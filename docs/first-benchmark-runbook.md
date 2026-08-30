@@ -6,7 +6,7 @@ script recognition.
 
 | Setting | v1 value |
 | --- | --- |
-| Model | `qari-ocr-0.2` (`NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct`) — 2B, Arabic-specific, runs on a free T4 |
+| Model | `qari-ocr-0.3` (`NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct`) — 2B, Arabic-specific, full merged model, runs on a free T4 |
 | Dataset | `muharaf_lines` — Muharaf-public `test` split, line-level (`aamijar/muharaf-public`) |
 | Sample count | 50 to start, then the full 1,334 |
 | Metrics | CER/WER (raw · light · diacritics-insensitive), diacritic F1, latency |
@@ -67,7 +67,7 @@ Colab **File → Upload notebook**.
 | 2 — clone | clones the repo with `GH_TOKEN` | prints the latest commit line |
 | 3 — HF cache | points HF at `/content` (Colab scratch, not your machine) | `HF_TOKEN set` if you added it |
 | 4 — install | `pip install -e '.[local]'` | ~2–4 min, some resolver noise is fine |
-| 5 — pick model | sets `MODEL='qari-ocr-0.2'`, `LIMIT=50` | no output |
+| 5 — pick model | sets `MODEL='qari-ocr-0.3'`, `LIMIT=50` | no output |
 | 6 — 1-image sanity | loads the model, transcribes one line | shows the line image, `GT:` and `PRED:`; first model download ~3–5 min |
 | 7 — benchmark | runs all 50 lines, scores them | progress, then the `summary.md` table |
 | 8 — inspect | first 20 predictions as a table | GT vs prediction |
@@ -78,7 +78,7 @@ Colab **File → Upload notebook**.
 If cell 6 fails, fix that before the full run — see Troubleshooting.
 
 **Scale up:** once the 50-line run looks sane, set `LIMIT = None` in cell 5 and
-re-run cells 5–11. The full test split is ~1,334 lines; on a T4, Qari-OCR-0.2 is
+re-run cells 5–11. The full test split is ~1,334 lines; on a T4, Qari-OCR is
 roughly 1–3 s/line, so ~20–60 min. The runner caches per line, so a disconnect
 mid-run resumes on re-run.
 
@@ -115,7 +115,7 @@ right-click `results/<run_id>` → Download, unzip into `results/` here, then:
 
 ```bash
 cd /Volumes/PortableSSD/repos/arabic_ocr && source env.sh
-git add results/<run_id> && git commit -m "results: qari-ocr-0.2 x muharaf_lines" && git push
+git add results/<run_id> && git commit -m "results: qari-ocr-0.3 x muharaf_lines" && git push
 ```
 
 ---
@@ -126,7 +126,7 @@ git add results/<run_id> && git commit -m "results: qari-ocr-0.2 x muharaf_lines
 source env.sh
 uv run python scripts/make_leaderboard.py results -o results/leaderboard.html
 open results/leaderboard.html          # eyeball it
-git add results/leaderboard.html results/leaderboard.json && git commit -m "leaderboard: add qari-ocr-0.2 run" && git push
+git add results/leaderboard.html results/leaderboard.json && git commit -m "leaderboard: add qari-ocr-0.3 run" && git push
 ```
 
 `results/leaderboard.html` is a self-contained, theme-aware page (all runs under
@@ -156,7 +156,7 @@ The artifact starts private to your Claude account; share it when you're ready.
 | Cell 2: clone asks for a password / 403 | `GH_TOKEN` missing, wrong name, Notebook-access off, or not granted `Contents` on this repo |
 | Cell 4: install errors about `torch` | usually harmless (Colab's torch already satisfies the pin); continue |
 | Cell 6: `KeyError` / chat-template error | model/processor mismatch — try `MODEL='qwen2.5-vl-3b'`; report the traceback |
-| Cell 6/7: CUDA out of memory | lower `LIMIT`; use `qari-ocr-0.2` or `qwen2.5-vl-3b` (not 7B) on a T4 |
+| Cell 6/7: CUDA out of memory | lower `LIMIT`; use `qari-ocr-0.3` or `qwen2.5-vl-3b` (not 7B) on a T4 |
 | Muharaf download stalls (~25 MB) | add the `HF_TOKEN` secret and re-run cell 7 |
 | Cell 11: `push` rejected | `GH_TOKEN` is Read-only — regenerate it with `Contents: Read and write`, or download manually (step 5) |
 | Gemini/paid stuff appears | wrong notebook — v1 is `01_colab_local_models.ipynb`, no API keys needed |

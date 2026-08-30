@@ -5,7 +5,7 @@
 #   print(open(score_run(rd)).read())
 
 models:
-  - qari-ocr-0.2               # small Arabic-specific; good first local model on a T4
+  - qari-ocr-0.3               # small Arabic-specific; good first local model on a T4
 
 datasets:
   - muharaf_lines

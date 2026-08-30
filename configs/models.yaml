@@ -48,16 +48,19 @@ claude-sonnet:
   pricing: { input_usd_per_1m: 3.00, output_usd_per_1m: 15.00 }
 
 # --- local open-weight / Arabic-specific VLMs (needs: uv sync --extra local)
-qari-ocr-0.2:
+qari-ocr-0.3:
+  # full merged model (config.json + model.safetensors). The v1 default — clean load.
   client: hf_local
-  hf_id: NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct
+  hf_id: NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct
   arch: qwen2_vl
   dtype: float16
   pricing: null
 
-qari-ocr-0.3:
+qari-ocr-0.2:
+  # v0.2.2.1 is only a LoRA adapter (no config.json); apply it on the fp16 base.
   client: hf_local
-  hf_id: NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct
+  hf_id: Qwen/Qwen2-VL-2B-Instruct
+  adapter_id: NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct
   arch: qwen2_vl
   dtype: float16
   pricing: null

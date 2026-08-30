@@ -15,6 +15,27 @@ from .base import Prediction
 from .litellm_client import clean_output
 
 
+def _load_model(hf_id: str, load_kwargs: dict):
+    """Try the vision-text auto classes in order — which one carries a given
+    architecture shifts between transformers releases."""
+    import transformers
+
+    errors = []
+    for cls_name in (
+        "AutoModelForImageTextToText",
+        "AutoModelForVision2Seq",
+        "AutoModelForCausalLM",
+    ):
+        cls = getattr(transformers, cls_name, None)
+        if cls is None:
+            continue
+        try:
+            return cls.from_pretrained(hf_id, **load_kwargs)
+        except (ValueError, KeyError, OSError) as e:
+            errors.append(f"{cls_name}: {type(e).__name__}: {e}")
+    raise RuntimeError("no auto class could load " + hf_id + "\n" + "\n".join(errors))
+
+
 class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
@@ -42,7 +63,7 @@ class HFLocalClient:
             ) from e
 
         import torch
-        from transformers import AutoConfig, AutoModelForImageTextToText
+        from transformers import AutoConfig
 
         device = "mps" if torch.backends.mps.is_available() else (
             "cuda" if torch.cuda.is_available() else "cpu"
@@ -78,7 +99,7 @@ class HFLocalClient:
             )
             load_kwargs["device_map"] = "auto"
 
-        model = AutoModelForImageTextToText.from_pretrained(self.hf_id, **load_kwargs)
+        model = _load_model(self.hf_id, load_kwargs)
         if self.adapter_id:
             from peft import PeftModel
 

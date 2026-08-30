@@ -169,14 +169,14 @@ def build_local():
         md(
             "## 4. Pick a model",
             "",
-            "`qari-ocr-0.2` is the default for **v1**: 2B params, Arabic-specific, fits a",
+            "`qari-ocr-0.3` is the default for **v1**: 2B params, Arabic-specific, fits a",
             "free T4 with room to spare. Other names in `configs/models.yaml`:",
-            "`qari-ocr-0.3`, `qwen2.5-vl-3b`, `qwen2.5-vl-7b`, `paligemma-arabic-hw`",
+            "`qari-ocr-0.2`, `qwen2.5-vl-3b`, `qwen2.5-vl-7b`, `paligemma-arabic-hw`",
             "(the last needs the gated `google/paligemma-3b-pt-448` — accept its license on",
             "HF and add an `HF_TOKEN` secret).",
         ),
         code(
-            "MODEL = 'qari-ocr-0.2'   # v1 default",
+            "MODEL = 'qari-ocr-0.3'   # v1 default",
             "LIMIT = 50               # Muharaf test lines; set None for all 1,334 once a small run looks right",
             "",
             "run_cfg = {",
