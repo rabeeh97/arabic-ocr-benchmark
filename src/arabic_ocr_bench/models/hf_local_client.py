@@ -18,13 +18,14 @@ from .litellm_client import clean_output
 class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
-                 max_new_tokens: int = 256):
+                 max_new_tokens: int = 256, load_in_4bit: bool = False):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
         self.dtype = dtype
         self.adapter_id = adapter_id
         self.max_new_tokens = max_new_tokens
+        self.load_in_4bit = load_in_4bit
         self._model = None
         self._processor = None
 
@@ -41,7 +42,7 @@ class HFLocalClient:
             ) from e
 
         import torch
-        from transformers import AutoModelForImageTextToText
+        from transformers import AutoConfig, AutoModelForImageTextToText
 
         device = "mps" if torch.backends.mps.is_available() else (
             "cuda" if torch.cuda.is_available() else "cpu"
@@ -52,15 +53,40 @@ class HFLocalClient:
             else "auto"
         )
         self._processor = AutoProcessor.from_pretrained(self.hf_id, trust_remote_code=True)
-        model = AutoModelForImageTextToText.from_pretrained(
-            self.hf_id, torch_dtype=torch_dtype, trust_remote_code=True,
-        )
+
+        # Some checkpoints (unsloth-derived, e.g. Qari-OCR) carry a bitsandbytes
+        # 4-bit `quantization_config` in config.json. That path is fragile on
+        # Colab ("'Parameter' object has no attribute 'compress_statistics'") and
+        # unnecessary for a 2-3B model on a 16 GB GPU. Unless the caller opted
+        # into quantization, drop it and load in plain fp16/bf16.
+        cfg = AutoConfig.from_pretrained(self.hf_id, trust_remote_code=True)
+        if not self.load_in_4bit and hasattr(cfg, "quantization_config"):
+            delattr(cfg, "quantization_config")
+
+        load_kwargs = {
+            "config": cfg,
+            "torch_dtype": torch_dtype,
+            "trust_remote_code": True,
+            "low_cpu_mem_usage": True,
+        }
+        if self.load_in_4bit:
+            from transformers import BitsAndBytesConfig
+
+            load_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_compute_dtype=torch_dtype,
+                bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
+            )
+            load_kwargs["device_map"] = "auto"
+
+        model = AutoModelForImageTextToText.from_pretrained(self.hf_id, **load_kwargs)
         if self.adapter_id:
             from peft import PeftModel
 
             model = PeftModel.from_pretrained(model, self.adapter_id)
-        self._model = model.to(device).eval()
-        self._device = device
+        # with device_map="auto" (4-bit) accelerate already placed the weights
+        model = model if self.load_in_4bit else model.to(device)
+        self._model = model.eval()
+        self._device = "cuda" if self.load_in_4bit else device
 
     # -- inference -------------------------------------------------------- #
     def transcribe(self, image: Image.Image, prompt: str) -> Prediction:

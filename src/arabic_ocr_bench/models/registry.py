@@ -40,6 +40,7 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             arch=cfg.get("arch", "qwen2_5_vl"),
             dtype=cfg.get("dtype", "auto"),
             adapter_id=cfg.get("adapter_id"),
+            load_in_4bit=bool(cfg.get("load_in_4bit", False)),
         )
     raise ValueError(f"model {name!r}: unknown client {client!r}")
 
