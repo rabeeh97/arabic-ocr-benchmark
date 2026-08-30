@@ -1,0 +1,22 @@
+# A single benchmark run: which models x datasets, and execution knobs.
+# Phase 1 smoke run: 15 Muharaf test lines against the zero-cost mock models.
+
+models:
+  - mock_empty
+  - mock_echo
+  # - gemini-2.5-flash        # uncomment once GEMINI_API_KEY is set
+
+datasets:
+  - muharaf_lines
+
+limit: 15                      # cap samples per dataset (null = all)
+prompt_version: line-v1
+
+# scoring
+normalization_profiles: [raw, light, diac_insensitive]
+
+# execution
+concurrency: 4                 # in-flight requests per model
+max_retries: 3
+cache: true                    # skip (sample, model, prompt_version) already in cache
+results_dir: results

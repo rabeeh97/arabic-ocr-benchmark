@@ -1,0 +1,48 @@
+# Model registry. See docs/models.md for access details and quirks.
+#
+# client: which ModelClient implementation to use
+#   mock       -> deterministic, zero-cost; for pipeline tests
+#   litellm    -> hosted APIs (and any OpenAI-compatible local server via api_base)
+#   hf_local   -> local open-weight / Arabic-specific weights (needs the `local` extra)
+# pricing is USD; used by report.py to compute cost. null = free / not billed.
+
+mock_echo:
+  client: mock
+  mode: echo_gt            # returns the ground truth (upper-bound sanity check)
+  pricing: null
+
+mock_empty:
+  client: mock
+  mode: empty              # returns "" (lower-bound sanity check: CER ~ 1.0)
+  pricing: null
+
+gemini-2.5-flash:
+  client: litellm
+  litellm_id: gemini/gemini-2.5-flash
+  env_key: GEMINI_API_KEY            # Google AI Studio free tier works (rate-limited)
+  params: { temperature: 0 }
+  pricing:
+    input_usd_per_1m: 0.30
+    output_usd_per_1m: 2.50
+    # image handling differs from OpenAI; treat as ~258 tokens/image for budgeting
+
+# --- listed for reference; enable when keys / weights are available ---
+# gpt-4o:
+#   client: litellm
+#   litellm_id: openai/gpt-4o
+#   env_key: OPENAI_API_KEY
+#   params: { temperature: 0 }
+#   pricing: { input_usd_per_1m: 2.50, output_usd_per_1m: 10.00 }
+#
+# qari-ocr-0.2:
+#   client: hf_local
+#   hf_id: NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct
+#   arch: qwen2_vl
+#   dtype: float16
+#   pricing: null
+#
+# qwen2.5-vl-7b:
+#   client: hf_local
+#   hf_id: Qwen/Qwen2.5-VL-7B-Instruct
+#   arch: qwen2_5_vl
+#   pricing: null
