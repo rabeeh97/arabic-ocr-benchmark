@@ -52,3 +52,7 @@ addopts = "-q"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
+# EXE002: every file on the exFAT external drive reports as executable — noise here.
+ignore = ["EXE002"]

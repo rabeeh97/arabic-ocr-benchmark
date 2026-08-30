@@ -1,0 +1,20 @@
+# Colab first-benchmark run. Edit `models` to the one(s) you want, then:
+#   from arabic_ocr_bench.runner import run
+#   from arabic_ocr_bench.report import score_run
+#   rd = run(yaml.safe_load(open("configs/run.colab.yaml")))
+#   print(open(score_run(rd)).read())
+
+models:
+  - qari-ocr-0.2               # small Arabic-specific; good first local model on a T4
+
+datasets:
+  - muharaf_lines
+
+limit: 50                      # bump to null for the full 1,330-line test split
+prompt_version: line-v1
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 1                 # single GPU
+max_retries: 3
+cache: true
+results_dir: results

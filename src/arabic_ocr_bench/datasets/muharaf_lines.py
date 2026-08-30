@@ -9,7 +9,7 @@ future fine-tuning phase and must never be scored here.
 
 from __future__ import annotations
 
-from typing import Iterator
+from collections.abc import Iterator
 
 from .base import Sample
 
