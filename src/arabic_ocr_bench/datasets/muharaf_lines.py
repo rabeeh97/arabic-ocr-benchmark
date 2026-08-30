@@ -1,6 +1,6 @@
 """Muharaf-public line-level adapter.
 
-HF dataset: aamijar/muharaf-public  (train 22,100 / validation 1,070 / test 1,330)
+HF dataset: aamijar/muharaf-public  (train 22,092 / validation 1,069 / test 1,334)
 Columns: image (PIL), text (str). License CC-BY-NC-SA-4.0 (research use).
 
 The benchmark uses the `test` split only. train / validation are reserved for a

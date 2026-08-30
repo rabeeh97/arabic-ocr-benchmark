@@ -1,13 +1,31 @@
 # Running the benchmark on Google Colab
 
-Three notebooks. All are generated from `scripts/build_notebooks.py` — edit that
-and re-run it, don't hand-edit the `.ipynb`.
+`01`–`03` are generated from `scripts/build_notebooks.py` — edit that and re-run
+it, don't hand-edit the `.ipynb`.
 
 | Notebook | Runtime | What it does |
 | --- | --- | --- |
+| `00_reference_gemini_pipeline.ipynb` | CPU | **Original prototype** (kept as-is, not generated). Gemini-2.5-flash only, raw CER/WER, CSV output. Superseded by `02` + `03`; see "About `00`" below. |
 | `01_colab_local_models.ipynb` | **T4 GPU** | Qari-OCR / Qwen2.5-VL / PaliGemma-Arabic on Muharaf |
 | `02_colab_hosted_apis.ipynb` | CPU | Gemini / OpenAI / Claude on Muharaf via their APIs |
 | `03_analysis.ipynb` | CPU | Leaderboard across runs + worst-error browser (image + GT + prediction) |
+
+## About `00_reference_gemini_pipeline.ipynb`
+
+The team's first prototype (the Colab that was shared into the repo). It targets
+the **same dataset and model** as the harness — `aamijar/muharaf-public` `test`
+split, line-level, `gemini-2.5-flash`, pricing `0.30 / 2.50` per 1M tokens — and
+tracks per-image + global CER/WER, latency, tokens and cost with resume support.
+The `02` notebook does everything it does and more: LiteLLM (multi-model), the
+`raw` / `light` / `diac_insensitive` normalization profiles, a diacritic F1
+score, macro as well as micro aggregation, and structured `predictions.jsonl` /
+`scores.jsonl` output instead of ad-hoc CSVs.
+
+Its saved outputs are from an **interrupted run** — only ~9 images completed
+before a storm of Gemini `503 "overloaded"` errors and a manual stop — so it
+contains **no global CER/WER numbers to reconcile against**. When `02` finishes a
+`gemini-2.5-flash` run, its `cer_micro_raw` is the value that should line up with
+this notebook's `Global_CER` once someone completes a full run of it.
 
 Each notebook: clone repo → install → run → `summary.md` → save results to Google Drive.
 

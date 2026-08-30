@@ -35,7 +35,7 @@ predominantly Ruq'ah), with polygonal line coordinates and page-element tags.
 | --- | --- |
 | Source | Hugging Face: `aamijar/muharaf-public` |
 | Level | line-level crops |
-| Size | `train` 22,100 · `validation` 1,070 · `test` 1,330 (≈24,495 lines, ~1.32 GB) |
+| Size | `train` 22,092 · `validation` 1,069 · `test` 1,334 (≈24,495 lines, ~1.32 GB) |
 | Columns | `image` (Image), `text` (string, 1–181 chars) |
 | License | CC-BY-NC-SA-4.0 (non-commercial; fine for research benchmarking — cite the paper) |
 | Access | public, no gating |

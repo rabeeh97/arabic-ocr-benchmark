@@ -10,7 +10,7 @@ models:
 datasets:
   - muharaf_lines
 
-limit: 50                      # bump to null for the full 1,330-line test split
+limit: 50                      # bump to null for the full 1,334-line test split
 prompt_version: line-v1
 normalization_profiles: [raw, light, diac_insensitive]
 
