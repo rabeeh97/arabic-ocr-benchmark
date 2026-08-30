@@ -22,9 +22,9 @@ data/
 !data/**/*.txt
 !data/**/*.json.example
 
-# benchmark outputs — keep the folder, ignore run artifacts
-results/*
-!results/.gitkeep
+# benchmark outputs: run dirs ARE committed (that's how results come back from
+# Colab). Only the local resume-cache is ignored.
+results/_cache/
 
 # HF / model caches
 .cache/

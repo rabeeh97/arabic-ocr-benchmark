@@ -111,6 +111,30 @@ PEEK_CELL = code(
     "df.head(20)",
 )
 
+LEADERBOARD_CELL = code(
+    "# Build the shareable HTML leaderboard from every run under results/",
+    "!python scripts/make_leaderboard.py results -o results/leaderboard.html",
+    "from IPython.display import HTML",
+    "HTML(open('results/leaderboard.html').read())",
+)
+
+COMMIT_RESULTS_CELL = code(
+    "# Push this run's results back to the repo (needs the GH_TOKEN secret used to",
+    "# clone). Skips silently if no token. Commits results/<run_id>/ + leaderboard.",
+    "import subprocess, os",
+    "if token:",
+    "    subprocess.run(['git','config','user.email','colab@arabic-ocr-bench'], check=True)",
+    "    subprocess.run(['git','config','user.name','colab-runner'], check=True)",
+    "    subprocess.run(['git','add','-f', f'results/{run_dir.name}', 'results/leaderboard.html', 'results/leaderboard.json'], check=True)",
+    "    msg = f'results: {\", \".join(run_cfg[\"models\"])} x {\", \".join(run_cfg[\"datasets\"])} (n={run_cfg.get(\"limit\") or \"all\"})'",
+    "    r = subprocess.run(['git','commit','-m',msg], capture_output=True, text=True)",
+    "    print(r.stdout or r.stderr)",
+    "    push = subprocess.run(['git','push','origin','HEAD:main'], capture_output=True, text=True)",
+    "    print(push.stdout or push.stderr)",
+    "else:",
+    "    print('no GH_TOKEN -- results are on Drive only; download them from the file browser')",
+)
+
 
 # --------------------------------------------------------------------------- #
 # 01 - local models
@@ -143,16 +167,17 @@ def build_local():
             "# Colab ships a recent torch already; this pulls transformers>=4.49, peft, qwen-vl-utils, ...",
         ),
         md(
-            "## 4. Pick a model and run",
+            "## 4. Pick a model",
             "",
-            "Model names come from `configs/models.yaml`. Good first picks on a T4:",
-            "`qari-ocr-0.2` (2B, Arabic-specific), `qwen2.5-vl-3b`, `qwen2.5-vl-7b`.",
-            "`paligemma-arabic-hw` needs HF access to the gated base `google/paligemma-3b-pt-448`",
-            "(accept the license on HF and add an `HF_TOKEN` secret).",
+            "`qari-ocr-0.2` is the default for **v1**: 2B params, Arabic-specific, fits a",
+            "free T4 with room to spare. Other names in `configs/models.yaml`:",
+            "`qari-ocr-0.3`, `qwen2.5-vl-3b`, `qwen2.5-vl-7b`, `paligemma-arabic-hw`",
+            "(the last needs the gated `google/paligemma-3b-pt-448` — accept its license on",
+            "HF and add an `HF_TOKEN` secret).",
         ),
         code(
-            "MODEL = 'qari-ocr-0.2'   # <- change me",
-            "LIMIT = 50               # lines from the Muharaf test split; set None for all 1,330",
+            "MODEL = 'qari-ocr-0.2'   # v1 default",
+            "LIMIT = 50               # Muharaf test lines; set None for all 1,334 once a small run looks right",
             "",
             "run_cfg = {",
             "    'models': [MODEL],",
@@ -164,6 +189,28 @@ def build_local():
             "    'results_dir': 'results',",
             "}",
         ),
+        md(
+            "## 5. Sanity check on one image",
+            "",
+            "Loads the model and transcribes a single line — surfaces any load / prompt /",
+            "dtype problem in ~1 min instead of after the whole run.",
+        ),
+        code(
+            "import yaml",
+            "from arabic_ocr_bench.models.registry import build_model, load_model_configs",
+            "from arabic_ocr_bench.datasets.registry import build_dataset, load_dataset_configs",
+            "from arabic_ocr_bench.prompting import get_prompt",
+            "",
+            "_m = load_model_configs(); _d = load_dataset_configs()",
+            "client = build_model(MODEL, _m[MODEL])",
+            "sample = next(iter(build_dataset('muharaf_lines', _d['muharaf_lines'], limit=1)))",
+            "pred = client.transcribe(sample.image, get_prompt('line-v1'))",
+            "display(sample.image)",
+            "print('GT  :', sample.ground_truth)",
+            "print('PRED:', pred.cleaned_text or f'(empty / error: {pred.error})')",
+            "assert pred.error is None, pred.error",
+        ),
+        md("## 6. Run the benchmark"),
         code(
             "from arabic_ocr_bench.runner import run",
             "from arabic_ocr_bench.report import score_run",
@@ -172,16 +219,25 @@ def build_local():
             "summary_md = score_run(run_dir, profiles=tuple(run_cfg['normalization_profiles']))",
             "print(open(summary_md).read())",
         ),
-        md("## 5. Inspect predictions"),
+        md("## 7. Inspect predictions"),
         PEEK_CELL,
-        md("## 6. Save results to Google Drive"),
+        md("## 8. Leaderboard"),
+        LEADERBOARD_CELL,
+        md("## 9. Save results to Google Drive"),
         DRIVE_SAVE_CELL,
+        md(
+            "## 10. Commit results back to the repo",
+            "",
+            "So they show up here and on GitHub without a manual download.",
+        ),
+        COMMIT_RESULTS_CELL,
         md(
             "## Next",
             "",
-            "- Re-run with a different `MODEL`; results accumulate under `results/` and on Drive.",
-            "- Set `LIMIT = None` for the full test split once a small run looks right.",
-            "- Open `03_analysis.ipynb` to compare models and browse the worst errors.",
+            "- Re-run with a different `MODEL`; runs accumulate under `results/`, on Drive, and (if committed) in the repo.",
+            "- Set `LIMIT = None` for the full 1,334-line test split.",
+            "- `03_analysis.ipynb` — compare models and browse the worst errors.",
+            "- See `docs/first-benchmark-runbook.md` for the end-to-end walkthrough incl. publishing the artifact.",
         ),
     ]
     write("01_colab_local_models.ipynb", notebook(cells, gpu=True))
@@ -243,8 +299,12 @@ def build_hosted():
         ),
         md("## 4. Inspect predictions"),
         PEEK_CELL,
-        md("## 5. Save results to Google Drive"),
+        md("## 5. Leaderboard"),
+        LEADERBOARD_CELL,
+        md("## 6. Save results to Google Drive"),
         DRIVE_SAVE_CELL,
+        md("## 7. Commit results back to the repo"),
+        COMMIT_RESULTS_CELL,
         md(
             "## Notes",
             "",

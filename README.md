@@ -45,8 +45,13 @@ cp .env.example .env                 # add API keys for hosted models
 
 ## Quickstart (Google Colab) — recommended for the first benchmark
 
-Colab gives a free T4 GPU. See [`notebooks/README.md`](notebooks/README.md) for
-step-by-step setup (secrets, runtime). The three notebooks:
+**v1 walkthrough: [`docs/first-benchmark-runbook.md`](docs/first-benchmark-runbook.md)** —
+one local model (`qari-ocr-0.2`) on Colab's free T4, no paid API, from opening the
+notebook to publishing the leaderboard artifact.
+
+See [`notebooks/README.md`](notebooks/README.md) for per-notebook setup. The four notebooks:
+
+- `notebooks/00_reference_gemini_pipeline.ipynb` — the team's original prototype (kept for reference)
 
 - `notebooks/01_colab_local_models.ipynb` — Qari-OCR / Qwen2.5-VL / PaliGemma-Arabic on a GPU
 - `notebooks/02_colab_hosted_apis.ipynb` — Gemini / OpenAI / Claude via API keys

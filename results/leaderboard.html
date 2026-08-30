@@ -1,0 +1,43 @@
+<style>
+:root{
+  --bg:#fbfbfa; --fg:#1a1a1a; --muted:#666; --line:#e3e3e0;
+  --head:#f0f0ee; --hi:#eef4ff; --accent:#2a5db0;
+}
+:root:not([data-theme="light"]){ }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171a; --fg:#e9e9e7; --muted:#9a9a97; --line:#2c2e33;
+    --head:#22242a; --hi:#1d2735; --accent:#7aa6f0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16171a; --fg:#e9e9e7; --muted:#9a9a97; --line:#2c2e33;
+  --head:#22242a; --hi:#1d2735; --accent:#7aa6f0;
+}
+body{background:var(--bg);color:var(--fg);}
+main{max-width:1040px;margin:0 auto;padding:28px 20px 56px;
+  font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+h1{font-size:22px;margin:0 0 4px;}
+h2{font-size:15px;margin:28px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.sub{color:var(--muted);margin:0 0 20px;}
+.wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;}
+table{border-collapse:collapse;width:100%;font-size:13px;}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;}
+thead th{background:var(--head);font-weight:600;vertical-align:bottom;position:sticky;top:0;}
+tbody tr:last-child td{border-bottom:none;}
+td.n{text-align:right;font-variant-numeric:tabular-nums;}
+td.m{font-weight:600;}
+td.hi,th:nth-child(5){background:var(--hi);}
+.runs{color:var(--muted);padding-left:18px;}
+.runs code,.foot code{background:var(--head);padding:1px 5px;border-radius:4px;}
+.foot{color:var(--muted);font-size:12px;margin-top:24px;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;}
+</style>
+<main><h1>Arabic Cursive OCR — Benchmark v1</h1>
+<p class='sub'>Arabic cursive script recognition — character/word error rate (lower is better). <b>micro</b> = corpus-weighted, <b>macro</b> = per-line mean. <b>light</b> normalizes alef/digits/tatweel/spacing; <b>diac</b> also strips harakat. <b>diac F1</b> = harakat F1 on raw text.</p>
+<div class='wrap'><table><thead><tr><th>model</th><th>dataset</th><th>n</th><th>CER<br>raw</th><th>CER<br>light</th><th>CER<br>diac</th><th>CER<br>macro·light</th><th>WER<br>light</th><th>exact<br>light</th><th>diac<br>F1</th><th>latency<br>ms</th><th>cost<br>USD</th><th>errors</th></tr></thead><tbody><tr><td class='m'>mock_echo</td><td>synthetic</td><td class='n'>10</td><td class='n'>0.00%</td><td class='n hi'>0.00%</td><td class='n'>0.00%</td><td class='n'>0.00%</td><td class='n'>0.00%</td><td class='n'>100.00%</td><td class='n'>1.000</td><td class='n'>0.0</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr><td class='m'>mock_empty</td><td>synthetic</td><td class='n'>10</td><td class='n'>100.00%</td><td class='n hi'>100.00%</td><td class='n'>100.00%</td><td class='n'>100.00%</td><td class='n'>100.00%</td><td class='n'>0.00%</td><td class='n'>1.000</td><td class='n'>0.0</td><td class='n'>0.0000</td><td class='n'>0</td></tr></tbody></table></div>
+<h2>Runs</h2><ul class='runs'>
+<li><code>20260830T132033Z</code> — 2026-08-30 13:20 UTC · limit=10 · prompt=line-v1</li>
+</ul>
+<p class='foot'>Generated 2026-08-30 13:21 UTC by <code>scripts/make_leaderboard.py</code> · dataset: Muharaf-public (CC-BY-NC-SA-4.0) · harness: arabic-ocr-bench</p>
+</main>

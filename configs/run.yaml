@@ -1,22 +1,19 @@
-# A single benchmark run: which models x datasets, and execution knobs.
-# Phase 1 smoke run: 15 Muharaf test lines against the zero-cost mock models.
+# Offline pipeline check: mock models x the in-repo synthetic dataset.
+# No network, no API keys, no downloads. Proves runner -> report end to end.
+#   uv run bench run --config configs/run.yaml --report
 
 models:
-  - mock_empty
-  - mock_echo
-  # - gemini-2.5-flash        # uncomment once GEMINI_API_KEY is set
+  - mock_empty            # -> CER ~1.0  (sanity floor)
+  - mock_echo             # -> CER  0.0  (sanity ceiling)
 
 datasets:
-  - muharaf_lines
+  - synthetic
 
-limit: 15                      # cap samples per dataset (null = all)
+limit: 10
 prompt_version: line-v1
-
-# scoring
 normalization_profiles: [raw, light, diac_insensitive]
 
-# execution
-concurrency: 4                 # in-flight requests per model
+concurrency: 4
 max_retries: 3
-cache: true                    # skip (sample, model, prompt_version) already in cache
+cache: true
 results_dir: results

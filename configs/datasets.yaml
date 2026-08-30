@@ -9,6 +9,13 @@ muharaf_lines:
   license: CC-BY-NC-SA-4.0
   source: https://huggingface.co/datasets/aamijar/muharaf-public
 
+synthetic:
+  adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
+  track: line
+  split: test
+  license: n/a
+  source: in-repo (offline pipeline check — no network)
+
 # --- not yet implemented, listed for reference (see benchmark-matrix.md) ---
 # muharaf_pages:
 #   adapter: arabic_ocr_bench.datasets.muharaf_pages:MuharafPages
