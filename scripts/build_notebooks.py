@@ -396,7 +396,152 @@ def build_analysis():
     write("03_analysis.ipynb", notebook(cells, gpu=False))
 
 
+# --------------------------------------------------------------------------- #
+# 04 - unattended sweep
+# --------------------------------------------------------------------------- #
+ROBUST_CLONE_CELL = code(
+    "# Bulletproof checkout: works whether the repo is missing, at the wrong",
+    "# path, or has local edits. Always ends up at the latest origin/main.",
+    "import os",
+    "REPO = '/content/arabic-ocr-benchmark'",
+    "token = None",
+    "try:",
+    "    from google.colab import userdata",
+    "    token = userdata.get('GH_TOKEN')",
+    "except Exception as e:",
+    "    print('no GH_TOKEN secret:', e)",
+    "url = f\"https://{(token + '@') if token else ''}github.com/rabeeh97/arabic-ocr-benchmark.git\"",
+    "if os.path.isdir(REPO + '/.git'):",
+    "    os.system(f'git -C {REPO} fetch --depth 1 origin main && git -C {REPO} reset --hard origin/main')",
+    "else:",
+    "    os.system(f'rm -rf {REPO} && git clone --depth 1 {url} {REPO}')",
+    "os.chdir(REPO)",
+    "print(os.popen('git log --oneline -3').read())",
+)
+
+SWEEP_RUN_CELL = code(
+    "import shutil, subprocess, pathlib",
+    "from arabic_ocr_bench.sweep import run_sweep",
+    "",
+    "DRIVE = pathlib.Path('/content/drive/MyDrive/arabic-ocr-bench')",
+    "DRIVE_OK = DRIVE.parent.exists()   # is Drive mounted?",
+    "",
+    "def _git(*a):",
+    "    return subprocess.run(['git', *a], capture_output=True, text=True)",
+    "",
+    "def _mirror_to_drive(run_dir):",
+    "    if not DRIVE_OK:",
+    "        return",
+    "    (DRIVE / 'results').mkdir(parents=True, exist_ok=True)",
+    "    if pathlib.Path('results/_cache').is_dir():",
+    "        shutil.copytree('results/_cache', DRIVE / '_cache', dirs_exist_ok=True)",
+    "    shutil.copytree(run_dir, DRIVE / 'results' / pathlib.Path(run_dir).name, dirs_exist_ok=True)",
+    "    for f in ('sweep_manifest.json', 'leaderboard.html', 'leaderboard.json'):",
+    "        if pathlib.Path('results', f).is_file():",
+    "            shutil.copy2(pathlib.Path('results', f), DRIVE / 'results' / f)",
+    "",
+    "def checkpoint(entry, run_dir):",
+    "    run_dir = str(run_dir)",
+    "    subprocess.run(['python', 'scripts/make_leaderboard.py', 'results',",
+    "                    '-o', 'results/leaderboard.html'])",
+    "    _mirror_to_drive(run_dir)",
+    "    if not token:",
+    "        print('   (no GH_TOKEN -> results saved to Drive only)'); return",
+    "    _git('config', 'user.email', 'colab@arabic-ocr-bench')",
+    "    _git('config', 'user.name', 'colab-sweep')",
+    "    _git('add', '-f', run_dir, 'results/sweep_manifest.json',",
+    "         'results/leaderboard.html', 'results/leaderboard.json')",
+    "    _git('commit', '-m', f\"sweep: {entry['model']} {entry['phase']} \"",
+    "         f\"CER-light {entry['cer_micro_light']*100:.1f}% n={entry['n']}\")",
+    "    _git('pull', '--rebase', '--autostash', 'origin', 'main')",
+    "    p = _git('push', 'origin', 'HEAD:main')",
+    "    print('   push:', 'ok' if p.returncode == 0 else p.stderr.strip()[:160])",
+    "",
+    "# resume: restore the per-line cache from Drive if we have one",
+    "if DRIVE_OK and (DRIVE / '_cache').is_dir():",
+    "    shutil.copytree(DRIVE / '_cache', 'results/_cache', dirs_exist_ok=True)",
+    "    print('restored line cache from Drive')",
+    "",
+    "run_sweep(",
+    "    models=MODELS, dataset=DATASET,",
+    "    partial_limit=PARTIAL_LIMIT, run_full=RUN_FULL,",
+    "    manifest_path='results/sweep_manifest.json', results_dir='results',",
+    "    on_progress=print, on_done=checkpoint,",
+    ")",
+    "print('\\n=== SWEEP COMPLETE ===')",
+)
+
+
+def build_sweep():
+    cells = [
+        md(
+            "# Arabic Cursive OCR Benchmark — Unattended Sweep",
+            "",
+            "Benchmarks several local models on **Muharaf** lines, **Run all and walk",
+            "away**. After every (model, phase) it rebuilds the leaderboard, mirrors",
+            "results to Drive, and pushes them to the repo — so a disconnect never",
+            "loses more than the model in flight.",
+            "",
+            "**Resumable:** re-running skips anything already in",
+            "`results/sweep_manifest.json`. Safe to Run all again after a timeout.",
+            "",
+            "**Before running:** `Runtime -> T4 GPU`; add `GH_TOKEN` (write-scoped) and",
+            "`HF_TOKEN` secrets (see `notebooks/README.md`).",
+        ),
+        md("## 1. GPU"),
+        code(
+            "import torch",
+            "assert torch.cuda.is_available(), 'Runtime -> Change runtime type -> T4 GPU'",
+            "print(torch.cuda.get_device_name(0))",
+        ),
+        md("## 2. Repo"),
+        ROBUST_CLONE_CELL,
+        md("## 3. Install + caches"),
+        HF_CACHE_CELL,
+        code("!pip install -q -e '.[local]'"),
+        md("## 4. Mount Drive"),
+        code(
+            "from google.colab import drive",
+            "drive.mount('/content/drive')",
+        ),
+        md(
+            "## 5. Config",
+            "",
+            "`PARTIAL_LIMIT` runs a quick pass on every model first (fast feedback);",
+            "with `RUN_FULL = True` it then does the full 1,334-line pass on each.",
+            "Both phases are checkpointed independently.",
+        ),
+        code(
+            "MODELS = ['qari-ocr-0.3', 'qari-ocr-0.2', 'qwen2.5-vl-3b']",
+            "DATASET = 'muharaf_lines'",
+            "PARTIAL_LIMIT = 100      # quick pass per model",
+            "RUN_FULL = True          # then the whole test split",
+        ),
+        md("## 6. Run the sweep — this is the long one; leave it running"),
+        SWEEP_RUN_CELL,
+        md("## 7. Final leaderboard"),
+        code(
+            "!python scripts/make_leaderboard.py results -o results/leaderboard.html",
+            "from IPython.display import HTML",
+            "HTML(open('results/leaderboard.html').read())",
+        ),
+        md(
+            "## Notes",
+            "",
+            "- **Resume after a timeout:** just Run all again. Completed (model, phase)",
+            "  pairs are skipped; a partially-done model restarts but its already-scored",
+            "  lines come from the cache (restored from Drive), so it's quick.",
+            "- **Force a re-run** of one model: delete its entries from",
+            "  `results/sweep_manifest.json` (and optionally its `results/<run_id>/`).",
+            "- **Add models:** edit `MODELS` and Run all — only the new ones execute.",
+            "- Hosted models (Gemini/GPT/Claude): `02_colab_hosted_apis.ipynb`.",
+        ),
+    ]
+    write("04_colab_sweep.ipynb", notebook(cells, gpu=True))
+
+
 if __name__ == "__main__":
     build_local()
     build_hosted()
     build_analysis()
+    build_sweep()

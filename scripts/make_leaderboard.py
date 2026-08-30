@@ -50,7 +50,18 @@ def collect(target: Path) -> list[dict]:
         with (rd / "summary.csv").open() as fh:
             for r in csv.DictReader(fh):
                 rows.append({**meta, **r})
-    return rows
+    return _dedupe_keep_largest(rows)
+
+
+def _dedupe_keep_largest(rows: list[dict]) -> list[dict]:
+    """One row per (model, dataset): keep the run with the most samples, so a
+    later full run supersedes an earlier partial one on the board."""
+    best: dict[tuple[str, str], dict] = {}
+    for r in rows:
+        k = (r.get("model", ""), r.get("dataset", ""))
+        if k not in best or int(r.get("n", 0) or 0) > int(best[k].get("n", 0) or 0):
+            best[k] = r
+    return list(best.values())
 
 
 def _fmt_pct(v: str | float) -> str:

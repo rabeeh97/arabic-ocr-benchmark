@@ -6,9 +6,10 @@ it, don't hand-edit the `.ipynb`.
 | Notebook | Runtime | What it does |
 | --- | --- | --- |
 | `00_reference_gemini_pipeline.ipynb` | CPU | **Original prototype** (kept as-is, not generated). Gemini-2.5-flash only, raw CER/WER, CSV output. Superseded by `02` + `03`; see "About `00`" below. |
-| `01_colab_local_models.ipynb` | **T4 GPU** | Qari-OCR / Qwen2.5-VL / PaliGemma-Arabic on Muharaf |
+| `01_colab_local_models.ipynb` | **T4 GPU** | Interactive single/few local models on Muharaf — for exploring |
+| **`04_colab_sweep.ipynb`** | **T4 GPU** | **Run-all-and-leave-it.** Several local models, partial then full pass, checkpoints + pushes to the repo after every step, resumes on restart. This is the one to actually run. |
 | `02_colab_hosted_apis.ipynb` | CPU | Gemini / OpenAI / Claude on Muharaf via their APIs |
-| `03_analysis.ipynb` | CPU | Leaderboard across runs + worst-error browser (image + GT + prediction) |
+| `03_analysis.ipynb` | CPU | Worst-error browser (image + GT + prediction) |
 
 ## About `00_reference_gemini_pipeline.ipynb`
 
