@@ -1,0 +1,25 @@
+# Hosted-API sweep for Google Colab (CPU runtime, notebook 02).
+# Runs whichever models have a key in the environment; the notebook filters the
+# list down to the keys you actually provided.
+#
+#   from arabic_ocr_bench.runner import run
+#   from arabic_ocr_bench.report import score_run
+#   import yaml; rd = run(yaml.safe_load(open("configs/run.sweep-hosted.yaml")))
+
+models:
+  - gemini-2.5-flash       # free tier (rate-limited)
+  - gemini-2.5-pro
+  - gpt-4o                 # paid
+  - claude-sonnet          # paid
+
+datasets:
+  - muharaf_lines
+
+limit: 50                  # keep modest for paid APIs; bump when the setup looks right
+prompt_version: line-v1
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 4
+max_retries: 3
+cache: true
+results_dir: results

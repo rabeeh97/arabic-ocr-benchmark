@@ -1,0 +1,15 @@
+models:
+- mock_empty
+- mock_echo
+datasets:
+- synthetic
+limit: 10
+prompt_version: line-v1
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 4
+max_retries: 3
+cache: true
+results_dir: results

@@ -39,7 +39,7 @@ def _load_model(hf_id: str, load_kwargs: dict):
 class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
-                 max_new_tokens: int = 256, load_in_4bit: bool = False):
+                 max_new_tokens: int = 512, load_in_4bit: bool = False):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
@@ -121,6 +121,22 @@ class HFLocalClient:
         model = model if self.load_in_4bit else model.to(device)
         self._model = model.eval()
         self._device = "cuda" if self.load_in_4bit else device
+
+    def close(self) -> None:
+        """Free the model from (GPU) memory — the runner calls this between
+        models in a sweep so a single GPU can host them one at a time."""
+        self._model = None
+        self._processor = None
+        try:
+            import gc
+
+            import torch
+
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except Exception as e:  # noqa: BLE001
+            print(f"close(): cache clear skipped: {e}")
 
     # -- inference -------------------------------------------------------- #
     def transcribe(self, image: Image.Image, prompt: str) -> Prediction:

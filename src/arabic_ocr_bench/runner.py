@@ -114,19 +114,21 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             cache_file.write_text(json.dumps(row, ensure_ascii=False))
         return row
 
-    jobs = [
-        (m, ds, s)
-        for m in run_cfg["models"]
-        for ds in run_cfg["datasets"]
-        for s in samples_by_ds[ds]
-    ]
-
-    with (
-        pred_path.open("w", encoding="utf-8") as fh,
-        ThreadPoolExecutor(max_workers=concurrency) as pool,
-    ):
-        for row in pool.map(lambda args: _one(*args), jobs):
-            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
-            fh.flush()
+    # Model-major: finish every job for one model, then free it before loading
+    # the next. Critical for a local-model sweep on a single GPU.
+    with pred_path.open("w", encoding="utf-8") as fh:
+        for model_name in run_cfg["models"]:
+            model_jobs = [
+                (model_name, ds, s)
+                for ds in run_cfg["datasets"]
+                for s in samples_by_ds[ds]
+            ]
+            with ThreadPoolExecutor(max_workers=concurrency) as pool:
+                for row in pool.map(lambda args: _one(*args), model_jobs):
+                    fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+                    fh.flush()
+            close = getattr(clients[model_name], "close", None)
+            if callable(close):
+                close()
 
     return run_dir
