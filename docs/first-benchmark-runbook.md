@@ -157,6 +157,8 @@ The artifact starts private to your Claude account; share it when you're ready.
 | Cell 4: install errors about `torch` | usually harmless (Colab's torch already satisfies the pin); continue |
 | Cell 6: `KeyError` / chat-template error | model/processor mismatch — try `MODEL='qwen2.5-vl-3b'`; report the traceback |
 | Cell 6/7: CUDA out of memory | lower `LIMIT`; use `qari-ocr-0.3` or `qwen2.5-vl-3b` (not 7B) on a T4 |
+| `'Parameter' object has no attribute 'compress_statistics'` | `bitsandbytes` is imported and has patched torch. `!pip uninstall -y bitsandbytes`, remove any `import bitsandbytes` cell, restart the runtime. The harness never needs it for these models. |
+| `Unrecognized model ... model_type` | pointing at a LoRA-adapter repo as if it were a full model. Use `qari-ocr-0.3` (full model); `qari-ocr-0.2` is already wired as base + adapter. |
 | Muharaf download stalls (~25 MB) | add the `HF_TOKEN` secret and re-run cell 7 |
 | Cell 11: `push` rejected | `GH_TOKEN` is Read-only — regenerate it with `Contents: Read and write`, or download manually (step 5) |
 | Gemini/paid stuff appears | wrong notebook — v1 is `01_colab_local_models.ipynb`, no API keys needed |

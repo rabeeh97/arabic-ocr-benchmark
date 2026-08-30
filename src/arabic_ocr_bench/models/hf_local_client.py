@@ -54,6 +54,19 @@ class HFLocalClient:
     def _ensure_loaded(self):
         if self._model is not None:
             return
+
+        import sys
+
+        if "bitsandbytes" in sys.modules and not self.load_in_4bit:
+            # importing bitsandbytes patches torch's linear layers to route
+            # through 4-bit matmul; an unquantized model then fails forward with
+            # "'Parameter' object has no attribute 'compress_statistics'".
+            print(
+                "WARNING: bitsandbytes is imported but this model is not 4-bit. "
+                "If inference fails with 'compress_statistics', restart the "
+                "runtime without importing bitsandbytes (or set load_in_4bit)."
+            )
+
         try:
             import torch
             from transformers import AutoProcessor
