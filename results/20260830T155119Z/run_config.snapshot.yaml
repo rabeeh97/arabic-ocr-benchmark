@@ -1,0 +1,13 @@
+models:
+- qari-ocr-0.3
+datasets:
+- muharaf_lines
+limit: 25
+prompt_version: line-v1
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+cache: true
+results_dir: results
