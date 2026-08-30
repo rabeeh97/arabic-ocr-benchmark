@@ -80,6 +80,16 @@ HF_CACHE_CELL = code(
     "os.environ['HF_HOME'] = '/content/hf_cache'",
     "os.environ['HF_HUB_DISABLE_TELEMETRY'] = '1'",
     "os.environ['TOKENIZERS_PARALLELISM'] = 'false'",
+    "# Optional HF_TOKEN secret: lifts anonymous rate limits and speeds the",
+    "# Muharaf download (and is required for gated models like PaliGemma's base).",
+    "try:",
+    "    from google.colab import userdata",
+    "    _hf = userdata.get('HF_TOKEN')",
+    "    if _hf:",
+    "        os.environ['HF_TOKEN'] = _hf",
+    "        print('HF_TOKEN set')",
+    "except Exception:",
+    "    pass",
 )
 
 DRIVE_SAVE_CELL = code(
@@ -193,6 +203,7 @@ def build_hosted():
         md("## 1. Clone + install"),
         CLONE_CELL,
         code("!pip install -q -e '.'  # core only — no torch/transformers"),
+        HF_CACHE_CELL,
         md("## 2. Load API keys from Colab secrets"),
         code(
             "import os",

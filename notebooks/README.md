@@ -38,11 +38,17 @@ Add as Colab secrets (Notebook access ON), any subset:
 
 The notebook runs whichever keys are present and skips the rest.
 
-### 3. HF token (only for `paligemma-arabic-hw`)
+### 3. HF token — `HF_TOKEN` (recommended)
 
-That model's base (`google/paligemma-3b-pt-448`) is gated. Accept the license on
-its HF page, create a read token at https://huggingface.co/settings/tokens, add it
-as a Colab secret named `HF_TOKEN`. Not needed for Qari-OCR or Qwen2.5-VL.
+Create a **read** token at https://huggingface.co/settings/tokens and add it as a
+Colab secret named `HF_TOKEN` (Notebook access ON). It:
+
+- lifts anonymous HF rate limits and **speeds up the Muharaf download** (anonymous
+  pulls throttle hard after ~25 MB), and
+- is **required** for gated models — e.g. `paligemma-arabic-hw`, whose base
+  `google/paligemma-3b-pt-448` needs the license accepted on its HF page first.
+
+Not strictly required for Qari-OCR or Qwen2.5-VL, but recommended for every run.
 
 ---
 
