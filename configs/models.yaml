@@ -65,11 +65,12 @@ qari-ocr-0.2:
   dtype: float16
   pricing: null
 
-qwen2.5-vl-7b:
+qwen2-vl-2b:
+  # untuned base of Qari — the "what does the raw model do" anchor.
   client: hf_local
-  hf_id: Qwen/Qwen2.5-VL-7B-Instruct
-  arch: qwen2_5_vl
-  dtype: bfloat16
+  hf_id: Qwen/Qwen2-VL-2B-Instruct
+  arch: qwen2_vl
+  dtype: float16
   pricing: null
 
 qwen2.5-vl-3b:
@@ -77,6 +78,25 @@ qwen2.5-vl-3b:
   hf_id: Qwen/Qwen2.5-VL-3B-Instruct
   arch: qwen2_5_vl
   dtype: bfloat16
+  pricing: null
+
+qwen2.5-vl-7b:
+  # fp16 ~15 GB won't fit a free T4 with activations -> 4-bit. Drop load_in_4bit
+  # on a 24 GB+ GPU. Needs: pip install bitsandbytes
+  client: hf_local
+  hf_id: Qwen/Qwen2.5-VL-7B-Instruct
+  arch: qwen2_5_vl
+  dtype: bfloat16
+  load_in_4bit: true
+  pricing: null
+
+ain-7b:
+  # AIN (MBZUAI) — Arabic-centric VLM, Qwen2-VL-7B based. 4-bit for the T4.
+  client: hf_local
+  hf_id: MBZUAI/AIN
+  arch: qwen2_vl
+  dtype: float16
+  load_in_4bit: true
   pricing: null
 
 paligemma-arabic-hw:
