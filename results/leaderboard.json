@@ -50,5 +50,31 @@
     "wer_micro_diac_insensitive": "0.988",
     "exact_diac_insensitive": "0.05",
     "diac_f1": "0.5764"
+  },
+  {
+    "run": "20260831T230858Z",
+    "when": "2026-08-31 23:08 UTC",
+    "limit": "10",
+    "prompt_version": "line-v2",
+    "model": "qwen2-vl-2b",
+    "dataset": "muharaf_lines",
+    "n": "10",
+    "errors": "1",
+    "refusal_rate": "0.1",
+    "latency_ms_mean": "48155.9",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "1.3815",
+    "cer_macro_raw": "1.2639",
+    "wer_micro_raw": "1.6727",
+    "exact_raw": "0.0",
+    "cer_micro_light": "1.3787",
+    "cer_macro_light": "1.261",
+    "wer_micro_light": "1.6727",
+    "exact_light": "0.0",
+    "cer_micro_diac_insensitive": "1.3516",
+    "cer_macro_diac_insensitive": "1.2268",
+    "wer_micro_diac_insensitive": "1.6727",
+    "exact_diac_insensitive": "0.0",
+    "diac_f1": "0.3"
   }
 ]
