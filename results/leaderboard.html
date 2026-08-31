@@ -140,7 +140,7 @@ b{font-weight:600;color:var(--ink);}
 <p class='eyebrow'>Handwritten Arabic · line-level recognition</p>
 <h1>Arabic Handwriting OCR Leaderboard</h1>
 <p class='lede'>Character- and word-error rates for OCR / vision-language models transcribing cursive handwritten Arabic, scored on the same held-out lines with the same metrics.</p>
-<p class='status status--live'><span class='dot'></span>8 model(s) · 14 run(s) · dataset: Muharaf-public test split</p>
+<p class='status status--live'><span class='dot'></span>9 model(s) · 15 run(s) · dataset: Muharaf-public test split</p>
 </header>
 <section class='legend'><dl>
 <div><dt>CER / WER</dt><dd>edit distance to the reference, over characters / words. 0 = perfect.</dd></div>
@@ -150,7 +150,7 @@ b{font-weight:600;color:var(--ink);}
 <div><dt>micro / macro</dt><dd>corpus-weighted total vs. mean of per-line rates.</dd></div>
 <div><dt>diac F1</dt><dd>precision/recall of harakat marks, measured on raw text.</dd></div>
 </dl></section>
-<section class='board'><div class='scroll'><table><thead><tr><th class='t'>model</th><th class='t'>dataset</th><th class='n'>n</th><th class='n'>CER · raw</th><th class='n hero'>CER · light</th><th class='n'>CER · no-diac</th><th class='n'>CER · macro</th><th class='n'>WER · light</th><th class='n'>exact %</th><th class='n'>diac F1</th><th class='n'>ms / line</th><th class='n'>cost $</th><th class='n'>err</th></tr></thead><tbody><tr class='best'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>36.40</td><td class='n hero'>34.91</td><td class='n'>30.59</td><td class='n'>35.52</td><td class='n'>83.56</td><td class='n'>0.00</td><td class='n'>0.375</td><td class='n'>12438</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>43.48</td><td class='n hero'>42.24</td><td class='n'>33.33</td><td class='n'>41.77</td><td class='n'>80.82</td><td class='n'>0.00</td><td class='n'>0.667</td><td class='n'>17939</td><td class='n'>0.0033</td><td class='n'>0</td></tr><tr class=''><td class='t'>gemini-flash-lite</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>47.17</td><td class='n hero'>46.41</td><td class='n'>43.58</td><td class='n'>45.42</td><td class='n'>97.26</td><td class='n'>0.00</td><td class='n'>0.833</td><td class='n'>12123</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-llama-4-maverick</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>60.06</td><td class='n hero'>58.62</td><td class='n'>48.20</td><td class='n'>60.27</td><td class='n'>96.58</td><td class='n'>0.00</td><td class='n'>0.260</td><td class='n'>9373</td><td class='n'>0.0027</td><td class='n'>0</td></tr><tr class=''><td class='t'>mistral-small</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>79.89</td><td class='n hero'>79.31</td><td class='n'>68.83</td><td class='n'>80.03</td><td class='n'>97.95</td><td class='n'>0.00</td><td class='n'>0.083</td><td class='n'>10914</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class=''><td class='t'>pixtral-12b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>123.94</td><td class='n hero'>123.99</td><td class='n'>81.39</td><td class='n'>121.08</td><td class='n'>110.27</td><td class='n'>0.00</td><td class='n'>0.000</td><td class='n'>10913</td><td class='n'>0.0008</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>muharaf_lines</td><td class='n'>20</td><td class='n'>65.86</td><td class='n hero'>64.82</td><td class='n'>61.26</td><td class='n'>62.14</td><td class='n'>98.80</td><td class='n'>5.00</td><td class='n'>0.576</td><td class='n'>18040</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>muharaf_lines</td><td class='n'>1334</td><td class='n'>80.12</td><td class='n hero'>78.24</td><td class='n'>71.42</td><td class='n'>81.12</td><td class='n'>102.07</td><td class='n'>0.97</td><td class='n'>0.558</td><td class='n'>2164</td><td class='n'>0.0000</td><td class='n'>15</td></tr><tr class='mock'><td class='t'>gemini-flash-lite</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3045</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-llama-4-maverick</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3027</td><td class='n'>0.0017</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.43</td><td class='n hero'>0.43</td><td class='n'>0.43</td><td class='n'>0.45</td><td class='n'>2.38</td><td class='n'>90.00</td><td class='n'>1.000</td><td class='n'>3799</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>mistral-small</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.36</td><td class='n hero'>13.36</td><td class='n'>0.00</td><td class='n'>13.52</td><td class='n'>21.43</td><td class='n'>80.00</td><td class='n'>0.800</td><td class='n'>3813</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>pixtral-12b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.79</td><td class='n hero'>13.79</td><td class='n'>1.29</td><td class='n'>14.15</td><td class='n'>23.81</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>2653</td><td class='n'>0.0004</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>28.02</td><td class='n hero'>28.02</td><td class='n'>13.79</td><td class='n'>28.36</td><td class='n'>40.48</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>7707</td><td class='n'>0.0016</td><td class='n'>0</td></tr></tbody></table></div><p class='board-note'>All error figures are percentages; lower is better. The <b>CER · light</b> column is the headline metric.</p></section>
+<section class='board'><div class='scroll'><table><thead><tr><th class='t'>model</th><th class='t'>dataset</th><th class='n'>n</th><th class='n'>CER · raw</th><th class='n hero'>CER · light</th><th class='n'>CER · no-diac</th><th class='n'>CER · macro</th><th class='n'>WER · light</th><th class='n'>exact %</th><th class='n'>diac F1</th><th class='n'>ms / line</th><th class='n'>cost $</th><th class='n'>err</th></tr></thead><tbody><tr class='best'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>36.40</td><td class='n hero'>34.91</td><td class='n'>30.59</td><td class='n'>35.52</td><td class='n'>83.56</td><td class='n'>0.00</td><td class='n'>0.375</td><td class='n'>12438</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>43.48</td><td class='n hero'>42.24</td><td class='n'>33.33</td><td class='n'>41.77</td><td class='n'>80.82</td><td class='n'>0.00</td><td class='n'>0.667</td><td class='n'>17939</td><td class='n'>0.0033</td><td class='n'>0</td></tr><tr class=''><td class='t'>gemini-flash-lite</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>47.17</td><td class='n hero'>46.41</td><td class='n'>43.58</td><td class='n'>45.42</td><td class='n'>97.26</td><td class='n'>0.00</td><td class='n'>0.833</td><td class='n'>12123</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-llama-4-maverick</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>60.06</td><td class='n hero'>58.62</td><td class='n'>48.20</td><td class='n'>60.27</td><td class='n'>96.58</td><td class='n'>0.00</td><td class='n'>0.260</td><td class='n'>9373</td><td class='n'>0.0027</td><td class='n'>0</td></tr><tr class=''><td class='t'>mistral-small</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>79.89</td><td class='n hero'>79.31</td><td class='n'>68.83</td><td class='n'>80.03</td><td class='n'>97.95</td><td class='n'>0.00</td><td class='n'>0.083</td><td class='n'>10914</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class=''><td class='t'>pixtral-12b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>123.94</td><td class='n hero'>123.99</td><td class='n'>81.39</td><td class='n'>121.08</td><td class='n'>110.27</td><td class='n'>0.00</td><td class='n'>0.000</td><td class='n'>10913</td><td class='n'>0.0008</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>muharaf_lines</td><td class='n'>20</td><td class='n'>65.86</td><td class='n hero'>64.82</td><td class='n'>61.26</td><td class='n'>62.14</td><td class='n'>98.80</td><td class='n'>5.00</td><td class='n'>0.576</td><td class='n'>18040</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>muharaf_lines</td><td class='n'>1334</td><td class='n'>80.12</td><td class='n hero'>78.24</td><td class='n'>71.42</td><td class='n'>81.12</td><td class='n'>102.07</td><td class='n'>0.97</td><td class='n'>0.558</td><td class='n'>2164</td><td class='n'>0.0000</td><td class='n'>15</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>muharaf_lines</td><td class='n'>10</td><td class='n'>138.15</td><td class='n hero'>137.87</td><td class='n'>135.16</td><td class='n'>126.10</td><td class='n'>167.27</td><td class='n'>0.00</td><td class='n'>0.300</td><td class='n'>48156</td><td class='n'>0.0000</td><td class='n'>1</td></tr><tr class='mock'><td class='t'>gemini-flash-lite</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3045</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-llama-4-maverick</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3027</td><td class='n'>0.0017</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.43</td><td class='n hero'>0.43</td><td class='n'>0.43</td><td class='n'>0.45</td><td class='n'>2.38</td><td class='n'>90.00</td><td class='n'>1.000</td><td class='n'>3799</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>mistral-small</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.36</td><td class='n hero'>13.36</td><td class='n'>0.00</td><td class='n'>13.52</td><td class='n'>21.43</td><td class='n'>80.00</td><td class='n'>0.800</td><td class='n'>3813</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>pixtral-12b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.79</td><td class='n hero'>13.79</td><td class='n'>1.29</td><td class='n'>14.15</td><td class='n'>23.81</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>2653</td><td class='n'>0.0004</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>28.02</td><td class='n hero'>28.02</td><td class='n'>13.79</td><td class='n'>28.36</td><td class='n'>40.48</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>7707</td><td class='n'>0.0016</td><td class='n'>0</td></tr></tbody></table></div><p class='board-note'>All error figures are percentages; lower is better. The <b>CER · light</b> column is the headline metric.</p></section>
 <section class='cards'>
 <h2>Models</h2><dl class='cardlist'>
 <div><dt>openrouter-qwen3-vl-235b</dt><dd>Qwen3-VL 235B (A22B MoE) via OpenRouter — current-generation large open VLM with very strong multilingual OCR. No local GPU needed.</dd></div>
@@ -161,6 +161,7 @@ b{font-weight:600;color:var(--ink);}
 <div><dt>pixtral-12b</dt><dd>Mistral&#x27;s open vision-language model (12B), served via Mistral&#x27;s API. Free tier available. A useful open-weight comparison point without local GPU.</dd></div>
 <div><dt>qari-ocr-0.3</dt><dd>NAMAA-Space&#x27;s Arabic OCR model, 2B params, fine-tuned from Qwen2-VL-2B. The v0.3 line is &quot;structure-first&quot; — tuned for full-page documents with layout and Markdown output, so on single lines it can add markup or over-generate.</dd></div>
 <div><dt>qari-ocr-0.2</dt><dd>NAMAA-Space&#x27;s earlier Arabic OCR checkpoint (v0.2.2.1), a LoRA adapter on Qwen2-VL-2B, tuned for raw-text accuracy on diacritically rich Arabic. Reports the best character accuracy of the Qari line on its own benchmark.</dd></div>
+<div><dt>qwen2-vl-2b</dt><dd>Alibaba&#x27;s Qwen2-VL, 2B params, untuned. The base model the Qari checkpoints are built on — its row shows how much the Arabic OCR fine-tuning actually buys.</dd></div>
 </dl>
 <h2>Datasets</h2><dl class='cardlist'>
 <div><dt>kitab_khatt</dt><dd>KITAB-Bench / KHATT subset — modern handwritten Arabic, line images with clean printed-quality ground truth. The main handwriting target: cleaner and more uniform than Muharaf, so a useful contrast with it.</dd></div>
@@ -177,6 +178,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>63%</td><td><span class='pred' dir='auto'>هذا ستحب له، هابك فيه البيت s:البيتعلى البيبته التي يذهب لي ببسات الحجّة، ليبيني L.حجه.</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>100%</td><td><span class='pred err'>— refusal</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>100%</td><td><span class='pred err'>— refusal</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -184,6 +186,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>58%</td><td><span class='pred' dir='auto'>لت يَافِك فُطْلًا بِأنا أفتا الحال الجماعات لا انيه عاجلي لكي اعتمد نفسي ث</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>75%</td><td><span class='pred' dir='auto'>الله تعالى لا إله إلا هو وسليم</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>75%</td><td><span class='pred' dir='auto'>الله تعالى لا إله إلا هو وسليم</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -191,6 +194,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>81%</td><td><span class='pred' dir='auto'>شَدْرَا فِضًا لِلصُّبْت طِيبٍ شَفَحَالْابْن زَهْيَةَ شَكَم سَقْفَه جَادِلٌ كَسِنْ</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>503%</td><td><span class='pred' dir='auto'>خادم رضي الله عنه صلى الله عليه وسلم حسن بن زيد بن خالد بن سعد بن عبد الرحمن بن معاذ بن عبيد الله بن قيس بن هود بن يزيد بن أبي بكر الصديق بن الحارث بن المغيرة بن الوليد بن مروان بن الأسد بن العباس بن مريم بن السلمة بن عمر بن الخطاب بن علي بن abi abu bakr al-harith bin saeed bin abd al-rahman bin othman bin uqba ibn huda ibn muhammad ibn abu Bakr ibn al-Harith ibn Muawiya ibn Al-Maqdisi ibn &#x27;Abbas ibn Malik ibn Abi Talib</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>505%</td><td><span class='pred' dir='auto'>خادم رضي الله عنه صلى الله عليه وسلم حسن بن زيد بن خالد بن سعد بن عبد الرحمن بن معاذ بن عبيد الله بن قيس بن هود بن يزيد بن أبي بكر الصديق بن الحارث بن المغيرة بن الوليد بن مروان بن الأسد بن العباس بن مريم بن السلمة بن عمر بن الخطاب بن علي بن abi abu bakr al-harith bin saeed bin abd al-rahman bin othman bin uqba ibn huda ibn muhammad ibn abu Bakr ibn al-Harith ibn Muawiya ibn Al-Maqdis ibn &#x27;Abbas ibn Malik ibn Abi Talib ib</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -198,6 +202,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>77%</td><td><span class='pred' dir='auto'>دَبْلِسٍ سُمّي كلَفَ سَماً بِحَجَابٍ فَالبين خَاتَمَهَا بِكَافِ شَاكِيك أَوَانَقٍا.</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>73%</td><td><span class='pred' dir='auto'>ارجل سعد تغل سالم وحسن زكريا حسن بن عبد الله</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>74%</td><td><span class='pred' dir='auto'>ارجل سعد تغلق سالم وسماع زالناب بالدك شاكرا</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -205,6 +210,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>85%</td><td><span class='pred' dir='auto'>و د ل</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>85%</td><td><span class='pred' dir='auto'>الد</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>85%</td><td><span class='pred' dir='auto'>الد</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -213,6 +219,7 @@ b{font-weight:600;color:var(--ink);}
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>57%</td><td><span class='pred' dir='auto'>هذا لا يهم ذ ما معت لحيات الدنيا، بحقم</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>215%</td><td><span class='pred' dir='auto'>بِنَّةُ رَحْمٍ وَلَا مِثْلٌ إِذَا الْرَسُوْدِيَ يَجْعَلُهُ بِكِتَابٍ أَزْهِراً لِّإِذْنِ الْأَشْرِقِينِ ۖ 
 اللهُ عَظِيمًا ۚ</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>100%</td><td><span class='pred' dir='auto'>بِنَّةُ رَحْمٍ وَلَا مِثْلٌ إِذَا الْرَسُولُ أَتَهُمْ بعَدًا</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -220,6 +227,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>75%</td><td><span class='pred' dir='auto'>ضم أنفه بجسجم اكبلاه بكشلَا</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>89%</td><td><span class='pred' dir='auto'>العربية</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>89%</td><td><span class='pred' dir='auto'>العربية</span></td></tr>
 </tbody></table></div>
 <div class='cmp'>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -227,6 +235,7 @@ b{font-weight:600;color:var(--ink);}
 <table class='cmp-t'><tbody>
 <tr><td class='cm'>qari-ocr-0.3</td><td class='cc'>76%</td><td><span class='pred' dir='auto'>أنا ستتّابعك</span></td></tr>
 <tr><td class='cm'>qari-ocr-0.2</td><td class='cc'>90%</td><td><span class='pred' dir='auto'>الخليفة</span></td></tr>
+<tr><td class='cm'>qwen2-vl-2b</td><td class='cc'>90%</td><td><span class='pred' dir='auto'>الخليفة</span></td></tr>
 </tbody></table></div>
 <h3>openrouter-qwen3-vl-235b — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
@@ -897,6 +906,50 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>الله، الرحمن، الرحيم، الحكمة، الله، الجبار، العظيمة، الخير، القدر، الكافر، الأعداء، الإسلام، النبوة، القرآن، السيدة، النبي، الرسول، الشهيد، الصديق، المحبوب، الطيب، الفاتحة، السلام، الخدمة، الخوف، الخروج، الخلق، الخلافة، الخمسين، الخيار، الخبر، الخصوصية، الخفيف، الخطر، الخطيئة، الخلفاء، الخراب، الخرج، الخضراء، الخلود، الخلاصة، الخلع، الخون، الخونة، الخور، الخرف، الخريف، الخيط، الخ</span><span class='cc'>1271%</span></p>
 </div>
 </div>
+<h3>qwen2-vl-2b — best &amp; worst</h3><div class='grid'>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> عبود الي الخوري طوبيا الي ابو طوبيا الي عبدالله غصن الي الخوري يوحنا والي كل أهالي قريتنا</p>
+<p class='pw'><span class='pred' dir='auto'>عصر المترشحات طمساً في الرضحا الاعتداله ونفسيته، والبراءة منها ولكلها خير</span><span class='cc'>64%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> بالاجمال سَلامي لكل معارفي واصحابي في الجيرة خاتم كتابي بالوف من القبلات ابن شقيقتك سلم خيرالله</p>
+<p class='pw'><span class='pred' dir='auto'>ارجل سعد تغلق سالم وسماع زالناب بالدك شاكرا</span><span class='cc'>74%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> بفكر وانادكم واقول ياما أمتا الخال الي عادة لما انده خالي بكلمتي احلام تهدسَ</p>
+<p class='pw'><span class='pred' dir='auto'>الله تعالى لا إله إلا هو وسليم</span><span class='cc'>75%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--typical'>typical</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> العنيسي سرحال</p>
+<p class='pw'><span class='pred' dir='auto'>الد</span><span class='cc'>85%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span><span class='chip chip--longest'>longest line</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> اهدي سلامي الي جاركم الخواجه اسَعد الي بيت ملحم الي بيت الشيخ يزبك الي بيت الشيخ موسَي الي بيت بطرسَ</p>
+<p class='pw'><span class='pred err'>— refusal</span><span class='cc'>100%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> جيت لدارهم ذني بعدهم / لقيت الدار تنعي من بعدهم</p>
+<p class='pw'><span class='pred' dir='auto'>بِنَّةُ رَحْمٍ وَلَا مِثْلٌ إِذَا الْرَسُولُ أَتَهُمْ بعَدًا</span><span class='cc'>100%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> يفكر لا ارقد ولا العيش بطيب كيف حال الشيخ توفيق من صوبكم كيف حال اهل السَقي</p>
+<p class='pw'><span class='pred' dir='auto'>خادم رضي الله عنه صلى الله عليه وسلم حسن بن زيد بن خالد بن سعد بن عبد الرحمن بن معاذ بن عبيد الله بن قيس بن هود بن يزيد بن أبي بكر الصديق بن الحارث بن المغيرة بن الوليد بن مروان بن الأسد بن العباس بن مريم بن السلمة بن عمر بن الخطاب بن علي بن abi abu bakr al-harith bin saeed bin abd al-rahman bin othman bin uqba ibn huda ibn muhammad ibn abu Bakr ibn al-Harith ibn Muawiya ibn Al-Maqdis ibn &#x27;Abbas ibn Malik ibn Abi Talib ib</span><span class='cc'>505%</span></p>
+</div>
+</div>
 </section>
 <section class='runs'><h2>Runs</h2><ul>
 <li><span class='rid'>20260831T231407Z</span><span class='rmeta'>2026-08-31 23:14 UTC · limit 10 · prompt line-v2</span></li>
@@ -905,6 +958,7 @@ b{font-weight:600;color:var(--ink);}
 <li><span class='rid'>20260831T231319Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T231305Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T230940Z</span><span class='rmeta'>2026-08-31 23:09 UTC · limit 12 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230858Z</span><span class='rmeta'>2026-08-31 23:08 UTC · limit 10 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T230847Z</span><span class='rmeta'>2026-08-31 23:08 UTC · limit 12 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T230728Z</span><span class='rmeta'>2026-08-31 23:07 UTC · limit 12 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T230642Z</span><span class='rmeta'>2026-08-31 23:06 UTC · limit 12 · prompt line-v2</span></li>
@@ -914,5 +968,5 @@ b{font-weight:600;color:var(--ink);}
 <li><span class='rid'>20260831T194503Z</span><span class='rmeta'>2026-08-31 19:45 UTC · limit 20 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T185739Z</span><span class='rmeta'>2026-08-31 18:57 UTC · limit null · prompt line-v2</span></li>
 </ul></section>
-<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten Arabic (NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. Harness: <code>arabic-ocr-bench</code>. Generated 2026-08-31 23:18 UTC by <code>scripts/make_leaderboard.py</code>.</p></footer>
+<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten Arabic (NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. Harness: <code>arabic-ocr-bench</code>. Generated 2026-08-31 23:23 UTC by <code>scripts/make_leaderboard.py</code>.</p></footer>
 </main>
