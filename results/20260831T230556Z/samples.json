@@ -1,0 +1,119 @@
+{
+  "run_id": "20260831T230556Z",
+  "generated_at": "2026-08-31T23:06:41+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000003",
+      "row": 3,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "و هي التي جعلته كريما على فقره .",
+      "prediction": "ربّما يكون هذا مفيداً.",
+      "error": null,
+      "cer_light": 0.7812,
+      "cer_raw": 0.7812,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000002",
+      "row": 2,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "النص: مشمش ، دراق ، غيظ ، ناء ،  بث ، نسر .",
+      "prediction": "الهم : شَجَاعَةُ دَرَجَةٍ عَظِيمَةٍ وَبَشَرَ",
+      "error": null,
+      "cer_light": 0.8571,
+      "cer_raw": 0.8605,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "لَهُمْ جَنَّاتُ الْأَعْدِي وَالْأَشْنَابِ وَالْتُرُبُ الْمُشْرِفَاتِ وَالْكَأْسُ الْمَدُودُ",
+      "error": null,
+      "cer_light": 0.8873,
+      "cer_raw": 0.9167,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000000",
+      "row": 0,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى",
+      "prediction": "صلى الله عليه وسلم قال رسول الله صلى الله عليه وسلم من سره أن يُبْسَطَ له في رزقه أو يُنْفَقَ عليه فليَصِلْ رَحِمَ",
+      "error": null,
+      "cer_light": 1.0625,
+      "cer_raw": 1.075,
+      "wer_light": 1.4667
+    },
+    {
+      "sample_id": "kitab_khatt/train/000007",
+      "row": 7,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء",
+      "prediction": "لَا تَقُولَنَّ لِيَهُودِيٌّ وَلَا نَصْرَانِيٌّ إِنَّمَا هُوَ عَبْدٌ لِلَّهِ الْعَبْدُ أَكْرَمُ مِمَّنْ أَسْلَمَ",
+      "error": null,
+      "cer_light": 1.4918,
+      "cer_raw": 1.5246,
+      "wer_light": 1.1818
+    },
+    {
+      "sample_id": "kitab_khatt/train/000005",
+      "row": 5,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،",
+      "prediction": "مُحَمَّدٌ رَسُولُ اللَّهِ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَأَزْوَاجُهُ أُمَّهَاتُ الْمُؤْمِنِينَ وَأَهْلُ بَيْتِهِ أَئِمَّةٌ مُهْتَدُونَ",
+      "error": null,
+      "cer_light": 1.6,
+      "cer_raw": 1.6143,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000009",
+      "row": 9,
+      "model": "pixtral-12b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "والصراع  الحضاري قد  يأخذ  أشكالا  مادية - الصراع  على الوصول .",
+      "prediction": "يَـا أَيُّهَا الَّذِينَ آمَنُواْ كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
+      "error": null,
+      "cer_light": 1.7759,
+      "cer_raw": 1.6349,
+      "wer_light": 1.3636
+    }
+  ]
+}

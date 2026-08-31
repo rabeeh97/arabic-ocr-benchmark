@@ -1,0 +1,134 @@
+{
+  "run_id": "20260831T230511Z",
+  "generated_at": "2026-08-31T23:05:56+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "ناهيك عن الخسارة الفادحة للأخشاب والثروة النباتية والحيوانية والبشرية",
+      "error": null,
+      "cer_light": 0.0986,
+      "cer_raw": 0.1111,
+      "wer_light": 0.7273
+    },
+    {
+      "sample_id": "kitab_khatt/train/000005",
+      "row": 5,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،",
+      "prediction": "الأدب عامة، والأدب الشعبي خاصة، لمزيد من التقصي والبحث والتحليل،",
+      "error": null,
+      "cer_light": 0.1,
+      "cer_raw": 0.1,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_khatt/train/000001",
+      "row": 1,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وهلال خازن عفيف للحج .  بدأت قوافل الحجيج حاج إثر آخر يلبي",
+      "prediction": "وهلال غازي عضيف للعيج . يرأت قوافل الحجيج حاجة إثر آية يلبس",
+      "error": null,
+      "cer_light": 0.193,
+      "cer_raw": 0.2069,
+      "wer_light": 0.5833
+    },
+    {
+      "sample_id": "kitab_khatt/train/000004",
+      "row": 4,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا",
+      "prediction": "أوقع أقبل مثل ببغلس له الضابط لزمتك. سألت راجع هل أبلغ أصحابنا",
+      "error": null,
+      "cer_light": 0.2321,
+      "cer_raw": 0.2456,
+      "wer_light": 0.4545
+    },
+    {
+      "sample_id": "kitab_khatt/train/000000",
+      "row": 0,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى",
+      "prediction": "وصف مجمل لحالة المغرب خلال سنة 2005، مشيرا في سياق من ذلك، لتناولات أخرى،",
+      "error": null,
+      "cer_light": 0.2375,
+      "cer_raw": 0.25,
+      "wer_light": 0.5333
+    },
+    {
+      "sample_id": "kitab_khatt/train/000003",
+      "row": 3,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "و هي التي جعلته كريما على فقره .",
+      "prediction": "وهي عجلة عجلة الا ربما على فقره",
+      "error": null,
+      "cer_light": 0.5,
+      "cer_raw": 0.5,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_khatt/train/000010",
+      "row": 10,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كيلومتر في نهر جليدي درجة حرارته 8ر1 درجة تحت الصفر، مسجلا رقما قياسيا",
+      "prediction": "تجمد نهر جليدي في مقاطعة هيلونغجيانغ بشرق الصين مسجلا 1,8 درجة تحت الصفر مئوية قياسيا",
+      "error": null,
+      "cer_light": 0.7857,
+      "cer_raw": 0.7857,
+      "wer_light": 0.9231
+    },
+    {
+      "sample_id": "kitab_khatt/train/000007",
+      "row": 7,
+      "model": "gemini-flash-lite",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء",
+      "prediction": "بلغ أصحابنا، ظعن، أصحابنا، هل أنا في الحج، أ، ح، خ، ث، ت، ر، ك، خ، ع، ب، ا، س، ي، ق، ت، ب، ا، س، م، أ، ت، ي، أ، ص، ض، ع، م، أ، ث، ن، في الحج، و",
+      "error": null,
+      "cer_light": 1.8852,
+      "cer_raw": 1.9016,
+      "wer_light": 3.6364
+    }
+  ]
+}

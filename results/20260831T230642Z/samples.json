@@ -1,0 +1,119 @@
+{
+  "run_id": "20260831T230642Z",
+  "generated_at": "2026-08-31T23:07:28+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000004",
+      "row": 4,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا",
+      "prediction": "مثل ما بيقولوا في الضابط لرمتك . سألت راجل هل أبو أصبان",
+      "error": null,
+      "cer_light": 0.3393,
+      "cer_raw": 0.3333,
+      "wer_light": 0.7273
+    },
+    {
+      "sample_id": "kitab_khatt/train/000000",
+      "row": 0,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى",
+      "prediction": "وصلت هذه الرسالة إلى يدك، لتعلم أن هذا الأمر",
+      "error": null,
+      "cer_light": 0.7,
+      "cer_raw": 0.7125,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000003",
+      "row": 3,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "و هي التي جعلته كريما على فقره .",
+      "prediction": "ربّما عليكم متابعة",
+      "error": null,
+      "cer_light": 0.7812,
+      "cer_raw": 0.7812,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000006",
+      "row": 6,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عفيف للحج .  بدأن قوافل الحجح حاج إن افر يلبي . عند وصولنا طفنا وسعينا هع شنح.",
+      "prediction": "وَلَهُمْ فِيهَا مَنَافِعُ وَمَشْرَبُ",
+      "error": null,
+      "cer_light": 0.8701,
+      "cer_raw": 0.8718,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000007",
+      "row": 7,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء",
+      "prediction": "وَلَكِنْ لَا تُحْسِنُ إِلَيْهِمْ كَمَا أَحْسَنَ إِلَيْكَ",
+      "error": null,
+      "cer_light": 0.8852,
+      "cer_raw": 0.9016,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "نَأْتِي عَنِ الْمُحَارَبِ الْقَائِمِ لِلْأَحْنَابِ وَالثُّرُوبِ النَّائِيَةِ وَلَحْيَيْهِ الْمُبْسِرَيْنِ",
+      "error": null,
+      "cer_light": 0.8873,
+      "cer_raw": 0.8889,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000008",
+      "row": 8,
+      "model": "mistral-small",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "غيظ ، ناء ، بث ، نسر .",
+      "prediction": "وَلَا",
+      "error": null,
+      "cer_light": 0.9545,
+      "cer_raw": 0.9545,
+      "wer_light": 1.0
+    }
+  ]
+}

@@ -31,33 +31,35 @@ mock_empty:
 # optional max_tokens. run_hosted.py / notebook 02 run every one whose key is set.
 # Pricing marked (verify) is a best-effort estimate — check the provider's page.
 
-# Google
-gemini-2.5-flash:
+# Google — Gemini 3.x (2.5-series is closed to new API keys as of 2026).
+gemini-flash:
   client: litellm
-  litellm_id: gemini/gemini-2.5-flash
+  litellm_id: gemini/gemini-3.6-flash
   env_key: GEMINI_API_KEY          # Google AI Studio free tier works (rate-limited)
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 2.50 }
+  pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 2.50 }   # (verify)
   card: >-
-    Google's fast multimodal model. General-purpose vision-language, not OCR-tuned;
-    strong at reading printed and clear handwritten text. Free AI Studio tier.
-gemini-2.5-flash-lite:
+    Google's fast multimodal model (Gemini 3.6 Flash). General-purpose
+    vision-language, not OCR-tuned; strong at reading printed and clear
+    handwritten text. Free AI Studio tier.
+gemini-flash-lite:
   client: litellm
-  litellm_id: gemini/gemini-2.5-flash-lite
+  litellm_id: gemini/gemini-3.5-flash-lite
   env_key: GEMINI_API_KEY
   params: { temperature: 0 }
   pricing: { input_usd_per_1m: 0.10, output_usd_per_1m: 0.40 }   # (verify)
   card: >-
-    Google's cheapest/fastest Gemini. Useful as a low-cost baseline row.
-gemini-2.5-pro:
+    Google's cheapest/fastest Gemini (3.5 Flash-Lite). Low-cost baseline row.
+gemini-pro:
   client: litellm
-  litellm_id: gemini/gemini-2.5-pro
+  litellm_id: gemini/gemini-3.1-pro-preview
   env_key: GEMINI_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }   # (verify)
   card: >-
-    Google's larger multimodal model — slower and pricier than Flash, generally
-    more accurate on hard images. General-purpose, not OCR-specialised.
+    Google's larger multimodal model (Gemini 3.1 Pro) — slower and pricier than
+    Flash, generally more accurate on hard images. General-purpose, not
+    OCR-specialised.
 
 # OpenAI
 gpt-4o:
@@ -123,37 +125,48 @@ openrouter-qwen2.5-vl-72b:
   card: >-
     Qwen2.5-VL 72B via OpenRouter — a large open VLM with strong OCR, no local
     GPU needed. OpenRouter also exposes many models on one key.
-openrouter-llama-3.2-90b-vision:
+openrouter-qwen3-vl-235b:
   client: litellm
-  litellm_id: openrouter/meta-llama/llama-3.2-90b-vision-instruct
+  litellm_id: openrouter/qwen/qwen3-vl-235b-a22b-instruct
   env_key: OPENROUTER_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.80, output_usd_per_1m: 0.80 }   # (verify)
+  pricing: { input_usd_per_1m: 0.21, output_usd_per_1m: 1.90 }   # (verify)
   card: >-
-    Llama 3.2 90B Vision via OpenRouter. Weaker on non-Latin script but a common
-    open baseline.
+    Qwen3-VL 235B (A22B MoE) via OpenRouter — current-generation large open VLM
+    with very strong multilingual OCR. No local GPU needed.
+openrouter-llama-4-maverick:
+  client: litellm
+  litellm_id: openrouter/meta-llama/llama-4-maverick
+  env_key: OPENROUTER_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 0.70 }   # (verify)
+  card: >-
+    Meta Llama 4 Maverick (multimodal MoE) via OpenRouter. A current open
+    baseline; historically weaker on non-Latin script than Qwen-VL.
 
-# Ollama cloud (ollama.com) — OpenAI-compatible; set OLLAMA_API_BASE + OLLAMA_API_KEY.
-# Replace the tags with models you've enabled on your Ollama account.
-ollama-qwen2.5-vl:
-  client: litellm
-  litellm_id: openai/qwen2.5-vl:7b
-  env_key: OLLAMA_API_KEY
-  api_base_env: OLLAMA_API_BASE
-  params: { temperature: 0 }
-  pricing: null
-  card: >-
-    Qwen2.5-VL 7B served from Ollama cloud (or a local Ollama) via its
-    OpenAI-compatible endpoint. Strong open OCR model.
-ollama-llama3.2-vision:
-  client: litellm
-  litellm_id: openai/llama3.2-vision:11b
-  env_key: OLLAMA_API_KEY
-  api_base_env: OLLAMA_API_BASE
-  params: { temperature: 0 }
-  pricing: null
-  card: >-
-    Llama 3.2 Vision 11B via Ollama's OpenAI-compatible endpoint.
+# Ollama — OpenAI-compatible endpoint; set OLLAMA_API_BASE + OLLAMA_API_KEY.
+# NOTE: as of 2026 the Ollama *cloud* (https://ollama.com/v1) serves only text
+# LLMs — no vision models — so these entries only work against a LOCAL Ollama
+# (OLLAMA_API_BASE=http://localhost:11434/v1) after `ollama pull qwen2.5-vl`.
+# They are commented out so the hosted sweep doesn't try (and fail) them.
+# ollama-qwen2.5-vl:
+#   client: litellm
+#   litellm_id: openai/qwen2.5-vl:7b
+#   env_key: OLLAMA_API_KEY
+#   api_base_env: OLLAMA_API_BASE
+#   params: { temperature: 0 }
+#   pricing: null
+#   card: >-
+#     Qwen2.5-VL 7B via a local Ollama's OpenAI-compatible endpoint.
+# ollama-llama3.2-vision:
+#   client: litellm
+#   litellm_id: openai/llama3.2-vision:11b
+#   env_key: OLLAMA_API_KEY
+#   api_base_env: OLLAMA_API_BASE
+#   params: { temperature: 0 }
+#   pricing: null
+#   card: >-
+#     Llama 3.2 Vision 11B via a local Ollama's OpenAI-compatible endpoint.
 claude-haiku:
   client: litellm
   litellm_id: anthropic/claude-haiku-4-5
@@ -255,3 +268,14 @@ paligemma-arabic-hw:
   card: >-
     A community LoRA adapter for Arabic handwritten OCR on Google's PaliGemma-3B
     (gated). Trained on single handwritten lines — line-track only, not pages.
+trocr-large-arabic:
+  client: hf_local
+  hf_id: David-Magdy/TR_OCR_LARGE
+  arch: trocr
+  max_new_tokens: 96
+  pricing: null
+  card: >-
+    TrOCR-Large (0.6B, vision-encoder-decoder) finetuned for Arabic + English
+    handwriting on KHATT and IAM. A dedicated HTR model rather than a general
+    VLM — no prompt, single-line only. Runs on CPU/MPS; expect it to do best on
+    KHATT-like lines and worse on out-of-distribution scripts (e.g. Muharaf).

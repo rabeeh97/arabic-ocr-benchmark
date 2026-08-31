@@ -1,0 +1,55 @@
+"""Offline dataset-adapter checks — no network."""
+
+from arabic_ocr_bench.datasets.kitab_bench import KitabBench
+from arabic_ocr_bench.datasets.registry import build_dataset
+from arabic_ocr_bench.datasets.synthetic import Synthetic
+
+
+def test_synthetic_renders_legible_arabic():
+    xs = list(Synthetic(limit=3))
+    assert [x.id for x in xs] == [f"synthetic/test/{i:06d}" for i in range(3)]
+    for x in xs:
+        assert x.image.mode == "RGB"
+        assert x.image.size[0] > 200 and x.image.size[1] > 20
+        assert x.ground_truth and x.track == "line"
+        # not a blank canvas — shaping actually drew ink
+        assert min(x.image.convert("L").getextrema()) < 128
+
+
+def test_kitab_bench_gt_key_resolution():
+    assert KitabBench._gt({"image": 1, "text": "أ", "source": "s"}) == "أ"
+    assert KitabBench._gt({"image": 1, "answer": "ب"}) == "ب"
+    try:
+        KitabBench._gt({"image": 1, "source": "s"})
+    except KeyError:
+        pass
+    else:  # pragma: no cover
+        raise AssertionError("expected KeyError when no GT column present")
+
+
+def test_kitab_bench_id_and_hf_id_from_config():
+    ds = build_dataset(
+        "kitab_khatt",
+        {
+            "adapter": "arabic_ocr_bench.datasets.kitab_bench:KitabBench",
+            "params": {"subset": "arocrbench_khatt"},
+            "split": "train",
+        },
+        limit=5,
+    )
+    assert ds.hf_id == "ahmedheakl/arocrbench_khatt"
+    assert ds.name == "kitab_khatt"  # registry passes `name` through
+    assert ds.limit == 5 and ds.split == "train"
+
+
+def test_build_dataset_still_works_without_params():
+    ds = build_dataset(
+        "muharaf_lines",
+        {
+            "adapter": "arabic_ocr_bench.datasets.muharaf_lines:MuharafLines",
+            "hf_id": "aamijar/muharaf-public",
+            "split": "test",
+        },
+        limit=3,
+    )
+    assert ds.hf_id == "aamijar/muharaf-public" and ds.limit == 3

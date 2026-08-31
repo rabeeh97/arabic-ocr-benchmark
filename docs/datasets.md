@@ -123,24 +123,37 @@ Adapter notes: use the "unique-text" paragraphs for the page track (fixed-text
 paragraphs repeat the same content across writers → leakage-like redundancy if
 mixed). Define a deterministic test split if the mirror lacks one.
 
-### KITAB-Bench (`KB`)
+### KITAB-Bench (`KB`) — **implemented, priority datasets**
 
 | Field | Value |
 | --- | --- |
-| Content | 8,809 samples, 9 domains / 36 sub-domains: printed + handwritten Arabic OCR, layout, line detection/recognition, tables, PDF→Markdown, charts, diagrams, VQA |
-| Source | GitHub `mbzuai-oryx/KITAB-Bench`; HF subsets under `ahmedheakl/arocrbench_*` (e.g. `arocrbench_adab`, and per-domain configs) |
+| Content | 8,809 samples, 9 domains / 36 sub-domains. We use only the **text-recognition** subsets |
+| Source | HF subsets under `ahmedheakl/arocrbench_*` — **ungated, no access form**, one `train` split each, columns `image` + (`text` or `answer`) + `source` |
 | Paper | arXiv `2502.14949` (ACL 2025 Findings) |
-| License | see repo (research benchmark) |
-| Use for us | pull only the **text-recognition** subsets (handwritten + printed); ignore charts/diagrams/VQA. Serves as an external cross-check and as the printed-Arabic contrast anchor |
+| License | per each source dataset + the KITAB-Bench paper |
+| Use for us | the priority benchmark datasets — small (200–500 lines), quick, cover handwritten + historical + printed Arabic in one consistent format |
 
-Fetch:
+One shared adapter, `datasets/kitab_bench.py::KitabBench`, selected by
+`params.subset` in `configs/datasets.yaml`. Ground truth is whichever of
+`text` / `answer` the subset uses. Registered datasets:
+
+| name | HF subset | kind |
+| --- | --- | --- |
+| `kitab_khatt` | `arocrbench_khatt` | modern handwritten (KHATT lines) — **main handwriting target** |
+| `kitab_muharaf` | `arocrbench_muharaf` | historical handwritten (Muharaf slice) — KITAB-scored comparison to `muharaf_lines` |
+| `kitab_historicalbooks` | `arocrbench_historicalbooks` | degraded historical printed |
+| `kitab_hindawi` | `arocrbench_hindawi` | clean digitised printed — easy anchor |
+
+More subsets (`arocrbench_adab`, `_arabicocr`, `_patsocr`, `_isippt`, …) drop in
+with the same adapter — just add an entry with `params.subset`.
+
 ```python
 from datasets import load_dataset
-hw = load_dataset("ahmedheakl/arocrbench_<handwritten_subset>")   # confirm exact config names from the GitHub README
+ds = load_dataset("ahmedheakl/arocrbench_khatt", split="train")   # image, text, source
 ```
 
-Adapter: map each recognition subset to `track="line"` or `"page"` per its
-image type; `meta["kitab_domain"]` for slicing.
+The full KITAB-Bench repo (`mbzuai/KITAB-Bench`) IS gated and its chart / table /
+PDF-to-markdown tasks are a different track — out of scope here.
 
 ### AHAWP — Arabic Handwritten Alphabets, Words, Paragraphs
 - Mendeley Data. Includes paragraph-level handwritten Arabic with transcriptions.

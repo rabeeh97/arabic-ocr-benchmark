@@ -59,6 +59,9 @@ class HFLocalClient:
     def _ensure_loaded(self):
         if self._model is not None:
             return
+        if self.arch == "trocr":
+            self._ensure_loaded_trocr()
+            return
 
         import sys
 
@@ -142,6 +145,28 @@ class HFLocalClient:
         self._device = "cuda" if use_4bit else device
         print(f"[load] {self.name} ready in {time.perf_counter() - _t0:.1f}s", flush=True)
 
+    def _ensure_loaded_trocr(self) -> None:
+        """TrOCR (VisionEncoderDecoder) — no chat template, no quantization; a
+        small encoder-decoder that runs fine on CPU/MPS. Used for
+        David-Magdy/TR_OCR_LARGE (TrOCR-Large finetuned on KHATT + IAM)."""
+        try:
+            import torch
+            from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+        except ImportError as e:  # pragma: no cover
+            raise RuntimeError(
+                "local models need the 'local' extra: uv sync --extra local"
+            ) from e
+
+        device = "mps" if torch.backends.mps.is_available() else (
+            "cuda" if torch.cuda.is_available() else "cpu"
+        )
+        _t0 = time.perf_counter()
+        print(f"[load] {self.hf_id} (trocr on {device}) ...", flush=True)
+        self._processor = TrOCRProcessor.from_pretrained(self.hf_id)
+        self._model = VisionEncoderDecoderModel.from_pretrained(self.hf_id).to(device).eval()
+        self._device = device
+        print(f"[load] {self.name} ready in {time.perf_counter() - _t0:.1f}s", flush=True)
+
     def close(self) -> None:
         """Free the model from (GPU) memory — the runner calls this between
         models in a sweep so a single GPU can host them one at a time."""
@@ -180,6 +205,8 @@ class HFLocalClient:
         image = cap_image(image, 1024)  # bound vision tokens / activation memory
         if self.arch == "paligemma":
             return self._generate_paligemma(image, prompt)
+        if self.arch == "trocr":
+            return self._generate_trocr(image)
 
         messages = [{
             "role": "user",
@@ -197,6 +224,18 @@ class HFLocalClient:
             )
         gen = out[0][inputs["input_ids"].shape[1]:]
         return self._processor.decode(gen, skip_special_tokens=True).strip()
+
+    def _generate_trocr(self, image: Image.Image) -> str:
+        import torch
+
+        pixel_values = self._processor(
+            images=image, return_tensors="pt"
+        ).pixel_values.to(self._device)
+        with torch.no_grad():
+            ids = self._model.generate(
+                pixel_values, max_new_tokens=self.max_new_tokens, **_GEN_KW
+            )
+        return self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
 
     def _generate_paligemma(self, image: Image.Image, prompt: str) -> str:
         import torch

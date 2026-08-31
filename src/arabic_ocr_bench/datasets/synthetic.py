@@ -1,16 +1,19 @@
 """A tiny offline dataset for pipeline validation — no network, no HF.
 
-Ten hand-written (ASCII-safe to type, real Arabic strings) line samples with a
-plain rendered image. The mock clients ignore the image; a real model will just
-do poorly on the un-shaped render, which is fine — this dataset exists to prove
-runner -> report -> leaderboard works end to end without downloading anything.
+Ten short Arabic lines rendered as clean printed text with a bundled Naskh font
+(Arabic shaping + bidi applied first, so the image is genuinely legible). It is
+the pipeline's *easy* anchor: a competent OCR / VLM model should score a very low
+CER here, and `mock_echo` / `mock_empty` still bound it at 0 % / 100 %. Use it to
+smoke-test runner -> report -> leaderboard, and to sanity-check a hosted-API key,
+without downloading anything.
 """
 
 from __future__ import annotations
 
 from collections.abc import Iterator
+from importlib import resources
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 from .base import Sample
 
@@ -26,6 +29,28 @@ _LINES = [
     "المكتبة مفتوحة يوم الجمعة",
     "الصديق وقت الضيق معروف",
 ]
+
+_FONT_SIZE = 44
+_IMG_W, _IMG_H = 1100, 96
+
+
+def _shape(text: str) -> str:
+    """Presentation-form + visual bidi order, so a non-shaping renderer (Pillow
+    without libraqm) still draws connected RTL Arabic. Falls back to the raw
+    string if the optional deps are missing."""
+    try:
+        import arabic_reshaper
+        from bidi.algorithm import get_display
+
+        return get_display(arabic_reshaper.reshape(text))
+    except ImportError:
+        return text
+
+
+def _font() -> ImageFont.FreeTypeFont:
+    path = resources.files("arabic_ocr_bench.assets") / "NotoNaskhArabic-Regular.ttf"
+    with resources.as_file(path) as p:
+        return ImageFont.truetype(str(p), _FONT_SIZE)
 
 
 class Synthetic:
@@ -46,9 +71,13 @@ class Synthetic:
         return len(self._rows())
 
     def __iter__(self) -> Iterator[Sample]:
+        font = _font()
         for idx, text in self._rows():
-            img = Image.new("RGB", (900, 80), "white")
-            ImageDraw.Draw(img).text((10, 30), text, fill="black")
+            img = Image.new("RGB", (_IMG_W, _IMG_H), "white")
+            draw = ImageDraw.Draw(img)
+            shaped = _shape(text)
+            w = draw.textlength(shaped, font=font)
+            draw.text((_IMG_W - w - 20, 20), shaped, fill="black", font=font)
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
                 image=img,

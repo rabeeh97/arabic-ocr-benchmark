@@ -77,7 +77,13 @@ def main() -> int:
     from arabic_ocr_bench.sweep import run_sweep
 
     _ds_cache: dict = {}
-    _hf_split = {"muharaf_lines": ("aamijar/muharaf-public", "test")}
+    _hf_split = {
+        "muharaf_lines": ("aamijar/muharaf-public", "test"),
+        "kitab_khatt": ("ahmedheakl/arocrbench_khatt", "train"),
+        "kitab_muharaf": ("ahmedheakl/arocrbench_muharaf", "train"),
+        "kitab_historicalbooks": ("ahmedheakl/arocrbench_historicalbooks", "train"),
+        "kitab_hindawi": ("ahmedheakl/arocrbench_hindawi", "train"),
+    }
 
     def get_image_fn(dataset: str):
         if dataset == "synthetic":

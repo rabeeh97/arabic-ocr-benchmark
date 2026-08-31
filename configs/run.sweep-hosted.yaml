@@ -10,8 +10,12 @@ models:
   - claude-haiku           # Anthropic Haiku 4.5
   - claude-sonnet          # Anthropic Sonnet 5
   - claude-opus            # Anthropic Opus 5
-  - gemini-2.5-flash       # Google (free tier)
-  - gemini-2.5-pro
+  - gemini-flash           # Google Gemini 3.6 Flash (free tier)
+  - gemini-pro             # Google Gemini 3.1 Pro
+  - pixtral-12b            # Mistral (free tier)
+  - mistral-small          # Mistral (free tier)
+  - openrouter-qwen2.5-vl-72b
+  - openrouter-qwen3-vl-235b
   # - gpt-4o               # OpenAI (paid)
 
 datasets:

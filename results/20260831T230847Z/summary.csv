@@ -1,0 +1,2 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+openrouter-qwen3-vl-235b,kitab_khatt,12,0,0.0,12437.9,0.001489,0.364,0.3696,0.8425,0.0,0.3491,0.3552,0.8356,0.0,0.3059,0.3117,0.8151,0.0,0.375

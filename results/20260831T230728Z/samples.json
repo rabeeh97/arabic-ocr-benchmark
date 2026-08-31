@@ -1,0 +1,134 @@
+{
+  "run_id": "20260831T230728Z",
+  "generated_at": "2026-08-31T23:08:47+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000004",
+      "row": 4,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا",
+      "prediction": "مثل أنتهى بغسل له الضابط لزمتك سألت راجح هل أبلغ أصحابنا",
+      "error": null,
+      "cer_light": 0.1071,
+      "cer_raw": 0.1053,
+      "wer_light": 0.2727
+    },
+    {
+      "sample_id": "kitab_khatt/train/000009",
+      "row": 9,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "والصراع  الحضاري قد  يأخذ  أشكالا  مادية - الصراع  على الوصول .",
+      "prediction": "والمدراء الحصاري قد بأخذ أشكاله مارية - الصراي على الوصول",
+      "error": null,
+      "cer_light": 0.1724,
+      "cer_raw": 0.2381,
+      "wer_light": 0.6364
+    },
+    {
+      "sample_id": "kitab_khatt/train/000005",
+      "row": 5,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،",
+      "prediction": "الادب عامة والادب السجعي خاصة خزير من التقالي والبحث والتحليل",
+      "error": null,
+      "cer_light": 0.2286,
+      "cer_raw": 0.2571,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_khatt/train/000003",
+      "row": 3,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "و هي التي جعلته كريما على فقره .",
+      "prediction": "و طي الأحجلة لربما على مفقوده .",
+      "error": null,
+      "cer_light": 0.375,
+      "cer_raw": 0.375,
+      "wer_light": 0.625
+    },
+    {
+      "sample_id": "kitab_khatt/train/000000",
+      "row": 0,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى",
+      "prediction": "ووصفت مجلة لحالة المغرب خلال الفترة 2005 مثيرة في سياسة العرب",
+      "error": null,
+      "cer_light": 0.4375,
+      "cer_raw": 0.4375,
+      "wer_light": 0.7333
+    },
+    {
+      "sample_id": "kitab_khatt/train/000008",
+      "row": 8,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "غيظ ، ناء ، بث ، نسر .",
+      "prediction": "غِيظ، نَادى، بَيت، نَهر",
+      "error": null,
+      "cer_light": 0.5455,
+      "cer_raw": 0.5455,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000007",
+      "row": 7,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء",
+      "prediction": "من بلغ أصحابنا ظع كن توح ضي بس بي ا صخ ه أنة من الرح",
+      "error": null,
+      "cer_light": 0.7869,
+      "cer_raw": 0.8033,
+      "wer_light": 1.3636
+    },
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "openrouter-qwen2.5-vl-72b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "تَأهِبُكَ عَنِ الْحَسَارَةِ الْفَادِحَةِ لِلْأَخْشَابِ وَالثَّرَوَاتِ النَّبَاتِيَّةِ وَالْحَبُوبِ الْبَدْرِ وَالْبَسْرِ بِ",
+      "error": null,
+      "cer_light": 0.9577,
+      "cer_raw": 0.9583,
+      "wer_light": 1.0
+    }
+  ]
+}

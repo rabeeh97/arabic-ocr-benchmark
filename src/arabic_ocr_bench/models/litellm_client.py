@@ -57,11 +57,15 @@ def clean_output(raw: str) -> str:
 
 class LiteLLMClient:
     def __init__(self, name: str, litellm_id: str, params: dict | None = None,
-                 api_base: str | None = None, max_tokens: int = 256):
+                 api_base: str | None = None, max_tokens: int = 256,
+                 api_key: str | None = None):
         self.name = name
         self.litellm_id = litellm_id
         self.params = params or {}
         self.api_base = api_base
+        # only needed for OpenAI-compatible endpoints (e.g. Ollama cloud) where
+        # litellm can't infer the key from a provider-specific env var
+        self.api_key = api_key
         # a line is <=181 chars; cap output so a model that rambles doesn't run
         # up cost / CER. Mirrors hf_local_client's 160-token cap.
         self.max_tokens = max_tokens
@@ -82,6 +86,8 @@ class LiteLLMClient:
                       max_tokens=self.max_tokens, **self.params)
         if self.api_base:
             kwargs["api_base"] = self.api_base
+        if self.api_key:
+            kwargs["api_key"] = self.api_key
 
         t0 = time.perf_counter()
         try:

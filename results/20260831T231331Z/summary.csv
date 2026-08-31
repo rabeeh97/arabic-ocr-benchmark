@@ -1,0 +1,2 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+openrouter-qwen2.5-vl-72b,synthetic,10,0,0.0,7707.1,0.001629,0.2802,0.2836,0.4048,0.6,0.2802,0.2836,0.4048,0.6,0.1379,0.1455,0.1905,0.8,0.8
