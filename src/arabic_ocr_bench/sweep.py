@@ -2,8 +2,12 @@
 pass, checkpointing to a manifest after each so an interrupted run resumes
 instead of repeating work.
 
-`run_sweep` does no git / Colab work itself — pass an `on_done(entry, run_dir)`
-callback to push results, and `on_progress(str)` for logging.
+`run_sweep` does no git / Colab work itself:
+- `on_progress(str)` — logging, best-effort.
+- `on_done(entry, run_dir)` — persist this phase's results (push to the repo /
+  Drive). **It MUST raise if persistence fails.** A phase is only recorded in
+  the manifest as "done" after `on_done` returns without raising; on failure the
+  manifest entry is rolled back and the phase re-runs on the next call.
 """
 
 from __future__ import annotations
@@ -113,17 +117,31 @@ def run_sweep(
                     "wer_micro_light": float(row.get("wer_micro_light", 0) or 0),
                     "done_at": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
                 }
-                manifest["entries"].append(entry)
-                _save_manifest(manifest_path, manifest)
-                done.add(key)
-                new_entries.append(entry)
-                log(
-                    f"done {model} / {phase}: CER-light "
-                    f"{entry['cer_micro_light'] * 100:.2f}% (n={entry['n']}, "
-                    f"errors={entry['errors']})"
-                )
-                if on_done is not None:
-                    on_done(entry, run_dir)
             except Exception as e:  # noqa: BLE001 - keep the sweep going
                 log(f"FAILED {model} / {phase}: {type(e).__name__}: {e}")
+                continue
+
+            # Publish first. Only record the phase as done if the results were
+            # actually persisted (on_done pushes to the repo / Drive and RAISES
+            # on failure). On failure we roll the manifest back so it re-runs.
+            manifest["entries"].append(entry)
+            _save_manifest(manifest_path, manifest)
+            if on_done is not None:
+                try:
+                    on_done(entry, run_dir)
+                except Exception as e:  # noqa: BLE001
+                    manifest["entries"].pop()
+                    _save_manifest(manifest_path, manifest)
+                    log(
+                        f"NOT PERSISTED {model} / {phase}: {type(e).__name__}: {e} "
+                        f"— will retry next run"
+                    )
+                    continue
+            done.add(key)
+            new_entries.append(entry)
+            log(
+                f"done {model} / {phase}: CER-light "
+                f"{entry['cer_micro_light'] * 100:.2f}% (n={entry['n']}, "
+                f"errors={entry['errors']})"
+            )
     return new_entries

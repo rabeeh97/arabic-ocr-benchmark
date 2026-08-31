@@ -103,3 +103,34 @@ def test_a_failing_model_does_not_stop_the_sweep(wired):
     )
     assert [e["model"] for e in entries] == ["mock_echo"]
     assert any("boom" in p and "fail" in p.lower() for p in progress)
+
+
+def test_phase_not_marked_done_when_on_done_raises_and_re_runs_next_time(wired):
+    manifest_path = wired / "sweep_manifest.json"
+
+    # publish fails the first time
+    calls = {"n": 0}
+
+    def flaky_publish(entry, run_dir):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise RuntimeError("push failed")
+
+    prog = []
+    first = sweep.run_sweep(
+        models=["mock_echo"], dataset="fake", partial_limit=2, run_full=False,
+        manifest_path=manifest_path, results_dir=wired, profiles=("raw",),
+        on_done=flaky_publish, on_progress=prog.append,
+    )
+    assert first == []                                   # nothing recorded
+    assert json.loads(manifest_path.read_text())["entries"] == []
+    assert any("not persisted" in p.lower() for p in prog)
+
+    # second run retries the same phase; this time publish succeeds
+    second = sweep.run_sweep(
+        models=["mock_echo"], dataset="fake", partial_limit=2, run_full=False,
+        manifest_path=manifest_path, results_dir=wired, profiles=("raw",),
+        on_done=flaky_publish,
+    )
+    assert [e["phase"] for e in second] == ["partial"]
+    assert len(json.loads(manifest_path.read_text())["entries"]) == 1
