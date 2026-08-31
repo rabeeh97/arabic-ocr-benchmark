@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 
+from ..imaging import cap_image
 from .base import Sample
 
 _HF_ID = "aamijar/muharaf-public"
@@ -44,7 +45,7 @@ class MuharafLines:
         for idx, row in enumerate(ds):
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
-                image=row["image"].convert("RGB"),
+                image=cap_image(row["image"].convert("RGB"), 1024),
                 ground_truth=row["text"],
                 track=self.track,
                 meta={"source": self.hf_id, "split": self.split, "row": idx},

@@ -11,6 +11,7 @@ import time
 
 from PIL import Image
 
+from ..imaging import cap_image
 from .base import Prediction
 from .litellm_client import clean_output
 
@@ -167,6 +168,7 @@ class HFLocalClient:
     def _generate(self, image: Image.Image, prompt: str) -> str:
         import torch
 
+        image = cap_image(image, 1024)  # bound vision tokens / activation memory
         if self.arch == "paligemma":
             return self._generate_paligemma(image, prompt)
 

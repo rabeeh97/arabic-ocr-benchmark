@@ -10,6 +10,7 @@ import time
 
 from PIL import Image
 
+from ..imaging import cap_image
 from .base import Prediction
 
 _TAG_RE = re.compile(r"</?[a-zA-Z][^>]*>")  # <b> <i> <p> </b> ... (markup, not Arabic)
@@ -23,7 +24,7 @@ _REFUSAL_HINTS = (
 
 def _image_data_uri(image: Image.Image) -> str:
     buf = io.BytesIO()
-    image.convert("RGB").save(buf, format="PNG")
+    cap_image(image.convert("RGB"), 1400).save(buf, format="PNG")
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
 

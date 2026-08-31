@@ -62,12 +62,6 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
 
     clients = {name: build_model(name, models_cfg[name]) for name in run_cfg["models"]}
 
-    # materialize samples once per dataset (image objects reused across models)
-    samples_by_ds: dict[str, list] = {}
-    for ds_name in run_cfg["datasets"]:
-        adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit)
-        samples_by_ds[ds_name] = list(adapter)
-
     def _one(model_name: str, ds_name: str, sample) -> dict:
         cfg = models_cfg[model_name]
         key = _cache_key(sample.id, model_name, prompt_version)
@@ -114,19 +108,38 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             cache_file.write_text(json.dumps(row, ensure_ascii=False))
         return row
 
+    def _chunks(it, n):
+        buf = []
+        for x in it:
+            buf.append(x)
+            if len(buf) >= n:
+                yield buf
+                buf = []
+        if buf:
+            yield buf
+
     # Model-major: finish every job for one model, then free it before loading
-    # the next. Critical for a local-model sweep on a single GPU.
+    # the next (critical for a local-model sweep on a single GPU). Samples are
+    # STREAMED from a fresh adapter per model and processed in small chunks, so
+    # we never hold the whole decoded dataset in RAM.
     with pred_path.open("w", encoding="utf-8") as fh:
         for model_name in run_cfg["models"]:
-            model_jobs = [
-                (model_name, ds, s)
-                for ds in run_cfg["datasets"]
-                for s in samples_by_ds[ds]
-            ]
-            with ThreadPoolExecutor(max_workers=concurrency) as pool:
-                for row in pool.map(lambda args: _one(*args), model_jobs):
-                    fh.write(json.dumps(row, ensure_ascii=False) + "\n")
-                    fh.flush()
+            for ds_name in run_cfg["datasets"]:
+                adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit)
+                if concurrency <= 1:
+                    for sample in adapter:
+                        fh.write(json.dumps(_one(model_name, ds_name, sample),
+                                            ensure_ascii=False) + "\n")
+                        fh.flush()
+                else:
+                    for chunk in _chunks(adapter, max(4, concurrency * 4)):
+                        with ThreadPoolExecutor(max_workers=concurrency) as pool:
+                            rows = list(pool.map(
+                                lambda s, m=model_name, d=ds_name: _one(m, d, s), chunk
+                            ))
+                        for row in rows:
+                            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+                        fh.flush()
             close = getattr(clients[model_name], "close", None)
             if callable(close):
                 close()
