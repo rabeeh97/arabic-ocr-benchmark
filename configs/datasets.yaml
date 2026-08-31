@@ -26,12 +26,30 @@ synthetic:
     Not a benchmark — an offline check that the runner, scorer and leaderboard work
     end to end without any download.
 
-# --- not yet implemented, listed for reference (see benchmark-matrix.md) ---
+# --- planned, adapters NOT yet implemented (see docs/datasets.md, benchmark-matrix.md) ---
+# To add one: implement datasets/<name>.py yielding Sample(id, image, ground_truth,
+# track, meta) with a stable id scheme, uncomment here, then add the HF id/split to
+# the notebook's _HF_SPLIT map so sample images render on the leaderboard.
+#
 # muharaf_pages:
 #   adapter: arabic_ocr_bench.datasets.muharaf_pages:MuharafPages
 #   track: page
-#   source: https://github.com/MehreenMehreen/muharaf
+#   source: https://github.com/MehreenMehreen/muharaf  (or Zenodo 11492215)
+#   card: >-
+#     Muharaf full-page images + polygon JSON. Page-track: whole page -> full
+#     transcript in reading order. Restrict to pages whose lines are in the HF
+#     `test` split so it stays comparable and leak-free.
 # khatt:
+#   adapter: arabic_ocr_bench.datasets.khatt:KHATT
 #   track: [line, page]
+#   source: KFUPM request form / LDC LDC2015T23 / HF mirror benhachem/KHATT
+#   card: >-
+#     KHATT — ~1,000 writers, modern handwritten Arabic paragraphs + extracted
+#     lines. Use the unique-text paragraphs for the page track.
 # kitab_bench:
+#   adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
 #   track: [line, page]
+#   source: HF ahmedheakl/arocrbench_*  (text-recognition subsets only)
+#   card: >-
+#     KITAB-Bench (ACL 2025) — pull only the printed + handwritten text-recognition
+#     subsets as an external cross-check and a printed-Arabic contrast anchor.

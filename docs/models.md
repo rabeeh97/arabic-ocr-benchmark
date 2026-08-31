@@ -62,7 +62,7 @@ Quirks:
 
 | Field | Value |
 | --- | --- |
-| LiteLLM id | `anthropic/claude-sonnet-4-5`, `anthropic/claude-opus-4-1` (check current ids at run time) |
+| LiteLLM id | `anthropic/claude-haiku-4-5`, `anthropic/claude-sonnet-5`, `anthropic/claude-opus-5` |
 | Credential | `ANTHROPIC_API_KEY` |
 | Image input | base64 `image` block; max 8000×8000 px, ~5 MB/image |
 | Track fit | line + page |

@@ -30,6 +30,7 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             litellm_id=cfg["litellm_id"],
             params=cfg.get("params") or {},
             api_base=cfg.get("api_base"),
+            max_tokens=int(cfg.get("max_tokens", 256)),
         )
     if client == "hf_local":
         from .hf_local_client import HFLocalClient

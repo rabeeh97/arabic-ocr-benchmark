@@ -1,25 +1,24 @@
-# Hosted-API sweep for Google Colab (CPU runtime, notebook 02).
-# Runs whichever models have a key in the environment; the notebook filters the
-# list down to the keys you actually provided.
+# Hosted-API sweep (Colab notebook 02, CPU). Same run_sweep engine as the local
+# sweep. The notebook filters this list to the models whose API key is present.
 #
-#   from arabic_ocr_bench.runner import run
-#   from arabic_ocr_bench.report import score_run
-#   import yaml; rd = run(yaml.safe_load(open("configs/run.sweep-hosted.yaml")))
+#   from arabic_ocr_bench.sweep import run_sweep
+#   run_sweep(models=..., dataset="muharaf_lines", partial_limit=25, run_full=False,
+#             concurrency=4, manifest_path="results/sweep_manifest.json",
+#             results_dir="results")
 
 models:
-  - gemini-2.5-flash       # free tier (rate-limited)
+  - claude-haiku           # Anthropic Haiku 4.5
+  - claude-sonnet          # Anthropic Sonnet 5
+  - claude-opus            # Anthropic Opus 5
+  - gemini-2.5-flash       # Google (free tier)
   - gemini-2.5-pro
-  - gpt-4o                 # paid
-  - claude-sonnet          # paid
+  # - gpt-4o               # OpenAI (paid)
 
 datasets:
   - muharaf_lines
 
-limit: 50                  # keep modest for paid APIs; bump when the setup looks right
-prompt_version: line-v1
+partial_limit: 25          # paid APIs — keep the partial small
+run_full: false            # flip to true for the full 1,334-line pass
+prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
-
 concurrency: 4
-max_retries: 3
-cache: true
-results_dir: results
