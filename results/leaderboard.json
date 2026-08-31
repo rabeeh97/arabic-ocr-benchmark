@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "run": "20260831T185411Z",
+    "when": "2026-08-31 18:54 UTC",
+    "limit": "20",
+    "prompt_version": "line-v2",
+    "model": "qari-ocr-0.2",
+    "dataset": "muharaf_lines",
+    "n": "20",
+    "errors": "1",
+    "refusal_rate": "0.05",
+    "latency_ms_mean": "8971.4",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "1.1029",
+    "cer_macro_raw": "1.057",
+    "wer_micro_raw": "1.2988",
+    "exact_raw": "0.05",
+    "cer_micro_light": "1.0928",
+    "cer_macro_light": "1.0481",
+    "wer_micro_light": "1.2988",
+    "exact_light": "0.05",
+    "cer_micro_diac_insensitive": "1.0079",
+    "cer_macro_diac_insensitive": "0.9582",
+    "wer_micro_diac_insensitive": "1.2988",
+    "exact_diac_insensitive": "0.05",
+    "diac_f1": "0.3518"
+  }
+]
