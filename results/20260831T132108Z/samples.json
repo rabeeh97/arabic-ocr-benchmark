@@ -1,0 +1,174 @@
+{
+  "run_id": "20260831T132108Z",
+  "generated_at": "2026-08-31T13:21:09+00:00",
+  "samples": [
+    {
+      "sample_id": "muharaf_lines/test/000000",
+      "row": 0,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "worst",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "اهدي سلامي الي جاركم الخواجه اسَعد الي بيت ملحم الي بيت الشيخ يزبك الي بيت الشيخ موسَي الي بيت بطرسَ",
+      "prediction": "عذراً، لا يمكنني تحديد ما إذا كانت هذه الأحرف هي العربية أو غيرها من الأبجدية. يرجى تقديم المزيد من المعلومات للمساعدة في التعرف على اللغة التي تستخدم فيها هذه الأحروف.",
+      "error": null,
+      "cer_light": 1.22,
+      "cer_raw": 1.22,
+      "wer_light": 1.5
+    },
+    {
+      "sample_id": "muharaf_lines/test/000001",
+      "row": 1,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بفكر وانادكم واقول ياما أمتا الخال الي عادة لما انده خالي بكلمتي احلام تهدسَ",
+      "prediction": "الله تعالى لا إله إلا هو وسليم",
+      "error": null,
+      "cer_light": 0.75,
+      "cer_raw": 0.7763,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000002",
+      "row": 2,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "يفكر لا ارقد ولا العيش بطيب كيف حال الشيخ توفيق من صوبكم كيف حال اهل السَقي",
+      "prediction": "خادم رضي الله عنه صلى الله عليه وسلم حسن بن زيد بن خالد بن سعد بن عبد الرحمن بن معاذ بن عبيد الله بن قيس بن هود بن يزيد بن أبي بكر الصديق بن الحارث بن المغيرة بن الوليد بن مروان بن الأسد بن العباس بن مريم بن السلمة بن عمر بن الخطاب بن علي بن abi abu bakr al-harith bin saeed bin abd al-rahman bin othman bin uqba ibn huda ibn muhammad ibn abu Bakr ibn al-Harith ibn Muawiya ibn Al-Maqdis ibn 'Abbas ibn Malik ibn Abi Talib ibn Abu Bakr al-Siddiq ibn Umar ibn Khattab ibn Ali ibn Thabit ibn Hajar ibn Yathrib ibn Zayd ibn Harun ibn Hamza ibn Khalaf ibn Mas'ud ibn Jafar ibn Qays ibn Aswad ibn Aamir ibn Fihri ibn Sina ibn Hayyan ibn Muhammad ibn Idris ibn Ismail ibn Musa ibn Maimon ibn Ya'qub ibn Anas ibn Makram ibn Marwan ibn Salama ibn Sa'd ibn Adham ibn Amr ibni al-Walid ibn Abd Allah ibn Ubaid Allah ibn Abdul Majeed ibn Ahmad ibn Sulaymân ibn Shahrîz ibn Bishr ibnu al-Qaiyim ibn Nafi ibn Khuwaylid ibn Tufail ibn Badran ibn At-Tulun ibnu 'Ubayd ibnu Abi Bakr",
+      "error": null,
+      "cer_light": 12.2667,
+      "cer_raw": 12.2667,
+      "wer_light": 11.9375
+    },
+    {
+      "sample_id": "muharaf_lines/test/000003",
+      "row": 3,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بالاجمال سَلامي لكل معارفي واصحابي في الجيرة خاتم كتابي بالوف من القبلات ابن شقيقتك سلم خيرالله",
+      "prediction": "ارجل سعد تغلق سالم وسماع زالناب بالدك شاكرا",
+      "error": null,
+      "cer_light": 0.7368,
+      "cer_raw": 0.7368,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000004",
+      "row": 4,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "العنيسي سرحال",
+      "prediction": "الد",
+      "error": null,
+      "cer_light": 0.8462,
+      "cer_raw": 0.8462,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000005",
+      "row": 5,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "جيت لدارهم ذني بعدهم / لقيت الدار تنعي من بعدهم",
+      "prediction": "بِنَّةُ رَحْمٍ وَلَا مِثْلٌ إِذَا الْرَسُولُ أَتَهُمْ بعَدًا",
+      "error": null,
+      "cer_light": 1.0,
+      "cer_raw": 1.0,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000006",
+      "row": 6,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تصبر يا قلبي علي بعدهم  كريم الله يجمعنا سَوا",
+      "prediction": "العربية",
+      "error": null,
+      "cer_light": 0.8864,
+      "cer_raw": 0.8889,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000007",
+      "row": 7,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "انها انشالله قريب نشاهد بعضنا",
+      "prediction": "الخليفة",
+      "error": null,
+      "cer_light": 0.8966,
+      "cer_raw": 0.8966,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000008",
+      "row": 8,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عتابا",
+      "prediction": "لياس",
+      "error": null,
+      "cer_light": 0.8,
+      "cer_raw": 0.8,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "muharaf_lines/test/000009",
+      "row": 9,
+      "model": "qwen2-vl-2b",
+      "dataset": "muharaf_lines",
+      "categories": [
+        "anchor",
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عبود الي الخوري طوبيا الي ابو طوبيا الي عبدالله غصن الي الخوري يوحنا والي كل أهالي قريتنا",
+      "prediction": "عصر المترشحات طمساً في الرضحا الاعتداله ونفسيته، والبراءة منها ولكلها خير",
+      "error": null,
+      "cer_light": 0.6404,
+      "cer_raw": 0.6404,
+      "wer_light": 1.0
+    }
+  ]
+}
