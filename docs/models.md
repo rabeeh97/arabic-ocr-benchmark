@@ -29,7 +29,7 @@ reports token usage; cost is computed by us from `configs/models.yaml` pricing
 
 | Field | Value |
 | --- | --- |
-| LiteLLM id | `gemini/gemini-2.5-flash`, `gemini/gemini-2.5-pro` |
+| LiteLLM id | `gemini/gemini-3.6-flash`, `gemini/gemini-3.5-flash-lite`, `gemini/gemini-3.1-pro-preview` (2.5-series is closed to new API keys) |
 | Credential | `GEMINI_API_KEY` (Google AI Studio) **or** Vertex AI (`VERTEXAI_PROJECT`, `VERTEXAI_LOCATION`, ADC) |
 | Image input | inline base64 in the message `content` list |
 | Track fit | line + page (strong at full-page reading order) |

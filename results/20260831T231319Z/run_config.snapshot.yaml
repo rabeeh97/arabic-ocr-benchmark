@@ -1,0 +1,13 @@
+models:
+- mistral-small
+datasets:
+- synthetic
+limit: 10
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 4
+cache: true
+results_dir: results

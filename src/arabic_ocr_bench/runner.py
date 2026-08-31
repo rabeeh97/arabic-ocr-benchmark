@@ -25,7 +25,7 @@ _TRANSIENT = ("429", "rate", "timeout", "500", "502", "503", "504", "overloaded"
 
 # Bump when generation behaviour changes (decoding params, max_new_tokens,
 # image caps, output cleaning, refusal handling) so old cached predictions miss.
-CACHE_REV = "2"
+CACHE_REV = "3"
 
 
 def _cache_key(sample_id: str, model: str, prompt_version: str) -> str:

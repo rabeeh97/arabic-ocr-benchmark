@@ -52,7 +52,7 @@ Add as Colab secrets (Notebook access ON), any subset:
 | Secret name | Where to get it | Notes |
 | --- | --- | --- |
 | `ANTHROPIC_API_KEY` | https://console.anthropic.com/settings/keys | claude-haiku / -sonnet / -opus |
-| `GEMINI_API_KEY` | https://aistudio.google.com/apikey | free tier; gemini-2.5-flash / -pro / -flash-lite |
+| `GEMINI_API_KEY` | https://aistudio.google.com/apikey | free tier; Gemini 3.x flash / flash-lite / pro |
 | `OPENAI_API_KEY` | https://platform.openai.com/api-keys | gpt-4o / -mini / gpt-4.1* / gpt-5 |
 | `MISTRAL_API_KEY` | https://console.mistral.ai/api-keys | free tier; pixtral-12b / mistral-small |
 | `OPENROUTER_API_KEY` | https://openrouter.ai/keys | one key, many models incl. free |

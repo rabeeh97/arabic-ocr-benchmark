@@ -23,11 +23,18 @@ def _resolve(target: str):
 
 def build_dataset(name: str, cfg: dict[str, Any], *, limit: int | None = None):
     adapter_cls = _resolve(cfg["adapter"])
-    kwargs: dict[str, Any] = {}
-    if "split" in cfg:
-        kwargs["split"] = cfg["split"]
-    if "hf_id" in cfg:
-        kwargs["hf_id"] = cfg["hf_id"]
+    kwargs: dict[str, Any] = dict(cfg.get("params") or {})
+    for k in ("split", "hf_id", "subset"):
+        if k in cfg:
+            kwargs[k] = cfg[k]
     if limit is not None:
         kwargs["limit"] = limit
+    # let an adapter that accepts `name` stamp stable sample ids from the config
+    try:
+        import inspect
+
+        if "name" in inspect.signature(adapter_cls).parameters:
+            kwargs.setdefault("name", name)
+    except (TypeError, ValueError):
+        pass
     return adapter_cls(**kwargs)

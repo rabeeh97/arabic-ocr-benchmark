@@ -15,6 +15,54 @@ muharaf_lines:
     is the held-out `test` split (1,334 lines); train/validation are reserved for
     fine-tuning. CC-BY-NC-SA-4.0, research use.
 
+# --- KITAB-Bench text-recognition subsets (arXiv:2502.14949) --------------------
+# Ungated HF datasets (ahmedheakl/arocrbench_*), single `train` split, small
+# (200-500 lines each). One shared adapter; `params.subset` picks the HF repo.
+# These are the priority datasets — small, quick, and cover handwritten +
+# historical + printed Arabic.
+kitab_khatt:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_khatt }
+  track: line
+  split: train
+  license: see KHATT terms (research use)
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_khatt
+  card: >-
+    KITAB-Bench / KHATT subset — modern handwritten Arabic, line images with
+    clean printed-quality ground truth. The main handwriting target: cleaner and
+    more uniform than Muharaf, so a useful contrast with it.
+kitab_muharaf:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_muharaf }
+  track: line
+  split: train
+  license: CC-BY-NC-SA-4.0
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_muharaf
+  card: >-
+    KITAB-Bench / Muharaf subset — historical handwritten Arabic segments (a
+    small slice of the same Muharaf corpus as `muharaf_lines`), for a direct
+    KITAB-Bench-scored comparison point.
+kitab_historicalbooks:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_historicalbooks }
+  track: line
+  split: train
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_historicalbooks
+  card: >-
+    KITAB-Bench / historical printed books — degraded historical *printed*
+    Arabic. Harder than modern print, easier than handwriting.
+kitab_hindawi:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_hindawi }
+  track: line
+  split: train
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_hindawi
+  card: >-
+    KITAB-Bench / Hindawi — clean digitised printed books. An easy printed-Arabic
+    anchor: strong models should approach 0 % CER here.
+
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
   track: line
@@ -46,10 +94,8 @@ synthetic:
 #   card: >-
 #     KHATT — ~1,000 writers, modern handwritten Arabic paragraphs + extracted
 #     lines. Use the unique-text paragraphs for the page track.
-# kitab_bench:
-#   adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
-#   track: [line, page]
-#   source: HF ahmedheakl/arocrbench_*  (text-recognition subsets only)
-#   card: >-
-#     KITAB-Bench (ACL 2025) — pull only the printed + handwritten text-recognition
-#     subsets as an external cross-check and a printed-Arabic contrast anchor.
+# kitab_bench (line-level text-recognition subsets) is implemented above:
+#   kitab_khatt / kitab_muharaf / kitab_historicalbooks / kitab_hindawi.
+# More arocrbench_* subsets (adab, arabicocr, patsocr, isippt, ...) can be added
+# with the same adapter — just set params.subset. The chart/table/PDF-to-markdown
+# KITAB-Bench tasks are a different track and out of scope here.
