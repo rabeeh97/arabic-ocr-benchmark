@@ -23,9 +23,15 @@ from .prompting import get_prompt
 
 _TRANSIENT = ("429", "rate", "timeout", "500", "502", "503", "504", "overloaded")
 
+# Bump when generation behaviour changes (decoding params, max_new_tokens,
+# image caps, output cleaning, refusal handling) so old cached predictions miss.
+CACHE_REV = "2"
+
 
 def _cache_key(sample_id: str, model: str, prompt_version: str) -> str:
-    return hashlib.sha1(f"{sample_id}|{model}|{prompt_version}".encode()).hexdigest()
+    return hashlib.sha1(
+        f"{sample_id}|{model}|{prompt_version}|r{CACHE_REV}".encode()
+    ).hexdigest()
 
 
 def _cost_usd(cfg: dict, in_tok: int, out_tok: int) -> float:

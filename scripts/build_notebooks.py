@@ -171,6 +171,7 @@ def build_local():
         code(
             "!pip install -q -e '.[local]'",
             "# Colab ships a recent torch already; this pulls transformers>=4.49, peft, qwen-vl-utils, ...",
+            "!pip uninstall -y -q torchao 2>/dev/null  # old Colab torchao breaks model load; unused",
         ),
         md(
             "## 4. Pick the model(s)",
@@ -539,7 +540,12 @@ def build_sweep():
         ROBUST_CLONE_CELL,
         md("## 3. Install + caches"),
         HF_CACHE_CELL,
-        code("!pip install -q -e '.[local]'"),
+        code(
+            "!pip install -q -e '.[local]'",
+            "# Colab ships an old torchao; recent transformers hard-errors importing it",
+            "# at model-load ('incompatible version of torchao'). We don't use it.",
+            "!pip uninstall -y -q torchao 2>/dev/null; echo 'torchao removed (unused)'",
+        ),
         md("## 4. Mount Drive"),
         code(
             "from google.colab import drive",
