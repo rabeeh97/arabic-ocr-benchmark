@@ -57,14 +57,19 @@ def clean_output(raw: str) -> str:
 
 class LiteLLMClient:
     def __init__(self, name: str, litellm_id: str, params: dict | None = None,
-                 api_base: str | None = None):
+                 api_base: str | None = None, max_tokens: int = 256):
         self.name = name
         self.litellm_id = litellm_id
         self.params = params or {}
         self.api_base = api_base
+        # a line is <=181 chars; cap output so a model that rambles doesn't run
+        # up cost / CER. Mirrors hf_local_client's 160-token cap.
+        self.max_tokens = max_tokens
 
     def transcribe(self, image: Image.Image, prompt: str) -> Prediction:
         import litellm
+
+        litellm.drop_params = True  # silently drop params a given model rejects
 
         messages = [{
             "role": "user",
@@ -73,7 +78,8 @@ class LiteLLMClient:
                 {"type": "image_url", "image_url": {"url": _image_data_uri(image)}},
             ],
         }]
-        kwargs = dict(model=self.litellm_id, messages=messages, **self.params)
+        kwargs = dict(model=self.litellm_id, messages=messages,
+                      max_tokens=self.max_tokens, **self.params)
         if self.api_base:
             kwargs["api_base"] = self.api_base
 

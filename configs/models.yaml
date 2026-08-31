@@ -54,15 +54,33 @@ gpt-4o:
   card: >-
     OpenAI's flagship multimodal model. Strong general vision-language reasoning
     and text reading; no Arabic-specific tuning. Paid API only.
-claude-sonnet:
+claude-haiku:
   client: litellm
-  litellm_id: anthropic/claude-sonnet-4-5      # check current id in docs/models.md
+  litellm_id: anthropic/claude-haiku-4-5
   env_key: ANTHROPIC_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 3.00, output_usd_per_1m: 15.00 }
+  pricing: { input_usd_per_1m: 1.00, output_usd_per_1m: 5.00 }
   card: >-
-    Anthropic's mid-tier model. Careful transcriber that tends to preserve
-    diacritics well; general-purpose, not OCR-specialised. Paid API only.
+    Anthropic's small, fast model (Haiku 4.5). Cheapest of the Claude tier;
+    general-purpose, not OCR-specialised.
+claude-sonnet:
+  client: litellm
+  litellm_id: anthropic/claude-sonnet-5
+  env_key: ANTHROPIC_API_KEY
+  params: {}                                   # Sonnet 5 rejects temperature/top_p
+  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 10.00 }
+  card: >-
+    Anthropic's mid-tier model (Sonnet 5). Careful transcriber that tends to
+    preserve diacritics well; general-purpose, not OCR-specialised.
+claude-opus:
+  client: litellm
+  litellm_id: anthropic/claude-opus-5
+  env_key: ANTHROPIC_API_KEY
+  params: {}                                   # Opus 5 rejects temperature/top_p
+  pricing: { input_usd_per_1m: 5.00, output_usd_per_1m: 25.00 }
+  card: >-
+    Anthropic's most capable widely-released model (Opus 5). Strongest general
+    vision-language reasoning in the set; no Arabic-specific tuning. Priciest.
 
 # --- local open-weight / Arabic-specific VLMs (needs: uv sync --extra local)
 qari-ocr-0.3:
