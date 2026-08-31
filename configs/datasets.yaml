@@ -8,6 +8,12 @@ muharaf_lines:
   split: test              # the benchmark hold-out; train/validation reserved for fine-tuning
   license: CC-BY-NC-SA-4.0
   source: https://huggingface.co/datasets/aamijar/muharaf-public
+  card: >-
+    Muharaf ("Manuscripts of Handwritten Arabic", NeurIPS 2024), line-level split.
+    Real 19th-to-21st-century handwritten letters, diaries and records —
+    predominantly Ruq'ah script, often degraded, with natural diacritic use. This
+    is the held-out `test` split (1,334 lines); train/validation are reserved for
+    fine-tuning. CC-BY-NC-SA-4.0, research use.
 
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
@@ -15,6 +21,10 @@ synthetic:
   split: test
   license: n/a
   source: in-repo (offline pipeline check — no network)
+  card: >-
+    Ten hard-coded Arabic sentences rendered to plain images, shipped in the repo.
+    Not a benchmark — an offline check that the runner, scorer and leaderboard work
+    end to end without any download.
 
 # --- not yet implemented, listed for reference (see benchmark-matrix.md) ---
 # muharaf_pages:
