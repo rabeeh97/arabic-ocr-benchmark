@@ -112,16 +112,26 @@ def export_run_samples(
     for r in scores:
         pairs.setdefault((r["model"], r["dataset"]), []).append(r)
 
+    from tqdm.auto import tqdm
+
     out_samples: list[dict] = []
     img_cache: dict[int, str] = {}
+    selection = {
+        (model, dataset): select_sample_ids(
+            rows, anchor_ids(dataset),
+            {r["sample_id"]: len(preds.get((model, r["sample_id"]), {}).get("ground_truth", ""))
+             for r in rows},
+            k=k,
+        )
+        for (model, dataset), rows in pairs.items()
+    }
+    n_total = sum(len(p) for p in selection.values())
+    bar = tqdm(total=n_total, desc="sample export", unit="sample")
     for (model, dataset), rows in pairs.items():
-        gt_len = {
-            r["sample_id"]: len(preds.get((model, r["sample_id"]), {}).get("ground_truth", ""))
-            for r in rows
-        }
-        picked = select_sample_ids(rows, anchor_ids(dataset), gt_len, k=k)
+        picked = selection[(model, dataset)]
         score_by_id = {r["sample_id"]: r for r in rows}
         for sid, categories in picked.items():
+            bar.update(1)
             idx = _row_index(sid)
             if idx not in img_cache:
                 try:
@@ -145,6 +155,7 @@ def export_run_samples(
                 "cer_raw": round(float(s.get("cer_raw", 0.0)), 4),
                 "wer_light": round(float(s.get("wer_light", 0.0)), 4),
             })
+    bar.close()
 
     out = run_dir / "samples.json"
     out.write_text(json.dumps(
@@ -155,4 +166,6 @@ def export_run_samples(
         },
         indent=2, ensure_ascii=False,
     ), encoding="utf-8")
+    print(f"[samples] {len(out_samples)} entries, {len(img_cache)} images -> {out.name} "
+          f"({out.stat().st_size // 1024} KB)", flush=True)
     return out

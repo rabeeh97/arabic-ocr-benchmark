@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import yaml
+from tqdm.auto import tqdm
 
 from .datasets.registry import build_dataset, load_dataset_configs
 from .models.mock_client import build_mock_prompt
@@ -49,6 +50,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     concurrency = int(run_cfg.get("concurrency", 4))
     max_retries = int(run_cfg.get("max_retries", 3))
     use_cache = bool(run_cfg.get("cache", True))
+    show_progress = bool(run_cfg.get("progress", True))
 
     root = Path(results_root or run_cfg.get("results_dir", "results"))
     run_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
@@ -118,19 +120,37 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         if buf:
             yield buf
 
+    n_models = len(run_cfg["models"])
+
     # Model-major: finish every job for one model, then free it before loading
     # the next (critical for a local-model sweep on a single GPU). Samples are
     # STREAMED from a fresh adapter per model and processed in small chunks, so
     # we never hold the whole decoded dataset in RAM.
     with pred_path.open("w", encoding="utf-8") as fh:
-        for model_name in run_cfg["models"]:
+        for mi, model_name in enumerate(run_cfg["models"], 1):
             for ds_name in run_cfg["datasets"]:
                 adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit)
+                try:
+                    total = len(adapter)
+                except (TypeError, AttributeError):
+                    total = None
+                bar = tqdm(
+                    total=total, unit="line", disable=not show_progress,
+                    desc=f"[{mi}/{n_models}] {model_name} · {ds_name}",
+                )
+                seen = {"cached": 0, "err": 0}
+
+                def _emit(row, bar=bar, seen=seen):
+                    fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+                    fh.flush()
+                    seen["cached"] += bool(row.get("cached"))
+                    seen["err"] += bool(row.get("error"))
+                    bar.update(1)
+                    bar.set_postfix(cached=seen["cached"], err=seen["err"], refresh=False)
+
                 if concurrency <= 1:
                     for sample in adapter:
-                        fh.write(json.dumps(_one(model_name, ds_name, sample),
-                                            ensure_ascii=False) + "\n")
-                        fh.flush()
+                        _emit(_one(model_name, ds_name, sample))
                 else:
                     for chunk in _chunks(adapter, max(4, concurrency * 4)):
                         with ThreadPoolExecutor(max_workers=concurrency) as pool:
@@ -138,8 +158,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
                                 lambda s, m=model_name, d=ds_name: _one(m, d, s), chunk
                             ))
                         for row in rows:
-                            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
-                        fh.flush()
+                            _emit(row)
+                bar.close()
             close = getattr(clients[model_name], "close", None)
             if callable(close):
                 close()

@@ -80,14 +80,17 @@ def run_sweep(
     if run_full:
         phases.append(("full", None))
 
+    total = len(models) * len(phases)
     new_entries: list[Entry] = []
+    step = 0
     for model in models:
         for phase, limit in phases:
+            step += 1
             key = (model, dataset, phase)
             if key in done:
-                log(f"skip {model} / {phase} (already done)")
+                log(f"[{step}/{total}] skip {model} / {phase} (already done)")
                 continue
-            log(f"start {model} / {phase} (limit={limit})")
+            log(f"[{step}/{total}] start {model} / {phase} (limit={limit})")
             try:
                 run_dir = run(
                     {

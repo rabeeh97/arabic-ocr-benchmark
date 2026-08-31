@@ -21,12 +21,14 @@ def _load_predictions(run_dir: Path) -> list[dict]:
     return rows
 
 
-def score_run(run_dir: str | Path, profiles=PROFILES) -> Path:
+def score_run(run_dir: str | Path, profiles=PROFILES, *, progress: bool = True) -> Path:
     run_dir = Path(run_dir)
     preds = _load_predictions(run_dir)
 
+    from tqdm.auto import tqdm
+
     scored: list[dict] = []
-    for r in preds:
+    for r in tqdm(preds, desc="scoring", unit="pred", disable=not progress):
         hyp = "" if r.get("error") else (r.get("cleaned_text") or "")
         ps = score_pair(r["ground_truth"], hyp, profiles=profiles)
         scored.append({

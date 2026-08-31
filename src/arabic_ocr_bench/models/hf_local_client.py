@@ -100,6 +100,11 @@ class HFLocalClient:
                 else torch.bfloat16 if self.dtype in ("bfloat16", "bf16")
                 else "auto"
             )
+        _t0 = time.perf_counter()
+        adapter = f" + adapter {self.adapter_id}" if self.adapter_id else ""
+        print(f"[load] {self.hf_id}{adapter} "
+              f"({'4-bit' if use_4bit else str(torch_dtype).replace('torch.', '')} on {device}) ...",
+              flush=True)
         self._processor = AutoProcessor.from_pretrained(self.hf_id, trust_remote_code=True)
 
         # Some checkpoints (unsloth-derived, e.g. Qari-OCR) carry a bitsandbytes
@@ -135,6 +140,7 @@ class HFLocalClient:
         model = model if use_4bit else model.to(device)
         self._model = model.eval()
         self._device = "cuda" if use_4bit else device
+        print(f"[load] {self.name} ready in {time.perf_counter() - _t0:.1f}s", flush=True)
 
     def close(self) -> None:
         """Free the model from (GPU) memory — the runner calls this between
