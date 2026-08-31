@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,27 @@ def load_model_configs(path: str | Path = _DEFAULT_CFG) -> dict[str, dict]:
     return yaml.safe_load(Path(path).read_text()) or {}
 
 
+def available_hosted_models(
+    configs: dict[str, dict] | None = None, env: dict | None = None
+) -> list[str]:
+    """Every `client: litellm` model whose `env_key` is present (or which needs
+    no key). Used so run_hosted.py / notebook 02 pick up new models in
+    models.yaml automatically — no hardcoded list."""
+    cfgs = configs if configs is not None else load_model_configs()
+    e = env if env is not None else os.environ
+    out = []
+    for name, cfg in cfgs.items():
+        if cfg.get("client") != "litellm":
+            continue
+        key = cfg.get("env_key")
+        if key and not e.get(key):
+            continue
+        if cfg.get("api_base_env") and not e.get(cfg["api_base_env"]):
+            continue
+        out.append(name)
+    return out
+
+
 def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
     client = cfg.get("client")
     if client == "mock":
@@ -25,11 +47,14 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
     if client == "litellm":
         from .litellm_client import LiteLLMClient
 
+        api_base = cfg.get("api_base")
+        if cfg.get("api_base_env"):
+            api_base = os.environ.get(cfg["api_base_env"], api_base)
         return LiteLLMClient(
             name=name,
             litellm_id=cfg["litellm_id"],
             params=cfg.get("params") or {},
-            api_base=cfg.get("api_base"),
+            api_base=api_base,
             max_tokens=int(cfg.get("max_tokens", 256)),
         )
     if client == "hf_local":

@@ -25,7 +25,13 @@ mock_empty:
     Test stub that returns an empty string. Its row is the pipeline's lower bound
     (CER ~100%); a "predict nothing" baseline every real model must beat.
 
-# --- hosted VLMs (LiteLLM) ------------------------------------------------
+# --- hosted VLMs (LiteLLM) ----------------------------------------------------
+# All go through litellm_client. Fields: litellm_id, env_key (skipped if unset),
+# optional api_base / api_base_env, params, pricing (USD/1M, for cost estimate),
+# optional max_tokens. run_hosted.py / notebook 02 run every one whose key is set.
+# Pricing marked (verify) is a best-effort estimate — check the provider's page.
+
+# Google
 gemini-2.5-flash:
   client: litellm
   litellm_id: gemini/gemini-2.5-flash
@@ -34,8 +40,15 @@ gemini-2.5-flash:
   pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 2.50 }
   card: >-
     Google's fast multimodal model. General-purpose vision-language, not OCR-tuned;
-    strong at reading printed and clear handwritten text. Called via API; a free
-    Google AI Studio tier exists (rate-limited).
+    strong at reading printed and clear handwritten text. Free AI Studio tier.
+gemini-2.5-flash-lite:
+  client: litellm
+  litellm_id: gemini/gemini-2.5-flash-lite
+  env_key: GEMINI_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.10, output_usd_per_1m: 0.40 }   # (verify)
+  card: >-
+    Google's cheapest/fastest Gemini. Useful as a low-cost baseline row.
 gemini-2.5-pro:
   client: litellm
   litellm_id: gemini/gemini-2.5-pro
@@ -45,6 +58,8 @@ gemini-2.5-pro:
   card: >-
     Google's larger multimodal model — slower and pricier than Flash, generally
     more accurate on hard images. General-purpose, not OCR-specialised.
+
+# OpenAI
 gpt-4o:
   client: litellm
   litellm_id: openai/gpt-4o
@@ -52,8 +67,93 @@ gpt-4o:
   params: { temperature: 0 }
   pricing: { input_usd_per_1m: 2.50, output_usd_per_1m: 10.00 }
   card: >-
-    OpenAI's flagship multimodal model. Strong general vision-language reasoning
-    and text reading; no Arabic-specific tuning. Paid API only.
+    OpenAI's GPT-4o. Strong general vision-language reasoning and text reading;
+    no Arabic-specific tuning.
+gpt-4o-mini:
+  client: litellm
+  litellm_id: openai/gpt-4o-mini
+  env_key: OPENAI_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.60 }
+  card: >-
+    OpenAI's small vision model — cheap baseline; weaker on dense/degraded script.
+gpt-4.1:
+  client: litellm
+  litellm_id: openai/gpt-4.1
+  env_key: OPENAI_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 8.00 }   # (verify)
+  card: >-
+    OpenAI GPT-4.1 — improved instruction following over 4o; vision-capable.
+gpt-5:
+  client: litellm
+  litellm_id: openai/gpt-5
+  env_key: OPENAI_API_KEY
+  params: {}                                   # some GPT-5 tiers reject temperature
+  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }   # (verify)
+  card: >-
+    OpenAI's GPT-5 (vision). Verify availability/pricing on your account.
+
+# Mistral
+pixtral-12b:
+  client: litellm
+  litellm_id: mistral/pixtral-12b-2409
+  env_key: MISTRAL_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.15 }   # (verify)
+  card: >-
+    Mistral's open vision-language model (12B), served via Mistral's API. Free
+    tier available. A useful open-weight comparison point without local GPU.
+mistral-small:
+  client: litellm
+  litellm_id: mistral/mistral-small-latest
+  env_key: MISTRAL_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 0.60 }   # (verify)
+  card: >-
+    Mistral Small (multimodal). Small, cheap, general-purpose.
+
+# OpenRouter — one key, routes to many providers incl. free ($0) models
+openrouter-qwen2.5-vl-72b:
+  client: litellm
+  litellm_id: openrouter/qwen/qwen2.5-vl-72b-instruct
+  env_key: OPENROUTER_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.70, output_usd_per_1m: 0.70 }   # (verify)
+  card: >-
+    Qwen2.5-VL 72B via OpenRouter — a large open VLM with strong OCR, no local
+    GPU needed. OpenRouter also exposes many models on one key.
+openrouter-llama-3.2-90b-vision:
+  client: litellm
+  litellm_id: openrouter/meta-llama/llama-3.2-90b-vision-instruct
+  env_key: OPENROUTER_API_KEY
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.80, output_usd_per_1m: 0.80 }   # (verify)
+  card: >-
+    Llama 3.2 90B Vision via OpenRouter. Weaker on non-Latin script but a common
+    open baseline.
+
+# Ollama cloud (ollama.com) — OpenAI-compatible; set OLLAMA_API_BASE + OLLAMA_API_KEY.
+# Replace the tags with models you've enabled on your Ollama account.
+ollama-qwen2.5-vl:
+  client: litellm
+  litellm_id: openai/qwen2.5-vl:7b
+  env_key: OLLAMA_API_KEY
+  api_base_env: OLLAMA_API_BASE
+  params: { temperature: 0 }
+  pricing: null
+  card: >-
+    Qwen2.5-VL 7B served from Ollama cloud (or a local Ollama) via its
+    OpenAI-compatible endpoint. Strong open OCR model.
+ollama-llama3.2-vision:
+  client: litellm
+  litellm_id: openai/llama3.2-vision:11b
+  env_key: OLLAMA_API_KEY
+  api_base_env: OLLAMA_API_BASE
+  params: { temperature: 0 }
+  pricing: null
+  card: >-
+    Llama 3.2 Vision 11B via Ollama's OpenAI-compatible endpoint.
 claude-haiku:
   client: litellm
   litellm_id: anthropic/claude-haiku-4-5
