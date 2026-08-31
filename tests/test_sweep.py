@@ -105,6 +105,22 @@ def test_a_failing_model_does_not_stop_the_sweep(wired):
     assert any("boom" in p and "fail" in p.lower() for p in progress)
 
 
+def test_reconcile_drops_manifest_entries_whose_run_dir_is_missing(wired):
+    manifest_path = wired / "sweep_manifest.json"
+    manifest_path.write_text(json.dumps({"entries": [
+        {"model": "ghost", "dataset": "fake", "phase": "partial", "run_id": "does-not-exist"},
+    ]}))
+    prog = []
+    sweep.run_sweep(
+        models=["mock_echo"], dataset="fake", partial_limit=2, run_full=False,
+        manifest_path=manifest_path, results_dir=wired, profiles=("raw",),
+        on_progress=prog.append,
+    )
+    saved = json.loads(manifest_path.read_text())["entries"]
+    assert [e["model"] for e in saved] == ["mock_echo"]        # ghost dropped, real one kept
+    assert any("reconcile" in p and "ghost" in p for p in prog)
+
+
 def test_phase_not_marked_done_when_on_done_raises_and_re_runs_next_time(wired):
     manifest_path = wired / "sweep_manifest.json"
 

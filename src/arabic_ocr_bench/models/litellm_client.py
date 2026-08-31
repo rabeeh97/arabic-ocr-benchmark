@@ -18,8 +18,16 @@ _MD_PREFIX_RE = re.compile(r"^\s{0,3}(#{1,6}\s+|[-*+]\s+|>\s+|\|)")
 
 _REFUSAL_HINTS = (
     "i cannot", "i can't", "i'm unable", "i am unable", "as an ai",
-    "cannot assist", "can't help with",
+    "cannot assist", "can't help with", "i'm sorry", "i am sorry",
+    # Arabic: "sorry", "I can't", "unable", "please provide more"
+    "عذرا", "آسف", "أعتذر", "لا يمكنني", "لا أستطيع", "لا استطيع",
+    "يرجى تقديم", "لا يمكن قراءة", "غير واضح",
 )
+
+
+def looks_like_refusal(text: str) -> bool:
+    t = text.strip().lower()[:200]
+    return any(h in t for h in _REFUSAL_HINTS)
 
 
 def _image_data_uri(image: Image.Image) -> str:
@@ -81,7 +89,7 @@ class LiteLLMClient:
         usage = getattr(resp, "usage", None)
         in_tok = getattr(usage, "prompt_tokens", 0) or 0
         out_tok = getattr(usage, "completion_tokens", 0) or 0
-        err = "refusal" if any(h in raw.lower() for h in _REFUSAL_HINTS) else None
+        err = "refusal" if looks_like_refusal(raw) else None
         return Prediction(
             raw_text=raw,
             cleaned_text=clean_output(raw),
