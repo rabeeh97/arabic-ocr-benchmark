@@ -525,6 +525,27 @@ b{font-weight:600;color:var(--ink);}
 </style>"""
 
 
+def _render_empty(title: str) -> str:
+    gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    return _HEAD.replace("{{TITLE}}", html.escape(title)) + f"""
+<main>
+<header class='top'>
+<p class='eyebrow'>Handwritten Arabic · line-level recognition</p>
+<h1>{html.escape(title)}</h1>
+<p class='lede'>Character- and word-error rates for OCR / vision-language models
+transcribing cursive handwritten Arabic, scored on the same held-out lines with
+the same metrics.</p>
+<p class='status status--preview'><span class='dot'></span>
+No benchmark runs yet — the leaderboard, model cards and sample transcriptions
+appear here after the first sweep.</p>
+</header>
+<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten Arabic
+(NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. Harness:
+<code>arabic-ocr-bench</code>. Generated {gen} by
+<code>scripts/make_leaderboard.py</code>.</p></footer>
+</main>"""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("target", help="results/ dir, or a single results/<run_id>/ dir")
@@ -535,8 +556,10 @@ def main() -> int:
     target = Path(args.target)
     rows = collect(target)
     if not rows:
-        print(f"no summary.csv found under {args.target}")
-        return 1
+        Path(args.out).write_text(_render_empty(args.title), encoding="utf-8")
+        Path(args.out).with_suffix(".json").write_text("[]", encoding="utf-8")
+        print(f"leaderboard -> {args.out}  (no runs yet — placeholder page)")
+        return 0
     Path(args.out).write_text(render(rows, args.title, target), encoding="utf-8")
     print(f"leaderboard -> {args.out}  ({len(rows)} rows from "
           f"{len({r['run'] for r in rows})} run(s))")
