@@ -13,7 +13,7 @@ from PIL import Image
 
 from ..imaging import cap_image
 from .base import Prediction
-from .litellm_client import clean_output
+from .litellm_client import clean_output, looks_like_refusal
 
 # greedy decoding on a hard manuscript line collapses into "الشبق الشبق ..." loops;
 # these keep it honest and let EOS fire naturally.
@@ -44,7 +44,7 @@ def _load_model(hf_id: str, load_kwargs: dict):
 class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
-                 max_new_tokens: int = 512, load_in_4bit: bool = False):
+                 max_new_tokens: int = 160, load_in_4bit: bool = False):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
@@ -168,6 +168,9 @@ class HFLocalClient:
             return Prediction(error=f"{type(e).__name__}: {e}",
                               latency_ms=(time.perf_counter() - t0) * 1000)
         latency_ms = (time.perf_counter() - t0) * 1000
+        if looks_like_refusal(text):
+            return Prediction(raw_text=text, cleaned_text="", error="refusal",
+                              latency_ms=latency_ms)
         return Prediction(raw_text=text, cleaned_text=clean_output(text),
                           latency_ms=latency_ms)
 

@@ -49,6 +49,24 @@ def _done_keys(manifest: dict) -> set[tuple[str, str, str]]:
     return {(e["model"], e["dataset"], e["phase"]) for e in manifest["entries"]}
 
 
+def _reconcile(manifest: dict, results_dir: Path, log) -> dict:
+    """Drop entries whose run directory isn't here — a 'done' marker is only
+    trustworthy if its results are actually present (self-heals a manifest that
+    was pushed while its run dirs were not)."""
+    kept, dropped = [], []
+    for e in manifest["entries"]:
+        if (results_dir / e.get("run_id", "")).is_dir():
+            kept.append(e)
+        else:
+            dropped.append(e)
+    if dropped:
+        for e in dropped:
+            log(f"reconcile: dropping {e['model']}/{e['phase']} "
+                f"(run dir {e.get('run_id')} missing) — will re-run")
+        manifest["entries"] = kept
+    return manifest
+
+
 def _summary_row(run_dir: Path, model: str, dataset: str) -> dict:
     with (run_dir / "summary.csv").open() as fh:
         for r in csv.DictReader(fh):
@@ -73,7 +91,8 @@ def run_sweep(
     on_done: Callable[[Entry, Path], None] | None = None,
 ) -> list[Entry]:
     log = on_progress or (lambda _msg: None)
-    manifest = load_manifest(manifest_path)
+    manifest = _reconcile(load_manifest(manifest_path), Path(results_dir), log)
+    _save_manifest(manifest_path, manifest)
     done = _done_keys(manifest)
 
     phases: list[tuple[str, int | None]] = [("partial", partial_limit)]
