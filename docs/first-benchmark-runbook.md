@@ -152,7 +152,7 @@ The artifact starts private to your Claude account; share it when you're ready.
 
 | Symptom | Fix |
 | --- | --- |
-| Cell 1: `No GPU` | Runtime → Change runtime type → T4 GPU, then Run all |
+| Cell 1 says `NO GPU` | It still runs on CPU (fp32, slow, 4-bit models skipped). For a real run: Runtime → Change runtime type → T4 GPU, then Run all. |
 | Cell 2: clone asks for a password / 403 | `GH_TOKEN` missing, wrong name, Notebook-access off, or not granted `Contents` on this repo |
 | Cell 4: install errors about `torch` | usually harmless (Colab's torch already satisfies the pin); continue |
 | Cell 6: `KeyError` / chat-template error | model/processor mismatch — try `MODEL='qwen2.5-vl-3b'`; report the traceback |

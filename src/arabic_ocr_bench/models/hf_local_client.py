@@ -85,11 +85,20 @@ class HFLocalClient:
         device = "mps" if torch.backends.mps.is_available() else (
             "cuda" if torch.cuda.is_available() else "cpu"
         )
-        torch_dtype = (
-            torch.float16 if self.dtype in ("float16", "fp16")
-            else torch.bfloat16 if self.dtype in ("bfloat16", "bf16")
-            else "auto"
-        )
+        # 4-bit (bitsandbytes) needs CUDA; fp16 matmul is unsupported / slow on CPU.
+        use_4bit = self.load_in_4bit and device == "cuda"
+        if device == "cpu":
+            torch_dtype = torch.float32
+            print(
+                f"WARNING: no GPU — loading {self.hf_id} on CPU in float32 "
+                f"({'4-bit disabled; ' if self.load_in_4bit else ''}expect ~30-90 s/line)."
+            )
+        else:
+            torch_dtype = (
+                torch.float16 if self.dtype in ("float16", "fp16")
+                else torch.bfloat16 if self.dtype in ("bfloat16", "bf16")
+                else "auto"
+            )
         self._processor = AutoProcessor.from_pretrained(self.hf_id, trust_remote_code=True)
 
         # Some checkpoints (unsloth-derived, e.g. Qari-OCR) carry a bitsandbytes
@@ -98,7 +107,7 @@ class HFLocalClient:
         # unnecessary for a 2-3B model on a 16 GB GPU. Unless the caller opted
         # into quantization, drop it and load in plain fp16/bf16.
         cfg = AutoConfig.from_pretrained(self.hf_id, trust_remote_code=True)
-        if not self.load_in_4bit and hasattr(cfg, "quantization_config"):
+        if not use_4bit and hasattr(cfg, "quantization_config"):
             delattr(cfg, "quantization_config")
 
         load_kwargs = {
@@ -107,7 +116,7 @@ class HFLocalClient:
             "trust_remote_code": True,
             "low_cpu_mem_usage": True,
         }
-        if self.load_in_4bit:
+        if use_4bit:
             from transformers import BitsAndBytesConfig
 
             load_kwargs["quantization_config"] = BitsAndBytesConfig(
@@ -122,9 +131,9 @@ class HFLocalClient:
 
             model = PeftModel.from_pretrained(model, self.adapter_id)
         # with device_map="auto" (4-bit) accelerate already placed the weights
-        model = model if self.load_in_4bit else model.to(device)
+        model = model if use_4bit else model.to(device)
         self._model = model.eval()
-        self._device = "cuda" if self.load_in_4bit else device
+        self._device = "cuda" if use_4bit else device
 
     def close(self) -> None:
         """Free the model from (GPU) memory — the runner calls this between

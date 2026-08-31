@@ -54,6 +54,17 @@ def write(name: str, nb: dict) -> None:
 # --------------------------------------------------------------------------- #
 # shared setup cells
 # --------------------------------------------------------------------------- #
+GPU_CHECK_CELL = code(
+    "import torch",
+    "HAS_GPU = torch.cuda.is_available()",
+    "if HAS_GPU:",
+    "    print('GPU:', torch.cuda.get_device_name(0))",
+    "    !nvidia-smi --query-gpu=memory.total,memory.used --format=csv",
+    "else:",
+    "    print('NO GPU — will run on CPU (much slower; big 4-bit models are skipped).')",
+    "    print('For a real run: Runtime -> Change runtime type -> T4 GPU.')",
+)
+
 CLONE_CELL = code(
     "# Clone the (private) benchmark repo using a fine-grained PAT stored as a",
     "# Colab secret named GH_TOKEN.  See notebooks/README.md to create one.",
@@ -152,12 +163,7 @@ def build_local():
             "`GH_TOKEN` secret (see `notebooks/README.md`). ~10-20 min end to end.",
         ),
         md("## 1. Check the GPU"),
-        code(
-            "import torch",
-            "assert torch.cuda.is_available(), 'No GPU: Runtime -> Change runtime type -> T4 GPU'",
-            "print(torch.cuda.get_device_name(0))",
-            "!nvidia-smi --query-gpu=memory.total,memory.used --format=csv",
-        ),
+        GPU_CHECK_CELL,
         md("## 2. Clone the benchmark repo"),
         CLONE_CELL,
         md("## 3. Install the harness (with local-model deps)"),
@@ -488,12 +494,8 @@ def build_sweep():
             "**Before running:** `Runtime -> T4 GPU`; add `GH_TOKEN` (write-scoped) and",
             "`HF_TOKEN` secrets (see `notebooks/README.md`).",
         ),
-        md("## 1. GPU"),
-        code(
-            "import torch",
-            "assert torch.cuda.is_available(), 'Runtime -> Change runtime type -> T4 GPU'",
-            "print(torch.cuda.get_device_name(0))",
-        ),
+        md("## 1. GPU (falls back to CPU)"),
+        GPU_CHECK_CELL,
         md("## 2. Repo"),
         ROBUST_CLONE_CELL,
         md("## 3. Install + caches"),
@@ -513,7 +515,9 @@ def build_sweep():
             "just means a bit of repeated cheap work if you interrupt.",
             "",
             "The 7B models (`qwen2.5-vl-7b`, `ain-7b`) load in **4-bit** to fit a free",
-            "T4 — the next cell installs `bitsandbytes` if any 4-bit model is listed.",
+            "T4. **On CPU** (no GPU) they are dropped automatically and the run",
+            "switches to a tiny partial-only pass — enough to prove the pipeline,",
+            "not a real benchmark.",
         ),
         code(
             "MODELS = [",
@@ -527,12 +531,18 @@ def build_sweep():
             "DATASET = 'muharaf_lines'",
             "PARTIAL_LIMIT = 25       # quick pass per model",
             "RUN_FULL = True          # then the whole 1,334-line test split",
+            "",
+            "import yaml",
+            "_mc = yaml.safe_load(open('configs/models.yaml'))",
+            "if not HAS_GPU:",
+            "    MODELS = [m for m in MODELS if not _mc.get(m, {}).get('load_in_4bit')]",
+            "    PARTIAL_LIMIT = min(PARTIAL_LIMIT, 10)",
+            "    RUN_FULL = False",
+            "    print(f'CPU mode -> MODELS={MODELS}, PARTIAL_LIMIT={PARTIAL_LIMIT}, RUN_FULL=False')",
         ),
         code(
-            "# bitsandbytes only if a 4-bit model is in the list (via configs/models.yaml)",
-            "import yaml",
-            "_cfg = yaml.safe_load(open('configs/models.yaml'))",
-            "if any(_cfg.get(m, {}).get('load_in_4bit') for m in MODELS):",
+            "# bitsandbytes only if a 4-bit model survived the CPU filter above",
+            "if HAS_GPU and any(_mc.get(m, {}).get('load_in_4bit') for m in MODELS):",
             "    !pip install -q bitsandbytes",
             "    print('bitsandbytes installed for 4-bit models')",
         ),
