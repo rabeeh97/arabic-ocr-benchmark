@@ -11,7 +11,7 @@ datasets:
   - muharaf_lines
 
 limit: 50                      # bump to null for the full 1,334-line test split
-prompt_version: line-v1
+prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
 
 concurrency: 1                 # single GPU

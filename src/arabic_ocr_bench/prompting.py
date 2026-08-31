@@ -8,6 +8,17 @@ LINE_V1 = (
     "Output only the transcription. No translation, no commentary, no quotation marks."
 )
 
+# v2: the image is ONE line; forbid the markup / repetition failure modes seen
+# from structure-first OCR models (Qari v0.3).
+LINE_V2 = (
+    "This image contains a single line of handwritten Arabic.\n"
+    "Transcribe exactly that one line, as plain text.\n"
+    "Preserve harakat that are actually written; do not invent any.\n"
+    "Do NOT add HTML tags, Markdown, bullet points, or formatting.\n"
+    "Do NOT repeat words or phrases. If a word is illegible, give your best single guess.\n"
+    "Output only the transcription — nothing before or after it."
+)
+
 PAGE_V1 = (
     "You are a transcription tool for handwritten Arabic manuscripts.\n"
     "Transcribe every line of Arabic text in this page image.\n"
@@ -19,6 +30,7 @@ PAGE_V1 = (
 
 _PROMPTS = {
     "line-v1": LINE_V1,
+    "line-v2": LINE_V2,
     "page-v1": PAGE_V1,
 }
 

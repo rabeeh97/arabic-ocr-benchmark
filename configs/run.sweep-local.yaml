@@ -7,8 +7,8 @@
 #             manifest_path="results/sweep_manifest.json", results_dir="results")
 
 models:
-  - qari-ocr-0.3         # Arabic-specific, 2B, full model
-  - qari-ocr-0.2         # Arabic-specific, 2B, base + LoRA
+  - qari-ocr-0.2         # Arabic OCR, 2B, raw-text focused (lead)
+  - qari-ocr-0.3         # Arabic OCR, 2B, structure-first (emits markup)
   - qwen2-vl-2b          # untuned base — anchor
   - qwen2.5-vl-3b        # general VLM, 3B
   - qwen2.5-vl-7b        # general VLM, 7B (4-bit)  -> needs `pip install bitsandbytes`
@@ -21,6 +21,6 @@ datasets:
 # used by the notebook; run_sweep takes these as args
 partial_limit: 25          # quick pass per model
 run_full: true             # then the full 1,334-line test split
-prompt_version: line-v1
+prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
 concurrency: 1

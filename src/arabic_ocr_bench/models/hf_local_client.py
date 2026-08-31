@@ -14,6 +14,10 @@ from PIL import Image
 from .base import Prediction
 from .litellm_client import clean_output
 
+# greedy decoding on a hard manuscript line collapses into "الشبق الشبق ..." loops;
+# these keep it honest and let EOS fire naturally.
+_GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
+
 
 def _load_model(hf_id: str, load_kwargs: dict):
     """Try the vision-text auto classes in order — which one carries a given
@@ -168,8 +172,9 @@ class HFLocalClient:
             self._device
         )
         with torch.no_grad():
-            out = self._model.generate(**inputs, max_new_tokens=self.max_new_tokens,
-                                       do_sample=False)
+            out = self._model.generate(
+                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+            )
         gen = out[0][inputs["input_ids"].shape[1]:]
         return self._processor.decode(gen, skip_special_tokens=True).strip()
 
@@ -184,6 +189,7 @@ class HFLocalClient:
         )
         in_len = inputs["input_ids"].shape[-1]
         with torch.no_grad():
-            out = self._model.generate(**inputs, max_new_tokens=self.max_new_tokens,
-                                       do_sample=False)
+            out = self._model.generate(
+                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+            )
         return self._processor.decode(out[0][in_len:], skip_special_tokens=True).strip()

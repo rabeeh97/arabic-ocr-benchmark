@@ -61,7 +61,7 @@ def run_sweep(
     *,
     manifest_path: str | Path,
     results_dir: str | Path,
-    prompt_version: str = "line-v1",
+    prompt_version: str = "line-v2",
     profiles: tuple[str, ...] = PROFILES,
     concurrency: int = 1,
     cache: bool = True,

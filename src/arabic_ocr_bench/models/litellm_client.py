@@ -5,11 +5,15 @@ from __future__ import annotations
 
 import base64
 import io
+import re
 import time
 
 from PIL import Image
 
 from .base import Prediction
+
+_TAG_RE = re.compile(r"</?[a-zA-Z][^>]*>")  # <b> <i> <p> </b> ... (markup, not Arabic)
+_MD_PREFIX_RE = re.compile(r"^\s{0,3}(#{1,6}\s+|[-*+]\s+|>\s+|\|)")
 
 _REFUSAL_HINTS = (
     "i cannot", "i can't", "i'm unable", "i am unable", "as an ai",
@@ -24,19 +28,22 @@ def _image_data_uri(image: Image.Image) -> str:
 
 
 def clean_output(raw: str) -> str:
-    """Strip code fences / preambles / wrapping quotes. raw is preserved elsewhere."""
+    """Normalize a model response to bare transcription text. The raw response is
+    kept verbatim elsewhere; this is only what scoring sees."""
     s = raw.strip()
     if s.startswith("```"):
         s = s.split("\n", 1)[-1] if "\n" in s else s[3:]
         if s.rstrip().endswith("```"):
             s = s.rstrip()[:-3]
+    s = _TAG_RE.sub("", s)                       # drop <b>/<i>/... markup (Qari v0.3 emits it)
+    s = _MD_PREFIX_RE.sub("", s.strip())         # drop a leading #, -, >, | markdown marker
     s = s.strip()
     for prefix in ("Transcription:", "Text:", "Here is the transcription:", "Output:"):
         if s.lower().startswith(prefix.lower()):
             s = s[len(prefix):].strip()
     if len(s) >= 2 and s[0] in "\"'«" and s[-1] in "\"'»":
         s = s[1:-1].strip()
-    return s
+    return s.strip()
 
 
 class LiteLLMClient:
