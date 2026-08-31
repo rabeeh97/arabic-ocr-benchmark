@@ -1,0 +1,17 @@
+{
+  "entries": [
+    {
+      "model": "qari-ocr-0.2",
+      "dataset": "muharaf_lines",
+      "phase": "partial",
+      "limit": 20,
+      "run_id": "20260831T185411Z",
+      "n": 20,
+      "errors": 1,
+      "cer_micro_raw": 1.1029,
+      "cer_micro_light": 1.0928,
+      "wer_micro_light": 1.2988,
+      "done_at": "2026-08-31T18:57:34+00:00"
+    }
+  ]
+}
