@@ -25,7 +25,6 @@ import yaml
 
 REPO = Path(__file__).resolve().parent.parent
 HARD_CAP = 50
-DEFAULT_MODELS = ["claude-haiku", "claude-sonnet", "claude-opus"]
 
 
 def _models_with_keys(names: list[str]) -> list[str]:
@@ -40,14 +39,18 @@ def _models_with_keys(names: list[str]) -> list[str]:
         if env_key and not os.environ.get(env_key):
             print(f"  skip {n}: {env_key} not set")
             continue
+        if entry.get("api_base_env") and not os.environ.get(entry["api_base_env"]):
+            print(f"  skip {n}: {entry['api_base_env']} not set")
+            continue
         keep.append(n)
     return keep
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--models", default=",".join(DEFAULT_MODELS),
-                    help="comma-separated model names from configs/models.yaml")
+    ap.add_argument("--models", default="",
+                    help="comma-separated names from configs/models.yaml "
+                         "(default: every hosted model whose API key is set)")
     ap.add_argument("--dataset", default="muharaf_lines")
     ap.add_argument("--limit", type=int, default=20)
     ap.add_argument("--push", action="store_true", help="git add/commit/push results after")
@@ -58,8 +61,12 @@ def main() -> int:
         print(f"--limit clamped {args.limit} -> {HARD_CAP} (cost guard)")
 
     os.chdir(REPO)
-    requested = [m.strip() for m in args.models.split(",") if m.strip()]
-    models = _models_with_keys(requested)
+    from arabic_ocr_bench.models.registry import available_hosted_models
+
+    if args.models.strip():
+        models = _models_with_keys([m.strip() for m in args.models.split(",") if m.strip()])
+    else:
+        models = available_hosted_models()
     if not models:
         print("\nno runnable models — set the API key(s) and retry, e.g.:\n"
               "  export ANTHROPIC_API_KEY=sk-ant-...")

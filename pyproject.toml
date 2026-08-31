@@ -18,6 +18,7 @@ dependencies = [
     "pandas>=2.0",
     "pyarabic>=0.6.15",
     "litellm>=1.50",
+    "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
