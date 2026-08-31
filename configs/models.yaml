@@ -105,8 +105,8 @@ qwen2.5-vl-3b:
     Alibaba's Qwen2.5-VL, 3B params. A capable general-purpose vision-language
     model with notably strong OCR across scripts; no Arabic-specific tuning.
 qwen2.5-vl-7b:
-  # NOT in the default sweep — 4-bit load-staging OOMs a free Colab (12 GB RAM).
-  # Run on a 24 GB+ GPU (drop load_in_4bit there). Needs: pip install bitsandbytes
+  # 4-bit on a T4 (drop load_in_4bit on a 24 GB+ GPU). Dropped in CPU mode.
+  # Needs: pip install bitsandbytes
   client: hf_local
   hf_id: Qwen/Qwen2.5-VL-7B-Instruct
   arch: qwen2_5_vl
@@ -117,7 +117,7 @@ qwen2.5-vl-7b:
     Alibaba's Qwen2.5-VL, 7B params, run 4-bit-quantized to fit a 16 GB GPU. The
     larger general-purpose VLM in the set; strong multilingual OCR, no Arabic tuning.
 ain-7b:
-  # NOT in the default sweep — same 4-bit OOM as qwen2.5-vl-7b on a free Colab.
+  # 4-bit on a T4; dropped automatically in CPU mode.
   client: hf_local
   hf_id: MBZUAI/AIN
   arch: qwen2_vl
