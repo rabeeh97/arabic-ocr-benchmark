@@ -1,6 +1,7 @@
-# Local-model sweep for Google Colab (free T4, 16 GB).
+# Local-model sweep for Google Colab (T4 GPU; CPU falls back to a smoke test).
 # The runner is model-major: load one model, run every line, free it, load the
-# next. This default set is fp16 and fits comfortably on a free T4.
+# next. The 7B models load 4-bit and fit a T4; on CPU they are dropped
+# automatically (no 4-bit, and fp32 7B OOMs a 12 GB box).
 #
 #   from arabic_ocr_bench.sweep import run_sweep
 #   run_sweep(models=..., dataset="muharaf_lines", partial_limit=25, run_full=True,
@@ -11,11 +12,9 @@ models:
   - qari-ocr-0.3         # Arabic OCR, 2B, structure-first
   - qwen2-vl-2b          # untuned base — anchor
   - qwen2.5-vl-3b        # general VLM, 3B
-  # 7B models are excluded from the default sweep — 4-bit load-staging OOMs the
-  # free tier. Run these on a bigger GPU:
-  #   - qwen2.5-vl-7b
-  #   - ain-7b
-  #   - paligemma-arabic-hw  # line-only; gated base -> HF license + HF_TOKEN
+  - qwen2.5-vl-7b        # general VLM, 7B (4-bit on GPU)  -> needs `pip install bitsandbytes`
+  - ain-7b              # Arabic-centric VLM, 7B (4-bit on GPU)
+  # - paligemma-arabic-hw  # line-only; gated base -> HF license + HF_TOKEN
 
 datasets:
   - muharaf_lines          # the only real dataset wired for Colab today
