@@ -324,6 +324,19 @@
       "cer_micro_light": 0.7375,
       "wer_micro_light": 1.0,
       "done_at": "2026-09-01T13:46:50+00:00"
+    },
+    {
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_muharaf",
+      "phase": "partial",
+      "limit": 10,
+      "run_id": "20260901T134723Z",
+      "n": 10,
+      "errors": 0,
+      "cer_micro_raw": 0.815,
+      "cer_micro_light": 0.8069,
+      "wer_micro_light": 1.1398,
+      "done_at": "2026-09-01T13:58:38+00:00"
     }
   ]
 }
