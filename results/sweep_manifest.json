@@ -311,6 +311,19 @@
       "cer_micro_light": 0.7162,
       "wer_micro_light": 1.1505,
       "done_at": "2026-09-01T13:15:09+00:00"
+    },
+    {
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_muharaf",
+      "phase": "partial",
+      "limit": 10,
+      "run_id": "20260901T131540Z",
+      "n": 10,
+      "errors": 0,
+      "cer_micro_raw": 0.7534,
+      "cer_micro_light": 0.7375,
+      "wer_micro_light": 1.0,
+      "done_at": "2026-09-01T13:46:50+00:00"
     }
   ]
 }
