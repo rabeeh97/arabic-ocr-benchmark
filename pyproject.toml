@@ -40,6 +40,7 @@ train = [
     "trl>=0.12",
     "bitsandbytes>=0.44",     # 4-bit base weights for QLoRA (CUDA only)
     "imagehash>=4.3",         # perceptual hashing for the contamination check
+    "fonttools>=4.50",        # cmap probe: skip fonts that can't render via reshaper+Pillow
     "datasets>=3.0",          # already a core dep; listed for clarity
 ]
 dev = [
