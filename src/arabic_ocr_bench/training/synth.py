@@ -194,41 +194,74 @@ def degrade(img: Image.Image, rng: np.random.Generator, level: str = "medium") -
 # --------------------------------------------------------------------------- #
 # corpus loaders (lazy, network) — not exercised by unit tests
 # --------------------------------------------------------------------------- #
-def _load_wikipedia(limit: int) -> list[str]:
+def _stream_texts(candidates: list[tuple[str, str | None]], limit: int) -> list[str]:
+    """Try each (hf_id, config) in turn; return texts from the first that loads.
+
+    Dataset ids on the Hub move or vanish, so every corpus below is a list of
+    fallbacks rather than a single id. If none resolve we return ``[]`` and let
+    the caller carry on with whatever other corpora it asked for — a missing
+    optional corpus must not abort a whole training-data build.
+    """
     from datasets import load_dataset
 
-    it = load_dataset("wikimedia/wikipedia", "20231101.ar", split="train", streaming=True)
-    out: list[str] = []
-    for row in it:
-        out.append(row["text"])
-        if len(out) >= limit:
-            break
-    return out
+    tried: list[str] = []
+    for hf_id, config in candidates:
+        tried.append(hf_id if config is None else f"{hf_id}:{config}")
+        try:
+            it = load_dataset(hf_id, config, split="train", streaming=True)
+            out: list[str] = []
+            for row in it:
+                txt = next(
+                (row[k] for k in ("text", "content", "poem_text", "poem", "body", "Text")
+                 if isinstance(row.get(k), str) and row[k]),
+                "",
+            )
+                if txt:
+                    out.append(txt)
+                if len(out) >= limit:
+                    break
+            if out:
+                return out
+        except Exception as e:  # noqa: BLE001 - any load failure -> try the next id
+            print(f"  synth corpus: {hf_id} unavailable ({type(e).__name__}); trying next")
+    print(f"  synth corpus: none of {tried} resolved — skipping this corpus")
+    return []
+
+
+def _load_wikipedia(limit: int) -> list[str]:
+    return _stream_texts(
+        [
+            ("wikimedia/wikipedia", "20231101.ar"),
+            ("wikipedia", "20220301.ar"),
+        ],
+        limit,
+    )
 
 
 def _load_classical(limit: int) -> list[str]:
-    from datasets import load_dataset
-
-    # A classical / heritage Arabic text corpus; adjust the id if it moves.
-    it = load_dataset("ClassicalArabicNLP/classical-arabic-corpus", split="train", streaming=True)
-    out: list[str] = []
-    for row in it:
-        out.append(row.get("text") or row.get("content") or "")
-        if len(out) >= limit:
-            break
-    return out
+    # Heritage / classical Arabic prose and poetry. OpenITI is the canonical
+    # classical corpus; the arbml poetry sets are the lightweight fallback.
+    return _stream_texts(
+        [
+            ("AbderrahmanSkiredj1/MLM_classical_arabic_openiti", None),
+            ("moneypitts/classicalarabic", None),
+            ("nehalelkaref/classical_arabic_poetry", None),
+            ("arbml/ashaar", None),
+        ],
+        limit,
+    )
 
 
 def _load_hindawi(limit: int) -> list[str]:
-    from datasets import load_dataset
-
-    it = load_dataset("arbml/hindawi_books", split="train", streaming=True)
-    out: list[str] = []
-    for row in it:
-        out.append(row.get("text") or row.get("content") or "")
-        if len(out) >= limit:
-            break
-    return out
+    # Digitised printed books from the Hindawi Foundation.
+    return _stream_texts(
+        [
+            ("alielfilali01/Hindawi-Books-dataset", None),
+            ("khalidalt/hindawi", None),
+            ("Abdallah4Zain/hindawi-arabic-sections", None),
+        ],
+        limit,
+    )
 
 
 _CORPUS_LOADERS = {
@@ -284,8 +317,13 @@ class SyntheticPrinted:
         for c in self.corpora:
             if isinstance(c, (list, tuple)):
                 raw.extend(c)
-            else:
+            elif c in _CORPUS_LOADERS:
                 raw.extend(_CORPUS_LOADERS[c](self.corpus_docs))
+            else:
+                raise KeyError(
+                    f"unknown corpus {c!r}; known: {sorted(_CORPUS_LOADERS)} "
+                    "(or pass a literal list of strings)"
+                )
         return raw
 
     def _pool(self) -> list[str]:
@@ -300,7 +338,13 @@ class SyntheticPrinted:
         if self.drop_overlap_with:
             pool = drop_overlap(pool, scored_text_keys(self.drop_overlap_with))
         if not pool:
-            raise ValueError("synthetic corpus is empty after filtering")
+            raise ValueError(
+                "synthetic corpus is empty. Either every remote corpus in "
+                f"{self.corpora!r} failed to load (see the warnings above — check "
+                "network / dataset ids), or the length / arabic-ratio / overlap "
+                "filters removed everything. Pass `texts=[...]` to supply lines "
+                "directly, or widen min_len / min_arabic."
+            )
         return pool
 
     def _build(self) -> list[Sample]:

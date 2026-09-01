@@ -206,6 +206,43 @@ def _is_preview(rows: list[dict]) -> bool:
     )
 
 
+def _cell(r: dict, key: str, ccls: str) -> str:
+    if key in ("model", "dataset"):
+        val = html.escape(r.get(key, ""))
+    elif key in ("n", "errors"):
+        val = html.escape(str(r.get(key, "")))
+    elif key == "diac_f1":
+        val = _fmt_num(r.get(key), 3)
+    elif key == "latency_ms_mean":
+        val = _fmt_num(r.get(key), 0)
+    elif key == "cost_usd_total":
+        val = _fmt_num(r.get(key), 4)
+    else:
+        val = _fmt_pct(r.get(key))
+    return f"<td class='{ccls}' data-v='{html.escape(str(r.get(key, '')))}'>{val}</td>"
+
+
+def _table(rows: list[dict], cols: list[tuple], best_run_key) -> str:
+    thead = "".join(
+        "<th class='{cls}' data-key='{key}' data-type='{typ}'>{lbl}</th>".format(
+            cls=cls, key=key, lbl=html.escape(label),
+            typ="text" if key in ("model", "dataset") else "num",
+        )
+        for key, label, cls in cols
+    )
+    trs = []
+    for r in rows:
+        is_best = best_run_key == (r["run"], r["model"], r["dataset"])
+        is_mock = r["model"].startswith("mock") or r["dataset"] == "synthetic"
+        cls = "best" if is_best else ("mock" if is_mock else "")
+        tds = "".join(_cell(r, key, ccls) for key, _, ccls in cols)
+        trs.append(f"<tr class='{cls}'>{tds}</tr>")
+    return (
+        "<div class='scroll'><table class='sortable'>"
+        f"<thead><tr>{thead}</tr></thead><tbody>{''.join(trs)}</tbody></table></div>"
+    )
+
+
 def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     _RENDER_CTX["target"] = target or Path("results")
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
@@ -263,42 +300,37 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         ("cost_usd_total", "cost $", "n"),
         ("errors", "err", "n"),
     ]
-    thead = "".join(
-        "<th class='{cls}' data-key='{key}' data-type='{typ}'>{lbl}</th>".format(
-            cls=cls, key=key, lbl=html.escape(label),
-            typ="text" if key in ("model", "dataset") else "num",
-        )
-        for key, label, cls in cols
-    )
-    trs = []
-    for r in rows:
-        is_best = best_run_key == (r["run"], r["model"], r["dataset"])
-        is_mock = r["model"].startswith("mock") or r["dataset"] == "synthetic"
-        cls = " best" if is_best else (" mock" if is_mock else "")
-        tds = []
-        for key, _, ccls in cols:
-            if key in ("model", "dataset"):
-                val = html.escape(r.get(key, ""))
-            elif key in ("n", "errors"):
-                val = html.escape(str(r.get(key, "")))
-            elif key == "diac_f1":
-                val = _fmt_num(r.get(key), 3)
-            elif key == "latency_ms_mean":
-                val = _fmt_num(r.get(key), 0)
-            elif key == "cost_usd_total":
-                val = _fmt_num(r.get(key), 4)
-            else:
-                val = _fmt_pct(r.get(key))
-            raw = html.escape(str(r.get(key, "")))
-            tds.append(f"<td class='{ccls}' data-v='{raw}'>{val}</td>")
-        trs.append(f"<tr class='{cls.strip()}'>{''.join(tds)}</tr>")
     out.append(
-        "<section class='board'><div class='scroll'><table class='sortable'>"
-        f"<thead><tr>{thead}</tr></thead><tbody>{''.join(trs)}</tbody></table></div>"
-        "<p class='board-note'>All error figures are percentages; lower is better. "
+        "<section class='board'>" + _table(rows, cols, best_run_key)
+        + "<p class='board-note'>All error figures are percentages; lower is better. "
         "The <b>CER · light</b> column is the headline metric. "
         "Click a column header to sort; click again to reverse.</p></section>"
     )
+
+    datasets = sorted({r.get("dataset", "") for r in rows})
+    if len(datasets) > 1:
+        sub_cols = [c for c in cols if c[0] != "dataset"]
+        parts = [
+            "<section class='board by-dataset'><h2>By dataset</h2>",
+            (
+                "<p class='board-note'>The same results, split out one table per "
+                "dataset &mdash; so each model is only lined up against others "
+                "scored on the <b>same</b> lines. Each table sorts on its own.</p>"
+            ),
+        ]
+        for ds in datasets:
+            drows = sorted(
+                (r for r in rows if r.get("dataset", "") == ds),
+                key=lambda r: float(r.get("cer_micro_light", 1) or 1),
+            )
+            parts.append(
+                f"<h3>{html.escape(ds)} "
+                f"<span class='dscount'>{len(drows)} model(s)</span></h3>"
+            )
+            parts.append(_table(drows, sub_cols, best_run_key))
+        parts.append("</section>")
+        out.append("".join(parts))
+
     out.append(_SORT_JS)
 
     out.append(_render_cards(rows))
@@ -327,29 +359,31 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
 
 _SORT_JS = """<script>
 (function(){
-  var t=document.querySelector('table.sortable'); if(!t||!t.tHead) return;
-  var tb=t.tBodies[0];
-  var ths=Array.prototype.slice.call(t.tHead.rows[0].cells);
-  ths.forEach(function(th,i){
-    th.addEventListener('click',function(){
-      var dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
-      ths.forEach(function(o){o.removeAttribute('aria-sort');});
-      th.setAttribute('aria-sort',dir);
-      var num=th.dataset.type==='num', s=dir==='ascending'?1:-1;
-      var rows=Array.prototype.slice.call(tb.rows);
-      rows.sort(function(a,b){
-        var x=a.cells[i].getAttribute('data-v')||'', y=b.cells[i].getAttribute('data-v')||'';
-        if(num){
-          var nx=parseFloat(x), ny=parseFloat(y);
-          var ax=isNaN(nx), ay=isNaN(ny);
-          if(ax&&ay) return 0;
-          if(ax) return 1;          /* blanks / dashes always sort last */
-          if(ay) return -1;
-          return (nx-ny)*s;
-        }
-        return x.localeCompare(y)*s;
+  Array.prototype.forEach.call(document.querySelectorAll('table.sortable'),function(t){
+    if(!t.tHead||!t.tBodies[0]) return;
+    var tb=t.tBodies[0];
+    var ths=Array.prototype.slice.call(t.tHead.rows[0].cells);
+    ths.forEach(function(th,i){
+      th.addEventListener('click',function(){
+        var dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+        ths.forEach(function(o){o.removeAttribute('aria-sort');});
+        th.setAttribute('aria-sort',dir);
+        var num=th.dataset.type==='num', s=dir==='ascending'?1:-1;
+        var rows=Array.prototype.slice.call(tb.rows);
+        rows.sort(function(a,b){
+          var x=a.cells[i].getAttribute('data-v')||'', y=b.cells[i].getAttribute('data-v')||'';
+          if(num){
+            var nx=parseFloat(x), ny=parseFloat(y);
+            var ax=isNaN(nx), ay=isNaN(ny);
+            if(ax&&ay) return 0;
+            if(ax) return 1;          /* blanks / dashes always sort last */
+            if(ay) return -1;
+            return (nx-ny)*s;
+          }
+          return x.localeCompare(y)*s;
+        });
+        rows.forEach(function(r){tb.appendChild(r);});
       });
-      rows.forEach(function(r){tb.appendChild(r);});
     });
   });
 })();
@@ -401,11 +435,15 @@ def _render_cards(rows: list[dict]) -> str:
     return "\n".join(out)
 
 
-def _chips(cats: list[str]) -> str:
-    return "".join(
+def _chips(cats: list[str], dataset: str = "") -> str:
+    out = ""
+    if dataset:
+        out += f"<span class='chip chip--ds'>{html.escape(dataset)}</span>"
+    out += "".join(
         f"<span class='chip chip--{c}'>{html.escape(_CAT_LABEL.get(c, c))}</span>"
         for c in cats
     )
+    return out
 
 
 def _pred_line(text: str, error: str | None) -> str:
@@ -421,24 +459,34 @@ def _render_samples(rows: list[dict]) -> str:
     all_models = list(dict.fromkeys(r["model"] for r in rows))
     real_models = [m for m in all_models if not m.startswith("mock")] or all_models
 
+    datasets = sorted({slot["dataset"] for slot in by_id.values() if slot.get("dataset")})
+
     out = [
         "<section class='samples'><h2>Sample transcriptions</h2>",
         (
-            "<p class='samp-intro'>Each image is one line from the test set; "
+            "<p class='samp-intro'>Each image is one line from a test set; "
             "<span dir='auto'>Arabic</span> reads right-to-left. Percentages are CER "
-            "(light) — lower is better.</p>"
+            "(light) — lower is better. Samples are drawn from every dataset a model "
+            "was run on (Muharaf handwriting and the KITAB-Bench subsets), each "
+            "tagged with its dataset.</p>"
         ),
     ]
 
-    # 1. shared lines, every model side by side
-    shared = [
-        (sid, slot) for sid, slot in sorted(by_id.items())
-        if "anchor" in {c for p in slot["preds"].values() for c in p["categories"]}
-        and len(slot["preds"]) >= 2
-    ][:8]
-    if shared:
-        out.append("<h3>Same lines, every model</h3>")
-        for sid, slot in shared:
+    # 1. shared lines, every model side by side — grouped by dataset
+    for ds in datasets:
+        shared = [
+            (sid, slot) for sid, slot in sorted(by_id.items())
+            if slot.get("dataset") == ds and len(slot["preds"]) >= 2
+        ]
+        # prefer explicitly anchored lines, then fall back to any multi-model line
+        shared.sort(key=lambda t: 0 if "anchor" in {
+            c for p in t[1]["preds"].values() for c in p["categories"]
+        } else 1)
+        shared = shared[:4]
+        if not shared:
+            continue
+        out.append(f"<h3>Same lines, every model &mdash; <code>{html.escape(ds)}</code></h3>")
+        for _sid, slot in shared:
             out.append("<div class='cmp'>")
             out.append(_img_block(slot))
             out.append(f"<p class='gt' dir='auto'><b>GT</b> {html.escape(slot['ground_truth'])}</p>")
@@ -454,25 +502,33 @@ def _render_samples(rows: list[dict]) -> str:
                 )
             out.append("</tbody></table></div>")
 
-    # 2. best / worst per model
+    # 2. best / worst per model — up to 2 tiles per dataset the model ran on
+    rank = {"best": 0, "typical": 1, "longest": 2, "worst": 3}
     for m in real_models:
         picks = [
-            (sid, slot, slot["preds"][m])
-            for sid, slot in by_id.items()
+            (slot["dataset"], slot, slot["preds"][m])
+            for slot in by_id.values()
             if m in slot["preds"]
-            and {c for c in slot["preds"][m]["categories"]} & {"best", "worst", "typical", "longest"}
+            and {c for c in slot["preds"][m]["categories"]} & set(rank)
         ]
         if not picks:
             continue
-        rank = {"best": 0, "typical": 1, "longest": 2, "worst": 3}
         picks.sort(key=lambda t: (
+            t[0],
             min((rank.get(c, 5) for c in t[2]["categories"]), default=5),
             float(t[2].get("cer_light") or 0),
         ))
+        seen: dict[str, int] = {}
+        kept = []
+        for ds, slot, p in picks:
+            if seen.get(ds, 0) >= 2:
+                continue
+            seen[ds] = seen.get(ds, 0) + 1
+            kept.append((ds, slot, p))
         out.append(f"<h3>{html.escape(m)} — best &amp; worst</h3><div class='grid'>")
-        for _sid, slot, p in picks:
+        for ds, slot, p in kept:
             out.append("<div class='samp'>")
-            out.append(_chips(p["categories"]))
+            out.append(_chips(p["categories"], ds))
             out.append(_img_block(slot))
             out.append(f"<p class='gt' dir='auto'><b>GT</b> {html.escape(slot['ground_truth'])}</p>")
             out.append(f"<p class='pw'>{_pred_line(p['prediction'], p['error'])}"
@@ -562,6 +618,14 @@ tbody tr.best td:first-child{box-shadow:inset 3px 0 0 var(--best-bar);}
 tbody tr.mock td{color:var(--mock);}
 tbody tr.mock td.t{font-weight:400;font-style:italic;}
 .board-note{font-size:12px;color:var(--muted);margin:10px 2px 0;}
+.by-dataset{margin:44px 0 0;}
+.by-dataset h3{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--ink);
+  margin:26px 2px 10px;display:flex;align-items:baseline;gap:10px;}
+.by-dataset h3:first-of-type{margin-top:16px;}
+.by-dataset .dscount{font-size:11px;font-weight:400;color:var(--muted);
+  text-transform:none;letter-spacing:0;}
+.by-dataset .scroll+h3{margin-top:26px;}
 
 .runs{margin:38px 0 0;}
 h2{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
@@ -624,6 +688,7 @@ b{font-weight:600;color:var(--ink);}
   margin:0 5px 0 0;background:var(--accent-soft);color:var(--accent);}
 .chip--worst{background:color-mix(in srgb,#a5443a 16%,transparent);color:#a5443a;}
 .chip--best{background:color-mix(in srgb,#3a7d5c 16%,transparent);color:#3a7d5c;}
+.chip--ds{background:var(--ink);color:var(--ground);}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]) .samp-img,
   :root:not([data-theme="light"]) .samp-img img{background:#f2f2ef;}
