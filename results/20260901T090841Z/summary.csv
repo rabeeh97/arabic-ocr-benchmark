@@ -1,0 +1,2 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+qari-ocr-0.3,kitab_khatt,10,0,0.0,89873.4,0.0,0.5071,0.4812,0.9754,0.0,0.4955,0.4688,0.9672,0.0,0.4112,0.3937,0.9508,0.0,0.44
