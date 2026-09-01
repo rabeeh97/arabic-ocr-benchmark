@@ -622,5 +622,31 @@
     "wer_micro_diac_insensitive": "0.957",
     "exact_diac_insensitive": "0.1",
     "diac_f1": "0.2509"
+  },
+  {
+    "run": "20260901T134723Z",
+    "when": "2026-09-01 13:47 UTC",
+    "limit": "10",
+    "prompt_version": "line-v2",
+    "model": "trocr-large-arabic",
+    "dataset": "kitab_muharaf",
+    "n": "10",
+    "errors": "0",
+    "refusal_rate": "0.0",
+    "latency_ms_mean": "67303.1",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "0.815",
+    "cer_macro_raw": "0.8308",
+    "wer_micro_raw": "1.1398",
+    "exact_raw": "0.0",
+    "cer_micro_light": "0.8069",
+    "cer_macro_light": "0.828",
+    "wer_micro_light": "1.1398",
+    "exact_light": "0.0",
+    "cer_micro_diac_insensitive": "0.8031",
+    "cer_macro_diac_insensitive": "0.8232",
+    "wer_micro_diac_insensitive": "1.1398",
+    "exact_diac_insensitive": "0.0",
+    "diac_f1": "0.7"
   }
 ]
