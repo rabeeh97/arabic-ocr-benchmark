@@ -35,6 +35,7 @@ class KitabBench:
         subset: str,
         split: str = "train",
         limit: int | None = None,
+        offset: int = 0,
         name: str | None = None,
         max_dim: int = 1600,
     ):
@@ -44,6 +45,7 @@ class KitabBench:
         self.name = name or self.hf_id.split("/")[-1]
         self.split = split
         self.limit = limit
+        self.offset = offset
         self.max_dim = max_dim
         self._rows = None
 
@@ -52,8 +54,8 @@ class KitabBench:
             from datasets import load_dataset
 
             ds = load_dataset(self.hf_id, split=self.split)
-            if self.limit is not None:
-                ds = ds.select(range(min(self.limit, len(ds))))
+            end = len(ds) if self.limit is None else min(self.offset + self.limit, len(ds))
+            ds = ds.select(range(min(self.offset, len(ds)), end))
             self._rows = list(ds)
         return self._rows
 
@@ -68,7 +70,8 @@ class KitabBench:
         return len(self._load())
 
     def __iter__(self) -> Iterator[Sample]:
-        for idx, row in enumerate(self._load()):
+        for i, row in enumerate(self._load()):
+            idx = self.offset + i
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
                 image=cap_image(row["image"].convert("RGB"), self.max_dim),

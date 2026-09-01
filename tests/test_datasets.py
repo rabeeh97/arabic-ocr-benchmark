@@ -53,3 +53,47 @@ def test_build_dataset_still_works_without_params():
         limit=3,
     )
     assert ds.hf_id == "aamijar/muharaf-public" and ds.limit == 3
+
+
+def test_build_dataset_passes_offset_through():
+    ds = build_dataset(
+        "kitab_khatt",
+        {
+            "adapter": "arabic_ocr_bench.datasets.kitab_bench:KitabBench",
+            "params": {"subset": "arocrbench_khatt"},
+            "split": "train",
+        },
+        limit=5,
+        offset=12,
+    )
+    assert ds.offset == 12
+
+
+def test_kitab_bench_ids_reflect_absolute_row_when_offset(monkeypatch):
+    class FakeImg:
+        def convert(self, mode):
+            return self
+
+    rows = [{"image": FakeImg(), "text": f"row{i}"} for i in range(5)]
+    ds = KitabBench(subset="arocrbench_khatt", offset=3, limit=2)
+    monkeypatch.setattr(ds, "_load", lambda: rows[3:5])
+    monkeypatch.setattr("arabic_ocr_bench.datasets.kitab_bench.cap_image", lambda img, m: img)
+    ids = [s.id for s in ds]
+    assert ids == ["arocrbench_khatt/train/000003", "arocrbench_khatt/train/000004"]
+    assert [s.meta["row"] for s in ds] == [3, 4]
+
+
+def test_muharaf_lines_ids_reflect_absolute_row_when_offset(monkeypatch):
+    from arabic_ocr_bench.datasets.muharaf_lines import MuharafLines
+
+    class FakeImg:
+        def convert(self, mode):
+            return self
+
+    rows = [{"image": FakeImg(), "text": f"row{i}"} for i in range(5)]
+    ds = MuharafLines(offset=3, limit=2)
+    monkeypatch.setattr(ds, "_load", lambda: rows[3:5])
+    monkeypatch.setattr("arabic_ocr_bench.datasets.muharaf_lines.cap_image", lambda img, m: img)
+    ids = [s.id for s in ds]
+    assert ids == ["muharaf_lines/test/000003", "muharaf_lines/test/000004"]
+    assert [s.meta["row"] for s in ds] == [3, 4]

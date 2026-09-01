@@ -140,7 +140,7 @@ b{font-weight:600;color:var(--ink);}
 <p class='eyebrow'>Handwritten Arabic · line-level recognition</p>
 <h1>Arabic Handwriting OCR Leaderboard</h1>
 <p class='lede'>Character- and word-error rates for OCR / vision-language models transcribing cursive handwritten Arabic, scored on the same held-out lines with the same metrics.</p>
-<p class='status status--live'><span class='dot'></span>11 model(s) · 25 run(s) · dataset: Muharaf-public test split</p>
+<p class='status status--live'><span class='dot'></span>11 model(s) · 19 run(s) · dataset: Muharaf-public test split</p>
 </header>
 <section class='legend'><dl>
 <div><dt>CER / WER</dt><dd>edit distance to the reference, over characters / words. 0 = perfect.</dd></div>
@@ -150,15 +150,15 @@ b{font-weight:600;color:var(--ink);}
 <div><dt>micro / macro</dt><dd>corpus-weighted total vs. mean of per-line rates.</dd></div>
 <div><dt>diac F1</dt><dd>precision/recall of harakat marks, measured on raw text.</dd></div>
 </dl></section>
-<section class='board'><div class='scroll'><table><thead><tr><th class='t'>model</th><th class='t'>dataset</th><th class='n'>n</th><th class='n'>CER · raw</th><th class='n hero'>CER · light</th><th class='n'>CER · no-diac</th><th class='n'>CER · macro</th><th class='n'>WER · light</th><th class='n'>exact %</th><th class='n'>diac F1</th><th class='n'>ms / line</th><th class='n'>cost $</th><th class='n'>err</th></tr></thead><tbody><tr class='best'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>36.40</td><td class='n hero'>34.91</td><td class='n'>30.59</td><td class='n'>35.52</td><td class='n'>83.56</td><td class='n'>0.00</td><td class='n'>0.375</td><td class='n'>12438</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>43.48</td><td class='n hero'>42.24</td><td class='n'>33.33</td><td class='n'>41.77</td><td class='n'>80.82</td><td class='n'>0.00</td><td class='n'>0.667</td><td class='n'>17939</td><td class='n'>0.0033</td><td class='n'>0</td></tr><tr class=''><td class='t'>gemini-flash-lite</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>47.17</td><td class='n hero'>46.41</td><td class='n'>43.58</td><td class='n'>45.42</td><td class='n'>97.26</td><td class='n'>0.00</td><td class='n'>0.833</td><td class='n'>12123</td><td class='n'>0.0015</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>50.71</td><td class='n hero'>49.55</td><td class='n'>41.12</td><td class='n'>46.88</td><td class='n'>96.72</td><td class='n'>0.00</td><td class='n'>0.440</td><td class='n'>89873</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2.5-vl-3b</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>59.04</td><td class='n hero'>57.84</td><td class='n'>46.01</td><td class='n'>59.32</td><td class='n'>98.36</td><td class='n'>0.00</td><td class='n'>0.246</td><td class='n'>414514</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-llama-4-maverick</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>60.06</td><td class='n hero'>58.62</td><td class='n'>48.20</td><td class='n'>60.27</td><td class='n'>96.58</td><td class='n'>0.00</td><td class='n'>0.260</td><td class='n'>9373</td><td class='n'>0.0027</td><td class='n'>0</td></tr><tr class=''><td class='t'>trocr-large-arabic</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>78.74</td><td class='n'>78.08</td><td class='n'>77.92</td><td class='n'>109.02</td><td class='n'>0.00</td><td class='n'>0.900</td><td class='n'>92967</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>mistral-small</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>79.89</td><td class='n hero'>79.31</td><td class='n'>68.83</td><td class='n'>80.03</td><td class='n'>97.95</td><td class='n'>0.00</td><td class='n'>0.083</td><td class='n'>10914</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>80.36</td><td class='n'>57.25</td><td class='n'>76.02</td><td class='n'>99.18</td><td class='n'>0.00</td><td class='n'>0.410</td><td class='n'>91264</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>80.36</td><td class='n'>57.25</td><td class='n'>76.02</td><td class='n'>99.18</td><td class='n'>0.00</td><td class='n'>0.410</td><td class='n'>79936</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>pixtral-12b</td><td class='t'>kitab_khatt</td><td class='n'>12</td><td class='n'>123.94</td><td class='n hero'>123.99</td><td class='n'>81.39</td><td class='n'>121.08</td><td class='n'>110.27</td><td class='n'>0.00</td><td class='n'>0.000</td><td class='n'>10913</td><td class='n'>0.0008</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>70.71</td><td class='n hero'>69.31</td><td class='n'>56.89</td><td class='n'>62.90</td><td class='n'>103.23</td><td class='n'>0.00</td><td class='n'>0.420</td><td class='n'>104982</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>72.06</td><td class='n hero'>71.62</td><td class='n'>68.31</td><td class='n'>58.55</td><td class='n'>115.05</td><td class='n'>10.00</td><td class='n'>0.700</td><td class='n'>94556</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>72.06</td><td class='n hero'>71.62</td><td class='n'>68.31</td><td class='n'>58.55</td><td class='n'>115.05</td><td class='n'>10.00</td><td class='n'>0.700</td><td class='n'>88711</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2.5-vl-3b</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>75.34</td><td class='n hero'>73.75</td><td class='n'>54.72</td><td class='n'>69.47</td><td class='n'>100.00</td><td class='n'>10.00</td><td class='n'>0.251</td><td class='n'>186736</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>trocr-large-arabic</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>81.50</td><td class='n hero'>80.69</td><td class='n'>80.31</td><td class='n'>82.80</td><td class='n'>113.98</td><td class='n'>0.00</td><td class='n'>0.700</td><td class='n'>67303</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>muharaf_lines</td><td class='n'>20</td><td class='n'>65.86</td><td class='n hero'>64.82</td><td class='n'>61.26</td><td class='n'>62.14</td><td class='n'>98.80</td><td class='n'>5.00</td><td class='n'>0.576</td><td class='n'>18040</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>muharaf_lines</td><td class='n'>1334</td><td class='n'>80.12</td><td class='n hero'>78.24</td><td class='n'>71.42</td><td class='n'>81.12</td><td class='n'>102.07</td><td class='n'>0.97</td><td class='n'>0.558</td><td class='n'>2164</td><td class='n'>0.0000</td><td class='n'>15</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>muharaf_lines</td><td class='n'>10</td><td class='n'>138.15</td><td class='n hero'>137.87</td><td class='n'>135.16</td><td class='n'>126.10</td><td class='n'>167.27</td><td class='n'>0.00</td><td class='n'>0.300</td><td class='n'>48156</td><td class='n'>0.0000</td><td class='n'>1</td></tr><tr class='mock'><td class='t'>gemini-flash-lite</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3045</td><td class='n'>0.0011</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-llama-4-maverick</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.00</td><td class='n hero'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>0.00</td><td class='n'>100.00</td><td class='n'>1.000</td><td class='n'>3027</td><td class='n'>0.0017</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>0.43</td><td class='n hero'>0.43</td><td class='n'>0.43</td><td class='n'>0.45</td><td class='n'>2.38</td><td class='n'>90.00</td><td class='n'>1.000</td><td class='n'>3799</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>mistral-small</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.36</td><td class='n hero'>13.36</td><td class='n'>0.00</td><td class='n'>13.52</td><td class='n'>21.43</td><td class='n'>80.00</td><td class='n'>0.800</td><td class='n'>3813</td><td class='n'>0.0006</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>pixtral-12b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>13.79</td><td class='n hero'>13.79</td><td class='n'>1.29</td><td class='n'>14.15</td><td class='n'>23.81</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>2653</td><td class='n'>0.0004</td><td class='n'>0</td></tr><tr class='mock'><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>synthetic</td><td class='n'>10</td><td class='n'>28.02</td><td class='n hero'>28.02</td><td class='n'>13.79</td><td class='n'>28.36</td><td class='n'>40.48</td><td class='n'>60.00</td><td class='n'>0.800</td><td class='n'>7707</td><td class='n'>0.0016</td><td class='n'>0</td></tr></tbody></table></div><p class='board-note'>All error figures are percentages; lower is better. The <b>CER · light</b> column is the headline metric.</p></section>
+<section class='board'><div class='scroll'><table><thead><tr><th class='t'>model</th><th class='t'>dataset</th><th class='n'>n</th><th class='n'>CER · raw</th><th class='n hero'>CER · light</th><th class='n'>CER · no-diac</th><th class='n'>CER · macro</th><th class='n'>WER · light</th><th class='n'>exact %</th><th class='n'>diac F1</th><th class='n'>ms / line</th><th class='n'>cost $</th><th class='n'>err</th></tr></thead><tbody><tr class='best'><td class='t'>openrouter-qwen3-vl-235b</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>32.54</td><td class='n hero'>31.14</td><td class='n'>24.87</td><td class='n'>33.43</td><td class='n'>72.28</td><td class='n'>0.00</td><td class='n'>0.386</td><td class='n'>7533</td><td class='n'>0.0027</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-qwen2.5-vl-72b</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>36.71</td><td class='n hero'>35.30</td><td class='n'>28.81</td><td class='n'>36.14</td><td class='n'>75.28</td><td class='n'>0.00</td><td class='n'>0.591</td><td class='n'>11246</td><td class='n'>0.0057</td><td class='n'>0</td></tr><tr class=''><td class='t'>gemini-flash-lite</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>43.19</td><td class='n hero'>42.48</td><td class='n'>38.44</td><td class='n'>43.55</td><td class='n'>82.02</td><td class='n'>0.00</td><td class='n'>0.773</td><td class='n'>11914</td><td class='n'>0.0028</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>50.71</td><td class='n hero'>49.55</td><td class='n'>41.12</td><td class='n'>46.88</td><td class='n'>96.72</td><td class='n'>0.00</td><td class='n'>0.440</td><td class='n'>89873</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>openrouter-llama-4-maverick</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>58.90</td><td class='n hero'>57.67</td><td class='n'>44.28</td><td class='n'>60.57</td><td class='n'>96.63</td><td class='n'>0.00</td><td class='n'>0.188</td><td class='n'>6435</td><td class='n'>0.0050</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2.5-vl-3b</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>59.04</td><td class='n hero'>57.84</td><td class='n'>46.01</td><td class='n'>59.32</td><td class='n'>98.36</td><td class='n'>0.00</td><td class='n'>0.246</td><td class='n'>414514</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>trocr-large-arabic</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>78.74</td><td class='n'>78.08</td><td class='n'>77.92</td><td class='n'>109.02</td><td class='n'>0.00</td><td class='n'>0.900</td><td class='n'>92967</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>mistral-small</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>80.79</td><td class='n hero'>80.35</td><td class='n'>69.29</td><td class='n'>81.69</td><td class='n'>98.88</td><td class='n'>0.00</td><td class='n'>0.136</td><td class='n'>6594</td><td class='n'>0.0019</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>80.36</td><td class='n'>57.25</td><td class='n'>76.02</td><td class='n'>99.18</td><td class='n'>0.00</td><td class='n'>0.410</td><td class='n'>91264</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>kitab_khatt</td><td class='n'>10</td><td class='n'>79.79</td><td class='n hero'>80.36</td><td class='n'>57.25</td><td class='n'>76.02</td><td class='n'>99.18</td><td class='n'>0.00</td><td class='n'>0.410</td><td class='n'>79936</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>pixtral-12b</td><td class='t'>kitab_khatt</td><td class='n'>22</td><td class='n'>124.65</td><td class='n hero'>125.02</td><td class='n'>79.30</td><td class='n'>125.19</td><td class='n'>110.11</td><td class='n'>0.00</td><td class='n'>0.047</td><td class='n'>7108</td><td class='n'>0.0013</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>70.71</td><td class='n hero'>69.31</td><td class='n'>56.89</td><td class='n'>62.90</td><td class='n'>103.23</td><td class='n'>0.00</td><td class='n'>0.420</td><td class='n'>104982</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>72.06</td><td class='n hero'>71.62</td><td class='n'>68.31</td><td class='n'>58.55</td><td class='n'>115.05</td><td class='n'>10.00</td><td class='n'>0.700</td><td class='n'>94556</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>72.06</td><td class='n hero'>71.62</td><td class='n'>68.31</td><td class='n'>58.55</td><td class='n'>115.05</td><td class='n'>10.00</td><td class='n'>0.700</td><td class='n'>88711</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qwen2.5-vl-3b</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>75.34</td><td class='n hero'>73.75</td><td class='n'>54.72</td><td class='n'>69.47</td><td class='n'>100.00</td><td class='n'>10.00</td><td class='n'>0.251</td><td class='n'>186736</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>trocr-large-arabic</td><td class='t'>kitab_muharaf</td><td class='n'>10</td><td class='n'>81.50</td><td class='n hero'>80.69</td><td class='n'>80.31</td><td class='n'>82.80</td><td class='n'>113.98</td><td class='n'>0.00</td><td class='n'>0.700</td><td class='n'>67303</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.3</td><td class='t'>muharaf_lines</td><td class='n'>20</td><td class='n'>65.86</td><td class='n hero'>64.82</td><td class='n'>61.26</td><td class='n'>62.14</td><td class='n'>98.80</td><td class='n'>5.00</td><td class='n'>0.576</td><td class='n'>18040</td><td class='n'>0.0000</td><td class='n'>0</td></tr><tr class=''><td class='t'>qari-ocr-0.2</td><td class='t'>muharaf_lines</td><td class='n'>1334</td><td class='n'>80.12</td><td class='n hero'>78.24</td><td class='n'>71.42</td><td class='n'>81.12</td><td class='n'>102.07</td><td class='n'>0.97</td><td class='n'>0.558</td><td class='n'>2233</td><td class='n'>0.0000</td><td class='n'>15</td></tr><tr class=''><td class='t'>qwen2-vl-2b</td><td class='t'>muharaf_lines</td><td class='n'>10</td><td class='n'>138.15</td><td class='n hero'>137.87</td><td class='n'>135.16</td><td class='n'>126.10</td><td class='n'>167.27</td><td class='n'>0.00</td><td class='n'>0.300</td><td class='n'>48156</td><td class='n'>0.0000</td><td class='n'>1</td></tr></tbody></table></div><p class='board-note'>All error figures are percentages; lower is better. The <b>CER · light</b> column is the headline metric.</p></section>
 <section class='cards'>
 <h2>Models</h2><dl class='cardlist'>
 <div><dt>openrouter-qwen3-vl-235b</dt><dd>Qwen3-VL 235B (A22B MoE) via OpenRouter — current-generation large open VLM with very strong multilingual OCR. No local GPU needed.</dd></div>
 <div><dt>openrouter-qwen2.5-vl-72b</dt><dd>Qwen2.5-VL 72B via OpenRouter — a large open VLM with strong OCR, no local GPU needed. OpenRouter also exposes many models on one key.</dd></div>
 <div><dt>gemini-flash-lite</dt><dd>Google&#x27;s cheapest/fastest Gemini (3.5 Flash-Lite). Low-cost baseline row.</dd></div>
 <div><dt>qari-ocr-0.3</dt><dd>NAMAA-Space&#x27;s Arabic OCR model, 2B params, fine-tuned from Qwen2-VL-2B. The v0.3 line is &quot;structure-first&quot; — tuned for full-page documents with layout and Markdown output, so on single lines it can add markup or over-generate.</dd></div>
-<div><dt>qwen2.5-vl-3b</dt><dd>Alibaba&#x27;s Qwen2.5-VL, 3B params. A capable general-purpose vision-language model with notably strong OCR across scripts; no Arabic-specific tuning.</dd></div>
 <div><dt>openrouter-llama-4-maverick</dt><dd>Meta Llama 4 Maverick (multimodal MoE) via OpenRouter. A current open baseline; historically weaker on non-Latin script than Qwen-VL.</dd></div>
+<div><dt>qwen2.5-vl-3b</dt><dd>Alibaba&#x27;s Qwen2.5-VL, 3B params. A capable general-purpose vision-language model with notably strong OCR across scripts; no Arabic-specific tuning.</dd></div>
 <div><dt>trocr-large-arabic</dt><dd>TrOCR-Large (0.6B, vision-encoder-decoder) finetuned for Arabic + English handwriting on KHATT and IAM. A dedicated HTR model rather than a general VLM — no prompt, single-line only. Runs on CPU/MPS; expect it to do best on KHATT-like lines and worse on out-of-distribution scripts (e.g. Muharaf).</dd></div>
 <div><dt>mistral-small</dt><dd>Mistral Small (multimodal). Small, cheap, general-purpose.</dd></div>
 <div><dt>qari-ocr-0.2</dt><dd>NAMAA-Space&#x27;s earlier Arabic OCR checkpoint (v0.2.2.1), a LoRA adapter on Qwen2-VL-2B, tuned for raw-text accuracy on diacritically rich Arabic. Reports the best character accuracy of the Qari line on its own benchmark.</dd></div>
@@ -169,7 +169,6 @@ b{font-weight:600;color:var(--ink);}
 <div><dt>kitab_khatt</dt><dd>KITAB-Bench / KHATT subset — modern handwritten Arabic, line images with clean printed-quality ground truth. The main handwriting target: cleaner and more uniform than Muharaf, so a useful contrast with it.</dd></div>
 <div><dt>kitab_muharaf</dt><dd>KITAB-Bench / Muharaf subset — historical handwritten Arabic segments (a small slice of the same Muharaf corpus as `muharaf_lines`), for a direct KITAB-Bench-scored comparison point.</dd></div>
 <div><dt>muharaf_lines</dt><dd>Muharaf (&quot;Manuscripts of Handwritten Arabic&quot;, NeurIPS 2024), line-level split. Real 19th-to-21st-century handwritten letters, diaries and records — predominantly Ruq&#x27;ah script, often degraded, with natural diacritic use. This is the held-out `test` split (1,334 lines); train/validation are reserved for fine-tuning. CC-BY-NC-SA-4.0, research use.</dd></div>
-<div><dt>synthetic</dt><dd>Ten hard-coded Arabic sentences rendered to plain images, shipped in the repo. Not a benchmark — an offline check that the runner, scorer and leaderboard work end to end without any download.</dd></div>
 </dl>
 </section>
 <section class='samples'><h2>Sample transcriptions</h2>
@@ -242,24 +241,6 @@ b{font-weight:600;color:var(--ink);}
 </tbody></table></div>
 <h3>openrouter-qwen3-vl-235b — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بسم الله الرحمن الرحيم</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السلام عليكم ورحمة الله</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--best'>best</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا</p>
@@ -284,34 +265,10 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>وهي الآن حعلت دريما على غفوه.</span><span class='cc'>31%</span></p>
 </div>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كتب الطالب الدرس في الدفتر</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--longest'>longest line</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى</p>
 <p class='pw'><span class='pred' dir='auto'>وصفت مجلة لحالة المخترب خلال ليلة 2005، شيراً، في سيد مد لله، ابتسام لان المغول</span><span class='cc'>35%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المكتبة مفتوحة يوم الجمعة</p>
-<p class='pw'><span class='pred' dir='auto'>المكتبة مفتوحة يوم الجمعة</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الصديق وقت الضيق معروف</p>
-<p class='pw'><span class='pred' dir='auto'>الصديق وقت الضيق معروف</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المدرسة قريبة من البيت</p>
-<p class='pw'><span class='pred' dir='auto'>المدرسة قرية من البيت</span><span class='cc'>5%</span></p>
 </div>
 <div class='samp'>
 <span class='chip chip--worst'>worst</span>
@@ -333,24 +290,6 @@ b{font-weight:600;color:var(--ink);}
 </div>
 </div>
 <h3>openrouter-qwen2.5-vl-72b — best &amp; worst</h3><div class='grid'>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بسم الله الرحمن الرحيم</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السلام عليكم ورحمة الله</span><span class='cc'>0%</span></p>
-</div>
 <div class='samp'>
 <span class='chip chip--best'>best</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -382,34 +321,10 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>ووصفت مجلة لحالة المغرب خلال الفترة 2005 مثيرة في سياسة العرب</span><span class='cc'>44%</span></p>
 </div>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كَتَبَ الطَّالِبُ الدَّرْسَ فِي الدَّفْتَرِ</span><span class='cc'>65%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--worst'>worst</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> غيظ ، ناء ، بث ، نسر .</p>
 <p class='pw'><span class='pred' dir='auto'>غِيظ، نَادى، بَيت، نَهر</span><span class='cc'>55%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المدرسة قريبة من البيت</p>
-<p class='pw'><span class='pred' dir='auto'>الْمَدْرَسَةُ قَرِيبَةٌ مِنَ الْبَيْتِ</span><span class='cc'>73%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> شمس الصباح تنير الطريق</p>
-<p class='pw'><span class='pred' dir='auto'>الطريق تنير الصباح شمس</span><span class='cc'>73%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الصديق وقت الضيق معروف</p>
-<p class='pw'><span class='pred' dir='auto'>معروف الضيق وقت الصديق</span><span class='cc'>73%</span></p>
 </div>
 <div class='samp'>
 <span class='chip chip--worst'>worst</span>
@@ -425,24 +340,6 @@ b{font-weight:600;color:var(--ink);}
 </div>
 </div>
 <h3>gemini-flash-lite — best &amp; worst</h3><div class='grid'>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بسم الله الرحمن الرحيم</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السلام عليكم ورحمة الله</span><span class='cc'>0%</span></p>
-</div>
 <div class='samp'>
 <span class='chip chip--best'>best</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
@@ -468,34 +365,10 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>أوقع أقبل مثل ببغلس له الضابط لزمتك. سألت راجع هل أبلغ أصحابنا</span><span class='cc'>23%</span></p>
 </div>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كتب الطالب الدرس في الدفتر</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--longest'>longest line</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى</p>
 <p class='pw'><span class='pred' dir='auto'>وصف مجمل لحالة المغرب خلال سنة 2005، مشيرا في سياق من ذلك، لتناولات أخرى،</span><span class='cc'>24%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> شمس الصباح تنير الطريق</p>
-<p class='pw'><span class='pred' dir='auto'>شمس الصباح تنير الطريق</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المكتبة مفتوحة يوم الجمعة</p>
-<p class='pw'><span class='pred' dir='auto'>المكتبة مفتوحة يوم الجمعة</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الصديق وقت الضيق معروف</p>
-<p class='pw'><span class='pred' dir='auto'>الصديق وقت الضيق معروف</span><span class='cc'>0%</span></p>
 </div>
 <div class='samp'>
 <span class='chip chip--worst'>worst</span>
@@ -650,6 +523,56 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>وَتُضْمِنُ ردِّيْسٍ الآيَى قَدِمَ مَهْمَمٌ أَن يَا سَعْرًا دَايٍ .</span><span class='cc'>95%</span></p>
 </div>
 </div>
+<h3>openrouter-llama-4-maverick — best &amp; worst</h3><div class='grid'>
+<div class='samp'>
+<span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا</p>
+<p class='pw'><span class='pred' dir='auto'>ما اُذكِّر بغلط ه الضّابط لزمْتك. سألت راجح هل ابلغ اَصحابنا</span><span class='cc'>23%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه</p>
+<p class='pw'><span class='pred' dir='auto'>نأهبك عن الاسرار الفادم للانشاب والثروح المنبثقه والههو الله والبشر يه</span><span class='cc'>28%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--best'>best</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،</p>
+<p class='pw'><span class='pred' dir='auto'>وأدب عامة والأدب السائد حالياً، خزيذ من الثقلي والبحث والتحليل.</span><span class='cc'>31%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--typical'>typical</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> وهلال خازن عفيف للحج .  بدأت قوافل الحجيج حاج إثر آخر يلبي</p>
+<p class='pw'><span class='pred' dir='auto'>وهذال هَارِن عضيف للصبع بيد أَ ر قَوا فُل المصبع هارِلا هُوَ فِ بلبس</span><span class='cc'>63%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--longest'>longest line</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى</p>
+<p class='pw'><span class='pred' dir='auto'>وصفَ مُحالاً لِحالَةِ المَغرِبِ خَلا الوَجودُ عَشيْراً وَ خَيبَةِ مَذاهِبِهِ لِتَساوي اِبنِ الهَوَى</span><span class='cc'>72%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--worst'>worst</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> غيظ ، ناء ، بث ، نسر .</p>
+<p class='pw'><span class='pred' dir='auto'>غَيْظٍ نَارٍ بِسِرٍ</span><span class='cc'>73%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--worst'>worst</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b>  هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء</p>
+<p class='pw'><span class='pred' dir='auto'>هر بلغ أصحابنا ظُعُنُا وَرَحْفى بِسْتِى ما صَفَا غَد أَشْنَى الْحَجْ</span><span class='cc'>93%</span></p>
+</div>
+<div class='samp'>
+<span class='chip chip--worst'>worst</span>
+<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
+<p class='gt' dir='auto'><b>GT</b> و هي التي جعلته كريما على فقره .</p>
+<p class='pw'><span class='pred' dir='auto'>وَهِيَ الاِ حْتَجَتْ لِرَيما اَكْثَرَ مِنَغْمه.</span><span class='cc'>94%</span></p>
+</div>
+</div>
 <h3>qwen2.5-vl-3b — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
 <span class='chip chip--best'>best</span><span class='chip chip--perfect'>perfect</span>
@@ -742,98 +665,6 @@ b{font-weight:600;color:var(--ink);}
 <p class='pw'><span class='pred' dir='auto'>وَهُمْ إِلَٰهُ ۚ حَجِّةٌ لِّدِبْيٍ مَا عَلَى هَنَفِقٍ .</span><span class='cc'>112%</span></p>
 </div>
 </div>
-<h3>openrouter-llama-4-maverick — best &amp; worst</h3><div class='grid'>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بسم الله الرحمن الرحيم</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السلام عليكم ورحمة الله</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا</p>
-<p class='pw'><span class='pred' dir='auto'>ما اُذكِّر بغلط ه الضّابط لزمْتك. سألت راجح هل ابلغ اَصحابنا</span><span class='cc'>23%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه</p>
-<p class='pw'><span class='pred' dir='auto'>نأهبك عن الاسرار الفادم للانشاب والثروح المنبثقه والههو الله والبشر يه</span><span class='cc'>28%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،</p>
-<p class='pw'><span class='pred' dir='auto'>وأدب عامة والأدب السائد حالياً، خزيذ من الثقلي والبحث والتحليل.</span><span class='cc'>31%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--typical'>typical</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> وهلال خازن عفيف للحج .  بدأت قوافل الحجيج حاج إثر آخر يلبي</p>
-<p class='pw'><span class='pred' dir='auto'>وهذال هَارِن عضيف للصبع بيد أَ ر قَوا فُل المصبع هارِلا هُوَ فِ بلبس</span><span class='cc'>63%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كتب الطالب الدرس في الدفتر</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى</p>
-<p class='pw'><span class='pred' dir='auto'>وصفَ مُحالاً لِحالَةِ المَغرِبِ خَلا الوَجودُ عَشيْراً وَ خَيبَةِ مَذاهِبِهِ لِتَساوي اِبنِ الهَوَى</span><span class='cc'>72%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> شمس الصباح تنير الطريق</p>
-<p class='pw'><span class='pred' dir='auto'>شمس الصباح تنير الطريق</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المكتبة مفتوحة يوم الجمعة</p>
-<p class='pw'><span class='pred' dir='auto'>المكتبة مفتوحة يوم الجمعة</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الصديق وقت الضيق معروف</p>
-<p class='pw'><span class='pred' dir='auto'>الصديق وقت الضيق معروف</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> غيظ ، ناء ، بث ، نسر .</p>
-<p class='pw'><span class='pred' dir='auto'>غَيْظٍ نَارٍ بِسِرٍ</span><span class='cc'>73%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b>  هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء</p>
-<p class='pw'><span class='pred' dir='auto'>هر بلغ أصحابنا ظُعُنُا وَرَحْفى بِسْتِى ما صَفَا غَد أَشْنَى الْحَجْ</span><span class='cc'>93%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> و هي التي جعلته كريما على فقره .</p>
-<p class='pw'><span class='pred' dir='auto'>وَهِيَ الاِ حْتَجَتْ لِرَيما اَكْثَرَ مِنَغْمه.</span><span class='cc'>94%</span></p>
-</div>
-</div>
 <h3>trocr-large-arabic — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
 <span class='chip chip--best'>best</span>
@@ -922,24 +753,6 @@ b{font-weight:600;color:var(--ink);}
 </div>
 <h3>mistral-small — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السلام عليكم ورحمة الله</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كتب الطالب الدرس في الدفتر</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--best'>best</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> مثل أنقض بغـلس له الضابط لزمتك. سألت راجح هل أبلغ أصحابنا</p>
@@ -962,24 +775,6 @@ b{font-weight:600;color:var(--ink);}
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> عفيف للحج .  بدأن قوافل الحجح حاج إن افر يلبي . عند وصولنا طفنا وسعينا هع شنح.</p>
 <p class='pw'><span class='pred' dir='auto'>وَلَهُمْ فِيهَا مَنَافِعُ وَمَشْرَبُ</span><span class='cc'>87%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الصديق وقت الضيق معروف</p>
-<p class='pw'><span class='pred' dir='auto'>الصديق وقت الضيق معروف</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> ذهب أحمد إلى السوق صباحا</p>
-<p class='pw'><span class='pred' dir='auto'>ذَهَبَ أَحْمَدُ إِلَى السُّوقِ صَبَاحًا</span><span class='cc'>62%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span><span class='cc'>73%</span></p>
 </div>
 <div class='samp'>
 <span class='chip chip--worst'>worst</span>
@@ -1323,24 +1118,6 @@ b{font-weight:600;color:var(--ink);}
 </div>
 <h3>pixtral-12b — best &amp; worst</h3><div class='grid'>
 <div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--typical'>typical</span><span class='chip chip--perfect'>perfect</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> الحمد لله رب العالمين</p>
-<p class='pw'><span class='pred' dir='auto'>الحمد لله رب العالمين</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span><span class='chip chip--longest'>longest line</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> كتب الطالب الدرس في الدفتر</p>
-<p class='pw'><span class='pred' dir='auto'>كتب الطالب الدرس في الدفتر</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--best'>best</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> المدرسة قريبة من البيت</p>
-<p class='pw'><span class='pred' dir='auto'>المدرسة قريبة من البيت</span><span class='cc'>0%</span></p>
-</div>
-<div class='samp'>
 <span class='chip chip--best'>best</span>
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> و هي التي جعلته كريما على فقره .</p>
@@ -1363,24 +1140,6 @@ b{font-weight:600;color:var(--ink);}
 <div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
 <p class='gt' dir='auto'><b>GT</b> وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى</p>
 <p class='pw'><span class='pred' dir='auto'>صلى الله عليه وسلم قال رسول الله صلى الله عليه وسلم من سره أن يُبْسَطَ له في رزقه أو يُنْفَقَ عليه فليَصِلْ رَحِمَ</span><span class='cc'>106%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> ذهب أحمد إلى السوق صباحا</p>
-<p class='pw'><span class='pred' dir='auto'>نحب أحمد إلى السوق صباحا</span><span class='cc'>8%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> بسم الله الرحمن الرحيم</p>
-<p class='pw'><span class='pred' dir='auto'>بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</span><span class='cc'>59%</span></p>
-</div>
-<div class='samp'>
-<span class='chip chip--anchor'>shared</span><span class='chip chip--worst'>worst</span>
-<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='></div>
-<p class='gt' dir='auto'><b>GT</b> السلام عليكم ورحمة الله</p>
-<p class='pw'><span class='pred' dir='auto'>السَّلامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ</span><span class='cc'>70%</span></p>
 </div>
 <div class='samp'>
 <span class='chip chip--worst'>worst</span>
@@ -1413,21 +1172,15 @@ b{font-weight:600;color:var(--ink);}
 <li><span class='rid'>20260901T092414Z</span><span class='rmeta'>2026-09-01 09:24 UTC · limit 10 · prompt line-v2</span></li>
 <li><span class='rid'>20260901T090841Z</span><span class='rmeta'>2026-09-01 09:08 UTC · limit 10 · prompt line-v2</span></li>
 <li><span class='rid'>20260901T085245Z</span><span class='rmeta'>2026-09-01 08:52 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T231407Z</span><span class='rmeta'>2026-08-31 23:14 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T231356Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T231331Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T231319Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T231305Z</span><span class='rmeta'>2026-08-31 23:13 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230940Z</span><span class='rmeta'>2026-08-31 23:09 UTC · limit 12 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230940Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T230858Z</span><span class='rmeta'>2026-08-31 23:08 UTC · limit 10 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230847Z</span><span class='rmeta'>2026-08-31 23:08 UTC · limit 12 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230728Z</span><span class='rmeta'>2026-08-31 23:07 UTC · limit 12 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230642Z</span><span class='rmeta'>2026-08-31 23:06 UTC · limit 12 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230556Z</span><span class='rmeta'>2026-08-31 23:05 UTC · limit 12 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T230511Z</span><span class='rmeta'>2026-08-31 23:05 UTC · limit 12 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T224840Z</span><span class='rmeta'>2026-08-31 22:48 UTC · limit 10 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230847Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230728Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230642Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230556Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
+<li><span class='rid'>20260831T230511Z+20260901T160440Z</span><span class='rmeta'>2026-09-01 16:04 UTC · limit 22 · prompt line-v2</span></li>
 <li><span class='rid'>20260831T194503Z</span><span class='rmeta'>2026-08-31 19:45 UTC · limit 20 · prompt line-v2</span></li>
-<li><span class='rid'>20260831T185739Z</span><span class='rmeta'>2026-08-31 18:57 UTC · limit null · prompt line-v2</span></li>
+<li><span class='rid'>20260831T185411Z+20260831T185739Z</span><span class='rmeta'>2026-08-31 18:57 UTC · limit 1334 · prompt line-v2</span></li>
 </ul></section>
-<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten Arabic (NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. Harness: <code>arabic-ocr-bench</code>. Generated 2026-09-01 13:58 UTC by <code>scripts/make_leaderboard.py</code>.</p></footer>
+<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten Arabic (NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. Harness: <code>arabic-ocr-bench</code>. Generated 2026-09-01 16:06 UTC by <code>scripts/make_leaderboard.py</code>.</p></footer>
 </main>

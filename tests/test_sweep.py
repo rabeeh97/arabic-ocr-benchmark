@@ -38,7 +38,7 @@ def wired(monkeypatch, tmp_path):
 
     monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"fake": {}})
     monkeypatch.setattr(
-        runner_mod, "build_dataset", lambda name, cfg, *, limit=None: _FakeDataset(limit)
+        runner_mod, "build_dataset", lambda name, cfg, *, limit=None, offset=0: _FakeDataset(limit)
     )
     monkeypatch.setattr(
         runner_mod,
