@@ -51,6 +51,8 @@ def collect_samples(target: Path) -> dict:
         except (OSError, json.JSONDecodeError):
             continue
         for s in data.get("samples", []):
+            if s.get("dataset") == "synthetic":
+                continue
             sid = s["sample_id"]
             slot = by_id.setdefault(sid, {
                 "row": s.get("row"), "dataset": s.get("dataset", ""),
@@ -98,23 +100,88 @@ def _run_meta(run_dir: Path) -> dict:
 
 def collect(target: Path) -> list[dict]:
     rows: list[dict] = []
+    run_dirs: dict[str, Path] = {}
     for rd in _run_dirs(target):
+        run_dirs[rd.name] = rd
         meta = _run_meta(rd)
         with (rd / "summary.csv").open() as fh:
             for r in csv.DictReader(fh):
+                # `synthetic` is an offline sanity-check dataset (near-0 CER for
+                # every real model) — informative for pipeline QA, not for the
+                # published board, so it never makes it into `rows`.
+                if r.get("dataset") == "synthetic":
+                    continue
                 rows.append({**meta, **r})
-    return _dedupe_keep_largest(rows)
+    return _merge_duplicate_runs(rows, run_dirs)
 
 
-def _dedupe_keep_largest(rows: list[dict]) -> list[dict]:
-    """One row per (model, dataset): keep the run with the most samples, so a
-    later full run supersedes an earlier partial one on the board."""
-    best: dict[tuple[str, str], dict] = {}
+def _merge_duplicate_runs(rows: list[dict], run_dirs: dict[str, Path]) -> list[dict]:
+    """One row per (model, dataset). A single run is kept as-is; when the same
+    pair was scored across more than one run, the rows are MERGED into one
+    combined row recomputed over the union of their (distinct, deduped-by-id)
+    samples, rather than discarding all but the largest run — so re-running a
+    model on new lines grows its reported n instead of throwing work away."""
+    groups: dict[tuple[str, str], list[dict]] = {}
     for r in rows:
-        k = (r.get("model", ""), r.get("dataset", ""))
-        if k not in best or int(r.get("n", 0) or 0) > int(best[k].get("n", 0) or 0):
-            best[k] = r
-    return list(best.values())
+        groups.setdefault((r.get("model", ""), r.get("dataset", "")), []).append(r)
+    out = []
+    for (model, dataset), group in groups.items():
+        out.append(group[0] if len(group) == 1 else _merge_runs(model, dataset, group, run_dirs))
+    return out
+
+
+def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str, Path]) -> dict:
+    from arabic_ocr_bench.metrics import aggregate, score_pair
+
+    seen: dict[str, dict] = {}
+    for r in group:
+        rd = run_dirs.get(r.get("run", ""))
+        pf = rd / "predictions.jsonl" if rd else None
+        if not pf or not pf.exists():
+            continue
+        with pf.open(encoding="utf-8") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                p = json.loads(line)
+                if p.get("model") == model and p.get("dataset") == dataset:
+                    seen.setdefault(p["sample_id"], p)  # first-seen wins if ids ever collide
+
+    if not seen:
+        # predictions.jsonl missing for every contributing run (older run dir) —
+        # fall back to the previous behaviour rather than reporting nothing.
+        return max(group, key=lambda r: int(r.get("n", 0) or 0))
+
+    preds = list(seen.values())
+    scored = [
+        (p, score_pair(p["ground_truth"], "" if p.get("error") else (p.get("cleaned_text") or "")))
+        for p in preds
+    ]
+    n = len(scored)
+    n_err = sum(1 for p, _ in scored if p.get("error"))
+    agg = aggregate([ps for _, ps in scored])
+
+    row = {
+        "run": "+".join(sorted({r["run"] for r in group})),
+        "when": max((r.get("when", "") for r in group), default=""),
+        "limit": str(n),
+        "prompt_version": "/".join(sorted({r.get("prompt_version", "") for r in group} - {""})),
+        "model": model,
+        "dataset": dataset,
+        "n": str(n),
+        "errors": str(n_err),
+        "refusal_rate": f"{n_err / n:.4f}" if n else "0.0",
+        "latency_ms_mean": f"{sum(p.get('latency_ms', 0.0) for p, _ in scored) / n:.1f}" if n else "0.0",
+        "cost_usd_total": f"{sum(p.get('cost_usd', 0.0) for p, _ in scored):.6f}",
+    }
+    for p in _PROFILES:
+        row[f"cer_micro_{p}"] = f"{agg['micro_cer'][p]:.4f}"
+        row[f"cer_macro_{p}"] = f"{agg['cer_macro'][p]:.4f}"
+        row[f"wer_micro_{p}"] = f"{agg['micro_wer'][p]:.4f}"
+        row[f"exact_{p}"] = f"{agg['exact_match_rate'][p]:.4f}"
+    row["diac_f1"] = f"{agg['diacritic']['f1']:.4f}"
+    return row
 
 
 def _fmt_pct(v: str | float) -> str:

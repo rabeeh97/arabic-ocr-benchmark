@@ -53,6 +53,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     prompt_version = run_cfg.get("prompt_version", "line-v1")
     base_prompt = get_prompt(prompt_version)
     limit = run_cfg.get("limit")
+    offset = int(run_cfg.get("offset", 0))
     concurrency = int(run_cfg.get("concurrency", 4))
     max_retries = int(run_cfg.get("max_retries", 3))
     use_cache = bool(run_cfg.get("cache", True))
@@ -135,7 +136,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     with pred_path.open("w", encoding="utf-8") as fh:
         for mi, model_name in enumerate(run_cfg["models"], 1):
             for ds_name in run_cfg["datasets"]:
-                adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit)
+                adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit, offset=offset)
                 try:
                     total = len(adapter)
                 except (TypeError, AttributeError):

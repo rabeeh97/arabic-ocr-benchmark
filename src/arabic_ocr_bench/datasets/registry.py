@@ -21,7 +21,7 @@ def _resolve(target: str):
     return getattr(importlib.import_module(mod_name), attr)
 
 
-def build_dataset(name: str, cfg: dict[str, Any], *, limit: int | None = None):
+def build_dataset(name: str, cfg: dict[str, Any], *, limit: int | None = None, offset: int = 0):
     adapter_cls = _resolve(cfg["adapter"])
     kwargs: dict[str, Any] = dict(cfg.get("params") or {})
     for k in ("split", "hf_id", "subset"):
@@ -29,6 +29,8 @@ def build_dataset(name: str, cfg: dict[str, Any], *, limit: int | None = None):
             kwargs[k] = cfg[k]
     if limit is not None:
         kwargs["limit"] = limit
+    if offset:
+        kwargs["offset"] = offset
     # let an adapter that accepts `name` stamp stable sample ids from the config
     try:
         import inspect
