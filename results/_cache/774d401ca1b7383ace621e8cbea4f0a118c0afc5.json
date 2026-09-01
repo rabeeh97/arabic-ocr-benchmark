@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/001228", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "Miguel Saikali", "raw_text": "Miguel Saikali", "cleaned_text": "Miguel Saikali", "latency_ms": 598.33, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

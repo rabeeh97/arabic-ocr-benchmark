@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/001099", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "Krougar attallah", "raw_text": "Kroger attal", "cleaned_text": "Kroger attal", "latency_ms": 605.53, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

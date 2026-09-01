@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/000987", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "QBat3D-5", "raw_text": "Bat3D5", "cleaned_text": "Bat3D5", "latency_ms": 483.47, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
