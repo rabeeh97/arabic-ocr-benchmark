@@ -138,6 +138,7 @@ alef/digit/tatweel/whitespace normalized, **diac_insensitive** = also harakat-st
 | --- | --- |
 | `No GPU` assertion | Runtime → Change runtime type → T4 GPU, then Run all |
 | Clone fails / asks for password | `GH_TOKEN` secret missing, wrong name, Notebook-access off, or token lacks Contents:Read |
+| `ModuleNotFoundError: No module named 'arabic_ocr_bench'` | The `pip install -e` cell didn't take. The checkout/clone cell now also puts `<repo>/src` on `sys.path`, so **re-run the clone cell** (cell 2) then the failing cell. It's a src-layout package — `sys.path` must include `src`, not just the repo root. |
 | CUDA out of memory | Lower `LIMIT`, or use `qari-ocr-0.2` / `qwen2.5-vl-3b` instead of 7B |
 | Muharaf download slow | First time only; it's cached for the rest of the session |
 | `paligemma-arabic-hw` 401/403 | Accept the base-model license on HF, add `HF_TOKEN` secret |
