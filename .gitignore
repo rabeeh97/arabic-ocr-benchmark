@@ -23,8 +23,9 @@ data/
 !data/**/*.json.example
 
 # benchmark outputs: run dirs ARE committed (that's how results come back from
-# Colab). Only the local resume-cache is ignored.
-results/_cache/
+# Colab). The per-line resume cache (results/_cache/) is ALSO committed now, so
+# that a re-run — on any machine, on the free API stack — never repeats a call
+# that already has an answer. Its files are tiny (<1 KB of JSON each).
 
 # HF / model caches
 .cache/

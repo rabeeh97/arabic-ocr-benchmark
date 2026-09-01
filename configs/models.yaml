@@ -146,27 +146,45 @@ openrouter-llama-4-maverick:
 
 # Ollama — OpenAI-compatible endpoint; set OLLAMA_API_BASE + OLLAMA_API_KEY.
 # NOTE: as of 2026 the Ollama *cloud* (https://ollama.com/v1) serves only text
-# LLMs — no vision models — so these entries only work against a LOCAL Ollama
-# (OLLAMA_API_BASE=http://localhost:11434/v1) after `ollama pull qwen2.5-vl`.
-# They are commented out so the hosted sweep doesn't try (and fail) them.
-# ollama-qwen2.5-vl:
+# LLMs — NO vision models. These entries only work against a LOCAL Ollama:
+#     ollama serve
+#     ollama pull qwen2.5vl:3b        # ~3.2 GB, best small Arabic-capable VLM
+#     ollama pull qwen2.5vl:7b        # ~6 GB, clearly better if the box allows
+#     ollama pull minicpm-v           # ~5.5 GB, 8B, explicitly multilingual OCR
+# then in .env:  OLLAMA_API_BASE=http://localhost:11434/v1  (OLLAMA_API_KEY=ollama)
+# Uncomment the rows for whatever you pulled. Left commented so the hosted sweep
+# doesn't try (and fail) them while OLLAMA_API_BASE still points at the cloud.
+# Avoid llava / bakllava / moondream / granite-vision here — weak on Arabic.
+# ollama-qwen2.5vl-3b:
 #   client: litellm
-#   litellm_id: openai/qwen2.5-vl:7b
+#   litellm_id: openai/qwen2.5vl:3b
 #   env_key: OLLAMA_API_KEY
 #   api_base_env: OLLAMA_API_BASE
 #   params: { temperature: 0 }
 #   pricing: null
 #   card: >-
-#     Qwen2.5-VL 7B via a local Ollama's OpenAI-compatible endpoint.
-# ollama-llama3.2-vision:
+#     Qwen2.5-VL 3B via a local Ollama. Smallest model with genuine Arabic OCR
+#     ability — same family that leads the hosted board at 72B/235B.
+# ollama-qwen2.5vl-7b:
 #   client: litellm
-#   litellm_id: openai/llama3.2-vision:11b
+#   litellm_id: openai/qwen2.5vl:7b
 #   env_key: OLLAMA_API_KEY
 #   api_base_env: OLLAMA_API_BASE
 #   params: { temperature: 0 }
 #   pricing: null
 #   card: >-
-#     Llama 3.2 Vision 11B via a local Ollama's OpenAI-compatible endpoint.
+#     Qwen2.5-VL 7B via a local Ollama. Noticeably stronger than the 3B; the
+#     practical local OCR pick when there's ~8 GB of RAM/VRAM to spare.
+# ollama-minicpm-v:
+#   client: litellm
+#   litellm_id: openai/minicpm-v
+#   env_key: OLLAMA_API_KEY
+#   api_base_env: OLLAMA_API_BASE
+#   params: { temperature: 0 }
+#   pricing: null
+#   card: >-
+#     MiniCPM-V 8B via a local Ollama. Multilingual document OCR (30+ languages
+#     incl. Arabic); a useful non-Qwen small-model comparison point.
 claude-haiku:
   client: litellm
   litellm_id: anthropic/claude-haiku-4-5
