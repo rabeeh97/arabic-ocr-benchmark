@@ -31,5 +31,10 @@ data/
 .cache/
 models_cache/
 
+# training checkpoints / merged weights — these live on Google Drive + the HF
+# Hub, never in git (notebook 05 points output_dir at Drive). This is a guard in
+# case a run is pointed at the local tree by mistake.
+results/training/
+
 # notebooks
 .ipynb_checkpoints/

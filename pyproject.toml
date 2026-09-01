@@ -34,6 +34,14 @@ local = [
     "sentencepiece>=0.2",
     "psutil>=5.9",           # pre-load RAM check so a too-big model is skipped, not OOM-killed
 ]
+# fine-tuning: LoRA/QLoRA SFT of the local VLMs + encoder-decoder models.
+# Needs the `local` extra too (torch, transformers, peft, accelerate).
+train = [
+    "trl>=0.12",
+    "bitsandbytes>=0.44",     # 4-bit base weights for QLoRA (CUDA only)
+    "imagehash>=4.3",         # perceptual hashing for the contamination check
+    "datasets>=3.0",          # already a core dep; listed for clarity
+]
 dev = [
     "pytest>=8.0",
     "ruff>=0.6",
@@ -41,6 +49,7 @@ dev = [
 
 [project.scripts]
 bench = "arabic_ocr_bench.cli:main"
+bench-train = "arabic_ocr_bench.training.cli:main"
 
 [build-system]
 requires = ["hatchling"]

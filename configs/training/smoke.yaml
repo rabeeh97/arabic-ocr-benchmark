@@ -1,0 +1,54 @@
+# M0.2 smoke experiment: prove the full loop
+#   assemble data -> QLoRA SFT -> merge -> register in models.yaml -> `bench run`
+# Tiny on purpose: 200 Muharaf train lines, 1 epoch, runs on a Colab T4 in minutes.
+experiment: smoke
+method: qlora
+
+base_model:
+  hf_id: Qwen/Qwen2-VL-2B-Instruct
+  arch: qwen2_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train        # reserved for fine-tuning; never scored
+      limit: 200
+  val_fraction: 0.05
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704       # 448*448
+  max_pixels: 1003520      # ~1120*896
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  # --- disconnect resilience (notebook 05 overrides output_dir to Google Drive) ---
+  save_strategy: epoch       # "steps" + save_steps for long real runs
+  save_steps: 200
+  save_total_limit: 3
+  resume: true               # re-run the notebook after a drop -> continues
+  push_to_hub: false         # notebook 05 sets true + hub_model_id when HF_TOKEN is present
+  # hub_model_id: rabeeh97/arabic-ocr-smoke
+  hub_private: true
+  hub_strategy: every_save   # mirror every checkpoint to the HF repo
+
+# notebook 05 points this at /content/drive/MyDrive/arabic-ocr-bench/training/<experiment>
+output_dir: results/training/smoke
+eval_datasets: [muharaf_lines]   # scored on the untouched test split after merge
