@@ -233,6 +233,19 @@
       "cer_micro_light": 0.4955,
       "wer_micro_light": 0.9672,
       "done_at": "2026-09-01T09:23:43+00:00"
+    },
+    {
+      "model": "qwen2-vl-2b",
+      "dataset": "kitab_khatt",
+      "phase": "partial",
+      "limit": 10,
+      "run_id": "20260901T092414Z",
+      "n": 10,
+      "errors": 0,
+      "cer_micro_raw": 0.7979,
+      "cer_micro_light": 0.8036,
+      "wer_micro_light": 0.9918,
+      "done_at": "2026-09-01T09:37:37+00:00"
     }
   ]
 }
