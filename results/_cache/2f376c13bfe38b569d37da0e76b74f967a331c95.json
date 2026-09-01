@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000008", "model": "qari-ocr-0.2", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "غيظ ، ناء ، بث ، نسر .", "raw_text": "غِظ، نَادٍ بُطْنِي", "cleaned_text": "غِظ، نَادٍ بُطْنِي", "latency_ms": 168146.54, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

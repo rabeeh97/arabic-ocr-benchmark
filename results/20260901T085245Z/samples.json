@@ -1,0 +1,134 @@
+{
+  "run_id": "20260901T085245Z",
+  "generated_at": "2026-09-01T09:08:07+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000005",
+      "row": 5,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الأدب عامة ، و الأدب السعبي خاصة ، لمزيد من التقصي و البحث و التحليل ،",
+      "prediction": "الآداب العامة، والأدب السعدي جاهزة، شيرز من التقلي والبت و التحليل",
+      "error": null,
+      "cer_light": 0.3,
+      "cer_raw": 0.3143,
+      "wer_light": 0.8125
+    },
+    {
+      "sample_id": "kitab_khatt/train/000002",
+      "row": 2,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "النص: مشمش ، دراق ، غيظ ، ناء ،  بث ، نسر .",
+      "prediction": "النبي: مسحش، دراق، قيم، ناهد، دبت أسر.",
+      "error": null,
+      "cer_light": 0.4048,
+      "cer_raw": 0.3953,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000003",
+      "row": 3,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "و هي التي جعلته كريما على فقره .",
+      "prediction": "و في الأرآء حجّلَتْ دربماً على منقُروهِ .",
+      "error": null,
+      "cer_light": 0.5312,
+      "cer_raw": 0.5312,
+      "wer_light": 0.625
+    },
+    {
+      "sample_id": "kitab_khatt/train/000008",
+      "row": 8,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "غيظ ، ناء ، بث ، نسر .",
+      "prediction": "غِظ، نَادٍ بُطْنِي",
+      "error": null,
+      "cer_light": 0.6364,
+      "cer_raw": 0.6364,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000000",
+      "row": 0,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وصفاً مجملاً لحالة المغرب خلال سنة 2005، مثيراً ، في سياق ذلك ، التساؤلات الكبرى",
+      "prediction": "وُصِّتْ جَمْلٌ تَالِدَ الْعَرَبِ هَلَا لِيَنْزِ 205 مِـةً، فِيهِ سَيدًا عَلَى السَّلاَسَارِينِ الأَرْضِ",
+      "error": null,
+      "cer_light": 0.825,
+      "cer_raw": 0.825,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000009",
+      "row": 9,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "والصراع  الحضاري قد  يأخذ  أشكالا  مادية - الصراع  على الوصول .",
+      "prediction": "العربية هي اللغة الرسمية في مصر - العربية هي الوسيلة الأساسية للتحدث والكتابة.",
+      "error": null,
+      "cer_light": 0.931,
+      "cer_raw": 0.8571,
+      "wer_light": 1.0909
+    },
+    {
+      "sample_id": "kitab_khatt/train/000006",
+      "row": 6,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عفيف للحج .  بدأن قوافل الحجح حاج إن افر يلبي . عند وصولنا طفنا وسعينا هع شنح.",
+      "prediction": "خُلْتَ لِي، وَأَنَا فَعَمَّلَ أَحَدٌ عَنْ الْبَرْكَاءِ مِنْهُمْ، ۖ عَذَرَتْ بِالْجَزءِ الْثَانِينِ إِلَى اللَّهِ، یَوْسُوفًا.",
+      "error": null,
+      "cer_light": 1.2857,
+      "cer_raw": 1.2949,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000007",
+      "row": 7,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " هل تعلم فائدة الكلمات التالية لهذا النص: مشمش، دراق، غيظ، ناء",
+      "prediction": "مِلْ بَعْضَا ٢٨ نُهْيَةً لَّب سَنَىٰ ١ صَخْرَدًا مِثْلاً فِيهِ أَحْتَفَظَ وَالْأَصْوَاءِ في الْجَزَءِ",
+      "error": null,
+      "cer_light": 1.377,
+      "cer_raw": 1.3934,
+      "wer_light": 1.2727
+    }
+  ]
+}

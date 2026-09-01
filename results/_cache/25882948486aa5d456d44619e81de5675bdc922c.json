@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/000186", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "Loc. guille", "raw_text": "Lorqugutta", "cleaned_text": "Lorqugutta", "latency_ms": 538.19, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

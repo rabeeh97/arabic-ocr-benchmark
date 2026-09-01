@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/001143", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "Toufic El Bacha", "raw_text": "Teufic El Bacha", "cleaned_text": "Teufic El Bacha", "latency_ms": 649.67, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

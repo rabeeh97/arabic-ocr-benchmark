@@ -388,5 +388,31 @@
     "wer_micro_diac_insensitive": "0.0",
     "exact_diac_insensitive": "1.0",
     "diac_f1": "1.0"
+  },
+  {
+    "run": "20260901T085245Z",
+    "when": "2026-09-01 08:52 UTC",
+    "limit": "10",
+    "prompt_version": "line-v2",
+    "model": "qari-ocr-0.2",
+    "dataset": "kitab_khatt",
+    "n": "10",
+    "errors": "0",
+    "refusal_rate": "0.0",
+    "latency_ms_mean": "91263.5",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "0.7979",
+    "cer_macro_raw": "0.7536",
+    "wer_micro_raw": "0.9918",
+    "exact_raw": "0.0",
+    "cer_micro_light": "0.8036",
+    "cer_macro_light": "0.7602",
+    "wer_micro_light": "0.9918",
+    "exact_light": "0.0",
+    "cer_micro_diac_insensitive": "0.5725",
+    "cer_macro_diac_insensitive": "0.5604",
+    "wer_micro_diac_insensitive": "0.9672",
+    "exact_diac_insensitive": "0.0",
+    "diac_f1": "0.41"
   }
 ]
