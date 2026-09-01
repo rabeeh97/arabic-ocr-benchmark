@@ -154,13 +154,25 @@ bench run --config configs/run.yaml
 | Track fit | **line only** — trained on single handwritten lines; do not run page track |
 | Prompt | PaliGemma expects a task prefix, e.g. `"ocr\n"` or `"transcribe Arabic\n"` — check the adapter card / config for the exact training prefix |
 
+### TR_OCR_LARGE — `David-Magdy/TR_OCR_LARGE` (implemented: `arch: trocr`)
+- TrOCR-Large (0.6B, ViT encoder + RoBERTa-style decoder) finetuned on **KHATT +
+  IAM** handwriting. A dedicated HTR model, not a VLM: no prompt, one line in →
+  one string out. `hf_local_client` loads it via `TrOCRProcessor` +
+  `VisionEncoderDecoderModel`; runs fine on CPU/MPS. Expect strong numbers on
+  KHATT-like lines, weak on out-of-distribution scripts (Muharaf).
+
+### MiniCPM-V 2.6 — `openbmb/MiniCPM-V-2_6` (implemented: `arch: minicpmv`)
+- 8B multimodal model with multilingual document OCR (30+ languages incl.
+  Arabic). Custom `model.chat(msgs, tokenizer)` API (`trust_remote_code`), so it
+  has its own `hf_local_client` branch. 4-bit on a T4, dropped in CPU mode. Also
+  the recommended **local Ollama** model (`ollama pull minicpm-v`).
+
 ### AIN, Qalam, other Arabic VLMs — stretch
 - **Qalam** (SwinV2 encoder + RoBERTa decoder, purpose-built Arabic OCR/HWR):
   check whether weights are publicly released; if only via paper/API, treat as
   Tier 4. If weights exist, it needs its own `hf_local_client` branch (not a
   Qwen/PaliGemma architecture).
-- **AIN** (MBZUAI Arabic VLM) and any new Arabic OCR checkpoints: add as a
-  `hf_local_client` model row when identified.
+- **AIN** (MBZUAI Arabic VLM) — implemented as `ain-7b` (`arch: qwen2_vl`, 4-bit).
 
 **Testing a Tier 3 model:** same as Tier 2. Add a `tests/fixtures/` golden line
 with a hand transcription and assert CER is near the model's reported number as

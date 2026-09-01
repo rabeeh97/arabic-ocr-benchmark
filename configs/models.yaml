@@ -297,3 +297,16 @@ trocr-large-arabic:
     handwriting on KHATT and IAM. A dedicated HTR model rather than a general
     VLM — no prompt, single-line only. Runs on CPU/MPS; expect it to do best on
     KHATT-like lines and worse on out-of-distribution scripts (e.g. Muharaf).
+minicpm-v:
+  # custom model.chat() API (trust_remote_code); 4-bit on a T4, dropped in CPU mode.
+  # Needs: pip install bitsandbytes
+  client: hf_local
+  hf_id: openbmb/MiniCPM-V-2_6
+  arch: minicpmv
+  load_in_4bit: true
+  max_new_tokens: 160
+  pricing: null
+  card: >-
+    MiniCPM-V 2.6 (8B), a compact multimodal model with multilingual document
+    OCR across 30+ languages including Arabic. The strongest non-Qwen small VLM
+    in the set; also the one to run locally via Ollama (`ollama pull minicpm-v`).

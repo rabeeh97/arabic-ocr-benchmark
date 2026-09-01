@@ -14,13 +14,19 @@ models:
   - qwen2.5-vl-3b        # general VLM, 3B
   - qwen2.5-vl-7b        # general VLM, 7B (4-bit on GPU)  -> needs `pip install bitsandbytes`
   - ain-7b              # Arabic-centric VLM, 7B (4-bit on GPU)
+  - minicpm-v            # multilingual doc-OCR VLM, 8B (4-bit on GPU)
+  - trocr-large-arabic   # dedicated HTR (TrOCR-Large, KHATT+IAM); runs on CPU too
   # - paligemma-arabic-hw  # line-only; gated base -> HF license + HF_TOKEN
 
 datasets:
-  - muharaf_lines          # the only real dataset wired for Colab today
+  - kitab_khatt            # KITAB-Bench / KHATT handwriting (ungated, 200 lines)
+  # - kitab_muharaf        # KITAB-Bench Muharaf slice
+  # - kitab_historicalbooks
+  # - kitab_hindawi        # clean printed — easy anchor
+  # - muharaf_lines        # 1,334 lines; needs HF_TOKEN
 
 partial_limit: 25          # quick pass per model
-run_full: true             # then the full 1,334-line test split
+run_full: true             # then the whole split for each dataset
 prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
 concurrency: 1
