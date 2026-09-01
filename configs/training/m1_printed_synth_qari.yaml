@@ -1,0 +1,57 @@
+# M1 / E1.2b — QLoRA Qari-OCR v0.3 (2B, already Arabic-OCR-tuned) on the same
+# ~15k synthetic printed lines as m1_printed_synth_qwen25vl3b.yaml. Comparison:
+# does starting from an OCR model beat a stronger general base on printed text?
+experiment: m1-printed-synth-qari
+method: qlora
+
+base_model:
+  hf_id: NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct
+  arch: qwen2_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: synthetic_printed
+      adapter: arabic_ocr_bench.training.synth:SyntheticPrinted
+      params:
+        corpora: [wikipedia, classical, hindawi]
+        n: 15000
+        seed: 0
+        degrade_level: medium
+        diacritics: mixed
+        drop_overlap_with: [kitab_hindawi, kitab_historicalbooks]
+        # cache_dir: /content/drive/MyDrive/arabic-ocr-bench/synth/m1-15k
+      limit: 15000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 250
+  save_total_limit: 3
+  resume: true
+  push_to_hub: false
+  hub_private: true
+  hub_strategy: every_save
+
+output_dir: results/training/m1-printed-synth-qari
+eval_datasets: [kitab_historicalbooks, kitab_hindawi]

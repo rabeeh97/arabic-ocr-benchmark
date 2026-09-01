@@ -36,5 +36,9 @@ models_cache/
 # case a run is pointed at the local tree by mistake.
 results/training/
 
+# synthetic-data fonts — downloaded by scripts/fetch_fonts.py, not committed
+# (OFL binaries). training/synth.py falls back to the bundled Noto Naskh.
+src/arabic_ocr_bench/assets/fonts/
+
 # notebooks
 .ipynb_checkpoints/

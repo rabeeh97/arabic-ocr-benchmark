@@ -1,0 +1,60 @@
+# M1 / E1.2a — QLoRA Qwen2.5-VL-3B on synthetic printed Arabic.
+# Target: kitab_historicalbooks (degraded print). kitab_hindawi is the
+# no-regression anchor. Start small (~15k lines); a scaling curve is a later run.
+experiment: m1-printed-synth-qwen25vl3b
+method: qlora
+
+base_model:
+  hf_id: Qwen/Qwen2.5-VL-3B-Instruct
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: synthetic_printed
+      adapter: arabic_ocr_bench.training.synth:SyntheticPrinted
+      params:
+        corpora: [wikipedia, classical, hindawi]
+        n: 15000
+        seed: 0
+        degrade_level: medium
+        diacritics: mixed
+        # Hindawi text overlaps the kitab_hindawi test set — drop any rendered
+        # line whose normalized text matches a scored ground truth.
+        drop_overlap_with: [kitab_hindawi, kitab_historicalbooks]
+        # on Colab, point this at Drive so renders survive a disconnect:
+        # cache_dir: /content/drive/MyDrive/arabic-ocr-bench/synth/m1-15k
+      limit: 15000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704       # 448*448
+  max_pixels: 1003520      # ~1120*896
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 250
+  save_total_limit: 3
+  resume: true
+  push_to_hub: false        # notebook 05 flips this on when HF_TOKEN is present
+  hub_private: true
+  hub_strategy: every_save
+
+output_dir: results/training/m1-printed-synth-qwen25vl3b
+eval_datasets: [kitab_historicalbooks, kitab_hindawi]
