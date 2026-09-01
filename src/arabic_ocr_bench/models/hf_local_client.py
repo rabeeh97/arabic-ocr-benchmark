@@ -20,6 +20,39 @@ from .litellm_client import clean_output, looks_like_refusal
 _GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
 
 
+def _available_ram_gb() -> float:
+    """Best-effort free system RAM in GB. Returns a huge number if it can't be
+    determined, so a missing psutil never wrongly blocks a load."""
+    try:
+        import psutil
+
+        return psutil.virtual_memory().available / 1e9
+    except Exception:  # noqa: BLE001
+        try:
+            with open("/proc/meminfo") as fh:
+                for line in fh:
+                    if line.startswith("MemAvailable:"):
+                        return int(line.split()[1]) / 1e6  # kB -> GB
+        except OSError:
+            pass
+    return 1e6
+
+
+def _cpu_dtype():
+    """CPU inference dtype. bfloat16 halves fp32's footprint and its
+    matmul/layernorm are supported on modern torch CPU (float16 is not). Override
+    with env ARABIC_OCR_CPU_DTYPE=float32 if a model misbehaves in bf16."""
+    import os
+
+    import torch
+
+    return {
+        "float32": torch.float32, "fp32": torch.float32,
+        "bfloat16": torch.bfloat16, "bf16": torch.bfloat16,
+        "float16": torch.float16, "fp16": torch.float16,
+    }.get(os.environ.get("ARABIC_OCR_CPU_DTYPE", "bfloat16").lower(), torch.bfloat16)
+
+
 def _load_model(hf_id: str, load_kwargs: dict):
     """Try the vision-text auto classes in order — which one carries a given
     architecture shifts between transformers releases."""
@@ -44,7 +77,8 @@ def _load_model(hf_id: str, load_kwargs: dict):
 class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
-                 max_new_tokens: int = 160, load_in_4bit: bool = False):
+                 max_new_tokens: int = 160, load_in_4bit: bool = False,
+                 min_ram_gb: float = 0.0):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
@@ -52,14 +86,40 @@ class HFLocalClient:
         self.adapter_id = adapter_id
         self.max_new_tokens = max_new_tokens
         self.load_in_4bit = load_in_4bit
+        # skip (rather than OOM-kill the kernel) if less than this much free RAM
+        # when running on CPU. From `min_ram_gb` in configs/models.yaml.
+        self.min_ram_gb = float(min_ram_gb or 0.0)
         self._model = None
         self._processor = None
         self._tokenizer = None
+
+    def _ram_preflight(self) -> None:
+        """On CPU, a model bigger than free RAM doesn't raise — the Linux OOM
+        killer takes the whole kernel. Check first and raise a normal exception
+        instead (the runner catches it and moves to the next model)."""
+        if self.min_ram_gb <= 0:
+            return
+        try:
+            import torch
+
+            on_gpu = torch.cuda.is_available() or torch.backends.mps.is_available()
+        except Exception:  # noqa: BLE001 - no torch yet; treat as CPU
+            on_gpu = False
+        if on_gpu:
+            return  # this budget is a CPU-only guard
+        avail = _available_ram_gb()
+        if avail < self.min_ram_gb:
+            raise RuntimeError(
+                f"skip {self.name} on CPU: needs ~{self.min_ram_gb:.0f} GB free "
+                f"RAM, only {avail:.1f} GB available (loading it would OOM-kill "
+                f"the kernel). Use a GPU runtime, or drop this model."
+            )
 
     # -- lazy load ---------------------------------------------------------- #
     def _ensure_loaded(self):
         if self._model is not None:
             return
+        self._ram_preflight()
         if self.arch == "trocr":
             self._ensure_loaded_trocr()
             return
@@ -96,10 +156,12 @@ class HFLocalClient:
         # 4-bit (bitsandbytes) needs CUDA; fp16 matmul is unsupported / slow on CPU.
         use_4bit = self.load_in_4bit and device == "cuda"
         if device == "cpu":
-            torch_dtype = torch.float32
+            torch_dtype = _cpu_dtype()
             print(
-                f"WARNING: no GPU — loading {self.hf_id} on CPU in float32 "
-                f"({'4-bit disabled; ' if self.load_in_4bit else ''}expect ~30-90 s/line)."
+                f"WARNING: no GPU — loading {self.hf_id} on CPU in "
+                f"{str(torch_dtype).replace('torch.', '')} "
+                f"({'4-bit disabled; ' if self.load_in_4bit else ''}"
+                f"{_available_ram_gb():.1f} GB RAM free; expect ~30-90 s/line)."
             )
         else:
             torch_dtype = (
@@ -187,7 +249,7 @@ class HFLocalClient:
             "mps" if torch.backends.mps.is_available() else "cpu"
         )
         use_4bit = self.load_in_4bit and device == "cuda"
-        dtype = torch.float32 if device == "cpu" else torch.bfloat16
+        dtype = _cpu_dtype() if device == "cpu" else torch.bfloat16
         load_kwargs: dict = {"trust_remote_code": True, "torch_dtype": dtype,
                              "attn_implementation": "sdpa"}
         if use_4bit:
