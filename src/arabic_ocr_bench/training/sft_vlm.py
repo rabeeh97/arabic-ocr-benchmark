@@ -1,0 +1,210 @@
+"""LoRA / QLoRA / full SFT for the Qwen2-VL-family OCR backbones.
+
+Runs on a Colab T4 (QLoRA 2B/3B) or the RTX 3090 (bf16 LoRA, 7B QLoRA, full 2B).
+Heavy deps (`torch`, `transformers`, `peft`, `trl`, `bitsandbytes`) are imported
+lazily so the core benchmark environment stays light and importing this module
+never fails.
+
+Recipe (current OCR best practice): freeze the vision tower + merger, LoRA the
+LLM attention + MLP projections, 4-bit nf4 double-quant base for QLoRA,
+conversational format with the ground truth as the assistant turn, labels masked
+everywhere except the assistant tokens.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from .checkpoints import resume_from
+from .config import TrainingConfig, hub_trainer_kwargs
+from .data import assemble_dataset
+
+_ARCH_MODEL_CLS = {
+    "qwen2_vl": ("transformers", "Qwen2VLForConditionalGeneration"),
+    "qwen2_5_vl": ("transformers", "Qwen2_5_VLForConditionalGeneration"),
+}
+
+
+def _load_processor(cfg: TrainingConfig):
+    from transformers import AutoProcessor
+
+    return AutoProcessor.from_pretrained(
+        cfg.base_model.hf_id,
+        min_pixels=cfg.image.min_pixels,
+        max_pixels=cfg.image.max_pixels,
+    )
+
+
+def _load_model(cfg: TrainingConfig):
+    import torch
+
+    mod_name, cls_name = _ARCH_MODEL_CLS.get(
+        cfg.base_model.arch, _ARCH_MODEL_CLS["qwen2_vl"]
+    )
+    model_cls = getattr(__import__(mod_name, fromlist=[cls_name]), cls_name)
+
+    kwargs: dict = {"torch_dtype": torch.bfloat16 if cfg.train.bf16 else torch.float16}
+    if cfg.method == "qlora":
+        from transformers import BitsAndBytesConfig
+
+        kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=torch.bfloat16,
+        )
+    kwargs["device_map"] = "auto"
+
+    model = model_cls.from_pretrained(cfg.base_model.hf_id, **kwargs)
+
+    if cfg.base_model.adapter_id:  # continue-training from an existing adapter
+        from peft import PeftModel
+
+        model = PeftModel.from_pretrained(model, cfg.base_model.adapter_id, is_trainable=True)
+        return model
+
+    if cfg.method in ("qlora", "lora"):
+        from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+
+        if cfg.method == "qlora":
+            model = prepare_model_for_kbit_training(
+                model, use_gradient_checkpointing=cfg.train.gradient_checkpointing
+            )
+        targets = list(cfg.lora.target_modules)
+        if cfg.lora.train_vision:
+            targets += ["qkv", "proj"]  # Qwen2-VL ViT block projection names
+        model = get_peft_model(
+            model,
+            LoraConfig(
+                r=cfg.lora.r,
+                lora_alpha=cfg.lora.alpha,
+                lora_dropout=cfg.lora.dropout,
+                target_modules=targets,
+                bias="none",
+                task_type="CAUSAL_LM",
+            ),
+        )
+    else:  # full fine-tune
+        if not cfg.lora.train_vision and hasattr(model, "visual"):
+            model.visual.requires_grad_(False)
+
+    return model
+
+
+def _make_collator(processor, max_seq_len: int):
+    """Chat-template + vision-process a batch of rows, mask non-assistant labels."""
+    from qwen_vl_utils import process_vision_info
+
+    img_token_ids = {
+        getattr(processor.tokenizer, "convert_tokens_to_ids", lambda _t: None)(t)
+        for t in ("<|image_pad|>", "<|vision_start|>", "<|vision_end|>")
+    }
+    img_token_ids.discard(None)
+
+    def collate(rows: list[dict]):
+        texts, image_inputs = [], []
+        for row in rows:
+            texts.append(
+                processor.apply_chat_template(
+                    row["messages"], tokenize=False, add_generation_prompt=False
+                )
+            )
+            # rebuild message list with the real PIL image spliced in for the util
+            msgs = []
+            imgs = iter(row["images"])
+            for m in row["messages"]:
+                content = [
+                    dict(c, image=next(imgs)) if c.get("type") == "image" else c
+                    for c in m["content"]
+                ]
+                msgs.append({"role": m["role"], "content": content})
+            vi, _ = process_vision_info(msgs)
+            image_inputs.append(vi)
+
+        batch = processor(
+            text=texts,
+            images=image_inputs,
+            return_tensors="pt",
+            padding=True,
+            truncation=True,
+            max_length=max_seq_len,
+        )
+        labels = batch["input_ids"].clone()
+        labels[labels == processor.tokenizer.pad_token_id] = -100
+        for tid in img_token_ids:
+            labels[labels == tid] = -100
+        # mask everything before the assistant turn
+        assistant_open = processor.tokenizer.encode(
+            "<|im_start|>assistant\n", add_special_tokens=False
+        )
+        for i in range(labels.size(0)):
+            ids = batch["input_ids"][i].tolist()
+            cut = _find_subseq(ids, assistant_open)
+            if cut is not None:
+                labels[i, : cut + len(assistant_open)] = -100
+        batch["labels"] = labels
+        return batch
+
+    return collate
+
+
+def _find_subseq(seq: list[int], sub: list[int]) -> int | None:
+    for i in range(len(seq) - len(sub) + 1):
+        if seq[i : i + len(sub)] == sub:
+            return i
+    return None
+
+
+def train(cfg: TrainingConfig) -> Path:
+    """Run SFT and write the adapter (or full weights) to ``cfg.output_dir``."""
+    from datasets import Dataset
+    from trl import SFTConfig, SFTTrainer
+
+    processor = _load_processor(cfg)
+    model = _load_model(cfg)
+
+    bundle = assemble_dataset(cfg.data, seed=cfg.train.seed)
+    train_ds = Dataset.from_list(bundle["train"])
+    eval_ds = Dataset.from_list(bundle["val"]) if bundle["val"] else None
+
+    out = Path(cfg.output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    resume_ckpt = resume_from(out, resume=cfg.train.resume)
+    if resume_ckpt:
+        print(f"[sft_vlm] resuming from {resume_ckpt}")
+
+    args = SFTConfig(
+        output_dir=str(out),
+        num_train_epochs=cfg.train.epochs,
+        per_device_train_batch_size=cfg.train.batch_size,
+        gradient_accumulation_steps=cfg.train.grad_accum,
+        learning_rate=cfg.train.lr,
+        lr_scheduler_type=cfg.train.scheduler,
+        warmup_ratio=cfg.train.warmup_ratio,
+        bf16=cfg.train.bf16,
+        gradient_checkpointing=cfg.train.gradient_checkpointing,
+        logging_steps=10,
+        save_strategy=cfg.train.save_strategy,
+        save_steps=cfg.train.save_steps,
+        save_total_limit=cfg.train.save_total_limit,
+        eval_strategy="epoch" if eval_ds is not None else "no",
+        seed=cfg.train.seed,
+        report_to=[],
+        dataset_kwargs={"skip_prepare_dataset": True},
+        remove_unused_columns=False,
+        **hub_trainer_kwargs(cfg),
+    )
+    trainer = SFTTrainer(
+        model=model,
+        args=args,
+        train_dataset=train_ds,
+        eval_dataset=eval_ds,
+        data_collator=_make_collator(processor, cfg.train.max_seq_len),
+    )
+    trainer.train(resume_from_checkpoint=resume_ckpt)
+    trainer.save_model(str(out))
+    processor.save_pretrained(str(out))
+    (out / "training_config.yaml").write_text(cfg.model_dump_json(indent=2))
+    if cfg.train.push_to_hub:
+        trainer.push_to_hub()  # final adapter + card
+    return out

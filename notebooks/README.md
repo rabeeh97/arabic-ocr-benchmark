@@ -1,6 +1,6 @@
 # Running the benchmark on Google Colab
 
-`01`–`03` are generated from `scripts/build_notebooks.py` — edit that and re-run
+`01`–`06` are generated from `scripts/build_notebooks.py` — edit that and re-run
 it, don't hand-edit the `.ipynb`.
 
 | Notebook | Runtime | What it does |
@@ -10,6 +10,8 @@ it, don't hand-edit the `.ipynb`.
 | **`04_colab_sweep.ipynb`** | **T4 GPU** (CPU fallback) | **Run-all-and-leave-it.** Local models (2B-8B: Qari, Qwen2(.5)-VL, AIN, MiniCPM-V, TrOCR) × one or more datasets (`DATASETS`, default `kitab_khatt`). 4-bit models drop in CPU mode. A (model, dataset, phase) is marked done in `results/sweep_manifest.json` **only after its results are pushed**, and every finished line is cached in `results/_cache/` — re-running repeats nothing. A model that OOMs / a dataset that won't download is caught and logged; the sweep continues. |
 | `02_colab_hosted_apis.ipynb` | CPU | Every keyed hosted model (Gemini / Mistral / OpenRouter / Claude / GPT) × `DATASETS` via their APIs; same resume + fault-tolerance |
 | `03_analysis.ipynb` | CPU | Worst-error browser (image + GT + prediction) |
+| `05_colab_train_lora.ipynb` | **T4 GPU** | Fine-tune a QLoRA/LoRA adapter from a `configs/training/*.yaml`, merge, register in `models.yaml`, score on the untouched test split. Config-driven; `smoke.yaml` runs in minutes. See `docs/training-plan.md`. |
+| `06_colab_prepare_data.ipynb` | CPU | Assemble + vet training data for a training config: source counts, contamination report vs the benchmark test splits, sample eyeballing. No torch. |
 
 ## About `00_reference_gemini_pipeline.ipynb`
 
