@@ -54,6 +54,7 @@ class HFLocalClient:
         self.load_in_4bit = load_in_4bit
         self._model = None
         self._processor = None
+        self._tokenizer = None
 
     # -- lazy load ---------------------------------------------------------- #
     def _ensure_loaded(self):
@@ -61,6 +62,9 @@ class HFLocalClient:
             return
         if self.arch == "trocr":
             self._ensure_loaded_trocr()
+            return
+        if self.arch == "minicpmv":
+            self._ensure_loaded_minicpmv()
             return
 
         import sys
@@ -167,11 +171,48 @@ class HFLocalClient:
         self._device = device
         print(f"[load] {self.name} ready in {time.perf_counter() - _t0:.1f}s", flush=True)
 
+    def _ensure_loaded_minicpmv(self) -> None:
+        """MiniCPM-V (openbmb/MiniCPM-V-2_6) — multilingual doc OCR, ~8B. Uses a
+        custom `model.chat(msgs, tokenizer)` API (trust_remote_code), not the
+        standard processor+generate path. 4-bit on CUDA, fp32 on CPU (slow)."""
+        try:
+            import torch
+            from transformers import AutoModel, AutoTokenizer
+        except ImportError as e:  # pragma: no cover
+            raise RuntimeError(
+                "local models need the 'local' extra: uv sync --extra local"
+            ) from e
+
+        device = "cuda" if torch.cuda.is_available() else (
+            "mps" if torch.backends.mps.is_available() else "cpu"
+        )
+        use_4bit = self.load_in_4bit and device == "cuda"
+        dtype = torch.float32 if device == "cpu" else torch.bfloat16
+        load_kwargs: dict = {"trust_remote_code": True, "torch_dtype": dtype,
+                             "attn_implementation": "sdpa"}
+        if use_4bit:
+            from transformers import BitsAndBytesConfig
+
+            load_kwargs["quantization_config"] = BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_compute_dtype=dtype,
+                bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
+            )
+            load_kwargs["device_map"] = "auto"
+        _t0 = time.perf_counter()
+        print(f"[load] {self.hf_id} (minicpmv {'4-bit' if use_4bit else dtype} on {device}) ...",
+              flush=True)
+        model = AutoModel.from_pretrained(self.hf_id, **load_kwargs)
+        self._model = (model if use_4bit else model.to(device)).eval()
+        self._tokenizer = AutoTokenizer.from_pretrained(self.hf_id, trust_remote_code=True)
+        self._device = "cuda" if use_4bit else device
+        print(f"[load] {self.name} ready in {time.perf_counter() - _t0:.1f}s", flush=True)
+
     def close(self) -> None:
         """Free the model from (GPU) memory — the runner calls this between
         models in a sweep so a single GPU can host them one at a time."""
         self._model = None
         self._processor = None
+        self._tokenizer = None
         try:
             import gc
 
@@ -207,6 +248,8 @@ class HFLocalClient:
             return self._generate_paligemma(image, prompt)
         if self.arch == "trocr":
             return self._generate_trocr(image)
+        if self.arch == "minicpmv":
+            return self._generate_minicpmv(image, prompt)
 
         messages = [{
             "role": "user",
@@ -224,6 +267,14 @@ class HFLocalClient:
             )
         gen = out[0][inputs["input_ids"].shape[1]:]
         return self._processor.decode(gen, skip_special_tokens=True).strip()
+
+    def _generate_minicpmv(self, image: Image.Image, prompt: str) -> str:
+        msgs = [{"role": "user", "content": [image, prompt]}]
+        out = self._model.chat(
+            image=None, msgs=msgs, tokenizer=self._tokenizer,
+            sampling=False, max_new_tokens=self.max_new_tokens,
+        )
+        return (out if isinstance(out, str) else str(out)).strip()
 
     def _generate_trocr(self, image: Image.Image) -> str:
         import torch

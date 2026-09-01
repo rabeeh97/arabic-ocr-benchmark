@@ -7,8 +7,8 @@ it, don't hand-edit the `.ipynb`.
 | --- | --- | --- |
 | `00_reference_gemini_pipeline.ipynb` | CPU | **Original prototype** (kept as-is, not generated). Gemini-2.5-flash only, raw CER/WER, CSV output. Superseded by `02` + `03`; see "About `00`" below. |
 | `01_colab_local_models.ipynb` | **T4 GPU** | Interactive single/few local models on Muharaf — for exploring |
-| **`04_colab_sweep.ipynb`** | **T4 GPU** (CPU fallback) | **Run-all-and-leave-it.** Six local models (2B-7B); the 7B ones load 4-bit on GPU and are dropped in CPU mode. A phase is marked done in `results/sweep_manifest.json` **only after its results are pushed to the repo**. Resumes on restart. No GPU -> tiny partial-only fp32 CPU pass. |
-| `02_colab_hosted_apis.ipynb` | CPU | Gemini / OpenAI / Claude on Muharaf via their APIs |
+| **`04_colab_sweep.ipynb`** | **T4 GPU** (CPU fallback) | **Run-all-and-leave-it.** Local models (2B-8B: Qari, Qwen2(.5)-VL, AIN, MiniCPM-V, TrOCR) × one or more datasets (`DATASETS`, default `kitab_khatt`). 4-bit models drop in CPU mode. A (model, dataset, phase) is marked done in `results/sweep_manifest.json` **only after its results are pushed**, and every finished line is cached in `results/_cache/` — re-running repeats nothing. A model that OOMs / a dataset that won't download is caught and logged; the sweep continues. |
+| `02_colab_hosted_apis.ipynb` | CPU | Every keyed hosted model (Gemini / Mistral / OpenRouter / Claude / GPT) × `DATASETS` via their APIs; same resume + fault-tolerance |
 | `03_analysis.ipynb` | CPU | Worst-error browser (image + GT + prediction) |
 
 ## About `00_reference_gemini_pipeline.ipynb`

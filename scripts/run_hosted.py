@@ -55,7 +55,9 @@ def main() -> int:
     ap.add_argument("--models", default="",
                     help="comma-separated names from configs/models.yaml "
                          "(default: every hosted model whose API key is set)")
-    ap.add_argument("--dataset", default="kitab_khatt")
+    ap.add_argument("--dataset", default="kitab_khatt",
+                    help="one name, or comma-separated for several "
+                         "(kitab_khatt,kitab_hindawi,...)")
     ap.add_argument("--limit", type=int, default=20)
     ap.add_argument("--full", action="store_true",
                     help="also run the full-split phase after the partial one")
@@ -148,17 +150,26 @@ def main() -> int:
             raise RuntimeError("git push failed: " + (p.stderr.strip()[:300] or "unknown"))
         print("  push: ok")
 
-    run_sweep(
-        models=models,
-        dataset=args.dataset,
-        partial_limit=limit,
-        run_full=args.full,
-        concurrency=4,
-        manifest_path="results/sweep_manifest.json",
-        results_dir="results",
-        on_progress=print,
-        on_done=on_done,
-    )
+    datasets = [d.strip() for d in args.dataset.split(",") if d.strip()]
+    for ds in datasets:
+        print(f"\n########## DATASET: {ds} ##########")
+        try:
+            run_sweep(
+                models=models,
+                dataset=ds,
+                partial_limit=limit,
+                run_full=args.full,
+                concurrency=4,
+                manifest_path="results/sweep_manifest.json",
+                results_dir="results",
+                on_progress=print,
+                on_done=on_done,
+            )
+        except Exception as e:  # noqa: BLE001 - one bad dataset shouldn't sink the rest
+            import traceback
+
+            traceback.print_exc()
+            print(f"!!! DATASET {ds} FAILED ({type(e).__name__}: {e}) — continuing !!!")
 
     latest = sorted((REPO / "results").glob("2*/summary.md"))
     if latest:
