@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/000846", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "وانتهاء بكتابها \"الغيبوبة\" وهو عملُ", "raw_text": "\"وهو عمن\"", "cleaned_text": "وهو عمن", "latency_ms": 665.61, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

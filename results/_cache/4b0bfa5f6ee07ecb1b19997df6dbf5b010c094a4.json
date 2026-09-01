@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/001022", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "اسعد : ساعه عتيقه .", "raw_text": "الله كريم", "cleaned_text": "الله كريم", "latency_ms": 491.59, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

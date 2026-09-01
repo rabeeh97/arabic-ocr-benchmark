@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/001073", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "كونكري في ١ حزيران سنة ١٩٣١", "raw_text": "1921/4/30 2:5", "cleaned_text": "1921/4/30 2:5", "latency_ms": 1149.65, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
