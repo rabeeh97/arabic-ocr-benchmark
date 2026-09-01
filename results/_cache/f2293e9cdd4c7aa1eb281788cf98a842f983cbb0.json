@@ -1,0 +1,1 @@
+{"sample_id": "muharaf_lines/test/000822", "model": "qari-ocr-0.2", "dataset": "muharaf_lines", "track": "line", "prompt_version": "line-v2", "ground_truth": "ولم يكن سهلاً عليها", "raw_text": "لما يكون سعيدًا", "cleaned_text": "لما يكون سعيدًا", "latency_ms": 662.39, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
