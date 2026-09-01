@@ -264,7 +264,11 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         ("errors", "err", "n"),
     ]
     thead = "".join(
-        f"<th class='{cls}'>{html.escape(label)}</th>" for _, label, cls in cols
+        "<th class='{cls}' data-key='{key}' data-type='{typ}'>{lbl}</th>".format(
+            cls=cls, key=key, lbl=html.escape(label),
+            typ="text" if key in ("model", "dataset") else "num",
+        )
+        for key, label, cls in cols
     )
     trs = []
     for r in rows:
@@ -285,14 +289,17 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
                 val = _fmt_num(r.get(key), 4)
             else:
                 val = _fmt_pct(r.get(key))
-            tds.append(f"<td class='{ccls}'>{val}</td>")
+            raw = html.escape(str(r.get(key, "")))
+            tds.append(f"<td class='{ccls}' data-v='{raw}'>{val}</td>")
         trs.append(f"<tr class='{cls.strip()}'>{''.join(tds)}</tr>")
     out.append(
-        "<section class='board'><div class='scroll'><table>"
+        "<section class='board'><div class='scroll'><table class='sortable'>"
         f"<thead><tr>{thead}</tr></thead><tbody>{''.join(trs)}</tbody></table></div>"
         "<p class='board-note'>All error figures are percentages; lower is better. "
-        "The <b>CER · light</b> column is the headline metric.</p></section>"
+        "The <b>CER · light</b> column is the headline metric. "
+        "Click a column header to sort; click again to reverse.</p></section>"
     )
+    out.append(_SORT_JS)
 
     out.append(_render_cards(rows))
     out.append(_render_samples(rows))
@@ -317,6 +324,36 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     out.append("</main>")
     return "\n".join(out)
 
+
+_SORT_JS = """<script>
+(function(){
+  var t=document.querySelector('table.sortable'); if(!t||!t.tHead) return;
+  var tb=t.tBodies[0];
+  var ths=Array.prototype.slice.call(t.tHead.rows[0].cells);
+  ths.forEach(function(th,i){
+    th.addEventListener('click',function(){
+      var dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
+      ths.forEach(function(o){o.removeAttribute('aria-sort');});
+      th.setAttribute('aria-sort',dir);
+      var num=th.dataset.type==='num', s=dir==='ascending'?1:-1;
+      var rows=Array.prototype.slice.call(tb.rows);
+      rows.sort(function(a,b){
+        var x=a.cells[i].getAttribute('data-v')||'', y=b.cells[i].getAttribute('data-v')||'';
+        if(num){
+          var nx=parseFloat(x), ny=parseFloat(y);
+          var ax=isNaN(nx), ay=isNaN(ny);
+          if(ax&&ay) return 0;
+          if(ax) return 1;          /* blanks / dashes always sort last */
+          if(ay) return -1;
+          return (nx-ny)*s;
+        }
+        return x.localeCompare(y)*s;
+      });
+      rows.forEach(function(r){tb.appendChild(r);});
+    });
+  });
+})();
+</script>"""
 
 _LEGEND = [
     ("CER / WER", "edit distance to the reference, over characters / words. 0 = perfect."),
@@ -509,6 +546,11 @@ th,td{padding:11px 14px;text-align:left;white-space:nowrap;border-bottom:1px sol
 thead th{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;
   letter-spacing:.03em;text-transform:uppercase;color:var(--muted);
   background:var(--ground);border-bottom:1px solid var(--line);}
+table.sortable thead th{cursor:pointer;}
+table.sortable thead th:hover{color:var(--ink);}
+thead th[aria-sort]{color:var(--ink);}
+thead th[aria-sort="ascending"]::after{content:" \2191";}
+thead th[aria-sort="descending"]::after{content:" \2193";}
 th.n,td.n{text-align:right;font-variant-numeric:tabular-nums;}
 td.n{font-family:"IBM Plex Mono",monospace;}
 td.t{font-weight:500;}
