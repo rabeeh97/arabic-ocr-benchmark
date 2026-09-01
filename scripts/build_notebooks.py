@@ -81,6 +81,11 @@ CLONE_CELL = code(
     "    url = f'https://{auth}github.com/{GH_USER}/{REPO}.git'",
     "    subprocess.run(['git', 'clone', '--depth', '1', url], check=True)",
     "os.chdir(REPO)",
+    "# src-layout package: importable straight from the checkout even if the",
+    "# `pip install -e` cell below fails or is skipped.",
+    "import sys",
+    "for _p in (os.path.join(os.getcwd(), 'src'), os.getcwd()):",
+    "    if _p not in sys.path: sys.path.insert(0, _p)",
     "print(subprocess.run(['git','log','--oneline','-1'], capture_output=True, text=True).stdout)",
 )
 
@@ -460,12 +465,21 @@ ROBUST_CLONE_CELL = code(
     "else:",
     "    os.system(f'rm -rf {REPO} && git clone --depth 1 {url} {REPO}')",
     "os.chdir(REPO)",
+    "# src-layout package: importable straight from the checkout even if the",
+    "# `pip install -e` cell fails or is skipped (this is what caused the old",
+    "# 'No module named arabic_ocr_bench' in the sweep cell).",
+    "import sys",
+    "for _p in (os.path.join(os.getcwd(), 'src'), os.getcwd()):",
+    "    if _p not in sys.path: sys.path.insert(0, _p)",
     "print(os.popen('git log --oneline -3').read())",
 )
 
 def _sweep_run_cell(concurrency: int = 1):
     return code(
-    "import shutil, subprocess, pathlib",
+    "import os, sys, shutil, subprocess, pathlib",
+    "# make the src-layout package importable even if `pip install -e` didn't take",
+    "for _p in (os.path.join(os.getcwd(), 'src'), os.getcwd()):",
+    "    if _p not in sys.path: sys.path.insert(0, _p)",
     "from arabic_ocr_bench.sweep import run_sweep",
     "from arabic_ocr_bench.samples import export_run_samples",
     "",
