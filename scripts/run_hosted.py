@@ -1,15 +1,19 @@
-"""Run hosted-API models (Claude / Gemini / GPT) locally on a SMALL sample.
+"""Run hosted-API models (Gemini / Mistral / OpenRouter / Claude / GPT) on a
+SMALL sample. Same engine as notebook 02 (`run_sweep`).
 
-Same engine as notebook 02 (`run_sweep`, partial phase only) — just no git push.
-Keeps cost down: `--limit` defaults to 20 and is hard-capped at 50.
+Resume-safe: every finished (model, dataset, phase) is recorded in
+`results/sweep_manifest.json` AND committed to git in the same step, and every
+finished line is cached in `results/_cache/` (also committed). Re-running skips
+whole done phases and, within a half-finished phase, never re-calls a line that
+already has an answer — so a free-tier quota is never spent twice on the same
+work. Keys come from `.env`; `--limit` defaults to 20, hard-capped at 50.
 
-    export ANTHROPIC_API_KEY=sk-ant-...
-    uv run python scripts/run_hosted.py                       # claude x 20 muharaf lines
-    uv run python scripts/run_hosted.py --dataset synthetic   # zero cost, no download
+    uv run python scripts/run_hosted.py                        # every keyed model x 20 kitab_khatt lines, commit+push
+    uv run python scripts/run_hosted.py --dataset synthetic    # zero cost, no download
     uv run python scripts/run_hosted.py --models claude-haiku --limit 10
-    uv run python scripts/run_hosted.py --push                # also commit + push results
+    uv run python scripts/run_hosted.py --no-push              # commit locally only (offline)
+    uv run python scripts/run_hosted.py --no-commit            # scratch run, persist nothing
 
-Needs the model's API key in the environment (env_key from configs/models.yaml).
 For `muharaf_lines`, set HF_TOKEN too if the anonymous download throttles.
 """
 
@@ -51,10 +55,18 @@ def main() -> int:
     ap.add_argument("--models", default="",
                     help="comma-separated names from configs/models.yaml "
                          "(default: every hosted model whose API key is set)")
-    ap.add_argument("--dataset", default="muharaf_lines")
+    ap.add_argument("--dataset", default="kitab_khatt")
     ap.add_argument("--limit", type=int, default=20)
-    ap.add_argument("--push", action="store_true", help="git add/commit/push results after")
+    ap.add_argument("--full", action="store_true",
+                    help="also run the full-split phase after the partial one")
+    ap.add_argument("--no-commit", action="store_true",
+                    help="don't git-commit results (default: commit after every phase)")
+    ap.add_argument("--no-push", action="store_true",
+                    help="commit locally but don't git push")
     args = ap.parse_args()
+
+    do_commit = not args.no_commit
+    do_push = do_commit and not args.no_push
 
     limit = min(args.limit, HARD_CAP)
     if limit != args.limit:
@@ -71,7 +83,9 @@ def main() -> int:
         print("\nno runnable models — set the API key(s) and retry, e.g.:\n"
               "  export ANTHROPIC_API_KEY=sk-ant-...")
         return 1
-    print(f"running: {models}  x  {args.dataset}  ({limit} lines, partial only)\n")
+    phases = "partial + full" if args.full else "partial only"
+    print(f"running: {models}  x  {args.dataset}  ({limit} lines, {phases})")
+    print(f"persist: {'commit + push' if do_push else 'commit (local)' if do_commit else 'none'}\n")
 
     from arabic_ocr_bench.samples import export_run_samples
     from arabic_ocr_bench.sweep import run_sweep
@@ -106,18 +120,39 @@ def main() -> int:
         return lambda i: rows[int(i)]["image"] if int(i) < len(rows) else None
 
     def on_done(entry, run_dir):
+        """Persist THIS phase before run_sweep marks it done. Mirrors the Colab
+        notebook's checkpoint(): a phase recorded in the manifest is always
+        already in git, so nothing (and no paid/free call) is ever repeated."""
         try:
             export_run_samples(run_dir, get_image=get_image_fn(entry["dataset"]), k=3)
         except Exception as e:  # noqa: BLE001
             print(f"  (sample export skipped: {e})")
         subprocess.run([sys.executable, "scripts/make_leaderboard.py", "results",
                         "-o", "results/leaderboard.html"], check=False)
+        if not do_commit:
+            return
+        # results/_cache is committed too (see .gitignore) — that's the per-line
+        # resume so an interrupted phase doesn't re-call the lines it finished.
+        subprocess.run(["git", "add", "-A", "results"], check=False)
+        msg = (f"hosted: {entry['model']} {entry['dataset']} {entry['phase']} "
+               f"n={entry['n']} CER-light {entry['cer_micro_light'] * 100:.1f}%")
+        subprocess.run(["git", "commit", "-m", msg], check=False)
+        if not do_push:
+            return
+        subprocess.run(["git", "pull", "--rebase", "--autostash", "origin", "main"], check=False)
+        p = subprocess.run(["git", "push", "origin", "HEAD:main"],
+                           capture_output=True, text=True, check=False)
+        if p.returncode != 0:
+            # raising rolls the manifest entry back -> phase re-runs next time,
+            # but the per-line cache means that costs ~nothing
+            raise RuntimeError("git push failed: " + (p.stderr.strip()[:300] or "unknown"))
+        print("  push: ok")
 
     run_sweep(
         models=models,
         dataset=args.dataset,
         partial_limit=limit,
-        run_full=False,
+        run_full=args.full,
         concurrency=4,
         manifest_path="results/sweep_manifest.json",
         results_dir="results",
@@ -129,12 +164,6 @@ def main() -> int:
     if latest:
         print("\n" + latest[-1].read_text())
     print("leaderboard -> results/leaderboard.html")
-
-    if args.push:
-        subprocess.run(["git", "add", "-A", "results"], check=False)
-        subprocess.run(["git", "commit", "-m",
-                        f"hosted: {', '.join(models)} x {args.dataset} n={limit}"], check=False)
-        subprocess.run(["git", "push"], check=False)
     return 0
 
 
