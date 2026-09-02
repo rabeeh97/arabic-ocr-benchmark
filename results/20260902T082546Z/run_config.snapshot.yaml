@@ -1,0 +1,22 @@
+models:
+- gemini-flash
+- gemini-flash-lite
+- pixtral-12b
+- mistral-small
+- openrouter-qwen2.5-vl-72b
+- openrouter-qwen3-vl-235b
+- openrouter-llama-4-maverick
+datasets:
+- kitab_muharaf
+- muharaf_lines
+limit: 10
+offset: 0
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 4
+max_retries: 3
+cache: true
+results_dir: results
