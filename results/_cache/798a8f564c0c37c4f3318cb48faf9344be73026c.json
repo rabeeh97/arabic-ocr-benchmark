@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000006", "model": "mistral-small", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "لبنان", "raw_text": "وَلَا", "cleaned_text": "وَلَا", "latency_ms": 399.21, "input_tokens": 121, "output_tokens": 4, "cost_usd": 2.66e-05, "error": null, "attempts": 1, "cached": false}
