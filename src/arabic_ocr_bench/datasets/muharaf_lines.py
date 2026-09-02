@@ -47,10 +47,19 @@ class MuharafLines:
         from datasets import load_dataset
 
         if self.indices is not None:
-            ds = load_dataset(self.hf_id, split=self.split)
-            sel = [i for i in self.indices if 0 <= i < len(ds)]
+            want = sorted(i for i in self.indices if i >= 0)
+            if want and want[-1] < _STREAM_MAX:
+                # small slice (accumulate / retry) — stream the first N rows
+                # instead of downloading + arrow-building the whole 500 MB split
+                it = load_dataset(self.hf_id, split=self.split, streaming=True)
+                head = list(itertools.islice(it, want[-1] + 1))
+                sel = [i for i in want if i < len(head)]
+                self._rows = [head[i] for i in sel]
+            else:
+                ds = load_dataset(self.hf_id, split=self.split)
+                sel = [i for i in want if i < len(ds)]
+                self._rows = list(ds.select(sel))
             self._abs = sel
-            self._rows = list(ds.select(sel))
             return self._rows
 
         window = None if self.limit is None else self.offset + self.limit
