@@ -36,6 +36,7 @@ class KitabBench:
         split: str = "train",
         limit: int | None = None,
         offset: int = 0,
+        indices: list[int] | None = None,
         name: str | None = None,
         max_dim: int = 1600,
     ):
@@ -46,17 +47,26 @@ class KitabBench:
         self.split = split
         self.limit = limit
         self.offset = offset
+        # explicit absolute row indices (accumulate / retry); wins over offset+limit
+        self.indices = None if indices is None else list(indices)
         self.max_dim = max_dim
         self._rows = None
+        self._abs: list[int] = []
 
     def _load(self):
         if self._rows is None:
             from datasets import load_dataset
 
             ds = load_dataset(self.hf_id, split=self.split)
-            end = len(ds) if self.limit is None else min(self.offset + self.limit, len(ds))
-            ds = ds.select(range(min(self.offset, len(ds)), end))
-            self._rows = list(ds)
+            n = len(ds)
+            if self.indices is not None:
+                sel = [i for i in self.indices if 0 <= i < n]
+            else:
+                start = min(self.offset, n)
+                end = n if self.limit is None else min(self.offset + self.limit, n)
+                sel = list(range(start, end))
+            self._abs = sel
+            self._rows = list(ds.select(sel))
         return self._rows
 
     @staticmethod
@@ -70,8 +80,9 @@ class KitabBench:
         return len(self._load())
 
     def __iter__(self) -> Iterator[Sample]:
-        for i, row in enumerate(self._load()):
-            idx = self.offset + i
+        rows = self._load()
+        for i, row in enumerate(rows):
+            idx = self._abs[i] if i < len(self._abs) else self.offset + i
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
                 image=cap_image(row["image"].convert("RGB"), self.max_dim),

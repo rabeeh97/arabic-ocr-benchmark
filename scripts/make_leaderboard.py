@@ -84,7 +84,8 @@ def _run_dirs(target: Path) -> list[Path]:
 def _run_meta(run_dir: Path) -> dict:
     meta = {"run": run_dir.name, "when": "", "limit": "", "prompt_version": ""}
     try:
-        parsed = dt.datetime.strptime(run_dir.name, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.UTC)
+        stamp = run_dir.name.split("-")[0]  # tolerate a "-2" same-second suffix
+        parsed = dt.datetime.strptime(stamp, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.UTC)
         meta["when"] = parsed.strftime("%Y-%m-%d %H:%M UTC")
     except ValueError:
         pass
@@ -145,22 +146,26 @@ def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str,
                 if not line:
                     continue
                 p = json.loads(line)
-                if p.get("model") == model and p.get("dataset") == dataset:
-                    seen.setdefault(p["sample_id"], p)  # first-seen wins if ids ever collide
+                if p.get("model") != model or p.get("dataset") != dataset:
+                    continue
+                prev = seen.get(p["sample_id"])
+                # a later, successful retry supersedes an earlier errored attempt;
+                # otherwise keep the first successful reading we saw.
+                if prev is None or (prev.get("error") and not p.get("error")):
+                    seen[p["sample_id"]] = p
 
     if not seen:
         # predictions.jsonl missing for every contributing run (older run dir) —
         # fall back to the previous behaviour rather than reporting nothing.
         return max(group, key=lambda r: int(r.get("n", 0) or 0))
 
-    preds = list(seen.values())
+    ok = [p for p in seen.values() if not p.get("error")]
+    n_err = len(seen) - len(ok)
+    n = len(ok)
     scored = [
-        (p, score_pair(p["ground_truth"], "" if p.get("error") else (p.get("cleaned_text") or "")))
-        for p in preds
+        (p, score_pair(p["ground_truth"], p.get("cleaned_text") or "")) for p in ok
     ]
-    n = len(scored)
-    n_err = sum(1 for p, _ in scored if p.get("error"))
-    agg = aggregate([ps for _, ps in scored])
+    agg = aggregate([ps for _, ps in scored]) if scored else None
 
     row = {
         "run": "+".join(sorted({r["run"] for r in group})),
@@ -171,16 +176,20 @@ def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str,
         "dataset": dataset,
         "n": str(n),
         "errors": str(n_err),
-        "refusal_rate": f"{n_err / n:.4f}" if n else "0.0",
-        "latency_ms_mean": f"{sum(p.get('latency_ms', 0.0) for p, _ in scored) / n:.1f}" if n else "0.0",
-        "cost_usd_total": f"{sum(p.get('cost_usd', 0.0) for p, _ in scored):.6f}",
+        "refusal_rate": f"{n_err / (n + n_err):.4f}" if (n + n_err) else "0.0",
+        "latency_ms_mean": (
+            f"{sum(p.get('latency_ms', 0.0) for p, _ in scored) / n:.1f}" if n else "0.0"
+        ),
+        "cost_usd_total": (
+            f"{sum(p.get('cost_usd', 0.0) for p in seen.values()):.6f}"
+        ),
     }
     for p in _PROFILES:
-        row[f"cer_micro_{p}"] = f"{agg['micro_cer'][p]:.4f}"
-        row[f"cer_macro_{p}"] = f"{agg['cer_macro'][p]:.4f}"
-        row[f"wer_micro_{p}"] = f"{agg['micro_wer'][p]:.4f}"
-        row[f"exact_{p}"] = f"{agg['exact_match_rate'][p]:.4f}"
-    row["diac_f1"] = f"{agg['diacritic']['f1']:.4f}"
+        row[f"cer_micro_{p}"] = f"{agg['micro_cer'][p]:.4f}" if agg else ""
+        row[f"cer_macro_{p}"] = f"{agg['cer_macro'][p]:.4f}" if agg else ""
+        row[f"wer_micro_{p}"] = f"{agg['micro_wer'][p]:.4f}" if agg else ""
+        row[f"exact_{p}"] = f"{agg['exact_match_rate'][p]:.4f}" if agg else ""
+    row["diac_f1"] = f"{agg['diacritic']['f1']:.4f}" if agg else ""
     return row
 
 
