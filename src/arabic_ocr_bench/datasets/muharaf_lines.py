@@ -29,18 +29,29 @@ class MuharafLines:
         split: str = "test",
         limit: int | None = None,
         offset: int = 0,
+        indices: list[int] | None = None,
         hf_id: str = _HF_ID,
     ):
         self.split = split
         self.limit = limit
         self.offset = offset
+        # explicit absolute row indices (accumulate / retry); wins over offset+limit
+        self.indices = None if indices is None else list(indices)
         self.hf_id = hf_id
         self._rows = None
+        self._abs: list[int] = []
 
     def _load(self):
         if self._rows is not None:
             return self._rows
         from datasets import load_dataset
+
+        if self.indices is not None:
+            ds = load_dataset(self.hf_id, split=self.split)
+            sel = [i for i in self.indices if 0 <= i < len(ds)]
+            self._abs = sel
+            self._rows = list(ds.select(sel))
+            return self._rows
 
         window = None if self.limit is None else self.offset + self.limit
         if window is not None and window <= _STREAM_MAX:
@@ -51,14 +62,16 @@ class MuharafLines:
             end = len(ds) if self.limit is None else min(self.offset + self.limit, len(ds))
             ds = ds.select(range(min(self.offset, len(ds)), end))
             self._rows = list(ds)
+        self._abs = list(range(self.offset, self.offset + len(self._rows)))
         return self._rows
 
     def __len__(self) -> int:
         return len(self._load())
 
     def __iter__(self) -> Iterator[Sample]:
-        for i, row in enumerate(self._load()):
-            idx = self.offset + i
+        rows = self._load()
+        for i, row in enumerate(rows):
+            idx = self._abs[i] if i < len(self._abs) else self.offset + i
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
                 image=cap_image(row["image"].convert("RGB"), 1024),

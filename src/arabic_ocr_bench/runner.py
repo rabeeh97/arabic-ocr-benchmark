@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
@@ -46,6 +47,50 @@ def _is_transient(err: str | None) -> bool:
     return bool(err) and any(t in err.lower() for t in _TRANSIENT)
 
 
+_IDX_RE = re.compile(r"(\d+)\s*$")
+
+
+def scored_indices(
+    root: Path, model: str, dataset: str, *, exclude: Path | None = None
+) -> set[int]:
+    """Absolute row indices this (model, dataset) already has a NON-errored
+    prediction for, across every run dir under ``root`` (except ``exclude`` —
+    the in-progress run whose predictions file is mid-write). Used by accumulate
+    mode so a re-run never re-spends a call that already succeeded."""
+    done: set[int] = set()
+    skip = exclude.resolve() if exclude else None
+    for pred in root.glob("*/predictions.jsonl"):
+        if skip and pred.parent.resolve() == skip:
+            continue
+        try:
+            lines = pred.read_text(encoding="utf-8").splitlines()
+        except OSError:
+            continue
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                r = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if r.get("model") != model or r.get("dataset") != dataset or r.get("error"):
+                continue
+            m = _IDX_RE.search(str(r.get("sample_id", "")).split("/")[-1])
+            if m:
+                done.add(int(m.group(1)))
+    return done
+
+
+def next_indices(done: set[int], n: int) -> list[int]:
+    """The next ``n`` absolute indices (from 0 up) that are not in ``done`` —
+    naturally retries earlier gaps / errored rows first, then moves into fresh
+    territory. The dataset adapter clamps anything past the end."""
+    if n <= 0:
+        return []
+    return [i for i in range(len(done) + n) if i not in done][:n]
+
+
 def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     models_cfg = load_model_configs()
     datasets_cfg = load_dataset_configs()
@@ -54,14 +99,19 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     base_prompt = get_prompt(prompt_version)
     limit = run_cfg.get("limit")
     offset = int(run_cfg.get("offset", 0))
+    accumulate = bool(run_cfg.get("accumulate", False))
     concurrency = int(run_cfg.get("concurrency", 4))
     max_retries = int(run_cfg.get("max_retries", 3))
     use_cache = bool(run_cfg.get("cache", True))
     show_progress = bool(run_cfg.get("progress", True))
 
     root = Path(results_root or run_cfg.get("results_dir", "results"))
-    run_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    run_dir = root / run_id
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+    run_id, run_dir, bump = stamp, root / stamp, 1
+    while run_dir.exists():  # two runs in the same second must not share a dir
+        bump += 1
+        run_id = f"{stamp}-{bump}"
+        run_dir = root / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
     cache_dir = root / "_cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -77,8 +127,9 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         cache_file = cache_dir / f"{key}.json"
         if use_cache and cache_file.exists():
             row = json.loads(cache_file.read_text())
-            row["cached"] = True
-            return row
+            if not row.get("error"):  # never serve a stale errored result — retry it
+                row["cached"] = True
+                return row
 
         prompt = base_prompt
         if is_mock(cfg):
@@ -136,7 +187,14 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     with pred_path.open("w", encoding="utf-8") as fh:
         for mi, model_name in enumerate(run_cfg["models"], 1):
             for ds_name in run_cfg["datasets"]:
-                adapter = build_dataset(ds_name, datasets_cfg[ds_name], limit=limit, offset=offset)
+                if accumulate:
+                    done = scored_indices(root, model_name, ds_name, exclude=run_dir)
+                    want = next_indices(done, int(limit) if limit else 10)
+                    adapter = build_dataset(ds_name, datasets_cfg[ds_name], indices=want)
+                else:
+                    adapter = build_dataset(
+                        ds_name, datasets_cfg[ds_name], limit=limit, offset=offset
+                    )
                 try:
                     total = len(adapter)
                 except (TypeError, AttributeError):

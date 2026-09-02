@@ -1,0 +1,7 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+gemini-flash-lite,kitab_muharaf,10,0,0.0,1590.6,0.001216,0.2936,0.3435,0.6566,0.0,0.2822,0.3347,0.6566,0.0,0.2705,0.3229,0.6263,0.0,0.8
+openrouter-qwen3-vl-235b,kitab_muharaf,10,0,0.0,3546.4,0.000884,0.5436,0.6008,0.8283,0.0,0.5379,0.5973,0.8283,0.0,0.461,0.4549,0.8182,0.0,0.6095
+openrouter-qwen2.5-vl-72b,kitab_muharaf,10,0,0.0,1646.7,0.001204,0.589,0.6816,0.9495,0.0,0.5833,0.6599,0.9495,0.0,0.5181,0.616,0.9394,0.0,0.6
+openrouter-llama-4-maverick,kitab_muharaf,10,0,0.0,6380.2,0.001204,0.6477,0.6858,0.9394,0.0,0.6402,0.6669,0.9394,0.0,0.5886,0.6197,0.9293,0.0,0.52
+mistral-small,kitab_muharaf,8,2,0.2,3175.9,0.000368,0.9158,0.9102,1.0145,0.0,0.9022,0.9004,1.0145,0.0,0.7446,0.773,0.9855,0.0,0.125
+pixtral-12b,kitab_muharaf,7,3,0.3,2651.3,0.000204,0.9188,0.8276,0.9853,0.0,0.911,0.8209,0.9853,0.0,0.6385,0.5909,0.9706,0.0,0.4354

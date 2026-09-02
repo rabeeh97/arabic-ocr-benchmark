@@ -1,10 +1,12 @@
-# Comparison pass: run the free-tier hosted models on the same first-10 lines of
-# kitab_muharaf and muharaf_lines that the local open-weight models were already
-# scored on, so the leaderboard's per-dataset tables compare hosted vs local on
-# identical images. offset 0 + limit 10 == the local runs' slice; the per-line
-# cache means a re-run costs nothing.
+# Comparison pass: free-tier hosted models on the datasets the local open-weight
+# models were scored on. accumulate=true -> each run adds `limit` brand-new
+# (never-scored) lines per model and retries anything that errored last time;
+# nothing already scored is recomputed. Re-run this to keep growing n.
+#
+# gemini-flash (3.6) is intentionally left out: on the free AI Studio tier it
+# rate-limits hard (errors, not data) and costs ~6x gemini-flash-lite for worse
+# output. gemini-flash-lite covers the Gemini line here.
 models:
-  - gemini-flash
   - gemini-flash-lite
   - pixtral-12b
   - mistral-small
@@ -17,7 +19,7 @@ datasets:
   - muharaf_lines
 
 limit: 10
-offset: 0
+accumulate: true
 prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
 

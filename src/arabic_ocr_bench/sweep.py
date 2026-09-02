@@ -87,6 +87,7 @@ def run_sweep(
     profiles: tuple[str, ...] = PROFILES,
     concurrency: int = 1,
     cache: bool = True,
+    accumulate: bool = False,
     on_progress: Callable[[str], None] | None = None,
     on_done: Callable[[Entry, Path], None] | None = None,
 ) -> list[Entry]:
@@ -95,9 +96,15 @@ def run_sweep(
     _save_manifest(manifest_path, manifest)
     done = _done_keys(manifest)
 
-    phases: list[tuple[str, int | None]] = [("partial", partial_limit)]
-    if run_full:
-        phases.append(("full", None))
+    # Accumulate mode: every call adds `partial_limit` NEW (never-scored) lines
+    # per model and retries anything that errored last time. There is no "done"
+    # — re-running the exact same cell grows coverage 10 -> 20 -> 30 ...
+    if accumulate:
+        phases: list[tuple[str, int | None]] = [("accumulate", partial_limit)]
+    else:
+        phases = [("partial", partial_limit)]
+        if run_full:
+            phases.append(("full", None))
 
     total = len(models) * len(phases)
     new_entries: list[Entry] = []
@@ -106,7 +113,7 @@ def run_sweep(
         for phase, limit in phases:
             step += 1
             key = (model, dataset, phase)
-            if key in done:
+            if key in done and not accumulate:
                 log(f"[{step}/{total}] skip {model} / {phase} (already done)")
                 continue
             log(f"[{step}/{total}] start {model} / {phase} (limit={limit})")
@@ -116,6 +123,7 @@ def run_sweep(
                         "models": [model],
                         "datasets": [dataset],
                         "limit": limit,
+                        "accumulate": accumulate,
                         "prompt_version": prompt_version,
                         "normalization_profiles": list(profiles),
                         "concurrency": concurrency,

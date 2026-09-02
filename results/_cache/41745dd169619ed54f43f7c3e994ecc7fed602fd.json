@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000017", "model": "mistral-small", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "YFS2A-1", "raw_text": "USA", "cleaned_text": "USA", "latency_ms": 1693.04, "input_tokens": 127, "output_tokens": 2, "cost_usd": 2.66e-05, "error": null, "attempts": 1, "cached": false}

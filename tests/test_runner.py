@@ -83,6 +83,76 @@ def test_cache_prevents_second_call(wired, monkeypatch):
     assert calls["n"] == 0
 
 
+def test_errored_predictions_are_not_scored_or_counted(wired):
+    run_dir = wired / "run1"
+    run_dir.mkdir()
+    (run_dir / "predictions.jsonl").write_text(
+        "\n".join(
+            json.dumps(r, ensure_ascii=False)
+            for r in [
+                {"sample_id": "fake/000", "model": "m", "dataset": "fake",
+                 "ground_truth": "مرحبا", "cleaned_text": "مرحبا", "error": None},
+                {"sample_id": "fake/001", "model": "m", "dataset": "fake",
+                 "ground_truth": "كتاب", "cleaned_text": "", "error": "429 rate limit"},
+            ]
+        )
+    )
+    score_run(run_dir, profiles=("raw",))
+    summary = {r["model"]: r for r in _read_csv(run_dir / "summary.csv")}
+    # only the one good pair is scored; the 429 row is quarantined, not CER 1.0
+    assert int(summary["m"]["n"]) == 1
+    assert int(summary["m"]["errors"]) == 1
+    assert float(summary["m"]["cer_micro_raw"]) == 0.0
+
+
+def test_errored_predictions_are_not_cached(wired, monkeypatch):
+    from arabic_ocr_bench.models.mock_client import MockClient
+
+    def boom(self, image, prompt):
+        from arabic_ocr_bench.models.base import Prediction
+
+        return Prediction(raw_text="", cleaned_text="", error="500 server error")
+
+    monkeypatch.setattr(MockClient, "transcribe", boom)
+    cfg = {"models": ["mock_echo"], "datasets": ["fake"], "prompt_version": "line-v1",
+           "cache": True}
+    run(cfg, results_root=wired)
+    assert not list((wired / "_cache").glob("*.json"))
+
+
+def test_accumulate_targets_fresh_indices_on_rerun(monkeypatch, tmp_path):
+    seen_indices = []
+
+    class _IdxDataset:
+        name = "fake"
+        track = "line"
+
+        def __init__(self, indices=None, **_):
+            self._idx = list(indices if indices is not None else range(2))
+            seen_indices.append(list(self._idx))
+
+        def __iter__(self):
+            img = Image.new("RGB", (8, 8))
+            for i in self._idx:
+                yield Sample(id=f"fake/{i:03d}", image=img, ground_truth="ك", track="line")
+
+    monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"fake": {}})
+    monkeypatch.setattr(runner_mod, "build_dataset",
+                        lambda name, cfg, **kw: _IdxDataset(**kw))
+    monkeypatch.setattr(
+        runner_mod, "load_model_configs",
+        lambda *a, **k: {"mock_echo": {"client": "mock", "mode": "echo_gt", "pricing": None}},
+    )
+    base = {"models": ["mock_echo"], "datasets": ["fake"], "prompt_version": "line-v1",
+            "limit": 2, "accumulate": True}
+    r1 = run(dict(base), results_root=tmp_path)
+    score_run(r1, profiles=("raw",))
+    run(dict(base), results_root=tmp_path)
+    # first accumulate pass -> [0, 1]; second must move on to [2, 3]
+    assert seen_indices[-2] == [0, 1]
+    assert seen_indices[-1] == [2, 3]
+
+
 def _read_csv(path):
     import csv
 
