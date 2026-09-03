@@ -74,6 +74,31 @@ Quirks:
 - Tends to preserve diacritics well; good candidate for the diacritic-accuracy
   metric comparison.
 
+### NVIDIA NIM API catalog (Llama-3.2-Vision / Gemma-4)
+
+| Field | Value |
+| --- | --- |
+| LiteLLM id | `openai/meta/llama-3.2-90b-vision-instruct`, `openai/meta/llama-3.2-11b-vision-instruct`, `openai/google/gemma-4-31b-it` |
+| Credential | `NVIDIA_API_KEY` (free developer tier at build.nvidia.com — no card, rate-limited) |
+| api_base | `https://integrate.api.nvidia.com/v1` (OpenAI-compatible; registry passes the key explicitly) |
+| Image input | `image_url` data URI (JPG/PNG); same path as every other LiteLLM model |
+| Track fit | page / document VQA — weak on bare handwritten line crops |
+
+Quirks:
+- **NVIDIA retired the hosted Nemotron-VL line.** As of 2026-09-02, `GET
+  /v1/models` no longer lists `nvidia/llama-3.1-nemotron-nano-vl-8b-v1` or
+  `nvidia/nemotron-nano-12b-v2-vl` — both return `410 Gone` ("end of life
+  2026-08-26"), and `google/gemma-3-27b-it` 410'd on 2026-05-12. The live chat
+  VLMs are Meta Llama-3.2-Vision (11B/90B), Gemma 3 4B/12B, Gemma 4 31B,
+  Phi-3-vision and `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning`.
+- These are general VLMs, not OCR models. On the Sep 2026 pass `llama-3.2-90b`
+  scored >100% CER on Muharaf lines (it describes the crop instead of
+  transcribing) at ~135 s/line — keep expectations low for the line track.
+- Free tier rate-limits and burns a small credit pool; keep `limit` modest and
+  `concurrency` low. Expect `RateLimitError` rows on big passes, not silent data.
+- `nvidia/nemotron-parse` (a dedicated document-parsing model) is *not* added: it
+  uses a non-chat NIM response shape that `litellm_client` doesn't speak.
+
 **Testing a Tier 1 model end to end:**
 ```
 # configs/run.yaml: models: [gemini/gemini-2.5-flash], datasets: [muharaf_lines], limit: 15

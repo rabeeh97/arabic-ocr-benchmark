@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000001", "model": "mistral-medium", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MK2A7 21", "raw_text": "مكثا ٧ ٢١", "cleaned_text": "مكثا ٧ ٢١", "latency_ms": 596.1, "input_tokens": 115, "output_tokens": 10, "cost_usd": 6.6e-05, "error": null, "attempts": 1, "cached": false}

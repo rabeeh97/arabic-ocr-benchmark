@@ -1,0 +1,24 @@
+models:
+- nemotron-nano-vl-8b
+- nemotron-nano-v2-vl-12b
+- nvidia-llama-3.2-90b-vl
+- nvidia-gemma-3-27b
+- pixtral-large
+- mistral-medium
+- openrouter-gemma-4-31b-free
+- openrouter-gemma-4-26b-free
+- openrouter-minimax-m3-free
+datasets:
+- kitab_muharaf
+- muharaf_lines
+limit: 10
+accumulate: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results
