@@ -104,3 +104,37 @@ def test_cache_dir_yields_lazy_images_that_decode_on_demand(tmp_path):
     assert isinstance(again[0].image, LazyImage)
     assert again[0].image._lazy_loaded is False
     assert again[0].image.convert("L").size == img.size
+
+
+def test_work_dir_checkpoints_to_a_single_tar_and_resumes(tmp_path):
+    drive = tmp_path / "drive"      # durable store (stand-in for Google Drive)
+    local1 = tmp_path / "local1"    # fast scratch, wiped between "sessions"
+    kw = {
+        "corpora": [], "texts": _BLOBS, "n": 6, "seed": 2,
+        "min_len": 15, "max_len": 200,
+        "cache_dir": drive, "work_dir": local1, "flush_every": 2,
+    }
+    s1 = list(SyntheticPrinted(**kw))
+    assert len(s1) == 6
+    # images rendered to the local dir, checkpoint is one tar on the durable store
+    assert len(list(local1.glob("*.png"))) == 6
+    assert (drive / "images.tar").exists()
+    assert not list(drive.glob("*.png"))          # no loose files on "Drive"
+    assert (drive / f"pool_{SyntheticPrinted(**kw)._pool_key()}.json").exists()
+
+    # new "session": fresh local dir, only the tar survives -> restored, no re-render
+    local2 = tmp_path / "local2"
+    adapter = SyntheticPrinted(**{**kw, "work_dir": local2})
+    import arabic_ocr_bench.training.synth as synth_mod
+
+    calls = []
+    orig = synth_mod.SyntheticPrinted._render
+    synth_mod.SyntheticPrinted._render = lambda self, *a, **k: calls.append(1) or orig(self, *a, **k)
+    try:
+        s2 = list(adapter)
+    finally:
+        synth_mod.SyntheticPrinted._render = orig
+    assert len(s2) == 6
+    assert calls == []                              # everything came from the tar
+    assert len(list(local2.glob("*.png"))) == 6
+    assert [x.id for x in s1] == [x.id for x in s2]
