@@ -272,6 +272,67 @@ _CORPUS_LOADERS = {
 
 
 # --------------------------------------------------------------------------- #
+# lazy image handle
+# --------------------------------------------------------------------------- #
+class LazyImage(Image.Image):
+    """A PIL image backed by a file on disk that decodes only on first real use.
+
+    ``assemble_dataset`` builds one row per training line, and the synthetic
+    source alone can be 15k+ lines; holding every decoded bitmap in memory at
+    once OOMs a Colab runtime (the "Assemble + class balance by source" cell in
+    ``06_colab_prepare_data.ipynb``). When the source renders to a ``cache_dir``
+    each line is written once as a PNG and represented here by its path, so the
+    row lists stay tiny. The pixels are paged in lazily — one batch at a time by
+    the trainer's collator, or per-sample by the notebook's preview cell.
+
+    It subclasses ``PIL.Image.Image`` (not a bare wrapper) so it still satisfies
+    ``isinstance(x, Image.Image)`` checks and ``datasets.Dataset.from_list``'s
+    automatic ``Image()`` feature inference. Decoding is funnelled through the
+    handful of entry points PIL routes pixel access through (``load``,
+    ``convert``, ``__getstate__``) plus ``size``.
+    """
+
+    def __init__(self, path: str | Path):
+        super().__init__()
+        object.__setattr__(self, "_lazy_path", str(path))
+        object.__setattr__(self, "_lazy_loaded", False)
+
+    def _lazy_ensure(self) -> None:
+        if self._lazy_loaded:
+            return
+        object.__setattr__(self, "_lazy_loaded", True)
+        with Image.open(self._lazy_path) as im:
+            im.load()
+            # PIL's own pickle protocol — version-stable across Pillow releases.
+            self.__setstate__(im.__getstate__())
+
+    def load(self):
+        self._lazy_ensure()
+        return Image.Image.load(self)
+
+    def convert(self, *args, **kwargs):
+        self._lazy_ensure()
+        return Image.Image.convert(self, *args, **kwargs)
+
+    def __getstate__(self):
+        self._lazy_ensure()
+        return Image.Image.__getstate__(self)
+
+    @property
+    def size(self):
+        self._lazy_ensure()
+        return self._size
+
+    @size.setter
+    def size(self, value):
+        # __setstate__ on older Pillow assigns .size directly; keep it working.
+        object.__setattr__(self, "_size", value)
+
+    def __reduce__(self):
+        return (LazyImage, (self._lazy_path,))
+
+
+# --------------------------------------------------------------------------- #
 # dataset adapter
 # --------------------------------------------------------------------------- #
 class SyntheticPrinted:
@@ -371,22 +432,25 @@ class SyntheticPrinted:
         return out
 
     def _render_cached(self, sid, gt, font_paths, idx) -> Image.Image:
-        if self.cache_dir is not None:
-            fp = self.cache_dir / f"{sid.replace('/', '__')}.png"
-            if fp.exists():
-                return Image.open(fp).convert("RGB")
+        if self.cache_dir is None:
+            return self._render(gt, font_paths, idx)
+        fp = self.cache_dir / f"{sid.replace('/', '__')}.png"
+        if not fp.exists():
+            fp.parent.mkdir(parents=True, exist_ok=True)
+            self._render(gt, font_paths, idx).save(fp)
+        # Return a lazy handle, not decoded pixels: a full run is 15k+ lines and
+        # assemble_dataset keeps them all in a list — see LazyImage.
+        return LazyImage(fp)
+
+    def _render(self, gt, font_paths, idx) -> Image.Image:
         prng = random.Random(f"{self.seed}:{idx}")
         font_path = font_paths[prng.randrange(len(font_paths))]
         size = self.sizes[prng.randrange(len(self.sizes))]
-        img = degrade(
+        return degrade(
             render_line(gt, font_path, size=size),
             np.random.default_rng([self.seed, idx]),
             self.degrade_level,
         )
-        if self.cache_dir is not None:
-            fp.parent.mkdir(parents=True, exist_ok=True)
-            img.save(fp)
-        return img
 
     def __len__(self) -> int:
         return len(self._build())
