@@ -217,7 +217,9 @@ nvidia-llama-3.2-11b-vl:
   pricing: null                    # free NIM tier
   card: >-
     Meta's Llama 3.2 11B Vision on NVIDIA's NIM catalog — the small sibling of
-    the 90B row. General-purpose, not OCR-tuned.
+    the 90B row. General-purpose, not OCR-tuned; on the Sep 2026 pass it went
+    into repetition collapse on Arabic handwriting (CER > 300%), i.e. it can't
+    read the script at all rather than reading it badly.
 nvidia-gemma-4-31b:
   client: litellm
   litellm_id: openai/google/gemma-4-31b-it
