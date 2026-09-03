@@ -9,9 +9,14 @@ dataset adapter that plugs straight into `training.data.assemble_dataset`.
 
 from __future__ import annotations
 
+import hashlib
 import io
+import json
+import os
 import random
 import re
+import tarfile
+import tempfile
 from collections.abc import Iterable, Iterator
 from pathlib import Path
 
@@ -40,6 +45,23 @@ _DEGRADE_LEVELS = {
     "medium": {"blur": 1.2, "noise": 12.0, "jpeg": (35, 72), "rot": 1.6, "scale": (0.72, 1.0)},
     "heavy": {"blur": 1.9, "noise": 20.0, "jpeg": (20, 55), "rot": 2.6, "scale": (0.55, 0.95)},
 }
+
+
+def _atomic_write_text(path: Path, text: str) -> None:
+    """Write via a temp file + rename so a killed process never leaves a
+    half-written checkpoint (works on the Drive FUSE mount too)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 # --------------------------------------------------------------------------- #
@@ -355,6 +377,8 @@ class SyntheticPrinted:
         corpus_docs: int = 4000,
         sizes: tuple[int, ...] = (34, 38, 40, 44, 48),
         cache_dir: str | Path | None = None,
+        work_dir: str | Path | None = None,
+        flush_every: int = 1000,
         name: str | None = None,
         limit: int | None = None,
         **_ignored,
@@ -370,8 +394,15 @@ class SyntheticPrinted:
         self.drop_overlap_with = drop_overlap_with
         self.corpus_docs = corpus_docs
         self.sizes = sizes
+        # cache_dir: the durable home (on Colab, a Drive folder). work_dir: a fast
+        # local scratch dir to actually render into; when both are set and differ,
+        # images live in work_dir and are checkpointed to cache_dir as a single
+        # tar (one sequential Drive write beats 15k tiny-file round-trips).
         self.cache_dir = Path(cache_dir) if cache_dir else None
+        self.work_dir = Path(work_dir) if work_dir else None
+        self.flush_every = max(1, int(flush_every))
         self._samples: list[Sample] | None = None
+        self._restored = False
 
     def _raw(self) -> list[str]:
         raw = list(self.texts)
@@ -387,7 +418,32 @@ class SyntheticPrinted:
                 )
         return raw
 
+    # --- pool: cache the (slow, network) corpus + contamination step ---------
+    def _pool_key(self) -> str:
+        spec = {
+            "texts": self.texts,
+            "corpora": [c if isinstance(c, str) else list(c) for c in self.corpora],
+            "n": self.n,
+            "seed": self.seed,
+            "min_len": self.min_len,
+            "max_len": self.max_len,
+            "min_arabic": self.min_arabic,
+            "drop_overlap_with": self.drop_overlap_with,
+            "corpus_docs": self.corpus_docs,
+        }
+        blob = json.dumps(spec, sort_keys=True, ensure_ascii=False)
+        return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:16]
+
     def _pool(self) -> list[str]:
+        cache_file = self.cache_dir / f"pool_{self._pool_key()}.json" if self.cache_dir else None
+        if cache_file and cache_file.exists():
+            try:
+                pool = json.loads(cache_file.read_text(encoding="utf-8"))
+                if pool:
+                    return pool
+            except (OSError, json.JSONDecodeError):
+                pass
+
         pool = sentences(
             self._raw(),
             n=max(self.n, 1),
@@ -406,19 +462,66 @@ class SyntheticPrinted:
                 "filters removed everything. Pass `texts=[...]` to supply lines "
                 "directly, or widen min_len / min_arabic."
             )
+        if cache_file:
+            _atomic_write_text(cache_file, json.dumps(pool, ensure_ascii=False))
         return pool
+
+    # --- image dir + tar checkpoint ----------------------------------------
+    @property
+    def _archive_path(self) -> Path | None:
+        """Single-file checkpoint on the durable store, used only when rendering
+        happens in a separate (fast, local) work_dir."""
+        if self.cache_dir and self.work_dir and self.work_dir != self.cache_dir:
+            return self.cache_dir / "images.tar"
+        return None
+
+    def _img_dir(self) -> Path | None:
+        """Directory the PNGs live in; restores from the tar checkpoint once."""
+        if not self.work_dir:
+            return self.cache_dir
+        self.work_dir.mkdir(parents=True, exist_ok=True)
+        arch = self._archive_path
+        if not self._restored and arch and arch.exists():
+            with tarfile.open(arch, "r") as tf:
+                # filter="data" (3.12+) rejects path traversal / device files;
+                # this is our own archive but it's the right default anyway.
+                kw = {"filter": "data"} if hasattr(tarfile, "data_filter") else {}
+                tf.extractall(self.work_dir, **kw)
+            print(f"synth: restored {len(list(self.work_dir.glob('*.png')))} "
+                  f"cached lines from {arch}")
+        self._restored = True
+        return self.work_dir
+
+    def _flush_archive(self, img_dir: Path) -> None:
+        arch = self._archive_path
+        if not arch:
+            return
+        arch.parent.mkdir(parents=True, exist_ok=True)
+        tmp = arch.with_suffix(".tar.tmp")
+        with tarfile.open(tmp, "w") as tf:
+            for png in sorted(img_dir.glob("*.png")):
+                tf.add(png, arcname=png.name)
+        os.replace(tmp, arch)
 
     def _build(self) -> list[Sample]:
         if self._samples is not None:
             return self._samples
+        from tqdm.auto import tqdm
+
         pool = self._pool()
         font_paths = fonts()
+        img_dir = self._img_dir()
         out: list[Sample] = []
-        for idx in range(self.n):
+        rendered_since_flush = 0
+        for idx in tqdm(range(self.n), desc="synth render", unit="line"):
             text = pool[idx % len(pool)]
             gt = _strip_diacritics(text, self.diacritics, seed=self.seed, idx=idx)
             sid = f"{self.name}/{self.seed}/{idx:06d}"
-            img = self._render_cached(sid, gt, font_paths, idx)
+            img, fresh = self._render_cached(sid, gt, font_paths, idx, img_dir)
+            rendered_since_flush += fresh
+            if fresh and rendered_since_flush >= self.flush_every:
+                self._flush_archive(img_dir)
+                rendered_since_flush = 0
             out.append(
                 Sample(
                     id=sid,
@@ -428,19 +531,24 @@ class SyntheticPrinted:
                     meta={"source": "synthetic_printed", "seed": self.seed, "row": idx},
                 )
             )
+        if rendered_since_flush:
+            self._flush_archive(img_dir)
         self._samples = out
         return out
 
-    def _render_cached(self, sid, gt, font_paths, idx) -> Image.Image:
-        if self.cache_dir is None:
-            return self._render(gt, font_paths, idx)
-        fp = self.cache_dir / f"{sid.replace('/', '__')}.png"
+    def _render_cached(self, sid, gt, font_paths, idx, img_dir) -> tuple[Image.Image, int]:
+        """Returns (image, 1 if freshly rendered else 0)."""
+        if img_dir is None:
+            return self._render(gt, font_paths, idx), 0
+        fp = img_dir / f"{sid.replace('/', '__')}.png"
+        fresh = 0
         if not fp.exists():
             fp.parent.mkdir(parents=True, exist_ok=True)
             self._render(gt, font_paths, idx).save(fp)
+            fresh = 1
         # Return a lazy handle, not decoded pixels: a full run is 15k+ lines and
         # assemble_dataset keeps them all in a list — see LazyImage.
-        return LazyImage(fp)
+        return LazyImage(fp), fresh
 
     def _render(self, gt, font_paths, idx) -> Image.Image:
         prng = random.Random(f"{self.seed}:{idx}")
