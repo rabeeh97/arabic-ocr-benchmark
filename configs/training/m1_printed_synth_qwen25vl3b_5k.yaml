@@ -1,0 +1,61 @@
+# PROOF RUN — a scaled-down copy of m1_printed_synth_qwen25vl3b.yaml (5k lines
+# instead of ~15k) to prove the notebook-06 -> notebook-05 pipeline end to end:
+# render + checkpoint synthetic lines in 06, reuse the images.tar in 05, QLoRA,
+# merge, score. Bump `n` / `limit` back to 15000 (and switch to the real config)
+# for the actual E1.2a experiment.
+experiment: m1-printed-synth-qwen25vl3b-5k
+method: qlora
+
+base_model:
+  hf_id: Qwen/Qwen2.5-VL-3B-Instruct
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: synthetic_printed
+      adapter: arabic_ocr_bench.training.synth:SyntheticPrinted
+      params:
+        corpora: [wikipedia, classical, hindawi]
+        n: 5000
+        seed: 0
+        degrade_level: medium
+        diacritics: mixed
+        # Hindawi text overlaps the kitab_hindawi test set — drop any rendered
+        # line whose normalized text matches a scored ground truth.
+        drop_overlap_with: [kitab_hindawi, kitab_historicalbooks]
+        # notebook 06 / 05 inject cache_dir (Drive) + work_dir (/content) here.
+      limit: 5000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704       # 448*448
+  max_pixels: 1003520      # ~1120*896
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 100
+  save_total_limit: 3
+  resume: true
+  push_to_hub: false        # notebook 05 flips this on when HF_TOKEN is present
+  hub_private: true
+  hub_strategy: every_save
+
+output_dir: results/training/m1-printed-synth-qwen25vl3b-5k
+eval_datasets: [kitab_historicalbooks, kitab_hindawi]
