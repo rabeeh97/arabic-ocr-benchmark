@@ -6,6 +6,7 @@ import numpy as np
 from PIL import Image
 
 from arabic_ocr_bench.training.synth import (
+    LazyImage,
     SyntheticPrinted,
     arabic_ratio,
     degrade,
@@ -76,3 +77,30 @@ def test_synthetic_printed_adapter_yields_n_deterministic_samples():
     assert [s.id for s in s1] == [s.id for s in s2]
     assert all(s.ground_truth.strip() for s in s1)
     assert all(isinstance(s.image, Image.Image) and s.track == "line" for s in s1)
+
+
+def test_cache_dir_yields_lazy_images_that_decode_on_demand(tmp_path):
+    kw = {
+        "corpora": [],
+        "texts": _BLOBS,
+        "n": 4,
+        "seed": 1,
+        "min_len": 15,
+        "max_len": 200,
+        "cache_dir": tmp_path,
+    }
+    samples = list(SyntheticPrinted(**kw))
+    assert len(samples) == 4
+    assert len(list(tmp_path.glob("*.png"))) == 4  # rendered once, to disk
+
+    img = samples[0].image
+    assert isinstance(img, LazyImage)
+    assert img._lazy_loaded is False  # nothing decoded yet
+    assert img.size[0] > img.size[1]  # touching a pixel-op pages it in
+    assert img._lazy_loaded is True
+
+    # a second adapter reuses the cache without re-rendering and stays lazy
+    again = list(SyntheticPrinted(**kw))
+    assert isinstance(again[0].image, LazyImage)
+    assert again[0].image._lazy_loaded is False
+    assert again[0].image.convert("L").size == img.size
