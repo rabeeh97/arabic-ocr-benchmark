@@ -1,0 +1,25 @@
+{
+  "pairs": [
+    {
+      "n_train_items": 5000,
+      "n_test_items": 10,
+      "n_text_collisions": 0,
+      "n_near_dup_images": 0,
+      "text_collisions": [],
+      "near_dup_images": [],
+      "train_source": "synthetic_printed",
+      "test_dataset": "kitab_historicalbooks"
+    },
+    {
+      "n_train_items": 5000,
+      "n_test_items": 200,
+      "n_text_collisions": 0,
+      "n_near_dup_images": 0,
+      "text_collisions": [],
+      "near_dup_images": [],
+      "train_source": "synthetic_printed",
+      "test_dataset": "kitab_hindawi"
+    }
+  ],
+  "n_flagged": 0
+}
