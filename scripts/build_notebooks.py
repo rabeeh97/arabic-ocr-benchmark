@@ -1135,10 +1135,17 @@ def build_prepare_data():
         code(
             "import subprocess",
             "if token:",
+            "    subprocess.run(['git','config','user.email','colab@arabic-ocr-bench'], check=True)",
+            "    subprocess.run(['git','config','user.name','colab-prep'], check=True)",
             "    subprocess.run(['git','add','-f','results/contamination_report.json'], check=True)",
             "    r = subprocess.run(['git','commit','-m',f'contam: {cfg.experiment}'], capture_output=True, text=True)",
             "    print(r.stdout or r.stderr)",
-            "    print(subprocess.run(['git','push','origin','HEAD:main'], capture_output=True, text=True).stdout)",
+            "    push = subprocess.run(['git','pull','--rebase','--autostash','origin','main'], capture_output=True, text=True)",
+            "    print(push.stdout or push.stderr)",
+            "    push = subprocess.run(['git','push','origin','HEAD:main'], capture_output=True, text=True)",
+            "    print(push.stdout or push.stderr)",
+            "else:",
+            "    print('no GH_TOKEN -- contamination_report.json is local only; download it from the file browser')",
         ),
     ]
     write("06_colab_prepare_data.ipynb", notebook(cells, gpu=False))
