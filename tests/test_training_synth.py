@@ -19,6 +19,27 @@ from arabic_ocr_bench.training.synth import (
 )
 
 
+def test_render_line_forces_the_basic_layout_engine(monkeypatch):
+    """The non-raqm layout engine must be forced explicitly: `_shape` already
+    shapes + reverses the text for a plain left-to-right renderer, so a Pillow
+    built with libraqm (the default engine when raqm is present) would shape
+    and reverse it a *second* time -> mirrored, disjointed glyphs. This is what
+    made Colab's renders come out backwards while local (no-raqm) Pillow looked
+    fine."""
+    from PIL import ImageFont
+
+    real_truetype = ImageFont.truetype
+    seen = {}
+
+    def spy(*a, **kw):
+        seen["layout_engine"] = kw.get("layout_engine")
+        return real_truetype(*a, **kw)
+
+    monkeypatch.setattr(ImageFont, "truetype", spy)
+    render_line("مرحبا بالعالم", size=30)
+    assert seen["layout_engine"] == ImageFont.Layout.BASIC
+
+
 def test_shape_reverses_rtl_and_keeps_harakat():
     # visual (reversed) order so Pillow's LTR renderer draws Arabic RTL —
     # the last logical word must come out first, and harakat must survive.
