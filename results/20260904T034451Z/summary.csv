@@ -1,0 +1,5 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+gemini-pro,kitab_historicalbooks,0,10,1.0,0.0,0.0,,,,,,,,,,,,,
+gemini-flash-lite,kitab_khatt,3,28,0.9032,8614.3,0.000378,0.3615,0.3643,0.7292,0.0,0.3476,0.3503,0.7083,0.0,0.3476,0.3503,0.7083,0.0,1.0
+gemini-flash,kitab_khatt,3,26,0.8966,8129.9,0.002907,0.8497,0.8329,0.9688,0.0,0.8366,0.822,0.9688,0.0,0.8105,0.7614,0.9062,0.0,0.6667
+gemini-pro,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,

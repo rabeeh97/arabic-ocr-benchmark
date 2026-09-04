@@ -1,0 +1,43 @@
+# Paid Claude + GPT sweep on the N=10 comparison set.
+#
+# Same samples as the free-tier hosted run 20260902T082546Z: prompt line-v2,
+# rows 000000-000009 of each split (offset 0, limit 10, NO accumulate -> a fixed,
+# deterministic slice). kitab_khatt is added so the paid models are also
+# comparable to the local Arabic-OCR models, which have kitab_khatt n=10.
+#
+# cache: true -> every successful (sample, model) is written to results/_cache/
+# keyed by sample_id|model|prompt_version|rCACHE_REV. Re-running this config costs
+# nothing for rows already done; only errored rows (never cached) are retried.
+# The *-paid model names are new, so these cache entries don't collide with any
+# earlier run.
+#
+# Run scripts/list_paid_models.py first (zero cost) to confirm the ids resolve,
+# then configs/run.paid-apis.smoke.yaml, then this.
+models:
+  - claude-haiku-paid
+  - claude-sonnet-paid
+  - claude-opus-paid
+  - claude-fable-paid
+  - claude-fable-5-1-paid
+  - gpt-4o-mini-paid
+  - gpt-4o-paid
+  - gpt-4.1-paid
+  - gpt-5-paid
+  - gpt-5.6-sol-paid
+  - gpt-5.6-terra-paid
+  - gpt-5.6-luna-paid
+
+datasets:
+  - kitab_muharaf
+  - muharaf_lines
+  - kitab_khatt
+
+limit: 10
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 2          # gentle on the paid endpoints
+max_retries: 3
+cache: true
+results_dir: results

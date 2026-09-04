@@ -9,7 +9,9 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import threading
 import time
+from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
 from pathlib import Path
@@ -23,6 +25,39 @@ from .models.registry import build_model, is_mock, load_model_configs
 from .prompting import get_prompt
 
 _TRANSIENT = ("429", "rate", "timeout", "500", "502", "503", "504", "overloaded")
+_RATE_LIMITED = ("429", "rate limit", "ratelimit", "rate_limit", "quota",
+                 "too many requests", "resource_exhausted", "insufficient_quota")
+# Consecutive rate-limit errors that mean "this (free) model is out of quota" —
+# stop hammering it and move on (its rows stay un-scored / uncached for a later run).
+_RL_ABORT = 8
+
+
+def _is_rate_limited(err: str | None) -> bool:
+    return bool(err) and any(t in err.lower() for t in _RATE_LIMITED)
+
+
+class _RateLimiter:
+    """Thread-safe sliding-window limiter: at most `rpm` acquisitions per 60 s.
+    Used to stay under a provider's requests-per-minute cap on a big crawl."""
+
+    def __init__(self, rpm: float):
+        self.rpm = float(rpm)
+        self._times: deque[float] = deque()
+        self._lock = threading.Lock()
+
+    def acquire(self) -> None:
+        if self.rpm <= 0:
+            return
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                while self._times and now - self._times[0] >= 60.0:
+                    self._times.popleft()
+                if len(self._times) < self.rpm:
+                    self._times.append(now)
+                    return
+                wait = 60.0 - (now - self._times[0]) + 0.01
+            time.sleep(max(wait, 0.0))
 
 # Bump when generation behaviour changes (decoding params, max_new_tokens,
 # image caps, output cleaning, refusal handling) so old cached predictions miss.
@@ -104,6 +139,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     max_retries = int(run_cfg.get("max_retries", 3))
     use_cache = bool(run_cfg.get("cache", True))
     show_progress = bool(run_cfg.get("progress", True))
+    limiter = _RateLimiter(float(run_cfg.get("rpm", 0) or 0))  # <=0 => no limit
+    rl_abort = int(run_cfg.get("rate_limit_abort", _RL_ABORT))  # 0 => never abort a model
 
     root = Path(results_root or run_cfg.get("results_dir", "results"))
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
@@ -139,6 +176,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         attempts = 0
         while True:
             attempts += 1
+            if not is_mock(cfg):
+                limiter.acquire()   # stay under the provider's requests/min cap
             t0 = time.perf_counter()
             pred = client.transcribe(sample.image, prompt)
             if pred.latency_ms == 0.0:
@@ -184,9 +223,16 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     # the next (critical for a local-model sweep on a single GPU). Samples are
     # STREAMED from a fresh adapter per model and processed in small chunks, so
     # we never hold the whole decoded dataset in RAM.
+    quota_out: set[str] = set()  # models that hit their rate limit — skip their rest
+
     with pred_path.open("w", encoding="utf-8") as fh:
         for mi, model_name in enumerate(run_cfg["models"], 1):
             for ds_name in run_cfg["datasets"]:
+                if model_name in quota_out:
+                    if show_progress:
+                        print(f"[{mi}/{n_models}] skip {model_name} · {ds_name} "
+                              f"(rate-limited — out of quota)")
+                    continue
                 if accumulate:
                     done = scored_indices(root, model_name, ds_name, exclude=run_dir)
                     want = next_indices(done, int(limit) if limit else 10)
@@ -203,19 +249,28 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
                     total=total, unit="line", disable=not show_progress,
                     desc=f"[{mi}/{n_models}] {model_name} · {ds_name}",
                 )
-                seen = {"cached": 0, "err": 0}
+                seen = {"cached": 0, "err": 0, "rl_streak": 0}
 
                 def _emit(row, bar=bar, seen=seen):
                     fh.write(json.dumps(row, ensure_ascii=False) + "\n")
                     fh.flush()
                     seen["cached"] += bool(row.get("cached"))
                     seen["err"] += bool(row.get("error"))
+                    if _is_rate_limited(row.get("error")) and not row.get("cached"):
+                        seen["rl_streak"] += 1
+                    elif not row.get("cached"):
+                        seen["rl_streak"] = 0
                     bar.update(1)
                     bar.set_postfix(cached=seen["cached"], err=seen["err"], refresh=False)
+
+                def _bail() -> bool:
+                    return rl_abort > 0 and seen["rl_streak"] >= rl_abort
 
                 if concurrency <= 1:
                     for sample in adapter:
                         _emit(_one(model_name, ds_name, sample))
+                        if _bail():
+                            break
                 else:
                     for chunk in _chunks(adapter, max(4, concurrency * 4)):
                         with ThreadPoolExecutor(max_workers=concurrency) as pool:
@@ -224,7 +279,15 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
                             ))
                         for row in rows:
                             _emit(row)
+                        if _bail():
+                            break
                 bar.close()
+                if _bail():
+                    quota_out.add(model_name)
+                    if show_progress:
+                        print(f"[{mi}/{n_models}] {model_name}: {rl_abort}+ consecutive "
+                              f"rate-limit errors on {ds_name} — treating as out of daily "
+                              f"quota, skipping its remaining datasets this run")
             close = getattr(clients[model_name], "close", None)
             if callable(close):
                 close()

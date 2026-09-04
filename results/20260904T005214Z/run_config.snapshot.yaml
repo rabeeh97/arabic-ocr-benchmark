@@ -1,0 +1,26 @@
+models:
+- gemini-flash-lite
+- gemini-flash
+- gemini-pro
+datasets:
+- kitab_historicalbooks
+- kitab_khatt
+- kitab_muharaf
+- kitab_hindawi
+- kitab_historyar
+- kitab_onlinekhatt
+limit: 50
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+rpm: 14
+rate_limit_abort: 25
+max_retries: 3
+cache: true
+results_dir: results
+progress: false

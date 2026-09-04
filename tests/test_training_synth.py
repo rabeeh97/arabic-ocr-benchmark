@@ -14,7 +14,24 @@ from arabic_ocr_bench.training.synth import (
     fonts,
     render_line,
     sentences,
+    synth_render_key,
 )
+
+
+def test_synth_render_key_ignores_n_and_limit_but_tracks_pixel_params():
+    base = {"corpora": ["wikipedia", "classical"], "seed": 0,
+            "degrade_level": "medium", "diacritics": "mixed",
+            "drop_overlap_with": ["kitab_hindawi"], "corpus_docs": 4000}
+    k = synth_render_key(base)
+    # a 5k and a 15k config that agree on everything else share one render cache
+    assert synth_render_key({**base, "n": 5000, "limit": 5000}) == k
+    assert synth_render_key({**base, "n": 15000}) == k
+    # anything that changes the rendered pixels changes the key
+    assert synth_render_key({**base, "seed": 1}) != k
+    assert synth_render_key({**base, "degrade_level": "heavy"}) != k
+    assert synth_render_key({**base, "diacritics": "none"}) != k
+    assert synth_render_key({**base, "corpora": ["wikipedia"]}) != k
+    assert len(k) == 12
 
 _BLOBS = [
     "المدرسة قريبة من البيت. ذهب الطالب إلى الصف مبكرا وقرأ الدرس بتأنٍ شديد.",

@@ -1,0 +1,26 @@
+models:
+- gemini-flash-lite
+- pixtral-12b
+- mistral-small
+- mistral-medium
+- openrouter-qwen2.5-vl-72b
+- openrouter-qwen3-vl-235b
+- openrouter-llama-4-maverick
+- openrouter-gemma-4-31b-free
+- openrouter-gemma-4-26b-free
+- openrouter-minimax-m3-free
+- nvidia-gemma-4-31b
+datasets:
+- kitab_historicalbooks
+- kitab_hindawi
+limit: 20
+offset: 0
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results

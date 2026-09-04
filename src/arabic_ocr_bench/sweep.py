@@ -18,9 +18,10 @@ import json
 from collections.abc import Callable
 from pathlib import Path
 
+from .datasets.registry import build_dataset, load_dataset_configs
 from .normalize import PROFILES
 from .report import score_run
-from .runner import run
+from .runner import next_indices, run, scored_indices
 
 Entry = dict
 
@@ -67,6 +68,27 @@ def _reconcile(manifest: dict, results_dir: Path, log) -> dict:
     return manifest
 
 
+def _accumulate_has_work(
+    results_dir: Path, dataset_cfgs: dict, model: str, dataset: str, n: int
+) -> bool:
+    """True if an accumulate pass would actually score something for this
+    (model, dataset): either un-scored lines remain, or earlier lines errored and
+    can be retried. Lets the sweep skip a model that has already covered the whole
+    split, instead of spinning up an empty run (and, in Colab, an empty commit).
+    """
+    done = scored_indices(results_dir, model, dataset)
+    want = next_indices(done, n)
+    if not want:
+        return False
+    cfg = dataset_cfgs.get(dataset)
+    if cfg is None:
+        return True  # unknown dataset — let run() handle it
+    try:
+        return len(build_dataset(dataset, cfg, indices=want)) > 0
+    except Exception:  # noqa: BLE001 - can't probe -> don't skip
+        return True
+
+
 def _summary_row(run_dir: Path, model: str, dataset: str) -> dict:
     with (run_dir / "summary.csv").open() as fh:
         for r in csv.DictReader(fh):
@@ -109,12 +131,19 @@ def run_sweep(
     total = len(models) * len(phases)
     new_entries: list[Entry] = []
     step = 0
+    _dcfg = load_dataset_configs() if accumulate else {}
     for model in models:
         for phase, limit in phases:
             step += 1
             key = (model, dataset, phase)
             if key in done and not accumulate:
                 log(f"[{step}/{total}] skip {model} / {phase} (already done)")
+                continue
+            if accumulate and not _accumulate_has_work(
+                Path(results_dir), _dcfg, model, dataset, limit or 10
+            ):
+                log(f"[{step}/{total}] skip {model} / {phase} "
+                    f"(no un-scored lines left in {dataset})")
                 continue
             log(f"[{step}/{total}] start {model} / {phase} (limit={limit})")
             try:

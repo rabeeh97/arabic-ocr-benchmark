@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000006", "model": "mistral-small", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "معَدل النهار وَالزوايَا ايضا", "raw_text": "فلما", "cleaned_text": "فلما", "latency_ms": 2883.15, "input_tokens": 556, "output_tokens": 3, "cost_usd": 0.000113, "error": null, "attempts": 1, "cached": false}

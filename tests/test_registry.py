@@ -1,6 +1,6 @@
 """available_hosted_models() selects litellm models whose key/base is present."""
 
-from arabic_ocr_bench.models.registry import available_hosted_models
+from arabic_ocr_bench.models.registry import available_hosted_models, build_model
 
 _CFGS = {
     "mock_x": {"client": "mock"},
@@ -27,3 +27,26 @@ def test_api_base_env_must_also_be_set():
 
 def test_empty_env_still_returns_keyless_litellm_models():
     assert available_hosted_models(_CFGS, env={}) == ["keyless"]
+
+
+def test_build_model_forwards_key_from_env_key(monkeypatch):
+    """A litellm model pinned to a non-default env_key (e.g. *_PAID) must have
+    that key passed to the client explicitly, even with no api_base — otherwise
+    litellm falls back to the provider-default var (ANTHROPIC_API_KEY / ...)."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY_PAID", "sk-paid-xyz")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-free-should-not-be-used")
+    client = build_model(
+        "claude-opus-paid",
+        {"client": "litellm", "litellm_id": "anthropic/claude-opus-5",
+         "env_key": "ANTHROPIC_API_KEY_PAID", "params": {}},
+    )
+    assert client.api_key == "sk-paid-xyz"
+    assert client.api_base is None
+
+
+def test_build_model_no_env_key_leaves_key_none(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    client = build_model(
+        "gpt", {"client": "litellm", "litellm_id": "openai/gpt-4o"},
+    )
+    assert client.api_key is None

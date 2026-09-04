@@ -50,11 +50,11 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
         api_base = cfg.get("api_base")
         if cfg.get("api_base_env"):
             api_base = os.environ.get(cfg["api_base_env"], api_base)
-        # for OpenAI-compatible custom endpoints (api_base set) litellm won't
-        # find a provider env var, so pass the key from env_key explicitly
-        api_key = None
-        if api_base and cfg.get("env_key"):
-            api_key = os.environ.get(cfg["env_key"])
+        # Pass the key named by env_key explicitly whenever there is one. Left to
+        # itself litellm reads a provider-default env var (OPENAI_API_KEY,
+        # ANTHROPIC_API_KEY, ...), which silently ignores a model pinned to a
+        # different key such as *_PAID, and finds nothing for a custom api_base.
+        api_key = os.environ.get(cfg["env_key"]) if cfg.get("env_key") else None
         return LiteLLMClient(
             name=name,
             litellm_id=cfg["litellm_id"],

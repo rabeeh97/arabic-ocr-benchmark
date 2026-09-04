@@ -1,0 +1,16 @@
+models:
+- openrouter-minimax-m3-free
+datasets:
+- kitab_historyar
+- kitab_onlinekhatt
+limit: 20
+offset: 0
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results

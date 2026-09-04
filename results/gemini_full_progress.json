@@ -1,0 +1,85 @@
+{
+  "updated": "2026-09-04T06:42:09Z",
+  "remaining": 2448,
+  "done": false,
+  "status": {
+    "gemini-flash-lite": {
+      "kitab_historicalbooks": [
+        10,
+        10
+      ],
+      "kitab_khatt": [
+        141,
+        200
+      ],
+      "kitab_muharaf": [
+        99,
+        200
+      ],
+      "kitab_hindawi": [
+        100,
+        200
+      ],
+      "kitab_historyar": [
+        100,
+        200
+      ],
+      "kitab_onlinekhatt": [
+        100,
+        200
+      ]
+    },
+    "gemini-flash": {
+      "kitab_historicalbooks": [
+        10,
+        10
+      ],
+      "kitab_khatt": [
+        15,
+        200
+      ],
+      "kitab_muharaf": [
+        7,
+        200
+      ],
+      "kitab_hindawi": [
+        0,
+        200
+      ],
+      "kitab_historyar": [
+        0,
+        200
+      ],
+      "kitab_onlinekhatt": [
+        0,
+        200
+      ]
+    },
+    "gemini-pro": {
+      "kitab_historicalbooks": [
+        0,
+        10
+      ],
+      "kitab_khatt": [
+        0,
+        200
+      ],
+      "kitab_muharaf": [
+        0,
+        200
+      ],
+      "kitab_hindawi": [
+        0,
+        200
+      ],
+      "kitab_historyar": [
+        0,
+        200
+      ],
+      "kitab_onlinekhatt": [
+        0,
+        200
+      ]
+    }
+  }
+}

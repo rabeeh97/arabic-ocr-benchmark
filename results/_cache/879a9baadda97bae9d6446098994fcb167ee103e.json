@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000001", "model": "gpt-5.6-luna-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MK2A7 21", "raw_text": "مِرْآةٌ", "cleaned_text": "مِرْآةٌ", "latency_ms": 16541.72, "input_tokens": 95, "output_tokens": 1046, "cost_usd": 0.0012742, "error": null, "attempts": 1, "cached": false}

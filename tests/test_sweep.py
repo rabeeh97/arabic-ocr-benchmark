@@ -121,6 +121,59 @@ def test_reconcile_drops_manifest_entries_whose_run_dir_is_missing(wired):
     assert any("reconcile" in p and "ghost" in p for p in prog)
 
 
+class _IndexedDataset:
+    """Fake with a fixed size that honours both `limit` and an explicit
+    `indices` list (accumulate mode), clamped to range like the real adapters."""
+
+    track = "line"
+    SIZE = 6
+
+    def __init__(self, limit=None, offset=0, indices=None):
+        if indices is not None:
+            self.rows = [i for i in indices if 0 <= i < self.SIZE]
+        else:
+            end = self.SIZE if limit is None else min(self.SIZE, offset + limit)
+            self.rows = list(range(offset, end))
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __iter__(self):
+        img = Image.new("RGB", (8, 8))
+        for i in self.rows:
+            yield Sample(id=f"fake/{i:03d}", image=img, ground_truth="مرحبا", track="line")
+
+
+def test_accumulate_skips_a_model_once_the_split_is_exhausted(monkeypatch, tmp_path):
+    from arabic_ocr_bench.models.registry import build_model as real_build
+
+    def _bd(name, cfg, *, limit=None, offset=0, indices=None):
+        return _IndexedDataset(limit=limit, offset=offset, indices=indices)
+
+    for mod in (runner_mod, sweep):
+        monkeypatch.setattr(mod, "load_dataset_configs", lambda *a, **k: {"fake": {}}, raising=False)
+        monkeypatch.setattr(mod, "build_dataset", _bd, raising=False)
+    monkeypatch.setattr(
+        runner_mod, "load_model_configs",
+        lambda *a, **k: {"mock_echo": {"client": "mock", "mode": "echo_gt", "pricing": None}},
+    )
+    monkeypatch.setattr(runner_mod, "build_model", real_build)
+
+    manifest = tmp_path / "m.json"
+    kw = dict(models=["mock_echo"], dataset="fake", partial_limit=4, run_full=False,
+              manifest_path=manifest, results_dir=tmp_path, profiles=("raw",), accumulate=True)
+
+    a = sweep.run_sweep(**kw)                      # scores rows 0-3
+    b = sweep.run_sweep(**kw)                      # scores rows 4-5 (only 2 left)
+    prog = []
+    c = sweep.run_sweep(**kw, on_progress=prog.append)  # nothing left
+
+    assert a[0]["n"] == 4
+    assert b[0]["n"] == 2
+    assert c == []                                # exhausted -> no empty run
+    assert any("no un-scored lines" in p for p in prog)
+
+
 def test_phase_not_marked_done_when_on_done_raises_and_re_runs_next_time(wired):
     manifest_path = wired / "sweep_manifest.json"
 

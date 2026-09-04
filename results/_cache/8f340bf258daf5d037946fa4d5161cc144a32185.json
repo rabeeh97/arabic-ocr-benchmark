@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000001", "model": "claude-haiku-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MK2A7 21", "raw_text": "MK2A-7\nJA", "cleaned_text": "MK2A-7\nJA", "latency_ms": 1151.47, "input_tokens": 115, "output_tokens": 12, "cost_usd": 0.000175, "error": null, "attempts": 1, "cached": false}

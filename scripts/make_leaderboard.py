@@ -23,6 +23,27 @@ _PROFILES = ("raw", "light", "diac_insensitive")
 _REPO = Path(__file__).resolve().parent.parent
 _SAMPLE_CATS = ("anchor", "best", "worst", "typical", "perfect", "longest")
 
+# Full row counts per dataset, for the "cost to run the whole dataset" projection.
+# Overridden by results/_dataset_sizes.json when present. historicalbooks / hindawi
+# are approximate until a size probe fills them in.
+_DATASET_ROWS = {
+    "muharaf_lines": 1334,
+    "kitab_khatt": 200,
+    "kitab_muharaf": 200,
+    "kitab_historicalbooks": 200,
+    "kitab_hindawi": 200,
+}
+
+
+def _dataset_rows() -> dict[str, int]:
+    out = dict(_DATASET_ROWS)
+    f = _REPO / "results" / "_dataset_sizes.json"
+    try:
+        out.update({k: int(v) for k, v in json.loads(f.read_text()).items()})
+    except (OSError, json.JSONDecodeError, ValueError, TypeError):
+        pass
+    return out
+
 
 def load_cards() -> dict[str, dict[str, str]]:
     out: dict[str, dict[str, str]] = {"models": {}, "datasets": {}}
@@ -73,6 +94,145 @@ def collect_samples(target: Path) -> dict:
                 "categories": cats,
             }
     return by_id
+
+
+def collect_review(target: Path) -> dict[str, list[dict]]:
+    """Every scored line, per model: {model -> [ {sample_id, dataset, cer_light,
+    cer_raw, wer_light, exact, error, gt, pred, image}, ... ]}.
+
+    Joins each run's scores.jsonl (metrics) with its predictions.jsonl (text),
+    then dedupes by (model, sample_id) across all runs — a later successful
+    reading supersedes an earlier errored one, otherwise the first is kept.
+    Errored lines are included with cer_light = None so they can head the
+    'worst' list. Images are attached from samples.json where one exists.
+    """
+    # image source: a full run-level images.json (every line the run touched)
+    # wins; otherwise the curated samples.json slot image.
+    images = {sid: slot.get("image", "") for sid, slot in collect_samples(target).items()}
+    img_files = (
+        [target / "images.json"]
+        if (target / "images.json").exists()
+        else sorted(target.glob("*/images.json"))
+    )
+    for f in img_files:
+        try:
+            for sid, uri in json.loads(f.read_text(encoding="utf-8")).items():
+                if uri:
+                    images[sid] = uri
+        except (OSError, json.JSONDecodeError):
+            continue
+    merged: dict[tuple[str, str], dict] = {}
+    for rd in _run_dirs(target):
+        preds: dict[tuple[str, str], dict] = {}
+        pf = rd / "predictions.jsonl"
+        if pf.exists():
+            for line in pf.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    p = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                preds[(p.get("model", ""), p.get("sample_id", ""))] = p
+        sf = rd / "scores.jsonl"
+        if not sf.exists():
+            continue
+        for line in sf.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                s = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            model, sid = s.get("model", ""), s.get("sample_id", "")
+            ds = s.get("dataset", "")
+            if not model or model.startswith("mock") or ds == "synthetic":
+                continue
+            p = preds.get((model, sid), {})
+            rec = {
+                "sample_id": sid,
+                "dataset": ds,
+                "cer_light": s.get("cer_light"),
+                "cer_raw": s.get("cer_raw"),
+                "wer_light": s.get("wer_light"),
+                "exact": bool(s.get("exact_light")),
+                "error": s.get("error") or p.get("error"),
+                "gt": p.get("ground_truth", ""),
+                "pred": p.get("cleaned_text", ""),
+                "image": images.get(sid, ""),
+            }
+            prev = merged.get((model, sid))
+            if prev is None or (prev.get("error") and not rec.get("error")):
+                merged[(model, sid)] = rec
+    out: dict[str, list[dict]] = {}
+    for (model, _sid), rec in merged.items():
+        out.setdefault(model, []).append(rec)
+    return out
+
+
+def collect_costs(target: Path) -> dict[str, dict]:
+    """Per model, from every run's predictions.jsonl (deduped by sample_id, last
+    successful wins): number of billable calls, mean & median $/call, mean in/out
+    tokens, and mean $/line per dataset. Only models with a pricing block in
+    configs/models.yaml are returned."""
+    import statistics
+
+    priced = {
+        name for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        if isinstance(c, dict) and (c.get("pricing") or {}).get("input_usd_per_1m") is not None
+    }
+    pricing = {
+        name: (c.get("pricing") or {})
+        for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        if isinstance(c, dict)
+    }
+    seen: dict[tuple[str, str], dict] = {}
+    for rd in _run_dirs(target):
+        pf = rd / "predictions.jsonl"
+        if not pf.exists():
+            continue
+        for line in pf.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                p = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            m = p.get("model", "")
+            if m not in priced or p.get("dataset") == "synthetic":
+                continue
+            key = (m, p.get("sample_id", ""))
+            prev = seen.get(key)
+            if prev is None or (prev.get("error") and not p.get("error")):
+                seen[key] = p
+
+    out: dict[str, dict] = {}
+    for (m, _sid), p in seen.items():
+        if p.get("error"):
+            continue
+        d = out.setdefault(m, {
+            "pricing": pricing.get(m, {}), "costs": [], "in": [], "out": [],
+            "per_ds": {},  # dataset -> list[cost_usd]
+        })
+        c = float(p.get("cost_usd", 0.0) or 0.0)
+        d["costs"].append(c)
+        d["in"].append(int(p.get("input_tokens", 0) or 0))
+        d["out"].append(int(p.get("output_tokens", 0) or 0))
+        d["per_ds"].setdefault(p.get("dataset", ""), []).append(c)
+
+    for m, d in out.items():
+        d["calls"] = len(d["costs"])
+        d["mean_call"] = statistics.fmean(d["costs"]) if d["costs"] else 0.0
+        d["median_call"] = statistics.median(d["costs"]) if d["costs"] else 0.0
+        d["mean_in"] = statistics.fmean(d["in"]) if d["in"] else 0.0
+        d["mean_out"] = statistics.fmean(d["out"]) if d["out"] else 0.0
+        d["ds_line"] = {
+            ds: (statistics.fmean(cs) if cs else 0.0) for ds, cs in d["per_ds"].items()
+        }
+    return out
 
 
 def _run_dirs(target: Path) -> list[Path]:
@@ -193,18 +353,137 @@ def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str,
     return row
 
 
-def _fmt_pct(v: str | float) -> str:
-    try:
-        return f"{float(v) * 100:.2f}"
-    except (TypeError, ValueError):
-        return "—"
+_EXPLORER_COLS = [
+    # (key in payload, label, decimals, *100, best = "lo" | "hi" | "")
+    ("n", "n", 0, False, ""), ("err", "err", 0, False, "lo"),
+    ("cl", "CER·light", 1, True, "lo"), ("cr", "CER·raw", 1, True, "lo"),
+    ("cnd", "CER·no-diac", 1, True, "lo"), ("cmac", "CER·macro", 1, True, "lo"),
+    ("wl", "WER·light", 1, True, "lo"), ("ex", "exact %", 1, True, "hi"),
+    ("df", "diac F1", 3, False, "hi"), ("ms", "ms/line", 0, False, "lo"),
+    ("cost", "cost $", 4, False, "lo"),
+]
+
+_EXPLORER_JS = r"""
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var D={}; try{D=JSON.parse(el('ex-data').textContent);}catch(e){return;}
+  var COLS=D.cols, DS=D.ds;
+  var sel=el('ex-ds'), card=el('ex-card'), out=el('ex-out');
+  var sortKey='cl', sortDir=1;
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function fmt(v,dp,pct){
+    if(v==null||v==='') return '—';
+    var n=Number(v); if(isNaN(n)) return '—';
+    return (pct?n*100:n).toFixed(dp);
+  }
+  function render(){
+    var d=DS[sel.value]; if(!d) return;
+    card.textContent=d.card||'';
+    var rows=d.rows.slice().sort(function(a,b){
+      var x=a[sortKey], y=b[sortKey];
+      x=(x==null||x==='')?Infinity:Number(x); y=(y==null||y==='')?Infinity:Number(y);
+      return (x-y)*sortDir;
+    });
+    var head="<th class='exm' data-k='m'>model</th>"+COLS.map(function(c){
+      return "<th data-k='"+c[0]+"'"+(c[0]===sortKey?" aria-sort='"+(sortDir>0?'ascending':'descending')+"'":"")+">"+esc(c[1])+"</th>";
+    }).join('');
+    // best value per column (for the bold-best highlight, like a benchmark table)
+    var best={};
+    COLS.forEach(function(c){
+      if(!c[4]) return;
+      var vals=rows.map(function(r){return r[c[0]];})
+                   .filter(function(v){return v!=null && v!=='' && !isNaN(Number(v));})
+                   .map(Number);
+      if(vals.length) best[c[0]] = c[4]==='hi' ? Math.max.apply(null,vals) : Math.min.apply(null,vals);
+    });
+    var body=rows.map(function(r){
+      return "<tr><td class='exm'>"+esc(r.m)+"</td>"+COLS.map(function(c){
+        var v=r[c[0]];
+        var isBest = (c[0] in best) && v!=null && v!=='' && Number(v)===best[c[0]];
+        return "<td class='exn"+(isBest?" exbest":"")+"'>"+fmt(v,c[2],c[3])+"</td>";
+      }).join('')+"</tr>";
+    }).join('');
+    out.innerHTML="<div class='scroll'><table class='ex-tbl'><thead><tr>"+head+
+      "</tr></thead><tbody>"+body+"</tbody></table></div>";
+    Array.prototype.forEach.call(out.querySelectorAll('th[data-k]'),function(th){
+      th.addEventListener('click',function(){
+        var k=th.getAttribute('data-k'); if(k==='m') return;
+        if(k===sortKey){ sortDir=-sortDir; } else { sortKey=k; sortDir=1; }
+        render();
+      });
+    });
+  }
+  sel.addEventListener('change',render);
+  render();
+})();
+"""
+
+_MODELREF_JS = r"""
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var M={}; try{M=JSON.parse(el('mr-data').textContent);}catch(e){return;}
+  var sel=el('mr-sel'), out=el('mr-out');
+  function render(){ out.textContent=M[sel.value]||'(no description)'; }
+  sel.addEventListener('change',render); render();
+})();
+"""
 
 
-def _fmt_num(v: str | float, nd: int = 1) -> str:
-    try:
-        return f"{float(v):.{nd}f}"
-    except (TypeError, ValueError):
-        return "—"
+def _render_explorer(rows: list[dict], target: Path) -> str:
+    """Pick a dataset -> its description + a sortable table of every model on it."""
+    cards = load_cards()
+    datasets = sorted({r["dataset"] for r in rows})
+    if not datasets:
+        return ""
+    payload = {"cols": [list(c) for c in _EXPLORER_COLS], "ds": {}}
+    for ds in datasets:
+        drows = sorted(
+            (r for r in rows if r["dataset"] == ds),
+            key=lambda r: float(r.get("cer_micro_light", 1) or 1),
+        )
+        payload["ds"][ds] = {
+            "card": cards["datasets"].get(ds, ""),
+            "rows": [
+                {
+                    "m": r["model"], "n": r.get("n", ""), "err": r.get("errors", ""),
+                    "cl": r.get("cer_micro_light", ""), "cr": r.get("cer_micro_raw", ""),
+                    "cnd": r.get("cer_micro_diac_insensitive", ""),
+                    "cmac": r.get("cer_macro_light", ""), "wl": r.get("wer_micro_light", ""),
+                    "ex": r.get("exact_light", ""), "df": r.get("diac_f1", ""),
+                    "ms": r.get("latency_ms_mean", ""), "cost": r.get("cost_usd_total", ""),
+                }
+                for r in drows
+            ],
+        }
+    blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    opts = "".join(f"<option value='{html.escape(d)}'>{html.escape(d)}</option>" for d in datasets)
+    return f"""<section class='explorer'><h2>By dataset</h2>
+<p class='board-note'>Pick a dataset to see its description and every model scored on it —
+same lines, same metrics. Click a column header to sort.</p>
+<div class='ex-controls'><label>dataset <select id='ex-ds'>{opts}</select></label></div>
+<p class='ex-card' id='ex-card'></p>
+<div id='ex-out'></div>
+<script id='ex-data' type='application/json'>{blob}</script>
+<script>{_EXPLORER_JS}</script>
+</section>"""
+
+
+def _render_model_reference(rows: list[dict]) -> str:
+    """Pick a model -> its one-line description."""
+    cards = load_cards()
+    models = [m for m in _model_order(rows) if m in cards["models"]]
+    if not models:
+        return ""
+    payload = {m: cards["models"][m] for m in models}
+    blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+    opts = "".join(f"<option value='{html.escape(m)}'>{html.escape(m)}</option>" for m in models)
+    return f"""<section class='modelref'><h2>Model reference</h2>
+<div class='mr-controls'><label>model <select id='mr-sel'>{opts}</select></label></div>
+<p class='mr-out' id='mr-out'></p>
+<script id='mr-data' type='application/json'>{blob}</script>
+<script>{_MODELREF_JS}</script>
+</section>"""
 
 
 def _is_preview(rows: list[dict]) -> bool:
@@ -215,40 +494,128 @@ def _is_preview(rows: list[dict]) -> bool:
     )
 
 
-def _cell(r: dict, key: str, ccls: str) -> str:
-    if key in ("model", "dataset"):
-        val = html.escape(r.get(key, ""))
-    elif key in ("n", "errors"):
-        val = html.escape(str(r.get(key, "")))
-    elif key == "diac_f1":
-        val = _fmt_num(r.get(key), 3)
-    elif key == "latency_ms_mean":
-        val = _fmt_num(r.get(key), 0)
-    elif key == "cost_usd_total":
-        val = _fmt_num(r.get(key), 4)
-    else:
-        val = _fmt_pct(r.get(key))
-    return f"<td class='{ccls}' data-v='{html.escape(str(r.get(key, '')))}'>{val}</td>"
+def _num(v, factor=100.0):
+    try:
+        return float(v) * factor
+    except (TypeError, ValueError):
+        return None
 
 
-def _table(rows: list[dict], cols: list[tuple], best_run_key) -> str:
-    thead = "".join(
-        "<th class='{cls}' data-key='{key}' data-type='{typ}'>{lbl}</th>".format(
-            cls=cls, key=key, lbl=html.escape(label),
-            typ="text" if key in ("model", "dataset") else "num",
-        )
-        for key, label, cls in cols
-    )
-    trs = []
+def _pct1(v) -> str:
+    n = _num(v)
+    return "—" if n is None else f"{n:.1f}"
+
+
+def _model_order(rows: list[dict]) -> list[str]:
+    """Models, best mean CER-light first (the order matrix columns use)."""
+    by_model: dict[str, list[float]] = {}
     for r in rows:
-        is_best = best_run_key == (r["run"], r["model"], r["dataset"])
-        is_mock = r["model"].startswith("mock") or r["dataset"] == "synthetic"
-        cls = "best" if is_best else ("mock" if is_mock else "")
-        tds = "".join(_cell(r, key, ccls) for key, _, ccls in cols)
-        trs.append(f"<tr class='{cls}'>{tds}</tr>")
+        n = _num(r.get("cer_micro_light"))
+        if n is not None:
+            by_model.setdefault(r["model"], []).append(n)
+    return sorted(
+        by_model, key=lambda m: sum(by_model[m]) / len(by_model[m])
+    ) + [m for m in dict.fromkeys(r["model"] for r in rows) if m not in by_model]
+
+
+_MATRIX_JS = r"""
+(function(){
+  var el=function(id){return document.getElementById(id);};
+  var P={}; try{P=JSON.parse(el('mx-data').textContent);}catch(e){return;}
+  var DS=P.ds, M=P.m, C=P.c;                 // C[di][mi] = [cerLight, werLight] | null
+  var out=el('mx-out'), note=el('mx-sortnote');
+  var meanOrder=P.order;                     // default model column order (indices)
+  var sortDi=-1;                             // >=0 => columns sorted by that dataset
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pc(v){return (v==null||isNaN(v))?'—':(v*100).toFixed(1);}
+  function tcls(cer){ if(cer==null||isNaN(cer)) return ''; return 'mx-t'+Math.min(7,Math.max(0,Math.floor(cer/0.15))); }
+  function colOrder(){
+    if(sortDi<0) return meanOrder.slice();
+    var row=C[sortDi];
+    return M.map(function(_,i){return i;}).sort(function(a,b){
+      var x=row[a]?row[a][0]:Infinity, y=row[b]?row[b][0]:Infinity;
+      return x-y;
+    });
+  }
+  function render(){
+    var ord=colOrder();
+    var head="<th class='mx-corner'"+(sortDi>=0?" data-reset='1' title='reset column order'":"")+">dataset \\ model</th>"
+      + ord.map(function(i){return "<th title='"+esc(M[i])+"'>"+esc(M[i])+"</th>";}).join('');
+    var body=DS.map(function(ds,di){
+      var row=C[di];
+      var best=Infinity;
+      row.forEach(function(c){ if(c && c[0]<best) best=c[0]; });
+      var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+"</th>";
+      cells+=ord.map(function(i){
+        var c=row[i];
+        if(!c) return "<td class='mx-empty'>·</td>";
+        var isBest=c[0]===best;
+        return "<td class='"+tcls(c[0])+(isBest?" mx-best":"")+"'>"+
+          "<span class='mx-cer'>"+pc(c[0])+"</span><span class='mx-wer'>"+pc(c[1])+"</span></td>";
+      }).join('');
+      return "<tr>"+cells+"</tr>";
+    }).join('');
+    out.innerHTML="<div class='scroll'><table class='mx-tbl'><thead><tr>"+head+
+      "</tr></thead><tbody>"+body+"</tbody></table></div>";
+    note.textContent = sortDi>=0
+      ? ("columns sorted best→worst on "+DS[sortDi]+" — click it again (or the corner) to reset")
+      : "click a dataset name to sort the model columns best→worst on it";
+  }
+  out.addEventListener('click',function(e){
+    var t=e.target.closest('[data-di],[data-reset]'); if(!t) return;
+    if(t.hasAttribute('data-reset')){ sortDi=-1; }
+    else { var di=+t.getAttribute('data-di'); sortDi = (di===sortDi ? -1 : di); }
+    render();
+  });
+  out.addEventListener('keydown',function(e){
+    if(e.key!=='Enter' && e.key!==' ') return;
+    var t=e.target.closest('[data-di]'); if(!t) return;
+    e.preventDefault(); var di=+t.getAttribute('data-di'); sortDi=(di===sortDi?-1:di); render();
+  });
+  render();
+})();
+"""
+
+
+def _render_matrix(rows: list[dict]) -> str:
+    """Datasets down the side, models across the top, each cell CER-light (big)
+    over WER-light (small). Best model per dataset is bold; a faint green→red CER
+    wash tints every cell. Click a dataset name to re-sort the model columns
+    best→worst on that dataset."""
+    datasets = sorted({r["dataset"] for r in rows})
+    models = _model_order(rows)
+    if not datasets or not models:
+        return ""
+    m_ix = {m: i for i, m in enumerate(models)}
+    idx = {(r["model"], r["dataset"]): r for r in rows}
+
+    cell = []
+    for ds in datasets:
+        row = []
+        for m in models:
+            r = idx.get((m, ds))
+            cl = _num(r.get("cer_micro_light"), 1.0) if r else None
+            wl = _num(r.get("wer_micro_light"), 1.0) if r else None
+            row.append([cl, wl] if cl is not None else None)
+        cell.append(row)
+
+    payload = {"ds": datasets, "m": models, "c": cell,
+               "order": list(range(len(models)))}  # already best-mean-CER first
+    _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
+    blob = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
+
     return (
-        "<div class='scroll'><table class='sortable'>"
-        f"<thead><tr>{thead}</tr></thead><tbody>{''.join(trs)}</tbody></table></div>"
+        "<section class='matrix'><h2>All results — CER-light / WER-light</h2>"
+        "<p class='board-note'>Every model &times; dataset in one grid. Top number is "
+        "<b>CER&middot;light&nbsp;%</b>, smaller number below is <b>WER&middot;light&nbsp;%</b> "
+        "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
+        "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
+        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset.</p>"
+        "<p class='board-note mx-sortnote' id='mx-sortnote'></p>"
+        f"<div id='mx-out'></div>"
+        f"<script id='mx-data' type='application/json'>{blob}</script>"
+        f"<script>{_MATRIX_JS}</script></section>"
     )
 
 
@@ -257,11 +624,7 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
                                        float(r.get("cer_micro_light", 1) or 1)))
     preview = _is_preview(rows)
-    best_run_key = None
     real = [r for r in rows if not (r["model"].startswith("mock") or r["dataset"] == "synthetic")]
-    if real:
-        best = min(real, key=lambda r: float(r.get("cer_micro_light", 1) or 1))
-        best_run_key = (best["run"], best["model"], best["dataset"])
 
     gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
     n_runs = len({r["run"] for r in rows})
@@ -284,10 +647,11 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
             "scores 100.00.</p>"
         )
     else:
+        n_ds = len({r.get("dataset", "") for r in real if r.get("dataset")})
         out.append(
             f"<p class='status status--live'><span class='dot'></span>"
             f"{len({r['model'] for r in real})} model(s) · {n_runs} run(s) · "
-            f"dataset: Muharaf-public test split</p>"
+            f"{n_ds} dataset(s) — Muharaf handwriting + KITAB-Bench subsets</p>"
         )
     out.append("</header>")
 
@@ -296,53 +660,16 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         out.append(f"<div><dt>{term}</dt><dd>{desc}</dd></div>")
     out.append("</dl></section>")
 
-    cols = [
-        ("model", "model", "t"), ("dataset", "dataset", "t"), ("n", "n", "n"),
-        ("cer_micro_raw", "CER · raw", "n"),
-        ("cer_micro_light", "CER · light", "n hero"),
-        ("cer_micro_diac_insensitive", "CER · no-diac", "n"),
-        ("cer_macro_light", "CER · macro", "n"),
-        ("wer_micro_light", "WER · light", "n"),
-        ("exact_light", "exact %", "n"),
-        ("diac_f1", "diac F1", "n"),
-        ("latency_ms_mean", "ms / line", "n"),
-        ("cost_usd_total", "cost $", "n"),
-        ("errors", "err", "n"),
-    ]
-    out.append(
-        "<section class='board'>" + _table(rows, cols, best_run_key)
-        + "<p class='board-note'>All error figures are percentages; lower is better. "
-        "The <b>CER · light</b> column is the headline metric. "
-        "Click a column header to sort; click again to reverse.</p></section>"
-    )
+    real_rows = [
+        r for r in rows
+        if not (r["model"].startswith("mock") or r["dataset"] == "synthetic")
+    ] or rows
 
-    datasets = sorted({r.get("dataset", "") for r in rows})
-    if len(datasets) > 1:
-        sub_cols = [c for c in cols if c[0] != "dataset"]
-        parts = [
-            "<section class='board by-dataset'><h2>By dataset</h2>",
-            (
-                "<p class='board-note'>The same results, split out one table per "
-                "dataset &mdash; so each model is only lined up against others "
-                "scored on the <b>same</b> lines. Each table sorts on its own.</p>"
-            ),
-        ]
-        for ds in datasets:
-            drows = sorted(
-                (r for r in rows if r.get("dataset", "") == ds),
-                key=lambda r: float(r.get("cer_micro_light", 1) or 1),
-            )
-            parts.append(
-                f"<h3>{html.escape(ds)} "
-                f"<span class='dscount'>{len(drows)} model(s)</span></h3>"
-            )
-            parts.append(_table(drows, sub_cols, best_run_key))
-        parts.append("</section>")
-        out.append("".join(parts))
-
-    out.append(_SORT_JS)
-
-    out.append(_render_cards(rows))
+    out.append(_render_matrix(real_rows))
+    out.append(_render_explorer(real_rows, Path(_RENDER_CTX["target"])))
+    out.append(_render_model_reference(real_rows))
+    out.append(_render_cost(rows, Path(_RENDER_CTX["target"])))
+    out.append(_render_review(rows, Path(_RENDER_CTX["target"])))
     out.append(_render_samples(rows))
 
     runs = sorted({(r["run"], r.get("when", ""), r.get("limit", ""),
@@ -357,8 +684,10 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     out.append("</ul></section>")
 
     out.append(
-        "<footer><p>Dataset: <b>Muharaf-public</b> — Manuscripts of Handwritten "
-        "Arabic (NeurIPS 2024), CC-BY-NC-SA-4.0, <code>test</code> split. "
+        "<footer><p>Datasets: <b>Muharaf-public</b> (Manuscripts of Handwritten "
+        "Arabic, NeurIPS 2024, CC-BY-NC-SA-4.0) and the <b>KITAB-Bench</b> "
+        "text-recognition subsets (KHATT, Muharaf, HistoricalBooks, Hindawi, "
+        "HistoryAr, OnlineKHATT). Line track, research use. "
         "Harness: <code>arabic-ocr-bench</code>. "
         f"Generated {gen} by <code>scripts/make_leaderboard.py</code>.</p></footer>"
     )
@@ -366,37 +695,165 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     return "\n".join(out)
 
 
-_SORT_JS = """<script>
+_REVIEW_JS = r"""
 (function(){
-  Array.prototype.forEach.call(document.querySelectorAll('table.sortable'),function(t){
-    if(!t.tHead||!t.tBodies[0]) return;
-    var tb=t.tBodies[0];
-    var ths=Array.prototype.slice.call(t.tHead.rows[0].cells);
-    ths.forEach(function(th,i){
-      th.addEventListener('click',function(){
-        var dir=th.getAttribute('aria-sort')==='ascending'?'descending':'ascending';
-        ths.forEach(function(o){o.removeAttribute('aria-sort');});
-        th.setAttribute('aria-sort',dir);
-        var num=th.dataset.type==='num', s=dir==='ascending'?1:-1;
-        var rows=Array.prototype.slice.call(tb.rows);
-        rows.sort(function(a,b){
-          var x=a.cells[i].getAttribute('data-v')||'', y=b.cells[i].getAttribute('data-v')||'';
-          if(num){
-            var nx=parseFloat(x), ny=parseFloat(y);
-            var ax=isNaN(nx), ay=isNaN(ny);
-            if(ax&&ay) return 0;
-            if(ax) return 1;          /* blanks / dashes always sort last */
-            if(ay) return -1;
-            return (nx-ny)*s;
-          }
-          return x.localeCompare(y)*s;
-        });
-        rows.forEach(function(r){tb.appendChild(r);});
-      });
+  var el=function(id){return document.getElementById(id);};
+  var P={}; try{P=JSON.parse(el('rv-data').textContent);}catch(e){return;}
+  var IMG=P.img||[], DATA=P.models||{};
+  var mSel=el('rv-model'), dSel=el('rv-ds'), nSel=el('rv-n'),
+      out=el('rv-out'), meta=el('rv-meta');
+  var lb=el('rv-lb'), lbImg=el('rv-lb-img'), lbWrap=el('rv-lb-imgwrap'),
+      lbMeta=el('rv-lb-meta'), lbGt=el('rv-lb-gt'), lbPd=el('rv-lb-pd'),
+      lbPdLab=el('rv-lb-pdlab');
+  var SHOWN=[];          // rows currently on screen, indexed by data-si
+  var lastFocus=null;
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function pct(v){return (v==null||isNaN(v))?'—':(v*100).toFixed(1)+'%';}
+  function imgOf(r){return (r.im>=0 && IMG[r.im])?IMG[r.im]:"";}
+
+  // --- ground-truth vs prediction diff -------------------------------------
+  var diffMode='word', curGT='', curPD='', curErr=null;
+  function lcsDiff(a,b){
+    var n=a.length, m=b.length;
+    var dp=[]; for(var i=0;i<=n;i++) dp.push(new Uint16Array(m+1));
+    for(var i=n-1;i>=0;i--) for(var j=m-1;j>=0;j--)
+      dp[i][j]= a[i]===b[j] ? dp[i+1][j+1]+1
+        : (dp[i+1][j]>=dp[i][j+1] ? dp[i+1][j] : dp[i][j+1]);
+    var ops=[], i=0, j=0;
+    while(i<n && j<m){
+      if(a[i]===b[j]){ ops.push({t:'e',s:a[i]}); i++; j++; }
+      else if(dp[i+1][j]>=dp[i][j+1]){ ops.push({t:'d',s:a[i]}); i++; }
+      else { ops.push({t:'i',s:b[j]}); j++; }
+    }
+    while(i<n) ops.push({t:'d',s:a[i++]});
+    while(j<m) ops.push({t:'i',s:b[j++]});
+    for(var k=0;k<ops.length;){                 // a deletion run followed by an
+      if(ops[k].t==='d'){                        // insertion run == a substitution
+        var p=k; while(p<ops.length && ops[p].t==='d') p++;
+        if(p<ops.length && ops[p].t==='i'){
+          var q=p; while(q<ops.length && ops[q].t==='i') q++;
+          for(var x=k;x<q;x++) ops[x].sub=true;
+          k=q; continue;
+        }
+      }
+      k++;
+    }
+    return ops;
+  }
+  function renderDiff(){
+    var gt=el('rv-lb-gt'), pd=el('rv-lb-pd'), stats=el('rv-lb-stats');
+    if(curErr){ gt.textContent=curGT; pd.innerHTML="<span class='rv-err'>"+esc(curErr)+"</span>"; stats.textContent=''; return; }
+    if(diffMode==='plain'){ gt.textContent=curGT; pd.textContent=curPD||'(empty)'; stats.textContent=''; return; }
+    var isChar=diffMode==='char', sep=isChar?'':' ';
+    var A=isChar?Array.from(curGT):curGT.split(/\s+/).filter(Boolean);
+    var B=isChar?Array.from(curPD):curPD.split(/\s+/).filter(Boolean);
+    var ops=lcsDiff(A,B);
+    function tok(s){ return isChar ? (s===' '?'␣':esc(s)) : esc(s); }
+    var gh='', ph='', keep=0, miss=0, extra=0, chg=0;
+    ops.forEach(function(o){
+      var cls=o.sub?'d-sub':(o.t==='d'?'d-del':'d-ins');
+      if(o.t==='e'){ gh+=tok(o.s)+sep; ph+=tok(o.s)+sep; keep++; }
+      else if(o.t==='d'){ gh+="<span class='"+cls+"'>"+tok(o.s)+"</span>"+sep; if(o.sub) chg++; else miss++; }
+      else { ph+="<span class='"+cls+"'>"+tok(o.s)+"</span>"+sep; if(!o.sub) extra++; }
     });
+    gt.innerHTML=gh.trim(); pd.innerHTML=ph.trim()||'<em>(empty)</em>';
+    stats.textContent=A.length+' '+(isChar?'chars':'words')+' · '+keep+' kept · '+chg+' changed · '+miss+' missed · '+extra+' extra';
+  }
+
+  function fillDatasets(){
+    var rows=DATA[mSel.value]||[];
+    var seen={},ds=[];
+    rows.forEach(function(r){if(!seen[r.d]){seen[r.d]=1;ds.push(r.d);}});
+    ds.sort();
+    dSel.innerHTML="<option value=''>all datasets</option>"+
+      ds.map(function(d){return "<option value='"+esc(d)+"'>"+esc(d)+"</option>";}).join('');
+  }
+  function tbl(rows,title,cls){
+    var h="<h4 class='rv-h "+cls+"'>"+esc(title)+" <span>("+rows.length+")</span></h4>";
+    if(!rows.length) return h+"<p class='rv-empty'>none</p>";
+    var head="<tr><th>#</th><th>dataset</th><th>CER·light</th><th>CER·raw</th>"+
+      "<th>image</th><th>ground truth</th><th>model reading</th></tr>";
+    var body=rows.map(function(r,i){
+      var si=SHOWN.push(r)-1;
+      var uri=imgOf(r);
+      var cer=r.e?"<span class='rv-err'>"+esc(r.e)+"</span>":pct(r.cl);
+      var thumb=uri?"<img loading='lazy' alt='' src='"+uri+"'>":"<span class='rv-noimg'>—</span>";
+      var pred=r.e?"<em>—</em>":(esc(r.p)||"<em>(empty)</em>");
+      return "<tr class='rv-row"+(uri?" rv-has-img":"")+"' data-si='"+si+"' tabindex='0'>"+
+        "<td class='rv-i'>"+(i+1)+"</td><td class='rv-ds'>"+esc(r.d)+
+        "</td><td class='rv-n'>"+cer+"</td><td class='rv-n'>"+pct(r.cr)+"</td>"+
+        "<td class='rv-img'>"+thumb+"</td>"+
+        "<td class='rv-x' dir='auto'>"+esc(r.gt)+"</td>"+
+        "<td class='rv-x' dir='auto'>"+pred+"</td></tr>";
+    }).join('');
+    return h+"<div class='scroll'><table class='rv-tbl'><thead>"+head+"</thead><tbody>"+body+"</tbody></table></div>";
+  }
+  function render(){
+    var rows=(DATA[mSel.value]||[]).slice();
+    if(dSel.value) rows=rows.filter(function(r){return r.d===dSel.value;});
+    var N=nSel.value==='all'?1e9:parseInt(nSel.value,10);
+    var ok=rows.filter(function(r){return !r.e && r.cl!=null;});
+    var bad=rows.filter(function(r){return r.e;});
+    var best=ok.slice().sort(function(a,b){return a.cl-b.cl;}).slice(0,N);
+    var worst=bad.concat(ok.slice().sort(function(a,b){return b.cl-a.cl;})).slice(0,N);
+    var mean=ok.length?(ok.reduce(function(s,r){return s+r.cl;},0)/ok.length):null;
+    meta.textContent=mSel.value+" — "+rows.length+" scored line(s)"+
+      (bad.length?(" · "+bad.length+" errored/refused"):"")+
+      (mean!=null?(" · mean CER·light "+(mean*100).toFixed(1)+"%"):"");
+    SHOWN=[];
+    out.innerHTML=tbl(best,'Best','rv-best')+tbl(worst,'Worst','rv-worst');
+  }
+  function openLB(r){
+    if(!r) return;
+    lastFocus=document.activeElement;
+    var uri=imgOf(r);
+    if(uri){ lbImg.src=uri; lbWrap.hidden=false; }
+    else { lbImg.removeAttribute('src'); lbWrap.hidden=true; }
+    lbImg.classList.remove('rv-zoom');
+    lbMeta.textContent=[mSel.value, r.d, r.s,
+      (r.e?("error: "+r.e):("CER·light "+pct(r.cl)+"  ·  CER·raw "+pct(r.cr)))
+    ].join('  ·  ');
+    curGT=r.gt||''; curPD=r.p||''; curErr=r.e||null;
+    el('rv-lb-diffbar').hidden=!!curErr;
+    renderDiff();
+    lb.hidden=false;
+    document.body.style.overflow='hidden';
+    el('rv-lb').querySelector('.rv-lb-x').focus();
+  }
+  function closeLB(){
+    lb.hidden=true;
+    document.body.style.overflow='';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  out.addEventListener('click',function(e){
+    var tr=e.target.closest('tr[data-si]'); if(!tr) return;
+    openLB(SHOWN[+tr.getAttribute('data-si')]);
   });
+  out.addEventListener('keydown',function(e){
+    if(e.key!=='Enter' && e.key!==' ') return;
+    var tr=e.target.closest('tr[data-si]'); if(!tr) return;
+    e.preventDefault(); openLB(SHOWN[+tr.getAttribute('data-si')]);
+  });
+  lb.addEventListener('click',function(e){
+    if(e.target.dataset.close || e.target.classList.contains('rv-lb-x')) closeLB();
+  });
+  lbImg.addEventListener('click',function(){ lbImg.classList.toggle('rv-zoom'); });
+  el('rv-lb-diffbar').addEventListener('click',function(e){
+    var b=e.target.closest('.rv-lb-mode'); if(!b) return;
+    diffMode=b.getAttribute('data-mode');
+    Array.prototype.forEach.call(this.querySelectorAll('.rv-lb-mode'),function(x){
+      x.classList.toggle('on', x===b);
+    });
+    renderDiff();
+  });
+  document.addEventListener('keydown',function(e){ if(!lb.hidden && e.key==='Escape') closeLB(); });
+  mSel.addEventListener('change',function(){fillDatasets();render();});
+  dSel.addEventListener('change',render);
+  nSel.addEventListener('change',render);
+  fillDatasets(); render();
 })();
-</script>"""
+"""
 
 _LEGEND = [
     ("CER / WER", "edit distance to the reference, over characters / words. 0 = perfect."),
@@ -419,29 +876,6 @@ def _cer_pct(v) -> str:
         return f"{float(v) * 100:.0f}%"
     except (TypeError, ValueError):
         return "—"
-
-
-def _render_cards(rows: list[dict]) -> str:
-    cards = load_cards()
-    models = [m for m in dict.fromkeys(r["model"] for r in rows) if m in cards["models"]]
-    datasets = [d for d in dict.fromkeys(r["dataset"] for r in rows) if d in cards["datasets"]]
-    if not models and not datasets:
-        return ""
-    out = ["<section class='cards'>"]
-    if models:
-        out.append("<h2>Models</h2><dl class='cardlist'>")
-        for m in models:
-            out.append(f"<div><dt>{html.escape(m)}</dt>"
-                       f"<dd>{html.escape(cards['models'][m])}</dd></div>")
-        out.append("</dl>")
-    if datasets:
-        out.append("<h2>Datasets</h2><dl class='cardlist'>")
-        for d in datasets:
-            out.append(f"<div><dt>{html.escape(d)}</dt>"
-                       f"<dd>{html.escape(cards['datasets'][d])}</dd></div>")
-        out.append("</dl>")
-    out.append("</section>")
-    return "\n".join(out)
 
 
 def _chips(cats: list[str], dataset: str = "") -> str:
@@ -511,49 +945,206 @@ def _render_samples(rows: list[dict]) -> str:
                 )
             out.append("</tbody></table></div>")
 
-    # 2. best / worst per model — up to 2 tiles per dataset the model ran on
-    rank = {"best": 0, "typical": 1, "longest": 2, "worst": 3}
-    for m in real_models:
-        picks = [
-            (slot["dataset"], slot, slot["preds"][m])
-            for slot in by_id.values()
-            if m in slot["preds"]
-            and {c for c in slot["preds"][m]["categories"]} & set(rank)
-        ]
-        if not picks:
-            continue
-        picks.sort(key=lambda t: (
-            t[0],
-            min((rank.get(c, 5) for c in t[2]["categories"]), default=5),
-            float(t[2].get("cer_light") or 0),
-        ))
-        seen: dict[str, int] = {}
-        kept = []
-        for ds, slot, p in picks:
-            if seen.get(ds, 0) >= 2:
-                continue
-            seen[ds] = seen.get(ds, 0) + 1
-            kept.append((ds, slot, p))
-        out.append(f"<h3>{html.escape(m)} — best &amp; worst</h3><div class='grid'>")
-        for ds, slot, p in kept:
-            out.append("<div class='samp'>")
-            out.append(_chips(p["categories"], ds))
-            out.append(_img_block(slot))
-            out.append(f"<p class='gt' dir='auto'><b>GT</b> {html.escape(slot['ground_truth'])}</p>")
-            out.append(f"<p class='pw'>{_pred_line(p['prediction'], p['error'])}"
-                       f"<span class='cc'>{_cer_pct(p['cer_light'])}</span></p>")
-            out.append("</div>")
-        out.append("</div>")
-
+    # (per-model best/worst now lives in the interactive "Review by model"
+    #  section — see _render_review — which covers every scored line, not just a
+    #  curated handful.)
     out.append("</section>")
     return "\n".join(out)
+
+
+def _shrink_uri(uri: str, max_dim: int = 440, quality: int = 42) -> str:
+    """Re-encode a base64 image data URI small. The page only needs the line
+    legible, not full-res; this keeps the artifact light enough to load fast.
+    Caps the longest edge (some datasets are page-sized or very wide)."""
+    if not uri.startswith("data:image/") or ";base64," not in uri:
+        return uri
+    try:
+        import base64
+        import io
+
+        from PIL import Image
+
+        raw = base64.b64decode(uri.split(";base64,", 1)[1])
+        im = Image.open(io.BytesIO(raw)).convert("RGB")
+        longest = max(im.size)
+        if longest > max_dim:
+            s = max_dim / longest
+            im = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
+        buf = io.BytesIO()
+        im.save(buf, format="JPEG", quality=quality, optimize=True)
+        out = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+        return out if len(out) < len(uri) else uri
+    except Exception:  # noqa: BLE001 - keep the original on any decode/encode issue
+        return uri
+
+
+def _render_review(rows: list[dict], target: Path) -> str:
+    """Interactive best/worst browser: pick a model (and optionally a dataset),
+    get its most- and least-accurate lines as a table, from every scored run."""
+    review = collect_review(target)
+    if not review:
+        return ""
+    # keep the leaderboard's model ordering, then append any extras
+    ordered = [m for m in dict.fromkeys(r["model"] for r in rows) if m in review]
+    ordered += [m for m in sorted(review) if m not in ordered]
+
+    # Deduplicate images: a data URI is stored once in `img` and rows reference
+    # it by index. Without this the same 20 line images are repeated per model
+    # (12x+) and the page balloons past what the Artifact renderer loads quickly.
+    img_idx: dict[str, int] = {}
+    imgs: list[str] = []
+
+    def _im(uri: str) -> int:
+        if not uri:
+            return -1
+        i = img_idx.get(uri)
+        if i is None:
+            i = img_idx[uri] = len(imgs)
+            imgs.append(uri)
+        return i
+
+    models = {
+        m: [
+            {
+                "s": r["sample_id"], "d": r["dataset"],
+                "cl": r["cer_light"], "cr": r["cer_raw"],
+                "e": r["error"], "gt": r["gt"], "p": r["pred"],
+                "im": _im(r.get("image", "")),
+            }
+            for r in review[m]
+        ]
+        for m in ordered
+    }
+    payload = {"img": [_shrink_uri(u) for u in imgs], "models": models}
+    blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
+
+    opts = "".join(f"<option value='{html.escape(m)}'>{html.escape(m)}</option>" for m in ordered)
+    return f"""<section class='review'><h2>Review — best &amp; worst by model</h2>
+<p class='samp-intro'>Pick a model to see its most- and least-accurate lines across
+every dataset it was scored on, from the stored per-sample results. CER = character
+error rate, light-normalised; lower is better. Errored / refused lines head the
+worst list. <b>Click any row</b> to enlarge the line image with its ground truth
+and the model's reading.</p>
+<div class='rv-controls'>
+  <label>model <select id='rv-model'>{opts}</select></label>
+  <label>dataset <select id='rv-ds'></select></label>
+  <label>rows <select id='rv-n'>
+    <option>10</option><option selected>25</option><option>50</option><option value='all'>all</option>
+  </select></label>
+</div>
+<p class='rv-meta' id='rv-meta'></p>
+<div id='rv-out'></div>
+<div id='rv-lb' class='rv-lb' hidden role='dialog' aria-modal='true' aria-label='sample detail'>
+  <div class='rv-lb-scrim' data-close='1'></div>
+  <div class='rv-lb-card'>
+    <button type='button' class='rv-lb-x' aria-label='Close'>&times;</button>
+    <p class='rv-lb-meta' id='rv-lb-meta'></p>
+    <div class='rv-lb-imgwrap' id='rv-lb-imgwrap'>
+      <img id='rv-lb-img' alt='handwritten Arabic line' />
+    </div>
+    <div class='rv-lb-diffbar' id='rv-lb-diffbar'>
+      <span class='rv-lb-modes'>
+        <button type='button' data-mode='word' class='rv-lb-mode on'>words</button
+        ><button type='button' data-mode='char' class='rv-lb-mode'>chars</button
+        ><button type='button' data-mode='plain' class='rv-lb-mode'>plain</button>
+      </span>
+      <span class='rv-lb-legend'>
+        <span class='d-ins'>added / wrong</span>
+        <span class='d-del'>missed</span>
+        <span class='d-sub'>changed</span>
+      </span>
+      <span class='rv-lb-stats' id='rv-lb-stats'></span>
+    </div>
+    <div class='rv-lb-pair'>
+      <div class='rv-lb-block rv-lb-gt'>
+        <span class='rv-lb-lab'>Ground truth</span>
+        <p id='rv-lb-gt' dir='auto'></p>
+      </div>
+      <div class='rv-lb-block rv-lb-pd'>
+        <span class='rv-lb-lab' id='rv-lb-pdlab'>Model reading</span>
+        <p id='rv-lb-pd' dir='auto'></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script id='rv-data' type='application/json'>{blob}</script>
+<script>{_REVIEW_JS}</script>
+</section>"""
+
+
+def _usd(v: float, nd: int = 4) -> str:
+    return f"${v:,.{nd}f}"
+
+
+def _render_cost(rows: list[dict], target: Path) -> str:
+    """Per-model cost: average / median $ for one image, plus the projected cost
+    to run the whole of each dataset (mean $/line on that dataset x row count)."""
+    costs = collect_costs(target)
+    if not costs:
+        return ""
+    ds_rows = _dataset_rows()
+    # datasets that actually appear on the board, in the board's order
+    board_ds = [d for d in dict.fromkeys(r["dataset"] for r in rows) if d in ds_rows]
+    board_ds = [d for d in board_ds if any(d in c["ds_line"] for c in costs.values())]
+
+    def total(m: str) -> float:
+        c = costs[m]
+        return sum(c["ds_line"][d] * ds_rows[d] for d in board_ds if d in c["ds_line"])
+
+    models = sorted(costs, key=total, reverse=True)
+
+    head = (
+        "<tr><th>model</th><th>in $/1M</th><th>out $/1M</th><th>calls</th>"
+        "<th>avg $/image</th><th>median $/image</th>"
+        + "".join(f"<th>{html.escape(d)}<br><span>({ds_rows[d]:,} lines)</span></th>" for d in board_ds)
+        + "<th>full sweep</th></tr>"
+    )
+    trs = []
+    for m in models:
+        c = costs[m]
+        p = c["pricing"]
+        cells = [
+            f"<td>{html.escape(m)}</td>",
+            f"<td>{p.get('input_usd_per_1m', 0):.2f}</td>",
+            f"<td>{p.get('output_usd_per_1m', 0):.2f}</td>",
+            f"<td>{c['calls']}</td>",
+            f"<td>{_usd(c['mean_call'], 5)}</td>",
+            f"<td>{_usd(c['median_call'], 5)}</td>",
+        ]
+        for d in board_ds:
+            if d in c["ds_line"]:
+                cells.append(f"<td>{_usd(c['ds_line'][d] * ds_rows[d], 2)}</td>")
+            else:
+                cells.append("<td>—</td>")
+        cells.append(f"<td class='cost-hi'>{_usd(total(m), 2)}</td>")
+        trs.append("<tr>" + "".join(cells) + "</tr>")
+
+    miss = [d for d in ds_rows if d not in board_ds]
+    note = (
+        "Average and median are over this model's billable calls in the stored runs "
+        "(provider-reported tokens × the price above; image tokens are already inside "
+        "the input count). A dataset's projection is that model's mean $/line <em>on "
+        "that dataset</em> × its full row count; “full sweep” sums the datasets the "
+        "model has actually run. "
+        + (f"Not shown (no runs yet): {', '.join(sorted(miss))}. " if miss else "")
+        + "Row counts: "
+        + ", ".join(f"<code>{html.escape(d)}</code> {ds_rows[d]:,}" for d in board_ds)
+        + ". Reasoning models (GPT-5 / GPT-5.6, and Claude with adaptive thinking) spend "
+        "hidden output tokens that dominate cost."
+    )
+    return (
+        "<section class='cost'><h2>Cost — per image and per full dataset</h2>"
+        "<div class='scroll'><table class='cost-tbl'><thead>" + head
+        + "</thead><tbody>" + "".join(trs) + "</tbody></table></div>"
+        + f"<p class='cost-note'>{note}</p></section>"
+    )
 
 
 def _img_block(slot: dict) -> str:
     if not slot.get("image"):
         return "<div class='samp-img samp-img--missing'>image unavailable</div>"
     return (f"<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' "
-            f"src='{slot['image']}'></div>")
+            f"src='{_shrink_uri(slot['image'], max_dim=620)}'></div>")
 
 _HEAD = """<title>{{TITLE}}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -626,7 +1217,68 @@ tbody tr.best td{background:var(--accent-soft);}
 tbody tr.best td:first-child{box-shadow:inset 3px 0 0 var(--best-bar);}
 tbody tr.mock td{color:var(--mock);}
 tbody tr.mock td.t{font-weight:400;font-style:italic;}
-.board-note{font-size:12px;color:var(--muted);margin:10px 2px 0;}
+.board-note{font-size:12px;color:var(--muted);margin:10px 2px 0;max-width:74ch;line-height:1.55;}
+
+/* --- results matrix (datasets x models) --- */
+.matrix{margin:28px 0 0;}
+.mx-tbl{font-size:12px;border-collapse:separate;border-spacing:0;}
+.mx-tbl th,.mx-tbl td{white-space:nowrap;text-align:right;padding:8px 12px;
+  border-bottom:1px solid var(--line);}
+.mx-tbl thead th{position:sticky;top:0;background:var(--ground);z-index:2;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;
+  text-transform:none;letter-spacing:0;color:var(--muted);max-width:130px;
+  overflow:hidden;text-overflow:ellipsis;}
+.mx-tbl th.mx-corner{position:sticky;left:0;z-index:3;text-align:left;}
+.mx-tbl th.mx-corner{cursor:pointer;}
+.mx-tbl th.mx-ds{position:sticky;left:0;z-index:1;background:var(--ground);
+  text-align:left;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0;
+  cursor:pointer;}
+.mx-tbl th.mx-ds:hover{color:var(--accent);}
+.mx-tbl th.mx-ds.mx-ds-on{color:var(--accent);box-shadow:inset 2px 0 0 var(--accent);}
+.mx-sortnote{font-style:italic;}
+.mx-tbl td{font-variant-numeric:tabular-nums;}
+.mx-tbl .mx-cer{display:block;font-family:"IBM Plex Mono",monospace;color:var(--ink);}
+.mx-tbl .mx-wer{display:block;font-size:10px;color:var(--muted);margin-top:2px;}
+.mx-tbl td.mx-empty{color:var(--line);}
+.mx-tbl td.mx-best .mx-cer{font-weight:700;}
+.mx-tbl td.mx-best{box-shadow:inset 0 0 0 1px var(--accent);}
+/* CER wash — green (low) -> amber -> red (high), .15 alpha; theme-agnostic */
+.mx-tbl td.mx-t0{background:rgba(58,125,92,.16);}
+.mx-tbl td.mx-t1{background:rgba(94,132,79,.16);}
+.mx-tbl td.mx-t2{background:rgba(130,140,67,.16);}
+.mx-tbl td.mx-t3{background:rgba(166,147,55,.16);}
+.mx-tbl td.mx-t4{background:rgba(201,154,58,.16);}
+.mx-tbl td.mx-t5{background:rgba(190,125,58,.16);}
+.mx-tbl td.mx-t6{background:rgba(178,96,58,.16);}
+.mx-tbl td.mx-t7{background:rgba(165,68,58,.18);}
+.mx-tbl tbody tr:hover td{background:var(--accent-soft)!important;}
+.mx-tbl tbody tr:hover th.mx-ds{background:var(--accent-soft);}
+
+/* --- dataset explorer + model reference --- */
+.explorer,.modelref{margin:40px 0 0;}
+.ex-controls,.mr-controls{display:flex;gap:10px;align-items:center;margin:10px 0 8px;}
+.ex-controls label,.mr-controls label{display:flex;align-items:center;gap:7px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--muted);}
+.ex-controls select,.mr-controls select{font:inherit;font-size:12.5px;padding:5px 9px;
+  border:1px solid var(--line);border-radius:7px;background:var(--surface);
+  color:var(--ink);text-transform:none;letter-spacing:0;max-width:70vw;}
+.ex-card,.mr-out{font-size:13.5px;line-height:1.6;color:var(--ink);max-width:70ch;
+  margin:4px 2px 12px;}
+.ex-tbl{font-size:13px;}
+.ex-tbl thead th{cursor:pointer;position:sticky;top:0;background:var(--ground);}
+.ex-tbl thead th:hover{color:var(--ink);}
+.ex-tbl thead th[aria-sort]{color:var(--ink);}
+.ex-tbl thead th[aria-sort="ascending"]::after{content:" \2191";}
+.ex-tbl thead th[aria-sort="descending"]::after{content:" \2193";}
+.ex-tbl td,.ex-tbl th{white-space:nowrap;}
+.ex-tbl td.exn,.ex-tbl th:not(.exm){text-align:right;font-variant-numeric:tabular-nums;}
+.ex-tbl td.exn{font-family:"IBM Plex Mono",monospace;}
+.ex-tbl td.exn.exbest{font-weight:700;color:var(--ink);}
+.ex-tbl td.exm{font-weight:500;}
+.ex-tbl tbody tr:hover td{background:var(--accent-soft);}
+
 .by-dataset{margin:44px 0 0;}
 .by-dataset h3{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
   letter-spacing:.04em;text-transform:uppercase;color:var(--ink);
@@ -705,6 +1357,117 @@ b{font-weight:600;color:var(--ink);}
   :root:not([data-theme="light"]) .chip--best{color:#79c6a0;}
 }
 :root[data-theme="dark"] .samp-img,:root[data-theme="dark"] .samp-img img{background:#f2f2ef;}
+
+/* --- interactive review (best/worst by model) --- */
+.review{margin:44px 0 0;}
+.rv-controls{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 8px;}
+.rv-controls label{display:flex;align-items:center;gap:7px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--muted);}
+.rv-controls select{font:inherit;font-size:12.5px;padding:5px 9px;border:1px solid var(--line);
+  border-radius:7px;background:var(--surface);color:var(--ink);
+  text-transform:none;letter-spacing:0;max-width:60vw;}
+.rv-meta{font-size:12.5px;color:var(--muted);margin:6px 2px 4px;font-variant-numeric:tabular-nums;}
+.rv-h{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;margin:20px 2px 8px;}
+.rv-h span{font-weight:400;color:var(--muted);}
+.rv-h.rv-best{color:#3a7d5c;}
+.rv-h.rv-worst{color:#a5443a;}
+.rv-empty{font-size:12px;color:var(--muted);margin:0 2px 6px;}
+.rv-tbl{width:100%;font-size:13px;}
+.rv-tbl thead th{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;
+  letter-spacing:.03em;text-transform:uppercase;color:var(--muted);background:var(--ground);
+  position:sticky;top:0;}
+.rv-tbl td{border-bottom:1px solid var(--line);vertical-align:top;white-space:normal;line-height:1.6;}
+.rv-tbl tbody tr:last-child td{border-bottom:none;}
+.rv-tbl tbody tr.rv-row{cursor:zoom-in;transition:background .12s;}
+.rv-tbl tbody tr.rv-row:hover,.rv-tbl tbody tr.rv-row:focus-visible{background:var(--accent-soft);outline:none;}
+.rv-tbl tbody tr.rv-row:focus-visible{box-shadow:inset 3px 0 0 var(--accent);}
+.rv-tbl td.rv-i,.rv-tbl td.rv-n{font-family:"IBM Plex Mono",monospace;text-align:right;
+  font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink);}
+.rv-tbl td.rv-ds{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);white-space:nowrap;}
+.rv-tbl td.rv-x{max-width:40ch;color:var(--ink);}
+.rv-tbl td.rv-img{width:150px;}
+.rv-tbl td.rv-img img{width:150px;height:auto;display:block;border:1px solid var(--line);
+  border-radius:5px;background:#fff;}
+.rv-noimg{color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+.rv-err{color:#a5443a;font-style:italic;}
+
+/* lightbox */
+.rv-lb{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:4vh 3vw;}
+.rv-lb[hidden]{display:none!important;}   /* class sets display:flex, so hide explicitly */
+.rv-lb-scrim{position:absolute;inset:0;background:rgba(10,11,14,.82);backdrop-filter:blur(2px);}
+.rv-lb-card{position:relative;z-index:1;width:min(1080px,96vw);max-height:92vh;overflow:auto;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;
+  padding:22px clamp(16px,3vw,30px) 26px;box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.rv-lb-x{position:absolute;top:10px;right:12px;width:32px;height:32px;border:1px solid var(--line);
+  border-radius:8px;background:var(--ground);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;}
+.rv-lb-x:hover{background:var(--accent-soft);}
+.rv-lb-meta{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--muted);
+  margin:0 40px 14px 0;letter-spacing:.02em;word-break:break-word;}
+.rv-lb-imgwrap{border:1px solid var(--line);border-radius:10px;overflow:auto;background:#f2f2ef;
+  display:flex;justify-content:center;margin:0 0 18px;}
+#rv-lb-img{max-width:100%;max-height:62vh;height:auto;object-fit:contain;display:block;cursor:zoom-in;}
+#rv-lb-img.rv-zoom{max-height:none;max-width:none;cursor:zoom-out;}
+.rv-lb-pair{display:grid;gap:12px;}
+.rv-lb-block{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--ground);}
+.rv-lb-gt{border-inline-start:3px solid #3a7d5c;}
+.rv-lb-pd{border-inline-start:3px solid var(--accent);}
+.rv-lb-lab{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.rv-lb-block p{margin:0;font-size:16px;line-height:1.9;color:var(--ink);}
+@media (min-width:720px){.rv-lb-pair{grid-template-columns:1fr 1fr;}}
+
+/* GT-vs-prediction diff */
+.rv-lb-diffbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;
+  margin:0 0 12px;font-family:"IBM Plex Mono",monospace;font-size:11px;}
+.rv-lb-modes{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;}
+.rv-lb-mode{font:inherit;font-size:11px;padding:4px 10px;border:0;cursor:pointer;
+  background:var(--surface);color:var(--muted);border-inline-start:1px solid var(--line);}
+.rv-lb-mode:first-child{border-inline-start:0;}
+.rv-lb-mode.on{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+.rv-lb-legend{display:inline-flex;gap:8px;color:var(--muted);}
+.rv-lb-legend span{padding:1px 6px;border-radius:4px;}
+.rv-lb-stats{color:var(--muted);margin-inline-start:auto;font-variant-numeric:tabular-nums;}
+.d-del{background:rgba(165,68,58,.16);color:#a5443a;text-decoration:line-through;
+  border-radius:3px;padding:0 2px;}
+.d-ins{background:rgba(58,125,92,.16);color:#3a7d5c;border-radius:3px;padding:0 2px;}
+.d-sub{background:rgba(201,154,58,.20);color:#9a7420;border-radius:3px;padding:0 2px;}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .d-del{color:#e0857b;}
+  :root:not([data-theme="light"]) .d-ins{color:#79c6a0;}
+  :root:not([data-theme="light"]) .d-sub{color:#d9b25f;}
+}
+:root[data-theme="dark"] .d-del{color:#e0857b;}
+:root[data-theme="dark"] .d-ins{color:#79c6a0;}
+:root[data-theme="dark"] .d-sub{color:#d9b25f;}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .rv-h.rv-best{color:#79c6a0;}
+  :root:not([data-theme="light"]) .rv-h.rv-worst{color:#e0857b;}
+  :root:not([data-theme="light"]) .rv-err{color:#e0857b;}
+  :root:not([data-theme="light"]) .rv-tbl td.rv-img img{background:#f2f2ef;}
+  :root:not([data-theme="light"]) .rv-lb-gt{border-inline-start-color:#79c6a0;}
+}
+:root[data-theme="dark"] .rv-h.rv-best{color:#79c6a0;}
+:root[data-theme="dark"] .rv-h.rv-worst{color:#e0857b;}
+:root[data-theme="dark"] .rv-tbl td.rv-img img{background:#f2f2ef;}
+:root[data-theme="dark"] .rv-lb-gt{border-inline-start-color:#79c6a0;}
+
+/* --- cost projection --- */
+.cost{margin:44px 0 0;}
+.cost .scroll{margin-top:6px;}
+.cost-tbl{width:100%;font-size:13px;}
+.cost-tbl th{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;
+  letter-spacing:.03em;text-transform:uppercase;color:var(--muted);background:var(--ground);
+  text-align:right;white-space:nowrap;padding:10px 12px;}
+.cost-tbl th:first-child{text-align:left;}
+.cost-tbl td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:right;
+  font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink);}
+.cost-tbl td:first-child{text-align:left;font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:500;}
+.cost-tbl tbody tr:last-child td{border-bottom:none;}
+.cost-tbl td.cost-hi{background:var(--accent-soft);font-weight:600;}
+.cost-note{font-size:12px;color:var(--muted);margin:10px 2px 0;max-width:72ch;line-height:1.55;}
 </style>"""
 
 
@@ -743,12 +1506,19 @@ def main() -> int:
         Path(args.out).with_suffix(".json").write_text("[]", encoding="utf-8")
         print(f"leaderboard -> {args.out}  (no runs yet — placeholder page)")
         return 0
-    Path(args.out).write_text(render(rows, args.title, target), encoding="utf-8")
+    # Model outputs occasionally contain U+FFFD (an undecodable byte). It is
+    # valid text but the Artifact deploy validator rejects a raw U+FFFD, so drop
+    # it from the published page and the bundle — nothing meaningful is lost.
+    page = render(rows, args.title, target).replace("�", "")
+    Path(args.out).write_text(page, encoding="utf-8")
     print(f"leaderboard -> {args.out}  ({len(rows)} rows from "
           f"{len({r['run'] for r in rows})} run(s))")
     # also dump a machine-readable bundle next to it
     bundle = Path(args.out).with_suffix(".json")
-    bundle.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+    bundle.write_text(
+        json.dumps(rows, indent=2, ensure_ascii=False).replace("�", ""),
+        encoding="utf-8",
+    )
     print(f"bundle      -> {bundle}")
     return 0
 
