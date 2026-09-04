@@ -8,6 +8,7 @@ from PIL import Image
 from arabic_ocr_bench.training.synth import (
     LazyImage,
     SyntheticPrinted,
+    _shape,
     arabic_ratio,
     degrade,
     drop_overlap,
@@ -16,6 +17,16 @@ from arabic_ocr_bench.training.synth import (
     sentences,
     synth_render_key,
 )
+
+
+def test_shape_reverses_rtl_and_keeps_harakat():
+    # visual (reversed) order so Pillow's LTR renderer draws Arabic RTL —
+    # the last logical word must come out first, and harakat must survive.
+    logical = "الْعِلْمُ نُورٌ"
+    out = _shape(logical)
+    plain = "العلم نور"
+    assert _shape(plain).split()[0].startswith(_shape("نور")[:2])  # last word rendered first
+    assert any(0x064B <= ord(c) <= 0x0652 for c in out)            # harakat not stripped
 
 
 def test_synth_render_key_ignores_n_and_limit_but_tracks_pixel_params():

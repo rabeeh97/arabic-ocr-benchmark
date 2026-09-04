@@ -20,7 +20,7 @@ dependencies = [
     "litellm>=1.50",
     "python-dotenv>=1.0",
     "arabic-reshaper>=3.0",
-    "python-bidi>=0.4.2",
+    "python-bidi>=0.6",
 ]
 
 [project.optional-dependencies]
