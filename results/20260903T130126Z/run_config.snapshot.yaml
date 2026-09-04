@@ -1,0 +1,27 @@
+models:
+- claude-haiku-paid
+- claude-sonnet-paid
+- claude-opus-paid
+- claude-fable-paid
+- claude-fable-5-1-paid
+- gpt-4o-mini-paid
+- gpt-4o-paid
+- gpt-4.1-paid
+- gpt-5-paid
+- gpt-5.6-sol-paid
+- gpt-5.6-terra-paid
+- gpt-5.6-luna-paid
+datasets:
+- kitab_muharaf
+- kitab_khatt
+limit: 10
+offset: 0
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results

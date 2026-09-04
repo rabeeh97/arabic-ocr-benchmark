@@ -354,6 +354,30 @@ class LazyImage(Image.Image):
         return (LazyImage, (self._lazy_path,))
 
 
+# parameters that change a line's rendered pixels for a given row index. `n` /
+# `limit` are excluded on purpose: they only set HOW MANY lines, not WHICH — so
+# a 5k and a 15k config that agree on everything else render byte-identical
+# images for rows 0..4999 and should share one render cache.
+_RENDER_KEY_PARAMS = (
+    "corpora", "texts", "seed", "degrade_level", "diacritics",
+    "min_len", "max_len", "min_arabic", "drop_overlap_with", "corpus_docs", "sizes",
+)
+
+
+def synth_render_key(params: dict) -> str:
+    """Stable short hash of the pixel-affecting synthetic-source params. Use it
+    to name the render cache dir so it is shared across configs (and notebooks
+    05 / 06) that produce the same images, and invalidated when they wouldn't."""
+    spec = {}
+    for k in _RENDER_KEY_PARAMS:
+        v = params.get(k)
+        if isinstance(v, tuple):
+            v = list(v)
+        spec[k] = v
+    blob = json.dumps(spec, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha1(blob.encode("utf-8")).hexdigest()[:12]
+
+
 # --------------------------------------------------------------------------- #
 # dataset adapter
 # --------------------------------------------------------------------------- #

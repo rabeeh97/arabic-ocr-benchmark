@@ -153,6 +153,46 @@ def test_accumulate_targets_fresh_indices_on_rerun(monkeypatch, tmp_path):
     assert seen_indices[-1] == [2, 3]
 
 
+class _RateLimitedClient:
+    name = "ratelimited"
+
+    def transcribe(self, image, prompt):
+        from arabic_ocr_bench.models.base import Prediction
+
+        return Prediction(error="RateLimitError: rate limit exceeded", latency_ms=1.0)
+
+
+def test_out_of_quota_model_is_abandoned_not_retried_line_by_line(monkeypatch, tmp_path):
+    img = Image.new("RGB", (8, 8))
+
+    class _Big:
+        track = "line"
+
+        def __iter__(self):
+            for i in range(20):
+                yield Sample(id=f"fake/{i:03d}", image=img, ground_truth="x", track="line")
+
+    monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"a": {}, "b": {}})
+    monkeypatch.setattr(runner_mod, "build_dataset", lambda *a, **k: _Big())
+    monkeypatch.setattr(
+        runner_mod, "load_model_configs",
+        lambda *a, **k: {"rl": {"client": "mock", "mode": "empty", "pricing": None}},
+    )
+    monkeypatch.setattr(runner_mod, "build_model", lambda name, cfg: _RateLimitedClient())
+
+    run_dir = run(
+        {"models": ["rl"], "datasets": ["a", "b"], "prompt_version": "line-v1",
+         "concurrency": 1, "max_retries": 0, "progress": False},
+        results_root=tmp_path,
+    )
+    rows = [json.loads(x) for x in (run_dir / "predictions.jsonl").read_text().splitlines()]
+    # aborts dataset "a" after the consecutive-rate-limit threshold (well under 20),
+    # and skips dataset "b" entirely
+    assert 0 < len(rows) < 20
+    assert {r["dataset"] for r in rows} == {"a"}
+    assert all(r["error"] for r in rows)
+
+
 def _read_csv(path):
     import csv
 

@@ -62,6 +62,26 @@ kitab_hindawi:
   card: >-
     KITAB-Bench / Hindawi — clean digitised printed books. An easy printed-Arabic
     anchor: strong models should approach 0 % CER here.
+kitab_historyar:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_historyar }
+  track: line
+  split: train
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_historyar
+  card: >-
+    KITAB-Bench / HistoryAr — historical Arabic manuscripts and documents. Old
+    scripts, degraded scans; a hard historical-handwriting target.
+kitab_onlinekhatt:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_onlinekhatt }
+  track: line
+  split: train
+  license: see KHATT / KITAB-Bench terms (research use)
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_onlinekhatt
+  card: >-
+    KITAB-Bench / OnlineKHATT — the online (stylus-captured) KHATT handwriting
+    set, rendered to line images. Cleaner strokes than scanned handwriting.
 
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic

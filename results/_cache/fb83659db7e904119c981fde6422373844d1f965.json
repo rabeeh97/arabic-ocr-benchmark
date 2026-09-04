@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000001", "model": "gpt-5.6-terra-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MK2A7 21", "raw_text": "MK2A-7 21", "cleaned_text": "MK2A-7 21", "latency_ms": 20733.12, "input_tokens": 95, "output_tokens": 1046, "cost_usd": 0.012742, "error": null, "attempts": 1, "cached": false}

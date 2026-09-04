@@ -1,0 +1,31 @@
+# Full-coverage Gemini crawl: every gemini model over every sample of the six
+# KITAB-Bench subsets, throttled under the 15 req/min free-tier cap.
+# accumulate + per-line cache -> fully resumable; a sample is never re-run once
+# it has a non-errored result. Driven by scripts/run_gemini_full.py, which loops
+# until every (model, dataset) is 100% covered and sleeps ~1h when a daily quota
+# is hit. muharaf_lines is left out for now (its streaming adapter hangs).
+models:
+  - gemini-flash-lite
+  - gemini-flash
+  - gemini-pro
+datasets:
+  - kitab_historicalbooks
+  - kitab_khatt
+  - kitab_muharaf
+  - kitab_hindawi
+  - kitab_historyar
+  - kitab_onlinekhatt
+
+limit: 50                 # NEW samples per (model,dataset) per pass; the wrapper loops
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 1
+rpm: 14                   # sliding-window cap, stays under 15/min
+rate_limit_abort: 25     # ride out 429 bursts; bail only if a model is truly capped
+max_retries: 3
+cache: true
+results_dir: results
+progress: false

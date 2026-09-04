@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000001", "model": "claude-sonnet-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MK2A7 21", "raw_text": "MK2A-7\n21", "cleaned_text": "MK2A-7\n21", "latency_ms": 2945.21, "input_tokens": 154, "output_tokens": 172, "cost_usd": 0.002028, "error": null, "attempts": 1, "cached": false}
