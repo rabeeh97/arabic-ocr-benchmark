@@ -155,15 +155,59 @@ def fonts() -> list[Path]:
     return usable
 
 
-def _shape(text: str) -> str:
-    """Presentation-form + visual bidi order so Pillow (no libraqm) draws RTL."""
-    try:
-        import arabic_reshaper
-        from bidi.algorithm import get_display
+# Bump when anything that changes rendered pixels for the SAME params changes
+# (shaping, harakat handling, degradation). Feeds synth_render_key so a stale
+# render cache is re-generated instead of silently reused.
+_RENDER_CODE_REV = "2"
 
-        return get_display(arabic_reshaper.reshape(text))
-    except ImportError:
-        return text
+_RESHAPER = None
+_SHAPE_OK: bool | None = None
+
+
+def _get_reshaper():
+    global _RESHAPER
+    if _RESHAPER is None:
+        from arabic_reshaper import ArabicReshaper
+
+        # keep harakat: the default config deletes them, which would erase every
+        # diacritic from the image even when the ground truth keeps them.
+        _RESHAPER = ArabicReshaper(configuration={"delete_harakat": False})
+    return _RESHAPER
+
+
+def _shape(text: str) -> str:
+    """Presentation forms + visual (reversed) order so Pillow's simple LTR text
+    renderer (no libraqm) draws Arabic right-to-left and joined.
+
+    Raises rather than silently returning mirrored/garbled text — a whole
+    synthetic training set rendered backwards is worse than a hard failure.
+    """
+    global _SHAPE_OK
+    from bidi.algorithm import get_display
+
+    reshaped = _get_reshaper().reshape(text)
+    try:
+        out = get_display(reshaped, base_dir="R")
+    except TypeError:  # older python-bidi without the base_dir kwarg
+        out = get_display(reshaped)
+
+    if _SHAPE_OK is None:
+        probe = _get_reshaper().reshape("السلام عليكم")
+        try:
+            shown = get_display(probe, base_dir="R")
+        except TypeError:
+            shown = get_display(probe)
+        _SHAPE_OK = shown == probe[::-1]
+        if not _SHAPE_OK:
+            import bidi
+
+            raise RuntimeError(
+                "Arabic bidi shaping is not reversing RTL text — synthetic lines "
+                "would render mirrored / left-to-right. Upgrade python-bidi "
+                f"(installed: {getattr(bidi, '__version__', '?')}; need >= 0.6) "
+                "and re-run: `pip install -U 'python-bidi>=0.6'`."
+            )
+    return out
 
 
 def render_line(
@@ -367,8 +411,9 @@ _RENDER_KEY_PARAMS = (
 def synth_render_key(params: dict) -> str:
     """Stable short hash of the pixel-affecting synthetic-source params. Use it
     to name the render cache dir so it is shared across configs (and notebooks
-    05 / 06) that produce the same images, and invalidated when they wouldn't."""
-    spec = {}
+    05 / 06) that produce the same images, and invalidated when they wouldn't —
+    including when the rendering code itself changes (``_RENDER_CODE_REV``)."""
+    spec = {"_code_rev": _RENDER_CODE_REV}
     for k in _RENDER_KEY_PARAMS:
         v = params.get(k)
         if isinstance(v, tuple):

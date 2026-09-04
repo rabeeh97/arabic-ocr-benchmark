@@ -1086,6 +1086,20 @@ def build_prepare_data():
             "        with tarfile.open(drive_cache / 'images.tar') as _tf:",
             "            print('  existing checkpoint:', len(_tf.getnames()), 'cached lines')",
         ),
+        md(
+            "## 4b. Sanity-check one rendered line",
+            "",
+            "Render + show a single line **before** the full pass. The Arabic must read",
+            "right-to-left, be joined, and keep its harakat. If it looks mirrored or",
+            "the marks are gone, stop — `_shape` raises on a bad `python-bidi`, so a",
+            "clear error here beats thousands of backwards images.",
+        ),
+        code(
+            "from arabic_ocr_bench.training.synth import render_line",
+            "_demo = 'الْعِلْمُ نُورٌ وَالْجَهْلُ ظَلَامٌ، وَالْقِرَاءَةُ غِذَاءُ الْعَقْلِ.'",
+            "display(render_line(_demo, size=40))",
+            "print('expected: reads right-to-left, letters joined, harakat visible')",
+        ),
         md("## 5. Assemble + class balance by source"),
         code(
             "from arabic_ocr_bench.training.data import assemble_dataset",
