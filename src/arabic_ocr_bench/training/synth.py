@@ -156,9 +156,9 @@ def fonts() -> list[Path]:
 
 
 # Bump when anything that changes rendered pixels for the SAME params changes
-# (shaping, harakat handling, degradation). Feeds synth_render_key so a stale
-# render cache is re-generated instead of silently reused.
-_RENDER_CODE_REV = "2"
+# (shaping, harakat handling, layout engine, degradation). Feeds
+# synth_render_key so a stale render cache is re-generated, not silently reused.
+_RENDER_CODE_REV = "3"
 
 _RESHAPER = None
 _SHAPE_OK: bool | None = None
@@ -214,7 +214,15 @@ def render_line(
     text: str, font_path: str | Path | None = None, *, size: int = 40, pad: int = 12
 ) -> Image.Image:
     """Draw one line of Arabic as dark ink on white. Width scales with the text."""
-    font = ImageFont.truetype(str(font_path or fonts()[0]), size)
+    # `_shape` pre-shapes to presentation forms and reverses to visual order so a
+    # plain left-to-right renderer draws correct RTL. On a Pillow built with
+    # libraqm the *default* layout engine shapes+reorders on its own, so feeding
+    # it an already-shaped-and-reversed string double-processes it -> mirrored,
+    # broken joining. Force the basic (non-raqm) engine so `_shape`'s output is
+    # drawn as literal glyphs, regardless of whether this Pillow has raqm.
+    font = ImageFont.truetype(
+        str(font_path or fonts()[0]), size, layout_engine=ImageFont.Layout.BASIC
+    )
     shaped = _shape(text)
     probe = ImageDraw.Draw(Image.new("RGB", (8, 8)))
     box = probe.textbbox((0, 0), shaped, font=font)
