@@ -653,6 +653,73 @@ nakba-baseline-qwen3vl:
     line-transcription training split. The organisers report 0.23 CER / 0.50 WER
     on their held-out test set; this row lets us reproduce it and compare it
     against the general OCR/VLM field on the same lines.
+
+# --- NAKBA NLP 2026 competing systems (Subtask 2) — released checkpoints -------
+# Of the 7 Systems-Track teams, these three published runnable weights on HF.
+# The rest (Al-Warraq, Not Gemma, Latent Narratives, Oblevit, 3reeq) only
+# describe their approach in the proceedings — no checkpoint to load. PALNLP /
+# SARD were Subtask 1 (manual transcription), not OCR systems.
+nakba-misraj-baseer:
+  # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
+  # family (via Misraj's "Baseer" 3B VLM), slerp-merged checkpoints. ~7.6 GB
+  # bf16 — fits a T4 without quantization. License CC-BY-NC-SA-4.0 (research).
+  client: hf_local
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Misraj AI's "Baseer-Nakba" — the top system in the NAKBA NLP 2026 HTR
+    competition (corpus CER 0.079). Adapts the 3B Baseer Arabic VLM to cursive
+    historical manuscripts with a progressive training pipeline, domain-matched
+    augmentation and SLERP checkpoint merging. CC-BY-NC-SA-4.0.
+nakba-ketaba-ocr:
+  # Ketaba-OCR team (self-reported CER 0.082). A DoRA + rslora adapter (r=32) on
+  # a dedicated Arabic-English handwritten-OCR model that is itself a
+  # Qwen2.5-VL-3B fine-tune. ~7.5 GB base bf16 — fits a T4.
+  client: hf_local
+  hf_id: sherif1313/Arabic-English-handwritten-OCR-v3
+  adapter_id: HassanB4/Ketaba-OCR-LoRA
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Ketaba-OCR (NAKBA NLP 2026) — parameter-efficient adaptation (LoRA/QLoRA/DoRA,
+    4-bit training) of a public Arabic-English handwritten-text-recognition model
+    to the Omar Al-Saleh manuscripts. Self-reported corpus CER 0.082 / WER 0.259.
+    Apache-2.0.
+nakba-moankhaled-qwen3vl:
+  # An unattributed Systems-Track submission (repo "nakba-ocr", NAKBA training
+  # logs, no paper). Full fine-tune of a Qwen3-VL model, weights under
+  # `final_model/`. Needs transformers >= 4.57; 4-bit to fit a T4 (~8.9 GB bf16).
+  client: hf_local
+  hf_id: Moankhaled10/nakba-ocr
+  subfolder: final_model
+  arch: qwen2_5_vl
+  min_ram_gb: 24
+  dtype: bfloat16
+  load_in_4bit: true
+  pricing: null
+  card: >-
+    A NAKBA NLP 2026 Systems-Track submission published without a system paper —
+    a full fine-tune of Qwen3-VL on the Omar Al-Saleh training split. Included
+    for completeness; loaded 4-bit.
+sherif-arabic-htr-v3:
+  # The public Arabic-English HTR model the Ketaba team adapted — a strong
+  # dedicated Arabic handwriting model in its own right (Qwen2.5-VL-3B fine-tuned
+  # on Muharaf). Its row is the "un-adapted base" comparison for nakba-ketaba-ocr.
+  client: hf_local
+  hf_id: sherif1313/Arabic-English-handwritten-OCR-v3
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    sherif1313's Arabic-English handwritten-OCR v3 — Qwen2.5-VL-3B fine-tuned for
+    Arabic/English handwriting on Muharaf. Widely used as a base for NAKBA 2026
+    entries (it is the Ketaba-OCR backbone); shown here un-adapted. Apache-2.0.
 paligemma-arabic-hw:
   client: hf_local
   hf_id: google/paligemma-3b-pt-448           # gated base

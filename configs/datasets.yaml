@@ -97,10 +97,11 @@ nakba_lines:
   license: CC-BY-4.0
   source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
   card: >-
-    NAKBA NLP 2026 — line segments from the Omar Al-Saleh memoirs: 16 handwritten
-    Arabic documents (1951-1965, ~1.6M words) from the Palestinian Nakba oral-history
-    archive. Real degraded 20th-century handwriting with a curated line-level
-    transcription. CC-BY-4.0; released for the shared task's Systems Track.
+    NAKBA NLP 2026 — line segments from the Omar Al-Saleh memoirs (16 handwritten
+    Arabic documents, 1951-1965; the full collection is ~1.6M words / 6,395 pages)
+    from the Palestinian Nakba oral-history archive. Real degraded 20th-century
+    handwriting with a curated line-level transcription (`image` + `text`).
+    CC-BY-4.0; the `test` split of the shared task's Systems Track.
 
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
