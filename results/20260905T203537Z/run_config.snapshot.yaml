@@ -1,0 +1,17 @@
+models:
+- qari-ocr-0.2
+datasets:
+- kitab_muharaf
+indices:
+- 20
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-7e514dd124f9
+session_id: 8e8edbdb
