@@ -1,0 +1,119 @@
+{
+  "run_id": "20260905T204223Z",
+  "generated_at": "2026-09-05T20:43:00+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_onlinekhatt/train/000010",
+      "row": 10,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الحالة عادة، الماء الطبيعي كمهدئ للنيوترونات ولنقل الحرارة.",
+      "prediction": "الحالة عادة ، الماء الطبي كمهدئُ للنيوترونات و لنقل الحرارة .",
+      "error": null,
+      "cer_light": 0.1017,
+      "cer_raw": 0.1017,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000015",
+      "row": 15,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مضافاً لها مقدار الزيادة في تداخل الفروع مع",
+      "prediction": "ممنافاً لعا فقدار الزيادة في تداخل الفروش مع",
+      "error": null,
+      "cer_light": 0.1163,
+      "cer_raw": 0.1163,
+      "wer_light": 0.5
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000011",
+      "row": 11,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "يمزج بينها وبين الابجديات الأخرى. ثم هل يعجز",
+      "prediction": "يمجرج بينهما وبين الا بمجديات الأخرى؛ ثم هل يعمجز؟",
+      "error": null,
+      "cer_light": 0.1818,
+      "cer_raw": 0.1818,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000018",
+      "row": 18,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وغالباً ما تعزى اسباب عمليه التصحر في شمال",
+      "prediction": "خغالبآمًا تصنى اسباب بعمليه التهديد في شمال",
+      "error": null,
+      "cer_light": 0.2619,
+      "cer_raw": 0.2857,
+      "wer_light": 0.625
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000014",
+      "row": 14,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "اللغة الإنجليزية والطريقة الثانيه هي الآجر كلة من",
+      "prediction": "التخدير بجلينزيه والطريفة لتساكيها، ولزمك من",
+      "error": null,
+      "cer_light": 0.5102,
+      "cer_raw": 0.5102,
+      "wer_light": 0.875
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000016",
+      "row": 16,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تتقدم وتحقق بعض النجاح والسيطرة ويزداد نفوذها كان",
+      "prediction": "تَقْرِم و تَحْفَق بِعُض النُّجاع والسيطوَة و ينطاد نقودُ ماعان",
+      "error": null,
+      "cer_light": 0.5306,
+      "cer_raw": 0.5306,
+      "wer_light": 1.25
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000017",
+      "row": 17,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "السنوات الأخيره زياده كبيره فى عدد السائحين الصينيين",
+      "prediction": "السنات، لا غبره زيا . كبير ، في هد د ل ا تجيسا 10 دهيني سا",
+      "error": null,
+      "cer_light": 0.5385,
+      "cer_raw": 0.5577,
+      "wer_light": 2.0
+    }
+  ]
+}

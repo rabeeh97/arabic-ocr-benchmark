@@ -1,0 +1,2 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+qwen2.5-vl-3b,kitab_hindawi,10,0,0.0,20000.2,0.0,0.6191,0.5711,0.7299,0.0,0.602,0.5515,0.7168,0.0,0.5905,0.5381,0.6954,0.0,0.3041

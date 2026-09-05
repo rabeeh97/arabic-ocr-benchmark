@@ -1,0 +1,134 @@
+{
+  "run_id": "20260905T204013Z",
+  "generated_at": "2026-09-05T20:41:26+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_onlinekhatt/train/000009",
+      "row": 9,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مما يتسبب في ارتفاع المتوسط العالمي للحرارة .",
+      "prediction": "مما يتسبب في ارتفاع هتوسة العالبي لكازة .",
+      "error": null,
+      "cer_light": 0.2,
+      "cer_raw": 0.2,
+      "wer_light": 0.375
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000005",
+      "row": 5,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "\" مواكبة لمستجدات الحياه المعاصرة منسجمه مع حقيقه",
+      "prediction": "مواكبة لاستجداد الحياة العاجرة مناسبه مع حقيقته",
+      "error": null,
+      "cer_light": 0.2245,
+      "cer_raw": 0.2245,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000002",
+      "row": 2,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "من الأشعة الشمسية وبذلك ترفع من درجة حرارة",
+      "prediction": "من الأشهر الشمسية وبدلات ترفيح من دجنة الحانة",
+      "error": null,
+      "cer_light": 0.3095,
+      "cer_raw": 0.3095,
+      "wer_light": 0.625
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000004",
+      "row": 4,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عليها وبشجاعتهم فقد استعملت أروبا بفضل توجيههم الحكيم",
+      "prediction": "عليها وسبجا منهم نقدا اشعلت ؛ دوبًا بفضل توجيههم حاليكم",
+      "error": null,
+      "cer_light": 0.3208,
+      "cer_raw": 0.3208,
+      "wer_light": 0.875
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000006",
+      "row": 6,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دون إضافة، وهو ما يتبادر على الذهن من",
+      "prediction": "ده إصْفَاهُ م وهومايتبادر على لذا هن مذ",
+      "error": null,
+      "cer_light": 0.4324,
+      "cer_raw": 0.4324,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000001",
+      "row": 1,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "باسم الحيوانات الوحشيه، أي التى لم تألف الإنسان،",
+      "prediction": "باسم السيّانات لـهكبه) ثم إن لي لم تكن إلا (إنا)",
+      "error": null,
+      "cer_light": 0.4375,
+      "cer_raw": 0.5208,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000007",
+      "row": 7,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تجاويف الأشجار والفجوات ويبني عدة أقراص متوازية من",
+      "prediction": "بام بن الأ سجبار د الفجوان ويبني كرة المراسم مَوازنِك من",
+      "error": null,
+      "cer_light": 0.44,
+      "cer_raw": 0.46,
+      "wer_light": 1.125
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000008",
+      "row": 8,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الضخمه، وقد حوت مقداراً من \"اكاسيد الحديد\" أعطت",
+      "prediction": "الضنية، وقدّهت عدارا \"اكاسيدجند\" أعطته الضحمة\".",
+      "error": null,
+      "cer_light": 0.5957,
+      "cer_raw": 0.5957,
+      "wer_light": 1.0
+    }
+  ]
+}
