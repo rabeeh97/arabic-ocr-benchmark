@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000015", "model": "qari-ocr-0.2", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "YS-4A-011a", "raw_text": "7s-4a-0112", "cleaned_text": "7s-4a-0112", "latency_ms": 990.42, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

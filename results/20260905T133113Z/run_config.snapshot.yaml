@@ -1,0 +1,14 @@
+models:
+- qwen2-vl-2b
+datasets:
+- kitab_muharaf
+limit: 10
+accumulate: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+cache: true
+results_dir: results
