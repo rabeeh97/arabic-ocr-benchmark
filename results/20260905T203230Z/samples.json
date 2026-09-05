@@ -1,0 +1,24 @@
+{
+  "run_id": "20260905T203230Z",
+  "generated_at": "2026-09-05T20:34:37+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_muharaf/train/000013",
+      "row": 13,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_muharaf",
+      "categories": [
+        "best",
+        "typical",
+        "longest"
+      ],
+      "image": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAA8ADwDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAABAUCAwYBAAf/xAAvEAACAQIFBAEDAwQDAAAAAAABAgMEEQAFEiExBhNBUSIUYXEjMlIWQmKBkaGx/8QAGQEBAQEAAwAAAAAAAAAAAAAAAAECAwQF/8QAGhEBAQEBAAMAAAAAAAAAAAAAAAERAhIhMf/aAAwDAQACEQMRAD8A+kGqW1mV193XYYpMv0/bVYnZWIGpdxv5wWisU/UI1ebcYmI1C6QBpAta2PHdvQ88gQC6hgTY6jiMuplV0TWLcXtgllXSbgEW9XwNJW0kFTDSPUQJUSgmKEuA7gc6V5NhgItV6HjR42Gs2v4GL4X1klkKNxv5xmepeopcvqYcroUSozKrF4YguoqB5K3F+NrkDYkkAYvmqj0p0qtdmchqamnjRZpAx0s7MATcLsupudN7DgnY2c0N5UlaV1iCgkfInFqydtQhjYWHgXwJkdRXVtF9ZXGiKzkSU30hdh2WUFSSwFzufA8YZ/gYlNRU7m7X9bcYmHBOA1lWQSIzAHUUtexxFXUOEjmA7YsyXv8AjDTEM4p8yq6VY8rzBKGbX8pXgEvxsRsCQL3IP+sIf6HyKlqJc0zGpqpquQky1k1W0ROra10KgDcAD8DGld3MYMRBJtv4tjCdSdQQZr0xm8JkpkXvLFTapRrl0suohfVuD5v4HOubfkMGUfSdT01FmTZdm2XZbSzymRZ5aQyPEuwCl3ksQPvfck+bYdJ0tSTyrNmtRU5tIpBVaxgYlNrXESgJ5O5BP3xi+pMx6lq8kqJswghpsvkKK0AALqVI887sQbeLAe7vYOps1zjN2GRUvfohAVMtQpSNZSeS1rtYW+K/yJxq+V9o2osBb/rHRgGmLSTu/wBQX0/BkC2AYckYL1+scaqpqOKU6mQar3uNjhe+SqzO6TSKzCxJN8NUN0F21H37xDvKZu2NyOftgsoOioJqNUQT6owf2lcLMzybpvLWlzSrpKaKUkuHJALMBeyAm2rbxuTjRll1W2vjIzCtn6uzI0lLls5iMC66wMWT9MsNJF9I1XJsMWJo/LYo63ppZMypo4YXDyOkp2RLmxYn/GxJ/wDMEZfLl9JVJl1GAxqITVq8S3RluADqGxv4+wHsXQRdOirirZ63qQyUdc7zVMcICrdDY6XYmyrbT+AL8DD3I6TKabsmhkknkNLGVmmZnbsknQATso2PxFuONsWyGjxTtAzyQ8sblDwTi4Rg8nF3jEdY/wCOcZNUTQyC4jIsxB3/ALfxjkNPLEXbUCWbUQcF3x6+BpHmuZz0NXSIlFNJC73qJYE7jRrbb4jexPJ8AHyQQqqKXPKmuq81y10pYH0oscsJMkqhSDIV5FixIGxOng7A64RqpLAbk7nE+Bi6MJT9PVopmpstEa0syGKWorFYSMjXuIlv8QLkjVySeeTpcry8001U3bEQLIsKITZIlUBV9fuLnb+XOGehdeq2/F8S4Bw0VSB2CmM8Hce8cNRCOWUHFqCygY92k50jfBH/2Q==",
+      "ground_truth": "عصو حلىل نعوم الرحى",
+      "prediction": "",
+      "error": "refusal",
+      "cer_light": 0.0,
+      "cer_raw": 0.0,
+      "wer_light": 0.0
+    }
+  ]
+}
