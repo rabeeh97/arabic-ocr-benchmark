@@ -1,0 +1,26 @@
+models:
+- trocr-large-arabic
+datasets:
+- kitab_historyar
+indices:
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+- 18
+- 19
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-7ffcec2f0c82
+session_id: 891b81c7
