@@ -222,6 +222,65 @@ coverage each pass, sleeps ~1 h on a daily quota, and exits when every (model, d
 is 100 % done. Fully resumable off the per-line cache. Progress:
 `results/gemini_full_progress.json`.
 
+## Update — 2026-09-05: GLM-5.3-Flash (Z.AI, paid) — vision confirmed, N=10
+
+A third paid key (`ZAI_API_KEY_PAID`, Z.AI/Zhipu) was added. Added as `glm-5.3-flash-paid`
+in `configs/models.yaml` (`openai/glm-5.3-flash` via LiteLLM's OpenAI-compatible path,
+custom `api_base: https://api.z.ai/api/paas/v4`). Plain `glm-5.3` (no `-Flash`) is
+text-only per Z.AI's own pricing docs and was not tried.
+
+- **Vision confirmed empirically**, settling an open question from the model's own docs
+  page: a 2-line smoke test correctly read a handwritten line image (`MK2A7 21` →
+  predicted `MK2A-7 21`, a near-exact match) once `max_tokens` was raised from the
+  default 256 to **4000** — at 256 the model spent its entire budget on hidden
+  chain-of-thought and returned empty `cleaned_text` with no error, the same failure
+  pattern already seen on GPT-5/GPT-5.6 and `nemotron-omni` in this doc.
+- **N=10 run** (`configs/run.glm-paid.yaml`): `kitab_muharaf` + `kitab_khatt`, rows
+  0–9, `line-v2`. `muharaf_lines` excluded (still unreliable to stream on this network
+  — HF parquet fetch timeouts, independent of the adapter fix already on `main`).
+  **0 errors, 20/20 lines scored.**
+
+  | dataset | n | cer_micro_light | wer_micro_raw | exact | cost (n=10) |
+  |---|---|---|---|---|---|
+  | kitab_muharaf | 10 | 68.0 % | 95.7 % | 10 % | $0.0078 |
+  | kitab_khatt | 10 | 78.2 % | 95.9 % | 0 % | $0.0139 |
+
+  Accuracy is well behind the Claude/GPT paid tier (contrast `claude-fable-5` at 23–30 %
+  CER·light on these same two sets) — GLM-5.3-Flash reads *something* off the image but
+  the transcriptions are frequently unrelated to the ground truth.
+
+- **Tried lowering the hidden reasoning spend, no win.** Z.AI's docs are explicit:
+  *"GLM-5.3 and GLM-5.3-FLASH use forced thinking and cannot be disabled"* — the
+  `thinking: {type: "disabled"}` field is silently coerced back to low effort. The
+  documented workaround is `reasoning_effort: low/high/max`, so it was tried on the same
+  2-line smoke sample with `cache: false` to force fresh calls. Result: no reliable
+  reduction — the harder of the two lines burned its **entire 4000-token budget** and
+  returned empty output on repeated attempts, with `reasoning_effort: low` set exactly
+  as often as with it left at the default. Since the setting cost nothing but also
+  bought nothing, it was **dropped from the config** rather than kept for no measured
+  benefit. Net: mean **285 input / 2,081 output tokens per line** — most of a line's
+  cost is hidden reasoning, not the image or the answer.
+- **Cost**: list pricing $0.15 / $0.50 per 1M in/out (an on-and-off ~50% Z.AI promo may
+  currently be running, unverified at run time — treat as an upper bound). Actual N=20
+  spend **$0.0217**; **$0.00108/line** blended.
+
+  | dataset | rows | projected cost |
+  |---|---|---|
+  | `muharaf_lines` | 1,334 | $1.44 |
+  | `kitab_khatt` | 200 | $0.22 |
+  | `kitab_muharaf` | 200 | $0.22 |
+  | `kitab_historicalbooks` | 10 | $0.01 |
+  | `kitab_hindawi` | 200 | $0.22 |
+  | `kitab_historyar` | 200 | $0.22 |
+  | `kitab_onlinekhatt` | 200 | $0.22 |
+  | **all 7 datasets** | 2,344 | **$2.54** |
+
+  For context this sits below `gpt-4o-mini-paid` ($5.56) and well below the reasoning-
+  heavy GPT-5.6 trio, but the accuracy doesn't justify a full run at this price point —
+  cheaper than most paid models, but not competitive on quality.
+- Leaderboard regenerated (`results/leaderboard.html`, 143 rows / 36 runs) to include
+  these rows.
+
 ## Follow-ups
 
 - Fix the `muharaf_lines` adapter (it streams over the network and hangs) so paid, local,

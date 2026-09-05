@@ -457,6 +457,30 @@ gpt-5.6-luna-paid:
     Reasoning model; does not honour reasoning_effort=minimal here, so it runs at
     default effort. Cheapest GPT-5.6 row.
 
+# Z.AI (bigmodel) — OpenAI-compatible endpoint at https://api.z.ai/api/paas/v4.
+# Plain GLM-5.3 is text-only per Z.AI's own docs; GLM-5.3-Flash is the model its
+# dedicated docs page describes as multimodal ("Video / Image / Text / File") —
+# unconfirmed against this benchmark's specific OCR task until the first probe.
+glm-5.3-flash-paid:
+  client: litellm
+  litellm_id: openai/glm-5.3-flash
+  env_key: ZAI_API_KEY_PAID
+  api_base: https://api.z.ai/api/paas/v4
+  params: { temperature: 0 }  # reasoning_effort tested (low) — see card note below on why it was dropped
+  max_tokens: 4000                             # reasoning model: empty content at 256 (thinking ate the budget)
+  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.50 }   # list price (verify — currently ~50% promo)
+  card: >-
+    Z.AI's GLM-5.3-Flash on the paid key. Cheap, native multimodal
+    (image/video/text/file) input — confirmed working on handwritten Arabic
+    line images (N=10, kitab_muharaf/kitab_khatt). Spends a large hidden
+    reasoning budget before answering (hundreds to the full 4000-token cap,
+    even for a short line), so cost/line is higher than the token price alone
+    suggests. Per Z.AI's docs, thinking cannot be disabled on GLM-5.3(-Flash);
+    tried `reasoning_effort: low` and it did not help — the same sample still
+    burned its whole budget on some calls with `low` set, so the setting was
+    dropped rather than kept for no benefit. Plain GLM-5.3 (no -Flash) is
+    text-only, so it is not included here.
+
 # --- local open-weight / Arabic-specific VLMs (needs: uv sync --extra local)
 qari-ocr-0.3:
   client: hf_local

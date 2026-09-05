@@ -1,0 +1,13 @@
+# GLM-5.3-Flash (Z.AI) on the N=10 comparison set. muharaf_lines skipped here —
+# its streaming adapter is timing out on the network right now (separate,
+# pre-existing issue); kitab_muharaf + kitab_khatt are fully cached locally.
+models: [glm-5.3-flash-paid]
+datasets: [kitab_muharaf, kitab_khatt]
+limit: 10
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 2
+max_retries: 2
+cache: true
+results_dir: results
