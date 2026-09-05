@@ -322,6 +322,7 @@ def build_hosted():
             "import os",
             "from google.colab import userdata",
             "for k in ('ANTHROPIC_API_KEY', 'GEMINI_API_KEY', 'OPENAI_API_KEY',",
+            "          'GEMINI1_API_KEY', 'GEMINI2_API_KEY', 'GEMINI3_API_KEY',",
             "          'MISTRAL_API_KEY', 'OPENROUTER_API_KEY',",
             "          'ANTHROPIC_API_KEY_PAID', 'OPENAI_API_KEY_PAID',",
             "          'OLLAMA_API_KEY', 'OLLAMA_API_BASE', 'HF_TOKEN'):",

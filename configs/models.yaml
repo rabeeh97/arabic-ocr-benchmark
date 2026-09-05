@@ -35,7 +35,12 @@ mock_empty:
 gemini-flash:
   client: litellm
   litellm_id: gemini/gemini-3.6-flash
-  env_key: GEMINI_API_KEY          # Google AI Studio free tier works (rate-limited)
+  env_key: GEMINI_API_KEY          # single-key fallback (Colab)
+  # Multi-key pool: each present key is throttled to per_key_rpm on its own
+  # sliding window; requests rotate across keys and route around any that is
+  # 429-ing (rested 60 s) or daily-capped (dropped for the run).
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14                  # stay under the 15 req/min free-tier cap per key
   params: { temperature: 0 }
   pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 2.50 }   # (verify)
   card: >-
@@ -45,7 +50,9 @@ gemini-flash:
 gemini-flash-lite:
   client: litellm
   litellm_id: gemini/gemini-3.5-flash-lite
-  env_key: GEMINI_API_KEY
+  env_key: GEMINI_API_KEY          # single-key fallback (Colab)
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
   params: { temperature: 0 }
   pricing: { input_usd_per_1m: 0.10, output_usd_per_1m: 0.40 }   # (verify)
   card: >-
@@ -53,7 +60,9 @@ gemini-flash-lite:
 gemini-pro:
   client: litellm
   litellm_id: gemini/gemini-3.1-pro-preview
-  env_key: GEMINI_API_KEY
+  env_key: GEMINI_API_KEY          # single-key fallback (Colab)
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
   params: { temperature: 0 }
   pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }   # (verify)
   card: >-

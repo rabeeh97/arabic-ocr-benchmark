@@ -1,9 +1,13 @@
 # Full-coverage Gemini crawl: every gemini model over every sample of the six
-# KITAB-Bench subsets, throttled under the 15 req/min free-tier cap.
+# KITAB-Bench subsets. Uses a 3-key pool (GEMINI1/2/3_API_KEY) — each key is
+# throttled to `per_key_rpm` (14, under the 15 req/min free-tier cap) on its own
+# sliding window, requests rotate across keys, and a key that 429s is rested
+# (per-minute) or dropped for the run (per-day) while the other keys carry on.
+# A request is only ever in flight on one key, so no sample is billed twice.
 # accumulate + per-line cache -> fully resumable; a sample is never re-run once
 # it has a non-errored result. Driven by scripts/run_gemini_full.py, which loops
-# until every (model, dataset) is 100% covered and sleeps ~1h when a daily quota
-# is hit. muharaf_lines is left out for now (its streaming adapter hangs).
+# until every (model, dataset) is 100% covered and sleeps ~1h when every key is
+# out of daily quota. muharaf_lines is left out for now (its adapter hangs).
 models:
   - gemini-flash-lite
   - gemini-flash
@@ -18,15 +22,15 @@ datasets:
   - kitab_historyar
   - kitab_onlinekhatt
 
-limit: 50                 # NEW samples per (model,dataset) per pass; the wrapper loops
+limit: 120                # NEW samples per (model,dataset) per pass; the wrapper loops
 offset: 0
 accumulate: true
 prompt_version: line-v2
 normalization_profiles: [raw, light, diac_insensitive]
 
-concurrency: 1
-rpm: 14                   # sliding-window cap, stays under 15/min
-rate_limit_abort: 25     # ride out 429 bursts; bail only if a model is truly capped
+concurrency: 3           # one in-flight request per key in the pool
+rpm: 0                   # global limiter off — per_key_rpm in models.yaml throttles each key
+rate_limit_abort: 25     # ride out 429 bursts; bail only once every key is daily-capped
 max_retries: 3
 cache: true
 results_dir: results

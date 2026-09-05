@@ -30,7 +30,12 @@ def available_hosted_models(
         if cfg.get("client") != "litellm":
             continue
         key = cfg.get("env_key")
-        if key and not e.get(key):
+        keys = cfg.get("env_keys") or []
+        # available if it needs no key, or the single env_key is set, or (for a
+        # multi-key model like Gemini) at least one of env_keys is set
+        if (key or keys) and not (
+            (key and e.get(key)) or any(e.get(k) for k in keys)
+        ):
             continue
         if cfg.get("api_base_env") and not e.get(cfg["api_base_env"]):
             continue
@@ -55,6 +60,12 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
         # ANTHROPIC_API_KEY, ...), which silently ignores a model pinned to a
         # different key such as *_PAID, and finds nothing for a custom api_base.
         api_key = os.environ.get(cfg["env_key"]) if cfg.get("env_key") else None
+        # A model may name several keys (e.g. three Gemini free-tier keys) via
+        # `env_keys:`. Each present one becomes a (label, value) pair for the
+        # client's rotating pool; `per_key_rpm` throttles each key on its own.
+        api_keys = [
+            (k, os.environ[k]) for k in (cfg.get("env_keys") or []) if os.environ.get(k)
+        ]
         return LiteLLMClient(
             name=name,
             litellm_id=cfg["litellm_id"],
@@ -62,6 +73,8 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             api_base=api_base,
             max_tokens=int(cfg.get("max_tokens", 256)),
             api_key=api_key,
+            api_keys=api_keys,
+            per_key_rpm=float(cfg.get("per_key_rpm", 0) or 0),
         )
     if client == "hf_local":
         from .hf_local_client import HFLocalClient
