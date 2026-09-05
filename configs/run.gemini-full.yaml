@@ -7,7 +7,9 @@
 models:
   - gemini-flash-lite
   - gemini-flash
-  - gemini-pro
+  # gemini-pro dropped: the free tier reports `limit: 0` for gemini-3.1-pro
+  # (not a daily cap — it is simply not on the free tier), so every pass wasted
+  # ~20 min retrying it. Add it back only with a paid Gemini key.
 datasets:
   - kitab_historicalbooks
   - kitab_khatt
