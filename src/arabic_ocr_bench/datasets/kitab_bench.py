@@ -6,6 +6,11 @@ columns `image`, `source`, and a ground-truth string that is `text` on some
 subsets and `answer` on others. This one adapter serves any of them; the
 concrete benchmark datasets are named in `configs/datasets.yaml`.
 
+It is also reused for any other single-split HF `image-to-text` line dataset
+that keeps its image in an `image` column and its transcription in one of
+`_GT_KEYS` — e.g. `nakba_lines` (`U4RASD/omar-al-saleh-manuscripts-segments`,
+NAKBA NLP 2026). Pass the full `org/name` as `subset` and set `split`.
+
 Subsets we use (see datasets.yaml for the full list):
   arocrbench_khatt           modern handwritten Arabic (KHATT) — line images
   arocrbench_muharaf         historical handwritten Arabic (Muharaf) segments
@@ -24,7 +29,7 @@ from collections.abc import Iterator
 from ..imaging import cap_image
 from .base import Sample
 
-_GT_KEYS = ("text", "answer", "label", "ground_truth")
+_GT_KEYS = ("text", "answer", "label", "ground_truth", "transcription", "gt", "target")
 
 
 class KitabBench:
