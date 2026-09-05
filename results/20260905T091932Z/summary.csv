@@ -1,0 +1,4 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+gemini-flash-lite,kitab_hindawi,7,0,0.0,2275.8,0.001106,0.7174,0.7459,0.739,0.0,0.7046,0.7364,0.7382,0.0,0.7008,0.7322,0.715,0.0,0.4214
+gemini-flash-lite,kitab_khatt,2,0,0.0,2613.5,0.000239,0.2435,0.2391,0.3182,0.0,0.2368,0.2307,0.3182,0.0,0.2193,0.2137,0.3182,0.0,0.5
+gemini-flash-lite,kitab_muharaf,49,1,0.02,2213.7,0.006148,0.4111,0.407,0.7748,0.0816,0.3913,0.3896,0.7512,0.102,0.3642,0.3681,0.7222,0.1429,0.6815

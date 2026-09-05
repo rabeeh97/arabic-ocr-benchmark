@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000141", "model": "gemini-flash-lite", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "الدي يقالُ لهُ", "raw_text": "الذي يقال له", "cleaned_text": "الذي يقال له", "latency_ms": 4844.34, "input_tokens": 1184, "output_tokens": 5, "cost_usd": 0.0001204, "error": null, "attempts": 1, "cached": false}

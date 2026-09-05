@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000028", "model": "pixtral-12b", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "الزراعية والريفية،", "raw_text": "الزراعة والريفية.", "cleaned_text": "الزراعة والريفية.", "latency_ms": 563.0, "input_tokens": 544, "output_tokens": 7, "cost_usd": 8.265e-05, "error": null, "attempts": 1, "cached": false}
