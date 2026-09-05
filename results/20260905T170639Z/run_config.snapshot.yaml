@@ -1,0 +1,26 @@
+models:
+- qwen2.5-vl-3b
+datasets:
+- muharaf_lines
+indices:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-7ffcec2f0c82
+session_id: 891b81c7
