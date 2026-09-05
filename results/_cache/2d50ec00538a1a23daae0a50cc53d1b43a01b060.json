@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000030", "model": "openrouter-llama-4-maverick", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "ن", "raw_text": "ع", "cleaned_text": "ع", "latency_ms": 1651.18, "input_tokens": 236, "output_tokens": 2, "cost_usd": 4.86e-05, "error": null, "attempts": 1, "cached": false}
