@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000130", "model": "gemini-flash-lite", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "عفيف الفتى", "raw_text": "عضف الفتى", "cleaned_text": "عضف الفتى", "latency_ms": 68962.67, "input_tokens": 1142, "output_tokens": 5, "cost_usd": 0.0001162, "error": null, "attempts": 2, "cached": false}

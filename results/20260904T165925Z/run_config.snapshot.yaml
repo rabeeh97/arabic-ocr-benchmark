@@ -1,0 +1,15 @@
+models:
+- glm-5.3-flash-paid
+datasets:
+- kitab_muharaf
+limit: 2
+offset: 0
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results
