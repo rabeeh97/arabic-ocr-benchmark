@@ -1,16 +1,20 @@
 """Coordinate a benchmark sweep run from several Colab accounts at once.
 
-Two or three Colab runners mount the **same** Google Drive and run the **same**
-notebook. This module lets them divide the work without a lock service.
+Two or three Colab runners run the **same** notebook and divide the work without
+a lock service. They may be different Google accounts — with :class:`GitLedger`
+they do not need to share anything but the GitHub repo.
 
-Model — advisory leases over a shared Drive directory (``claims/``):
+Model — advisory leases, each a small JSON file:
 
 * A unit of work is ``(model, dataset, [i0, i1))`` — a ``BATCH``-aligned slice of
   absolute dataset row indices.
-* To take a unit a runner writes a lease file, waits a jittered moment, then
-  re-reads. On a collision the deterministic tiebreak — earliest ``claimed_at``,
-  then lexicographically smallest ``session_id`` — picks the winner; the loser
-  deletes its lease and tries another unit.
+* To take a unit a runner writes a lease file, re-reads the set of leases, and
+  on a collision the deterministic tiebreak — earliest ``claimed_at``, then
+  lexicographically smallest ``session_id`` — picks the winner; the loser drops
+  its lease and tries another unit. :class:`Ledger` keeps the files in a plain
+  shared directory and settles a race with a jittered wait-then-reread;
+  :class:`GitLedger` keeps them on a git branch and settles it with GitHub's
+  push serialisation (a lost race is a rejected push).
 * Correctness never depends on a lease being honoured. The per-line result cache
   already stops genuine duplicate spend, and every runner writes its own
   ``results/<run_id>/`` directories, so a lost race just produces one extra
@@ -23,6 +27,13 @@ Runner identity is the Colab Google-account email when reachable (stable across
 VM restarts), else a uuid persisted at ``/content/.sweep_runner_id``; a fresh
 per-session nonce is always appended so two sessions of one account stay
 distinguishable in the audit.
+
+Use :class:`Ledger` only when every runner genuinely shares one directory (a
+single machine, or one Google account's Drive). Across *different* Google
+accounts a Drive mount is **not** shared and even a shared folder syncs across
+accounts far too slowly to lease against — use :class:`GitLedger`, which keeps
+the identical lease format and semantics but on a dedicated git branch: every
+mutation is a commit + push, every read fast-forwards first.
 """
 
 from __future__ import annotations
@@ -31,6 +42,7 @@ import json
 import os
 import random
 import re
+import subprocess
 import time
 import uuid
 from dataclasses import asdict, dataclass, field, fields
@@ -276,3 +288,156 @@ class Ledger:
                 self.release(lease)
                 n += 1
         return n
+
+
+class GitLedger(Ledger):
+    """A :class:`Ledger` whose lease files live on a dedicated git branch
+    instead of a shared directory.
+
+    A Google Drive mount is not a shared filesystem: two Colab runners signed in
+    to *different* Google accounts see different ``MyDrive`` trees entirely, and
+    even a folder shared between accounts propagates a write only after a long,
+    unbounded delay. Either way every runner's :meth:`confirm` re-reads a
+    directory that contains only its own leases and the whole scheme silently
+    no-ops. Git is the one store every runner already shares consistently.
+
+    The lease format, TTL, tiebreak and resume semantics are exactly those of
+    :class:`Ledger`. What changes: every mutation is ``commit`` + ``push`` to
+    ``branch`` inside ``repo_dir`` (a small throwaway checkout kept apart from
+    the notebook's main working tree), and every read first fast-forwards to
+    ``origin/<branch>``. GitHub serialises pushes to a ref, so a lost race is a
+    rejected push — the loser rebases, re-applies :meth:`Lease.wins_over`, and
+    goes looking for other work.
+    """
+
+    def __init__(self, repo_dir: str | Path, branch: str = "sweep-claims",
+                 ttl_sec: float = LEASE_TTL_SEC, *, sync_every: float = 1.5):
+        self.repo = Path(repo_dir)
+        self.branch = branch
+        self.dir = self.repo / "claims"
+        self.ttl = float(ttl_sec)
+        self._sync_every = float(sync_every)
+        self._last_sync = 0.0
+        self._ensure_branch()
+        self.dir.mkdir(parents=True, exist_ok=True)
+
+    # ---- git plumbing -------------------------------------------------- #
+    def _git(self, *args: str) -> subprocess.CompletedProcess:
+        try:
+            return subprocess.run(
+                ["git", "-C", str(self.repo), *args],
+                capture_output=True, text=True, timeout=90, check=False,
+            )
+        except (subprocess.TimeoutExpired, OSError) as e:
+            return subprocess.CompletedProcess(args, 1, "", str(e))
+
+    def _ensure_branch(self) -> None:
+        self.repo.mkdir(parents=True, exist_ok=True)
+        self._git("fetch", "--depth", "1", "--no-tags", "origin", self.branch)
+        if self._git("rev-parse", "--verify", f"origin/{self.branch}").returncode == 0:
+            self._git("checkout", "-B", self.branch, f"origin/{self.branch}")
+            return
+        # brand-new: start an orphan history that carries only claims/
+        self._git("checkout", "--orphan", self.branch)
+        self._git("rm", "-rf", "--quiet", ".")
+        self.dir.mkdir(parents=True, exist_ok=True)
+        (self.dir / ".keep").write_text("")
+        self._git("add", "-A", "--", "claims")
+        self._git("-c", "user.email=sweep@local", "-c", "user.name=sweep-init",
+                  "commit", "-m", "init sweep-claims branch")
+        if self._git("push", "origin", f"HEAD:{self.branch}").returncode != 0:
+            # another runner created it first — adopt theirs
+            self._git("fetch", "--depth", "1", "--no-tags", "origin", self.branch)
+            self._git("checkout", "-B", self.branch, f"origin/{self.branch}")
+            self._git("reset", "--hard", f"origin/{self.branch}")
+
+    def sync(self, *, force: bool = False) -> None:
+        now = time.time()
+        if not force and now - self._last_sync < self._sync_every:
+            return
+        self._last_sync = now
+        if self._git("fetch", "--depth", "1", "--no-tags",
+                     "origin", self.branch).returncode == 0:
+            self._git("reset", "--hard", f"origin/{self.branch}")
+            self._git("clean", "-fd", "--", "claims")
+
+    def _commit_push(self, msg: str) -> bool:
+        """Commit whatever changed under ``claims/`` and push it. A rejected
+        push is rebased onto origin and retried a few times; returns False if it
+        still won't land (the caller then re-reads and re-decides)."""
+        self._git("add", "-A", "--", "claims")
+        c = self._git("-c", "user.email=sweep@local", "-c", "user.name=sweep",
+                      "commit", "-m", msg)
+        if c.returncode != 0:
+            blob = (c.stdout + c.stderr).lower()
+            return "nothing to commit" in blob or "no changes added" in blob
+        for _ in range(6):
+            if self._git("push", "origin", f"HEAD:{self.branch}").returncode == 0:
+                return True
+            self._git("fetch", "--depth", "1", "--no-tags", "origin", self.branch)
+            if self._git("rebase", f"origin/{self.branch}").returncode != 0:
+                self._git("rebase", "--abort")
+                self.sync(force=True)
+                return False
+        self.sync(force=True)
+        return False
+
+    def _conflict(self, lease: Lease) -> bool:
+        """True if another reserved, unexpired lease overlaps ``lease`` and
+        ``lease`` loses the deterministic tiebreak to it."""
+        for other in Ledger._load_all(self):
+            if other.path == lease.path or other.status != "reserved":
+                continue
+            if other.expired(self.ttl):
+                continue
+            if lease.overlaps(other) and not lease.wins_over(other):
+                return True
+        return False
+
+    # ---- reads: always fast-forward first --------------------------- #
+    def _load_all(self) -> list[Lease]:
+        self.sync()
+        return Ledger._load_all(self)
+
+    # ---- writes: through git --------------------------------------- #
+    def _write(self, lease: Lease) -> Lease:
+        lease.updated_at = time.time()
+        body = {k: v for k, v in asdict(lease).items() if k != "path"}
+        p = self.dir / self._fname(lease)
+        p.write_text(json.dumps(body, ensure_ascii=False))
+        lease.path = str(p)
+        verb = "done" if lease.status == "done" else "reserve"
+        self._commit_push(f"lease {verb} {self._fname(lease)}")
+        return lease
+
+    def release(self, lease: Lease) -> None:
+        name = Path(lease.path).name if lease.path else ""
+        try:
+            Path(lease.path).unlink()
+        except OSError:
+            pass
+        if name:
+            self._commit_push(f"lease release {name}")
+
+    def claim(self, model: str, dataset: str, indices: list[int],
+              runner_id: str, session_id: str) -> Lease | None:
+        if not indices:
+            return None
+        idx = sorted(indices)
+        lease = Lease(
+            model=model, dataset=dataset, i0=idx[0], i1=idx[-1] + 1,
+            indices=idx, runner_id=runner_id, session_id=session_id,
+        )
+        self.sync(force=True)
+        if self._conflict(lease):
+            return None
+        self._write(lease)              # commit + push
+        self.sync(force=True)           # settle against anyone who pushed too
+        if not Path(lease.path).exists() or self._conflict(lease):
+            self.release(lease)
+            return None
+        return lease
+
+    def confirm(self, lease: Lease, *, jitter: tuple[float, float] = (0.0, 0.0)) -> bool:
+        self.sync(force=True)
+        return not self._conflict(lease)
