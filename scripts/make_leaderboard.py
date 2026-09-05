@@ -15,6 +15,7 @@ import csv
 import datetime as dt
 import html
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -619,6 +620,89 @@ def _render_matrix(rows: list[dict]) -> str:
     )
 
 
+_TOC_JS = r"""
+(function(){
+  var toc=document.getElementById('toc'); if(!toc) return;
+  var links=[].slice.call(toc.querySelectorAll('a'));
+  var byId={};
+  function openAncestor(t){ var d=t&&t.closest('details'); if(d && !d.open) d.open=true; }
+  links.forEach(function(a){
+    var id=a.getAttribute('href').slice(1); byId[id]=a;
+    a.addEventListener('click',function(e){
+      var t=document.getElementById(id); if(!t) return;
+      e.preventDefault(); openAncestor(t);
+      requestAnimationFrame(function(){
+        t.scrollIntoView({block:'start'});
+        try{ history.replaceState(null,'','#'+id); }catch(_){}
+      });
+    });
+  });
+  try{
+    var obs=new IntersectionObserver(function(ents){
+      ents.forEach(function(en){
+        if(!en.isIntersecting) return;
+        var a=byId[en.target.id]; if(!a) return;
+        links.forEach(function(x){x.classList.remove('active');});
+        a.classList.add('active');
+      });
+    },{rootMargin:'-42% 0px -52% 0px',threshold:0});
+    Object.keys(byId).forEach(function(id){
+      var s=document.getElementById(id); if(s) obs.observe(s);
+    });
+  }catch(_){}
+  // persist each panel's open/closed state
+  [].forEach.call(document.querySelectorAll('details.panel-d[data-key]'),function(d){
+    var k='lb_panel_'+d.getAttribute('data-key');
+    try{ var v=localStorage.getItem(k); if(v==='1') d.open=true; else if(v==='0') d.open=false; }catch(_){}
+    d.addEventListener('toggle',function(){
+      try{ localStorage.setItem(k, d.open?'1':'0'); }catch(_){}
+    });
+  });
+  if(location.hash){
+    var t=document.getElementById(location.hash.slice(1));
+    if(t){ openAncestor(t); requestAnimationFrame(function(){ t.scrollIntoView(); }); }
+  }
+})();
+"""
+
+
+def _toc(items: list[tuple[str, str]]) -> str:
+    """A sticky in-page nav bar linking to each section."""
+    links = "".join(
+        f"<a href='#{html.escape(sid)}'>{html.escape(label)}</a>" for sid, label in items
+    )
+    return f"<nav class='toc' id='toc' aria-label='sections'>{links}</nav>"
+
+
+_PANEL_RE = re.compile(r"^<section class='([^']+)'>\s*<h2>(.*?)</h2>\s*(.*)$", re.S)
+
+
+def _panel(section_html: str, *, pid: str, collapsible: bool,
+           open: bool = False, hint: str = "") -> str:
+    """Add a stable id to a rendered `<section>`; when `collapsible`, fold its
+    body into a `<details>` whose `<summary>` carries the section title."""
+    if not section_html:
+        return ""
+    m = _PANEL_RE.match(section_html)
+    if not m:
+        return section_html.replace("<section class='", f"<section id='{pid}' class='", 1)
+    cls, h2, rest = m.groups()
+    rest = rest.rstrip()
+    if rest.endswith("</section>"):
+        rest = rest[: -len("</section>")].rstrip()
+    if not collapsible:
+        return f"<section id='{pid}' class='{cls}'><h2>{h2}</h2>\n{rest}</section>"
+    hint_html = f"<span class='panel-hint'>{html.escape(hint)}</span>" if hint else ""
+    op = " open" if open else ""
+    return (
+        f"<section id='{pid}' class='{cls} panel'>"
+        f"<details class='panel-d' data-key='{pid}'{op}>"
+        f"<summary class='panel-sum'><span class='panel-ttl'>{h2}</span>"
+        f"{hint_html}<span class='panel-chev' aria-hidden='true'></span></summary>"
+        f"<div class='panel-body'>{rest}</div></details></section>"
+    )
+
+
 def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     _RENDER_CTX["target"] = target or Path("results")
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
@@ -665,23 +749,46 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         if not (r["model"].startswith("mock") or r["dataset"] == "synthetic")
     ] or rows
 
-    out.append(_render_matrix(real_rows))
-    out.append(_render_explorer(real_rows, Path(_RENDER_CTX["target"])))
-    out.append(_render_model_reference(real_rows))
-    out.append(_render_cost(rows, Path(_RENDER_CTX["target"])))
-    out.append(_render_review(rows, Path(_RENDER_CTX["target"])))
-    out.append(_render_samples(rows))
+    tgt = Path(_RENDER_CTX["target"])
+    n_models_real = len({r["model"] for r in real_rows})
+    n_ds_real = len({r["dataset"] for r in real_rows if r.get("dataset")})
+    try:
+        n_cost_models = len(collect_costs(tgt))
+    except Exception:  # noqa: BLE001
+        n_cost_models = 0
 
     runs = sorted({(r["run"], r.get("when", ""), r.get("limit", ""),
                     r.get("prompt_version", "")) for r in rows}, reverse=True)
-    out.append("<section class='runs'><h2>Runs</h2><ul>")
-    for run, when, limit, pv in runs:
-        out.append(
+    runs_html = ["<section class='runs'><h2>Runs</h2><ul>"]
+    for run, when, limit_, pv in runs:
+        runs_html.append(
             f"<li><span class='rid'>{html.escape(run)}</span>"
             f"<span class='rmeta'>{html.escape(when or 'time unknown')} · "
-            f"limit {html.escape(str(limit) or 'all')} · prompt {html.escape(pv or '?')}</span></li>"
+            f"limit {html.escape(str(limit_) or 'all')} · prompt {html.escape(pv or '?')}</span></li>"
         )
-    out.append("</ul></section>")
+    runs_html.append("</ul></section>")
+
+    # (id, label for TOC, rendered html, collapsible?, open-by-default?, summary hint)
+    sections = [
+        ("matrix", "Matrix", _render_matrix(real_rows), False, True, ""),
+        ("by-dataset", "By dataset", _render_explorer(real_rows, tgt), True, True,
+         f"{n_ds_real} datasets"),
+        ("models", "Models", _render_model_reference(real_rows), True, False,
+         f"{n_models_real} models"),
+        ("cost", "Cost", _render_cost(rows, tgt), True, False,
+         f"{n_cost_models} priced models" if n_cost_models else ""),
+        ("review", "Review", _render_review(rows, tgt), True, False,
+         "best & worst lines, per model"),
+        ("samples", "Samples", _render_samples(rows), True, False, "with images"),
+        ("runs", "Runs", "".join(runs_html), True, False, f"{n_runs} runs"),
+    ]
+    present = [(sid, label) for sid, label, h, *_ in sections if h]
+    out.append(_toc(present))
+    for sid, _label, section_html, collapsible, open_default, hint in sections:
+        if not section_html:
+            continue
+        out.append(_panel(section_html, pid=sid, collapsible=collapsible,
+                          open=open_default, hint=hint))
 
     out.append(
         "<footer><p>Datasets: <b>Muharaf-public</b> (Manuscripts of Handwritten "
@@ -691,6 +798,7 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         "Harness: <code>arabic-ocr-bench</code>. "
         f"Generated {gen} by <code>scripts/make_leaderboard.py</code>.</p></footer>"
     )
+    out.append(f"<script>{_TOC_JS}</script>")
     out.append("</main>")
     return "\n".join(out)
 
@@ -1153,6 +1261,7 @@ _HEAD = """<title>{{TITLE}}</title>
   --ground:#f6f6f3; --surface:#ffffff; --ink:#1b1d21; --muted:#5d6470;
   --line:#e4e3de; --accent:#2f4b99; --accent-soft:#eaeef7;
   --mock:#8a8f99; --best-bar:#2f4b99;
+  --toc-h:46px;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -1224,7 +1333,7 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 .mx-tbl{font-size:12px;border-collapse:separate;border-spacing:0;}
 .mx-tbl th,.mx-tbl td{white-space:nowrap;text-align:right;padding:8px 12px;
   border-bottom:1px solid var(--line);}
-.mx-tbl thead th{position:sticky;top:0;background:var(--ground);z-index:2;
+.mx-tbl thead th{position:sticky;top:var(--toc-h);background:var(--ground);z-index:2;
   font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500;
   text-transform:none;letter-spacing:0;color:var(--muted);max-width:130px;
   overflow:hidden;text-overflow:ellipsis;}
@@ -1267,7 +1376,7 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 .ex-card,.mr-out{font-size:13.5px;line-height:1.6;color:var(--ink);max-width:70ch;
   margin:4px 2px 12px;}
 .ex-tbl{font-size:13px;}
-.ex-tbl thead th{cursor:pointer;position:sticky;top:0;background:var(--ground);}
+.ex-tbl thead th{cursor:pointer;position:sticky;top:var(--toc-h);background:var(--ground);}
 .ex-tbl thead th:hover{color:var(--ink);}
 .ex-tbl thead th[aria-sort]{color:var(--ink);}
 .ex-tbl thead th[aria-sort="ascending"]::after{content:" \2191";}
@@ -1377,7 +1486,7 @@ b{font-weight:600;color:var(--ink);}
 .rv-tbl{width:100%;font-size:13px;}
 .rv-tbl thead th{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:11px;
   letter-spacing:.03em;text-transform:uppercase;color:var(--muted);background:var(--ground);
-  position:sticky;top:0;}
+  position:sticky;top:var(--toc-h);}
 .rv-tbl td{border-bottom:1px solid var(--line);vertical-align:top;white-space:normal;line-height:1.6;}
 .rv-tbl tbody tr:last-child td{border-bottom:none;}
 .rv-tbl tbody tr.rv-row{cursor:zoom-in;transition:background .12s;}
@@ -1468,6 +1577,55 @@ b{font-weight:600;color:var(--ink);}
 .cost-tbl tbody tr:last-child td{border-bottom:none;}
 .cost-tbl td.cost-hi{background:var(--accent-soft);font-weight:600;}
 .cost-note{font-size:12px;color:var(--muted);margin:10px 2px 0;max-width:72ch;line-height:1.55;}
+
+/* --- table of contents (sticky in-page nav) --- */
+html{scroll-behavior:smooth;}
+main section{scroll-margin-top:calc(var(--toc-h) + 16px);}
+.toc{position:sticky;top:0;z-index:40;display:flex;gap:4px;align-items:center;
+  height:var(--toc-h);margin:16px 0 6px;padding:0 2px;overflow-x:auto;
+  background:color-mix(in srgb,var(--ground) 90%,transparent);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);scrollbar-width:none;}
+.toc::-webkit-scrollbar{display:none;}
+.toc a{flex:none;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  text-decoration:none;padding:6px 11px;border-radius:7px;white-space:nowrap;
+  transition:color .12s,background .12s;}
+.toc a:hover{color:var(--ink);background:var(--accent-soft);}
+.toc a.active{color:var(--accent);background:var(--accent-soft);font-weight:600;}
+
+/* --- collapsible panels --- */
+.panel{margin:30px 0 0;}
+.panel>.panel-d{border:1px solid var(--line);border-radius:12px;
+  background:var(--surface);overflow:hidden;}
+.panel>.panel-d[open]{background:transparent;}
+.panel-sum{display:flex;align-items:center;gap:12px;cursor:pointer;list-style:none;
+  padding:14px 16px;font-family:"IBM Plex Mono",monospace;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);user-select:none;}
+.panel-sum::-webkit-details-marker{display:none;}
+.panel-sum:hover{color:var(--ink);}
+.panel-d[open]>.panel-sum{color:var(--ink);border-bottom:1px solid var(--line);
+  background:var(--surface);}
+.panel-ttl{flex:1;}
+.panel-hint{font-size:10px;letter-spacing:.03em;color:var(--muted);
+  text-transform:none;font-weight:400;white-space:nowrap;}
+.panel-chev{flex:none;width:7px;height:7px;border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor;transform:rotate(-45deg);
+  transition:transform .15s;margin-inline-start:2px;}
+.panel-d[open]>.panel-sum .panel-chev{transform:rotate(45deg);}
+.panel-body{padding:18px 16px 8px;}
+.panel-body>h2{display:none;}
+.panel-body>*:first-child{margin-top:0;}
+
+/* --- sticky first column: cost + explorer tables --- */
+.ex-tbl,.cost-tbl{border-collapse:separate;border-spacing:0;}
+.cost-tbl thead th{position:sticky;top:var(--toc-h);z-index:2;}
+.ex-tbl thead th:first-child,.cost-tbl thead th:first-child{left:0;z-index:4;
+  box-shadow:1px 0 0 var(--line);}
+.ex-tbl tbody td.exm,.cost-tbl tbody td:first-child{position:sticky;left:0;z-index:1;
+  background:var(--surface);box-shadow:1px 0 0 var(--line);}
+.ex-tbl tbody tr:hover td.exm{background:var(--accent-soft);}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
 </style>"""
 
 

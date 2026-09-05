@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05T12:31:13Z",
-  "remaining": 1962,
+  "updated": "2026-09-05T15:11:14Z",
+  "remaining": 949,
   "done": false,
   "status": {
     "gemini-flash-lite": {
@@ -35,37 +35,11 @@
         10
       ],
       "kitab_khatt": [
-        41,
+        44,
         200
       ],
       "kitab_muharaf": [
         7,
-        200
-      ],
-      "kitab_hindawi": [
-        0,
-        200
-      ],
-      "kitab_historyar": [
-        0,
-        200
-      ],
-      "kitab_onlinekhatt": [
-        0,
-        200
-      ]
-    },
-    "gemini-pro": {
-      "kitab_historicalbooks": [
-        0,
-        10
-      ],
-      "kitab_khatt": [
-        0,
-        200
-      ],
-      "kitab_muharaf": [
-        0,
         200
       ],
       "kitab_hindawi": [
