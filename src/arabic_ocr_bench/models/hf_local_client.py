@@ -129,12 +129,15 @@ class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
                  max_new_tokens: int = 160, load_in_4bit: bool = False,
-                 min_ram_gb: float = 0.0):
+                 min_ram_gb: float = 0.0, subfolder: str | None = None):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
         self.dtype = dtype
         self.adapter_id = adapter_id
+        # some checkpoints live in a sub-directory of the repo (e.g. a repo that
+        # ships `final_model/` alongside training checkpoints)
+        self.subfolder = subfolder or None
         self.max_new_tokens = max_new_tokens
         self.load_in_4bit = load_in_4bit
         # How much memory this model needs to load safely, in GB — enforced
@@ -278,14 +281,16 @@ class HFLocalClient:
               f"({'4-bit' if use_4bit else str(torch_dtype).replace('torch.', '')} on {device}"
               f"{_vram}) ...",
               flush=True)
-        self._processor = AutoProcessor.from_pretrained(self.hf_id, trust_remote_code=True)
+        _sub = {"subfolder": self.subfolder} if self.subfolder else {}
+        self._processor = AutoProcessor.from_pretrained(
+            self.hf_id, trust_remote_code=True, **_sub)
 
         # Some checkpoints (unsloth-derived, e.g. Qari-OCR) carry a bitsandbytes
         # 4-bit `quantization_config` in config.json. That path is fragile on
         # Colab ("'Parameter' object has no attribute 'compress_statistics'") and
         # unnecessary for a 2-3B model on a 16 GB GPU. Unless the caller opted
         # into quantization, drop it and load in plain fp16/bf16.
-        cfg = AutoConfig.from_pretrained(self.hf_id, trust_remote_code=True)
+        cfg = AutoConfig.from_pretrained(self.hf_id, trust_remote_code=True, **_sub)
         if not use_4bit and hasattr(cfg, "quantization_config"):
             delattr(cfg, "quantization_config")
 
@@ -294,6 +299,7 @@ class HFLocalClient:
             "torch_dtype": torch_dtype,
             "trust_remote_code": True,
             "low_cpu_mem_usage": True,
+            **_sub,
         }
         if use_4bit:
             from transformers import BitsAndBytesConfig

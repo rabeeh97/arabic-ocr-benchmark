@@ -88,6 +88,7 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             load_in_4bit=bool(cfg.get("load_in_4bit", False)),
             max_new_tokens=int(cfg.get("max_new_tokens", 160)),
             min_ram_gb=float(cfg.get("min_ram_gb", 0) or 0),
+            subfolder=cfg.get("subfolder"),
         )
     raise ValueError(f"model {name!r}: unknown client {client!r}")
 
