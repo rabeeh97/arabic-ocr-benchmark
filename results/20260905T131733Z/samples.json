@@ -1,0 +1,119 @@
+{
+  "run_id": "20260905T131733Z",
+  "generated_at": "2026-09-05T13:24:57+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000014",
+      "row": 14,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فأما الأدله التاريخية المستقاة من المصادر الأدبيه فهي تنحصر في بعض الكتب",
+      "prediction": "فأما الادلة التاريخية المشتقة من المصادر الأدبية فهمي تنتحصري ببطء الكتبة",
+      "error": null,
+      "cer_light": 0.1667,
+      "cer_raw": 0.1806,
+      "wer_light": 0.6667
+    },
+    {
+      "sample_id": "kitab_khatt/train/000015",
+      "row": 15,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وعدم استقرار موظفي الوزارات والمسؤولين الإداريين ، عدم الاعتبار الممنهج للاستحقاق",
+      "prediction": "وعندم استقرار موظفي الوزارات والمسؤولين الإداريين علمهم الأخبار المنجل لا تستطاعون",
+      "error": null,
+      "cer_light": 0.2222,
+      "cer_raw": 0.2346,
+      "wer_light": 0.5455
+    },
+    {
+      "sample_id": "kitab_khatt/train/000019",
+      "row": 19,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الواردة عن ملوك الحيرة وعرب الحيرة، أنداد الغساسنة، ولذلك لم تكن في جانبهم، وتكاد",
+      "prediction": "الواردة عن ملوك الحجرة وحور المحرقة أخذت العصاكة ولذلك لم يكن في حاضرهم، رَكَّدْ",
+      "error": null,
+      "cer_light": 0.321,
+      "cer_raw": 0.321,
+      "wer_light": 0.5714
+    },
+    {
+      "sample_id": "kitab_khatt/train/000010",
+      "row": 10,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كيلومتر في نهر جليدي درجة حرارته 8ر1 درجة تحت الصفر، مسجلا رقما قياسيا",
+      "prediction": "لديكَ صُرْ في نفْسِي دَرجةٌ مُنْهَ 8،1 درجةً كَانَ الحَزَمُ محجولًا رُماً عَايَجياً",
+      "error": null,
+      "cer_light": 0.6714,
+      "cer_raw": 0.6714,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000018",
+      "row": 18,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دراق، غيظ، ناء ،  بث ، نسر.",
+      "prediction": "دَرَأْقِنٌ، نَا، دُبْثٍ، نَسْلُّ.",
+      "error": null,
+      "cer_light": 0.7308,
+      "cer_raw": 0.7407,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000017",
+      "row": 17,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " نائم بكلمات لا أفهمها مثل انقض بغلس له الضابط لزمتك. سألت راجع هل بلغ",
+      "prediction": "وَأُمِرْتُ بِاللَّهِ أَنْ لا أَخْفَى مَا عَذَبْتَ مِنْكُمْ غَيْرَ الظَّاهِرِ لَزَنٍ، سُئلتُ رَجُحًا طَلَابَةً",
+      "error": null,
+      "cer_light": 1.0725,
+      "cer_raw": 1.1014,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000012",
+      "row": 12,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " ب س ش ص غ هـ أننا في الحج . هل تعلم فائدة الكلمات",
+      "prediction": "الله يَا اللهُ مَنْ تَكَلِّمَ بِهِ فَأَتْقَاهُ وَمَنٌّا فَصَوَّرْهُ إِلَيْهِ",
+      "error": null,
+      "cer_light": 1.2292,
+      "cer_raw": 1.2245,
+      "wer_light": 1.0
+    }
+  ]
+}
