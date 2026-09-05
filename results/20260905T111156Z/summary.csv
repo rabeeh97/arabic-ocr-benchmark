@@ -1,0 +1,4 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+pixtral-12b,kitab_hindawi,20,0,0.0,1873.4,0.002656,0.7522,0.7359,0.8572,0.0,0.7392,0.7238,0.8538,0.0,0.7318,0.7166,0.8396,0.0,0.1448
+pixtral-12b,kitab_khatt,20,0,0.0,1048.3,0.001463,1.1048,1.0716,1.0691,0.0,1.0987,1.0645,1.0691,0.0,0.747,0.7321,1.0528,0.0,0.1046
+pixtral-12b,kitab_muharaf,15,5,0.25,1004.3,0.000418,1.3371,1.4498,1.25,0.0,1.3078,1.3871,1.25,0.0,0.8462,0.8816,1.2407,0.0,0.1846
