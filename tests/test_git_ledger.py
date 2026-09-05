@@ -25,8 +25,10 @@ def two_runners(tmp_path):
     clone_b = tmp_path / "runner_b"
     _run("git", "clone", str(origin), str(clone_a))
     _run("git", "clone", str(origin), str(clone_b))
-    a = GitLedger(clone_a, branch="sweep-claims", ttl_sec=2, sync_every=0.0)
-    b = GitLedger(clone_b, branch="sweep-claims", ttl_sec=2, sync_every=0.0)
+    a = GitLedger(clone_a, branch="sweep-claims", ttl_sec=2, sync_every=0.0,
+                  settle_sec=(0.0, 0.0))
+    b = GitLedger(clone_b, branch="sweep-claims", ttl_sec=2, sync_every=0.0,
+                  settle_sec=(0.0, 0.0))
     return a, b
 
 

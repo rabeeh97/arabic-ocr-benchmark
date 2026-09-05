@@ -311,15 +311,27 @@ class GitLedger(Ledger):
     """
 
     def __init__(self, repo_dir: str | Path, branch: str = "sweep-claims",
-                 ttl_sec: float = LEASE_TTL_SEC, *, sync_every: float = 1.5):
+                 ttl_sec: float = LEASE_TTL_SEC, *, sync_every: float = 1.5,
+                 settle_sec: tuple[float, float] = (2.0, 6.0)):
         self.repo = Path(repo_dir)
         self.branch = branch
         self.dir = self.repo / "claims"
         self.ttl = float(ttl_sec)
         self._sync_every = float(sync_every)
         self._last_sync = 0.0
+        # A push to a ref is not instantly visible to a `git fetch` from another
+        # machine (GitHub replication lag). Between writing a claim and deciding
+        # the deterministic tie-break, wait a jittered moment so a *concurrent*
+        # claim's push has time to become fetchable — otherwise two runners can
+        # each fetch stale state and both believe they won.
+        self._settle_lo, self._settle_hi = settle_sec
         self._ensure_branch()
         self.dir.mkdir(parents=True, exist_ok=True)
+
+    def _settle(self) -> None:
+        hi = self._settle_hi
+        if hi > 0:
+            time.sleep(random.uniform(self._settle_lo, hi))
 
     # ---- git plumbing -------------------------------------------------- #
     def _git(self, *args: str) -> subprocess.CompletedProcess:
@@ -432,12 +444,14 @@ class GitLedger(Ledger):
         if self._conflict(lease):
             return None
         self._write(lease)              # commit + push
-        self.sync(force=True)           # settle against anyone who pushed too
+        self._settle()                  # let a concurrent claim's push land
+        self.sync(force=True)           # re-read, including anyone who raced us
         if not Path(lease.path).exists() or self._conflict(lease):
             self.release(lease)
             return None
         return lease
 
     def confirm(self, lease: Lease, *, jitter: tuple[float, float] = (0.0, 0.0)) -> bool:
+        self._settle()                  # more slack for GitHub replication lag
         self.sync(force=True)
         return not self._conflict(lease)

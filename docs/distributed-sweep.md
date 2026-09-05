@@ -16,9 +16,14 @@ repo.
 
 | Store | Where | Holds | Written by |
 | --- | --- | --- | --- |
-| **`main` branch** (GitHub) | the notebook's normal checkout | the benchmark **results** — `results/<run_id>/predictions.jsonl` + `scores.jsonl`, the per-line cache `results/_cache/`, `results/leaderboard.html/.json` | every runner, one commit per finished batch |
+| **`main` branch** (GitHub) | the notebook's normal checkout | the benchmark **results** — `results/<run_id>/predictions.jsonl` + `scores.jsonl` + `samples.json`, and the per-line cache `results/_cache/` | every runner, one commit per finished batch (with rebase+retry) |
 | **`sweep-claims` branch** (GitHub) | a second, throwaway shallow clone at `/content/.sweep-claims-repo` | the **lease ledger** — one tiny JSON file per claimed batch, under `claims/` | every runner, on every claim / complete / release |
-| **Google Drive** | `MyDrive/arabic-ocr-bench/` on whichever account is running | a **mirror** of `results/<run_id>/` and `_cache/`, plus the latest leaderboard | every runner, after each batch (best-effort) |
+| **Google Drive** | `MyDrive/arabic-ocr-bench/` on whichever account is running | a **mirror** of `results/<run_id>/` and `_cache/` | every runner, after each batch (best-effort) |
+
+The **leaderboard is not written by runners.** `results/leaderboard.html/.json`
+is regenerated on demand from the last cell of the notebook (or locally with
+`scripts/make_leaderboard.py`) — see the footnote for why every runner committing
+it every batch was removed.
 
 Key point: **the ledger is on a git branch, not on Drive.** Two Colab sessions
 signed in to *different* Google accounts do **not** share a `MyDrive` tree, and
@@ -63,9 +68,10 @@ confuses old work with new.)*
 ## 3. A unit of work
 
 A **unit** is `(model, dataset, [i0, i1))` — a contiguous block of absolute
-dataset row indices for one model on one dataset. Size is `BATCH` (default 10).
-`04b` additionally caps each `(model, dataset)` pair at `TARGET` (default 20)
-total scored lines.
+dataset row indices for one model on one dataset. Size is `BATCH` (default 20).
+Both notebooks sweep **every line of every split** by default (`TARGET = None`);
+`04b` exposes an optional integer `TARGET` to cap each `(model, dataset)` pair at
+that many scored lines for a quick partial pass.
 
 Picking the next unit (`_free_indices`):
 
@@ -96,9 +102,10 @@ runner will not pick rows that another runner has already **finished** (its
           • write claims/<model>__<dataset>__<i0>-<i1>__<session>.json  (status="reserved")
           • git add + commit + push origin HEAD:sweep-claims
                 – push rejected  ->  fetch, rebase, retry (up to 6x); rebase conflict -> abort, return None
+          • SETTLE: sleep a jittered 2–6 s so a concurrent claim's push becomes fetchable
           • fetch again; re-check overlap; if I now lose the tie-break -> delete my file, return None
 
- confirm LEDGER.confirm(lease):   fetch once more, final overlap/tie-break check   -> False means "lost the race"
+ confirm LEDGER.confirm(lease):   settle again, fetch once more, final overlap/tie-break check   -> False means "lost the race"
 
  run    runner.run({models:[model], datasets:[dataset], indices:want,
                      accumulate:true, cache:true, runner_id, session_id, ...})
@@ -109,16 +116,16 @@ runner will not pick rows that another runner has already **finished** (its
  persist _persist(model, dataset, run_dir, n):
           • score_run  ->  scores.jsonl
           • export_run_samples  ->  samples.json (+ 3 sample images for the leaderboard)
-          • rebuild results/leaderboard.html / .json
-          • copy run_dir + _cache + leaderboard  ->  Drive        (best-effort)
-          • git add -f results/<run_id> results/_cache leaderboard.*
+          • copy run_dir + _cache  ->  Drive        (best-effort)   [no leaderboard]
+          • git add -f results/<run_id> results/_cache               [no leaderboard.*]
           • git commit  "sweep[<runner_id>]: <model> <dataset> n=<n> (<run_id>)"
-          • git pull --rebase --autostash origin main
-          • git push origin HEAD:main        — RAISES if the push fails
+          • up to 8x:  git pull --rebase --autostash origin main  ;  git push origin HEAD:main
+                       — success -> return ;  rejected -> sleep 2–6 s, retry
+          • RAISES only if all 8 rounds fail
 
  done   LEDGER.complete(lease, run_id, n):
           • flip the lease file to status="done", record run_id + n_scored
-          • git commit + push origin HEAD:sweep-claims
+          • git commit + push origin HEAD:sweep-claims  (same rebase+retry as any claim)
 
         └──────────────────────────────────────────────────────────────────────────────────┘
               then: re-read everything from the top and grab the next unit
@@ -139,8 +146,8 @@ Per batch, best-effort (`_mirror_to_drive`), into `MyDrive/arabic-ocr-bench/`:
   (`predictions.jsonl`, `scores.jsonl`, `samples.json`, config snapshot).
 - `_cache/` — the growing per-line result cache, merged in
   (`shutil.copytree(..., dirs_exist_ok=True)`).
-- `results/leaderboard.html` and `results/leaderboard.json` — overwritten with
-  the latest rebuild.
+
+(The leaderboard is not mirrored — runners don't build it.)
 
 On **startup** the notebook copies `MyDrive/arabic-ocr-bench/_cache/` back into
 the local `results/_cache/` ("restored line cache from Drive"), so a brand-new VM
@@ -162,24 +169,23 @@ does not change how the work is divided.
 One commit **per finished batch, per runner**:
 
 ```
-sweep[omar@example.com]: qwen2.5-vl-3b nakba_lines n=10 (20260906T101502Z)
+sweep[omar@example.com]: qwen2.5-vl-3b nakba_lines n=20 (20260906T101502Z)
 ```
 
-Each such commit adds/updates:
+Each such commit adds/updates only:
 
 - `results/<run_id>/` (that runner's own run directories — **never** another
   runner's, so they never collide on these paths),
 - `results/_cache/*.json` (new cache entries — additive; two runners adding
-  different files rebase cleanly),
-- `results/leaderboard.html` / `.json` (rebuilt from *all* results each time —
-  this is the file most likely to cause a push race, see the footnote).
+  different files rebase cleanly).
 
 Before every push the runner does `git pull --rebase --autostash origin main`, so
-it always builds on the newest results. A rejected push is retried after another
-rebase. Because each runner owns a disjoint set of `results/<run_id>/` paths, the
-only real merge surface is `_cache/` (additive) and the leaderboard files
-(regenerated, so "theirs vs mine" is resolved by just regenerating again on the
-next batch).
+it always builds on the newest results; a rejected push sleeps a jittered 2–6 s
+and retries, up to 8 rounds, before giving up and leaving the lease to be
+reclaimed. Since each runner owns a disjoint set of `results/<run_id>/` paths and
+the leaderboard is no longer committed here, the only real merge surface is
+`_cache/`, and its adds are non-overlapping — so a rebase almost always applies
+cleanly and the retry loop rarely needs more than one extra round.
 
 Commits are authored `colab:<runner_id>` / `colab@arabic-ocr-bench`.
 
@@ -214,11 +220,16 @@ end of a run (`LEDGER.prune_done`).
 1. **GitHub push serialisation.** Two runners cannot both fast-forward
    `sweep-claims` from the same parent. The loser's push is rejected; it fetches,
    rebases its one-file commit on top, and re-checks.
-2. **Deterministic tie-break.** After rebasing, if the loser's lease *overlaps*
-   an existing `reserved` lease and does **not** win
-   `wins_over` — `(claimed_at, session_id)` compared as a tuple, earliest wins —
-   it deletes its own lease file and picks a different unit.
-3. **Idempotency backstop.** Even if a race slips through, `runner.run` consults
+2. **Settle window.** A push to a ref is *not* instantly visible to a `git fetch`
+   from another machine. So after writing its claim, a runner sleeps a jittered
+   2–6 s (again before `confirm`) to give a genuinely-concurrent claim time to
+   become fetchable — otherwise both runners can fetch stale state and both
+   believe they won. This is the single most important guard against duplicates.
+3. **Deterministic tie-break.** Once both leases are visible, if a runner's lease
+   *overlaps* another `reserved` lease and does **not** win `wins_over` —
+   `(claimed_at, session_id)` compared as a tuple, earliest wins — it deletes its
+   own lease file and picks a different unit.
+4. **Idempotency backstop.** Even if a race still slips through, `runner.run` consults
    `results/_cache/` before calling any model, so the same line is never
    *recomputed*; it would at worst produce a duplicate prediction row, which
    `scripts/sweep_audit.py` flags.
@@ -273,9 +284,10 @@ Exit status is non-zero if any duplicate is found.
 5. Stop any time. A disconnected runner's batch is reclaimed after the TTL.
 
 `LEASE_TTL_MIN` must be comfortably longer than one batch takes — a 7B/8B model
-in 4-bit doing 10 lines on a T4 can be 10–15 min, so 30 is fine; bump to 45 if
-you add slow models. `BATCH` trades commit volume against how much is lost on a
-disconnect.
+in 4-bit doing 20 lines on a T4 can be 15–25 min, so keep it at 30–45. `BATCH`
+(default 20) trades commit volume against how much is redone (from cache, mostly)
+on a disconnect. `TARGET` is `None` for a full sweep; set an integer in `04b` for
+a quick partial pass.
 
 ---
 
@@ -291,13 +303,15 @@ where it strains.
    Firebase). The lease scheme is deliberately "good enough for a handful of
    friends", not a cluster scheduler.
 
-2. **The leaderboard rebuild is the main source of `main` push conflicts.**
-   Every runner regenerates `results/leaderboard.html/.json` and pushes it every
-   batch. Consider: (a) have runners push only `predictions/scores/_cache` and
-   run a single separate "reduce" job (locally, or one designated runner on a
-   timer) that rebuilds and pushes the leaderboard; or (b) `.gitignore` the
-   generated leaderboard on `main` and only ever build it on demand. Either
-   removes the one file that several runners fight over.
+2. **The leaderboard rebuild — fixed.** Runners used to regenerate + commit +
+   push `results/leaderboard.html/.json` every batch; two runners then fought
+   over that one file on every push, which (combined with a single non-retried
+   push) is what made batches fail and get recomputed. Runners now push only
+   `predictions/scores/samples/_cache`, and the push is a rebase+retry loop.
+   Build the leaderboard on demand from the notebook's last cell, or run
+   `scripts/make_leaderboard.py results -o results/leaderboard.html` locally and
+   commit it yourself. If you want it in the repo during a live sweep, do that
+   from **one** machine on a timer, not from every runner.
 
 3. **`main` history gets noisy** — one commit per batch per runner, dozens per
    session. Options: push sweep results to a dedicated `sweep-results` branch and
@@ -318,10 +332,11 @@ where it strains.
    it isn't.
 
 6. **Run `sweep_audit.py` after each session**, not just when something looks
-   wrong. A duplicate usually means a runner's clock was skewed (the tie-break
-   uses wall-clock `claimed_at`) or a network partition let two claims both
-   "win". It's cheap insurance and the fix is just deleting the redundant
-   `results/<run_id>/`.
+   wrong. A duplicate now almost always means the settle window (2–6 s) was
+   shorter than GitHub's push→fetch replication lag for that moment, or a
+   runner's clock was skewed. It's cheap insurance and the fix is just deleting
+   the redundant `results/<run_id>/`. If duplicates recur, raise `settle_sec` in
+   the `GitLedger(...)` call in the sweep cell (e.g. `(4.0, 10.0)`).
 
 7. **Clock skew is a real (if small) risk.** `wins_over` compares
    `claimed_at` wall-clock timestamps from different VMs. Colab VMs are usually
