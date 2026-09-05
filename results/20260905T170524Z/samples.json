@@ -1,0 +1,134 @@
+{
+  "run_id": "20260905T170524Z",
+  "generated_at": "2026-09-05T17:05:45+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000013",
+      "row": 13,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الناظم ان مراده الاول لا الثاني بقوله اعني ىهذا ما له من منزله اى اعنى بهذا الخارج",
+      "prediction": "جيحلا يف اننع تادبلا ركتمزل طباضلاـغب ضقنا لثم اهمهفأ ال تاملكب مئان",
+      "error": null,
+      "cer_light": 0.7317,
+      "cer_raw": 0.7439,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000018",
+      "row": 18,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بمَا وصفنا ان الماخذ فيما هو اصغر وَاقل من ذلك مِن اجزاءِ فلك البُروج",
+      "prediction": "جيحلا لفاوق تأدب . يكتمزل طعاضلا هل سلـغب صنا اهميعسو انفط",
+      "error": null,
+      "cer_light": 0.7536,
+      "cer_raw": 0.7826,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000016",
+      "row": 16,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "البَدنِ الى الصُفرَة وَاذَا تُدخنَ بهِ معَ الزّبيب اوِ الراتيٮح نقّى الرحمَ",
+      "prediction": "جحلا يف اننأ ال تاملكب مئان وهو ملـتي ةميخلا # ىف يراج ناك",
+      "error": null,
+      "cer_light": 0.76,
+      "cer_raw": 0.76,
+      "wer_light": 1.0833
+    },
+    {
+      "sample_id": "kitab_historyar/train/000014",
+      "row": 14,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مقسومة على شى ودرهمين ثم اضرب الا ثلثة اشيا فى خمسة اكعب يكن خمسة عشر",
+      "prediction": "شمش صنلا اذهل هيلاتلا تاملكلا ـئان وهو ملفعت لاله جحلار يف نزاخ لسو",
+      "error": null,
+      "cer_light": 0.8116,
+      "cer_raw": 0.8116,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000017",
+      "row": 17,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَالاحْدَی وَالثّلَاثِينَ دَقِيقَةََ وَالخَمْسِ وَالخَمْسِينَ ثَانِيةََ نِسْبَةَ الْمِايةِ وَالإِثْنَی",
+      "prediction": "ثميخلا يف يراج ناك . خيش عم انيعسو اهمهفأ ال تاملكب مئان وهو ملـتي ةميعخف",
+      "error": null,
+      "cer_light": 0.8137,
+      "cer_raw": 0.8137,
+      "wer_light": 1.6667
+    },
+    {
+      "sample_id": "kitab_historyar/train/000019",
+      "row": 19,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "من الشكّ والزيغ ومن بدع اهل اصفهٰان واشهد",
+      "prediction": "رفاظ ناك خيش عم انباحصو دنع .جحلا ىف اق تأدب",
+      "error": null,
+      "cer_light": 0.8537,
+      "cer_raw": 0.878,
+      "wer_light": 1.25
+    },
+    {
+      "sample_id": "kitab_historyar/train/000012",
+      "row": 12,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فى المثانه وٮفٮت الحصَا قالامَاعَرسطسَ وهُوَ ضَربٌ",
+      "prediction": "ثب ، ءان ظيغ ،قارد ،شمشلا اذهل هيعس ةيلاتلا تاملكلا",
+      "error": null,
+      "cer_light": 0.9,
+      "cer_raw": 0.9,
+      "wer_light": 1.4286
+    },
+    {
+      "sample_id": "kitab_historyar/train/000011",
+      "row": 11,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لل لى حعڡر الخادن",
+      "prediction": "نسن ،ثب",
+      "error": null,
+      "cer_light": 0.9412,
+      "cer_raw": 0.9412,
+      "wer_light": 1.0
+    }
+  ]
+}
