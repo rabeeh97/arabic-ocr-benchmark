@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000013", "model": "qwen2.5-vl-3b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "عصو حلىل نعوم الرحى", "raw_text": "عُدْمَةٌ", "cleaned_text": "عُدْمَةٌ", "latency_ms": 1134.32, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
