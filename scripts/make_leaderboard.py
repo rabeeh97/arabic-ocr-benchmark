@@ -355,13 +355,30 @@ def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str,
 
 
 _EXPLORER_COLS = [
-    # (key in payload, label, decimals, *100, best = "lo" | "hi" | "")
-    ("n", "n", 0, False, ""), ("err", "err", 0, False, "lo"),
-    ("cl", "CER·light", 1, True, "lo"), ("cr", "CER·raw", 1, True, "lo"),
-    ("cnd", "CER·no-diac", 1, True, "lo"), ("cmac", "CER·macro", 1, True, "lo"),
-    ("wl", "WER·light", 1, True, "lo"), ("ex", "exact %", 1, True, "hi"),
-    ("df", "diac F1", 3, False, "hi"), ("ms", "ms/line", 0, False, "lo"),
-    ("cost", "cost $", 4, False, "lo"),
+    # (key in payload, label, decimals, *100, best = "lo" | "hi" | "", hover def)
+    ("n", "n", 0, False, "", "lines scored for this model on this dataset"),
+    ("err", "err", 0, False, "lo", "lines that errored or were refused (excluded from the rates)"),
+    ("cl", "CER·light", 1, True, "lo",
+     "character error rate after light normalization (alef forms, digits, tatweel, "
+     "spacing) — corpus-weighted. 0 = perfect. The headline metric."),
+    ("cr", "CER·raw", 1, True, "lo",
+     "character error rate on exact strings — every orthographic and diacritic "
+     "difference counts. Corpus-weighted."),
+    ("cnd", "CER·no-diac", 1, True, "lo",
+     "character error rate with light normalization and harakat stripped from both "
+     "sides — how well the skeleton letters were read."),
+    ("cmac", "CER·macro", 1, True, "lo",
+     "mean of the per-line light CER (every line weighted equally) rather than "
+     "corpus-weighted — more sensitive to short lines."),
+    ("wl", "WER·light", 1, True, "lo",
+     "word error rate after light normalization, corpus-weighted."),
+    ("ex", "exact %", 1, True, "hi",
+     "share of lines transcribed exactly right after light normalization."),
+    ("df", "diac F1", 3, False, "hi",
+     "F1 of harakat (diacritic) marks against the reference, measured on raw text."),
+    ("ms", "ms/line", 0, False, "lo", "mean wall-clock latency per line, milliseconds"),
+    ("cost", "cost $", 4, False, "lo",
+     "total USD billed for this model on this dataset in the stored runs"),
 ]
 
 _EXPLORER_JS = r"""
@@ -387,7 +404,9 @@ _EXPLORER_JS = r"""
       return (x-y)*sortDir;
     });
     var head="<th class='exm' data-k='m'>model</th>"+COLS.map(function(c){
-      return "<th data-k='"+c[0]+"'"+(c[0]===sortKey?" aria-sort='"+(sortDir>0?'ascending':'descending')+"'":"")+">"+esc(c[1])+"</th>";
+      var tip=c[5]?" title='"+esc(c[5])+"'":"";
+      var lab=c[5]?"<abbr class='gloss'"+tip+">"+esc(c[1])+"</abbr>":esc(c[1]);
+      return "<th data-k='"+c[0]+"'"+(c[0]===sortKey?" aria-sort='"+(sortDir>0?'ascending':'descending')+"'":"")+">"+lab+"</th>";
     }).join('');
     // best value per column (for the bold-best highlight, like a benchmark table)
     var best={};
@@ -606,10 +625,15 @@ def _render_matrix(rows: list[dict]) -> str:
     _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
     blob = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
 
+    _cl = ("<abbr class='gloss' title='character error rate after light normalization "
+           "(alef forms, digits, tatweel, spacing), corpus-weighted. 0 = perfect.'>"
+           "CER&middot;light</abbr>")
+    _wl = ("<abbr class='gloss' title='word error rate after light normalization, "
+           "corpus-weighted.'>WER&middot;light</abbr>")
     return (
-        "<section class='matrix'><h2>All results — CER-light / WER-light</h2>"
-        "<p class='board-note'>Every model &times; dataset in one grid. Top number is "
-        "<b>CER&middot;light&nbsp;%</b>, smaller number below is <b>WER&middot;light&nbsp;%</b> "
+        f"<section class='matrix'><h2>All results — {_cl} / {_wl}</h2>"
+        f"<p class='board-note'>Every model &times; dataset in one grid. Top number is "
+        f"<b>{_cl}&nbsp;%</b>, smaller number below is <b>{_wl}&nbsp;%</b> "
         "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
         "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
         "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset.</p>"
@@ -667,11 +691,17 @@ _TOC_JS = r"""
 
 
 def _toc(items: list[tuple[str, str]]) -> str:
-    """A sticky in-page nav bar linking to each section."""
-    links = "".join(
-        f"<a href='#{html.escape(sid)}'>{html.escape(label)}</a>" for sid, label in items
+    """A vertical section index, fixed to the left of the page (scroll-spy in
+    ``_TOC_JS`` highlights the section currently in view)."""
+    lis = "".join(
+        f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
+        for sid, label in items
     )
-    return f"<nav class='toc' id='toc' aria-label='sections'>{links}</nav>"
+    return (
+        "<nav class='sidenav' id='toc' aria-label='sections'>"
+        "<p class='sidenav-h'>Contents</p>"
+        f"<ol>{lis}</ol></nav>"
+    )
 
 
 _PANEL_RE = re.compile(r"^<section class='([^']+)'>\s*<h2>(.*?)</h2>\s*(.*)$", re.S)
@@ -714,6 +744,9 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     n_runs = len({r["run"] for r in rows})
 
     out = [_HEAD.replace("{{TITLE}}", html.escape(title))]
+    out.append("<div class='layout'>")
+    _SIDENAV_AT = len(out)
+    out.append("")                       # sidenav spliced in once `present` is known
     out.append("<main>")
     out.append("<header class='top'>")
     out.append("<p class='eyebrow'>Handwritten Arabic · line-level recognition</p>")
@@ -738,11 +771,6 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
             f"{n_ds} dataset(s) — Muharaf handwriting + KITAB-Bench subsets</p>"
         )
     out.append("</header>")
-
-    out.append("<section class='legend'><dl>")
-    for term, desc in _LEGEND:
-        out.append(f"<div><dt>{term}</dt><dd>{desc}</dd></div>")
-    out.append("</dl></section>")
 
     real_rows = [
         r for r in rows
@@ -783,12 +811,20 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         ("runs", "Runs", "".join(runs_html), True, False, f"{n_runs} runs"),
     ]
     present = [(sid, label) for sid, label, h, *_ in sections if h]
-    out.append(_toc(present))
     for sid, _label, section_html, collapsible, open_default, hint in sections:
         if not section_html:
             continue
         out.append(_panel(section_html, pid=sid, collapsible=collapsible,
                           open=open_default, hint=hint))
+
+    # metric definitions live at the foot of the page; each term is also a
+    # hover tooltip on the table headers above.
+    out.append("<section id='legend' class='legend'><h2>Metric definitions</h2><dl>")
+    for term, desc in _LEGEND:
+        out.append(f"<div><dt>{html.escape(term)}</dt><dd>{desc}</dd></div>")
+    out.append("</dl></section>")
+    present.append(("legend", "Definitions"))
+    out[_SIDENAV_AT] = _toc(present)
 
     out.append(
         "<footer><p>Datasets: <b>Muharaf-public</b> (Manuscripts of Handwritten "
@@ -800,6 +836,7 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
     )
     out.append(f"<script>{_TOC_JS}</script>")
     out.append("</main>")
+    out.append("</div>")
     return "\n".join(out)
 
 
@@ -1201,11 +1238,18 @@ def _render_cost(rows: list[dict], target: Path) -> str:
 
     models = sorted(costs, key=total, reverse=True)
 
+    def _g(label: str, tip: str) -> str:
+        return f"<abbr class='gloss' title='{html.escape(tip)}'>{label}</abbr>"
+
     head = (
-        "<tr><th>model</th><th>in $/1M</th><th>out $/1M</th><th>calls</th>"
-        "<th>avg $/image</th><th>median $/image</th>"
+        "<tr><th>model</th>"
+        f"<th>{_g('in $/1M', 'list price per 1M input tokens (image tokens included)')}</th>"
+        f"<th>{_g('out $/1M', 'list price per 1M output tokens')}</th>"
+        f"<th>{_g('calls', 'billable API calls for this model across the stored runs')}</th>"
+        f"<th>{_g('avg $/image', 'mean USD per line: provider-reported tokens x the price above')}</th>"
+        f"<th>{_g('median $/image', 'median USD per line over this model billable calls')}</th>"
         + "".join(f"<th>{html.escape(d)}<br><span>({ds_rows[d]:,} lines)</span></th>" for d in board_ds)
-        + "<th>full sweep</th></tr>"
+        + f"<th>{_g('full sweep', 'sum of the per-dataset projections for datasets this model has run')}</th></tr>"
     )
     trs = []
     for m in models:
@@ -1254,14 +1298,15 @@ def _img_block(slot: dict) -> str:
     return (f"<div class='samp-img'><img loading='lazy' alt='handwritten Arabic line' "
             f"src='{_shrink_uri(slot['image'], max_dim=620)}'></div>")
 
-_HEAD = """<title>{{TITLE}}</title>
+_HEAD = """<meta charset="utf-8">
+<title>{{TITLE}}</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
   --ground:#f6f6f3; --surface:#ffffff; --ink:#1b1d21; --muted:#5d6470;
   --line:#e4e3de; --accent:#2f4b99; --accent-soft:#eaeef7;
   --mock:#8a8f99; --best-bar:#2f4b99;
-  --toc-h:46px;
+  --toc-h:0px;   /* sticky table headers stick to the very top now */
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -1296,7 +1341,9 @@ h1{font-family:Spectral,Georgia,serif;font-weight:600;font-size:clamp(28px,4.4vw
 .status--preview{color:var(--muted);}
 .status--live .dot{background:var(--accent);}
 
-.legend{margin:32px 0 8px;}
+.legend{margin:44px 0 8px;padding-top:26px;border-top:2px solid var(--line);}
+.legend h2{font-family:Spectral,Georgia,serif;font-weight:600;font-size:19px;
+  margin:0 0 14px;}
 .legend dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:2px 28px;margin:0;}
 .legend div{padding:9px 0;border-top:1px solid var(--line);}
@@ -1578,21 +1625,43 @@ b{font-weight:600;color:var(--ink);}
 .cost-tbl td.cost-hi{background:var(--accent-soft);font-weight:600;}
 .cost-note{font-size:12px;color:var(--muted);margin:10px 2px 0;max-width:72ch;line-height:1.55;}
 
-/* --- table of contents (sticky in-page nav) --- */
+/* --- table of contents: fixed left sidebar --- */
 html{scroll-behavior:smooth;}
-main section{scroll-margin-top:calc(var(--toc-h) + 16px);}
-.toc{position:sticky;top:0;z-index:40;display:flex;gap:4px;align-items:center;
-  height:var(--toc-h);margin:16px 0 6px;padding:0 2px;overflow-x:auto;
-  background:color-mix(in srgb,var(--ground) 90%,transparent);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--line);scrollbar-width:none;}
-.toc::-webkit-scrollbar{display:none;}
-.toc a{flex:none;font-family:"IBM Plex Mono",monospace;font-size:11px;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
-  text-decoration:none;padding:6px 11px;border-radius:7px;white-space:nowrap;
-  transition:color .12s,background .12s;}
-.toc a:hover{color:var(--ink);background:var(--accent-soft);}
-.toc a.active{color:var(--accent);background:var(--accent-soft);font-weight:600;}
+main section{scroll-margin-top:20px;}
+.layout{max-width:1320px;margin:0 auto;display:grid;
+  grid-template-columns:214px minmax(0,1fr);
+  padding:0 clamp(16px,4vw,32px);}
+.layout>main{max-width:1060px;margin:0;
+  padding:clamp(24px,5vw,64px) 0 72px clamp(20px,3.2vw,48px);}
+.sidenav{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+  padding:clamp(24px,5vw,64px) 22px 28px 0;
+  border-right:1px solid var(--line);scrollbar-width:thin;}
+.sidenav-h{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 12px 10px;font-weight:500;}
+.sidenav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+  gap:1px;counter-reset:sn;}
+.sidenav a{display:flex;gap:9px;align-items:baseline;padding:7px 10px;border-radius:8px;
+  font-size:13px;line-height:1.3;color:var(--muted);text-decoration:none;
+  border-left:2px solid transparent;transition:color .12s,background .12s;}
+.sidenav li{counter-increment:sn;}
+.sidenav a::before{content:counter(sn,decimal-leading-zero);
+  font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--line);flex:none;}
+.sidenav a:hover{color:var(--ink);background:var(--accent-soft);}
+.sidenav a:hover::before{color:var(--muted);}
+.sidenav a.active{color:var(--accent);background:var(--accent-soft);font-weight:600;
+  border-left-color:var(--accent);}
+.sidenav a.active::before{color:var(--accent);}
+@media (max-width:1120px){
+  .layout{grid-template-columns:1fr;}
+  .layout>main{padding-left:0;}
+  .sidenav{position:static;max-height:none;overflow:visible;border-right:0;
+    border-bottom:1px solid var(--line);padding:14px 0 12px;margin-bottom:6px;}
+  .sidenav ol{flex-direction:row;flex-wrap:wrap;gap:3px;}
+  .sidenav a::before{display:none;}
+}
+
+/* --- hoverable metric glossary --- */
+abbr.gloss{text-decoration:none;border-bottom:1px dotted currentColor;cursor:help;}
 
 /* --- collapsible panels --- */
 .panel{margin:30px 0 0;}
