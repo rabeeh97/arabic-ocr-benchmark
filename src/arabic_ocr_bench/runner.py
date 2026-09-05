@@ -291,5 +291,11 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             close = getattr(clients[model_name], "close", None)
             if callable(close):
                 close()
+            # Drop the client itself so the next model loads onto a clean GPU
+            # even if close() left a reference cycle behind.
+            clients[model_name] = None
+            import gc
+
+            gc.collect()
 
     return run_dir
