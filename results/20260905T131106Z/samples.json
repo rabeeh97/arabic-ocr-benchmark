@@ -1,0 +1,119 @@
+{
+  "run_id": "20260905T131106Z",
+  "generated_at": "2026-09-05T13:12:51+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000016",
+      "row": 16,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مع شيخ. كان جاري في الخيمة يتكلم وهو نائم  بكلمات لا أفهمها مثل انقض بغـلس",
+      "prediction": "مع سيخ: كان باري في القيمة ينكلم وهو نائم بكلمات لا أفهمها منذ أنفه تعلس",
+      "error": null,
+      "cer_light": 0.1528,
+      "cer_raw": 0.1892,
+      "wer_light": 0.4667
+    },
+    {
+      "sample_id": "kitab_khatt/train/000015",
+      "row": 15,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وعدم استقرار موظفي الوزارات والمسؤولين الإداريين ، عدم الاعتبار الممنهج للاستحقاق",
+      "prediction": "دمم السفر موقفي الوزارات والمسؤولين الأداريين، عم الإسماء المختلطة للأسفان",
+      "error": null,
+      "cer_light": 0.2963,
+      "cer_raw": 0.3333,
+      "wer_light": 0.8182
+    },
+    {
+      "sample_id": "kitab_khatt/train/000019",
+      "row": 19,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الواردة عن ملوك الحيرة وعرب الحيرة، أنداد الغساسنة، ولذلك لم تكن في جانبهم، وتكاد",
+      "prediction": "الولادة من ملوك الحموة وحرب المحرورة، وأنصار العباسية وأولاد الرسق في حجاتهم، ركذ",
+      "error": null,
+      "cer_light": 0.4074,
+      "cer_raw": 0.4074,
+      "wer_light": 0.8571
+    },
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "بهاك من الهجرة القديمة للإنسان والترور السباح والصبر والمباركة",
+      "error": null,
+      "cer_light": 0.493,
+      "cer_raw": 0.5139,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000010",
+      "row": 10,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كيلومتر في نهر جليدي درجة حرارته 8ر1 درجة تحت الصفر، مسجلا رقما قياسيا",
+      "prediction": "العربية",
+      "error": null,
+      "cer_light": 0.9429,
+      "cer_raw": 0.9429,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000017",
+      "row": 17,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " نائم بكلمات لا أفهمها مثل انقض بغلس له الضابط لزمتك. سألت راجع هل بلغ",
+      "prediction": "أتمنى لكم أن تكنوا معاً في المناسب الذي نستعد له، ونأمل أن يكون الحفلة مليئة بالسعادة والنجاح.",
+      "error": null,
+      "cer_light": 0.9565,
+      "cer_raw": 1.029,
+      "wer_light": 1.2143
+    },
+    {
+      "sample_id": "kitab_khatt/train/000013",
+      "row": 13,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لايخطئ ، وهي أيضا ليست الإفراط في الواقعية والتى تعتبر",
+      "prediction": "لا يُحْكِم 6 وَيَا أَضٰـى لِّسِتِ الْإِصْرَافِ عَلَى الأَفْقَةِ وَالْنَهْارِ فَوْقِهاِ وَاخْتَبَر",
+      "error": null,
+      "cer_light": 1.1667,
+      "cer_raw": 1.1852,
+      "wer_light": 1.2
+    }
+  ]
+}
