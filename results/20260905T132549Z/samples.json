@@ -1,0 +1,134 @@
+{
+  "run_id": "20260905T132549Z",
+  "generated_at": "2026-09-05T13:26:57+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000018",
+      "row": 18,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دراق، غيظ، ناء ،  بث ، نسر.",
+      "prediction": ". رسن ، ثب ،ءان ظيغ ،قارد",
+      "error": null,
+      "cer_light": 0.7308,
+      "cer_raw": 0.7407,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000016",
+      "row": 16,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مع شيخ. كان جاري في الخيمة يتكلم وهو نائم  بكلمات لا أفهمها مثل انقض بغـلس",
+      "prediction": "سلـغب ضقنا لثم اهمهفأ ال تاملكب مئان وهو ملىتي ةميخلا يف يراج ناك .خيش عم",
+      "error": null,
+      "cer_light": 0.75,
+      "cer_raw": 0.7568,
+      "wer_light": 0.9333
+    },
+    {
+      "sample_id": "kitab_khatt/train/000015",
+      "row": 15,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وعدم استقرار موظفي الوزارات والمسؤولين الإداريين ، عدم الاعتبار الممنهج للاستحقاق",
+      "prediction": "تاملكب مئان وهو حلفيأس . ىقراد لالهوصو دنعلي رخآ رفاظ قيارد تأدب جحلل ناك",
+      "error": null,
+      "cer_light": 0.7654,
+      "cer_raw": 0.7654,
+      "wer_light": 1.2727
+    },
+    {
+      "sample_id": "kitab_khatt/train/000017",
+      "row": 17,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " نائم بكلمات لا أفهمها مثل انقض بغلس له الضابط لزمتك. سألت راجع هل بلغ",
+      "prediction": "غلب له حجار تلأس .كتمزل طباضلا هل سلـغب صنا لثم اهمهفأ ال تاملكب مئان",
+      "error": null,
+      "cer_light": 0.7826,
+      "cer_raw": 0.8116,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000019",
+      "row": 19,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الواردة عن ملوك الحيرة وعرب الحيرة، أنداد الغساسنة، ولذلك لم تكن في جانبهم، وتكاد",
+      "prediction": "لكتي ةميخلا يف ىراج ناك .زيشلا اذهل ةيعح رثافوإ عميعسوغلا رقنا",
+      "error": null,
+      "cer_light": 0.8025,
+      "cer_raw": 0.8025,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000010",
+      "row": 10,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كيلومتر في نهر جليدي درجة حرارته 8ر1 درجة تحت الصفر، مسجلا رقما قياسيا",
+      "prediction": "انيعسو لفط اهمه دنع نب كتي ةميخلا يف ىراج ناك .خيش عم انباحصو ددع",
+      "error": null,
+      "cer_light": 0.8286,
+      "cer_raw": 0.8286,
+      "wer_light": 1.0769
+    },
+    {
+      "sample_id": "kitab_khatt/train/000012",
+      "row": 12,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " ب س ش ص غ هـ أننا في الحج . هل تعلم فائدة الكلمات",
+      "prediction": "تاملكلا ةدئاف ملعت له . جحلا يف اننأ ـه غ ص ، ش س ب",
+      "error": null,
+      "cer_light": 0.875,
+      "cer_raw": 0.8776,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000013",
+      "row": 13,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لايخطئ ، وهي أيضا ليست الإفراط في الواقعية والتى تعتبر",
+      "prediction": "و ةميخلا يف اننأ ال تاملكب مئان وهو ملىعتي ج ناك .خيش عم افاط",
+      "error": null,
+      "cer_light": 0.8889,
+      "cer_raw": 0.9074,
+      "wer_light": 1.4
+    }
+  ]
+}

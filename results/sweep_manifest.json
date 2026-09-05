@@ -389,6 +389,19 @@
       "cer_micro_light": 0.5373,
       "wer_micro_light": 0.8099,
       "done_at": "2026-09-05T13:24:57+00:00"
+    },
+    {
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_khatt",
+      "phase": "accumulate",
+      "limit": 10,
+      "run_id": "20260905T132549Z",
+      "n": 10,
+      "errors": 0,
+      "cer_micro_raw": 0.8043,
+      "cer_micro_light": 0.7981,
+      "wer_micro_light": 1.0661,
+      "done_at": "2026-09-05T13:26:57+00:00"
     }
   ]
 }
