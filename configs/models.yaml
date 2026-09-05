@@ -192,6 +192,29 @@ openrouter-minimax-m3-free:
   card: >-
     MiniMax M3 (multimodal) on OpenRouter's free tier. Long-context general
     VLM from MiniMax; included as a non-Qwen / non-Google open comparison.
+openrouter-nemotron-omni-free:
+  client: litellm
+  litellm_id: openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+  env_key: OPENROUTER_API_KEY
+  params: { temperature: 0 }
+  max_tokens: 2000                  # reasoning model — don't token-starve the answer
+  pricing: null                    # :free variant — $0, rate-limited
+  card: >-
+    NVIDIA Nemotron-3-Nano Omni 30B-A3B (reasoning) on OpenRouter's free tier.
+    Omni-modal MoE; the OpenRouter route is tried because the NVIDIA-NIM copy of
+    this model hangs on real handwriting crops (see nemotron-omni above).
+openrouter-dots3-note-free:
+  client: litellm
+  litellm_id: openrouter/dots-studio/dots-3-note-preview:free
+  env_key: OPENROUTER_API_KEY
+  params: { temperature: 0 }
+  pricing: null                    # :free variant — $0, rate-limited
+  card: >-
+    dots.studio "dots-3-note" preview on OpenRouter's free tier — a
+    document/note-understanding multimodal model from the team behind dots.ocr.
+    Worth a look for a doc-tuned (rather than general-VLM) free option.
+# NOTE: thinkingmachines/inkling:free is NOT usable here — OpenRouter gates it
+# to "agentic harnesses" and returns 403 on a plain chat/completions call.
 
 # NVIDIA — build.nvidia.com / NIM API catalog. OpenAI-compatible endpoint at
 # https://integrate.api.nvidia.com/v1; one NVIDIA_API_KEY, free developer tier
@@ -259,6 +282,26 @@ nemotron-omni:
     A reasoning model: it thinks in a separate field and returns a clean
     transcription in `content`. General-purpose, not Arabic-tuned; slower and
     more tokens per line than a plain VLM.
+
+# DeepSeek — OpenAI-compatible endpoint at https://api.deepseek.com; one
+# DEEPSEEK_API_KEY. No standing free tier, but every new account gets a one-time
+# 5M-token grant valid 30 days (no card) — enough to cover a full benchmark
+# sweep at ~500 tokens/line. Off-peak list price is $0.22 / $0.66 per 1M
+# in/out; peak (01:00-04:00 & 06:00-10:00 UTC) is 2x. Images bill at <=384
+# tokens each, folded into the input count. `deepseek-v4-flash-vision-exp` is
+# the multimodal model (released 2026-08-21, still experimental).
+deepseek-vl-flash:
+  client: litellm
+  litellm_id: openai/deepseek-v4-flash-vision-exp
+  env_key: DEEPSEEK_API_KEY
+  api_base: https://api.deepseek.com
+  params: { temperature: 0 }
+  pricing: { input_usd_per_1m: 0.22, output_usd_per_1m: 0.66 }   # off-peak; 2x at peak
+  card: >-
+    DeepSeek V4-Flash-Vision-Exp — DeepSeek's first multimodal model, image +
+    screenshot understanding on the ultra-fast V4-Flash base. Tuned for
+    multimodal agent / UI / chart tasks rather than OCR; general-purpose on
+    handwriting. OpenAI-compatible; billed against the 30-day signup grant.
 
 # Ollama — OpenAI-compatible endpoint; set OLLAMA_API_BASE + OLLAMA_API_KEY.
 # NOTE: as of 2026 the Ollama *cloud* (https://ollama.com/v1) serves only text

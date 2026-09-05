@@ -19,8 +19,13 @@ models:
   - openrouter-minimax-m3-free
   - openrouter-gemma-4-31b-free
   - openrouter-gemma-4-26b-free
+  - openrouter-nemotron-omni-free   # new — reasoning omni-modal
+  - openrouter-dots3-note-free      # new — doc/note-tuned (dots.ocr team)
   - nvidia-llama-3.2-11b-vl
   - nvidia-llama-3.2-90b-vl
+  - nvidia-gemma-4-31b
+  # - deepseek-vl-flash            # add once the DeepSeek key has balance (5M signup
+  #                                 grant, or a small top-up) — see configs/models.yaml
 
 datasets:
   - kitab_khatt
@@ -38,7 +43,7 @@ normalization_profiles: [raw, light, diac_insensitive]
 
 concurrency: 3
 rpm: 0                    # no shared rpm cap across these providers (unlike the Gemini crawl)
-rate_limit_abort: 15      # abandon a model for the rest of this pass after 15 straight rate-limit errors
+rate_limit_abort: 5       # a free model that's out of daily quota is dropped fast — no staling
 max_retries: 3
 cache: true
 results_dir: results
