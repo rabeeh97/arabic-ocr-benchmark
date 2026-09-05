@@ -1,0 +1,1 @@
+{"sample_id": "kitab_onlinekhatt/train/000039", "model": "openrouter-minimax-m3-free", "dataset": "kitab_onlinekhatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "ذلك.", "raw_text": "ذٰلِكَ .", "cleaned_text": "ذٰلِكَ .", "latency_ms": 1893.74, "input_tokens": 273, "output_tokens": 9, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
