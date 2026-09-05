@@ -3820,5 +3820,31 @@
     "wer_micro_diac_insensitive": "0.9727",
     "exact_diac_insensitive": "0.0",
     "diac_f1": "0.0139"
+  },
+  {
+    "run": "20260905T203703Z",
+    "when": "2026-09-05 20:37 UTC",
+    "limit": "",
+    "prompt_version": "line-v2",
+    "model": "trocr-large-arabic",
+    "dataset": "kitab_hindawi",
+    "n": "10",
+    "errors": "0",
+    "refusal_rate": "0.0",
+    "latency_ms_mean": "4867.7",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "0.9429",
+    "cer_macro_raw": "0.9273",
+    "wer_micro_raw": "1.0",
+    "exact_raw": "0.0",
+    "cer_micro_light": "0.9412",
+    "cer_macro_light": "0.923",
+    "wer_micro_light": "1.0",
+    "exact_light": "0.0",
+    "cer_micro_diac_insensitive": "0.9394",
+    "cer_macro_diac_insensitive": "0.9215",
+    "wer_micro_diac_insensitive": "1.0",
+    "exact_diac_insensitive": "0.0",
+    "diac_f1": "0.0"
   }
 ]
