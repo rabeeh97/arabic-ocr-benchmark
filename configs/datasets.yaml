@@ -83,6 +83,25 @@ kitab_onlinekhatt:
     KITAB-Bench / OnlineKHATT — the online (stylus-captured) KHATT handwriting
     set, rendered to line images. Cleaner strokes than scanned handwriting.
 
+# --- NAKBA NLP 2026 — Omar Al-Saleh manuscript collection (Systems Track) ------
+# Shared task: https://acrps.ai/nakba-nlp-manu-understanding-2026
+# GATED (auto-approve): open https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
+# while logged in and click "Agree and access repository" once — then the same
+# HF_TOKEN used everywhere else can stream it. The `-full` (page-level) repo is
+# manual-approval and not wired here.
+nakba_lines:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+  track: line
+  split: test               # also has train/ (fine-tuning) and blind_test/ (no GT)
+  license: CC-BY-4.0
+  source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
+  card: >-
+    NAKBA NLP 2026 — line segments from the Omar Al-Saleh memoirs: 16 handwritten
+    Arabic documents (1951-1965, ~1.6M words) from the Palestinian Nakba oral-history
+    archive. Real degraded 20th-century handwriting with a curated line-level
+    transcription. CC-BY-4.0; released for the shared task's Systems Track.
+
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
   track: line

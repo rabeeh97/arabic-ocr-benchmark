@@ -155,6 +155,20 @@ ds = load_dataset("ahmedheakl/arocrbench_khatt", split="train")   # image, text,
 The full KITAB-Bench repo (`mbzuai/KITAB-Bench`) IS gated and its chart / table /
 PDF-to-markdown tasks are a different track — out of scope here.
 
+### NAKBA NLP 2026 — Omar Al-Saleh manuscripts (`NK`) — **implemented**
+
+| Field | Value |
+| --- | --- |
+| Content | Line segments from 16 handwritten Arabic documents (Omar Al-Saleh memoirs, 1951–1965, ~1.6M words) — real degraded 20th-century handwriting with expert line-level transcription |
+| Source | HF `U4RASD/omar-al-saleh-manuscripts-segments` — **gated, auto-approval**: open the page logged in, click *Agree and access repository* once, then `HF_TOKEN` streams it. Splits `train` / `test` / `blind_test` (blind_test has no GT) |
+| Shared task | <https://acrps.ai/nakba-nlp-manu-understanding-2026> (Systems Track = OCR/HTR) |
+| License | CC-BY-4.0 |
+| Baseline | `U4RASD/ar-ms-baseline` — LoRA on Qwen3-VL-8B-Instruct, organisers report 0.23 CER / 0.50 WER on their test set. Wired as model `nakba-baseline-qwen3vl`; the untuned base is `qwen3-vl-8b` |
+
+Served by the same `KitabBench` adapter — `params.subset:
+U4RASD/omar-al-saleh-manuscripts-segments`, `split: test`. The page-level repo
+`U4RASD/omar-al-saleh-manuscripts-full` is **manual**-approval and not wired.
+
 ### AHAWP — Arabic Handwritten Alphabets, Words, Paragraphs
 - Mendeley Data. Includes paragraph-level handwritten Arabic with transcriptions.
 - Fetch: download the Mendeley archive to `data/ahawp/`. Use the paragraph subset
