@@ -1,0 +1,134 @@
+{
+  "run_id": "20260905T131350Z",
+  "generated_at": "2026-09-05T13:15:06+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000013",
+      "row": 13,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لايخطئ ، وهي أيضا ليست الإفراط في الواقعية والتى تعتبر",
+      "prediction": "لا يخطع 6 هدفه أن يلست الإطراف في الواقعية والتي تعتبر",
+      "error": null,
+      "cer_light": 0.2778,
+      "cer_raw": 0.2778,
+      "wer_light": 0.8
+    },
+    {
+      "sample_id": "kitab_khatt/train/000018",
+      "row": 18,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دراق، غيظ، ناء ،  بث ، نسر.",
+      "prediction": "د راه ، غيظا ، نا، د بث ، نسن.",
+      "error": null,
+      "cer_light": 0.3077,
+      "cer_raw": 0.3333,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000015",
+      "row": 15,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وعدم استقرار موظفي الوزارات والمسؤولين الإداريين ، عدم الاعتبار الممنهج للاستحقاق",
+      "prediction": "وقدم استقرار موظفي الوزارة و المسؤولين الأداريين ، فهم الاستبار المجهول لا سطحًا لَا ستئنَّانْ .",
+      "error": null,
+      "cer_light": 0.358,
+      "cer_raw": 0.3704,
+      "wer_light": 1.0909
+    },
+    {
+      "sample_id": "kitab_khatt/train/000019",
+      "row": 19,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الواردة عن ملوك الحيرة وعرب الحيرة، أنداد الغساسنة، ولذلك لم تكن في جانبهم، وتكاد",
+      "prediction": "الخارجه من ملوون الحموة وحرب المحيرة، أذاد الخسكسه؛ ولا للمركن في حسابهم ، وذلكا",
+      "error": null,
+      "cer_light": 0.3704,
+      "cer_raw": 0.3704,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000016",
+      "row": 16,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مع شيخ. كان جاري في الخيمة يتكلم وهو نائم  بكلمات لا أفهمها مثل انقض بغـلس",
+      "prediction": "مع سُمِيْخٍ، كان جَارِ ب الْكِيسَةِ ينكلم وهو نادئُ بِكلفات ما افْهِمها مَا انفَضذ تُعلس",
+      "error": null,
+      "cer_light": 0.4583,
+      "cer_raw": 0.473,
+      "wer_light": 0.8
+    },
+    {
+      "sample_id": "kitab_khatt/train/000011",
+      "row": 11,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ناهيك عن الخسارهـ الفادحه للأخشاب و الثروة النباتيه و الحيوانيه والبشريه",
+      "prediction": "أهلك من المجلس القادم للاكتشاف والتروح السابق، والمهمة المحددة و المشتركة",
+      "error": null,
+      "cer_light": 0.5493,
+      "cer_raw": 0.5833,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000010",
+      "row": 10,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كيلومتر في نهر جليدي درجة حرارته 8ر1 درجة تحت الصفر، مسجلا رقما قياسيا",
+      "prediction": "ليه ستد فن نهر جيلسي د-دها مرايته 1،8 درجة كَفّ اعْسِر ه ما عَاجشَا",
+      "error": null,
+      "cer_light": 0.5571,
+      "cer_raw": 0.5571,
+      "wer_light": 0.9231
+    },
+    {
+      "sample_id": "kitab_khatt/train/000014",
+      "row": 14,
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فأما الأدله التاريخية المستقاة من المصادر الأدبيه فهي تنحصر في بعض الكتب",
+      "prediction": "فَائِلَا الْأدَلةُ التَّارِيخِيَةُ الهَسْقَاتَ مِنَ الهصادرِ الأكْبَدِيِّ فَهَى تَنزحُوصٍ بِمطَاطِ الكتَّابِ",
+      "error": null,
+      "cer_light": 0.7222,
+      "cer_raw": 0.7361,
+      "wer_light": 1.0
+    }
+  ]
+}
