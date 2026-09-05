@@ -415,6 +415,19 @@
       "cer_micro_light": 0.721,
       "wer_micro_light": 0.9368,
       "done_at": "2026-09-05T13:28:39+00:00"
+    },
+    {
+      "model": "qari-ocr-0.3",
+      "dataset": "kitab_muharaf",
+      "phase": "accumulate",
+      "limit": 10,
+      "run_id": "20260905T132931Z",
+      "n": 10,
+      "errors": 0,
+      "cer_micro_raw": 0.6837,
+      "cer_micro_light": 0.6686,
+      "wer_micro_light": 0.9495,
+      "done_at": "2026-09-05T13:30:20+00:00"
     }
   ]
 }
