@@ -3742,5 +3742,31 @@
     "wer_micro_diac_insensitive": "0.9544",
     "exact_diac_insensitive": "0.0",
     "diac_f1": "0.3953"
+  },
+  {
+    "run": "20260905T133828Z",
+    "when": "2026-09-05 13:38 UTC",
+    "limit": "20",
+    "prompt_version": "line-v2",
+    "model": "qari-ocr-0.3",
+    "dataset": "kitab_historicalbooks",
+    "n": "10",
+    "errors": "0",
+    "refusal_rate": "0.0",
+    "latency_ms_mean": "10278.2",
+    "cost_usd_total": "0.0",
+    "cer_micro_raw": "0.6796",
+    "cer_macro_raw": "0.6822",
+    "wer_micro_raw": "0.9533",
+    "exact_raw": "0.0",
+    "cer_micro_light": "0.6607",
+    "cer_macro_light": "0.6632",
+    "wer_micro_light": "0.9075",
+    "exact_light": "0.0",
+    "cer_micro_diac_insensitive": "0.6327",
+    "cer_macro_diac_insensitive": "0.6364",
+    "wer_micro_diac_insensitive": "0.8834",
+    "exact_diac_insensitive": "0.0",
+    "diac_f1": "0.4356"
   }
 ]
