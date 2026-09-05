@@ -93,8 +93,22 @@ class LiteLLMClient:
         try:
             resp = litellm.completion(**kwargs)
         except Exception as e:  # noqa: BLE001 - report, don't crash the run
-            return Prediction(error=f"{type(e).__name__}: {e}",
-                              latency_ms=(time.perf_counter() - t0) * 1000)
+            # Some newer models (e.g. gpt-6-astra) reject `max_tokens` outright and
+            # demand `max_completion_tokens` instead — litellm only auto-translates
+            # this for models its own internal registry already recognises, so a
+            # brand-new model id can slip through and forward `max_tokens` as-is.
+            # Retry once with the swap rather than failing every line on day one.
+            if "max_tokens" in kwargs and "max_completion_tokens" in str(e) and "max_tokens" in str(e):
+                retry_kwargs = {k: v for k, v in kwargs.items() if k != "max_tokens"}
+                retry_kwargs["max_completion_tokens"] = kwargs["max_tokens"]
+                try:
+                    resp = litellm.completion(**retry_kwargs)
+                except Exception as e2:  # noqa: BLE001
+                    return Prediction(error=f"{type(e2).__name__}: {e2}",
+                                      latency_ms=(time.perf_counter() - t0) * 1000)
+            else:
+                return Prediction(error=f"{type(e).__name__}: {e}",
+                                  latency_ms=(time.perf_counter() - t0) * 1000)
         latency_ms = (time.perf_counter() - t0) * 1000
 
         raw = (resp.choices[0].message.content or "").strip()

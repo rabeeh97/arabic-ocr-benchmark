@@ -281,12 +281,68 @@ text-only per Z.AI's own pricing docs and was not tried.
 - Leaderboard regenerated (`results/leaderboard.html`, 143 rows / 36 runs) to include
   these rows.
 
+## Update — 2026-09-05: probing "avoid the reasoning tax" for GLM-5.3-Flash, GPT-5.6, GPT-6 Astra
+
+Single-sample, cache-backed probes (no real run) to check whether the hidden-reasoning
+cost problem seen on GLM-5.3-Flash and the GPT-5.6 trio has a cheaper way around it.
+
+- **GLM-5.3-Flash — no dedicated non-thinking vision path exists.** There's no separate
+  vision endpoint or model id: images/video/text are content blocks in the same chat-
+  completions request, and Z.AI's docs are explicit that `thinking.type` "only supports
+  `enabled`". Instead tried raising `max_tokens` from 4,000 to **40,000** on the sample
+  that previously came back empty (all 4,000 tokens spent on hidden reasoning, no
+  answer): it now answered, but needed **12,705** output tokens to do it — 3x the old
+  cap. Cost for that one line: $0.0064 (well under the $0.25 probe budget), but the
+  transcription is still unrelated to the ground truth. Confirms the earlier failure
+  was pure truncation, not a capability gap — but a real re-run at this budget would
+  cost several times more per line than our N=10 estimate assumed, for no accuracy
+  gain. `max_tokens` in `configs/models.yaml` was left at 4,000 (comparable to the
+  already-reported run); raise it only if a real re-run is wanted.
+- **GPT-5.6 (sol/terra/luna) — `reasoning_effort: none` is a real, distinct value**
+  (OpenAI's full range is `none, minimal, low, medium, high, xhigh, max`; these three
+  ignore `minimal` but accept `none` without erroring). Probed 1 sample each:
+
+  | model | output tokens | cost (1 line) | vs. earlier default-effort mean |
+  |---|---|---|---|
+  | gpt-5.6-sol-paid | 5,199 | $0.1046 | was ~3,658 tok/line — **higher**, not lower |
+  | gpt-5.6-terra-paid | 1,573 | $0.0192 | was ~2,093 tok/line — lower |
+  | gpt-5.6-luna-paid | 4,209 | $0.0051 | was ~2,745 tok/line — **higher**, not lower |
+
+  No errors, so kept as the new default in `configs/models.yaml` (strictly better than
+  the previously-ignored `minimal`). But from n=1 each this is **not a clear win**: two
+  of the three models spent *more* reasoning tokens on this sample under `none` than
+  they did at default effort before. Sol's single line cost $0.10 — a real N=10 for all
+  three would likely run $1–2, not the fraction of a cent `none` might suggest. Treat
+  this as unresolved; a slightly larger probe (n=3-5/model) would be needed to tell
+  signal from this-one-sample noise before committing to a full run.
+- **GPT-6 Astra — tried for the first time.** Visible on the paid key
+  (`scripts/list_paid_models.py`, $0 check) as `gpt-6-astra`. Pricing $10/$50 per 1M
+  in/out (2.5x Sol, matching Claude Fable 5.1). `reasoning.effort` supports
+  `low/medium/high/xhigh/max` only — **`none` and `minimal` both 400** (unlike the
+  GPT-5.6 trio), so probed at its floor, `low`. First attempt hit a real bug: Astra
+  rejects `max_tokens` outright ("Unsupported parameter... Use `max_completion_tokens`
+  instead") — litellm only auto-translates this for models already in its own internal
+  registry, and a brand-new id slips through. Fixed generically in
+  `litellm_client.py` (retry once with `max_completion_tokens` swapped in on that exact
+  error, covered by `tests/test_litellm_client.py`) rather than special-casing this one
+  model. Second attempt succeeded: 2,913 output tokens, **$0.1472 for one line** — by
+  far the most expensive row in this doc. Projected: **~$1.47 for a single N=10 pass on
+  one dataset**, ~$29-30 for a full 200-row KITAB-Bench subset, ~$345 across all 7
+  datasets at this per-line rate — not something to run at any real N without
+  discussing budget first. Added as `gpt-6-astra-paid` in `configs/models.yaml`,
+  N=1 only (no real run yet).
+
 ## Follow-ups
 
 - Fix the `muharaf_lines` adapter (it streams over the network and hangs) so paid, local,
   and Gemini runs can cover it.
-- Run the local models on all subsets (Colab GPU, notebook 04 — now covers them all).
+- Run the local models on all subsets (Colab GPU, notebook 04 — now covers them all;
+  `04b_colab_sweep_local_capped20.ipynb` does the same for the 5 already-tried local
+  models, capped at 20/dataset instead of growing forever).
 - Grow the free-tier coverage on the new subsets past n=20 (`accumulate` / re-run the config).
+- Decide whether GPT-5.6's `reasoning_effort: none` is worth a real N=10 (needs a
+  slightly bigger probe first — n=1/model wasn't conclusive) and whether GPT-6 Astra is
+  worth any paid run at all given its cost.
 
 ## Reproduce
 

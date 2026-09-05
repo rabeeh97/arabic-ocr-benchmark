@@ -428,34 +428,50 @@ gpt-5.6-sol-paid:
   client: litellm
   litellm_id: openai/gpt-5.6-sol
   env_key: OPENAI_API_KEY_PAID
-  params: {}                                   # ignores reasoning_effort=minimal (litellm drops it)
+  params: { reasoning_effort: none }            # "minimal" is ignored by this model; "none" is a distinct, lower level — probing it
   max_tokens: 8000                             # headroom: reasoning ~3k tok before the answer
   pricing: { input_usd_per_1m: 4.00, output_usd_per_1m: 20.00 }
   card: >-
     OpenAI GPT-5.6 "sol" on the paid key — the largest of the GPT-5.6 trio.
-    Reasoning model; does not honour reasoning_effort=minimal here, so it runs at
-    default effort (~3k reasoning tokens/line). Priciest OpenAI row.
+    Reasoning model; ignores reasoning_effort=minimal, so probing
+    reasoning_effort=none (a distinct, lower value than minimal) instead.
+    Priciest OpenAI row.
 gpt-5.6-terra-paid:
   client: litellm
   litellm_id: openai/gpt-5.6-terra
   env_key: OPENAI_API_KEY_PAID
-  params: { reasoning_effort: minimal }
+  params: { reasoning_effort: none }             # was "minimal" (honoured, but "none" is lower still) — probing it
   max_tokens: 4000
   pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 12.00 }
   card: >-
     OpenAI GPT-5.6 "terra" on the paid key — the mid GPT-5.6 tier. Reasoning
-    model, run at reasoning_effort=minimal.
+    model, probing reasoning_effort=none (lower than the minimal we used before).
 gpt-5.6-luna-paid:
   client: litellm
   litellm_id: openai/gpt-5.6-luna
   env_key: OPENAI_API_KEY_PAID
-  params: {}                                   # ignores reasoning_effort=minimal (litellm drops it)
+  params: { reasoning_effort: none }            # "minimal" is ignored by this model; "none" is a distinct, lower level — probing it
   max_tokens: 8000                             # headroom: reasoning ~2k tok before the answer
   pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.20 }
   card: >-
     OpenAI GPT-5.6 "luna" on the paid key — the small/cheap GPT-5.6 tier.
-    Reasoning model; does not honour reasoning_effort=minimal here, so it runs at
-    default effort. Cheapest GPT-5.6 row.
+    Reasoning model; ignores reasoning_effort=minimal, so probing
+    reasoning_effort=none (a distinct, lower value than minimal) instead.
+    Cheapest GPT-5.6 row.
+
+gpt-6-astra-paid:
+  client: litellm
+  litellm_id: openai/gpt-6-astra
+  env_key: OPENAI_API_KEY_PAID
+  params: { reasoning_effort: low }              # Astra rejects reasoning_effort=none with a 400 (per OpenAI docs); low is its floor
+  max_tokens: 4000
+  pricing: { input_usd_per_1m: 10.00, output_usd_per_1m: 50.00 }
+  card: >-
+    OpenAI's flagship GPT-6 Astra on the paid key. Not yet run here — a
+    single-sample probe only, at reasoning_effort=low (its lowest supported
+    level; "none"/"minimal" 400). Most expensive row by far ($10/$50 per 1M);
+    treat any per-dataset projection as an upper-bound estimate, not a plan
+    to actually run it at scale without discussing cost first.
 
 # Z.AI (bigmodel) — OpenAI-compatible endpoint at https://api.z.ai/api/paas/v4.
 # Plain GLM-5.3 is text-only per Z.AI's own docs; GLM-5.3-Flash is the model its
@@ -467,7 +483,10 @@ glm-5.3-flash-paid:
   env_key: ZAI_API_KEY_PAID
   api_base: https://api.z.ai/api/paas/v4
   params: { temperature: 0 }  # reasoning_effort tested (low) — see card note below on why it was dropped
-  max_tokens: 4000                             # reasoning model: empty content at 256 (thinking ate the budget)
+  max_tokens: 4000                             # reasoning model: empty content at 256. A single-sample probe at
+                                                # max_tokens=40000 showed the hardest lines can need >12k tokens to
+                                                # answer at all — kept at 4000 here to stay comparable with the
+                                                # already-reported N=10 run; raise it if a real re-run is wanted.
   pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.50 }   # list price (verify — currently ~50% promo)
   card: >-
     Z.AI's GLM-5.3-Flash on the paid key. Cheap, native multimodal

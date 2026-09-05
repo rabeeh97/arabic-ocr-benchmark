@@ -1,0 +1,44 @@
+# Free-tier hosted models, accumulate mode, across every KITAB-Bench subset
+# (muharaf_lines excluded — still unreliable to stream on this network). Gemini
+# models are excluded too: they're covered by the dedicated full-coverage crawl
+# (scripts/run_gemini_full.py) and running both against the same models
+# concurrently would double up on the same rate-limit budget.
+#
+# accumulate: true means each pass adds up to `limit` NEW lines per (model,
+# dataset) — a pair with 0 gets its first `limit`, a pair already at n gets
+# `limit` more on top. Free/no cost; the runner's per-model rate limiter
+# already abandons a model for the rest of a pass once it's clearly
+# quota-exhausted (memory: skip-rate-limited-free-models).
+models:
+  - pixtral-12b
+  - mistral-small
+  - mistral-medium
+  - openrouter-qwen2.5-vl-72b
+  - openrouter-qwen3-vl-235b
+  - openrouter-llama-4-maverick
+  - openrouter-minimax-m3-free
+  - openrouter-gemma-4-31b-free
+  - openrouter-gemma-4-26b-free
+  - nvidia-llama-3.2-11b-vl
+  - nvidia-llama-3.2-90b-vl
+
+datasets:
+  - kitab_khatt
+  - kitab_muharaf
+  - kitab_historicalbooks
+  - kitab_hindawi
+  - kitab_historyar
+  - kitab_onlinekhatt
+
+limit: 20
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 3
+rpm: 0                    # no shared rpm cap across these providers (unlike the Gemini crawl)
+rate_limit_abort: 15      # abandon a model for the rest of this pass after 15 straight rate-limit errors
+max_retries: 3
+cache: true
+results_dir: results
