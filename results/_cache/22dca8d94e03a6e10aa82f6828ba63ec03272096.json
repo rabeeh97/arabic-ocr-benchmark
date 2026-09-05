@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000065", "model": "gemini-flash", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "للتبادل الحر", "raw_text": "فلتبادل الأدوار", "cleaned_text": "فلتبادل الأدوار", "latency_ms": 3115.14, "input_tokens": 1196, "output_tokens": 246, "cost_usd": 0.0009738, "error": null, "attempts": 1, "cached": false}

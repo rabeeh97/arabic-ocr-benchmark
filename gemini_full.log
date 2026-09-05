@@ -1,0 +1,82 @@
+targets: {'muharaf_lines': 1334, 'kitab_khatt': 200, 'kitab_muharaf': 200, 'kitab_historicalbooks': 10, 'kitab_hindawi': 200, 'kitab_historyar': 200, 'kitab_onlinekhatt': 200}
+[19:59:58] remaining rows: 940
+[92m20:00:26 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:26 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:26 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI1_API_KEY hit its daily quota — dropping it for this run (2 key(s) still live)
+[92m20:00:28 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:33 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:39 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:45 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:49 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:53 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:57 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:00:57 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:02 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:03 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:16 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:16 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:16 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:01:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI2_API_KEY rate-limited — resting it 60s
+[92m20:01:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI3_API_KEY rate-limited — resting it 60s
+[92m20:02:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:20 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:26 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:30 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:34 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:36 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:39 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:02:42 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:01 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:01 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:01 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:05 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:06 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:09 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:21 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:25 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:29 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:31 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:34 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:34 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:40 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:40 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+[92m20:03:40 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI2_API_KEY hit its daily quota — dropping it for this run (1 key(s) still live)
+[92m20:03:40 - LiteLLM:WARNING[0m: vertex_and_google_ai_studio_gemini.py:1083 - DeprecationWarning: `temperature`, `top_p`, and `top_k` continue to function for Gemini 3+ (gemini-3.6-flash) but are planned for removal in a future release. Move sampling guidance into the `system` instructions instead.
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI3_API_KEY hit its daily quota — dropping it for this run (0 key(s) still live)
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+[gemini] key GEMINI3_API_KEY hit its daily quota — dropping it for this run (0 key(s) still live)
+/opt/anaconda3/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

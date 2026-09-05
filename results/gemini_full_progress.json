@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05T15:11:14Z",
-  "remaining": 949,
+  "updated": "2026-09-05T16:59:58Z",
+  "remaining": 940,
   "done": false,
   "status": {
     "gemini-flash-lite": {
@@ -43,7 +43,7 @@
         200
       ],
       "kitab_hindawi": [
-        0,
+        9,
         200
       ],
       "kitab_historyar": [
