@@ -141,6 +141,18 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     show_progress = bool(run_cfg.get("progress", True))
     limiter = _RateLimiter(float(run_cfg.get("rpm", 0) or 0))  # <=0 => no limit
     rl_abort = int(run_cfg.get("rate_limit_abort", _RL_ABORT))  # 0 => never abort a model
+    runner_id = str(run_cfg.get("runner_id", "") or "")
+    session_id = str(run_cfg.get("session_id", "") or "")
+
+    # A distributed runner claims an exact index range and passes it here, so
+    # two Colab accounts never recompute the same rows. `indices` needs a single
+    # (model, dataset) pair — it overrides accumulate's own next-indices pick.
+    explicit_indices = run_cfg.get("indices")
+    if explicit_indices is not None:
+        if len(run_cfg["models"]) != 1 or len(run_cfg["datasets"]) != 1:
+            raise ValueError("run_cfg['indices'] requires exactly one model and one dataset")
+        explicit_indices = sorted(int(i) for i in explicit_indices)
+        accumulate = True
 
     root = Path(results_root or run_cfg.get("results_dir", "results"))
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
@@ -166,6 +178,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             row = json.loads(cache_file.read_text())
             if not row.get("error"):  # never serve a stale errored result — retry it
                 row["cached"] = True
+                # keep the original runner's attribution; record who re-served it
+                row["served_to"] = runner_id or row.get("served_to", "")
                 return row
 
         prompt = base_prompt
@@ -203,6 +217,10 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             "attempts": attempts,
             "cached": False,
         }
+        if runner_id:
+            row["runner"] = runner_id
+        if session_id:
+            row["session"] = session_id
         if use_cache and pred.error is None:
             cache_file.write_text(json.dumps(row, ensure_ascii=False))
         return row
@@ -234,8 +252,11 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
                               f"(rate-limited — out of quota)")
                     continue
                 if accumulate:
-                    done = scored_indices(root, model_name, ds_name, exclude=run_dir)
-                    want = next_indices(done, int(limit) if limit else 10)
+                    if explicit_indices is not None:
+                        want = explicit_indices
+                    else:
+                        done = scored_indices(root, model_name, ds_name, exclude=run_dir)
+                        want = next_indices(done, int(limit) if limit else 10)
                     adapter = build_dataset(ds_name, datasets_cfg[ds_name], indices=want)
                 else:
                     adapter = build_dataset(
