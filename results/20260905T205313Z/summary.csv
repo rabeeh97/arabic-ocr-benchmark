@@ -1,0 +1,2 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+qwen2-vl-2b,muharaf_lines,9,1,0.1,2160.3,0.0,0.8082,0.7371,0.9773,0.1111,0.7946,0.7252,0.9773,0.1111,0.7017,0.6367,0.9773,0.1111,0.3374
