@@ -193,6 +193,54 @@ def test_out_of_quota_model_is_abandoned_not_retried_line_by_line(monkeypatch, t
     assert all(r["error"] for r in rows)
 
 
+def test_explicit_indices_and_runner_stamp(monkeypatch, tmp_path):
+    """A distributed runner passes an exact index range + its identity; the runner
+    forwards the range to build_dataset and stamps every row with runner/session."""
+    from PIL import Image as _Image
+
+    seen = {}
+
+    class _Idx:
+        name = "fake"
+        track = "line"
+
+        def __iter__(self):
+            img = _Image.new("RGB", (8, 8))
+            for i in seen["indices"]:
+                yield Sample(id=f"fake/{i:03d}", image=img, ground_truth="x", track="line")
+
+    def _spy_build(name, cfg, *, limit=None, offset=0, indices=None):
+        seen["indices"] = indices
+        return _Idx()
+
+    monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"fake": {}})
+    monkeypatch.setattr(runner_mod, "build_dataset", _spy_build)
+    monkeypatch.setattr(
+        runner_mod, "load_model_configs",
+        lambda *a, **k: {"m": {"client": "mock", "mode": "echo_gt", "pricing": None}},
+    )
+
+    run_dir = run(
+        {"models": ["m"], "datasets": ["fake"], "prompt_version": "line-v1",
+         "indices": [3, 1, 2], "cache": False, "progress": False,
+         "runner_id": "alice@example.com", "session_id": "7f3a"},
+        results_root=tmp_path,
+    )
+    assert seen["indices"] == [1, 2, 3]          # forwarded, sorted, accumulate implied
+    rows = [json.loads(x) for x in (run_dir / "predictions.jsonl").read_text().splitlines()]
+    assert len(rows) == 3
+    assert all(r["runner"] == "alice@example.com" and r["session"] == "7f3a" for r in rows)
+
+
+def test_explicit_indices_rejects_multiple_pairs(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"a": {}, "b": {}})
+    monkeypatch.setattr(runner_mod, "load_model_configs",
+                        lambda *a, **k: {"m": {"client": "mock", "mode": "empty", "pricing": None}})
+    with pytest.raises(ValueError, match="exactly one model and one dataset"):
+        run({"models": ["m"], "datasets": ["a", "b"], "indices": [0, 1],
+             "prompt_version": "line-v1"}, results_root=tmp_path)
+
+
 def _read_csv(path):
     import csv
 
