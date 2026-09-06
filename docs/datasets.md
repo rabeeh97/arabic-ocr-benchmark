@@ -1,5 +1,7 @@
 # Datasets — How to Obtain and Prepare Each One
 
+> Acquisition status, sizes, licenses and the "what to get next" list live in **[datasets-catalog.md](datasets-catalog.md)**.
+
 Companion to `benchmark-matrix.md` and the Phase 1 plan. For every dataset we
 plan to benchmark on (primary + stretch): where it lives, license, how to fetch
 it (online or local), what the ground truth looks like, and how it maps onto our
