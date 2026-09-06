@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T004716Z",
+  "generated_at": "2026-09-06T00:49:14+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000019",
+      "row": 19,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "من الشكّ والزيغ ومن بدع اهل اصفهٰان واشهد",
+      "prediction": "من الشك والزنيغ ومن بدع اهلا صفهان راشد",
+      "error": null,
+      "cer_light": 0.1707,
+      "cer_raw": 0.1707,
+      "wer_light": 0.625
+    },
+    {
+      "sample_id": "kitab_historyar/train/000013",
+      "row": 13,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الناظم ان مراده الاول لا الثاني بقوله اعني ىهذا ما له من منزله اى اعنى بهذا الخارج",
+      "prediction": "النظام إن فرادة الأول لا تتأتي بقولة أعني بهذا ما له من مزحله اني بهذا الخانج",
+      "error": null,
+      "cer_light": 0.2195,
+      "cer_raw": 0.2683,
+      "wer_light": 0.5294
+    },
+    {
+      "sample_id": "kitab_historyar/train/000018",
+      "row": 18,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بمَا وصفنا ان الماخذ فيما هو اصغر وَاقل من ذلك مِن اجزاءِ فلك البُروج",
+      "prediction": "بما وصفنا أن المخالف فيهما أصغر وأقل من ذلك مزاجًا؛ فتلك البرج",
+      "error": null,
+      "cer_light": 0.2609,
+      "cer_raw": 0.3043,
+      "wer_light": 0.6429
+    },
+    {
+      "sample_id": "kitab_historyar/train/000008",
+      "row": 8,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الاسمين من كل من الثلاثة الاول مشارک لاكبرهما وأنه فى كل من الثلاثه ا[؟",
+      "prediction": "الاسمى سليم بن العثمان الأكبر وأمه وكميلته الثلاثة",
+      "error": null,
+      "cer_light": 0.5352,
+      "cer_raw": 0.5493,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000017",
+      "row": 17,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَالاحْدَی وَالثّلَاثِينَ دَقِيقَةََ وَالخَمْسِ وَالخَمْسِينَ ثَانِيةََ نِسْبَةَ الْمِايةِ وَالإِثْنَی",
+      "prediction": "الإجدرة التالية تزيد في قيّمة و الخمسين والخمسينية بني نسته المائة والإثني",
+      "error": null,
+      "cer_light": 0.5686,
+      "cer_raw": 0.5784,
+      "wer_light": 1.3333
+    },
+    {
+      "sample_id": "kitab_historyar/train/000011",
+      "row": 11,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لل لى حعڡر الخادن",
+      "prediction": "السعودية",
+      "error": null,
+      "cer_light": 0.8824,
+      "cer_raw": 0.8824,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000016",
+      "row": 16,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "البَدنِ الى الصُفرَة وَاذَا تُدخنَ بهِ معَ الزّبيب اوِ الراتيٮح نقّى الرحمَ",
+      "prediction": "الله أعلم",
+      "error": null,
+      "cer_light": 0.8933,
+      "cer_raw": 0.8933,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000001",
+      "row": 1,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مال مال ثم فى ثلاثة اجزا مال يكن تسعة اجزا شى فى خمسة عشر مقسومه على",
+      "prediction": "بِنْ مَالُمَايْرٍ إِلَّا أَجْزَامًا َكَانَ تَعْظَّمَ اَجَازَةً وَجِهَة عَسْرَمِقْتَوْصَى عَلَى",
+      "error": null,
+      "cer_light": 0.8971,
+      "cer_raw": 0.9118,
+      "wer_light": 1.0
+    }
+  ]
+}
