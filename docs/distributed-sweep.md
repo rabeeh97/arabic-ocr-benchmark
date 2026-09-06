@@ -45,11 +45,21 @@ without it.
 On startup each runner computes `(runner_id, session_id)` via
 `arabic_ocr_bench.coordination.runner_identity()`:
 
-- **`runner_id`** — *stable* across VM restarts of the same account. Resolved in
-  order: the `SWEEP_RUNNER_ID` env var → the signed-in Colab **Google-account
-  email** (obtained from the credentials the notebook already used to mount
-  Drive) → a UUID persisted at `/content/.sweep_runner_id`. Sanitised to
-  `[A-Za-z0-9._+@-]`, capped at 80 chars.
+- **`runner_id`** — meant to be *stable* across VM restarts of the same account.
+  Resolved in order: the **`SWEEP_RUNNER_ID` env var** → the signed-in Colab
+  **Google-account email** (from the Drive-mount credentials) → a UUID persisted
+  at `Drive/arabic-ocr-bench/.sweep_runner_id` (survives a restart) or, if Drive
+  isn't mounted, `/content/.sweep_runner_id` (does **not** — Colab wipes
+  `/content` on restart). Sanitised to `[A-Za-z0-9._+@-]`, capped at 80 chars.
+
+  In practice `_colab_email()` often fails silently, so **set `SWEEP_RUNNER_ID`
+  as a Colab secret** per account (`runner-a`, `runner-b`, …) — it's checked
+  first, needs no auth, and is the only fully deterministic option. Without a
+  stable id nothing breaks: collision safety uses `session_id`, and a crashed
+  runner's leases are still reclaimed after the TTL. The *only* cost of a
+  changing id is that a restarted runner can't instantly re-adopt its **own**
+  in-flight leases (it no longer recognises them) — they wait out the ~30-min
+  TTL and then anyone reclaims them.
 - **`session_id`** — a fresh 8-hex string on *every* run of the cell. Two
   sessions of the same account stay distinguishable in the audit, and it is the
   final tie-breaker when two runners race for the same batch.
@@ -279,9 +289,12 @@ Exit status is non-zero if any duplicate is found.
    on every account is fine; attribution comes from `runner_id`, not the token.
 3. Colab secret **`HF_TOKEN`** — read scope; also click *Agree* once on any gated
    dataset page (e.g. the NAKBA set) with that account.
-4. `Runtime → Run all`. Repeat on each account. Order doesn't matter; the first
+4. Colab secret **`SWEEP_RUNNER_ID`** — a short stable name unique to this
+   account (`runner-a`, `runner-b`, `runner-c`). Recommended, not required; it
+   makes restart-resume instant and the audit per-account instead of per-VM.
+5. `Runtime → Run all`. Repeat on each account. Order doesn't matter; the first
    one to start creates `sweep-claims`.
-5. Stop any time. A disconnected runner's batch is reclaimed after the TTL.
+6. Stop any time. A disconnected runner's batch is reclaimed after the TTL.
 
 `LEASE_TTL_MIN` must be comfortably longer than one batch takes — a 7B/8B model
 in 4-bit doing 20 lines on a T4 can be 15–25 min, so keep it at 30–45. `BATCH`

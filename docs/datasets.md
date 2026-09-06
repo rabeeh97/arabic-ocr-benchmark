@@ -177,10 +177,14 @@ U4RASD/omar-al-saleh-manuscripts-segments`, `split: test`. The page-level repo
 | `nakba-ketaba-ocr` | Ketaba-OCR — `HassanB4/Ketaba-OCR-LoRA` | 0.082 | DoRA/rslora adapter on `sherif1313/Arabic-English-handwritten-OCR-v3` |
 | `sherif-arabic-htr-v3` | `sherif1313/Arabic-English-handwritten-OCR-v3` | — | the un-adapted base of the Ketaba entry; strong standalone Arabic HTR |
 | `nakba-moankhaled-qwen3vl` | `Moankhaled10/nakba-ocr` (no paper) | — | full Qwen3-VL fine-tune, weights under `final_model/` |
+| `nakba-warraq-fanar` | Al-Warraq — `mabdulaziz499/Warraq-Arabic-HTR-7B` | 0.114 (5th) | QLoRA (r=16) on `QCRI/Fanar-2-Oryx-IVU`; run 4-bit |
+| `fanar-oryx-7b` | `QCRI/Fanar-2-Oryx-IVU` | — | un-adapted base of the Warraq entry — QCRI's Arabic-first Qwen2.5-VL-7B |
 
-Al-Warraq, Not Gemma, Latent Narratives, Oblevit and 3reeq describe their
-systems in the proceedings but released no checkpoint. PALNLP and SARD were
-Subtask 1 (manual transcription), not OCR systems.
+Not Gemma, Latent Narratives, Oblevit and 3reeq describe their systems in the
+proceedings but released no loadable checkpoint. PALNLP and SARD were Subtask 1
+(manual transcription), not OCR systems. `factlogic/phoenix-arabic-manuscript-htr`
+is a strong historical-Arabic HTR model (evaluated on Omar Al-Saleh docs) but a
+Kraken/CTC model, not HF-transformers — out of scope for the `hf_local` client.
 
 ### AHAWP — Arabic Handwritten Alphabets, Words, Paragraphs
 - Mendeley Data. Includes paragraph-level handwritten Arabic with transcriptions.

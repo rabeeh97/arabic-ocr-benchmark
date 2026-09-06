@@ -32,17 +32,41 @@ def test_available_ram_gb_returns_a_positive_number():
 def test_vram_preflight_reclaims_then_skips_when_still_short(monkeypatch):
     # pretend we're on a CUDA GPU with only 3 GB free, even after a reclaim
     monkeypatch.setattr(H, "_cuda_free_total_gb", lambda: (3.0, 16.0))
+    monkeypatch.setattr(H, "_available_ram_gb", lambda: 32.0)
     freed = []
     monkeypatch.setattr(H, "_hard_free", lambda: freed.append(True))
     client = H.HFLocalClient(name="qwen2.5-vl-3b", hf_id="x", min_ram_gb=11)
-    with pytest.raises(RuntimeError, match=r"skip qwen2\.5-vl-3b: needs ~11 GB GPU"):
+    with pytest.raises(RuntimeError, match=r"skip qwen2\.5-vl-3b: needs ~11 GB free GPU"):
         client._mem_preflight()
     assert freed  # it tried to reclaim before giving up
 
 
 def test_vram_preflight_passes_when_gpu_has_room(monkeypatch):
     monkeypatch.setattr(H, "_cuda_free_total_gb", lambda: (14.0, 16.0))
+    monkeypatch.setattr(H, "_available_ram_gb", lambda: 32.0)
     H.HFLocalClient(name="m", hf_id="x", min_ram_gb=11)._mem_preflight()  # no raise
+
+
+def test_vram_preflight_uses_a_smaller_budget_for_a_4bit_model(monkeypatch):
+    # a 7B model, min_ram_gb sized for fp16 CPU load (22) but load_in_4bit=True:
+    # real VRAM need is ~22/3 ≈ 7 GB, so 9 GB free on a T4 must be enough.
+    monkeypatch.setattr(H, "_cuda_free_total_gb", lambda: (9.0, 16.0))
+    monkeypatch.setattr(H, "_available_ram_gb", lambda: 32.0)
+    H.HFLocalClient(
+        name="qwen2.5-vl-7b", hf_id="x", min_ram_gb=22, load_in_4bit=True
+    )._mem_preflight()  # no raise
+    # the same model NOT 4-bit would still be skipped at 9 GB free
+    with pytest.raises(RuntimeError, match="needs ~22 GB free GPU"):
+        H.HFLocalClient(
+            name="qwen2.5-vl-7b", hf_id="x", min_ram_gb=22
+        )._mem_preflight()
+
+
+def test_vram_preflight_guards_the_kernel_against_host_oom(monkeypatch):
+    monkeypatch.setattr(H, "_cuda_free_total_gb", lambda: (14.0, 16.0))
+    monkeypatch.setattr(H, "_available_ram_gb", lambda: 1.2)  # about to OOM
+    with pytest.raises(RuntimeError, match="system RAM free"):
+        H.HFLocalClient(name="m", hf_id="x", min_ram_gb=11)._mem_preflight()
 
 
 def test_load_oom_marks_model_skipped_for_the_rest_of_the_run(monkeypatch):
