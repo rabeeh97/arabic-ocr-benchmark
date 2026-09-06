@@ -1,0 +1,119 @@
+{
+  "run_id": "20260906T003819Z",
+  "generated_at": "2026-09-06T00:38:50+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000084",
+      "row": 84,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الذي يوتر الاجرا الباقيه مِن نصف الدايرة وهى ماية وارٮعة وارٮعون جزا الاجزا الباٯيه من مرٮع القطر وهى ثلاثه عَشر",
+      "prediction": "، خيش عم انباحصأ غلب له ةم اجار تلأس .كتمزل طوع ىفاضلا ناك خعذهوشلا ةيإ رف ملا",
+      "error": null,
+      "cer_light": 0.7321,
+      "cer_raw": 0.75,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000095",
+      "row": 95,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "كما اشار اليه بالبيت الاول والقانون الموصل الى معرفة قدر الجذر فى هذا الضرب",
+      "prediction": "يخ رفاظ قيار يؤل نب فوزل انفط ال تاملكب مئان وهو ملـتي ةميغ",
+      "error": null,
+      "cer_light": 0.7333,
+      "cer_raw": 0.7333,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000080",
+      "row": 80,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "اشيا واربعة وعشرىن فهى المفردة الثالثه وان زدت على سبعة الاشيا نصف الاشيا",
+      "prediction": "انيعسو اذهل ةميخلا يف ىراج ناك .زيئان وهو ملكتي ةبحصو ماغلا",
+      "error": null,
+      "cer_light": 0.7534,
+      "cer_raw": 0.7534,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000092",
+      "row": 92,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عشرة اشيا على مالين لكان الخارج خمسة اجزا شى الا ترى انك لو ضربت خمسة اجزا شى",
+      "prediction": "ءان ،ظيغ ضقارد شمشم :صنلا اذهل نب ، طيجاحلا يف لسو ةمأ انباتاملكلا ةدئانعتي",
+      "error": null,
+      "cer_light": 0.8052,
+      "cer_raw": 0.8052,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000089",
+      "row": 89,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الشعر واذا",
+      "prediction": "فاظ قيارد ،شمشلا",
+      "error": null,
+      "cer_light": 1.2,
+      "cer_raw": 1.2,
+      "wer_light": 1.5
+    },
+    {
+      "sample_id": "kitab_historyar/train/000091",
+      "row": 91,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "صح",
+      "prediction": "رسن",
+      "error": null,
+      "cer_light": 1.5,
+      "cer_raw": 1.5,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000094",
+      "row": 94,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لث",
+      "prediction": ". رسن",
+      "error": null,
+      "cer_light": 2.5,
+      "cer_raw": 2.5,
+      "wer_light": 2.0
+    }
+  ]
+}
