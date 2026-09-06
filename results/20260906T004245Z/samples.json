@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T004245Z",
+  "generated_at": "2026-09-06T00:43:13+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000150",
+      "row": 150,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فى المركبة الاولى فتصور الاحوال الثلاثه الثانى ان كل مسـلة فيها مال وجذور",
+      "prediction": "رسن ،ثب ،كتمزلا طيغلا هل سلـغب ضقنا لثم اهمهفأ ال تاملكب مئان وهو",
+      "error": null,
+      "cer_light": 0.7361,
+      "cer_raw": 0.7534,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000147",
+      "row": 147,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "يكن الجواب حمسين شيا وخمسين مالا مقسومين على مال وكعب فلو فرضت الشى اثنين",
+      "prediction": "ضقنا لثم اهمهفأ ال تاملكب مئان وهو ملى يراج ناك .خيشلا هم اذهل",
+      "error": null,
+      "cer_light": 0.7397,
+      "cer_raw": 0.7397,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000144",
+      "row": 144,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لانّهم في غاية الحرٰارة من كثرة علومهم وهؤلٰاء الٓمقامٰات",
+      "prediction": "ثم اهفأ ال تاملكب مئان وهو ملـتي هميخلا يف ىراج ناك",
+      "error": null,
+      "cer_light": 0.7544,
+      "cer_raw": 0.7719,
+      "wer_light": 1.2222
+    },
+    {
+      "sample_id": "kitab_historyar/train/000159",
+      "row": 159,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "قتلها وخاصه النابت منه بالبلاد التى ٮقالُ بها بَابِل",
+      "prediction": "تلأس ةيل تلكلا ةدئان وهو ملف ل نم امهىط انلوصو دنع . ارل",
+      "error": null,
+      "cer_light": 0.8077,
+      "cer_raw": 0.8077,
+      "wer_light": 1.4444
+    },
+    {
+      "sample_id": "kitab_historyar/train/000156",
+      "row": 156,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَعِشْرِينَ جُزءََا وَوَتَرُضِعْفِ قَوْسِ ها هُوَ١٢٠جُزْءََا وَلِذلك يَكُونُ ضِعْفُ",
+      "prediction": "ضقنا لثم اهمهفأ ال تاملكب مئان وهو ملى يراج ناك خيش عم لالهوعسو",
+      "error": null,
+      "cer_light": 0.8554,
+      "cer_raw": 0.8675,
+      "wer_light": 1.4444
+    },
+    {
+      "sample_id": "kitab_historyar/train/000158",
+      "row": 158,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "قَوْسي اب اج",
+      "prediction": "رسن ،ثب ،كمشم",
+      "error": null,
+      "cer_light": 1.0,
+      "cer_raw": 1.0,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000153",
+      "row": 153,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "nan",
+      "prediction": ". رسن",
+      "error": null,
+      "cer_light": 1.6667,
+      "cer_raw": 1.6667,
+      "wer_light": 2.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000148",
+      "row": 148,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "صح",
+      "prediction": ". رسن",
+      "error": null,
+      "cer_light": 2.5,
+      "cer_raw": 2.5,
+      "wer_light": 2.0
+    }
+  ]
+}
