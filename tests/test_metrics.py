@@ -130,6 +130,13 @@ class TestDiacriticPrf:
         assert r["recall"] == 1.0
         assert r["f1"] == 0.0
 
+    def test_combining_mark_order_is_not_a_diacritic_error(self):
+        # sheen + SHADDA + FATHA  vs  sheen + FATHA + SHADDA  — canonically equal
+        a = "ش" + "ّ" + "َ"
+        b = "ش" + "َ" + "ّ"
+        r = diacritic_prf(a, b)
+        assert (r["precision"], r["recall"], r["f1"]) == (1.0, 1.0, 1.0)
+
 
 class TestScorePair:
     def test_normalization_profile_changes_cer_and_exact_match(self):

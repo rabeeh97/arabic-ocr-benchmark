@@ -1037,11 +1037,15 @@ _LEGEND = [
      "long lines weigh more. macro = the plain mean of the per-line rates."),
     ("diac F1", "precision/recall of harakat marks, measured on raw (un-normalized) text."),
     ("raw",
-     "no normalization — every orthographic and diacritic difference counts. Strictest."),
+     ("encoding canonicalisation only — strip bidi / zero-width controls, fold "
+      "Arabic Presentation Forms to nominal letters, then NFC. Every ORTHOGRAPHIC "
+      "difference (alef form, tatweel, digit, harakat, spacing) still counts. "
+      "Strictest.")),
     ("light",
-     "Unicode NFC, strip tatweel (ـ), unify alef forms (أإآٱ→ا), map Arabic-Indic "
-     "digits to ASCII, collapse whitespace. Keeps harakat, taa-marbuta and "
-     "alef-maqsura. The headline profile — matches CAMeL-Tools / Lucene practice."),
+     ("raw, plus strip tatweel (ـ), unify alef forms (أإآٱ→ا), fold Persian/Urdu "
+      "look-alikes (ک→ك, ی→ي, ہ→ه), map Arabic-Indic digits to ASCII, collapse "
+      "whitespace. Keeps harakat, taa-marbuta, alef-maqsura. The headline "
+      "profile — matches CAMeL-Tools / Lucene practice.")),
     ("no-diac",
      "light, plus alef-maqsura→yaa, taa-marbuta→haa, hamza carriers folded (ؤ→و, "
      "ئ→ي) and all harakat stripped from both sides — scores the consonant skeleton."),

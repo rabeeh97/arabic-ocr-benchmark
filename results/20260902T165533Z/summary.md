@@ -10,6 +10,6 @@ Full per-metric, per-profile numbers (CAR / MER / WIL / WIP too) are in `summary
 | mistral-medium | kitab_muharaf | 10 | 0 | 0.6936 | 0.6834 | 0.6713 | 0.3166 | 1.0753 | 0.9615 | 0.1 | 0.6 | 1248.5 | 0.000991 |
 | nvidia-llama-3.2-90b-vl | kitab_muharaf | 10 | 0 | 1.0289 | 1.027 | 0.9114 | 0.0 | 1.2366 | 0.9829 | 0.1 | 0.5057 | 134676.4 | 0.0 |
 | mistral-medium | muharaf_lines | 10 | 0 | 0.6986 | 0.6928 | 0.6767 | 0.3072 | 0.9818 | 0.9818 | 0.0 | 0.5 | 1200.5 | 0.000874 |
-| nvidia-llama-3.2-90b-vl | muharaf_lines | 10 | 0 | 1.8571 | 1.8517 | 1.841 | 0.0 | 1.3455 | 1.0 | 0.0 | 0.5056 | 137994.4 | 0.0 |
+| nvidia-llama-3.2-90b-vl | muharaf_lines | 10 | 0 | 1.8571 | 1.8464 | 1.8357 | 0.0 | 1.3455 | 1.0 | 0.0 | 0.5056 | 137994.4 | 0.0 |
 
 Full per-profile numbers in `summary.csv`; per-sample in `scores.jsonl`.

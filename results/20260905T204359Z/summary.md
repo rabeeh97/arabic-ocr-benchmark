@@ -6,6 +6,6 @@ Full per-metric, per-profile numbers (CAR / MER / WIL / WIP too) are in `summary
 
 | model | dataset | n | errors | cer_micro_raw | cer_micro_light | cer_micro_diac_insensitive | car_micro_light | wer_micro_raw | mer_micro_raw | exact_raw | diac_f1 | latency_ms_mean | cost_usd_total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| qwen2.5-vl-3b | kitab_hindawi | 10 | 0 | 0.6191 | 0.602 | 0.5905 | 0.398 | 0.7299 | 0.7244 | 0.0 | 0.3041 | 20000.2 | 0.0 |
+| qwen2.5-vl-3b | kitab_hindawi | 10 | 0 | 0.6188 | 0.6019 | 0.5903 | 0.3981 | 0.7299 | 0.7244 | 0.0 | 0.3041 | 20000.2 | 0.0 |
 
 Full per-profile numbers in `summary.csv`; per-sample in `scores.jsonl`.
