@@ -1,0 +1,36 @@
+models:
+- trocr-large-arabic
+datasets:
+- muharaf_lines
+indices:
+- 700
+- 701
+- 702
+- 703
+- 704
+- 705
+- 706
+- 707
+- 708
+- 709
+- 710
+- 711
+- 712
+- 713
+- 714
+- 715
+- 716
+- 717
+- 718
+- 719
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-3596a4a809e3
+session_id: c079b5cb
