@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T003647Z",
+  "generated_at": "2026-09-06T00:37:22+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000062",
+      "row": 62,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وتر ضعف قوس ط ر قك جزءا فَوتر",
+      "prediction": "خيآ رفاظ قيارد يؤل نب فوؤر",
+      "error": null,
+      "cer_light": 0.7241,
+      "cer_raw": 0.7241,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000078",
+      "row": 78,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الحاصل منها دون تعيين لمقدار كميته كما يقال الخارج من قسمة كذا على كذا اشيا مثلا",
+      "prediction": "هيلاتلا تامكلا هدئاف ملعت له .جحلا # يف اننأ ال ةميخلار رف ناك ءان وسو اىملال",
+      "error": null,
+      "cer_light": 0.7375,
+      "cer_raw": 0.75,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000064",
+      "row": 64,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "اى ومقام الخارج من قسمة النوع على نوعه عدد ولما كان الخارج فى هذه الحالة لا يتغير",
+      "prediction": "فيغ ص ،شمش س ب ، ناك ع ظ انباحصو دنعل يـه ة جاح جيجحلا لفاوق تأدب",
+      "error": null,
+      "cer_light": 0.7531,
+      "cer_raw": 0.7531,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000071",
+      "row": 71,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وتكون كل واحدة من قوسي د ﺟ ز زحط ربع دايرة مِن اجْل ان افق",
+      "prediction": "ةميخلا يف اننأ تاملكب مئان وهو ملىتي ةميعسفظ قيار",
+      "error": null,
+      "cer_light": 0.8103,
+      "cer_raw": 0.8103,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000068",
+      "row": 68,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَالأَربَعِينَ دَقِيقَةََ وَالثّلَاثِ وَالْخمسِينَ ثَانِيةََ إِلَی الثّمانِيةِ وَالأَرْبعِينَ جُزْءََا",
+      "prediction": "ءان وهو ملكتي ةميخلا يف ىراج ناك .خيشلا عم انيعسو اهوفط ال تاملـئان",
+      "error": null,
+      "cer_light": 0.8235,
+      "cer_raw": 0.8235,
+      "wer_light": 1.4444
+    },
+    {
+      "sample_id": "kitab_historyar/train/000079",
+      "row": 79,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "رؤوس مستديره شٮٮهه في استدارتها بالاكرخَشِنَه فٮها بَزْر",
+      "prediction": "رف قيارد تزلكتي ةميخلا يفواج ناك .خيش عم انيعسو اهوفط ال دنلوصو",
+      "error": null,
+      "cer_light": 0.9286,
+      "cer_raw": 0.9286,
+      "wer_light": 1.5
+    },
+    {
+      "sample_id": "kitab_historyar/train/000066",
+      "row": 66,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ٮورق الباذروح واغصا",
+      "prediction": "غلب ضقنا لثم اهمهفأ ال",
+      "error": null,
+      "cer_light": 0.9474,
+      "cer_raw": 1.0,
+      "wer_light": 1.6667
+    },
+    {
+      "sample_id": "kitab_historyar/train/000063",
+      "row": 63,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دَايرةِ وَسَطِ البُروج",
+      "prediction": "giringيخلا يف انناحصو د",
+      "error": null,
+      "cer_light": 0.9545,
+      "cer_raw": 0.9545,
+      "wer_light": 1.3333
+    }
+  ]
+}
