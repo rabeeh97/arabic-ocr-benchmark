@@ -720,6 +720,40 @@ sherif-arabic-htr-v3:
     sherif1313's Arabic-English handwritten-OCR v3 — Qwen2.5-VL-3B fine-tuned for
     Arabic/English handwriting on Muharaf. Widely used as a base for NAKBA 2026
     entries (it is the Ketaba-OCR backbone); shown here un-adapted. Apache-2.0.
+nakba-warraq-fanar:
+  # Al-Warraq (NAKBA 2026 Systems Track, 5th place, corpus CER ~0.114). A QLoRA
+  # adapter (r=16) on QCRI's Fanar-2-Oryx-IVU, which is itself a Qwen2.5-VL-7B
+  # fine-tune -> 4-bit on a T4. Apache-2.0.
+  client: hf_local
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  adapter_id: mabdulaziz499/Warraq-Arabic-HTR-7B
+  arch: qwen2_5_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  load_in_4bit: true
+  pricing: null
+  card: >-
+    Al-Warraq's NAKBA NLP 2026 HTR system — a QLoRA fine-tune of QCRI's
+    Fanar-2-Oryx-IVU (Arabic-first Qwen2.5-VL-7B) on KHATT + OnlineKHATT +
+    Muharaf. Placed 5th in the shared task (corpus CER ~0.114); its card also
+    reports 0.039 CER on KHATT test. Run 4-bit.
+fanar-oryx-7b:
+  # The Warraq base on its own — QCRI's Arabic-first VLM (Qwen2.5-VL-7B FT).
+  client: hf_local
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  arch: qwen2_5_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  load_in_4bit: true
+  pricing: null
+  card: >-
+    Fanar-2-Oryx-IVU (QCRI) — an Arabic-first vision-language model fine-tuned
+    from Qwen2.5-VL-7B for culturally-aware image understanding. Not OCR-tuned;
+    the un-adapted base of nakba-warraq-fanar. Run 4-bit.
+# NOT addable: factlogic/phoenix-arabic-manuscript-htr is a Kraken (CTC) model,
+# not a HF-transformers model — it needs the `kraken` runtime, a different
+# inference path — and is CC-BY-NC-SA. Strong on historical Arabic manuscripts
+# (incl. an Omar Al-Saleh held-out eval) but out of scope for this client.
 paligemma-arabic-hw:
   client: hf_local
   hf_id: google/paligemma-3b-pt-448           # gated base

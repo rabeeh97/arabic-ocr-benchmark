@@ -49,7 +49,16 @@ from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 
 LEASE_TTL_SEC = 30 * 60
-_RUNNER_ID_FILE = Path("/content/.sweep_runner_id")
+# Where a per-VM runner id is remembered. The Drive copy survives a Colab
+# runtime restart (so a crashed runner re-adopts its own leases instantly
+# instead of waiting out the TTL); the /content copy is the ephemeral fallback
+# for when Drive isn't mounted. `SWEEP_RUNNER_ID` in the environment overrides
+# all of this and is the recommended way to pin a stable name per account.
+_RUNNER_ID_FILES = (
+    Path("/content/drive/MyDrive/arabic-ocr-bench/.sweep_runner_id"),
+    Path("/content/.sweep_runner_id"),
+)
+_RUNNER_ID_FILE = _RUNNER_ID_FILES[-1]  # back-compat alias
 _SAFE = re.compile(r"[^A-Za-z0-9._+@-]")
 
 
@@ -86,18 +95,22 @@ def _colab_email() -> str | None:
 
 
 def _persisted_uuid() -> str:
-    try:
-        if _RUNNER_ID_FILE.exists():
-            v = _RUNNER_ID_FILE.read_text().strip()
-            if v:
-                return v
-    except OSError:
-        pass
+    for p in _RUNNER_ID_FILES:
+        try:
+            if p.exists():
+                v = p.read_text().strip()
+                if v:
+                    return v
+        except OSError:
+            pass
     v = f"vm-{uuid.uuid4().hex[:12]}"
-    try:
-        _RUNNER_ID_FILE.write_text(v)
-    except OSError:
-        pass
+    if Path("/content").exists():  # only persist on Colab, never mkdir on a dev box
+        for p in _RUNNER_ID_FILES:
+            try:
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(v)
+            except OSError:
+                pass
     return v
 
 

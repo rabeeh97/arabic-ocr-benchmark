@@ -34,10 +34,25 @@ def _cuda_free_total_gb():
     return None
 
 
+def _trim_cpu_ram() -> None:
+    """Ask glibc to return free heap pages to the OS. PyTorch / HF free CPU
+    tensors back into glibc's malloc arenas, but glibc keeps the pages mapped;
+    over a long sweep (a model reloaded every batch) that shows up as system RSS
+    that only ever grows and eventually OOM-kills the Colab kernel. No-op off
+    glibc/Linux, never raises."""
+    try:
+        import ctypes
+
+        ctypes.CDLL("libc.so.6").malloc_trim(0)
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def _hard_free() -> None:
     """Aggressively hand memory back — Python garbage first, then the CUDA
-    caching allocator's free blocks. A no-op (never raises) without torch/GPU.
-    Called after every model in a sweep so the next one starts with a clean GPU."""
+    caching allocator's free blocks, then glibc's heap pages. A no-op (never
+    raises) without torch/GPU. Called after every model in a sweep so the next
+    one starts with a clean GPU *and* a clean RSS."""
     try:
         import gc
 
@@ -52,6 +67,7 @@ def _hard_free() -> None:
         except Exception:  # noqa: BLE001
             pass
         gc.collect()
+        _trim_cpu_ram()
     except Exception:  # noqa: BLE001
         pass
 
@@ -168,17 +184,33 @@ class HFLocalClient:
         ft = _cuda_free_total_gb()
         if ft is not None:  # CUDA GPU
             free_gb, total_gb = ft
-            if free_gb < need * 1.10:
+            # `min_ram_gb` is sized for the fp16 model in CPU RAM. When it will
+            # actually be loaded 4-bit onto the GPU the real VRAM need is ~1/4 of
+            # that (nf4 weights) plus room for the vision tower, KV cache and
+            # activations — call it a third, with a 3.5 GB floor.
+            need_vram = max(need / 3.0 if self.load_in_4bit else need, 3.5)
+            if free_gb < need_vram * 1.10:
                 _hard_free()  # an earlier model probably still holds VRAM
                 ft = _cuda_free_total_gb() or ft
                 free_gb = ft[0]
-            if free_gb < need:
+            if free_gb < need_vram:
                 raise RuntimeError(
-                    f"skip {self.name}: needs ~{need:.0f} GB GPU memory, only "
+                    f"skip {self.name}: needs ~{need_vram:.0f} GB free GPU RAM "
+                    f"({'4-bit' if self.load_in_4bit else 'fp16'}), only "
                     f"{free_gb:.1f} of {total_gb:.0f} GB free after reclaiming "
                     f"cache. A previous model likely didn't release its VRAM — "
                     f"skipping this one rather than risk an OOM that needs a "
                     f"runtime restart."
+                )
+            # weights are staged in CPU RAM during from_pretrained even when the
+            # target is the GPU; guard the kernel against a host OOM too.
+            ram = _available_ram_gb()
+            if ram < 2.0:
+                raise RuntimeError(
+                    f"skip {self.name}: only {ram:.1f} GB system RAM free — "
+                    f"loading weights stages them in RAM first and this would "
+                    f"OOM-kill the kernel. Restart the runtime (RAM creeps up "
+                    f"across many model loads)."
                 )
             return
 
@@ -308,14 +340,19 @@ class HFLocalClient:
                 load_in_4bit=True, bnb_4bit_compute_dtype=torch_dtype,
                 bnb_4bit_quant_type="nf4", bnb_4bit_use_double_quant=True,
             )
-            load_kwargs["device_map"] = "auto"
+            # Force EVERY layer onto GPU 0. With device_map="auto", accelerate
+            # silently offloads layers it isn't sure will fit into *system RAM*
+            # — which then bleeds host memory across a sweep and keeps VRAM
+            # deceptively low. Pinning to {"": 0} makes a too-big model raise a
+            # clean CUDA OOM at load (caught below → model skipped) instead.
+            load_kwargs["device_map"] = {"": 0}
 
         model = _load_model(self.hf_id, load_kwargs)
         if self.adapter_id:
             from peft import PeftModel
 
             model = PeftModel.from_pretrained(model, self.adapter_id)
-        # with device_map="auto" (4-bit) accelerate already placed the weights
+        # 4-bit: device_map={"": 0} already placed every weight on the GPU.
         model = model if use_4bit else model.to(device)
         self._model = model.eval()
         self._device = "cuda" if use_4bit else device
