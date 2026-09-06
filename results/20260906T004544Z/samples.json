@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T004544Z",
+  "generated_at": "2026-09-06T00:46:15+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000192",
+      "row": 192,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مربع السته عشر وهو مايتان وستة وخمسون هو المال فقس على ذلك ما يرد من اشباهه",
+      "prediction": "حلا يف اننأ ال تاملكب مئان وهو ملىتي ةميخلا # يراج ناك .زاظ",
+      "error": null,
+      "cer_light": 0.7333,
+      "cer_raw": 0.7333,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000197",
+      "row": 197,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ان ىوتى بلفظ الجواب كلفط السؤال ففى قسمة شى على مال وقسمة ثلاثة اشيا على كعب مثلا",
+      "prediction": "لثم اهمهفأ ال تاملكب مئان وهو حلـج ناخيش عميعسو انفارل ةيلاد ارمهلا",
+      "error": null,
+      "cer_light": 0.7407,
+      "cer_raw": 0.7531,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000191",
+      "row": 191,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "من الشّعب المعاً ويقال له دوكاه حجازي والحزين ويقال",
+      "prediction": "ملالهو ةبخلا يف يراج ناك . ءان وهو ملـغي ضقنا لثم",
+      "error": null,
+      "cer_light": 0.7451,
+      "cer_raw": 0.7451,
+      "wer_light": 1.2222
+    },
+    {
+      "sample_id": "kitab_historyar/train/000189",
+      "row": 189,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فِي الأَعْدَادِ وَ نُبَينُ اوَّلًا بِاقَلِ مَا يَكُونُ مِنَ الأَبْوَابِ وَ اسْرَعِهَا اسْتِخْرَاجًا لِمَا",
+      "prediction": "انلكتي ةميخلا يف ىراج ناك .خيشلا اهمهفأ ال تاملـئان وهو ملقي رخآ رفب",
+      "error": null,
+      "cer_light": 0.8,
+      "cer_raw": 0.819,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000196",
+      "row": 196,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فَهُوَ وحدهُ فَقَطْ يُوَرِثُ مَن اتِّخَذَهُ بِعنَايَةٍ وَشِدِّةِ بَحْثٍ الْعِلْمَ الثِّابِتَ الْحَقِيِّ",
+      "prediction": ". رسنلكتي ةميخلا يف يراج ناك . خيشلا عم اهمهفأ ال تاملىئان وهو ملـعتي",
+      "error": null,
+      "cer_light": 0.8155,
+      "cer_raw": 0.8155,
+      "wer_light": 1.1667
+    },
+    {
+      "sample_id": "kitab_historyar/train/000185",
+      "row": 185,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "يقالُ لها",
+      "prediction": "اذهل ةيئاف",
+      "error": null,
+      "cer_light": 0.8889,
+      "cer_raw": 0.8889,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000184",
+      "row": 184,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "طويل احْمر يَصلح للجراحات العَارضه في الراس والكسر العارض",
+      "prediction": "ثم اهفط ال تاملكب مئان وهو ةيع ـف يراج ناك .خيشلا عم لالهو انفانلوصو",
+      "error": null,
+      "cer_light": 0.9298,
+      "cer_raw": 0.9474,
+      "wer_light": 1.5556
+    },
+    {
+      "sample_id": "kitab_historyar/train/000180",
+      "row": 180,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تحت راس الكبش ل ط بالمقدار",
+      "prediction": "sliet; طباضلا هل سلـغب ضقنا لثم",
+      "error": null,
+      "cer_light": 0.9615,
+      "cer_raw": 1.0,
+      "wer_light": 1.0
+    }
+  ]
+}
