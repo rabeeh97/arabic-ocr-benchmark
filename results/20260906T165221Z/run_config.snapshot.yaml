@@ -1,0 +1,36 @@
+models:
+- nakba-baseline-qwen3vl
+datasets:
+- muharaf_lines
+indices:
+- 180
+- 181
+- 182
+- 183
+- 184
+- 185
+- 186
+- 187
+- 188
+- 189
+- 190
+- 191
+- 192
+- 193
+- 194
+- 195
+- 196
+- 197
+- 198
+- 199
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: runner_rob
+session_id: a306b3e1
