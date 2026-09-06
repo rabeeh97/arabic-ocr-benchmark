@@ -1,0 +1,119 @@
+{
+  "run_id": "20260906T004413Z",
+  "generated_at": "2026-09-06T00:44:43+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000179",
+      "row": 179,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بطريق الحط وما نقص عن مال الى مال بطريق الجبر ثم تحط كلا من النوعين الاخرين",
+      "prediction": "ثميخلا يف ناك عم انباحصو دنعلي رغلا ةم لالهو طوعطع رفاظ قيار",
+      "error": null,
+      "cer_light": 0.72,
+      "cer_raw": 0.72,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000178",
+      "row": 178,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لقلوبهم حٰالة السّمٰاع بالتلذّذ التّام واذا كنت بمجلس مع عوام",
+      "prediction": "غلب له حجار تلأس .كتمزل طباضلا هل سلـغب ةدئاف ملعت لاله",
+      "error": null,
+      "cer_light": 0.7705,
+      "cer_raw": 0.7705,
+      "wer_light": 1.1
+    },
+    {
+      "sample_id": "kitab_historyar/train/000176",
+      "row": 176,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وله من الشّعب المخيّرويقال له بين البحرين والأوج ويقال لَهُ",
+      "prediction": "ةمئان وهو ملكتي ةميخلا يف ىراج ناك .خيشلا عم انباحصأ",
+      "error": null,
+      "cer_light": 0.7797,
+      "cer_raw": 0.7966,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000161",
+      "row": 161,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "إِلَى وَتَرِ ضِعْفِ قَوْسِ ها تُولّفُ مِنْ نِسْبَتَيْنِ مِنْ نِسْبَةِ وَتَرِ ضِعْفِ قَوْسِ جز إِلَى وِتَرِ",
+      "prediction": "رخلا يف يراج ناك غيعسوؤل نب فوزاض رقيارد ،شمش عم انيعهو اهوفط ال تاملكب",
+      "error": null,
+      "cer_light": 0.8113,
+      "cer_raw": 0.8208,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000163",
+      "row": 163,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "له كوچك وهو رابع الُمقامات والزّنكو له طبعه هوائي",
+      "prediction": "ىباض رغ ، قارد ، شمشم : صنلا اذهل ةيعحلا يف اننعسو ا ال",
+      "error": null,
+      "cer_light": 0.9184,
+      "cer_raw": 0.9184,
+      "wer_light": 1.5556
+    },
+    {
+      "sample_id": "kitab_historyar/train/000160",
+      "row": 160,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "صح خ",
+      "prediction": ". رخيغ",
+      "error": null,
+      "cer_light": 1.25,
+      "cer_raw": 1.25,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000170",
+      "row": 170,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "يفسد",
+      "prediction": "tries.",
+      "error": null,
+      "cer_light": 1.5,
+      "cer_raw": 1.5,
+      "wer_light": 1.0
+    }
+  ]
+}
