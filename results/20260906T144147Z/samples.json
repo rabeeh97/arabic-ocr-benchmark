@@ -1,0 +1,119 @@
+{
+  "run_id": "20260906T144147Z",
+  "generated_at": "2026-09-06T14:43:13+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000053",
+      "row": 53,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وسعينا مع شيخ. كان جاري في الخيمة يتكلم وهو نائم  بكلمات لا أفهمها مثل",
+      "prediction": "وستعين مع شيخ، كان جازي في النية بقلطم وهو ناسم بكلمات لا أفهمها مثل",
+      "error": null,
+      "cer_light": 0.1594,
+      "cer_raw": 0.1714,
+      "wer_light": 0.4286
+    },
+    {
+      "sample_id": "kitab_khatt/train/000042",
+      "row": 42,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "للحج.  بدأت قوافل الحجيج حاج إثر آخر يلبي.  عند وصولنا طفنا وسعينا مع شيخ.",
+      "prediction": "الحج . بدأت فوائج الحجاج حاج إثر آخر بليي . عند صومنا طفينا وسحبا مع شيخ.",
+      "error": null,
+      "cer_light": 0.2083,
+      "cer_raw": 0.2297,
+      "wer_light": 0.6429
+    },
+    {
+      "sample_id": "kitab_khatt/train/000054",
+      "row": 54,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " عند وصولنا طفنا وسعينا مع شيخ .كان جاري في الخيمه يتكلم وهو نائم  بكلمات",
+      "prediction": "عبد وبيونا طفنا وسعيما مع شيخ كان حاري في أحببه نيلكم وهو زامم بكلامات",
+      "error": null,
+      "cer_light": 0.2394,
+      "cer_raw": 0.2639,
+      "wer_light": 0.6429
+    },
+    {
+      "sample_id": "kitab_khatt/train/000041",
+      "row": 41,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الكلمات التالية لهذا النص: مشمش , دراق , غيظ، ناء ,  بث , نس .",
+      "prediction": "الكلمات التالية لها المعنى: مشتى، رديف، حيف، ناس، بيت، خمسة،",
+      "error": null,
+      "cer_light": 0.4098,
+      "cer_raw": 0.4194,
+      "wer_light": 0.8667
+    },
+    {
+      "sample_id": "kitab_khatt/train/000050",
+      "row": 50,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وهلال خازن عفيف للجج. بدأت قوافل الحجيج حاج إثر آخر يلبي .",
+      "prediction": "وهلال خارج عضيف للحج",
+      "error": null,
+      "cer_light": 0.7069,
+      "cer_raw": 0.7069,
+      "wer_light": 0.9167
+    },
+    {
+      "sample_id": "kitab_khatt/train/000048",
+      "row": 48,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "خوليا  دام عدة أيام اجزاء من المانيا وتسبب بفيضانات شديدة",
+      "prediction": "الجواب:",
+      "error": null,
+      "cer_light": 0.9286,
+      "cer_raw": 0.9298,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000051",
+      "row": 51,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst",
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وىعي الطريقة الطبيعية للتطريد في النحل وبها يزيد من عدد طوائفه.يخزن النحل الصغير العسل في أعلى القرص",
+      "prediction": "وَعْرِي الطَّبُقَة الْطَابِيقَة النَّكَفَازِ في الثَّلُثِ ثَمَانٍ بِنِّيْتِهِ مِنْ سَدَرِ طَوافِيهِ، ۖ يَحْذِيرُ عَلَى أَخْلاَفِ السَّالِسِ لِأَحَلِ الفَرْضِ",
+      "error": null,
+      "cer_light": 1.02,
+      "cer_raw": 1.03,
+      "wer_light": 1.0
+    }
+  ]
+}
