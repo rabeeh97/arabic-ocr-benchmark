@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T004113Z",
+  "generated_at": "2026-09-06T00:41:45+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000130",
+      "row": 130,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مِن ٱلسُوسن البري",
+      "prediction": ". رسن ،ثب ،",
+      "error": null,
+      "cer_light": 0.7059,
+      "cer_raw": 0.7059,
+      "wer_light": 1.3333
+    },
+    {
+      "sample_id": "kitab_historyar/train/000122",
+      "row": 122,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ان كان باقيا بوجه من وجه التحيل وهذا الطرىق هو الذى اورده فى النطم واشار اليه بقوله",
+      "prediction": "ثم اهمهفأ ال تاملكب مئان وهو ملـتي هميخلا يف ىراج ناك .خيشلا عم اذهو انلسوصو",
+      "error": null,
+      "cer_light": 0.747,
+      "cer_raw": 0.759,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000125",
+      "row": 125,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "زمانه بالوحه الدى وصعناه",
+      "prediction": ". انلفصو دنع نب ماخ",
+      "error": null,
+      "cer_light": 0.75,
+      "cer_raw": 0.75,
+      "wer_light": 1.25
+    },
+    {
+      "sample_id": "kitab_historyar/train/000138",
+      "row": 138,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "اجْزَاءِِ وَالأَرْبِعِ وَالأَرْبعِينَ دَقِيقَة وَالثّلاَثِ وَالخَمسِينَ ثَانِيةََ إِلَی الثّمانِيَّةِ",
+      "prediction": "ةيخلا يف اتاملكب مئان وهو ةميغلا رف يراج ناك . خيش عم انيعسو افط # اللوصو دنع",
+      "error": null,
+      "cer_light": 0.7822,
+      "cer_raw": 0.802,
+      "wer_light": 1.8889
+    },
+    {
+      "sample_id": "kitab_historyar/train/000121",
+      "row": 121,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "نَهشَة الافعَي ونهش",
+      "prediction": "شمشلا ةم اذهفط",
+      "error": null,
+      "cer_light": 0.7895,
+      "cer_raw": 0.7895,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000136",
+      "row": 136,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "هُو نباتٌ من المستاٮف كونه فى كل سَنةٍ وله ورق شبِيه",
+      "prediction": "هميخلا يف يراج ناك . خيش عم انيعسو امفط ا اللوصو دنع",
+      "error": null,
+      "cer_light": 0.8846,
+      "cer_raw": 0.8846,
+      "wer_light": 1.0909
+    },
+    {
+      "sample_id": "kitab_historyar/train/000134",
+      "row": 134,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "لَتِهِ",
+      "prediction": ". رخ",
+      "error": null,
+      "cer_light": 1.0,
+      "cer_raw": 1.0,
+      "wer_light": 2.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000129",
+      "row": 129,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دلک الخط مرٮع خط ىشاركه",
+      "prediction": ". رسن ، ثب ،ءان ةيغلاد لهمهفأ ال",
+      "error": null,
+      "cer_light": 1.1739,
+      "cer_raw": 1.2174,
+      "wer_light": 1.6
+    }
+  ]
+}
