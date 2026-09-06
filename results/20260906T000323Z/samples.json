@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T000323Z",
+  "generated_at": "2026-09-06T00:03:40+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_onlinekhatt/train/000006",
+      "row": 6,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "دون إضافة، وهو ما يتبادر على الذهن من",
+      "prediction": "دين إضافة، وهو ما يتبارى على الذهن من",
+      "error": null,
+      "cer_light": 0.0811,
+      "cer_raw": 0.0811,
+      "wer_light": 0.25
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000009",
+      "row": 9,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مما يتسبب في ارتفاع المتوسط العالمي للحرارة .",
+      "prediction": "ما يتسبب في ارتفاع تورس العالمي الحرارة .",
+      "error": null,
+      "cer_light": 0.1556,
+      "cer_raw": 0.1556,
+      "wer_light": 0.375
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000002",
+      "row": 2,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "من الأشعة الشمسية وبذلك ترفع من درجة حرارة",
+      "prediction": "من الاشياء الشمسية وبذلك تربح من درجة الحرارة",
+      "error": null,
+      "cer_light": 0.1667,
+      "cer_raw": 0.1905,
+      "wer_light": 0.375
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000000",
+      "row": 0,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "بأحد ملوك حمير ألا وهو الملك الحميري ذو",
+      "prediction": "أحد ملوك عمير ألد وهو الملك المخزني ذو",
+      "error": null,
+      "cer_light": 0.1795,
+      "cer_raw": 0.1795,
+      "wer_light": 0.5
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000004",
+      "row": 4,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عليها وبشجاعتهم فقد استعملت أروبا بفضل توجيههم الحكيم",
+      "prediction": "عليها وبسجاج استقم نقدا شعلات أروبا بفضل نقوجيهم الحاليين",
+      "error": null,
+      "cer_light": 0.3585,
+      "cer_raw": 0.3585,
+      "wer_light": 0.75
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000008",
+      "row": 8,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الضخمه، وقد حوت مقداراً من \"اكاسيد الحديد\" أعطت",
+      "prediction": "الغزامة) وقامت عقد \"أمس\" أكاسيد بحريّة أعطت",
+      "error": null,
+      "cer_light": 0.4681,
+      "cer_raw": 0.5106,
+      "wer_light": 0.875
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000001",
+      "row": 1,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "باسم الحيوانات الوحشيه، أي التى لم تألف الإنسان،",
+      "prediction": "باسم الحسين بن العوام (أبي بكر لم تكن الإِنْكَه)",
+      "error": null,
+      "cer_light": 0.5625,
+      "cer_raw": 0.5625,
+      "wer_light": 0.875
+    },
+    {
+      "sample_id": "kitab_onlinekhatt/train/000007",
+      "row": 7,
+      "model": "qwen2.5-vl-3b",
+      "dataset": "kitab_onlinekhatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تجاويف الأشجار والفجوات ويبني عدة أقراص متوازية من",
+      "prediction": "تَبَارِنْ الأُشْدَارُ وَالنخراطُ ويبني عرّة المراض خَفازَيْهَا من",
+      "error": null,
+      "cer_light": 0.62,
+      "cer_raw": 0.64,
+      "wer_light": 0.75
+    }
+  ]
+}
