@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T003516Z",
+  "generated_at": "2026-09-06T00:35:46+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000051",
+      "row": 51,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الى مال وخمسة وعشرين الا عشرة اجذار المال يعدل واحدا فجذرا احدى المتعادلتين",
+      "prediction": "ثم انيعسو اهفط ارلو دنع ىبلي رخا رفاظ قيار يؤل نب فوؤر ةبحصب ماغل",
+      "error": null,
+      "cer_light": 0.76,
+      "cer_raw": 0.76,
+      "wer_light": 1.0769
+    },
+    {
+      "sample_id": "kitab_historyar/train/000044",
+      "row": 44,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ما نبهتك عليه فيما تقدّم وان تراجع وزن الّذٖي ينٰاسب من الأُوزٰان",
+      "prediction": "تاملكب مئان وهو ةميخلا يف ىراج ناك .خيش عم انيعسو امفط",
+      "error": null,
+      "cer_light": 0.7692,
+      "cer_raw": 0.7692,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000059",
+      "row": 59,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "برجه الميزان سٰاعته المريخ في الفلك الخامس يوم الثّلثاء وله",
+      "prediction": "ال تاملكب مئان وهو ملف يراج ناك .خيشلا عم انيعسو امفأ ال",
+      "error": null,
+      "cer_light": 0.7797,
+      "cer_raw": 0.7797,
+      "wer_light": 1.2
+    },
+    {
+      "sample_id": "kitab_historyar/train/000056",
+      "row": 56,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَخمسًا وخمسِين دقيقة وَثلَاثًا وَعشرِٮن ثانِيَةً فقَدْ استخرجنا هَذِهِ الاوتار بطريق سَهْلٍ ويستبين من هذا الموضع",
+      "prediction": "جيغ ضقنا لثم اهمهفأ ال تاملكب مئان وهو ملـعتي هميخلا يف يراج ناك .خيش عم احيعسو انفانل",
+      "error": null,
+      "cer_light": 0.807,
+      "cer_raw": 0.8158,
+      "wer_light": 1.0625
+    },
+    {
+      "sample_id": "kitab_historyar/train/000040",
+      "row": 40,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "تمام زاويتين قايمتين سىعة وسبعين جزءا ونصف جزء وقد استبان",
+      "prediction": "كتمزل طيعس هميخلا يف يراج ناك .خيش عم انيعو اهو احصو دنع",
+      "error": null,
+      "cer_light": 0.8246,
+      "cer_raw": 0.8246,
+      "wer_light": 1.2
+    },
+    {
+      "sample_id": "kitab_historyar/train/000050",
+      "row": 50,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "مَدقوقٌ مخلوط بزيت",
+      "prediction": "نثم اهفط ال تاملكب مئان وهو",
+      "error": null,
+      "cer_light": 1.2778,
+      "cer_raw": 1.2778,
+      "wer_light": 2.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000052",
+      "row": 52,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ص",
+      "prediction": "رسن",
+      "error": null,
+      "cer_light": 3.0,
+      "cer_raw": 3.0,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000045",
+      "row": 45,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "خ",
+      "prediction": ". رخ?",
+      "error": null,
+      "cer_light": 4.0,
+      "cer_raw": 4.0,
+      "wer_light": 2.0
+    }
+  ]
+}
