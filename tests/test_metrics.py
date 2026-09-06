@@ -4,11 +4,15 @@ import pytest
 
 from arabic_ocr_bench.metrics import (
     aggregate,
+    car,
     cer,
     char_edit_counts,
     diacritic_prf,
+    mer,
     score_pair,
     wer,
+    wil,
+    wip,
 )
 
 KASRA = "ِ"
@@ -41,6 +45,47 @@ class TestWer:
 
     def test_both_empty_is_zero(self):
         assert wer("", "") == 0.0
+
+
+class TestCar:
+    def test_car_is_one_minus_cer(self):
+        assert car("abcd", "abXd") == pytest.approx(0.75)
+
+    def test_car_is_one_for_perfect(self):
+        assert car("مرحبا", "مرحبا") == 1.0
+
+    def test_car_clamped_at_zero_for_long_garbage(self):
+        # 2 ref chars, a flood of insertions -> CER > 1 -> CAR floored at 0
+        assert car("ab", "abXXXXXXXXXX") == 0.0
+
+
+class TestWordFamily:
+    def test_identical_is_perfect(self):
+        assert wer("the cat sat", "the cat sat") == 0.0
+        assert mer("the cat sat", "the cat sat") == 0.0
+        assert wil("the cat sat", "the cat sat") == 0.0
+        assert wip("the cat sat", "the cat sat") == 1.0
+
+    def test_mer_bounded_when_wer_exceeds_one(self):
+        # 1 ref word, 4 hyp words: WER = 4/1 = 4.0, MER = 4/(4+0)... hits=0 -> 1.0
+        assert wer("hello", "a b c d") == pytest.approx(4.0)
+        assert mer("hello", "a b c d") == 1.0
+        assert 0.0 <= wil("hello", "a b c d") <= 1.0
+
+    def test_wip_accounts_for_invented_words(self):
+        ref = "the cat sat"
+        hyp = "the cat sat on the warm mat"  # all 3 ref words kept, 4 invented
+        # H=3, N_ref=3, N_hyp=7  -> WIP = (3/3)*(3/7) = 3/7
+        assert wip(ref, hyp) == pytest.approx(3 / 7)
+        assert wil(ref, hyp) == pytest.approx(1 - 3 / 7)
+        # perfect recall (every ref word present) yet WIP is well under 1 because
+        # precision is only 3/7 — plain recall-style scoring would miss that
+        assert wil(ref, hyp) > 0.5
+
+    def test_empty_reference_conventions(self):
+        assert wer("", "") == 0.0 and mer("", "") == 0.0
+        assert wip("", "") == 1.0 and wil("", "") == 0.0
+        assert mer("", "a b") == 1.0 and wip("", "a b") == 0.0
 
 
 class TestCharEditCounts:
@@ -121,3 +166,22 @@ class TestAggregate:
         p2 = score_pair("ab", "aX", profiles=("raw",))
         agg = aggregate([p1, p2], profiles=("raw",))
         assert agg["exact_match_rate"]["raw"] == 0.5
+
+    def test_micro_car_is_one_minus_micro_cer(self):
+        p1 = score_pair("ab", "ab", profiles=("raw",))              # 0 / 2
+        p2 = score_pair("abcdefgh", "abcdXXXX", profiles=("raw",))  # 4 / 8
+        agg = aggregate([p1, p2], profiles=("raw",))
+        assert agg["micro_car"]["raw"] == pytest.approx(1 - 4 / 10)
+
+    def test_micro_mer_and_wil_are_populated_and_bounded(self):
+        p1 = score_pair("the cat sat", "the cat sat", profiles=("raw",))
+        p2 = score_pair("a b c", "x y z w v", profiles=("raw",))
+        agg = aggregate([p1, p2], profiles=("raw",))
+        for key in ("micro_mer", "micro_wil", "micro_wip", "mer_macro", "wil_macro"):
+            assert 0.0 <= agg[key]["raw"] <= 1.0
+        assert agg["micro_wil"]["raw"] == pytest.approx(1 - agg["micro_wip"]["raw"])
+
+    def test_score_pair_exposes_new_metric_keys(self):
+        out = score_pair("مرحبا", "مرحبا", profiles=("light",))
+        for k in ("car", "mer", "wil", "wip"):
+            assert k in out and "light" in out[k]

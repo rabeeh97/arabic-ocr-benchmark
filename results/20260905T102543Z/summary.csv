@@ -1,7 +1,7 @@
-model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
-gemini-flash-lite,kitab_hindawi,1,0,0.0,2157.4,0.000154,0.7663,0.7663,0.8086,0.0,0.7594,0.7594,0.7644,0.0,0.7619,0.7619,0.7644,0.0,0.56
-gemini-pro,kitab_historicalbooks,0,10,1.0,0.0,0.0,,,,,,,,,,,,,
-gemini-flash-lite,kitab_historyar,38,0,0.0,4385.1,0.004757,0.3136,0.3654,0.7209,0.0,0.3041,0.3578,0.6992,0.0,0.2324,0.2937,0.5176,0.0526,0.3801
-gemini-flash,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,
-gemini-pro,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,
-gemini-flash-lite,kitab_onlinekhatt,50,0,0.0,2234.6,0.006062,0.1412,0.1425,0.3836,0.1,0.1322,0.1334,0.3606,0.12,0.1164,0.1177,0.3197,0.24,0.8631
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,car_micro_raw,car_macro_raw,wer_micro_raw,mer_micro_raw,mer_macro_raw,wil_micro_raw,wip_micro_raw,exact_raw,cer_micro_light,cer_macro_light,car_micro_light,car_macro_light,wer_micro_light,mer_micro_light,mer_macro_light,wil_micro_light,wip_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,car_micro_diac_insensitive,car_macro_diac_insensitive,wer_micro_diac_insensitive,mer_micro_diac_insensitive,mer_macro_diac_insensitive,wil_micro_diac_insensitive,wip_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+gemini-flash-lite,kitab_hindawi,1,0,0.0,2157.4,0.000154,0.7663,0.7663,0.2337,0.2337,0.8086,0.7988,0.7988,0.836,0.164,0.0,0.7594,0.7594,0.2406,0.2406,0.7644,0.7644,0.7644,0.7644,0.2356,0.0,0.7619,0.7619,0.2381,0.2381,0.7644,0.7644,0.7644,0.7644,0.2356,0.0,0.56
+gemini-pro,kitab_historicalbooks,0,10,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+gemini-flash-lite,kitab_historyar,38,0,0.0,4385.1,0.004757,0.3136,0.3654,0.6864,0.6346,0.7209,0.6873,0.7229,0.8882,0.1118,0.0,0.3041,0.3578,0.6959,0.6422,0.6992,0.6649,0.7038,0.871,0.129,0.0,0.2324,0.2937,0.7676,0.7063,0.5176,0.4923,0.5459,0.7037,0.2963,0.0526,0.3801
+gemini-flash,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+gemini-pro,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+gemini-flash-lite,kitab_onlinekhatt,50,0,0.0,2234.6,0.006062,0.1412,0.1425,0.8588,0.8575,0.3836,0.3641,0.3611,0.5686,0.4314,0.1,0.1322,0.1334,0.8678,0.8666,0.3606,0.3414,0.3344,0.5351,0.4649,0.12,0.1164,0.1177,0.8836,0.8823,0.3197,0.3027,0.285,0.4788,0.5212,0.24,0.8631

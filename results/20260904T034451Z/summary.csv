@@ -1,5 +1,5 @@
-model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,wer_micro_raw,exact_raw,cer_micro_light,cer_macro_light,wer_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,wer_micro_diac_insensitive,exact_diac_insensitive,diac_f1
-gemini-pro,kitab_historicalbooks,0,10,1.0,0.0,0.0,,,,,,,,,,,,,
-gemini-flash-lite,kitab_khatt,3,28,0.9032,8614.3,0.000378,0.3615,0.3643,0.7292,0.0,0.3476,0.3503,0.7083,0.0,0.3476,0.3503,0.7083,0.0,1.0
-gemini-flash,kitab_khatt,3,26,0.8966,8129.9,0.002907,0.8497,0.8329,0.9688,0.0,0.8366,0.822,0.9688,0.0,0.8105,0.7614,0.9062,0.0,0.6667
-gemini-pro,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,car_micro_raw,car_macro_raw,wer_micro_raw,mer_micro_raw,mer_macro_raw,wil_micro_raw,wip_micro_raw,exact_raw,cer_micro_light,cer_macro_light,car_micro_light,car_macro_light,wer_micro_light,mer_micro_light,mer_macro_light,wil_micro_light,wip_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,car_micro_diac_insensitive,car_macro_diac_insensitive,wer_micro_diac_insensitive,mer_micro_diac_insensitive,mer_macro_diac_insensitive,wil_micro_diac_insensitive,wip_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+gemini-pro,kitab_historicalbooks,0,10,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+gemini-flash-lite,kitab_khatt,3,28,0.9032,8614.3,0.000378,0.3615,0.3643,0.6385,0.6357,0.7292,0.6604,0.6407,0.8533,0.1467,0.0,0.3476,0.3503,0.6524,0.6497,0.7083,0.6415,0.6222,0.8365,0.1635,0.0,0.3476,0.3503,0.6524,0.6497,0.7083,0.6415,0.6222,0.8365,0.1635,0.0,1.0
+gemini-flash,kitab_khatt,3,26,0.8966,8129.9,0.002907,0.8497,0.8329,0.1503,0.1671,0.9688,0.9688,0.9583,0.9978,0.0022,0.0,0.8366,0.822,0.1634,0.178,0.9688,0.9688,0.9583,0.9978,0.0022,0.0,0.8105,0.7614,0.1895,0.2386,0.9062,0.9062,0.875,0.9799,0.0201,0.0,0.6667
+gemini-pro,kitab_khatt,0,25,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

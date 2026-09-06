@@ -348,7 +348,13 @@ def _merge_runs(model: str, dataset: str, group: list[dict], run_dirs: dict[str,
     for p in _PROFILES:
         row[f"cer_micro_{p}"] = f"{agg['micro_cer'][p]:.4f}" if agg else ""
         row[f"cer_macro_{p}"] = f"{agg['cer_macro'][p]:.4f}" if agg else ""
+        row[f"car_micro_{p}"] = f"{agg['micro_car'][p]:.4f}" if agg else ""
+        row[f"car_macro_{p}"] = f"{agg['car_macro'][p]:.4f}" if agg else ""
         row[f"wer_micro_{p}"] = f"{agg['micro_wer'][p]:.4f}" if agg else ""
+        row[f"mer_micro_{p}"] = f"{agg['micro_mer'][p]:.4f}" if agg else ""
+        row[f"mer_macro_{p}"] = f"{agg['mer_macro'][p]:.4f}" if agg else ""
+        row[f"wil_micro_{p}"] = f"{agg['micro_wil'][p]:.4f}" if agg else ""
+        row[f"wip_micro_{p}"] = f"{agg['micro_wip'][p]:.4f}" if agg else ""
         row[f"exact_{p}"] = f"{agg['exact_match_rate'][p]:.4f}" if agg else ""
     row["diac_f1"] = f"{agg['diacritic']['f1']:.4f}" if agg else ""
     return row
@@ -370,8 +376,17 @@ _EXPLORER_COLS = [
     ("cmac", "CER·macro", 1, True, "lo",
      "mean of the per-line light CER (every line weighted equally) rather than "
      "corpus-weighted — more sensitive to short lines."),
+    ("car", "CAR·light", 1, True, "hi",
+     "character accuracy rate after light normalization = 100 − CER·light "
+     "(clamped at 0). Higher is better."),
     ("wl", "WER·light", 1, True, "lo",
      "word error rate after light normalization, corpus-weighted."),
+    ("mer", "MER·light", 1, True, "lo",
+     "match error rate — like WER but hits are in the denominator, so it never "
+     "exceeds 100. Light normalization, corpus-weighted."),
+    ("wil", "WIL·light", 1, True, "lo",
+     "word information lost = 100·(1 − (H/N_ref)·(H/N_hyp)); penalises both "
+     "missed and invented words. Light normalization."),
     ("ex", "exact %", 1, True, "hi",
      "share of lines transcribed exactly right after light normalization."),
     ("df", "diac F1", 3, False, "hi",
@@ -469,7 +484,11 @@ def _render_explorer(rows: list[dict], target: Path) -> str:
                     "m": r["model"], "n": r.get("n", ""), "err": r.get("errors", ""),
                     "cl": r.get("cer_micro_light", ""), "cr": r.get("cer_micro_raw", ""),
                     "cnd": r.get("cer_micro_diac_insensitive", ""),
-                    "cmac": r.get("cer_macro_light", ""), "wl": r.get("wer_micro_light", ""),
+                    "cmac": r.get("cer_macro_light", ""),
+                    "car": r.get("car_micro_light", ""),
+                    "wl": r.get("wer_micro_light", ""),
+                    "mer": r.get("mer_micro_light", ""),
+                    "wil": r.get("wil_micro_light", ""),
                     "ex": r.get("exact_light", ""), "df": r.get("diac_f1", ""),
                     "ms": r.get("latency_ms_mean", ""), "cost": r.get("cost_usd_total", ""),
                 }
@@ -1001,12 +1020,33 @@ _REVIEW_JS = r"""
 """
 
 _LEGEND = [
-    ("CER / WER", "edit distance to the reference, over characters / words. 0 = perfect."),
-    ("raw", "exact strings — every orthographic and diacritic difference counts."),
-    ("light", "alef forms, digits, tatweel and spacing normalized first."),
-    ("no-diac", "light, and harakat stripped from both sides."),
-    ("micro / macro", "corpus-weighted total vs. mean of per-line rates."),
-    ("diac F1", "precision/recall of harakat marks, measured on raw text."),
+    ("CER / WER",
+     "edit distance to the reference over characters / words: (S+D+I) ÷ N_ref. "
+     "0 = perfect; can exceed 100% when the output is much longer than the reference."),
+    ("CAR",
+     "character accuracy rate = max(0, 100 − CER). The same information as CER, "
+     "framed as “how much was right”. Higher is better."),
+    ("MER",
+     "match error rate = (S+D+I) ÷ (S+D+I+H) — like WER but hits sit in the "
+     "denominator too, so it is always between 0 and 100%."),
+    ("WIL / WIP",
+     "word information lost / preserved. WIP = (H/N_ref)·(H/N_hyp) rewards "
+     "correct words and punishes invented ones; WIL = 100% − WIP. Lower WIL is better."),
+    ("micro / macro",
+     "micro = one corpus-wide rate (sum the S/D/I/H counts, then divide) — "
+     "long lines weigh more. macro = the plain mean of the per-line rates."),
+    ("diac F1", "precision/recall of harakat marks, measured on raw (un-normalized) text."),
+    ("raw",
+     "no normalization — every orthographic and diacritic difference counts. Strictest."),
+    ("light",
+     "Unicode NFC, strip tatweel (ـ), unify alef forms (أإآٱ→ا), map Arabic-Indic "
+     "digits to ASCII, collapse whitespace. Keeps harakat, taa-marbuta and "
+     "alef-maqsura. The headline profile — matches CAMeL-Tools / Lucene practice."),
+    ("no-diac",
+     "light, plus alef-maqsura→yaa, taa-marbuta→haa, hamza carriers folded (ؤ→و, "
+     "ئ→ي) and all harakat stripped from both sides — scores the consonant skeleton."),
+    ("(details)",
+     "full formulae and the normalization rationale: docs/metrics.md in the repo."),
 ]
 
 _RENDER_CTX: dict = {"target": Path("results")}

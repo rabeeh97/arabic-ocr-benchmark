@@ -52,7 +52,11 @@ def score_run(run_dir: str | Path, profiles=PROFILES, *, progress: bool = True) 
             "latency_ms": r.get("latency_ms", 0.0),
             "cost_usd": r.get("cost_usd", 0.0),
             **{f"cer_{p}": ps["cer"][p] for p in profiles},
+            **{f"car_{p}": ps["car"][p] for p in profiles},
             **{f"wer_{p}": ps["wer"][p] for p in profiles},
+            **{f"mer_{p}": ps["mer"][p] for p in profiles},
+            **{f"wil_{p}": ps["wil"][p] for p in profiles},
+            **{f"wip_{p}": ps["wip"][p] for p in profiles},
             **{f"exact_{p}": ps["exact_match"][p] for p in profiles},
             "diac_precision": ps["diacritic"]["precision"],
             "diac_recall": ps["diacritic"]["recall"],
@@ -100,17 +104,23 @@ def score_run(run_dir: str | Path, profiles=PROFILES, *, progress: bool = True) 
             for p in profiles:
                 row[f"cer_micro_{p}"] = round(agg["micro_cer"][p], 4)
                 row[f"cer_macro_{p}"] = round(agg["cer_macro"][p], 4)
+                row[f"car_micro_{p}"] = round(agg["micro_car"][p], 4)
+                row[f"car_macro_{p}"] = round(agg["car_macro"][p], 4)
                 row[f"wer_micro_{p}"] = round(agg["micro_wer"][p], 4)
+                row[f"mer_micro_{p}"] = round(agg["micro_mer"][p], 4)
+                row[f"mer_macro_{p}"] = round(agg["mer_macro"][p], 4)
+                row[f"wil_micro_{p}"] = round(agg["micro_wil"][p], 4)
+                row[f"wip_micro_{p}"] = round(agg["micro_wip"][p], 4)
                 row[f"exact_{p}"] = round(agg["exact_match_rate"][p], 4)
             row["diac_f1"] = round(agg["diacritic"]["f1"], 4)
         else:
             # nothing scored (every attempt errored) — leave the metric cells
             # empty so the board shows "—", not a spurious 0.00 CER.
             for p in profiles:
-                row[f"cer_micro_{p}"] = ""
-                row[f"cer_macro_{p}"] = ""
-                row[f"wer_micro_{p}"] = ""
-                row[f"exact_{p}"] = ""
+                for m in ("cer_micro", "cer_macro", "car_micro", "car_macro",
+                          "wer_micro", "mer_micro", "mer_macro",
+                          "wil_micro", "wip_micro", "exact"):
+                    row[f"{m}_{p}"] = ""
             row["diac_f1"] = ""
         summary_rows.append(row)
 
@@ -131,16 +141,22 @@ def _group_by(rows: list[dict], keys: tuple[str, ...]):
 
 
 def _render_md(df: pd.DataFrame, run_id: str, profiles) -> str:
+    note1 = ("CER/WER/MER/WIL: lower is better. CAR/WIP: higher is better. "
+             "`micro` = corpus-weighted, `macro` = per-sample mean.")
+    note3 = ("Full per-metric, per-profile numbers (CAR / MER / WIL / WIP too) "
+             "are in `summary.csv`; see `docs/metrics.md` for definitions.")
     lines = [
         f"# Benchmark summary — `{run_id}`",
         "",
-        "CER/WER: lower is better. `micro` = corpus-weighted, `macro` = per-sample mean.",
+        note1,
         "`exact` = fraction of samples transcribed perfectly. `diac_f1` = harakat F1 (raw text).",
+        note3,
         "",
     ]
     headline = ["model", "dataset", "n", "errors"]
     headline += [f"cer_micro_{p}" for p in profiles]
-    headline += ["wer_micro_raw", "exact_raw", "diac_f1", "latency_ms_mean", "cost_usd_total"]
+    headline += ["car_micro_light", "wer_micro_raw", "mer_micro_raw",
+                 "exact_raw", "diac_f1", "latency_ms_mean", "cost_usd_total"]
     view = df[[c for c in headline if c in df.columns]]
     lines.append(_df_to_md(view))
     lines.append("")
