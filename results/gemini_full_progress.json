@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05T16:59:58Z",
-  "remaining": 940,
+  "updated": "2026-09-06T17:22:33Z",
+  "remaining": 829,
   "done": false,
   "status": {
     "gemini-flash-lite": {
@@ -35,7 +35,7 @@
         10
       ],
       "kitab_khatt": [
-        44,
+        155,
         200
       ],
       "kitab_muharaf": [
