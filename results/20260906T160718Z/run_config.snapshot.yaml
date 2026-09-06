@@ -1,0 +1,36 @@
+models:
+- trocr-large-arabic
+datasets:
+- muharaf_lines
+indices:
+- 1040
+- 1041
+- 1042
+- 1043
+- 1044
+- 1045
+- 1046
+- 1047
+- 1048
+- 1049
+- 1050
+- 1051
+- 1052
+- 1053
+- 1054
+- 1055
+- 1056
+- 1057
+- 1058
+- 1059
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-3596a4a809e3
+session_id: c079b5cb

@@ -1,0 +1,36 @@
+models:
+- trocr-large-arabic
+datasets:
+- muharaf_lines
+indices:
+- 1300
+- 1301
+- 1302
+- 1303
+- 1304
+- 1305
+- 1306
+- 1307
+- 1308
+- 1309
+- 1310
+- 1311
+- 1312
+- 1313
+- 1314
+- 1315
+- 1316
+- 1317
+- 1318
+- 1319
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-3596a4a809e3
+session_id: c079b5cb
