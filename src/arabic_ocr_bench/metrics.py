@@ -30,6 +30,7 @@ Conventions for degenerate inputs (documented so results are reproducible):
 from __future__ import annotations
 
 import re
+import unicodedata
 
 import jiwer
 
@@ -127,8 +128,12 @@ def _harakat_only(s: str) -> str:
 
 def diacritic_prf(ref: str, hyp: str) -> dict[str, float]:
     """Precision / recall / F1 over the ordered sequence of harakat marks.
-    Computed on RAW text (never normalized), so it still sees dropped or
-    invented diacritics even when a diacritics-insensitive CER is 0."""
+    Computed on otherwise-unnormalized text — so it still sees dropped or
+    invented diacritics even when a diacritics-insensitive CER is 0 — but each
+    side is NFC-normalized first, so a model that emits shadda+fatha instead of
+    the canonical fatha+shadda is not scored as two diacritic errors."""
+    ref = unicodedata.normalize("NFC", ref)
+    hyp = unicodedata.normalize("NFC", hyp)
     r = _harakat_only(ref)
     h = _harakat_only(hyp)
     if not r and not h:

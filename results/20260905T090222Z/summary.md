@@ -6,6 +6,6 @@ Full per-metric, per-profile numbers (CAR / MER / WIL / WIP too) are in `summary
 
 | model | dataset | n | errors | cer_micro_raw | cer_micro_light | cer_micro_diac_insensitive | car_micro_light | wer_micro_raw | mer_micro_raw | exact_raw | diac_f1 | latency_ms_mean | cost_usd_total |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| gemini-flash-lite | kitab_khatt | 35 | 0 | 0.253 | 0.2415 | 0.2325 | 0.7585 | 0.5894 | 0.5256 | 0.0286 | 0.9102 | 1848.2 | 0.00436 |
+| gemini-flash-lite | kitab_khatt | 35 | 0 | 0.253 | 0.241 | 0.232 | 0.759 | 0.5894 | 0.5256 | 0.0286 | 0.9102 | 1848.2 | 0.00436 |
 
 Full per-profile numbers in `summary.csv`; per-sample in `scores.jsonl`.

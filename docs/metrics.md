@@ -19,22 +19,50 @@ they are compared. Reported numbers always name the profile (`cer_micro_light`,
 
 | profile | steps | keeps | use |
 | --- | --- | --- | --- |
-| **raw** | none | everything | strictest; every orthographic and diacritic variant is an error |
-| **light** | Unicode **NFC** → strip **tatweel** `ـ` → unify **alef** `أ إ آ ٱ → ا` → map **Arabic-Indic digits** `٠-٩` / `۰-۹` → `0-9` → collapse **whitespace** | harakat, **taa-marbuta** `ة`, **alef-maqsura** `ى`, hamza carriers `ؤ ئ` | **the headline profile** |
+| **raw** | **encoding canonicalisation only** — strip bidi / zero-width controls → fold **Arabic Presentation Forms** (contextual glyph codepoints + ligatures) to their nominal letters → **NFC** | everything orthographic: alef forms, tatweel, digits, harakat, spacing | strictest — every *orthographic* variant is an error, but a different *encoding* of the same text is not |
+| **light** | *raw*, then strip **tatweel** `ـ` → unify **alef** `أ إ آ ٱ → ا` → fold **Persian/Urdu look-alikes** `ک→ك`, `ی→ي`, `ہ ھ ە → ه` → map **Arabic-Indic digits** `٠-٩` / `۰-۹` → `0-9` → collapse **whitespace** | harakat, **taa-marbuta** `ة`, **alef-maqsura** `ى`, hamza carriers `ؤ ئ` | **the headline profile** |
 | **diac_insensitive** ("no-diac") | *light*, plus **alef-maqsura → yaa** `ى → ي`, **taa-marbuta → haa** `ة → ه`, **hamza carriers folded** `ؤ → و`, `ئ → ي`, and **strip all harakat** ` َ ً ُ ٌ ِ ٍ ّ ْ ٰ …` | the bare consonant skeleton | "did it read the letters", ignoring spelling conventions and vowelling |
 
 Harakat = the combining marks `U+064B–U+065F` plus the superscript (dagger) alef
 `U+0670`.
+
+### The "raw" encoding canonicalisation (why "raw" isn't literally raw)
+
+Different models emit the *same* Arabic text in different Unicode encodings, and
+so — it turns out — do some of the reference transcriptions (PDF-extraction
+noise). Scoring those as errors measures the encoder, not the reader. So even
+`raw` first applies three **lossless, non-orthographic** fixes:
+
+1. **Strip bidi / zero-width controls** (`LRM/RLM/ALM`, the embeddings and
+   isolates, `ZWSP/ZWJ/ZWNJ`, `BOM`) — invisible formatting, never content.
+2. **Fold Arabic Presentation Forms** (`U+FB50–U+FDFF`, `U+FE70–U+FEFF`) to their
+   nominal letters via a per-character compatibility decomposition: an
+   "initial-form jeem" codepoint → `ج`, the lam-alef ligature → `ل` + `ا`, the
+   `ﷺ` ligature → its spelled-out words.
+3. **NFC** — canonical composition, which also *reorders combining marks*: a
+   model that writes `ـّ` as `SHADDA, FATHA` and one that writes `FATHA, SHADDA`
+   now compare equal (they render identically and NFC says they're the same
+   string).
+
+Measured effect of adding this (2026-09-06 rescore of all stored runs):
+`cer_micro_raw` drops by ≤ 0.002 for most models (never rises), and **`diac_f1`
+rises materially** for models that emitted non-canonical mark order — up to
++0.20 for `gpt-4o`, +0.09 for `claude-opus`, +0.05 for `claude-fable` — because
+the diacritic metric no longer counts a reordering as a dropped-plus-invented
+mark.
 
 ### Why this design
 
 `light` is the level most Arabic OCR/NLP work compares at, and it mirrors the
 normalizers in **CAMeL Tools** (`normalize_unicode`, `normalize_alef_ar`,
 `normalize_alef_maksura_ar`, `normalize_teh_marbuta_ar`) and the **Lucene Arabic
-analyzer**: Unicode-normalize, drop tatweel, unify alef, and (for the
-diacritic-insensitive variant) unify alef-maqsura / taa-marbuta and remove
-tashkeel. Digit-script unification is added because OCR models legitimately
-disagree on `١٢٣` vs `123` for the same glyphs.
+analyzer**: Unicode-normalize, drop tatweel, unify alef, fold the Persian/Urdu
+letter look-alikes, and (for the diacritic-insensitive variant) unify
+alef-maqsura / taa-marbuta and remove tashkeel. Digit-script unification is
+added because OCR models legitimately disagree on `١٢٣` vs `123` for the same
+glyphs. Alef-maqsura `ى` is **not** folded at `light` — it is a real
+final-position orthographic distinction that the references use ~8.5k times, so
+it belongs only in `diac_insensitive`.
 
 `light` deliberately **keeps** harakat, taa-marbuta and alef-maqsura so that a
 model that drops every vowel or writes `ه` for `ة` is still marked down at the
