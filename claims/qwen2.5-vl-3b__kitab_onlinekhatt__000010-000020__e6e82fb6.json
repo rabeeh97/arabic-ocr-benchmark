@@ -1,0 +1,1 @@
+{"model": "qwen2.5-vl-3b", "dataset": "kitab_onlinekhatt", "i0": 10, "i1": 20, "indices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "runner_id": "vm-166ab08eee93", "session_id": "e6e82fb6", "status": "reserved", "claimed_at": 1788653108.0499527, "updated_at": 1788653109.0404599, "run_id": "", "n_scored": 0}
