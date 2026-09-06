@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T143809Z",
+  "generated_at": "2026-09-06T14:40:47+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_khatt/train/000028",
+      "row": 28,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الزراعية والريفية،",
+      "prediction": "الزراوية والريفية",
+      "error": null,
+      "cer_light": 0.1111,
+      "cer_raw": 0.1111,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000032",
+      "row": 32,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "أن العقيدة كلما اقتربت من فكرة التدحيد والايمان بالحياة الأخرى.",
+      "prediction": "أن العقيدة كما اقتربت من فكرة التوحيد والذكاء والإلهة الأخرى",
+      "error": null,
+      "cer_light": 0.1746,
+      "cer_raw": 0.1746,
+      "wer_light": 0.5
+    },
+    {
+      "sample_id": "kitab_khatt/train/000035",
+      "row": 35,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "حتى لا تكون هناك قطيعة تامة، وارتفعت بذلك السواحل الغربية، نتيجة انخساف الأرض،",
+      "prediction": "حتى لا تكون هناك قصيدة نهائية، وارتقطن بذلك السواحل العربية، نتيجة انحسار الأرنين.",
+      "error": null,
+      "cer_light": 0.2051,
+      "cer_raw": 0.2051,
+      "wer_light": 0.4615
+    },
+    {
+      "sample_id": "kitab_khatt/train/000038",
+      "row": 38,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "في الحج . هل تعلم فائدهـ الكلمات التالية لهذا النص : مشش ،",
+      "prediction": "في بعضها، هل تعلم ما أردت بكالات إسبانية لهذا الفعل؟",
+      "error": null,
+      "cer_light": 0.4912,
+      "cer_raw": 0.5172,
+      "wer_light": 0.7692
+    },
+    {
+      "sample_id": "kitab_khatt/train/000026",
+      "row": 26,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": " ظ ع ك ، ث خ ض، ب س ش، ص غ هـ أننا في الحج هل تعلم فائدة الكلمات التالية لهذا النص:",
+      "prediction": "الله أعلم، بس شيء، حسن الله أنني نجح في مائة ألفي سنة من العمر.",
+      "error": null,
+      "cer_light": 0.6667,
+      "cer_raw": 0.6829,
+      "wer_light": 0.9565
+    },
+    {
+      "sample_id": "kitab_khatt/train/000031",
+      "row": 31,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فألفو ذلك وقد هلك من العرب من هلك بالموت والقتل، فحفظوا أقل ذلك، وذهب",
+      "prediction": "قللوا أفلذلك ودعبه",
+      "error": null,
+      "cer_light": 0.8116,
+      "cer_raw": 0.8116,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000034",
+      "row": 34,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "شهد القرن الماضي إرتفاعاً ملحوظاً في معدلات درجات الحرارة",
+      "prediction": "حُرْدَ الْقِّتَنِ الأَصَاءِ إِلَى مِثْلاً ١٢٠۶٥٤٦٧٨٩٣٤",
+      "error": null,
+      "cer_light": 0.8246,
+      "cer_raw": 0.8596,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_khatt/train/000022",
+      "row": 22,
+      "model": "qari-ocr-0.2",
+      "dataset": "kitab_khatt",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "الأحرار بأجر نقدي ، واستأجروا عمالاً أحراراً يعملون",
+      "prediction": "أُمْ نَفِي ٥٠ وَسَتَعْجِبُوا أَنَا لَهُ مَّا تَحْلُقُونَ",
+      "error": null,
+      "cer_light": 0.8824,
+      "cer_raw": 0.8824,
+      "wer_light": 1.0
+    }
+  ]
+}
