@@ -103,6 +103,86 @@ nakba_lines:
     handwriting with a curated line-level transcription (`image` + `text`).
     CC-BY-4.0; the `test` split of the shared task's Systems Track.
 
+# --- RASAM (Calfa / BULAC) — Maghribi-script historical manuscripts ------------
+# HF, ungated, apache-2.0. Same `KitabBench` generic adapter: columns are
+# `image` + `transcription`. A distinct script family (Maghrebi) from the
+# Ruq'ah / Naskh handwriting elsewhere in the suite — worth its own rows.
+rasam2:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: calfa-ai/RASAM-2 }
+  track: line
+  split: test               # 372 lines (train 2,976 / val 372 reserved)
+  license: apache-2.0
+  source: https://huggingface.co/datasets/calfa-ai/RASAM-2
+  card: >-
+    RASAM 2 — line crops from Maghrebi-script Arabic manuscripts (BULAC
+    collection), transcribed by the Calfa / RASAM project. Dense diacritics,
+    a script style under-represented in most Arabic HTR sets.
+rasam1:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: calfa-ai/RASAM-1 }
+  track: line
+  split: test               # 734 lines (train 5,864 / val 733 reserved)
+  license: apache-2.0
+  source: https://huggingface.co/datasets/calfa-ai/RASAM-1
+  card: >-
+    RASAM 1 — the earlier Maghrebi-script manuscript set from the same project;
+    a larger companion to rasam2 for the same script family.
+
+# --- extra KITAB-Bench text-recognition subsets (same adapter as kitab_*) ------
+# All ahmedheakl/arocrbench_*, ungated, one `train` split, small. Mostly
+# PRINTED Arabic of varying quality — extends coverage beyond handwriting.
+kitab_adab:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_adab }
+  track: line
+  split: train              # 200
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_adab
+  card: >-
+    KITAB-Bench / adab — short printed Arabic segments (literary corpus). Clean
+    print; an easy-to-mid anchor.
+kitab_patsocr:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_patsocr }
+  track: line
+  split: train              # 500
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_patsocr
+  card: >-
+    KITAB-Bench / PATS-OCR — printed Arabic pages (PATS corpus), longer lines
+    with classical religious text. Ground truth in the `answer` column.
+kitab_isippt:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_isippt }
+  track: line
+  split: train              # 500
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_isippt
+  card: >-
+    KITAB-Bench / ISI-PPT — printed Arabic from presentation slides; varied
+    fonts and layouts.
+kitab_evarest:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_evarest }
+  track: line
+  split: train              # 800
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_evarest
+  card: >-
+    KITAB-Bench / EvArEST — Arabic scene text / short words in the wild;
+    photographed signage-style text, a harder printed setting.
+kitab_arabicocr:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: arocrbench_arabicocr }
+  track: line
+  split: train              # 50 (tiny)
+  license: see KITAB-Bench paper
+  source: https://huggingface.co/datasets/ahmedheakl/arocrbench_arabicocr
+  card: >-
+    KITAB-Bench / ArabicOCR — a small 50-line printed-Arabic set; too small to
+    weigh heavily, kept for completeness.
+
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
   track: line
