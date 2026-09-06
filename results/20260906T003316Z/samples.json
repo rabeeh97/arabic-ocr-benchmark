@@ -1,0 +1,134 @@
+{
+  "run_id": "20260906T003316Z",
+  "generated_at": "2026-09-06T00:34:13+00:00",
+  "samples": [
+    {
+      "sample_id": "kitab_historyar/train/000035",
+      "row": 35,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وله من الشّعب النّشٰابور ويقال له سلمك والنّهاوندى و",
+      "prediction": "رسـغب ضقنا لثم اهمهفأ ال تاملكب مئان وهو",
+      "error": null,
+      "cer_light": 0.75,
+      "cer_raw": 0.7692,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000021",
+      "row": 21,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "وَنَعْنِي بِاجْزآءِ الاوْتارِ الّتِي يَكُونُ الْقُطرُ ١٢٠ جُزْءًا مِنْ تِلْكَ الأَجْزَآءِ",
+      "prediction": "ثم ، كتمزل طباضلا هل سلـغي صنعسو ملفخر رآ لالهو تاملكب مئان وهو",
+      "error": null,
+      "cer_light": 0.7753,
+      "cer_raw": 0.7865,
+      "wer_light": 1.1818
+    },
+    {
+      "sample_id": "kitab_historyar/train/000039",
+      "row": 39,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "best"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "فهو الراٮع وان كان الحط",
+      "prediction": "رسن ،ثب ، ءان",
+      "error": null,
+      "cer_light": 0.7826,
+      "cer_raw": 0.7826,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000023",
+      "row": 23,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "longest"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "عَشَرَ مِنْ فَلَكِ الْبُرُوج يُسَاوِي زَمَانُ طُلُوعِهِ زَمَانَ طُلوُعِ الْبَاقِي منْ رُبُعِ",
+      "prediction": "جيحلا يف اننأدع تائاملكتي ةميخلا رف ىراج ناك . خيش عم اهوفط ال تامكب مئان وهو",
+      "error": null,
+      "cer_light": 0.8152,
+      "cer_raw": 0.8152,
+      "wer_light": 1.3333
+    },
+    {
+      "sample_id": "kitab_historyar/train/000022",
+      "row": 22,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "typical"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ڡرى الكل على دلک الخط مرٮع",
+      "prediction": ". رسن ، ثب ،ءان ظيغ ،قارد",
+      "error": null,
+      "cer_light": 0.8846,
+      "cer_raw": 0.8846,
+      "wer_light": 1.1667
+    },
+    {
+      "sample_id": "kitab_historyar/train/000031",
+      "row": 31,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "صح",
+      "prediction": ". رسن",
+      "error": null,
+      "cer_light": 2.5,
+      "cer_raw": 2.5,
+      "wer_light": 2.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000036",
+      "row": 36,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "خ",
+      "prediction": "رسن",
+      "error": null,
+      "cer_light": 3.0,
+      "cer_raw": 3.0,
+      "wer_light": 1.0
+    },
+    {
+      "sample_id": "kitab_historyar/train/000030",
+      "row": 30,
+      "model": "trocr-large-arabic",
+      "dataset": "kitab_historyar",
+      "categories": [
+        "worst"
+      ],
+      "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg==",
+      "ground_truth": "ن",
+      "prediction": ". رسن",
+      "error": null,
+      "cer_light": 4.0,
+      "cer_raw": 4.0,
+      "wer_light": 2.0
+    }
+  ]
+}
