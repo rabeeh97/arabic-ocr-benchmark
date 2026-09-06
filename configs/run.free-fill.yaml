@@ -13,10 +13,12 @@ models:
   - pixtral-12b
   # --- OpenRouter :free (try; skipped fast if the daily cap is hit) ---
   - openrouter-gemma-4-26b-free   # ~all cells empty
-  - openrouter-nemotron-omni-free # ~all cells empty (reasoning; max_tokens raised)
-  - openrouter-dots3-note-free    # ~all cells empty
   - openrouter-gemma-4-31b-free   # thin
   - openrouter-minimax-m3-free
+  # openrouter-nemotron-omni-free / openrouter-dots3-note-free are NOT here:
+  # nemotron-omni-free on OpenRouter's free tier runs at ~15-25 MIN/line (it's a
+  # reasoning model, heavily queued) — it would stall the whole sweep for days.
+  # Run those two alone with a tiny `limit` if you want any datapoints.
   # --- OpenRouter routed/paid (need account credit; already ~40/200) ---
   - openrouter-qwen2.5-vl-72b
   - openrouter-qwen3-vl-235b
