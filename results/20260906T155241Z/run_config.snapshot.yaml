@@ -1,0 +1,36 @@
+models:
+- trocr-large-arabic
+datasets:
+- muharaf_lines
+indices:
+- 880
+- 881
+- 882
+- 883
+- 884
+- 885
+- 886
+- 887
+- 888
+- 889
+- 890
+- 891
+- 892
+- 893
+- 894
+- 895
+- 896
+- 897
+- 898
+- 899
+accumulate: true
+cache: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+results_dir: results
+runner_id: vm-3596a4a809e3
+session_id: c079b5cb
