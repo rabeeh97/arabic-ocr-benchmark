@@ -1,0 +1,19 @@
+# A few more GLM-5.3-Flash samples on top of the N=10 confirmation run.
+# Paid (Z.AI), but cheap: ~$0.001/line worst case at 0.075/0.25 per 1M in/out.
+# 3 datasets x 15 new lines each = ~45 lines, well under $0.10. cache-backed.
+models:
+  - glm-5.3-flash-paid
+datasets:
+  - kitab_khatt      # had 10
+  - kitab_muharaf    # had 10
+  - kitab_hindawi    # new — printed, easier, a fresh datapoint
+limit: 15
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 2
+rate_limit_abort: 8
+max_retries: 3
+cache: true
+results_dir: results

@@ -282,6 +282,27 @@ nemotron-omni:
     A reasoning model: it thinks in a separate field and returns a clean
     transcription in `content`. General-purpose, not Arabic-tuned; slower and
     more tokens per line than a plain VLM.
+nvidia-kimi-k3:
+  # Moonshot Kimi K3 (2.8T-param MoE, MoonViT-V2 vision encoder — text+image
+  # -> text) on the NVIDIA NIM catalog, OpenAI-compatible.
+  # STATUS (2026-09-06): listed in GET /v1/models but the free NIM tier does
+  # NOT serve it from a dev box — a plain text request hangs past 45 s with no
+  # response (same failure as nemotron-omni). kimi-k2.6 404s outright for this
+  # account. Left OUT of every run config; try it from Colab (better path to
+  # integrate.api.nvidia.com) or swap the api_base to OpenRouter
+  # (openrouter/moonshotai/kimi-k3, paid).
+  client: litellm
+  litellm_id: openai/moonshotai/kimi-k3
+  env_key: NVIDIA_API_KEY
+  api_base: https://integrate.api.nvidia.com/v1
+  params: { temperature: 0 }
+  max_tokens: 4000                  # reasoning-capable — guard against empty content
+  pricing: null                    # free NIM tier
+  card: >-
+    Moonshot AI's Kimi K3 — a 2.8T-parameter MoE with a 401M MoonViT-V2 vision
+    encoder (text + image + video in, text out), 1M-token context. Served on
+    NVIDIA's NIM catalog. General frontier model, not OCR-tuned. Not yet
+    verified here — the free NIM tier does not respond for this account.
 
 # DeepSeek — OpenAI-compatible endpoint at https://api.deepseek.com; one
 # DEEPSEEK_API_KEY. No standing free tier, but every new account gets a one-time

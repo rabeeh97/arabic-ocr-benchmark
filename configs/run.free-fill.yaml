@@ -1,0 +1,43 @@
+# Targeted fill of the free-tier gaps in the leaderboard. accumulate: true means
+# each pass takes the next `limit` UNSCORED indices per (model, dataset) — so it
+# naturally fills empty / thin cells before extending full ones. Models are
+# ordered worst-covered first.
+#
+# NVIDIA NIM models are NOT here: integrate.api.nvidia.com is unreachable from
+# the dev box right now (even meta/llama-3.2-11b-vision times out). Run
+# nvidia-gemma-4-31b / nvidia-llama-3.2-* from notebook 02 on Colab instead.
+models:
+  # --- reliably fillable (Mistral free tier) ---
+  - mistral-medium               # kitab_khatt is a fully-missing cell
+  - mistral-small
+  - pixtral-12b
+  # --- OpenRouter :free (try; skipped fast if the daily cap is hit) ---
+  - openrouter-gemma-4-26b-free   # ~all cells empty
+  - openrouter-nemotron-omni-free # ~all cells empty (reasoning; max_tokens raised)
+  - openrouter-dots3-note-free    # ~all cells empty
+  - openrouter-gemma-4-31b-free   # thin
+  - openrouter-minimax-m3-free
+  # --- OpenRouter routed/paid (need account credit; already ~40/200) ---
+  - openrouter-qwen2.5-vl-72b
+  - openrouter-qwen3-vl-235b
+  - openrouter-llama-4-maverick
+
+datasets:
+  - kitab_khatt
+  - kitab_muharaf
+  - kitab_historicalbooks
+  - kitab_hindawi
+  - kitab_historyar
+  - kitab_onlinekhatt
+
+limit: 40                 # NEW lines per (model, dataset) per pass
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 3
+rpm: 0
+rate_limit_abort: 5      # a free model out of daily quota is dropped fast
+max_retries: 3
+cache: true
+results_dir: results
