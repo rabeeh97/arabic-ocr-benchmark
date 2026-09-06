@@ -10,6 +10,7 @@ Full per-metric, per-profile numbers (CAR / MER / WIL / WIP too) are in `summary
 | openrouter-minimax-m3-free | kitab_hindawi | 19 | 17 | 0.7677 | 0.7528 | 0.7346 | 0.2472 | 0.9123 | 0.9078 | 0.0 | 0.1854 | 7871.5 | 0.0 |
 | openrouter-qwen2.5-vl-72b | kitab_hindawi | 17 | 23 | 0.8422 | 0.8339 | 0.8259 | 0.1661 | 0.8812 | 0.8812 | 0.0 | 0.1102 | 3882.9 | 0.009545 |
 | pixtral-12b | kitab_historyar | 39 | 1 | 1.1665 | 1.1517 | 0.8035 | 0.0 | 1.1425 | 1.0 | 0.0 | 0.1418 | 3998.5 | 0.002313 |
+| openrouter-qwen2.5-vl-72b | kitab_historyar | 0 | 24 |  |  |  |  |  |  |  |  | 0.0 | 0.0 |
 | openrouter-qwen2.5-vl-72b | kitab_khatt | 2 | 38 | 0.1154 | 0.098 | 0.0915 | 0.902 | 0.4643 | 0.4194 | 0.0 | 1.0 | 1900.4 | 0.000321 |
 | openrouter-gemma-4-31b-free | kitab_khatt | 1 | 11 | 0.45 | 0.4375 | 0.4026 | 0.5625 | 0.8 | 0.75 | 0.0 | 0.0 | 3537.1 | 0.0 |
 | openrouter-minimax-m3-free | kitab_khatt | 40 | 0 | 0.5059 | 0.4897 | 0.4187 | 0.5103 | 0.8745 | 0.8229 | 0.0 | 0.475 | 4749.0 | 0.0 |
