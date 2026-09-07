@@ -14,6 +14,11 @@ export UV_LINK_MODE=copy            # cache and target are on the same FS, but b
 # Hugging Face: datasets + model weights + hub
 export HF_HOME="${_CACHE}/hf"
 export HF_HUB_DISABLE_TELEMETRY=1
+# Xet transfer backend is unreliable from this box: whole passes of the Gemini /
+# free-tier sweeps die on "File reconstruction error: CAS Client Error" when
+# fetching arocrbench_historyar / arocrbench_onlinekhatt. Force the plain-LFS
+# download path (slower first fetch, then cached and fine).
+export HF_HUB_DISABLE_XET=1
 export TRANSFORMERS_CACHE="${_CACHE}/hf_transformers"
 
 # pip / torch (in case anything shells out to them)

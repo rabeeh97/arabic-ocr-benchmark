@@ -196,6 +196,40 @@ data/canonical/
 2. **`corpora.yaml` values** — the table above is a first proposal; `genre` and
    `era` for the KITAB print subsets are low-confidence.
 
+## Follow-up work — separate spec, after this lands
+
+Agreed in the design discussion, to be specced once `data/canonical/*.jsonl`
+exists to build on:
+
+- **`normalize.py` gains two reported profiles, no change to `raw` / `light` /
+  `diac_insensitive`:**
+  - `standard` = `light` + alef-maqsura→yaa (ى→ي) + taa-marbuta→haa (ة→ه). Used
+    only for the cross-paper comparison table (RefLAM / CAMeL fold these at their
+    headline; we keep `light` strict so the headline still measures the
+    distinction). Existing leaderboard numbers are unaffected.
+  - `diac_full` = `diac_insensitive` but the stripped mark set is WIDE
+    (`U+064B–065F, U+0670`) **plus** the Qur'anic marks `U+0610–061A` and
+    `U+06D6–06ED`. `diac_insensitive` (WIDE) stays the headline diacritic
+    profile; `diac_full` is scored alongside it and the WIDE↔FULL delta is
+    reported as a number (RefLAM's and Farazi's CERs are not otherwise
+    comparable). The tashkeel set becomes a parameter of `strip_harakat`.
+- **`text_l1/l2/l3` in the canonical record stay = `normalize(text_diplomatic,
+  {raw,light,diac_insensitive})`.** `standard` / `diac_full` forms are computed
+  at analysis/report time, not stored per line.
+- **`scripts/build_charset.py`** — reads `data/canonical/*.jsonl`, params
+  `--level {l1,l2,l3,standard}` and `--min-count` (default 20); emits
+  `data/canonical/_charset.json` with global + per-corpus + per-split charset,
+  size, OOV mass, frequency tail, and the train→test character gap. **No line is
+  ever dropped here.** The `<unk>`-vs-filter choice is an `oov_policy: unk |
+  error` field in `training/config.py` — `unk` for training loaders, `error`
+  (never silently drop) for any eval loader.
+- **`docs/metrics.md`** gains a paragraph: codepoint-level edit distance,
+  reference and hypothesis normalised identically before the denominator,
+  WIDE↔FULL tashkeel delta, and the Maghribi qāf/fāʾ dotting note (same Unicode
+  codepoint as Mashriqi, so a visual→symbol transfer problem that only
+  script-diverse training data fixes; slice CER by the `script` field to show
+  it).
+
 ## Known operational note (not part of this design)
 
 The Gemini full crawl and the free-tier sweep were failing to download
