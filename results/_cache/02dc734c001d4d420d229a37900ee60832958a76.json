@@ -1,0 +1,1 @@
+{"sample_id": "kitab_onlinekhatt/train/000115", "model": "pixtral-12b", "dataset": "kitab_onlinekhatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "لة،", "raw_text": "<", "cleaned_text": "<", "latency_ms": 312.06, "input_tokens": 113, "output_tokens": 2, "cost_usd": 1.725e-05, "error": null, "attempts": 1, "cached": false}

@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000032", "model": "openrouter-minimax-m3-free", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "أصوات المؤيدين.", "raw_text": "امومت السرّها", "cleaned_text": "امومت السرّها", "latency_ms": 2746.87, "input_tokens": 644, "output_tokens": 7, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

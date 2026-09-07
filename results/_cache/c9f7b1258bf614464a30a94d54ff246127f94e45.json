@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000051", "model": "openrouter-qwen3-vl-235b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "فى ٢٤ تموز سنة ١٩٤٢", "raw_text": "٢٣ عَامًا", "cleaned_text": "٢٣ عَامًا", "latency_ms": 1221.56, "input_tokens": 155, "output_tokens": 9, "cost_usd": 4.965e-05, "error": null, "attempts": 1, "cached": false}

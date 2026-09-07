@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000134", "model": "pixtral-12b", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "لَتِهِ", "raw_text": "بِسْمِ", "cleaned_text": "بِسْمِ", "latency_ms": 5079.41, "input_tokens": 139, "output_tokens": 6, "cost_usd": 2.175e-05, "error": null, "attempts": 1, "cached": false}

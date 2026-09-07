@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000013", "model": "glm-5.3-flash-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "عصو حلىل نعوم الرحى", "raw_text": "عله على فقط", "cleaned_text": "عله على فقط", "latency_ms": 9728.69, "input_tokens": 111, "output_tokens": 318, "cost_usd": 0.00017565, "error": null, "attempts": 1, "cached": false}

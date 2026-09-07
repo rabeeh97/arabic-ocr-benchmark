@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000072", "model": "openrouter-qwen3-vl-235b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "عدد", "raw_text": "عدد", "cleaned_text": "عدد", "latency_ms": 852.97, "input_tokens": 163, "output_tokens": 2, "cost_usd": 3.803e-05, "error": null, "attempts": 1, "cached": false}

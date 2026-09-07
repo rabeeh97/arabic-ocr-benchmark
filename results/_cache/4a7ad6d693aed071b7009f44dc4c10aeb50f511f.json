@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000028", "model": "openrouter-minimax-m3-free", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "سماع مني وبيع حجار", "raw_text": "المؤمنين", "cleaned_text": "المؤمنين", "latency_ms": 1791.21, "input_tokens": 641, "output_tokens": 5, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

@@ -1,0 +1,1 @@
+{"sample_id": "kitab_onlinekhatt/train/000046", "model": "pixtral-12b", "dataset": "kitab_onlinekhatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "والموزل والموز", "raw_text": "والهذ والهمز", "cleaned_text": "والهذ والهمز", "latency_ms": 618.61, "input_tokens": 161, "output_tokens": 7, "cost_usd": 2.52e-05, "error": null, "attempts": 1, "cached": false}

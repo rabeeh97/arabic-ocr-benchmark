@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000129", "model": "pixtral-12b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "الفردوسي:", "raw_text": "رَغْبَةُ جَبْرِيلَ", "cleaned_text": "رَغْبَةُ جَبْرِيلَ", "latency_ms": 592.01, "input_tokens": 103, "output_tokens": 14, "cost_usd": 1.755e-05, "error": null, "attempts": 1, "cached": false}

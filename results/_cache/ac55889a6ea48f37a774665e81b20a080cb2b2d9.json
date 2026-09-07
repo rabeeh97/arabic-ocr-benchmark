@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000015", "model": "glm-5.3-flash-paid", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "YS-4A-011a", "raw_text": "٧٥-٤٨-٠٩٧٩", "cleaned_text": "٧٥-٤٨-٠٩٧٩", "latency_ms": 110734.98, "input_tokens": 128, "output_tokens": 3807, "cost_usd": 0.0019227, "error": null, "attempts": 1, "cached": false}

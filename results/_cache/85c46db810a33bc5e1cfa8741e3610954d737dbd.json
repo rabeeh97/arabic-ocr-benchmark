@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000163", "model": "pixtral-12b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "في مطعم مروش", "raw_text": "فِي عِلْمِ مُحَمّدٍ", "cleaned_text": "فِي عِلْمِ مُحَمّدٍ", "latency_ms": 815.43, "input_tokens": 121, "output_tokens": 12, "cost_usd": 1.995e-05, "error": null, "attempts": 1, "cached": false}

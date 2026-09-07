@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000065", "model": "openrouter-minimax-m3-free", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "للتبادل الحر", "raw_text": "عبد الله", "cleaned_text": "عبد الله", "latency_ms": 1839.4, "input_tokens": 515, "output_tokens": 4, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
