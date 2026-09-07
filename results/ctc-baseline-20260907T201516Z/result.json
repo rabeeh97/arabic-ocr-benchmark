@@ -1,0 +1,14 @@
+{
+  "all": {
+    "raw": 0.6802,
+    "light": 0.6669,
+    "diac_insensitive": 0.6669,
+    "n": 6744
+  },
+  "unknown": {
+    "raw": 0.6802,
+    "light": 0.6669,
+    "diac_insensitive": 0.6669,
+    "n": 6744
+  }
+}
