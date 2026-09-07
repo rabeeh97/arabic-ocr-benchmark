@@ -1,0 +1,2 @@
+{"sample_id":"dsy/test/000000","model":"m2","dataset":"dsy","track":"line","prompt_version":"line-v2","ground_truth":"مدرسة","raw_text":"مدرسه","cleaned_text":"مدرسه","latency_ms":600.0,"input_tokens":900,"output_tokens":4,"cost_usd":0.0011,"error":null,"attempts":2,"cached":false}
+{"sample_id":"dsx/test/000005","model":"m1","dataset":"dsx","track":"line","prompt_version":"line-v2","ground_truth":"نهر النيل","raw_text":"نهر النيك","cleaned_text":"نهر النيك","latency_ms":720.0,"input_tokens":1000,"output_tokens":7,"cost_usd":0.001,"error":null,"attempts":1,"cached":false}
