@@ -1192,22 +1192,33 @@ def _render_review(rows: list[dict], target: Path) -> str:
             imgs.append(uri)
         return i
 
-    # Embed images for at most IMAGES_PER_MODEL lines per model — the ones most
-    # worth eyeballing (errored / refused first, then highest CER). Every other
-    # row still shows its text diff, just no thumbnail. A full-split sweep has
-    # 200 lines x 15 datasets x 15 models of distinct crops; without this cap the
-    # page is ~10 MB and the Artifact viewer refuses to share it.
-    IMAGES_PER_MODEL = 10
+    # The review browser only ever shows a model's most- and least-accurate
+    # lines, so embed just those: the WORST_PER_MODEL hardest (errored / refused
+    # first, then highest CER) plus the BEST_PER_MODEL cleanest. Carrying every
+    # scored line's ground-truth + prediction text for every model is what makes
+    # the page multi-MB (8k+ rows -> ~7 MB) and too big for the Artifact viewer
+    # to share. Thumbnails go on the worst IMAGES_PER_MODEL of the kept set.
+    WORST_PER_MODEL = 30
+    BEST_PER_MODEL = 12
+    IMAGES_PER_MODEL = 6
 
     def _worst_first(r: dict) -> tuple:
         return (0 if r.get("error") else 1, -(r["cer_light"] if r["cer_light"] is not None else 1e9))
 
+    def _best_first(r: dict) -> tuple:
+        return (1 if r.get("error") else 0, r["cer_light"] if r["cer_light"] is not None else 1e9)
+
     models = {}
     for m in ordered:
         recs = review[m]
-        keep_img = {
-            id(r) for r in sorted(recs, key=_worst_first)[:IMAGES_PER_MODEL]
-        }
+        worst = sorted(recs, key=_worst_first)[:WORST_PER_MODEL]
+        best = [r for r in sorted(recs, key=_best_first) if not r.get("error")][:BEST_PER_MODEL]
+        kept, seen = [], set()
+        for r in worst + best:
+            if id(r) not in seen:
+                seen.add(id(r))
+                kept.append(r)
+        keep_img = {id(r) for r in worst[:IMAGES_PER_MODEL]}
         models[m] = [
             {
                 "s": r["sample_id"], "d": r["dataset"],
@@ -1215,7 +1226,7 @@ def _render_review(rows: list[dict], target: Path) -> str:
                 "e": r["error"], "gt": r["gt"], "p": r["pred"],
                 "im": _im(r.get("image", "")) if id(r) in keep_img else -1,
             }
-            for r in recs
+            for r in kept
         ]
     payload = {"img": [_shrink_uri(u) for u in imgs], "models": models}
     blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
