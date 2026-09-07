@@ -16,6 +16,7 @@ dependencies = [
     "tqdm>=4.66",
     "tenacity>=8.2",
     "pandas>=2.0",
+    "numpy>=1.26",
     "pyarabic>=0.6.15",
     "litellm>=1.50",
     "python-dotenv>=1.0",
