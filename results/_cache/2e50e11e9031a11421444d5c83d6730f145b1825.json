@@ -1,0 +1,1 @@
+{"sample_id": "kitab_onlinekhatt/train/000048", "model": "openrouter-minimax-m3-free", "dataset": "kitab_onlinekhatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "الإجبا", "raw_text": "الاحبـ", "cleaned_text": "الاحبـ", "latency_ms": 2386.44, "input_tokens": 269, "output_tokens": 4, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

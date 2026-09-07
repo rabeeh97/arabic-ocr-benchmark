@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000130", "model": "pixtral-12b", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "مِن ٱلسُوسن البري", "raw_text": "من سُنَنِ", "cleaned_text": "من سُنَنِ", "latency_ms": 8863.47, "input_tokens": 673, "output_tokens": 6, "cost_usd": 0.00010185, "error": null, "attempts": 1, "cached": false}

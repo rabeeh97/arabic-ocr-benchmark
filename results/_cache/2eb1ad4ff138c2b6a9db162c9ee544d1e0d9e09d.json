@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000122", "model": "gemini-flash", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "متعاقبه من البشر.", "raw_text": "ومقاصده من الجيش.", "cleaned_text": "ومقاصده من الجيش.", "latency_ms": 6226.97, "input_tokens": 1164, "output_tokens": 252, "cost_usd": 0.0009792, "error": null, "attempts": 1, "cached": false}
