@@ -13,6 +13,8 @@ it, don't hand-edit the `.ipynb`.
 | `03_analysis.ipynb` | CPU | Worst-error browser (image + GT + prediction) |
 | `05_colab_train_lora.ipynb` | **T4 GPU** | Fine-tune a QLoRA/LoRA adapter from a `configs/training/*.yaml`, merge, register in `models.yaml`, score on the untouched test split. Config-driven; `smoke.yaml` runs in minutes. See `docs/training-plan.md`. |
 | `06_colab_prepare_data.ipynb` | CPU | Assemble + vet training data for a training config: source counts, contamination report vs the benchmark test splits, sample eyeballing. No torch. |
+| `07_colab_mirror_arams.ipynb` | CPU | One-shot: download AraMS-28k-HTR from Zenodo (2.4 GB), parse its `images/` + manifests, push a streaming-ready dataset to `<hf-user>/arams28k-htr-lines`, and tar a Kraken-format copy to Drive. Run once before `08`. |
+| `08_colab_train_ctc_baseline.ipynb` | **T4 GPU** | Tier-0 experiment 0.1 — Kraken (`ketos train`, Muharaf warm-start) and an own CRNN+CTC baseline on the AraMS-28k-HTR book-level split. Crash-safe: checkpoints to Drive every `SAVE_EVERY` steps / every epoch, auto-resumes on Run all. Sanity anchor: RefLAM weighted CER 23.31 %. |
 
 ## About `00_reference_gemini_pipeline.ipynb`
 
