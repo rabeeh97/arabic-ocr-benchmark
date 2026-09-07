@@ -1192,18 +1192,31 @@ def _render_review(rows: list[dict], target: Path) -> str:
             imgs.append(uri)
         return i
 
-    models = {
-        m: [
+    # Embed images for at most IMAGES_PER_MODEL lines per model — the ones most
+    # worth eyeballing (errored / refused first, then highest CER). Every other
+    # row still shows its text diff, just no thumbnail. A full-split sweep has
+    # 200 lines x 15 datasets x 15 models of distinct crops; without this cap the
+    # page is ~10 MB and the Artifact viewer refuses to share it.
+    IMAGES_PER_MODEL = 10
+
+    def _worst_first(r: dict) -> tuple:
+        return (0 if r.get("error") else 1, -(r["cer_light"] if r["cer_light"] is not None else 1e9))
+
+    models = {}
+    for m in ordered:
+        recs = review[m]
+        keep_img = {
+            id(r) for r in sorted(recs, key=_worst_first)[:IMAGES_PER_MODEL]
+        }
+        models[m] = [
             {
                 "s": r["sample_id"], "d": r["dataset"],
                 "cl": r["cer_light"], "cr": r["cer_raw"],
                 "e": r["error"], "gt": r["gt"], "p": r["pred"],
-                "im": _im(r.get("image", "")),
+                "im": _im(r.get("image", "")) if id(r) in keep_img else -1,
             }
-            for r in review[m]
+            for r in recs
         ]
-        for m in ordered
-    }
     payload = {"img": [_shrink_uri(u) for u in imgs], "models": models}
     blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
 
