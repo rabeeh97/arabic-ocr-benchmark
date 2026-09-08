@@ -16,6 +16,7 @@ import datetime as dt
 import html
 import json
 import re
+import sys
 from pathlib import Path
 
 import yaml
@@ -240,6 +241,34 @@ def _run_dirs(target: Path) -> list[Path]:
     if (target / "summary.csv").exists():
         return [target]
     return sorted(p.parent for p in target.glob("*/summary.csv"))
+
+
+def _ensure_findings(target: Path) -> dict:
+    """Return the parsed findings doc for ``target``, (re)building
+    ``results/findings.json`` when it is missing or older than the newest run
+    file under ``target``, else reading the cached file. Never raises on an
+    analysis failure — logs to stderr and returns ``{}``."""
+    fj = (target / "findings.json") if target.is_dir() else target.parent / "findings.json"
+    newest = 0.0
+    for rd in _run_dirs(target):
+        for name in ("predictions.jsonl", "scores.jsonl"):
+            p = rd / name
+            if p.exists():
+                newest = max(newest, p.stat().st_mtime)
+    if fj.exists() and fj.stat().st_mtime >= newest:
+        try:
+            return json.loads(fj.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            pass
+    try:
+        from arabic_ocr_bench.analysis.findings import build
+
+        doc = build(target)
+        fj.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+        return doc
+    except Exception as e:  # noqa: BLE001
+        print(f"findings build failed: {e}", file=sys.stderr)
+        return {}
 
 
 def _run_meta(run_dir: Path) -> dict:
@@ -752,8 +781,10 @@ def _panel(section_html: str, *, pid: str, collapsible: bool,
     )
 
 
-def render(rows: list[dict], title: str, target: Path | None = None) -> str:
+def render(rows: list[dict], title: str, target: Path | None = None,
+           findings: dict | None = None) -> str:
     _RENDER_CTX["target"] = target or Path("results")
+    _ = findings  # threaded through for the findings tab (Task 18); unused here
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
                                        float(r.get("cer_micro_light", 1) or 1)))
     preview = _is_preview(rows)
@@ -1796,6 +1827,7 @@ def main() -> int:
 
     target = Path(args.target)
     rows = collect(target)
+    findings = _ensure_findings(target)
     if not rows:
         Path(args.out).write_text(_render_empty(args.title), encoding="utf-8")
         Path(args.out).with_suffix(".json").write_text("[]", encoding="utf-8")
@@ -1804,7 +1836,7 @@ def main() -> int:
     # Model outputs occasionally contain U+FFFD (an undecodable byte). It is
     # valid text but the Artifact deploy validator rejects a raw U+FFFD, so drop
     # it from the published page and the bundle — nothing meaningful is lost.
-    page = render(rows, args.title, target).replace("�", "")
+    page = render(rows, args.title, target, findings=findings).replace("�", "")
     Path(args.out).write_text(page, encoding="utf-8")
     print(f"leaderboard -> {args.out}  ({len(rows)} rows from "
           f"{len({r['run'] for r in rows})} run(s))")
