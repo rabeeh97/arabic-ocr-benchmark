@@ -2,7 +2,7 @@
 
 One command takes a fresh box from nothing to a scored fine-tune:
 
-    python scripts/run_3090_experiment.py --dir D:\\aocr-exp --base qwen3vl4b --detach
+    python scripts/run_3090_experiment.py --dir C:\\Users\\User\\a-experiment\\exp --base qwen3vl4b --detach
 
 Everything lives under ``--dir``: the uv venv, the HF cache, the uv cache, the
 dataset, checkpoints, merged weights, eval scores and plots. Deleting that one
@@ -36,7 +36,9 @@ import shutil
 import subprocess
 import sys
 import urllib.request
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+
+UTC = timezone.utc  # datetime.UTC alias; not present before Python 3.11
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -86,6 +88,18 @@ UV_INSTALL_PS1 = "https://astral.sh/uv/install.ps1"
 # --------------------------------------------------------------------------- #
 def _now() -> str:
     return datetime.now(UTC).isoformat(timespec="seconds")
+
+
+def _download(url: str, dest) -> None:
+    """Fetch ``url`` to ``dest`` with a browser-ish UA.
+
+    ``urllib``'s default ``Python-urllib/x.y`` agent gets a blanket **403** from
+    GitHub's asset CDN (``objects.githubusercontent.com``), which is where the
+    ``astral.sh`` installer URLs redirect to.
+    """
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req) as r, open(dest, "wb") as fh:
+        shutil.copyfileobj(r, fh)
 
 
 def _log(dirs: dict, msg: str) -> None:
@@ -210,14 +224,14 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         env = {**os.environ, "UV_INSTALL_DIR": str(dirs["bin"]), "UV_UNMANAGED_INSTALL": str(dirs["bin"])}
         if IS_WIN:
             ps1 = dirs["bin"] / "install-uv.ps1"
-            urllib.request.urlretrieve(UV_INSTALL_PS1, ps1)
+            _download(UV_INSTALL_PS1, ps1)
             subprocess.run(
                 ["powershell", "-ExecutionPolicy", "Bypass", "-File", str(ps1)],
                 check=True, env=env,
             )
         else:
             sh = dirs["bin"] / "install-uv.sh"
-            urllib.request.urlretrieve(UV_INSTALL_SH, sh)
+            _download(UV_INSTALL_SH, sh)
             subprocess.run(["sh", str(sh)], check=True, env=env)
         uv = _uv_bin(dirs)
 

@@ -23,8 +23,8 @@ in with a normal shell (PowerShell or cmd both work).
 | Need | Check | Notes |
 |---|---|---|
 | NVIDIA driver ≥ 550 | `nvidia-smi` | for the `cu124` torch wheels; older driver → pass `--torch-index https://download.pytorch.org/whl/cu121` |
-| ~60 GB free disk on the target drive | `dir D:\` | venv + HF cache + base weights (~8 GB) + checkpoints |
-| Python 3.11+ **with `pyyaml`** for the *launcher* only | `python -c "import sys,yaml;print(sys.version)"` | the venv the script builds is separate; the launcher just needs stdlib + pyyaml. `python -m pip install pyyaml` if missing |
+| ~60 GB free disk on `C:` | `Get-PSDrive C` | venv + HF cache + base weights (~8 GB) + checkpoints |
+| Python 3.9+ for the *launcher* only | `python --version` | launcher is **stdlib-only** (no pip installs needed); the venv it builds is separate and pulls its own 3.11 via uv |
 | PowerShell available (for the uv installer) | `powershell -?` | present on every modern Windows |
 
 Nothing else is installed globally — `uv`, torch, transformers, bitsandbytes all
@@ -34,29 +34,41 @@ go **inside the experiment folder**.
 
 ## 1. Copy the repo to the box (Mac → Windows)
 
-From this Mac, in the repo root. Pick a **clean** copy — exclude the big
-local-only trees:
+The box has **no `rsync`**, and its stock Windows OpenSSH `sshd` rejects
+MSYS-style `/d/...` paths — `scp` only reliably writes **relative to your Windows
+home** (`C:\Users\User`). So build a clean zip straight from git (tracked files
+only — this already excludes `.git/`, `.venv/`, `results/`, `__pycache__/`, …),
+`scp` it into your home dir, then unpack it with PowerShell.
+
+From this Mac, in the repo root:
 
 ```bash
-rsync -av --delete \
-  --exclude '.git/' --exclude '.venv/' --exclude 'results/' \
-  --exclude '.pytest_cache/' --exclude '.ruff_cache/' --exclude '.cache/' \
-  --exclude '__pycache__/' --exclude '.superpowers/' \
-  ./  user@10.100.0.3:/d/aocr-repo/
+git archive --format=zip HEAD -o /tmp/aocr.zip
+scp /tmp/aocr.zip user@10.100.0.3:aocr.zip
 ```
 
-> No `rsync` on the box? `scp -r` works too, or zip locally and `scp` the zip:
-> `git archive --format=zip HEAD -o /tmp/aocr.zip && scp /tmp/aocr.zip user@10.100.0.3:/d/`
-> then unzip on the box into `D:\aocr-repo`.
+Then unpack on the box, from the Mac:
 
-The repo **code** is all the box needs — the script fetches model weights and
-data itself.
+```bash
+ssh user@10.100.0.3 "powershell -NoProfile -Command \"New-Item -ItemType Directory -Force C:\Users\User\a-experiment; Expand-Archive -Force \$HOME\aocr.zip C:\Users\User\a-experiment\aocr-repo; Remove-Item \$HOME\aocr.zip\""
+```
+
+(Or SSH in and run just the three PowerShell statements directly, with `$HOME`
+un-escaped.)
+
+Repo now at **`C:\Users\User\a-experiment\aocr-repo`**. The repo **code** is all
+the box needs — the script fetches model weights and data itself.
+
+> `git archive HEAD` ships only **committed** files — commit local edits first,
+> or re-run the `git archive` / `scp` / `Expand-Archive` trio after each change.
+> Installing `rsync` on the box (`choco install rsync`, or MSYS2) restores
+> incremental `rsync -av --delete ./ user@10.100.0.3:a-experiment/aocr-repo/`.
 
 ## 2. Drop in the HF token (Mac → Windows)
 
 The gated pieces (Muharaf dataset always; PaliGemma base if you pick it) need a
 Hugging Face token. Create `experiment.env` **on the Mac** and copy it into the
-*experiment folder* (not the repo):
+*experiment folder* (not the repo) — same scp-to-home-then-move dance as the repo:
 
 ```
 # experiment.env  — KEY=VALUE, no export, quotes optional
@@ -64,8 +76,8 @@ HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxx
 ```
 
 ```bash
-ssh user@10.100.0.3 "mkdir -p /d/aocr-exp"
-scp experiment.env user@10.100.0.3:/d/aocr-exp/experiment.env
+scp experiment.env user@10.100.0.3:experiment.env
+ssh user@10.100.0.3 "powershell -NoProfile -Command \"New-Item -ItemType Directory -Force C:\Users\User\a-experiment\exp; Move-Item -Force \$HOME\experiment.env C:\Users\User\a-experiment\exp\experiment.env\""
 ```
 
 The token must have accepted the licences for `aamijar/muharaf-public` and, if
@@ -79,8 +91,8 @@ using PaliGemma, `google/paligemma2-3b-pt-448`. `Misraj/Baseer__Nakba` and
 On the box, from the repo:
 
 ```powershell
-cd D:\aocr-repo
-python scripts\run_3090_experiment.py --dir D:\aocr-exp --base qwen3vl4b --detach
+cd C:\Users\User\a-experiment\aocr-repo
+python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp --base qwen3vl4b --detach
 ```
 
 `--base` is one of:
@@ -92,19 +104,31 @@ python scripts\run_3090_experiment.py --dir D:\aocr-exp --base qwen3vl4b --detac
 | `paligemma` | `google/paligemma2-3b-pt-448` | `paligemma` (added) | **gated.** Uses a different collator (`_make_collator_paligemma`) from the published PaliGemma-2 recipe — **watch the first training batches** (loss should start ≈ 2–4 and fall; labels should be all `-100` except the target span) |
 
 `--detach` re-spawns the worker free of your SSH session (Windows
-`DETACHED_PROCESS`), writes `D:\aocr-exp\logs\run.pid`, prints the log path, and
+`DETACHED_PROCESS`), writes `C:\Users\User\a-experiment\exp\logs\run.pid`, prints the log path, and
 returns. You can log out.
 
 Useful flags: `--limit N` (training-line count; default 8000), `--epochs F`,
 `--from PHASE` / `--only PHASE`, `--allow-contam` (only if the gate flags a
 false positive), `--torch-index URL`.
 
+Watch it immediately after launch (Ctrl-C stops the tail, not the run):
+
+```powershell
+Get-Content C:\Users\User\a-experiment\exp\logs\run.log -Wait -Tail 50
+```
+
+or from `cmd`:
+
+```bat
+powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\exp\logs\run.log -Wait -Tail 50"
+```
+
 ---
 
 ## 4. Check on it (while away / after reconnecting)
 
 ```powershell
-python scripts\run_3090_experiment.py --dir D:\aocr-exp status
+python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp status
 ```
 
 Prints: the phase table (`bootstrap → fetch → prepare → train → merge → eval →
@@ -112,7 +136,7 @@ report`), whether the worker pid is alive, the newest `checkpoint-NNN`, and the
 last 40 log lines. For a live tail:
 
 ```powershell
-Get-Content D:\aocr-exp\logs\run.log -Wait -Tail 50
+Get-Content C:\Users\User\a-experiment\exp\logs\run.log -Wait -Tail 50
 ```
 
 ## 5. Resume after any interruption
@@ -120,7 +144,7 @@ Get-Content D:\aocr-exp\logs\run.log -Wait -Tail 50
 Just run the **same launch command again** (with or without `--detach`):
 
 ```powershell
-python scripts\run_3090_experiment.py --dir D:\aocr-exp --base qwen3vl4b --detach
+python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp --base qwen3vl4b --detach
 ```
 
 Finished phases are skipped; `train` re-enters `bench-train sft` which picks up
@@ -137,20 +161,22 @@ or start explicitly: `--from train`.
 ```bash
 mkdir -p ~/aocr-exp-results && cd ~/aocr-exp-results
 
+# paths below are relative to the box's Windows home (C:\Users\User)
+
 # merged, standalone fine-tuned weights (safetensors + processor)
-scp -r user@10.100.0.3:/d/aocr-exp/merged/  ./merged/
+scp -r user@10.100.0.3:a-experiment/exp/merged/  ./merged/
 
 # held-out eval: CER/WER numbers + per-line predictions
-scp -r user@10.100.0.3:/d/aocr-exp/eval/    ./eval/
+scp -r user@10.100.0.3:a-experiment/exp/eval/    ./eval/
 
 # plots: SFT loss curve + eval-CER bar
-scp -r user@10.100.0.3:/d/aocr-exp/plots/   ./plots/
+scp -r user@10.100.0.3:a-experiment/exp/plots/   ./plots/
 
 # training telemetry (loss history, LR schedule, config actually used)
-scp    user@10.100.0.3:/d/aocr-exp/effective_config.yaml ./
-scp    "user@10.100.0.3:/d/aocr-exp/runs/*/trainer_state.json" ./
-scp    user@10.100.0.3:/d/aocr-exp/state.json ./
-scp    user@10.100.0.3:/d/aocr-exp/contamination_report.json ./
+scp    user@10.100.0.3:a-experiment/exp/effective_config.yaml ./
+scp    "user@10.100.0.3:a-experiment/exp/runs/*/trainer_state.json" ./   # if the glob doesn't expand, add -O or name the run dir
+scp    user@10.100.0.3:a-experiment/exp/state.json ./
+scp    user@10.100.0.3:a-experiment/exp/contamination_report.json ./
 ```
 
 To fold the fine-tune into this repo's leaderboard afterwards: copy
@@ -162,15 +188,17 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 ## 7. Clean up — leaves nothing behind
 
 ```powershell
-python scripts\run_3090_experiment.py --dir D:\aocr-exp clean --yes
+python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp clean --yes
 ```
 
-That is just `rmdir /s /q D:\aocr-exp`. The venv, the uv cache
+That is just `rmdir /s /q C:\Users\User\a-experiment\exp`. The venv, the uv cache
 (`UV_CACHE_DIR` was pinned inside the folder), the HF cache (`HF_HOME` inside the
-folder), `uv` itself (installed to `D:\aocr-exp\bin`), checkpoints, logs — all of
-it is under that one path. After deletion, `nvidia-smi` is idle and no
-`arabic-ocr` process, service, scheduled task, registry key, or file remains.
-The SSH-copied `D:\aocr-repo` is untouched — delete it separately if you want.
+folder), `uv` itself (installed to `C:\Users\User\a-experiment\exp\bin`),
+checkpoints, logs — all of it is under that one path. After deletion,
+`nvidia-smi` is idle and no `arabic-ocr` process, service, scheduled task,
+registry key, or file remains. The SSH-copied
+`C:\Users\User\a-experiment\aocr-repo` is untouched — `rmdir /s /q
+C:\Users\User\a-experiment` wipes both.
 
 ---
 
@@ -203,6 +231,14 @@ training) to prove the whole pipeline before committing to the long run.
 
 ## 9. Gotchas
 
+- **Launcher Python** — the launcher is stdlib-only and runs on **3.9+** (the box
+  had 3.10). It does *not* need `pyyaml`; the config rewrite runs in the venv.
+  Older `datetime` needs no `UTC` symbol — the script shims it.
+- **`uv` installer 403** — the `astral.sh/uv/install.{ps1,sh}` URLs redirect to
+  GitHub's asset CDN, which returns **HTTP 403** to `urllib`'s default agent. The
+  script's `_download()` sends a `Mozilla/5.0` UA to get past it. If it still 403s
+  the box is behind a proxy — install `uv` by hand (`winget install astral-sh.uv`
+  or download the release zip) so `shutil.which("uv")` finds it, then re-run.
 - **`transformers>=4.57`** for Qwen3-VL — the script installs it into the venv
   after the editable install so the resolver can't downgrade it. The core repo
   stays at 4.49.
@@ -221,7 +257,7 @@ training) to prove the whole pipeline before committing to the long run.
   something else, `--base qwen3vl4b` is the safe fallback.
 - **Contamination gate** — `prepare` runs `bench-train check-contam` and
   **hard-stops** if a train/eval line overlap is flagged
-  (`D:\aocr-exp\contamination_report.json`). This is the no-leak guarantee; only
+  (`C:\Users\User\a-experiment\exp\contamination_report.json`). This is the no-leak guarantee; only
   override with `--allow-contam` after confirming a false positive.
 - **`--from` / `--only`** — if `eval` fails because a transient network hiccup
   broke the register step, `--from eval` re-runs just eval + report without
