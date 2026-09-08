@@ -18,9 +18,9 @@ import html
 import math
 
 __all__ = [
-    "FINDINGS_CSS", "binned_curve", "box_row", "diverging_hbar", "dumbbell",
-    "ecdf", "forest", "hbar", "histogram", "stacked_hbar", "svg_heatmap",
-    "svg_scatter",
+    "FINDINGS_CSS", "FINDINGS_SECTIONS", "binned_curve", "box_row",
+    "diverging_hbar", "dumbbell", "ecdf", "forest", "hbar", "histogram",
+    "render_findings_view", "stacked_hbar", "svg_heatmap", "svg_scatter",
 ]
 
 
@@ -501,3 +501,524 @@ def forest(rows) -> str:
             f'<circle class="pt-solid" cx="{fx(pv):g}" cy="{cy:g}" r="4" data-tip="{tip}"></circle>'
         )
     return _svg("".join(p), W, H, "fv-forest")
+
+# --------------------------------------------------------------------------- #
+# section renderers                                                           #
+# --------------------------------------------------------------------------- #
+# ``(slug, label)`` pairs in render order. Coverage is first: it gates an
+# honest reading of every section that follows.
+FINDINGS_SECTIONS = [
+    ("coverage", "Coverage"),
+    ("error-anatomy", "Error anatomy"),
+    ("script-letters", "Script & letters"),
+    ("diacritics", "Diacritics"),
+    ("difficulty", "Difficulty"),
+    ("model-landscape", "Model landscape"),
+    ("operational", "Operations"),
+    ("corpus-health", "Corpus health"),
+]
+
+_NA = ('<p class="chart-empty">not available &#8212; run '
+       '<code>bench analyze</code></p>')
+
+
+def _panel(slug: str, title: str, note: str, body: str) -> str:
+    """The section shell every ``_render_*`` returns, matching the leaderboard
+    section contract (``<section id=... class='f-panel'><h2>…</h2>…``)."""
+    n = f'<p class="board-note">{_esc(note)}</p>' if note else ""
+    return (f"<section id='f-{_esc(slug)}' class='f-panel'>"
+            f"<h2>{_esc(title)}</h2>{n}{body}</section>")
+
+
+def _fig(caption: str, chart: str) -> str:
+    return f'<figure><figcaption>{_esc(caption)}</figcaption>{chart}</figure>'
+
+
+def _tbl(headers, rows) -> str:
+    """A ``.rv-tbl`` inside a ``.scroll`` wrapper (classes from the main
+    stylesheet). Every cell is escaped."""
+    if not rows:
+        return _NA
+    head = "".join(f"<th>{_esc(h)}</th>" for h in headers)
+    body = "".join(
+        "<tr>" + "".join(f"<td>{_esc(c)}</td>" for c in r) + "</tr>" for r in rows
+    )
+    return (f"<div class='scroll'><table class='rv-tbl'><thead><tr>{head}</tr>"
+            f"</thead><tbody>{body}</tbody></table></div>")
+
+
+def _pct(v, d: int = 0) -> str:
+    return f"{_f(v) * 100:.{d}f}%"
+
+
+def _models(findings: dict) -> list:
+    return list((findings.get("meta") or {}).get("models") or [])
+
+
+def _render_coverage(findings: dict) -> str:
+    note = ("Every model and dataset: lines scored divided by lines attempted. "
+            "Read this panel first — a model with thin coverage on a dataset "
+            "can look artificially strong or weak everywhere else.")
+    cov = (findings.get("operational") or {}).get("coverage") or {}
+    grid = cov.get("grid") or []
+    models, datasets = cov.get("models") or [], cov.get("datasets") or []
+    if not grid or not models or not datasets:
+        return _panel("coverage", "Coverage", note, _NA)
+    vals = []
+    for mi in range(len(models)):
+        row = []
+        mrow = grid[mi] if mi < len(grid) else []
+        for di in range(len(datasets)):
+            cell = mrow[di] if di < len(mrow) else None
+            if isinstance(cell, (list, tuple)) and len(cell) == 2 and _f(cell[1]):
+                row.append(_f(cell[0]) / _f(cell[1]))
+            else:
+                row.append(None)
+        vals.append(row)
+    gen = (findings.get("meta") or {}).get("generated_utc")
+    body = _fig("scored / attempted",
+                svg_heatmap(models, datasets, vals, fmt="{:.0%}",
+                            title="scored / attempted"))
+    if gen:
+        body += f'<p class="board-note">Generated {_esc(gen)}.</p>'
+    return _panel("coverage", "Coverage", note, body)
+
+
+def _render_error_anatomy(findings: dict) -> str:
+    note = ("Where the edit distance goes: substitutions vs insertions vs "
+            "deletions, whether errors are only spacing, whether predictions run "
+            "long or short, and the most common character rewrites.")
+    ea = findings.get("error_anatomy") or {}
+    if not ea:
+        return _panel("error-anatomy", "Error anatomy", note, _NA)
+    body = []
+
+    ss = ea.get("sid_split") or {}
+    if ss:
+        order = (["__pooled__"] if "__pooled__" in ss else []) + \
+                sorted(k for k in ss if k != "__pooled__")
+        rows = [("pooled" if k == "__pooled__" else k, ss[k]) for k in order]
+        body.append(_fig("S / I / D share of total edit distance",
+                         stacked_hbar(rows, ["sub", "ins", "del"])))
+
+    lb = ea.get("length_bias") or {}
+    if lb:
+        rows = []
+        for m in sorted(lb):
+            dm = _f((lb[m] or {}).get("delta_median"))
+            rows.append((m, {"shorter": max(0.0, -dm), "longer": max(0.0, dm)}))
+        body.append(_fig("length bias — median len(pred) − len(GT)",
+                         diverging_hbar(rows, left_key="shorter",
+                                        right_key="longer",
+                                        left_label="pred shorter",
+                                        right_label="pred longer")))
+
+    ch = (ea.get("rewrites") or {}).get("char") or []
+    if ch:
+        pairs = [(f"{a} → {b}", c) for a, b, c in ch]
+        body.append(_fig("top character rewrites (GT → pred)",
+                         hbar(pairs, rtl_labels=True)))
+
+    sp = ea.get("spacing_share") or {}
+    if sp:
+        rows = [(m, f"{_f(d.get('wer_light')):.2f}", d.get("spacing_ops", 0),
+                 _pct(d.get("spacing_frac_of_ops")))
+                for m, d in sorted(sp.items())]
+        body.append(_fig("spacing-only operations",
+                         _tbl(["model", "WER-light", "spacing ops",
+                               "spacing % of ops"], rows)))
+
+    return _panel("error-anatomy", "Error anatomy", note,
+                  "".join(body) or _NA)
+
+
+def _render_script_letters(findings: dict) -> str:
+    note = ("Letter-level behaviour: which characters get confused for which, "
+            "per-letter error rates, the rasm-vs-full CER gap (missing dots), and "
+            "leakage of presentation forms or digit scripts.")
+    sl = findings.get("script_letters") or {}
+    if not sl:
+        return _panel("script-letters", "Script & letters", note, _NA)
+    body = []
+
+    pooled = (sl.get("confusion") or {}).get("pooled") or []
+    if pooled:
+        chars = sorted({c for pair in pooled for c in (pair[0], pair[1])})
+        cmap = {(a, b): n for a, b, n in pooled}
+        vals = [[cmap.get((r, c)) for c in chars] for r in chars]
+        body.append(_fig("substitution pairs (count)",
+                         svg_heatmap(chars, chars, vals,
+                                     title="GT (row) → pred (col)",
+                                     rtl_labels=True)))
+
+    ler = (sl.get("letter_error_rate") or {}).get("pooled") or []
+    if ler:
+        body.append(_fig("per-letter error rate (worst first)",
+                         hbar([(row[0], row[3]) for row in ler],
+                              rtl_labels=True)))
+
+    rg = sl.get("rasm_gap") or {}
+    if rg:
+        rows = []
+        for m in sorted(rg):
+            for ds in sorted(rg[m] or {}):
+                d = rg[m][ds]
+                rows.append((f"{m} / {ds}", d.get("cer_rasm"),
+                             d.get("cer_light")))
+        body.append(_fig("rasm vs full CER (i'jam gap)",
+                         dumbbell(rows, left_label="rasm",
+                                  right_label="light")))
+
+    pl = sl.get("presentation_leak") or {}
+    if pl:
+        body.append(_fig("presentation-form / tatweel leakage rate",
+                         hbar([(m, (pl[m] or {}).get("rate"))
+                               for m in sorted(pl)])))
+
+    dsw = sl.get("digit_swaps") or {}
+    if dsw:
+        body.append(_fig("digit-script swaps",
+                         hbar([(m, dsw[m]) for m in sorted(dsw)])))
+
+    return _panel("script-letters", "Script & letters", note,
+                  "".join(body) or _NA)
+
+
+def _render_diacritics(findings: dict) -> str:
+    note = ("How each model handles Arabic diacritics: marks missed vs inserted, "
+            "diacritic F1 against CER-light, and how densely the ground truth "
+            "itself is marked.")
+    di = findings.get("diacritics") or {}
+    if not di:
+        return _panel("diacritics", "Diacritics", note, _NA)
+    body = []
+
+    per_mark = di.get("per_mark") or {}
+    agg = {}
+    for marks in per_mark.values():
+        for mk, d in (marks or {}).items():
+            a = agg.setdefault(mk, {"missed": 0.0, "inserted": 0.0})
+            a["missed"] += _f(d.get("missed"))
+            a["inserted"] += _f(d.get("inserted"))
+    if agg:
+        rows = [(mk, agg[mk]) for mk in sorted(agg)]
+        body.append(_fig("per mark — missed vs inserted (pooled)",
+                         diverging_hbar(rows, left_key="missed",
+                                        right_key="inserted",
+                                        left_label="missed",
+                                        right_label="inserted")))
+
+    fc = di.get("f1_vs_cer") or {}
+    if fc:
+        ms = sorted(fc)
+        pts = [((fc[m] or {}).get("diac_f1"), (fc[m] or {}).get("cer_light"))
+               for m in ms]
+        body.append(_fig("diacritic F1 vs CER-light",
+                         svg_scatter(pts, x_label="diacritic F1",
+                                     y_label="CER-light", labels=ms)))
+
+    gd = di.get("gt_density") or {}
+    if gd:
+        chips = ", ".join(f"{k} {_pct(v, 1)}" for k, v in sorted(gd.items()))
+        body.append(f'<p class="board-note">GT diacritization density: '
+                    f'{_esc(chips)}.</p>')
+
+    return _panel("diacritics", "Diacritics", note, "".join(body) or _NA)
+
+
+def _render_difficulty(findings: dict) -> str:
+    note = ("Which lines are hard: consensus-hard and consensus-easy lines, the "
+            "most discriminative lines, suspected bad ground truth, and how CER "
+            "varies with line length.")
+    df = findings.get("difficulty") or {}
+    if not df:
+        return _panel("difficulty", "Difficulty", note, _NA)
+    models = _models(findings)
+    body = []
+
+    def _sample_tbl(items, extra=()):
+        if not items:
+            return _NA
+        ms = models or sorted(
+            {k for it in items for k in (it.get("per_model") or {})})
+        headers = (["sample", "dataset", "GT"] + [f"CER {m}" for m in ms] +
+                   ["mean CER"] + [h for h, _ in extra])
+        rows = []
+        for it in items:
+            pm = it.get("per_model") or {}
+            cells = [it.get("sample_id"), it.get("dataset"), it.get("gt")]
+            for m in ms:
+                v = pm.get(m)
+                cells.append("—" if v is None else _num(v, 3))
+            cells.append(_num(it.get("mean_cer"), 3))
+            for _, key in extra:
+                v = it.get(key)
+                cells.append(_num(v, 3) if isinstance(v, (int, float))
+                             else (v or ""))
+            rows.append(cells)
+        return _tbl(headers, rows)
+
+    body.append(_fig("consensus-hard lines (highest mean CER)",
+                     _sample_tbl(df.get("consensus_hard") or [])))
+    body.append(_fig("consensus-easy lines (near-zero for every model)",
+                     _sample_tbl(df.get("consensus_easy") or [])))
+    body.append(_fig("discriminative lines (highest cross-model variance)",
+                     _sample_tbl(df.get("discriminative") or [],
+                                 extra=[("variance", "variance")])))
+
+    sbg = df.get("suspected_bad_gt") or []
+    if sbg:
+        rows = [(it.get("sample_id"), it.get("dataset"), it.get("gt"),
+                 _num(it.get("mean_pairwise_pred_cer"), 3),
+                 _num(it.get("mean_pred_vs_gt_cer"), 3),
+                 _num(it.get("score"), 3)) for it in sbg]
+        body.append(_fig("suspected bad ground truth (models agree, GT disagrees)",
+                         _tbl(["sample", "dataset", "GT", "pairwise pred CER",
+                               "pred vs GT CER", "score"], rows)))
+
+    cvl = df.get("cer_vs_length") or {}
+    series = {m: v for m, v in cvl.items() if v}
+    if series:
+        body.append(_fig("CER vs GT length (binned)",
+                         binned_curve(series, x_label="GT length (chars)",
+                                      y_label="CER-light")))
+
+    cd = df.get("cer_distribution") or {}
+    rows = []
+    for m in sorted(cd):
+        for ds in sorted(cd[m] or {}):
+            rows.append((f"{m} / {ds}", cd[m][ds]))
+    if rows:
+        body.append(_fig("per-sample CER distribution (model × dataset)",
+                         box_row(rows)))
+
+    ec = {m: v for m, v in (df.get("ecdf") or {}).items() if v}
+    if ec:
+        body.append(_fig("CER ECDF per model",
+                         ecdf(ec, x_label="CER-light")))
+
+    return _panel("difficulty", "Difficulty", note, "".join(body) or _NA)
+
+
+def _render_model_landscape(findings: dict) -> str:
+    note = ("How the models relate: output agreement, head-to-head win rate, "
+            "metric correlation, ensemble ceilings, bootstrap confidence "
+            "intervals, rank stability, and the normalization-profile split.")
+    ml = findings.get("model_landscape") or {}
+    if not ml:
+        return _panel("model-landscape", "Model landscape", note, _NA)
+    body = []
+
+    ag = ml.get("agreement") or {}
+    am = ag.get("models") or []
+    if am and ag.get("identity"):
+        body.append(_fig("pairwise output-identity rate",
+                         svg_heatmap(am, am, ag.get("identity"),
+                                     fmt="{:.0%}",
+                                     title="output-identity rate")))
+
+    wr = ml.get("win_rate") or {}
+    wm = wr.get("models") or []
+    if wm and wr.get("matrix"):
+        body.append(_fig("pairwise win rate (row beats column)",
+                         svg_heatmap(wm, wm, wr.get("matrix"), fmt="{:.0%}",
+                                     title="win rate")))
+
+    mc = ml.get("metric_correlation") or {}
+    mm = mc.get("metrics") or []
+    if mm and mc.get("matrix"):
+        body.append(_fig("metric correlation across samples",
+                         svg_heatmap(mm, mm, mc.get("matrix"), fmt="{:.2f}",
+                                     title="metric correlation")))
+
+    en = ml.get("ensemble") or {}
+    single = en.get("single") or {}
+    if single:
+        pairs = [(m, single[m]) for m in sorted(single)]
+        if "oracle" in en:
+            pairs.append(("oracle (best per line)", en["oracle"]))
+        if "rover" in en:
+            pairs.append(("ROVER majority vote", en["rover"]))
+        body.append(_fig("single-model CER vs oracle / ROVER ceilings",
+                         hbar(pairs)))
+
+    bc = ml.get("bootstrap_cer") or {}
+    rows = []
+    for m in sorted(bc):
+        for ds in sorted(bc[m] or {}):
+            d = bc[m][ds]
+            rows.append((f"{m} / {ds}", d.get("point"), d.get("lo"),
+                         d.get("hi")))
+    if rows:
+        body.append(_fig("bootstrap 95% CI on CER-light (model × dataset)",
+                         forest(rows)))
+
+    rs = ml.get("rank_stability") or {}
+    rrows = []
+    for m in sorted(k for k in rs if k != "datasets"):
+        for ds in sorted(rs[m] or {}):
+            d = rs[m][ds]
+            rrows.append((m, ds, d.get("best"), d.get("mode"), d.get("worst")))
+    if rrows:
+        body.append(_fig("bootstrap rank stability",
+                         _tbl(["model", "dataset", "best rank", "modal rank",
+                               "worst rank"], rrows)))
+
+    pdd = ml.get("profile_decomposition") or {}
+    if pdd:
+        rows = [(m, pdd[m]) for m in sorted(pdd)]
+        body.append(_fig("normalization-profile decomposition of CER-raw",
+                         stacked_hbar(rows,
+                                      ["real", "orthographic", "diacritic"])))
+
+    return _panel("model-landscape", "Model landscape", note,
+                  "".join(body) or _NA)
+
+
+def _render_operational(findings: dict) -> str:
+    note = ("Cost, latency and reliability: the cost-accuracy Pareto frontier, "
+            "latency spread, failure-cause mix, and retry / empty-output rates.")
+    op = findings.get("operational") or {}
+    if not op:
+        return _panel("operational", "Operations", note, _NA)
+    body = []
+
+    pa = op.get("pareto") or {}
+    if pa:
+        ms = sorted(pa)
+        pts = [((pa[m] or {}).get("usd_per_1k"), (pa[m] or {}).get("cer_light"))
+               for m in ms]
+        body.append(_fig("cost – accuracy Pareto (log cost axis)",
+                         svg_scatter(pts, x_label="USD / 1k lines",
+                                     y_label="CER-light", pareto=True,
+                                     log_x=True, labels=ms)))
+
+    lat = op.get("latency") or {}
+    rows = []
+    for m in sorted(lat):
+        d = lat[m]
+        p50, p95 = _f(d.get("p50")), _f(d.get("p95"))
+        med = min(max(_f(d.get("mean")), p50), p95)
+        rows.append((m, {"min": p50, "q1": p50, "median": med, "q3": p95,
+                         "max": p95}))
+    if rows:
+        body.append(_fig("latency p50 → p95 (ms), mean as the median line",
+                         box_row(rows)))
+
+    fcs = op.get("failure_causes") or {}
+    classes = ["ok", "refusal", "empty", "wrong_script", "meta_commentary",
+               "prompt_echo", "rate_limited", "other_error"]
+    rows = []
+    for m in sorted(fcs):
+        for ds in sorted(fcs[m] or {}):
+            rows.append((f"{m} / {ds}", fcs[m][ds]))
+    if rows:
+        body.append(_fig("failure-cause decomposition (model × dataset)",
+                         stacked_hbar(rows, classes)))
+
+    rt = op.get("retries") or {}
+    bp = rt.get("by_provider") or {}
+    if bp:
+        body.append(_fig("lines retried, by provider",
+                         hbar([(m, (bp[m] or {}).get("retried"))
+                               for m in sorted(bp)])))
+    ah = rt.get("attempts_hist") or {}
+    if ah:
+        body.append(_fig("attempts per line", _tbl(
+            ["attempts", "lines"],
+            [(k, ah[k]) for k in sorted(ah, key=lambda x: int(x))])))
+
+    er = op.get("empty_rate") or {}
+    if er:
+        body.append(_fig("empty / near-empty output rate", _tbl(
+            ["model", "empty", "n", "rate"],
+            [(m, (er[m] or {}).get("empty"), (er[m] or {}).get("n"),
+              _pct((er[m] or {}).get("rate"), 1)) for m in sorted(er)])))
+
+    return _panel("operational", "Operations", note, "".join(body) or _NA)
+
+
+def _render_corpus_health(findings: dict) -> str:
+    note = ("Health of the benchmark itself: per-dataset character statistics "
+            "and Zipf curves, how model ranks shift across metrics, and any "
+            "contamination flags.")
+    ch = findings.get("corpus_health") or {}
+    if not ch:
+        return _panel("corpus-health", "Corpus health", note, _NA)
+    body = []
+
+    gs = ch.get("gt_stats") or {}
+    zipf = {ds: (gs[ds].get("zipf") or []) for ds in gs}
+    zipf = {ds: v for ds, v in zipf.items() if v}
+    if zipf:
+        body.append(_fig("character-frequency Zipf curve per dataset",
+                         binned_curve(zipf, x_label="rank",
+                                      y_label="count")))
+    if gs:
+        rows = [(ds, gs[ds].get("charset_size"),
+                 _num(gs[ds].get("mean_line_chars"), 1),
+                 _pct(gs[ds].get("diac_density"), 1),
+                 gs[ds].get("n_lines")) for ds in sorted(gs)]
+        body.append(_fig("ground-truth statistics per dataset",
+                         _tbl(["dataset", "charset size", "mean line chars",
+                               "diac density", "lines"], rows)))
+
+    churn = ch.get("leaderboard_churn") or {}
+    ranks = churn.get("ranks") or {}
+    if ranks:
+        db = []
+        for m in sorted(ranks):
+            vs = [v for v in ranks[m].values() if isinstance(v, (int, float))]
+            if vs:
+                db.append((m, min(vs), max(vs)))
+        if db:
+            body.append(_fig("rank spread across metrics",
+                             dumbbell(db, left_label="best rank",
+                                      right_label="worst rank")))
+        cols = list(churn.get("metrics") or [])
+        if any("cost_adjusted" in (ranks[m] or {}) for m in ranks):
+            cols = cols + ["cost_adjusted"]
+        body.append(_fig("rank under each metric", _tbl(
+            ["model"] + cols,
+            [[m] + [(ranks[m] or {}).get(c) for c in cols]
+             for m in sorted(ranks)])))
+
+    cont = ch.get("contamination") or {}
+    flagged = cont.get("flagged") or []
+    if flagged:
+        body.append(_fig("contamination-flagged lines", _tbl(
+            list(flagged[0].keys()) if isinstance(flagged[0], dict) else ["line"],
+            [list(r.values()) if isinstance(r, dict) else [r] for r in flagged])))
+    elif not cont.get("available", False):
+        body.append('<p class="board-note">No contamination report available '
+                    '(run <code>training/contamination.py</code>).</p>')
+    else:
+        body.append('<p class="board-note">No lines flagged for '
+                    'contamination.</p>')
+
+    return _panel("corpus-health", "Corpus health", note, "".join(body) or _NA)
+
+
+_RENDERERS = {
+    "coverage": _render_coverage,
+    "error-anatomy": _render_error_anatomy,
+    "script-letters": _render_script_letters,
+    "diacritics": _render_diacritics,
+    "difficulty": _render_difficulty,
+    "model-landscape": _render_model_landscape,
+    "operational": _render_operational,
+    "corpus-health": _render_corpus_health,
+}
+
+
+def render_findings_view(findings: dict) -> str:
+    """The whole Findings view: a ``<div class="findings-view">`` wrapping the
+    eight sections in ``FINDINGS_SECTIONS`` order. Always well-formed and always
+    carrying every ``id='f-<slug>'`` anchor; sections with no data render their
+    shell plus a "not available" note."""
+    findings = findings or {}
+    parts = ['<div class="findings-view">']
+    for slug, _label in FINDINGS_SECTIONS:
+        parts.append(_RENDERERS[slug](findings))
+    parts.append("</div>")
+    return "".join(parts)
