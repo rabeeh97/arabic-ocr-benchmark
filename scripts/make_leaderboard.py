@@ -19,6 +19,7 @@ import re
 import sys
 from pathlib import Path
 
+import _leaderboard_findings as _lf  # scripts/ sibling; resolvable on sys.path[0]
 import yaml
 
 _PROFILES = ("raw", "light", "diac_insensitive")
@@ -738,17 +739,94 @@ _TOC_JS = r"""
 """
 
 
-def _toc(items: list[tuple[str, str]]) -> str:
+_TABS_JS = r"""
+(function(){
+  var bar=document.querySelector('.tabbar');
+  var btns=bar?[].slice.call(bar.querySelectorAll('.tab')):[];
+  var views={};
+  [].forEach.call(document.querySelectorAll('.view[data-view]'),function(v){
+    views[v.getAttribute('data-view')]=v;
+  });
+  var navs={leaderboard:document.getElementById('toc-leaderboard'),
+            findings:document.getElementById('toc-findings')};
+
+  function want(){
+    var h=location.hash||'';
+    if(h.indexOf('#f-')===0||h.indexOf('#findings')===0) return 'findings';
+    try{ var s=localStorage.getItem('lb_tab');
+         if(s==='findings'||s==='leaderboard') return s; }catch(_){}
+    return 'leaderboard';
+  }
+  function activate(name,push){
+    if(name!=='findings') name='leaderboard';
+    btns.forEach(function(b){
+      b.classList.toggle('tab--on', b.getAttribute('data-tab')===name);
+    });
+    Object.keys(views).forEach(function(k){ if(views[k]) views[k].hidden=(k!==name); });
+    Object.keys(navs).forEach(function(k){ if(navs[k]) navs[k].hidden=(k!==name); });
+    try{ localStorage.setItem('lb_tab',name); }catch(_){}
+    if(push){ try{ history.replaceState(null,'',name==='findings'?'#findings':'#'); }catch(_){} }
+  }
+
+  var init=want();
+  activate(init,false);
+  if(init==='findings' && location.hash.indexOf('#f-')===0){
+    var t=document.getElementById(location.hash.slice(1));
+    if(t) requestAnimationFrame(function(){ t.scrollIntoView({block:'start'}); });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){ activate(b.getAttribute('data-tab'),true); });
+  });
+
+  // one shared cursor tooltip for any [data-tip] element (charts live here)
+  var tip=null;
+  function host(el){
+    while(el && el.getAttribute){
+      if(el.hasAttribute('data-tip')) return el;
+      el=el.parentNode;
+    }
+    return null;
+  }
+  document.addEventListener('mousemove',function(e){
+    var h=host(e.target);
+    if(!h){ if(tip) tip.classList.remove('on'); return; }
+    if(!tip){ tip=document.createElement('div'); tip.className='chart-tip';
+              document.body.appendChild(tip); }
+    tip.textContent=h.getAttribute('data-tip')||'';
+    tip.classList.add('on');
+    var pad=14, w=tip.offsetWidth, ht=tip.offsetHeight;
+    var x=e.clientX+pad, y=e.clientY+pad;
+    if(x+w>window.innerWidth-4) x=e.clientX-pad-w;
+    if(y+ht>window.innerHeight-4) y=e.clientY-pad-ht;
+    tip.style.left=Math.max(4,x)+'px';
+    tip.style.top=Math.max(4,y)+'px';
+  });
+  document.addEventListener('mouseout',function(e){
+    if(tip && !host(e.target)) tip.classList.remove('on');
+  });
+})();
+"""
+
+
+def _toc(items: list[tuple[str, str]],
+         findings_items: list[tuple[str, str]] | None = None) -> str:
     """A vertical section index, fixed to the left of the page (scroll-spy in
-    ``_TOC_JS`` highlights the section currently in view)."""
-    lis = "".join(
-        f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
-        for sid, label in items
-    )
+    ``_TOC_JS`` highlights the section currently in view). Two lists share the
+    nav — the leaderboard sections and the findings sections — with only the
+    one matching the active tab visible (``_TABS_JS`` swaps ``hidden``)."""
+    def _ol(pairs: list[tuple[str, str]], oid: str, hidden: bool) -> str:
+        lis = "".join(
+            f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
+            for sid, label in pairs
+        )
+        return f"<ol id='{oid}'{' hidden' if hidden else ''}>{lis}</ol>"
+
     return (
         "<nav class='sidenav' id='toc' aria-label='sections'>"
         "<p class='sidenav-h'>Contents</p>"
-        f"<ol>{lis}</ol></nav>"
+        f"{_ol(items, 'toc-leaderboard', False)}"
+        f"{_ol(findings_items or [], 'toc-findings', True)}"
+        "</nav>"
     )
 
 
@@ -784,7 +862,6 @@ def _panel(section_html: str, *, pid: str, collapsible: bool,
 def render(rows: list[dict], title: str, target: Path | None = None,
            findings: dict | None = None) -> str:
     _RENDER_CTX["target"] = target or Path("results")
-    _ = findings  # threaded through for the findings tab (Task 18); unused here
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
                                        float(r.get("cer_micro_light", 1) or 1)))
     preview = _is_preview(rows)
@@ -821,6 +898,16 @@ def render(rows: list[dict], title: str, target: Path | None = None,
             f"{n_ds} dataset(s) — Muharaf handwriting + KITAB-Bench subsets</p>"
         )
     out.append("</header>")
+
+    out.append(
+        "<div class=\"tabbar\" role=\"tablist\">"
+        "<button type=\"button\" class=\"tab tab--on\" data-tab=\"leaderboard\" "
+        "role=\"tab\">Leaderboard</button>"
+        "<button type=\"button\" class=\"tab\" data-tab=\"findings\" "
+        "role=\"tab\">Findings &amp; analysis</button>"
+        "</div>"
+    )
+    out.append('<div class="view" data-view="leaderboard">')
 
     real_rows = [
         r for r in rows
@@ -874,7 +961,14 @@ def render(rows: list[dict], title: str, target: Path | None = None,
         out.append(f"<div><dt>{html.escape(term)}</dt><dd>{desc}</dd></div>")
     out.append("</dl></section>")
     present.append(("legend", "Definitions"))
-    out[_SIDENAV_AT] = _toc(present)
+    out[_SIDENAV_AT] = _toc(
+        present, [(f"f-{slug}", label) for slug, label in _lf.FINDINGS_SECTIONS]
+    )
+
+    out.append("</div>")  # close data-view="leaderboard"
+    out.append('<div class="view" data-view="findings" hidden>')
+    out.append(_lf.render_findings_view(findings or {}))
+    out.append("</div>")
 
     out.append(
         "<footer><p>Datasets: <b>Muharaf-public</b> (Manuscripts of Handwritten "
@@ -884,6 +978,7 @@ def render(rows: list[dict], title: str, target: Path | None = None,
         "Harness: <code>arabic-ocr-bench</code>. "
         f"Generated {gen} by <code>scripts/make_leaderboard.py</code>.</p></footer>"
     )
+    out.append(f"<script>{_TABS_JS}</script>")
     out.append(f"<script>{_TOC_JS}</script>")
     out.append("</main>")
     out.append("</div>")
@@ -1794,7 +1889,31 @@ abbr.gloss{text-decoration:none;border-bottom:1px dotted currentColor;cursor:hel
   background:var(--surface);box-shadow:1px 0 0 var(--line);}
 .ex-tbl tbody tr:hover td.exm{background:var(--accent-soft);}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+
+/* --- tab bar + view split (Findings & analysis) --- */
+.tabbar{display:flex;gap:2px;margin:26px 0 2px;border-bottom:1px solid var(--line);}
+.tab{appearance:none;-webkit-appearance:none;background:none;border:0;
+  border-bottom:2px solid transparent;margin-bottom:-1px;padding:9px 15px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);cursor:pointer;
+  transition:color .12s,border-color .12s;}
+.tab:hover{color:var(--ink);}
+.tab--on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+.view[hidden]{display:none;}
+/* the shared cursor tooltip is appended to <body>, so it needs unscoped rules
+   (FINDINGS_CSS only styles .findings-view .chart-tip). */
+.chart-tip{position:fixed;z-index:60;left:0;top:0;pointer-events:none;opacity:0;
+  max-width:280px;padding:6px 9px;border:1px solid var(--line);border-radius:8px;
+  background:var(--surface);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:11.5px;line-height:1.45;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);transition:opacity .1s;}
+.chart-tip.on{opacity:1;}
 </style>"""
+
+# Fold the Findings view's own stylesheet (scoped under ``.findings-view``) into
+# the single ``<style>`` block so the published fragment stays self-contained.
+_HEAD = _HEAD.replace("\n</style>", "\n" + _lf.FINDINGS_CSS.strip() + "\n</style>")
 
 
 def _render_empty(title: str) -> str:
