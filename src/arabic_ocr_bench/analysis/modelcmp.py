@@ -26,10 +26,12 @@ the whole dict survives ``json.dumps``.
 
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
+from itertools import zip_longest
 
 import numpy as np
 
+from ..metrics import cer as _cer
 from ..normalize import normalize
 from .charstats import _ok
 
@@ -297,10 +299,196 @@ def model_landscape(
     for m in sorted(rs_by_model):
         rank_stability[m] = rs_by_model[m]
 
+    # ---- ensemble: oracle / ROVER ceiling + greedy marginal --------------- #
+    # Deterministic, no RNG. All aggregation is micro CER-light in the module's
+    # house style: ``sum(round(cer_i * len_ref_i)) / sum(len_ref_i)``.
+    ok_sids_by_model: dict[str, set] = defaultdict(set)
+    rec_by_key: dict[tuple[str, str], object] = {}
+    for r in ok:
+        ok_sids_by_model[r.model].add(r.sample_id)
+        rec_by_key[(r.model, r.sample_id)] = r
+    ens_models = sorted(ok_sids_by_model)
+
+    common = (
+        set.intersection(*(ok_sids_by_model[m] for m in ens_models))
+        if ens_models
+        else set()
+    )
+    common_sorted = sorted(common)
+
+    def _micro(pairs) -> float:
+        num = sum(round(c * length) for c, length in pairs)
+        den = sum(length for _c, length in pairs)
+        return float(num / den) if den else 0.0
+
+    if common_sorted:
+        # Per-line reference length: taken from the first model (identical GT
+        # across models for a shared line), used as the common denominator so
+        # ``oracle`` and each ``single`` divide by the same total.
+        ref_len = {
+            sid: int(rec_by_key[(ens_models[0], sid)].len_ref_chars)
+            for sid in common_sorted
+        }
+
+        single = {
+            m: _micro(
+                [
+                    (
+                        rec_by_key[(m, sid)].cer_light,
+                        rec_by_key[(m, sid)].len_ref_chars,
+                    )
+                    for sid in common_sorted
+                ]
+            )
+            for m in ens_models
+        }
+
+        def _oracle_cer(subset) -> float:
+            num = 0
+            den = 0
+            for sid in common_sorted:
+                best_c = min(
+                    rec_by_key[(m, sid)].cer_light for m in subset
+                )
+                length = ref_len[sid]
+                num += round(best_c * length)
+                den += length
+            return float(num / den) if den else 0.0
+
+        oracle = _oracle_cer(ens_models)
+
+        # ROVER: positional character-level majority vote over the models'
+        # light-normalized predictions (zip_longest columns, modal char per
+        # column, drop a column whose winner is the fill sentinel). Modal
+        # char ties break by codepoint so the vote is deterministic.
+        _FILL = "\x00"
+
+        def _vote(preds) -> str:
+            out_chars: list[str] = []
+            for col in zip_longest(*preds, fillvalue=_FILL):
+                counts = Counter(col)
+                ch = min(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0]
+                if ch != _FILL:
+                    out_chars.append(ch)
+            return "".join(out_chars)
+
+        r_num = 0
+        r_den = 0
+        for sid in common_sorted:
+            avail = [
+                rows_by_key[(m, sid)]
+                for m in ens_models
+                if (m, sid) in rows_by_key
+            ]
+            if not avail:
+                continue  # no prediction text on hand for this line
+            gt_light = normalize(avail[0].gt, "light")
+            preds = [normalize(row.pred, "light") for row in avail]
+            voted = _vote(preds)
+            length = len(gt_light)
+            r_num += round(_cer(gt_light, voted) * length)
+            r_den += length
+        rover = float(r_num / r_den) if r_den else 0.0
+
+        # Greedy marginal: start at the best single model, then repeatedly add
+        # whichever remaining model most lowers the subset's oracle CER.
+        best = min(ens_models, key=lambda m: (single[m], m))
+        selected = [best]
+        marginal: list[list] = [[best, single[best]]]
+        remaining = [m for m in ens_models if m != best]
+        while remaining:
+            cand = sorted(
+                ((_oracle_cer(selected + [m]), m) for m in remaining),
+                key=lambda t: (t[0], t[1]),
+            )
+            oc, pick = cand[0]
+            selected.append(pick)
+            remaining.remove(pick)
+            marginal.append([pick, oc])
+
+        ensemble = {
+            "single": {m: float(single[m]) for m in ens_models},
+            "oracle": float(oracle),
+            "rover": float(rover),
+            "marginal": marginal,
+        }
+    else:
+        # No line is OK for every model -> no shared basis for an ensemble
+        # ceiling. Fall back to each model's overall micro CER-light.
+        overall = {}
+        for m in ens_models:
+            recs_m = [rec_by_key[(m, sid)] for sid in ok_sids_by_model[m]]
+            overall[m] = _micro(
+                [(r.cer_light, r.len_ref_chars) for r in recs_m]
+            )
+        ensemble = {
+            "single": {m: float(overall[m]) for m in ens_models},
+            "oracle": 0.0,
+            "rover": 0.0,
+            "marginal": [],
+        }
+
+    # ---- win_rate: pairwise per-line CER-light win fraction --------------- #
+    wr_models = sorted(ok_sids_by_model)
+    wn = len(wr_models)
+    win_matrix = [[0.5] * wn for _ in range(wn)]
+    # wins[a][b] = wins of a vs b (tie -> 0.5 each); games[a][b] = shared lines.
+    bt_wins = np.zeros((wn, wn), dtype=float)
+    bt_games = np.zeros((wn, wn), dtype=float)
+    for a in range(wn):
+        for c in range(a + 1, wn):
+            ma, mc = wr_models[a], wr_models[c]
+            shared = sorted(ok_sids_by_model[ma] & ok_sids_by_model[mc])
+            bt_games[a, c] = bt_games[c, a] = float(len(shared))
+            if not shared:
+                win_matrix[a][c] = win_matrix[c][a] = 0.5
+                continue
+            wa = 0.0
+            wc = 0.0
+            for sid in shared:
+                ca = rec_by_key[(ma, sid)].cer_light
+                cc = rec_by_key[(mc, sid)].cer_light
+                if ca < cc:
+                    wa += 1.0
+                elif ca > cc:
+                    wc += 1.0
+                else:
+                    wa += 0.5
+                    wc += 0.5
+            bt_wins[a, c] = wa
+            bt_wins[c, a] = wc
+            win_matrix[a][c] = float(wa / len(shared))
+            win_matrix[c][a] = float(wc / len(shared))
+    win_rate = {"models": list(wr_models), "matrix": win_matrix}
+
+    # ---- bradley_terry: MM-algorithm strengths from pairwise wins -------- #
+    bradley_terry: dict[str, float] = {}
+    if wn:
+        w_i = bt_wins.sum(axis=1)
+        p = np.ones(wn, dtype=float)
+        for _ in range(50):
+            new_p = np.empty(wn, dtype=float)
+            for i in range(wn):
+                denom = 0.0
+                for j in range(wn):
+                    if j == i:
+                        continue
+                    denom += bt_games[i, j] / (p[i] + p[j] + 1e-12)
+                new_p[i] = w_i[i] / (denom + 1e-12)
+            new_p = np.where(new_p <= 0.0, 1e-12, new_p)
+            new_p = new_p / np.exp(np.mean(np.log(new_p)))
+            p = new_p
+        bradley_terry = {
+            m: float(p[i]) for i, m in enumerate(wr_models)
+        }
+
     return {
         "agreement": agreement,
         "metric_correlation": metric_correlation,
         "profile_decomposition": profile_decomposition,
         "bootstrap_cer": bootstrap_cer,
         "rank_stability": rank_stability,
+        "ensemble": ensemble,
+        "win_rate": win_rate,
+        "bradley_terry": bradley_terry,
     }
