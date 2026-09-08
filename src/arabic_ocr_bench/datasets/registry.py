@@ -12,7 +12,7 @@ _DEFAULT_CFG = Path("configs/datasets.yaml")
 
 
 def load_dataset_configs(path: str | Path = _DEFAULT_CFG) -> dict[str, dict]:
-    return yaml.safe_load(Path(path).read_text()) or {}
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
 
 
 def _resolve(target: str):

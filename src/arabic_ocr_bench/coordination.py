@@ -98,7 +98,7 @@ def _persisted_uuid() -> str:
     for p in _RUNNER_ID_FILES:
         try:
             if p.exists():
-                v = p.read_text().strip()
+                v = p.read_text(encoding="utf-8").strip()
                 if v:
                     return v
         except OSError:
@@ -108,7 +108,7 @@ def _persisted_uuid() -> str:
         for p in _RUNNER_ID_FILES:
             try:
                 p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(v)
+                p.write_text(v, encoding="utf-8")
             except OSError:
                 pass
     return v
@@ -191,7 +191,7 @@ class Ledger:
         out: list[Lease] = []
         for p in sorted(self.dir.glob("*.json")):
             try:
-                body = json.loads(p.read_text())
+                body = json.loads(p.read_text(encoding="utf-8"))
             except (OSError, json.JSONDecodeError):
                 continue  # torn write from another runner — it'll settle
             try:
@@ -244,7 +244,7 @@ class Ledger:
         lease.updated_at = time.time()
         body = {k: v for k, v in asdict(lease).items() if k != "path"}
         p = self.dir / self._fname(lease)
-        p.write_text(json.dumps(body, ensure_ascii=False))
+        p.write_text(json.dumps(body, ensure_ascii=False), encoding="utf-8")
         lease.path = str(p)
         return lease
 
@@ -429,7 +429,7 @@ class GitLedger(Ledger):
         lease.updated_at = time.time()
         body = {k: v for k, v in asdict(lease).items() if k != "path"}
         p = self.dir / self._fname(lease)
-        p.write_text(json.dumps(body, ensure_ascii=False))
+        p.write_text(json.dumps(body, ensure_ascii=False), encoding="utf-8")
         lease.path = str(p)
         verb = "done" if lease.status == "done" else "reserve"
         self._commit_push(f"lease {verb} {self._fname(lease)}")

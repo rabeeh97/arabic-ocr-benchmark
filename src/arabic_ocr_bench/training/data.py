@@ -43,7 +43,7 @@ def _hf_id_for(cfg: dict) -> str | None:
 
 def scored_splits(cfg_path: str | Path = _DEFAULT_CFG) -> set[tuple[str, str]]:
     """`(hf_id, split)` pairs the benchmark evaluates on — the do-not-train set."""
-    registry = yaml.safe_load(Path(cfg_path).read_text()) or {}
+    registry = yaml.safe_load(Path(cfg_path).read_text(encoding="utf-8")) or {}
     pairs: set[tuple[str, str]] = set()
     for entry in registry.values():
         if not isinstance(entry, dict):

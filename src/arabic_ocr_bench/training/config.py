@@ -121,7 +121,7 @@ def hub_trainer_kwargs(cfg: TrainingConfig) -> dict:
 def load_training_config(
     path: str | Path, *, datasets_cfg: str | Path = "configs/datasets.yaml"
 ) -> TrainingConfig:
-    cfg = TrainingConfig.model_validate(yaml.safe_load(Path(path).read_text()))
+    cfg = TrainingConfig.model_validate(yaml.safe_load(Path(path).read_text(encoding="utf-8")))
     for src in cfg.data.sources:
         if src.hf_id and src.split:
             check_source_not_scored(src.hf_id, src.split, cfg_path=datasets_cfg)

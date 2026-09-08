@@ -14,7 +14,7 @@ _DEFAULT_CFG = Path("configs/models.yaml")
 
 
 def load_model_configs(path: str | Path = _DEFAULT_CFG) -> dict[str, dict]:
-    return yaml.safe_load(Path(path).read_text()) or {}
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
 
 
 def available_hosted_models(
