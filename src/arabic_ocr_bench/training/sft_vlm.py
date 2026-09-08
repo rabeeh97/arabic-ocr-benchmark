@@ -22,12 +22,24 @@ from .data import assemble_dataset
 _ARCH_MODEL_CLS = {
     "qwen2_vl": ("transformers", "Qwen2VLForConditionalGeneration"),
     "qwen2_5_vl": ("transformers", "Qwen2_5_VLForConditionalGeneration"),
+    # Qwen3-VL shares the Qwen chat template / <|image_pad|> tokens / qwen_vl_utils
+    # pipeline with 2.5-VL, so only the model class differs. Needs transformers>=4.57.
+    "qwen3_vl": ("transformers", "Qwen3VLForConditionalGeneration"),
+    # PaliGemma 1 & 2 — different processor + collator (see _make_collator_paligemma).
+    "paligemma": ("transformers", "PaliGemmaForConditionalGeneration"),
 }
+
+# arches that use the Qwen chat-template collator + qwen_vl_utils vision pipeline
+_QWEN_FAMILY = {"qwen2_vl", "qwen2_5_vl", "qwen3_vl"}
 
 
 def _load_processor(cfg: TrainingConfig):
     from transformers import AutoProcessor
 
+    if cfg.base_model.arch == "paligemma":
+        # PaliGemma's processor has a fixed image size baked into the checkpoint;
+        # it rejects the Qwen min_pixels / max_pixels kwargs.
+        return AutoProcessor.from_pretrained(cfg.base_model.hf_id)
     return AutoProcessor.from_pretrained(
         cfg.base_model.hf_id,
         min_pixels=cfg.image.min_pixels,
@@ -155,6 +167,48 @@ def _find_subseq(seq: list[int], sub: list[int]) -> int | None:
     return None
 
 
+# PaliGemma OCR prefix — short task tag, not the full line-v2 instruction (the
+# SigLIP/Gemma stack does better with a terse prefix). Tune per experiment.
+_PALIGEMMA_PREFIX = "transcribe the arabic text in this image"
+
+
+def _make_collator_paligemma(processor, max_seq_len: int):
+    """PaliGemma 2 SFT collator (HF `paligemma2` recipe).
+
+    Each row from `assemble_dataset` carries a chat `messages` list + one PIL
+    image; PaliGemma wants a flat (prefix, image, suffix) triple. Passing
+    `suffix=` lets the processor build `input_ids` = prefix+<image>+suffix AND
+    the label mask (everything but the suffix tokens set to -100), so no manual
+    masking here. Verify the first few batches on the box — `labels` should be
+    all -100 except the ground-truth span.
+    """
+
+    def _target(row: dict) -> str:
+        for m in reversed(row["messages"]):
+            if m["role"] == "assistant":
+                return "".join(
+                    c.get("text", "") for c in m["content"] if c.get("type") == "text"
+                )
+        return ""
+
+    def collate(rows: list[dict]):
+        images = [row["images"][0] for row in rows]
+        prefixes = [_PALIGEMMA_PREFIX] * len(rows)
+        suffixes = [_target(row) for row in rows]
+        batch = processor(
+            text=prefixes,
+            images=images,
+            suffix=suffixes,
+            return_tensors="pt",
+            padding="longest",
+            truncation=True,
+            max_length=max_seq_len,
+        )
+        return batch
+
+    return collate
+
+
 def train(cfg: TrainingConfig) -> Path:
     """Run SFT and write the adapter (or full weights) to ``cfg.output_dir``."""
     from datasets import Dataset
@@ -194,12 +248,17 @@ def train(cfg: TrainingConfig) -> Path:
         remove_unused_columns=False,
         **hub_trainer_kwargs(cfg),
     )
+    collator = (
+        _make_collator_paligemma(processor, cfg.train.max_seq_len)
+        if cfg.base_model.arch == "paligemma"
+        else _make_collator(processor, cfg.train.max_seq_len)
+    )
     trainer = SFTTrainer(
         model=model,
         args=args,
         train_dataset=train_ds,
         eval_dataset=eval_ds,
-        data_collator=_make_collator(processor, cfg.train.max_seq_len),
+        data_collator=collator,
     )
     trainer.train(resume_from_checkpoint=resume_ckpt)
     trainer.save_model(str(out))

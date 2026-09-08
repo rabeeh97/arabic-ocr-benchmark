@@ -1,0 +1,56 @@
+# RTX 3090 experiment — bf16 LoRA of Qwen3-VL-4B-Instruct on real cursive
+# handwriting (Muharaf `train` split, reserved for fine-tuning, never scored).
+# Driven end-to-end by scripts/run_3090_experiment.py (see
+# docs/experiments/3090-experiment-runbook.md).
+#
+# Base needs transformers>=4.57 — the experiment script installs it into the
+# self-contained venv; the core benchmark env stays at 4.49.
+experiment: exp3090-qwen3vl4b
+method: lora            # bf16 LoRA ~16-20 GB on a 3090. OOM lever: switch to `qlora`.
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false   # freeze the ViT; flip on for degraded/historical script
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      # Data-scaling knob. Muharaf train is a few k lines; raise/lower to trace a
+      # curve. `null` = use the whole split.
+      limit: 8000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 1003520    # ~1120*896  (lower first if you OOM)
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 200        # a checkpoint well before any interruption
+  save_total_limit: 3
+  resume: true           # re-run -> continues from the newest checkpoint-*
+  push_to_hub: false     # local self-contained folder is the only backup
+
+# The experiment script overrides output_dir to <exp-folder>/runs/<experiment>.
+output_dir: results/training/exp3090-qwen3vl4b
+eval_datasets: [muharaf_lines]

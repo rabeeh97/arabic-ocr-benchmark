@@ -1,0 +1,15 @@
+# Held-out eval for exp3090-baseer-nakba — score the merged fine-tune on the UNTOUCHED
+# muharaf_lines test split. Run by scripts/run_3090_experiment.py after merge,
+# or by hand:  uv run bench run --config configs/training/exp3090_baseer_nakba.run.yaml --report
+models:
+  - exp3090-baseer-nakba-ft
+datasets:
+  - muharaf_lines
+limit: 200
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

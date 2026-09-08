@@ -1,0 +1,57 @@
+# RTX 3090 experiment — bf16 LoRA on top of Misraj/Baseer__Nakba, an
+# Arabic-manuscript-tuned ~3B VLM (SOTA on the NAKBA-NLP 2026 set: CER 0.079).
+# Domain-adapts it further to the Muharaf `train` split.
+#
+# License: cc-by-nc-sa-4.0 (non-commercial) — fine for research/benchmark use;
+# the derived adapter inherits the NC terms.
+#
+# arch: qwen2_5_vl mirrors the existing `nakba-misraj-baseer` entry in
+# configs/models.yaml (Baseer is Qwen2.5-VL-3B-derived). The experiment script's
+# fetch phase prints the checkpoint's real `architectures` — if it is NOT a
+# Qwen2.5-VL class, stop and use --base qwen3vl4b instead.
+experiment: exp3090-baseer-nakba
+method: lora
+
+base_model:
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 5.0e-5              # gentler LR — the base is already OCR-competent
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 200
+  save_total_limit: 3
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-baseer-nakba
+eval_datasets: [muharaf_lines]

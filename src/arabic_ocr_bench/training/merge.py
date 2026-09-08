@@ -13,6 +13,8 @@ from pathlib import Path
 _ARCH_MODEL_CLS = {
     "qwen2_vl": "Qwen2VLForConditionalGeneration",
     "qwen2_5_vl": "Qwen2_5_VLForConditionalGeneration",
+    "qwen3_vl": "Qwen3VLForConditionalGeneration",   # needs transformers>=4.57
+    "paligemma": "PaliGemmaForConditionalGeneration",  # PaliGemma 1 & 2
 }
 
 
