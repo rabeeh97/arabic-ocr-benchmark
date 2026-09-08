@@ -258,7 +258,9 @@ training) to prove the whole pipeline before committing to the long run.
 - **Contamination gate** — `prepare` runs `bench-train check-contam` and
   **hard-stops** if a train/eval line overlap is flagged
   (`C:\Users\User\a-experiment\exp\contamination_report.json`). This is the no-leak guarantee; only
-  override with `--allow-contam` after confirming a false positive.
+  override with `--allow-contam` after confirming a false positive. If
+  `check-contam` *crashes* (no flagged report written) the launcher says so
+  explicitly — that's a bug to fix, not something `--allow-contam` bypasses.
 - **`--from` / `--only`** — if `eval` fails because a transient network hiccup
   broke the register step, `--from eval` re-runs just eval + report without
   re-training.
