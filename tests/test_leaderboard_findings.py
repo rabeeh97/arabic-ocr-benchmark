@@ -81,6 +81,31 @@ def test_stacked_hbar_5_segments_use_distinct_colour_vars():
     assert "opacity:" not in frag  # flat fill per segment, no opacity-step scheme
 
 
+def _fixture_findings():
+    sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+    from arabic_ocr_bench.analysis.findings import build
+    return build(Path(__file__).parent / "fixtures" / "mini_results")
+
+
+def test_render_findings_view_has_all_sections():
+    html = lf.render_findings_view(_fixture_findings())
+    _wellformed(html)
+    for slug, _ in lf.FINDINGS_SECTIONS:
+        assert (f"id='f-{slug}'" in html) or (f'id="f-{slug}"' in html)
+
+
+def test_render_findings_view_empty_dict_is_graceful():
+    html = lf.render_findings_view({})
+    _wellformed(html)
+    assert "not available" in html.lower()
+    for slug, _ in lf.FINDINGS_SECTIONS:
+        assert (f"id='f-{slug}'" in html) or (f'id="f-{slug}"' in html)
+
+
+def test_no_replacement_char():
+    assert "�" not in lf.render_findings_view(_fixture_findings())
+
+
 def test_css_is_a_string_scoped_to_findings():
     css = lf.FINDINGS_CSS
     assert isinstance(css, str)
