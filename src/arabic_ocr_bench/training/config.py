@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from .data import check_source_not_scored
 
 Method = Literal["qlora", "lora", "full", "trocr"]
-Arch = Literal["qwen2_vl", "qwen2_5_vl", "trocr", "paligemma", "minicpmv"]
+Arch = Literal["qwen2_vl", "qwen2_5_vl", "qwen3_vl", "trocr", "paligemma", "minicpmv"]
 
 
 class BaseModelSpec(BaseModel):
