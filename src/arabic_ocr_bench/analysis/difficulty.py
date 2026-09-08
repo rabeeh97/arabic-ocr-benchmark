@@ -21,9 +21,11 @@ JSON-serialisable dict:
                           points, monotonic, last ``y == 1.0``).
 
 Per-sample CER for the consensus / discriminative views is the row's
-``scores["cer_light"]`` when it scored, else ``1.0`` (an errored or unscored
-model still counts as a full miss). Every scalar in the returned structure is a
-plain Python ``int`` / ``float`` so the whole thing survives ``json.dumps``.
+``scores["cer_light"]`` when the aligned record's ``failure_class == "ok"``,
+else ``1.0`` (an errored, content-failure, or unscored model still counts as a
+full miss and is not counted in ``n_models``). Every scalar in the returned
+structure is a plain Python ``int`` / ``float`` so the whole thing survives
+``json.dumps``.
 """
 
 from __future__ import annotations
@@ -40,15 +42,26 @@ from .charstats import _ok
 _ECDF_MAX_POINTS = 50
 
 
-def _row_scored(row) -> bool:
-    """True when the row carries a usable ``cer_light`` (no error, score present)."""
-    return row.error is None and row.scores.get("cer_light") is not None
+def _row_scored(row, rec) -> bool:
+    """True when the aligned record is a clean (``failure_class == "ok"``)
+    transcription that also carries a usable ``cer_light``.
+
+    Gating on the record's ``failure_class`` rather than ``row.error`` keeps this
+    consistent with ``modelcmp`` / ``charstats`` / ``operational.coverage`` /
+    ``corpus``: a content failure (``wrong_script`` / ``prompt_echo`` /
+    ``meta_commentary``) has ``row.error is None`` but is NOT a scored model.
+    """
+    return (
+        rec is not None
+        and rec.failure_class == "ok"
+        and row.scores.get("cer_light") is not None
+    )
 
 
-def _row_cer(row) -> float:
+def _row_cer(row, rec) -> float:
     """Per-sample CER for the consensus / discriminative views: the row's
-    ``cer_light`` when it scored, else ``1.0``."""
-    if _row_scored(row):
+    ``cer_light`` when it scored, else ``1.0`` (errored *or* content-failure)."""
+    if _row_scored(row, rec):
         return float(row.scores["cer_light"])
     return 1.0
 
@@ -76,6 +89,12 @@ def difficulty(rows, records, *, cap=30, bins=12) -> dict:
         ds_of.setdefault(r.sample_id, r.dataset)
         gt_of.setdefault(r.sample_id, r.gt)
 
+    # (model, sample_id) -> aligned record; the "was this a scored model?" test
+    # consults the record's failure_class, not row.error (see _row_scored).
+    rec_of: dict[tuple[str, str], object] = {
+        (rec.model, rec.sample_id): rec for rec in records
+    }
+
     ok_by_sample: dict[str, dict[str, object]] = defaultdict(dict)
     for rec in _ok(records):
         ok_by_sample[rec.sample_id][rec.model] = rec
@@ -89,10 +108,18 @@ def difficulty(rows, records, *, cap=30, bins=12) -> dict:
         ds, gt = ds_of[sid], gt_of[sid]
         models = sorted(per_model)
 
-        per_model_cer = {m: _row_cer(per_model[m]) for m in models}
-        n_models = sum(1 for m in models if _row_scored(per_model[m]))
+        per_model_cer = {
+            m: _row_cer(per_model[m], rec_of.get((m, sid))) for m in models
+        }
+        n_models = sum(
+            1 for m in models if _row_scored(per_model[m], rec_of.get((m, sid)))
+        )
         per_model_out = {
-            m: (float(per_model[m].scores["cer_light"]) if _row_scored(per_model[m]) else None)
+            m: (
+                float(per_model[m].scores["cer_light"])
+                if _row_scored(per_model[m], rec_of.get((m, sid)))
+                else None
+            )
             for m in models
         }
         mean_cer = float(np.mean([per_model_cer[m] for m in models])) if models else 0.0

@@ -258,7 +258,10 @@ def _ensure_findings(target: Path) -> dict:
                 newest = max(newest, p.stat().st_mtime)
     if fj.exists() and fj.stat().st_mtime >= newest:
         try:
-            return json.loads(fj.read_text(encoding="utf-8"))
+            doc = json.loads(fj.read_text(encoding="utf-8"))
+            if isinstance(doc, dict):
+                return doc
+            # valid JSON but not an object — treat like a decode error, rebuild.
         except (OSError, json.JSONDecodeError):
             pass
     try:
@@ -967,7 +970,15 @@ def render(rows: list[dict], title: str, target: Path | None = None,
 
     out.append("</div>")  # close data-view="leaderboard"
     out.append('<div class="view" data-view="findings" hidden>')
-    out.append(_lf.render_findings_view(findings or {}))
+    # A structurally-wrong (but JSON-valid) findings doc can make a "trust the
+    # golden shape" renderer raise; degrade the tab to its empty shell rather
+    # than crash the whole leaderboard build.
+    try:
+        _fv = _lf.render_findings_view(findings or {})
+    except Exception as e:  # noqa: BLE001
+        print(f"findings view render failed: {e}", file=sys.stderr)
+        _fv = _lf.render_findings_view({})
+    out.append(_fv)
     out.append("</div>")
 
     out.append(

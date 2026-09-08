@@ -79,3 +79,48 @@ def test_render_without_findings_still_works(tmp_path):
     rows = mk.collect(dst)
     page = mk.render(rows, "Test board", dst)  # findings defaults to None
     assert "<main" in page
+
+
+def test_findings_view_render_failure_degrades_but_page_still_renders(tmp_path, monkeypatch):
+    """A structurally-wrong findings doc that blows up a findings renderer must
+    degrade the findings tab to its empty shell, not crash the whole board."""
+    import shutil
+
+    dst = tmp_path / "results"
+    shutil.copytree(FIX, dst)
+    rows = mk.collect(dst)
+
+    real = mk._lf.render_findings_view
+    calls = {"n": 0}
+
+    def flaky(f):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            raise ValueError("boom: golden-shape unpack failed")
+        return real(f)
+
+    monkeypatch.setattr(mk._lf, "render_findings_view", flaky)
+
+    page = mk.render(rows, "T", dst, findings={"error_anatomy": {"sid_split": "not-a-dict"}})
+    assert "<main" in page
+    assert 'data-view="leaderboard"' in page
+    assert 'data-view="findings"' in page
+    assert 'class="findings-view"' in page  # fallback empty shell present
+    assert calls["n"] == 2  # first raised, fallback call succeeded
+
+
+def test_ensure_findings_rebuilds_when_cache_is_not_a_dict(tmp_path):
+    """A valid-JSON but non-dict findings.json (e.g. ``[]``) must be treated
+    like a decode error and rebuilt, not returned as-is."""
+    import shutil
+
+    dst = tmp_path / "results"
+    shutil.copytree(FIX, dst)
+    for rd in sorted(p.parent for p in dst.glob("*/predictions.jsonl")):
+        (rd / "summary.csv").write_text("model,dataset,n\n")
+    fj = dst / "findings.json"
+    fj.write_text("[]")  # valid JSON, wrong type
+    now = time.time() + 10
+    os.utime(fj, (now, now))  # fresher than any run file
+    doc = mk._ensure_findings(dst)
+    assert isinstance(doc, dict) and "model_landscape" in doc
