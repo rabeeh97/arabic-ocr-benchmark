@@ -129,7 +129,9 @@ def score_run(run_dir: str | Path, profiles=PROFILES, *, progress: bool = True) 
         key=lambda c: pd.to_numeric(c, errors="coerce") if c.name == "cer_micro_raw" else c,
     )
     df.to_csv(run_dir / "summary.csv", index=False)
-    (run_dir / "summary.md").write_text(_render_md(df, run_dir.name, profiles))
+    (run_dir / "summary.md").write_text(
+        _render_md(df, run_dir.name, profiles), encoding="utf-8"
+    )
     return run_dir / "summary.md"
 
 

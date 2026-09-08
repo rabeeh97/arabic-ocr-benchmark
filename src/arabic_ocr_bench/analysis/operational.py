@@ -43,7 +43,7 @@ def _priced_models() -> set[str]:
     same "priced" rule as ``scripts/make_leaderboard.collect_costs``: the model
     is defined in models.yaml and ``pricing.input_usd_per_1m`` is not None."""
     try:
-        cfg = yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}
+        cfg = yaml.safe_load((_REPO / "configs" / "models.yaml").read_text(encoding="utf-8")) or {}
     except OSError:
         return set()
     return {

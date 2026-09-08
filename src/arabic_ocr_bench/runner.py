@@ -165,7 +165,9 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     cache_dir = root / "_cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
 
-    (run_dir / "run_config.snapshot.yaml").write_text(yaml.safe_dump(run_cfg, sort_keys=False))
+    (run_dir / "run_config.snapshot.yaml").write_text(
+        yaml.safe_dump(run_cfg, sort_keys=False), encoding="utf-8"
+    )
     pred_path = run_dir / "predictions.jsonl"
 
     clients = {name: build_model(name, models_cfg[name]) for name in run_cfg["models"]}
@@ -175,7 +177,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         key = _cache_key(sample.id, model_name, prompt_version)
         cache_file = cache_dir / f"{key}.json"
         if use_cache and cache_file.exists():
-            row = json.loads(cache_file.read_text())
+            row = json.loads(cache_file.read_text(encoding="utf-8"))
             if not row.get("error"):  # never serve a stale errored result — retry it
                 row["cached"] = True
                 # keep the original runner's attribution; record who re-served it
@@ -222,7 +224,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         if session_id:
             row["session"] = session_id
         if use_cache and pred.error is None:
-            cache_file.write_text(json.dumps(row, ensure_ascii=False))
+            cache_file.write_text(json.dumps(row, ensure_ascii=False), encoding="utf-8")
         return row
 
     def _chunks(it, n):

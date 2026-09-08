@@ -13,7 +13,7 @@ from .runner import run as run_benchmark
 
 
 def _load_run_cfg(path: str) -> dict:
-    return yaml.safe_load(Path(path).read_text())
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8"))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -42,13 +42,13 @@ def main(argv: list[str] | None = None) -> int:
             profiles = tuple(cfg.get("normalization_profiles") or ())
             md = score_run(run_dir, profiles=profiles) if profiles else score_run(run_dir)
             print(f"summary -> {md}")
-            print(Path(md).read_text())
+            print(Path(md).read_text(encoding="utf-8"))
         return 0
 
     if args.cmd == "report":
         md = score_run(args.run_dir)
         print(f"summary -> {md}")
-        print(Path(md).read_text())
+        print(Path(md).read_text(encoding="utf-8"))
         return 0
 
     if args.cmd == "analyze":

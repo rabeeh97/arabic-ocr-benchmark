@@ -44,6 +44,6 @@ def register_model(
 ) -> None:
     """Add / overwrite one entry in models.yaml, leaving the rest untouched."""
     p = Path(path)
-    doc = yaml.safe_load(p.read_text()) or {}
+    doc = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
     doc[name] = entry
-    p.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False))
+    p.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8")

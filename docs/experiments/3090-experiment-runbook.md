@@ -234,6 +234,11 @@ training) to prove the whole pipeline before committing to the long run.
 - **Launcher Python** — the launcher is stdlib-only and runs on **3.9+** (the box
   had 3.10). It does *not* need `pyyaml`; the config rewrite runs in the venv.
   Older `datetime` needs no `UTC` symbol — the script shims it.
+- **Windows text encoding** — Python on Windows defaults file writes to `cp1252`,
+  which cannot encode Arabic; every `read_text`/`write_text` in the package now
+  passes `encoding="utf-8"` explicitly. Symptom if one is missed:
+  `UnicodeEncodeError: 'charmap' codec can't encode…` while writing
+  `contamination_report.json`, `summary.md`, prediction caches, etc.
 - **`uv` installer 403** — the `astral.sh/uv/install.{ps1,sh}` URLs redirect to
   GitHub's asset CDN, which returns **HTTP 403** to `urllib`'s default agent. The
   script's `_download()` sends a `Mozilla/5.0` UA to get past it. If it still 403s

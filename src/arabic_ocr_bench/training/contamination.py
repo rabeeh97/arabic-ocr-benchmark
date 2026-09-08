@@ -162,5 +162,5 @@ def check_datasets(
     }
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report

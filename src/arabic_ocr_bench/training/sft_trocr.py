@@ -103,7 +103,7 @@ def train(cfg: TrainingConfig) -> Path:
     trainer.train(resume_from_checkpoint=resume_ckpt)
     trainer.save_model(str(out))
     processor.save_pretrained(str(out))
-    (out / "training_config.yaml").write_text(cfg.model_dump_json(indent=2))
+    (out / "training_config.yaml").write_text(cfg.model_dump_json(indent=2), encoding="utf-8")
     if cfg.train.push_to_hub:
         trainer.push_to_hub()
     return out

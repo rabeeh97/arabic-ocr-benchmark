@@ -30,7 +30,7 @@ def load_manifest(path: str | Path) -> dict:
     p = Path(path)
     if p.exists():
         try:
-            data = json.loads(p.read_text())
+            data = json.loads(p.read_text(encoding="utf-8"))
             data.setdefault("entries", [])
             return data
         except json.JSONDecodeError:
@@ -42,7 +42,7 @@ def _save_manifest(path: str | Path, manifest: dict) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(p.suffix + ".tmp")
-    tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+    tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.replace(p)
 
 
