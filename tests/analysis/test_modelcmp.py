@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 
 from arabic_ocr_bench.analysis.align import AlignmentRecord, build_record
@@ -170,3 +171,27 @@ def test_non_ok_rows_are_excluded_from_every_key():
     assert out["agreement"]["cer_corr"] == base["agreement"]["cer_corr"]
     assert out["metric_correlation"] == base["metric_correlation"]
     assert out["profile_decomposition"] == base["profile_decomposition"]
+
+
+def test_oracle_not_worse_than_best_single():
+    rows, recs = _setup()
+    out = model_landscape(rows, recs, b=200)
+    best_single = min(out["ensemble"]["single"].values())
+    assert out["ensemble"]["oracle"] <= best_single + 1e-9
+
+
+def test_win_rate_antisymmetric():
+    rows, recs = _setup()
+    out = model_landscape(rows, recs, b=200)
+    M = out["win_rate"]["matrix"]
+    n = len(M)
+    for i in range(n):
+        for j in range(n):
+            assert abs(M[i][j] + M[j][i] - 1.0) < 1e-9
+
+
+def test_bradley_terry_centered():
+    rows, recs = _setup()
+    out = model_landscape(rows, recs, b=200)
+    logs = [math.log(v) for v in out["bradley_terry"].values()]
+    assert abs(sum(logs) / len(logs)) < 1e-6
