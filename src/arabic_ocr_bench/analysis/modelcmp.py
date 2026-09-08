@@ -35,6 +35,8 @@ from .charstats import _ok
 
 _METRICS = ["cer_light", "wer_light", "mer_light", "wil_light", "diac_f1"]
 
+_BOOTSTRAP_B = 2000
+
 
 def _avg_linkage_order(dist: np.ndarray) -> list[int]:
     """Return the leaf order of an average-linkage agglomerative clustering of a
@@ -83,8 +85,8 @@ def _pearson(x, y) -> float:
 def model_landscape(
     rows, records, *, seed: int = 1234, b: int | None = None
 ) -> dict:
-    rng = np.random.default_rng(seed)  # noqa: F841  -- Task 10 uses this.
-    _ = b  # bootstrap-size override, unused until Task 10.
+    rng = np.random.default_rng(seed)
+    bootstrap_b = _BOOTSTRAP_B if b is None else max(1, int(b))
 
     # Single OK gate + single row lookup, shared by all four keys.
     ok = _ok(records)
@@ -196,8 +198,109 @@ def model_landscape(
             "diacritic": float(max(0.0, cer_light - cer_di)),
         }
 
+    # ---- bootstrap_cer (OK records only) ------------------------------- #
+    # Percentile bootstrap of each (model, dataset)'s micro-CER over its OK
+    # records. RNG is drawn here FIRST, iterating sorted models then, within
+    # each, sorted datasets -- one ``rng.integers`` call per non-degenerate
+    # cell (a cell whose reference-char total is 0 draws nothing).
+    B = bootstrap_b
+    md_pairs: dict[str, dict[str, list[tuple[int, int]]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    for r in ok:
+        err = round(r.cer_light * r.len_ref_chars)
+        md_pairs[r.model][r.dataset].append((int(err), int(r.len_ref_chars)))
+
+    bootstrap_cer: dict[str, dict[str, dict]] = {}
+    for m in sorted(md_pairs):
+        per_ds: dict[str, dict] = {}
+        for ds in sorted(md_pairs[m]):
+            pairs = md_pairs[m][ds]
+            cnt = len(pairs)
+            err_arr = np.array([p[0] for p in pairs], dtype=float)
+            ref_arr = np.array([p[1] for p in pairs], dtype=float)
+            ref_total = float(ref_arr.sum())
+            if ref_total == 0.0:
+                per_ds[ds] = {
+                    "point": 0.0, "lo": 0.0, "hi": 0.0, "n": int(cnt)
+                }
+                continue
+            point = float(err_arr.sum() / ref_total)
+            idx = rng.integers(0, cnt, size=(B, cnt))
+            err_s = err_arr[idx].sum(axis=1)
+            ref_s = ref_arr[idx].sum(axis=1)
+            safe = np.where(ref_s == 0.0, 1.0, ref_s)
+            micro = np.where(ref_s == 0.0, 0.0, err_s / safe)
+            per_ds[ds] = {
+                "point": point,
+                "lo": float(np.percentile(micro, 2.5)),
+                "hi": float(np.percentile(micro, 97.5)),
+                "n": int(cnt),
+            }
+        bootstrap_cer[m] = per_ds
+
+    # ---- rank_stability (OK records only) ----------------------------- #
+    # Per dataset: one joint resample of that dataset's OK sample set per
+    # replicate; each model scored on the resampled samples it actually has,
+    # then models ranked 1..k by ascending replicate micro-CER (ties -> stable
+    # by model name). RNG is drawn AFTER every bootstrap_cer cell, iterating
+    # datasets in sorted order -- one ``rng.integers`` call per dataset.
+    datasets_sorted = sorted({r.dataset for r in ok})
+    rank_stability: dict = {"datasets": list(datasets_sorted)}
+    rs_by_model: dict[str, dict[str, dict]] = defaultdict(dict)
+    for ds in datasets_sorted:
+        recs_ds = [r for r in ok if r.dataset == ds]
+        samples = sorted({r.sample_id for r in recs_ds})
+        s_ix = {s: i for i, s in enumerate(samples)}
+        ns = len(samples)
+        ds_models = sorted({r.model for r in recs_ds})
+        k = len(ds_models)
+        m_ix = {m: i for i, m in enumerate(ds_models)}
+
+        err_mat = np.zeros((k, ns), dtype=float)
+        ref_mat = np.zeros((k, ns), dtype=float)
+        for r in recs_ds:
+            i = m_ix[r.model]
+            j = s_ix[r.sample_id]
+            err_mat[i, j] += round(r.cer_light * r.len_ref_chars)
+            ref_mat[i, j] += r.len_ref_chars
+
+        idx = rng.integers(0, ns, size=(B, ns))
+        err_s = err_mat[:, idx].sum(axis=2)  # (k, B)
+        ref_s = ref_mat[:, idx].sum(axis=2)  # (k, B)
+        # Ruling 12: a model with zero resampled records in a replicate is
+        # excluded from that replicate's ranking (and from its own tally),
+        # never handed rank 1 off a no-data draw. Forcing its replicate micro
+        # to +inf parks it behind every model that actually drew data, so the
+        # data-having models occupy ranks 1..d contiguously; the per-model
+        # accumulator then keeps only the replicates where that model itself
+        # had data. A k-model dataset thus legitimately yields a <k-model
+        # ranking in replicates that miss a sparse model's samples.
+        safe = np.where(ref_s == 0.0, 1.0, ref_s)
+        micro = np.where(ref_s > 0.0, err_s / safe, np.inf)
+        order = np.argsort(micro, axis=0, kind="stable")  # (k, B)
+        ranks = np.argsort(order, axis=0, kind="stable") + 1  # ranks[model, rep]
+
+        for m, i in m_ix.items():
+            drew = ref_s[i] > 0.0  # replicates where this model had >=1 record
+            rr = ranks[i][drew]
+            if rr.size == 0:
+                # Ranked in zero replicates (astronomically unlikely at
+                # B >= 2000, n >= 1): omit this (model, dataset) entry.
+                continue
+            counts = np.bincount(rr, minlength=k + 1)
+            rs_by_model[m][ds] = {
+                "best": int(rr.min()),
+                "worst": int(rr.max()),
+                "mode": int(np.argmax(counts)),
+            }
+    for m in sorted(rs_by_model):
+        rank_stability[m] = rs_by_model[m]
+
     return {
         "agreement": agreement,
         "metric_correlation": metric_correlation,
         "profile_decomposition": profile_decomposition,
+        "bootstrap_cer": bootstrap_cer,
+        "rank_stability": rank_stability,
     }
