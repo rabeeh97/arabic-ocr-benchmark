@@ -118,3 +118,20 @@ def test_css_is_a_string_scoped_to_findings():
         s = line.strip()
         if "{" in s and not s.startswith(("@", ":root")):
             assert ".findings-view" in s, f"unscoped rule: {s!r}"
+
+
+def test_failure_classes_single_sourced_from_analysis_package():
+    from arabic_ocr_bench.analysis.refusal import FAILURE_CLASSES as CANON
+
+    assert tuple(lf.FAILURE_CLASSES) == tuple(CANON)
+    assert lf.FAILURE_CLASSES[0] == "ok"
+    # the operational renderer must order its stacked bar on this exact sequence
+    op = {
+        "operational": {
+            "failure_causes": {
+                "m1": {"dsx": {c: 1 for c in lf.FAILURE_CLASSES}},
+            }
+        }
+    }
+    frag = lf._render_operational(op)
+    _wellformed(frag)

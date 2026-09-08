@@ -535,18 +535,6 @@
           "m3": 0.3333333333333333
         },
         "sample_id": "dsx/test/000001"
-      },
-      {
-        "dataset": "dsy",
-        "gt": "شمس",
-        "mean_cer": 0.4444444444444444,
-        "n_models": 3,
-        "per_model": {
-          "m1": 0.3333333333333333,
-          "m2": 0.0,
-          "m3": 1.0
-        },
-        "sample_id": "dsy/test/000001"
       }
     ],
     "consensus_hard": [
@@ -590,11 +578,11 @@
         "dataset": "dsy",
         "gt": "شمس",
         "mean_cer": 0.4444444444444444,
-        "n_models": 3,
+        "n_models": 2,
         "per_model": {
           "m1": 0.3333333333333333,
           "m2": 0.0,
-          "m3": 1.0
+          "m3": null
         },
         "sample_id": "dsy/test/000001"
       },
@@ -658,19 +646,6 @@
       }
     ],
     "discriminative": [
-      {
-        "dataset": "dsy",
-        "gt": "شمس",
-        "mean_cer": 0.4444444444444444,
-        "n_models": 3,
-        "per_model": {
-          "m1": 0.3333333333333333,
-          "m2": 0.0,
-          "m3": 1.0
-        },
-        "sample_id": "dsy/test/000001",
-        "variance": 0.17283950617283952
-      },
       {
         "dataset": "dsx",
         "gt": "مَدْرَسَة",
@@ -1018,7 +993,7 @@
       "dsx",
       "dsy"
     ],
-    "generated_utc": "2026-09-08T14:13:25+00:00",
+    "generated_utc": "2026-09-08T19:15:33+00:00",
     "models": [
       "m1",
       "m2",

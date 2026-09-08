@@ -17,8 +17,16 @@ reads into the shared ``.chart-tip`` div. No ``<script>`` is emitted here.
 import html
 import math
 
+try:  # single-source the failure-class ordering from the analysis package
+    from arabic_ocr_bench.analysis.refusal import FAILURE_CLASSES
+except Exception:  # noqa: BLE001 - this scripts/ module can be imported without src on sys.path
+    FAILURE_CLASSES = (
+        "ok", "empty", "refusal", "meta_commentary",
+        "wrong_script", "prompt_echo", "rate_limited", "other_error",
+    )
+
 __all__ = [
-    "FINDINGS_CSS", "FINDINGS_SECTIONS", "binned_curve", "box_row",
+    "FAILURE_CLASSES", "FINDINGS_CSS", "FINDINGS_SECTIONS", "binned_curve", "box_row",
     "diverging_hbar", "dumbbell", "ecdf", "forest", "hbar", "histogram",
     "render_findings_view", "stacked_hbar", "svg_heatmap", "svg_scatter",
 ]
@@ -906,8 +914,7 @@ def _render_operational(findings: dict) -> str:
                          box_row(rows)))
 
     fcs = op.get("failure_causes") or {}
-    classes = ["ok", "refusal", "empty", "wrong_script", "meta_commentary",
-               "prompt_echo", "rate_limited", "other_error"]
+    classes = list(FAILURE_CLASSES)
     rows = []
     for m in sorted(fcs):
         for ds in sorted(fcs[m] or {}):
