@@ -342,13 +342,28 @@ def phase_prepare(dirs: dict, state: dict, spec: dict, args) -> None:
     _log(dirs, "prepare: assemble counts + contamination gate")
     cli = [str(py), "-m", "arabic_ocr_bench.training.cli"]
     _run(dirs, [*cli, "assemble", "--config", str(eff)], phase="prepare")
+    report_path = dirs["root"] / "contamination_report.json"
     rc = _run(dirs, [*cli, "check-contam", "--config", str(eff),
-                     "--out", str(dirs["root"] / "contamination_report.json")], phase="prepare")
-    if rc == 1 and not args.allow_contam:
-        raise SystemExit(
-            "prepare: contamination check FLAGGED a train/eval overlap. Inspect "
-            f"{dirs['root'] / 'contamination_report.json'} — pass --allow-contam only if it is a false positive."
-        )
+                     "--out", str(report_path)], phase="prepare")
+    if rc:
+        # exit 1 == "flagged" *and* exit 1 == "uncaught exception" — disambiguate
+        # by whether a report with n_flagged>0 was actually written.
+        try:
+            n_flagged = json.loads(report_path.read_text(encoding="utf-8")).get("n_flagged")
+        except (OSError, ValueError):
+            n_flagged = None
+        if n_flagged:
+            if not args.allow_contam:
+                raise SystemExit(
+                    "prepare: contamination check FLAGGED a train/eval overlap. Inspect "
+                    f"{report_path} — pass --allow-contam only if it is a false positive."
+                )
+        else:
+            raise SystemExit(
+                f"prepare: check-contam exited {rc} without a flagged report — it "
+                "crashed (see the traceback in the log above), this is not a "
+                "contamination hit and --allow-contam will not help."
+            )
     _mark(dirs, state, "prepare", config=str(eff))
 
 
