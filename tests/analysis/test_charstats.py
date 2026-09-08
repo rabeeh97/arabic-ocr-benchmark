@@ -5,7 +5,11 @@ from types import SimpleNamespace
 import pytest
 
 from arabic_ocr_bench.analysis.align import build_record
-from arabic_ocr_bench.analysis.charstats import _decimate, error_anatomy
+from arabic_ocr_bench.analysis.charstats import (
+    _decimate,
+    error_anatomy,
+    script_letters,
+)
 from arabic_ocr_bench.analysis.loader import iter_pred_rows
 
 FIX = Path(__file__).parent.parent / "fixtures" / "mini_results"
@@ -13,6 +17,10 @@ FIX = Path(__file__).parent.parent / "fixtures" / "mini_results"
 
 def _records():
     return [build_record(r) for r in iter_pred_rows(FIX)]
+
+
+def _rbk():
+    return {(r.model, r.sample_id): r for r in iter_pred_rows(FIX)}
 
 
 def test_sid_split_has_pooled_and_per_model():
@@ -93,3 +101,34 @@ def test_output_is_json_serialisable():
     rows_by_key = {(r.model, r.sample_id): r for r in iter_pred_rows(FIX)}
     out = error_anatomy(_records(), rows_by_key)
     json.dumps(out)
+
+
+# --------------------------------------------------------------------------- #
+# Task 6: script_letters()
+# --------------------------------------------------------------------------- #
+
+
+def test_confusion_captures_planted_bt():
+    out = script_letters(_records(), _rbk())
+    pooled = {(a, b) for a, b, _ in out["confusion"]["pooled"]}
+    assert ("ت", "ب") in pooled or ("ب", "ت") in pooled
+
+
+def test_rasm_gap_nonnegative_and_present():
+    out = script_letters(_records(), _rbk())
+    for per_ds in out["rasm_gap"].values():
+        for v in per_ds.values():
+            assert v["gap"] >= -1e-9
+            assert abs(v["gap"] - (v["cer_light"] - v["cer_rasm"])) < 1e-9
+
+
+def test_presentation_leak_rate_bounds():
+    out = script_letters(_records(), _rbk())
+    for v in out["presentation_leak"].values():
+        assert 0.0 <= v["rate"] <= 1.0
+
+
+def test_all_json_types():
+    import json
+
+    json.dumps(script_letters(_records(), _rbk()))  # must not raise

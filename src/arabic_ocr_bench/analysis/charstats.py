@@ -1,5 +1,6 @@
 # src/arabic_ocr_bench/analysis/charstats.py
-"""Task 5: ``error_anatomy()`` — pooled character/word error anatomy.
+"""Task 5: ``error_anatomy()`` + Task 6: ``script_letters()`` — pooled
+character/word error anatomy and an Arabic-script letter report.
 
 Reduces a list of :class:`~arabic_ocr_bench.analysis.align.AlignmentRecord` (the
 OK ones only) into JSON-serialisable summaries:
@@ -21,6 +22,9 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 
 import numpy as np
+
+from ..normalize import normalize
+from .align import ARABIC_LETTER_RE, LETTER_GROUPS
 
 _POINT_CAP = 400
 
@@ -188,3 +192,158 @@ def error_anatomy(records, rows_by_key=None) -> dict:
         }
 
     return out
+
+
+# --------------------------------------------------------------------------- #
+# Task 6: script_letters() — Arabic-script confusion matrix, per-letter error
+# rates, rasm (undotted-skeleton) gap, digit swaps and presentation-form leak.
+# --------------------------------------------------------------------------- #
+
+_CONFUSION_TOP = 40
+_LETTER_RATE_TOP = 30
+_MIN_PAIR_COUNT = 2
+_MIN_GT_OCC = 5
+
+
+def _is_letter(ch: str) -> bool:
+    return bool(ch) and ARABIC_LETTER_RE.match(ch) is not None
+
+
+def _confusion_list(counter: Counter, top: int):
+    """Deterministic ``[[ref, hyp, count], ...]`` — count >= 2, sort
+    ``(-count, ref, hyp)``, capped at ``top``."""
+    items = [
+        (ref, hyp, int(n))
+        for (ref, hyp), n in counter.items()
+        if n >= _MIN_PAIR_COUNT
+    ]
+    items.sort(key=lambda t: (-t[2], t[0], t[1]))
+    return [[ref, hyp, n] for ref, hyp, n in items[:top]]
+
+
+def script_letters(records, rows_by_key) -> dict:
+    """Reduce OK ``AlignmentRecord``s into an Arabic-script letter report.
+
+    Parameters
+    ----------
+    records:
+        Iterable of ``AlignmentRecord``. Only ``failure_class == "ok"`` rows are
+        pooled.
+    rows_by_key:
+        Mandatory ``{(model, sample_id): PredRow}`` map. Used to count ground
+        truth letter occurrences from ``normalize(row.gt, "light")`` for the
+        per-letter error-rate denominator.
+
+    Returns
+    -------
+    dict with keys ``confusion``, ``letter_error_rate``, ``rasm_gap``,
+    ``digit_swaps`` and ``presentation_leak``. Every scalar is a plain Python
+    ``int`` / ``float`` (the whole structure survives ``json.dumps``).
+    """
+    ok = _ok(records)
+
+    conf_pooled: Counter = Counter()
+    conf_by_model: dict[str, Counter] = defaultdict(Counter)
+
+    involved: Counter = Counter()       # char -> #sub/del(ref) + #ins(hyp)
+    gt_occ: Counter = Counter()         # char -> ground-truth occurrences
+
+    # rasm gap accumulators, keyed (model, dataset)
+    light_err: dict = defaultdict(int)
+    light_ref: dict = defaultdict(int)
+    rasm_err: dict = defaultdict(int)
+    rasm_ref: dict = defaultdict(int)
+
+    digit_swaps: dict[str, int] = defaultdict(int)
+    pf_lines: dict[str, int] = defaultdict(int)
+    pf_n: dict[str, int] = defaultdict(int)
+
+    for r in ok:
+        # touch per-model buckets so every OK model appears with zeros
+        _ = conf_by_model[r.model]
+        _ = digit_swaps[r.model]
+        pf_n[r.model] += 1
+        if r.presentation_form_chars > 0:
+            pf_lines[r.model] += 1
+        digit_swaps[r.model] += int(r.digit_swaps)
+
+        for o in r.char_ops:
+            if o.op == "sub":
+                if _is_letter(o.ref) and _is_letter(o.hyp):
+                    conf_pooled[(o.ref, o.hyp)] += 1
+                    conf_by_model[r.model][(o.ref, o.hyp)] += 1
+                involved[o.ref] += 1
+            elif o.op == "del":
+                involved[o.ref] += 1
+            elif o.op == "ins":
+                involved[o.hyp] += 1
+
+        key = (r.model, r.dataset)
+        light_err[key] += round(r.cer_light * r.len_ref_chars)
+        light_ref[key] += int(r.len_ref_chars)
+        rasm_err[key] += int(
+            r.rasm_ops["sub"] + r.rasm_ops["ins"] + r.rasm_ops["del"]
+        )
+        rasm_ref[key] += int(r.rasm_ops["ref_len"])
+
+        row = rows_by_key.get((r.model, r.sample_id))
+        if row is not None:
+            for ch in normalize(row.gt, "light"):
+                gt_occ[ch] += 1
+
+    # ---- confusion -------------------------------------------------------- #
+    confusion = {
+        "pooled": _confusion_list(conf_pooled, _CONFUSION_TOP),
+        "by_model": {
+            m: _confusion_list(c, _CONFUSION_TOP)
+            for m, c in conf_by_model.items()
+        },
+    }
+
+    # ---- letter_error_rate --------------------------------------------------- #
+    pooled_rates = []
+    for ch, occ in gt_occ.items():
+        if occ < _MIN_GT_OCC or not _is_letter(ch):
+            continue
+        inv = int(involved.get(ch, 0))
+        pooled_rates.append([ch, inv, int(occ), float(inv) / float(occ)])
+    pooled_rates.sort(key=lambda t: (-t[3], t[0]))
+    pooled_rates = pooled_rates[:_LETTER_RATE_TOP]
+
+    by_group = {}
+    for group, members in LETTER_GROUPS.items():
+        inv = sum(int(involved.get(ch, 0)) for ch in members)
+        occ = sum(int(gt_occ.get(ch, 0)) for ch in members)
+        by_group[group] = float(inv) / float(occ) if occ else 0.0
+
+    letter_error_rate = {"pooled": pooled_rates, "by_group": by_group}
+
+    # ---- rasm_gap ------------------------------------------------------------ #
+    rasm_gap: dict = defaultdict(dict)
+    for (model, dataset), lr in light_ref.items():
+        rr = rasm_ref[(model, dataset)]
+        cer_light = float(light_err[(model, dataset)]) / float(lr) if lr else 0.0
+        cer_rasm = float(rasm_err[(model, dataset)]) / float(rr) if rr else 0.0
+        rasm_gap[model][dataset] = {
+            "cer_light": cer_light,
+            "cer_rasm": cer_rasm,
+            "gap": cer_light - cer_rasm,
+        }
+
+    # ---- presentation_leak ------------------------------------------------- #
+    presentation_leak = {
+        m: {
+            "lines_with_pf": int(pf_lines.get(m, 0)),
+            "n": int(pf_n[m]),
+            "rate": float(pf_lines.get(m, 0)) / float(pf_n[m]) if pf_n[m] else 0.0,
+        }
+        for m in pf_n
+    }
+
+    return {
+        "confusion": confusion,
+        "letter_error_rate": letter_error_rate,
+        "rasm_gap": {m: dict(v) for m, v in rasm_gap.items()},
+        "digit_swaps": {m: int(n) for m, n in digit_swaps.items()},
+        "presentation_leak": presentation_leak,
+    }
