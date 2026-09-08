@@ -27,6 +27,11 @@ def main(argv: list[str] | None = None) -> int:
     p_rep = sub.add_parser("report", help="score an existing run directory")
     p_rep.add_argument("run_dir")
 
+    p_an = sub.add_parser("analyze", help="assemble the benchmark findings document")
+    p_an.add_argument("results_dir")
+    p_an.add_argument("-o", "--out")
+    p_an.add_argument("--dump-records", metavar="PATH")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "run":
@@ -45,6 +50,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"summary -> {md}")
         print(Path(md).read_text())
         return 0
+
+    if args.cmd == "analyze":
+        from .analysis.findings import main as analyze_main
+
+        argv_an = [args.results_dir]
+        if args.out:
+            argv_an += ["-o", args.out]
+        if args.dump_records:
+            argv_an += ["--dump-records", args.dump_records]
+        return analyze_main(argv_an)
 
     return 1
 
