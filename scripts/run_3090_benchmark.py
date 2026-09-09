@@ -278,9 +278,9 @@ def phase_check(dirs: dict, state: dict, spec: dict, args) -> None:
 
 
 def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "register") and not args.force:
-        _log(dirs, "register: already done")
-        return
+    # Always runs: it writes into aocr-repo/configs/models.yaml, which a repo
+    # re-sync resets — a persistent "done" mark would leave the rows missing.
+    # The register calls are idempotent overwrites, ~1 s total.
     py = _venv_python(dirs)
     merged = str(dirs["merged"] / spec["experiment"])
     reg = [str(py), "-m", "arabic_ocr_bench.training.cli", "register", "--arch", spec["arch"]]
