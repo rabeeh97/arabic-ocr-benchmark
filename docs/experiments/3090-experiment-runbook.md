@@ -107,9 +107,17 @@ python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp --bas
 `DETACHED_PROCESS`), writes `C:\Users\User\a-experiment\exp\logs\run.pid`, prints the log path, and
 returns. You can log out.
 
+**One run per folder.** A launch while another worker is live in the same
+`--dir` is **refused** (it prints the running pid and how to watch or stop it) —
+so an accidental double-launch can't stack two trainers on the GPU. Override with
+`--force` only if you know the recorded pid is actually dead. Each launch also
+**rotates the log**: the old `run.log` becomes `run.<timestamp>.log` and a fresh
+`run.log` starts, so `status` / `-Wait` never show last attempt's errors.
+
 Useful flags: `--limit N` (training-line count; default 8000), `--epochs F`,
 `--from PHASE` / `--only PHASE`, `--allow-contam` (only if the gate flags a
-false positive), `--torch-index URL`.
+false positive), `--torch-index URL`, `--force` (re-run done phases *and* ignore
+the run lock).
 
 Watch it immediately after launch (Ctrl-C stops the tail, not the run):
 
@@ -133,7 +141,8 @@ python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp statu
 
 Prints: the phase table (`bootstrap → fetch → prepare → train → merge → eval →
 report`), whether the worker pid is alive, the newest `checkpoint-NNN`, and the
-last 40 log lines. For a live tail:
+last 40 lines of the **current** `run.log` (earlier sessions are in
+`run.<timestamp>.log` beside it). For a live tail:
 
 ```powershell
 Get-Content C:\Users\User\a-experiment\exp\logs\run.log -Wait -Tail 50
