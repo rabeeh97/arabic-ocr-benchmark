@@ -245,7 +245,7 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     # 1. CUDA torch first so the CUDA build wins over the CPU wheel a later
     #    resolve would pick.
     if _run(dirs, [*pipbase, "torch", "torchvision", "--index-url", args.torch_index], phase="bootstrap"):
-        raise SystemExit("bootstrap: torch (CUDA) install failed — check --torch-index / driver")
+        raise SystemExit("bootstrap: torch (CUDA) install failed - check --torch-index / driver")
     # 2. the benchmark + training extras (editable, from the SSH-copied repo)
     if _run(dirs, [*pipbase, "-e", f"{REPO}[local,train]"], phase="bootstrap"):
         raise SystemExit("bootstrap: `pip install -e .[local,train]` failed")
@@ -282,7 +282,7 @@ def phase_fetch(dirs: dict, state: dict, spec: dict, args) -> None:
         "print('base ->', p)"
     )
     if _run(dirs, [str(py), "-c", dl], phase="fetch"):
-        gated = " (gated — is HF_TOKEN in experiment.env and has it accepted the licence?)" if spec["gated"] else ""
+        gated = " (gated - is HF_TOKEN in experiment.env and has it accepted the licence?)" if spec["gated"] else ""
         raise SystemExit(f"fetch: could not download {hf_id}{gated}")
 
     # probe the real architecture class so a wrong --base fails here, not after
@@ -356,11 +356,11 @@ def phase_prepare(dirs: dict, state: dict, spec: dict, args) -> None:
             if not args.allow_contam:
                 raise SystemExit(
                     "prepare: contamination check FLAGGED a train/eval overlap. Inspect "
-                    f"{report_path} — pass --allow-contam only if it is a false positive."
+                    f"{report_path} - pass --allow-contam only if it is a false positive."
                 )
         else:
             raise SystemExit(
-                f"prepare: check-contam exited {rc} without a flagged report — it "
+                f"prepare: check-contam exited {rc} without a flagged report - it "
                 "crashed (see the traceback in the log above), this is not a "
                 "contamination hit and --allow-contam will not help."
             )
@@ -377,7 +377,7 @@ def phase_train(dirs: dict, state: dict, spec: dict, args) -> None:
     rc = _run(dirs, [str(py), "-m", "arabic_ocr_bench.training.cli", "sft",
                      "--config", str(eff)], phase="train")
     if rc:
-        raise SystemExit("train: sft exited non-zero — fix the cause and re-run (it resumes)")
+        raise SystemExit("train: sft exited non-zero - fix the cause and re-run (it resumes)")
     _mark(dirs, state, "train")
 
 
