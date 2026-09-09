@@ -205,6 +205,9 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
     """Run a subprocess, streaming combined output to the log and stdout."""
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
     e = {**os.environ, **(env or {})}
+    # When detached, sys.stdout IS run.log (the child's fd 1) — mirroring to it
+    # again would double every line. Only echo to stdout when it's a real tty.
+    tee = sys.stdout.isatty()
     with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env=e,
@@ -212,8 +215,9 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
         )
         assert proc.stdout is not None
         for ln in proc.stdout:
-            sys.stdout.write(ln)
-            sys.stdout.flush()
+            if tee:
+                sys.stdout.write(ln)
+                sys.stdout.flush()
             fh.write(ln)
         proc.wait()
     if proc.returncode != 0:
