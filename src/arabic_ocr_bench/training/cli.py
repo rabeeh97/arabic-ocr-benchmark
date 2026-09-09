@@ -87,6 +87,7 @@ def _cmd_register(args) -> int:
         arch=args.arch,
         adapter_id=args.adapter_id,
         dtype=args.dtype,
+        load_in_4bit=args.load_in_4bit,
         card=args.card,
     )
     register_model(args.name, entry, path=args.models)
@@ -126,6 +127,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--arch", required=True)
     p.add_argument("--adapter-id", dest="adapter_id", default=None)
     p.add_argument("--dtype", default="bfloat16")
+    p.add_argument("--load-in-4bit", dest="load_in_4bit", action="store_true",
+                   help="score this model 4-bit-quantised (matches the 4-bit base rows)")
     p.add_argument("--card", default=None)
     p.add_argument("--models", default="configs/models.yaml")
     p.set_defaults(fn=_cmd_register)

@@ -1,0 +1,32 @@
+# Held-out benchmark for the RTX-3090 Qwen3-VL-4B fine-tune.
+#
+# Run by scripts/run_3090_benchmark.py on the 3090 box (after the training run's
+# `merge` phase), or by hand:
+#   uv run bench run --config configs/training/exp3090_bench.run.yaml --report
+#
+# Generic: add models / datasets to the two lists below. The benchmark script
+# refuses to start if `datasets` contains muharaf_lines or kitab_muharaf — the
+# fine-tune trained on the Muharaf train split, so those would be contaminated.
+
+models:
+  - qwen3-vl-4b                    # base, 4-bit  (already in configs/models.yaml)
+  - qwen3-vl-4b-bf16              # base, bf16   (registered by run_3090_benchmark.py)
+  - exp3090-qwen3vl4b-ft-4bit     # fine-tune, 4-bit   "        "        "
+  - exp3090-qwen3vl4b-ft-bf16     # fine-tune, bf16    "        "        "
+
+datasets:
+  - kitab_khatt                   # modern handwritten Arabic (KHATT), clean GT
+  - nakba_lines                   # 20th-c. degraded handwriting (gated: accept the HF licence once)
+  - rasam1                        # Maghrebi-script manuscripts
+  - rasam2                        # Maghrebi-script manuscripts, dense diacritics
+  - kitab_hindawi                 # printed anchor — regression check
+  - kitab_historicalbooks        # degraded historical print — regression check
+
+# no `limit:` -> score every line in each dataset
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

@@ -29,6 +29,13 @@ def test_adapter_model_entry_keeps_base_and_adapter():
     assert entry["adapter_id"] == "results/training/smoke"
 
 
+def test_load_in_4bit_flag_adds_the_key_only_when_set():
+    plain = build_model_entry("ft", "/m", arch="qwen2_5_vl", card="x")
+    assert "load_in_4bit" not in plain
+    quant = build_model_entry("ft-4bit", "/m", arch="qwen2_5_vl", load_in_4bit=True, card="x")
+    assert quant["load_in_4bit"] is True
+
+
 def test_register_model_appends_without_touching_existing_entries(tmp_path):
     path = tmp_path / "models.yaml"
     path.write_text("mock_echo:\n  client: mock\n  mode: echo_gt\n")

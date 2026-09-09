@@ -20,13 +20,16 @@ def build_model_entry(
     arch: str,
     adapter_id: str | None = None,
     dtype: str = "bfloat16",
+    load_in_4bit: bool = False,
     min_ram_gb: int | None = None,
     card: str | None = None,
 ) -> dict:
     """One `hf_local` registry entry for a trained model.
 
     Pass a merged directory as `hf_id_or_path` (no `adapter_id`), or the base
-    `hf_id` plus an `adapter_id` pointing at the LoRA output dir.
+    `hf_id` plus an `adapter_id` pointing at the LoRA output dir. Set
+    `load_in_4bit` to score the model 4-bit-quantised (matches the 4-bit base
+    rows already in the registry).
     """
     entry: dict = {"client": "hf_local", "hf_id": hf_id_or_path, "arch": arch}
     if adapter_id:
@@ -34,6 +37,8 @@ def build_model_entry(
     if min_ram_gb is not None:
         entry["min_ram_gb"] = min_ram_gb
     entry["dtype"] = dtype
+    if load_in_4bit:
+        entry["load_in_4bit"] = True
     entry["pricing"] = None
     entry["card"] = card or f"Fine-tuned model {name} (arabic_ocr_bench training subsystem)."
     return entry
