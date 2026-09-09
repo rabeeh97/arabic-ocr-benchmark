@@ -21,6 +21,7 @@ def build_model_entry(
     adapter_id: str | None = None,
     dtype: str = "bfloat16",
     load_in_4bit: bool = False,
+    max_new_tokens: int | None = None,
     min_ram_gb: int | None = None,
     card: str | None = None,
 ) -> dict:
@@ -39,6 +40,8 @@ def build_model_entry(
     entry["dtype"] = dtype
     if load_in_4bit:
         entry["load_in_4bit"] = True
+    if max_new_tokens is not None:
+        entry["max_new_tokens"] = int(max_new_tokens)
     entry["pricing"] = None
     entry["card"] = card or f"Fine-tuned model {name} (arabic_ocr_bench training subsystem)."
     return entry

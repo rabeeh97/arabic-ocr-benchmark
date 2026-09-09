@@ -9,14 +9,16 @@ models:
   - qwen3-vl-4b-bf16              # untuned base, bf16   (registered by the script)
   - exp3090-qwen3vl4b-ft-bf16     # RTX-3090 fine-tune, bf16   "        "
 
-datasets:                         # all disjoint from the Muharaf training data,
-                                  # and all confirmed LINE-level (see
-                                  # docs/experiments/findings-and-notes.md)
-  - kitab_khatt                   # modern handwritten Arabic (KHATT)
-  - nakba_lines                   # 20th-c. degraded handwriting (gated: accept the HF licence once)
-  - rasam1                        # Maghrebi-script manuscripts
-  - rasam2                        # Maghrebi-script manuscripts, dense diacritics
-  # kitab_hindawi / kitab_historicalbooks removed: the KITAB-Bench "printed"
-  # subsets are paragraph/page-scale, not lines — every model truncates and the
-  # CER is meaningless in a line harness. Re-add a real line-level printed set if
-  # a print regression check is wanted.
+datasets:                         # all disjoint from the Muharaf training data
+  - kitab_khatt                   # modern handwritten Arabic (KHATT) — line-level
+  - nakba_lines                   # 20th-c. degraded handwriting — line-level (gated)
+  - rasam1                        # Maghrebi-script manuscripts — line-level
+  - rasam2                        # Maghrebi-script manuscripts, dense diacritics — line-level
+  - kitab_hindawi                 # printed; GT is PARAGRAPH-scale (~350 tok) — see notes
+  - kitab_historicalbooks        # degraded historical print; also paragraph-scale
+  # kitab_hindawi / kitab_historicalbooks are page/paragraph-scale, not lines.
+  # The benchmark registers its rows with --max-new-tokens 640 so the output is
+  # not hard-truncated; the residual gap on these two is the line-prompt vs
+  # page-content mismatch (see docs/experiments/findings-and-notes.md). Their
+  # numbers are a "will the model volunteer a full-page transcript" probe, not a
+  # clean line-OCR score, and are not comparable to KITAB-Bench's page protocol.

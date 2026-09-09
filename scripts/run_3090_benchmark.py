@@ -295,7 +295,11 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
     # The register calls are idempotent overwrites, ~1 s total.
     py = _venv_python(dirs)
     merged = str(dirs["merged"] / spec["experiment"])
-    reg = [str(py), "-m", "arabic_ocr_bench.training.cli", "register", "--arch", spec["arch"]]
+    # 640-token cap (vs the 160 default) so page-scale datasets (kitab_hindawi,
+    # kitab_historicalbooks — GT ~350+ tokens) aren't hard-truncated. Line
+    # datasets stop at EOS well before this, so no slowdown there.
+    reg = [str(py), "-m", "arabic_ocr_bench.training.cli", "register",
+           "--arch", spec["arch"], "--max-new-tokens", str(args.max_new_tokens)]
     rows = [
         (spec["base_name"], spec["base_hf_id"], [],
          f"Untuned {spec['base_hf_id']} at bf16 — base row for the "
@@ -546,6 +550,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="lines per dataset per model in the smoke stage (default 20)")
     ap.add_argument("--full-n", dest="full_n", type=int, default=200,
                     help="new lines per dataset per full-stage batch (default 200)")
+    ap.add_argument("--max-new-tokens", dest="max_new_tokens", type=int, default=640,
+                    help="generation cap for the registered rows (default 640)")
     ap.add_argument("--with-4bit", dest="with_4bit", action="store_true",
                     help="also score the 4-bit fine-tune row")
     ap.add_argument("--detach", action="store_true", help="re-spawn free of this shell and return")

@@ -7,34 +7,39 @@ saw, what it means, what to do about it. Newest section first within each area.
 
 ## Benchmark validity
 
-### `kitab_hindawi` (and the KITAB-Bench "printed" subsets) are NOT line-level — dropped from the fine-tuning benchmark
+### `kitab_hindawi` / `kitab_historicalbooks` are page-scale, not lines — kept, with a raised token cap and a caveat
 
-**Seen (2026-09-09, exp3090 smoke).** On `kitab_hindawi` both the base
-`qwen3-vl-4b-bf16` and `exp3090-qwen3vl4b-ft-bf16` score ~85–90 % CER-light,
-against ~30 % on the handwriting sets. Inspecting predictions: the ground truth
-is **~860 characters** — a whole page / multi-paragraph block with tab-separated
-"lines" — while both models emit ~200–280 characters (one paragraph, fully
-diacritised, then they stop). No errors, no empty rows; the models read *part* of
-a dense downscaled page and confabulate the rest.
+**Seen (2026-09-09, exp3090 smoke).** On `kitab_hindawi` both `qwen3-vl-4b-bf16`
+and `exp3090-qwen3vl4b-ft-bf16` score ~85–90 % CER-light vs ~30 % on the
+handwriting sets. The ground truth is **~860 chars ≈ ~350 tokens** — a whole
+page / multi-paragraph block with tab-separated "lines". Predictions were
+~194 chars (base) / ~284 chars (ft) — about **77 / 113 tokens**.
 
-**Meaning.** This is a task/granularity mismatch, not a model result. The
-`arocrbench_hindawi` subset is paragraph/page-scale; our harness feeds it a
-"transcribe this single line" prompt (`line-v2`) and caps the image at 1024 px.
-Every model fails the same way, so the number carries no signal. The other
-`kitab_*` *printed* subsets (`historicalbooks`, `adab`, `patsocr`, `isippt`,
-`evarest`) are very likely the same shape and are **not comparable to
-KITAB-Bench's own scores**, which use a page-level protocol.
+**Verified — two compounding causes:**
+1. **Output cap.** `hf_local` defaults to `max_new_tokens=160`
+   (`models/registry.py`). A complete transcription needs ~350+; the cap alone
+   guarantees truncation on a full page.
+2. **Prompt/content mismatch.** The predictions (77–113 tok) actually stop
+   *below* the 160 cap — the model emits one paragraph then EOS because the
+   prompt (`line-v2`) says "transcribe this single line" and the model treats one
+   paragraph as the answer. So raising the cap is necessary but not sufficient.
 
-**Done.** Removed `kitab_hindawi` and `kitab_historicalbooks` from
-`configs/training/exp3090_bench.run.yaml`. The fine-tuning benchmark now runs the
-four confirmed line-level handwriting sets: `kitab_khatt`, `nakba_lines`,
-`rasam1`, `rasam2`.
+**Done.** Kept both datasets in `configs/training/exp3090_bench.run.yaml`.
+`run_3090_benchmark.py` now registers every row with **`--max-new-tokens 640`**
+(new `bench-train register --max-new-tokens` flag). Line datasets stop at EOS
+well before 640, so no slowdown and the existing line-dataset cache stays valid.
 
-**To do.** (1) If we want a printed-Arabic regression check, use a genuinely
-line-level printed set, or add a `page` track to the harness. (2) The runner
-should surface `empty_rate` and median `len(pred)/len(gt)` per (model, dataset) —
-an all-models-truncated dataset is a loud "wrong granularity" alarm that
-currently only shows up as a mediocre CER.
+**How to read these two rows:** a "does the model volunteer a full-page
+transcript from a line prompt" probe, not a clean line-OCR score, and **not
+comparable to KITAB-Bench's own numbers** (page-level protocol). Watch whether
+(a) the higher cap moves them and (b) other / stronger models — which transcribe
+whole pages more readily — do better.
+
+**To do.** (1) For a real printed-Arabic *line* regression check, add a
+line-level printed set. (2) Add a `page` prompt/track for genuinely page-scale
+data. (3) The runner should surface `empty_rate` and median `len(pred)/len(gt)`
+per (model, dataset) — an all-models-truncated dataset should raise a loud "wrong
+granularity" flag instead of just a mediocre CER.
 
 ---
 
