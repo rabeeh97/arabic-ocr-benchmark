@@ -1,0 +1,17 @@
+models:
+- qwen3-vl-4b-bf16
+- exp3090-qwen3vl4b-ft-bf16
+datasets:
+- nakba_lines
+limit: 20
+offset: 0
+accumulate: false
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: C:/Users/User/a-experiment/exp/bench/results
