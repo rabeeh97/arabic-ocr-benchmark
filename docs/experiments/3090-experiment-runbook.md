@@ -194,6 +194,64 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 `bench run --config configs/training/exp3090_<base>.run.yaml --report` and
 `scripts/make_leaderboard.py results`.
 
+---
+
+## 6b. Held-out benchmark — base vs fine-tune
+
+`scripts/run_3090_benchmark.py` scores **base vs fine-tune** on datasets the
+fine-tune never saw (Muharaf is excluded — it was the training data). It
+**reuses the training folder** (`--dir` = the same `…\a-experiment\exp`): same
+venv, same HF cache, the merged weights already there. Phases
+(`check → register → run → collect`, tracked in `bench_state.json`), and the same
+`--detach` / resume / one-run-lock / log-rotation ergonomics.
+
+Datasets and models are the two lists in `configs/training/exp3090_bench.run.yaml`
+— edit them to add more. `nakba_lines` is HF-gated (auto-approve): open
+`https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments` while
+logged into the account behind `HF_TOKEN` and click **Agree and access
+repository** once. If you skip it that dataset just errors and the rest still run.
+
+**Prereqs:** the training run has completed at least its `merge` phase
+(`…\exp\merged\exp3090-qwen3vl4b\` exists).
+
+**Sync the script (Mac):**
+
+```bash
+git archive --format=zip HEAD -o /tmp/aocr.zip
+scp /tmp/aocr.zip user@10.100.0.3:aocr.zip
+ssh user@10.100.0.3 "powershell -NoProfile -Command \"Remove-Item -Recurse -Force C:\Users\User\a-experiment\aocr-repo; Expand-Archive -Force \$HOME\aocr.zip C:\Users\User\a-experiment\aocr-repo; Remove-Item \$HOME\aocr.zip\""
+```
+
+**Launch (box, detached):**
+
+```bat
+cd C:\Users\User\a-experiment\aocr-repo
+python scripts\run_3090_benchmark.py --dir C:\Users\User\a-experiment\exp --detach
+```
+
+**Watch it (survives logout):**
+
+```bat
+powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\exp\logs\bench.log -Wait -Tail 50"
+```
+or the phase table: `python scripts\run_3090_benchmark.py --dir C:\Users\User\a-experiment\exp status`
+
+It writes the scored run into `…\exp\bench\<run_id>\` (`summary.csv/md`,
+`predictions.jsonl`, `scores.jsonl`) plus a standalone `…\exp\bench\leaderboard.html`.
+
+**Fetch the results (Mac):**
+
+```bash
+mkdir -p ~/aocr-exp-results/bench && cd ~/aocr-exp-results/bench
+scp -r "user@10.100.0.3:a-experiment/exp/bench/*" ./
+```
+
+**Merge into this repo's leaderboard:** copy `merged/exp3090-qwen3vl4b/` under the
+repo, re-register the fine-tune rows with **repo-relative** paths (the box's
+`configs/models.yaml` has machine-local absolute paths — don't commit it), drop
+the fetched `bench/<run_id>/` into `results/`, then
+`uv run python scripts/make_leaderboard.py results -o results/leaderboard.html`.
+
 ## 7. Clean up — leaves nothing behind
 
 ```powershell
