@@ -244,9 +244,13 @@ training) to prove the whole pipeline before committing to the long run.
   script's `_download()` sends a `Mozilla/5.0` UA to get past it. If it still 403s
   the box is behind a proxy — install `uv` by hand (`winget install astral-sh.uv`
   or download the release zip) so `shutil.which("uv")` finds it, then re-run.
-- **`transformers>=4.57`** for Qwen3-VL — the script installs it into the venv
-  after the editable install so the resolver can't downgrade it. The core repo
-  stays at 4.49.
+- **Training-stack pins** — `bootstrap` installs `transformers>=<floor>,<5` (floor
+  is 4.57 for Qwen3-VL, 4.49 otherwise) and `trl>=0.21,<1.0`, after the editable
+  install, so the resolver can't drift up. Unbounded `>=` had pulled
+  transformers 5.x + trl 1.x, whose `SFTConfig` dropped `warmup_ratio` and rewrote
+  the SFT pipeline (`TypeError: SFTConfig.__init__() got an unexpected keyword
+  argument 'warmup_ratio'`). `pyproject.toml` now carries the `<5` / `<1.0` caps
+  too. The core repo's transformers floor stays 4.49.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
   CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.

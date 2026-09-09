@@ -28,7 +28,7 @@ dependencies = [
 # local open-weight / Arabic-specific models (Qwen2.5-VL, Qari-OCR, PaliGemma, ...)
 local = [
     "torch>=2.2",
-    "transformers>=4.49",
+    "transformers>=4.49,<5",  # 5.x drops TrainingArguments fields the training code relies on
     "accelerate>=0.30",
     "qwen-vl-utils>=0.0.8",
     "peft>=0.11",
@@ -38,7 +38,7 @@ local = [
 # fine-tuning: LoRA/QLoRA SFT of the local VLMs + encoder-decoder models.
 # Needs the `local` extra too (torch, transformers, peft, accelerate).
 train = [
-    "trl>=0.12",
+    "trl>=0.12,<1.0",         # 1.x rewrote SFTConfig/SFTTrainer; this code targets the 0.x API
     "bitsandbytes>=0.44",     # 4-bit base weights for QLoRA (CUDA only)
     "imagehash>=4.3",         # perceptual hashing for the contamination check
     "fonttools>=4.50",        # cmap probe: skip fonts that can't render via reshaper+Pillow
