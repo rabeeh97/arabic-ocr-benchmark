@@ -670,11 +670,86 @@ _FT_CSS = """<style>
   :root:not([data-theme=light]) .ft-loss{color:#f87171}}
 :root[data-theme=dark] .ft-gain{color:#4ade80}
 :root[data-theme=dark] .ft-loss{color:#f87171}
+.ft-train{margin:.4rem 0 .7rem;max-width:340px}
+.ft-train .ft-curve{display:block;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
 .ft-hyp{font-size:.84rem;font-style:italic;color:var(--muted);margin:.6rem 0 .1rem}
 .ft-note{font-size:.85rem;line-height:1.55;margin:.5rem 0 0;padding-left:1.15rem}
 .ft-note li{margin:.22rem 0}
 .ft-empty{color:var(--muted);font-size:.9rem}
 </style>"""
+
+
+def _loss_curve_svg(train: list[tuple[float, float]], evals: list[tuple[float, float]]) -> str:
+    """Tiny inline SVG: training loss line + eval-loss dots vs optimizer step."""
+    if len(train) < 2:
+        return ""
+    W, H, ml, mr, mt, mb = 320, 120, 34, 8, 8, 20
+    xs = [s for s, _ in train] + [s for s, _ in evals]
+    ys = [v for _, v in train] + [v for _, v in evals]
+    x0, x1 = min(xs), max(xs) or 1
+    y0, y1 = min(ys), max(ys)
+    yr = (y1 - y0) or 1.0
+    xr = (x1 - x0) or 1.0
+
+    def fx(s):
+        return ml + (W - mr - ml) * (s - x0) / xr
+
+    def fy(v):
+        return (H - mb) - (H - mb - mt) * (v - y0) / yr
+
+    pts = " ".join(f"{fx(s):.1f},{fy(v):.1f}" for s, v in train)
+    dots = "".join(
+        f'<circle cx="{fx(s):.1f}" cy="{fy(v):.1f}" r="2.6" fill="var(--accent)"></circle>'
+        for s, v in evals
+    )
+    return (
+        f'<svg class="ft-curve" viewBox="0 0 {W} {H}" width="100%" '
+        f'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">'
+        f'<line x1="{ml}" y1="{H-mb}" x2="{W-mr}" y2="{H-mb}" stroke="var(--line)"></line>'
+        f'<line x1="{ml}" y1="{mt}" x2="{ml}" y2="{H-mb}" stroke="var(--line)"></line>'
+        f'<text x="{ml-4}" y="{fy(y1):.1f}" text-anchor="end" font-size="8" '
+        f'fill="var(--muted)">{y1:.2f}</text>'
+        f'<text x="{ml-4}" y="{fy(y0):.1f}" text-anchor="end" font-size="8" '
+        f'fill="var(--muted)">{y0:.2f}</text>'
+        f'<text x="{(ml+W-mr)/2:.0f}" y="{H-4}" text-anchor="middle" font-size="8" '
+        f'fill="var(--muted)">optimizer step</text>'
+        f'<polyline points="{pts}" fill="none" stroke="var(--accent)" stroke-width="1.5"></polyline>'
+        f'{dots}</svg>'
+    )
+
+
+def _ft_training_block(e: dict) -> str:
+    """Per-experiment training snapshot: loss curve + a couple of numbers, from
+    the fetched ``<report_dir>/trainer_state.json`` if it has been committed."""
+    rd = e.get("report_dir")
+    if not rd:
+        return ""
+    tsp = _REPO / rd / "trainer_state.json"
+    if not tsp.exists():
+        return (f"<p class='ft-meta'>Training curve: drop the run's "
+                f"<code>trainer_state.json</code> at <code>{html.escape(rd)}/</code> "
+                f"(from the pipeline's <code>reports/&lt;exp&gt;/</code> snapshot).</p>")
+    try:
+        ts = json.loads(tsp.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    lh = ts.get("log_history") or []
+    train = [(float(x["step"]), float(x["loss"])) for x in lh if "loss" in x and "step" in x]
+    evals = [(float(x["step"]), float(x["eval_loss"])) for x in lh if "eval_loss" in x]
+    bits = []
+    if ts.get("global_step"):
+        bits.append(f"{int(ts['global_step'])} steps")
+    if ts.get("epoch"):
+        bits.append(f"{float(ts['epoch']):.2f} epoch")
+    if train:
+        bits.append(f"loss {train[0][1]:.2f} &rarr; {train[-1][1]:.2f}")
+    if evals:
+        bits.append(f"eval-loss {evals[-1][1]:.2f}")
+    svg = _loss_curve_svg(train, evals)
+    head = " &middot; ".join(bits)
+    return (f"<div class='ft-train'>{svg}"
+            + (f"<p class='ft-meta'>{head}</p>" if head else "")
+            + "</div>")
 
 
 def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[str, str]]]:
@@ -787,6 +862,7 @@ def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[
             + (f" &nbsp;&middot;&nbsp; recipe <code>{html.escape(cfg)}</code>" if cfg else "")
             + "</p>",
             f"<p class='ft-head'>{headline}</p>",
+            _ft_training_block(e),
             indom, body,
         ]
         if e.get("hypothesis"):

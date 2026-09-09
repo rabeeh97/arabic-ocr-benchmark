@@ -544,6 +544,21 @@ def phase_report(dirs: dict, state: dict, spec: dict, args) -> None:
     rp.write_text(_REPORT_PY, encoding="utf-8")
     _run(dirs, [str(py), str(rp), str(dirs["runs"] / exp), str(dirs["plots"]),
                 str(dirs["eval"])], phase="report")
+    # per-experiment report bundle: shared plots/ & eval/ get overwritten by the
+    # next --base, so snapshot everything the leaderboard's Fine-tuning tab needs.
+    rd = dirs["root"] / "reports" / exp
+    rd.mkdir(parents=True, exist_ok=True)
+    cands = list((dirs["runs"] / exp).glob("**/trainer_state.json"))
+    if (dirs["runs"] / exp / "trainer_state.json").exists():
+        cands.append(dirs["runs"] / exp / "trainer_state.json")
+    if cands:
+        shutil.copy2(max(cands, key=lambda p: p.stat().st_mtime), rd / "trainer_state.json")
+    for src in (dirs["root"] / "effective_config.yaml",
+                dirs["eval"] / "summary.csv", dirs["eval"] / "summary.md",
+                dirs["plots"] / "loss.png", dirs["plots"] / "eval_cer.png"):
+        if src.exists():
+            shutil.copy2(src, rd / src.name)
+    _log(dirs, f"report: snapshot -> {rd}")
     _mark(dirs, state, "report", exp=spec["experiment"])
 
 

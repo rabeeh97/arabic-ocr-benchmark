@@ -419,6 +419,7 @@ def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
     # Excludes bench/results/ and its _cache/ (hundreds of hash-named JSON that
     # only matter on the box, for resume).
     bundle = dirs["bench"] / "bundle.zip"
+    reports = dirs["root"] / "reports"
     with zipfile.ZipFile(bundle, "w", zipfile.ZIP_DEFLATED) as z:
         for sub in ("smoke", "full"):
             root = dirs["bench"] / sub
@@ -428,6 +429,11 @@ def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
         lb = dirs["bench"] / "leaderboard.html"
         if lb.exists():
             z.write(lb, lb.name)
+        # per-experiment training snapshots (loss curve JSON, effective config,
+        # in-domain eval, plots) for the Fine-tuning tab
+        for f in (reports.rglob("*") if reports.exists() else []):
+            if f.is_file():
+                z.write(f, Path("reports") / f.relative_to(reports))
     _log(dirs, f"collect: bundle -> {bundle} ({bundle.stat().st_size // 1024} KB)")
     _mark(dirs, state, "collect", spec["experiment"], at=_now(), bundle=str(bundle))
 
