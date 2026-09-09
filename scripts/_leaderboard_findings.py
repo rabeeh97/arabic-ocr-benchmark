@@ -26,7 +26,7 @@ except Exception:  # noqa: BLE001 - this scripts/ module can be imported without
     )
 
 __all__ = [
-    "FAILURE_CLASSES", "FINDINGS_CSS", "FINDINGS_SECTIONS", "binned_curve", "box_row",
+    "FAILURE_CLASSES", "FINDINGS_CSS", "FINDINGS_NOTES", "FINDINGS_SECTIONS", "binned_curve", "box_row",
     "diverging_hbar", "dumbbell", "ecdf", "forest", "hbar", "histogram",
     "render_findings_view", "stacked_hbar", "svg_heatmap", "svg_scatter",
 ]
@@ -59,9 +59,13 @@ def _num(v, d: int = 2) -> str:
     return s or "0"
 
 
-def _svg(inner: str, w: float, h: float, cls: str) -> str:
+def _svg(inner: str, w: float, h: float, cls: str, *, stretch: bool = True) -> str:
+    # stretch=True: fill the column width (fine for charts with a few rows).
+    # stretch=False: render at natural px size, capped at 100% by CSS — used by
+    # the heatmap so a tall label margin isn't scaled up into a huge blank gap.
+    wattr = 'width="100%"' if stretch else f'width="{w:g}" style="max-width:100%;height:auto"'
     return (
-        f'<svg class="fv-svg {cls}" viewBox="0 0 {w:g} {h:g}" width="100%" '
+        f'<svg class="fv-svg {cls}" viewBox="0 0 {w:g} {h:g}" {wattr} '
         f'preserveAspectRatio="xMidYMid meet" role="img" '
         f'xmlns="http://www.w3.org/2000/svg">{inner}</svg>'
     )
@@ -120,6 +124,8 @@ FINDINGS_CSS = """
 .findings-view .fv-svg .fv-title{fill:var(--ink);font-size:11px;}
 .findings-view .fv-svg .ax{stroke:var(--line);stroke-width:1;}
 .findings-view .fv-svg .hm-cell{stroke:var(--surface);stroke-width:1.5;}
+.findings-view .fv-svg .hm-val{fill:var(--ink);paint-order:stroke;stroke:var(--ground);
+  stroke-width:2.4px;stroke-linejoin:round;}
 .findings-view .fv-svg .pt{fill:var(--accent);fill-opacity:.5;}
 .findings-view .fv-svg .pt-fr{fill:var(--accent);}
 .findings-view .fv-svg .pt-solid{fill:var(--accent);}
@@ -143,6 +149,14 @@ FINDINGS_CSS = """
 .findings-view .fb-seg{position:absolute;top:0;bottom:0;}
 .findings-view .fb-div-mid{position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--line);}
 .findings-view .fb-val{flex:none;width:64px;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums;}
+.findings-view .fv-notes{margin:14px 0 2px;border-top:1px solid var(--line);padding-top:8px;}
+.findings-view .fv-notes>summary{cursor:pointer;color:var(--muted);font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;list-style:none;}
+.findings-view .fv-notes>summary::-webkit-details-marker{display:none;}
+.findings-view .fv-notes>summary::before{content:"▸ ";}
+.findings-view .fv-notes[open]>summary::before{content:"▾ ";}
+.findings-view .fv-notes ul{margin:8px 0 0;padding-left:1.1rem;font-size:12.5px;line-height:1.55;}
+.findings-view .fv-notes li{margin:.3rem 0;color:var(--ink);}
 .findings-view .fb-legend{display:flex;flex-wrap:wrap;gap:12px;margin:4px 0 8px;color:var(--muted);font-size:11px;}
 .findings-view .fb-legend i{display:inline-block;width:10px;height:10px;margin-right:4px;
   border-radius:2px;vertical-align:-1px;background:var(--accent);}
@@ -159,13 +173,21 @@ def svg_heatmap(rows, cols, values, *, fmt="{:.0f}", title="", rtl_labels=False)
     lo, hi = (min(flat), max(flat)) if flat else (0.0, 1.0)
     rng = (hi - lo) or 1.0
     cw, ch = 46, 26
-    left, top = 128, (30 if title else 16)
+    # vertical column labels (rotate -90, reading upward): can't collide with
+    # each other or the row labels; height ~ longest label in 10px mono chars.
+    lab_h = min(160, 24 + 6 * max((len(str(c)) for c in cols), default=0))
+    left, top = 132, (16 if title else 0) + lab_h
     w, h = left + cw * len(cols) + 8, top + ch * len(rows) + 34
     p = []
     if title:
-        p.append(f'<text x="{left}" y="14" class="fv-title">{_esc(title)}</text>')
+        p.append(f'<text x="{left}" y="12" class="fv-title">{_esc(title)}</text>')
     for ci, cn in enumerate(cols):
-        p.append(f'<text x="{left + ci*cw + cw/2:g}" y="{top-4:g}" text-anchor="middle">{_esc(cn)}</text>')
+        cx = left + ci * cw + cw / 2
+        by = top - 12
+        p.append(
+            f'<text x="{cx:g}" y="{by:g}" text-anchor="start" '
+            f'transform="rotate(-90 {cx:g} {by:g})">{_esc(cn)}</text>'
+        )
     for ri, rn in enumerate(rows):
         y = top + ri * ch
         lx, anc = (8, "start") if rtl_labels else (left - 8, "end")
@@ -180,13 +202,13 @@ def svg_heatmap(rows, cols, values, *, fmt="{:.0f}", title="", rtl_labels=False)
                     f'<rect class="hm-cell" x="{x:g}" y="{y:g}" width="{cw}" height="{ch}" '
                     f'fill="var(--accent)" fill-opacity="{op:.3f}" '
                     f'data-tip="{_esc(f"{rn} / {cn}: " + fmt.format(v))}"></rect>'
-                    f'<text x="{x + cw/2:g}" y="{y + ch/2 + 3:g}" text-anchor="middle" '
-                    f'fill="var(--ink)">{_esc(fmt.format(v))}</text>'
+                    f'<text class="hm-val" x="{x + cw/2:g}" y="{y + ch/2 + 3:g}" '
+                    f'text-anchor="middle">{_esc(fmt.format(v))}</text>'
                 )
             else:
                 p.append(f'<rect class="hm-cell" x="{x:g}" y="{y:g}" width="{cw}" height="{ch}" '
                          f'fill="var(--surface)"></rect>')
-    return _svg("".join(p), w, h, "fv-heatmap")
+    return _svg("".join(p), w, h, "fv-heatmap", stretch=False)
 
 
 def hbar(pairs, *, unit="", max_bars=30, rtl_labels=False) -> str:
@@ -248,7 +270,7 @@ def diverging_hbar(rows, *, left_key, right_key, left_label, right_label) -> str
     ) or 1.0
     out = [
         (f'<div class="fb-legend"><span><i style="background:var(--muted)"></i>{_esc(left_label)}</span>'
-         f'<span><i></i>{_esc(right_label)}</span></div><div class="fb">'),
+         f'<span><i style="background:var(--accent)"></i>{_esc(right_label)}</span></div><div class="fb">'),
     ]
     for lab, d in rows:
         lv, rv = _f(d.get(left_key, 0)), _f(d.get(right_key, 0))
@@ -530,12 +552,57 @@ _NA = ('<p class="chart-empty">not available &#8212; run '
        '<code>bench analyze</code></p>')
 
 
+# Standing research notes per section — working hypotheses / what to check next,
+# tied to the project's "can we publish our own benchmark, and what does it
+# tell us" questions. Kept short; edit freely as findings firm up.
+FINDINGS_NOTES = {
+    "coverage": [
+        "A dataset where every model has thin coverage tells us little — finish the sweep before drawing per-dataset conclusions.",
+        "Coverage gaps that correlate with a script family (e.g. Maghrebi) hint at loader / licence / gating issues, not model weakness.",
+    ],
+    "error-anatomy": [
+        "Split 'refusal / meta-commentary / wrong-script' from real transcription error: the first cluster is an output-format problem a small SFT fixes cheaply; the second is the actual OCR ceiling.",
+        "Length bias: models that run long are usually confabulating on illegible input — a signal the image resolution or line segmentation is the bottleneck, not the decoder.",
+    ],
+    "script-letters": [
+        "Per-letter confusion that concentrates on connected forms (initial/medial) vs isolated is evidence the model lacks a ligature-segmentation prior — the thing handwriting SFT teaches.",
+        "If the same letter errors recur across unrelated models, it is a script property (our datasets' contribution), not a model quirk.",
+    ],
+    "diacritics": [
+        "Diac-insensitive CER far below raw CER = the skeleton is right and the harakat are the gap. Check whether that gap is real or just ambiguous Unicode normalisation of the same mark.",
+        "Does the model's tokenizer represent the same rendered diacritic consistently? Inconsistent tokenisation would cap achievable diac-F1 regardless of training.",
+    ],
+    "difficulty": [
+        "Which line-level features (length, diacritic density, ink degradation, script) predict error across all models? Those are the axes our benchmark can make claims on that clean/synthetic sets can't.",
+        "If difficulty rank is stable across models, the benchmark is measuring the data; if it flips per model, it is measuring the model — we want to report both.",
+    ],
+    "model-landscape": [
+        "Frontier VLM vs Arabic-specialised vs classical OCR: where does each plateau? That picks the base to build on if we train our own.",
+        "A per-model board stays academic. Note any place a cheap pre-filter or post-process (dictionary, known-vocabulary prior) would move a model — that is the per-product angle.",
+    ],
+    "operational": [
+        "Latency / cost per line at fixed accuracy is the number a product cares about; a model that is 2x slower for the same CER is a different product decision.",
+        "Local 4-bit vs bf16 vs hosted API: capture the accuracy/throughput/cost trade so 'which stack' is answerable.",
+    ],
+    "corpus-health": [
+        "Duplicate or near-duplicate lines across train/test splits inflate scores — keep the contamination gate honest as datasets grow.",
+        "Ground-truth quality (tab artefacts, page-scale rows mislabelled as lines) directly caps measurable CER; log every data defect found here.",
+    ],
+}
+
+
 def _panel(slug: str, title: str, note: str, body: str) -> str:
     """The section shell every ``_render_*`` returns, matching the leaderboard
     section contract (``<section id=... class='f-panel'><h2>…</h2>…``)."""
     n = f'<p class="board-note">{_esc(note)}</p>' if note else ""
+    notes = FINDINGS_NOTES.get(slug) or []
+    nl = (
+        "<details class='fv-notes'><summary>Notes &amp; open questions</summary><ul>"
+        + "".join(f"<li>{_esc(x)}</li>" for x in notes)
+        + "</ul></details>"
+    ) if notes else ""
     return (f"<section id='f-{_esc(slug)}' class='f-panel'>"
-            f"<h2>{_esc(title)}</h2>{n}{body}</section>")
+            f"<h2>{_esc(title)}</h2>{n}{body}{nl}</section>")
 
 
 def _fig(caption: str, chart: str) -> str:
