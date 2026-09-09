@@ -167,25 +167,46 @@ def _state_path(dirs: dict) -> Path:
 
 def _read_state(dirs: dict) -> dict:
     p = _state_path(dirs)
-    if p.exists():
-        try:
-            return json.loads(p.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            pass
-    return {"phases": {}, "created": _now()}
+    if not p.exists():
+        return {"phases": {}, "created": _now()}
+    try:
+        st = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {"phases": {}, "created": _now()}
+    # migrate the legacy flat layout (all phases under state["phases"]) into the
+    # experiment it belonged to, so a second --base doesn't inherit its phases.
+    flat = st.get("phases", {})
+    legacy = {k: v for k, v in flat.items() if k != "bootstrap"}
+    exp = st.get("experiment")
+    if legacy and exp:
+        bucket = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
+        for k, v in legacy.items():
+            bucket.setdefault(k, v)
+        st["phases"] = {k: v for k, v in flat.items() if k == "bootstrap"}
+    return st
 
 
 def _write_state(dirs: dict, state: dict) -> None:
     _state_path(dirs).write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
-def _mark(dirs: dict, state: dict, phase: str, **extra) -> None:
-    state["phases"][phase] = {"done": True, "at": _now(), **extra}
+def _phases(state: dict, exp: str | None) -> dict:
+    """Phase-record dict. ``exp=None`` -> the shared bucket (``bootstrap``, since
+    the venv/deps are per-folder). ``exp`` set -> that experiment's own bucket,
+    so running a second ``--base`` in the same ``--dir`` doesn't see the first
+    one's ``train``/``merge``/``eval`` as already done."""
+    if exp is None:
+        return state.setdefault("phases", {})
+    return state.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
+
+
+def _mark(dirs: dict, state: dict, phase: str, *, exp: str | None = None, **extra) -> None:
+    _phases(state, exp)[phase] = {"done": True, "at": _now(), **extra}
     _write_state(dirs, state)
 
 
-def _done(state: dict, phase: str) -> bool:
-    return bool(state["phases"].get(phase, {}).get("done"))
+def _done(state: dict, phase: str, exp: str | None = None) -> bool:
+    return bool(_phases(state, exp).get(phase, {}).get("done"))
 
 
 def _venv_python(dirs: dict) -> Path:
@@ -293,7 +314,7 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
 
 
 def phase_fetch(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "fetch") and not args.force:
+    if _done(state, "fetch", spec["experiment"]) and not args.force:
         _log(dirs, "fetch: already done")
         return
     py = _venv_python(dirs)
@@ -333,7 +354,7 @@ def phase_fetch(dirs: dict, state: dict, spec: dict, args) -> None:
     fonts = REPO / "scripts" / "fetch_fonts.py"
     if fonts.exists():
         _run(dirs, [str(py), str(fonts)], phase="fetch")
-    _mark(dirs, state, "fetch")
+    _mark(dirs, state, "fetch", exp=spec["experiment"])
 
 
 def _effective_config(dirs: dict, spec: dict, args) -> Path:
@@ -360,7 +381,7 @@ def _effective_config(dirs: dict, spec: dict, args) -> Path:
 
 
 def phase_prepare(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "prepare") and not args.force:
+    if _done(state, "prepare", spec["experiment"]) and not args.force:
         _log(dirs, "prepare: already done")
         return
     py = _venv_python(dirs)
@@ -390,11 +411,11 @@ def phase_prepare(dirs: dict, state: dict, spec: dict, args) -> None:
                 "crashed (see the traceback in the log above), this is not a "
                 "contamination hit and --allow-contam will not help."
             )
-    _mark(dirs, state, "prepare", config=str(eff))
+    _mark(dirs, state, "prepare", exp=spec["experiment"], config=str(eff))
 
 
 def phase_train(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "train") and not args.force:
+    if _done(state, "train", spec["experiment"]) and not args.force:
         _log(dirs, "train: already done")
         return
     py = _venv_python(dirs)
@@ -404,11 +425,11 @@ def phase_train(dirs: dict, state: dict, spec: dict, args) -> None:
                      "--config", str(eff)], phase="train")
     if rc:
         raise SystemExit("train: sft exited non-zero - fix the cause and re-run (it resumes)")
-    _mark(dirs, state, "train")
+    _mark(dirs, state, "train", exp=spec["experiment"])
 
 
 def phase_merge(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "merge") and not args.force:
+    if _done(state, "merge", spec["experiment"]) and not args.force:
         _log(dirs, "merge: already done")
         return
     py = _venv_python(dirs)
@@ -421,11 +442,11 @@ def phase_merge(dirs: dict, state: dict, spec: dict, args) -> None:
                      "--base", spec["hf_id"], "--arch", spec["arch"]], phase="merge")
     if rc:
         raise SystemExit("merge: failed")
-    _mark(dirs, state, "merge", merged=str(out))
+    _mark(dirs, state, "merge", exp=spec["experiment"], merged=str(out))
 
 
 def phase_eval(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "eval") and not args.force:
+    if _done(state, "eval", spec["experiment"]) and not args.force:
         _log(dirs, "eval: already done")
         return
     py = _venv_python(dirs)
@@ -447,7 +468,7 @@ def phase_eval(dirs: dict, state: dict, spec: dict, args) -> None:
             if (src / f).exists():
                 shutil.copy2(src / f, dirs["eval"] / f)
         _log(dirs, f"eval: copied {src.name}/ -> {dirs['eval']}")
-    _mark(dirs, state, "eval")
+    _mark(dirs, state, "eval", exp=spec["experiment"])
 
 
 _REPORT_PY = r'''
@@ -502,7 +523,7 @@ def phase_report(dirs: dict, state: dict, spec: dict, args) -> None:
     rp.write_text(_REPORT_PY, encoding="utf-8")
     _run(dirs, [str(py), str(rp), str(dirs["runs"] / exp), str(dirs["plots"]),
                 str(dirs["eval"])], phase="report")
-    _mark(dirs, state, "report")
+    _mark(dirs, state, "report", exp=spec["experiment"])
 
 
 PHASE_FN = {
@@ -570,12 +591,17 @@ def cmd_status(dirs: dict) -> int:
     if pidf.exists():
         pid = int(pidf.read_text().strip() or 0)
         print(f"worker pid     : {pid}  ({'alive' if _pid_alive(pid) else 'not running'})")
-    print("\nphases:")
+    exp = state.get("experiment")
+    print(f"\nphases ({exp or '?'}):")
+    exp_ph = _phases(state, exp) if exp else {}
     for ph in PHASES:
-        rec = state["phases"].get(ph, {})
+        rec = state["phases"].get(ph, {}) if ph == "bootstrap" else exp_ph.get(ph, {})
         mark = "done" if rec.get("done") else "--"
         print(f"  {ph:<10} {mark:<6} {rec.get('at', '')}")
-    exp = state.get("experiment")
+    if state.get("experiments"):
+        others = [e for e in state["experiments"] if e != exp]
+        if others:
+            print(f"  other experiments in this folder: {', '.join(others)}")
     if exp:
         cks = sorted((dirs["runs"] / exp).glob("checkpoint-*"),
                      key=lambda p: int(p.name.split("-")[-1]) if p.name.split("-")[-1].isdigit() else 0)

@@ -130,25 +130,41 @@ def _state_path(dirs: dict) -> Path:
 
 def _read_state(dirs: dict) -> dict:
     p = _state_path(dirs)
-    if p.exists():
-        try:
-            return json.loads(p.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            pass
-    return {"phases": {}, "created": _now()}
+    if not p.exists():
+        return {"experiments": {}, "created": _now()}
+    try:
+        st = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {"experiments": {}, "created": _now()}
+    # migrate the legacy flat layout: everything under state["phases"] belonged
+    # to the experiment last run in this folder.
+    flat = st.get("phases")
+    exp = st.get("experiment")
+    if flat and exp:
+        bucket = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
+        for k, v in flat.items():
+            bucket.setdefault(k, v)
+        st.pop("phases", None)
+    return st
 
 
 def _write_state(dirs: dict, state: dict) -> None:
     _state_path(dirs).write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
-def _mark(dirs: dict, state: dict, phase: str, **extra) -> None:
-    state["phases"][phase] = {"done": True, "at": _now(), **extra}
+def _phases(state: dict, exp: str) -> dict:
+    """This experiment's phase-record dict (per-experiment, so a second --base in
+    the same --dir doesn't inherit the first one's check/smoke/full)."""
+    return state.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
+
+
+def _mark(dirs: dict, state: dict, phase: str, exp: str, **extra) -> None:
+    _phases(state, exp)[phase] = {"done": True, "at": _now(), **extra}
     _write_state(dirs, state)
 
 
-def _done(state: dict, phase: str) -> bool:
-    return bool(state["phases"].get(phase, {}).get("done"))
+def _done(state: dict, phase: str, exp: str) -> bool:
+    return bool(_phases(state, exp).get(phase, {}).get("done"))
 
 
 def _venv_python(dirs: dict) -> Path:
@@ -286,7 +302,7 @@ def phase_check(dirs: dict, state: dict, spec: dict, args) -> None:
                    "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0))"],
             phase="check"):
         raise SystemExit("check: venv sanity import failed")
-    _mark(dirs, state, "check", merged=str(merged))
+    _mark(dirs, state, "check", spec["experiment"], merged=str(merged))
 
 
 def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
@@ -314,7 +330,7 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
         if _run(dirs, [*reg, "--name", name, "--path", path, "--card", card, *extra],
                 phase="register"):
             raise SystemExit(f"register: `bench-train register {name}` failed")
-    _mark(dirs, state, "register", models=[r[0] for r in rows])
+    _mark(dirs, state, "register", spec["experiment"], models=[r[0] for r in rows])
 
 
 def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
@@ -329,7 +345,7 @@ def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
     exhausted: list[str] = []
     for ds in datasets:
         key = f"{stage}:{ds}"
-        if _done(state, key) and not args.force:
+        if _done(state, key, spec["experiment"]) and not args.force:
             _log(dirs, f"{stage}: {ds} already done")
             exhausted.append(ds)
             continue
@@ -343,7 +359,7 @@ def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
         # dataset is exhausted when the last batch scored fewer NEW lines than asked
         new_lines = _run_new_line_count(dirs, run_id, models[0], ds) if run_id else 0
         if not accumulate or new_lines < limit:
-            _mark(dirs, state, key, run_id=run_id)
+            _mark(dirs, state, key, spec["experiment"], run_id=run_id)
             exhausted.append(ds)
         else:
             _log(dirs, f"{stage}: {ds} — {new_lines} more lines scored; re-run to continue")
@@ -369,19 +385,19 @@ def _run_new_line_count(dirs: dict, run_id: str, model: str, dataset: str) -> in
 
 
 def phase_smoke(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "smoke") and not args.force:
+    if _done(state, "smoke", spec["experiment"]) and not args.force:
         _log(dirs, "smoke: already done")
         return
     if _sweep(dirs, state, spec, args, stage="smoke", limit=args.smoke_n, accumulate=False):
-        _mark(dirs, state, "smoke")
+        _mark(dirs, state, "smoke", spec["experiment"])
 
 
 def phase_full(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "full") and not args.force:
+    if _done(state, "full", spec["experiment"]) and not args.force:
         _log(dirs, "full: already done")
         return
     if _sweep(dirs, state, spec, args, stage="full", limit=args.full_n, accumulate=True):
-        _mark(dirs, state, "full")
+        _mark(dirs, state, "full", spec["experiment"])
         _log(dirs, "full: every dataset exhausted")
     else:
         _log(dirs, "full: batch done — re-run this command to score the next batch")
@@ -406,7 +422,7 @@ def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
         if lb.exists():
             z.write(lb, lb.name)
     _log(dirs, f"collect: bundle -> {bundle} ({bundle.stat().st_size // 1024} KB)")
-    _mark(dirs, state, "collect", at=_now(), bundle=str(bundle))
+    _mark(dirs, state, "collect", spec["experiment"], at=_now(), bundle=str(bundle))
 
 
 PHASE_FN = {
@@ -461,18 +477,20 @@ def _active_worker(dirs: dict) -> int | None:
     return None
 
 
-def cmd_status(dirs: dict) -> int:
+def cmd_status(dirs: dict, exp: str) -> int:
     state = _read_state(dirs)
+    ph_map = _phases(state, exp)
     print(f"experiment dir : {dirs['root']}")
+    print(f"experiment     : {exp}")
     pidf = dirs["logs"] / "bench.pid"
     if pidf.exists():
         pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
         print(f"worker pid     : {pid}  ({'alive' if _pid_alive(pid) else 'not running'})")
     print("\nphases:")
     for ph in PHASES:
-        rec = state["phases"].get(ph, {})
+        rec = ph_map.get(ph, {})
         print(f"  {ph:<9} {'done' if rec.get('done') else '--':<6} {rec.get('at', '')}")
-    sub = {k: v for k, v in state["phases"].items() if ":" in k}
+    sub = {k: v for k, v in ph_map.items() if ":" in k}
     if sub:
         print("\nper-dataset:")
         for k in sorted(sub):
@@ -565,7 +583,7 @@ def main(argv: list[str] | None = None) -> int:
     dirs = _dirs(Path(args.dir).expanduser().resolve())
     _pin_env(dirs)
     if args.cmd == "status":
-        return cmd_status(dirs)
+        return cmd_status(dirs, args.experiment)
 
     spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id,
             "base_name": args.base_name, "arch": args.arch}
