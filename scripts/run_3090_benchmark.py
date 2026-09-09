@@ -178,12 +178,21 @@ def _venv_python(dirs: dict) -> Path:
     return dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")
 
 
+def _stdout_is_regular_file() -> bool:
+    """True only when this process's stdout is a plain file (the detached
+    worker's own log). A tty or a pipe (parent script reading us) is not — we
+    must still echo to stdout in that case or the parent/log sees nothing."""
+    try:
+        import stat as _s
+        return _s.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
     global _CHILD
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
-    # When detached, sys.stdout IS bench.log — only echo to it on a real tty,
-    # else every subprocess line lands in the log twice.
-    tee = sys.stdout.isatty()
+    tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
     with (dirs["logs"] / "bench.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env={**os.environ},
