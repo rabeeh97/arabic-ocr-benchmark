@@ -2,29 +2,36 @@
 
 Sibling to ``run_3090_experiment.py``. It **reuses that run's folder** — point
 ``--dir`` at the same experiment dir and it borrows the venv, the HF cache and
-the merged weights, adds a few model rows to ``configs/models.yaml`` and scores
-**base vs fine-tune** on datasets the fine-tune never saw:
+the merged weights, adds two model rows to ``configs/models.yaml`` and scores
+**fine-tune vs its untuned base** on datasets the fine-tune never saw:
 
     python scripts/run_3090_benchmark.py --dir C:\\Users\\User\\a-experiment\\exp --detach
 
+Everything it writes lives under ``<dir>/bench/`` (never inside the git repo, so
+re-syncing the repo can't wipe the cache or results).
+
 Phases (idempotent, tracked in ``<dir>/bench_state.json``):
 
-    check -> register -> run -> collect
+    check -> register -> smoke -> full -> collect
 
   * **check**    — the shared venv imports torch (CUDA) and the merged
                    fine-tune dir exists.
-  * **register** — add ``qwen3-vl-4b-bf16`` + ``exp3090-qwen3vl4b-ft-{4bit,bf16}``
-                   to ``configs/models.yaml`` (the 4-bit base ``qwen3-vl-4b`` is
-                   already there).
-  * **run**      — ``bench run --config <benchmark run config> --report`` over the
-                   models x datasets matrix. Refuses to start if the config's
-                   ``datasets`` names a Muharaf set (the fine-tune trained on it).
-  * **collect**  — copy the newest ``results/<run_id>/`` into ``<dir>/bench/`` and
-                   render a standalone ``<dir>/bench/leaderboard.html``.
+  * **register** — add ``qwen3-vl-4b-bf16`` + ``exp3090-qwen3vl4b-ft-bf16``
+                   (``--with-4bit`` also adds ``exp3090-qwen3vl4b-ft-4bit``).
+  * **smoke**    — dataset by dataset: score every model on the first
+                   ``--smoke-n`` (20) lines, copy the summary into
+                   ``<dir>/bench/smoke/<dataset>/``, then the next dataset.
+  * **full**     — dataset by dataset in **accumulate** mode: each run scores the
+                   next ``--full-n`` (200) *un-scored* lines per dataset and
+                   copies the batch summary into ``<dir>/bench/full/<dataset>/``.
+                   Re-run to continue where it left off; done when every dataset
+                   is exhausted.
+  * **collect**  — render ``<dir>/bench/leaderboard.html`` over everything scored
+                   so far.
 
 Same ergonomics as the training runner: ``--detach`` survives logout, re-running
-resumes from the last finished phase, one run per folder (a second launch is
-refused), and each launch rotates ``<dir>/logs/bench.log``.
+resumes, one run per folder (a second launch is refused, and a stray orphaned
+``bench run`` is reaped on start), each launch rotates ``<dir>/logs/bench.log``.
 """
 
 from __future__ import annotations
@@ -44,14 +51,17 @@ UTC = timezone.utc  # datetime.UTC alias; not present before Python 3.11
 REPO = Path(__file__).resolve().parents[1]
 IS_WIN = platform.system() == "Windows"
 
-PHASES = ["check", "register", "run", "collect"]
+PHASES = ["check", "register", "smoke", "full", "collect"]
 
-# Defaults for the qwen3vl4b training run; flags below override for other bases.
 DEFAULT_EXPERIMENT = "exp3090-qwen3vl4b"
 DEFAULT_BASE_HF_ID = "Qwen/Qwen3-VL-4B-Instruct"
 DEFAULT_ARCH = "qwen2_5_vl"
-DEFAULT_RUN_CONFIG = "configs/training/exp3090_bench.run.yaml"
+MATRIX_FILE = "configs/training/exp3090_bench.run.yaml"
 BANNED_DATASETS = ("muharaf_lines", "kitab_muharaf")  # overlap the fine-tune's training data
+PROMPT_VERSION = "line-v2"
+NORM_PROFILES = ("raw", "light", "diac_insensitive")
+
+_CHILD: subprocess.Popen | None = None  # current `bench run` subprocess, for cleanup
 
 
 # --------------------------------------------------------------------------- #
@@ -69,6 +79,8 @@ def _dirs(root: Path) -> dict:
         "uv_cache": root / "uv_cache",
         "merged": root / "merged",
         "bench": root / "bench",
+        "results": root / "bench" / "results",
+        "cfg": root / "bench" / "_cfg",
         "logs": root / "logs",
     }
     for p in d.values():
@@ -84,7 +96,6 @@ def _log(dirs: dict, msg: str) -> None:
 
 
 def _rotate_log(dirs: dict) -> None:
-    """Move a non-empty ``bench.log`` aside so each launch starts clean."""
     log = dirs["logs"] / "bench.log"
     if log.exists() and log.stat().st_size > 0:
         stamp = _now().replace(":", "").replace("-", "")
@@ -143,37 +154,102 @@ def _venv_python(dirs: dict) -> Path:
 
 
 def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
+    global _CHILD
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
     with (dirs["logs"] / "bench.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env={**os.environ},
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
         )
+        _CHILD = proc
         assert proc.stdout is not None
-        for ln in proc.stdout:
-            sys.stdout.write(ln)
-            sys.stdout.flush()
-            fh.write(ln)
-        proc.wait()
+        try:
+            for ln in proc.stdout:
+                sys.stdout.write(ln)
+                sys.stdout.flush()
+                fh.write(ln)
+            proc.wait()
+        finally:
+            _CHILD = None
     if proc.returncode != 0:
         _log(dirs, f"!! phase {phase}: command exited {proc.returncode}")
     return proc.returncode
 
 
-def _config_datasets(path: Path) -> list[str]:
-    """List items under a top-level ``datasets:`` key (stdlib, no yaml)."""
-    out: list[str] = []
-    in_block = False
-    for raw in path.read_text(encoding="utf-8").splitlines():
+def _kill_child() -> None:
+    if _CHILD and _CHILD.poll() is None:
+        _CHILD.terminate()
+        try:
+            _CHILD.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            _CHILD.kill()
+
+
+def _reap_orphans() -> None:
+    """Kill a stray `bench run` left behind by a previously hard-killed worker
+    (it holds the GPU and a fresh run would fight it)."""
+    if IS_WIN:
+        ps = ("Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | "
+              "Where-Object { $_.CommandLine -match 'arabic_ocr_bench\\.cli run' } | "
+              "ForEach-Object { Stop-Process -Id $_.ProcessId -Force }")
+        subprocess.run(["powershell", "-NoProfile", "-Command", ps],
+                       capture_output=True, check=False)
+    else:
+        subprocess.run(["pkill", "-f", "arabic_ocr_bench.cli run"],
+                       capture_output=True, check=False)
+
+
+def _matrix() -> tuple[list[str], list[str]]:
+    """(models, datasets) from the two lists in MATRIX_FILE (stdlib, no yaml)."""
+    models: list[str] = []
+    datasets: list[str] = []
+    cur: list[str] | None = None
+    for raw in (REPO / MATRIX_FILE).read_text(encoding="utf-8").splitlines():
         line = raw.split("#", 1)[0].rstrip()
         if not line:
             continue
         if not line.startswith((" ", "\t")):
-            in_block = line.strip() == "datasets:"
+            key = line.strip().rstrip(":")
+            cur = {"models": models, "datasets": datasets}.get(key)
             continue
-        if in_block and line.lstrip().startswith("- "):
-            out.append(line.lstrip()[2:].strip())
-    return out
+        if cur is not None and line.lstrip().startswith("- "):
+            cur.append(line.lstrip()[2:].strip())
+    return models, datasets
+
+
+def _write_run_cfg(path: Path, *, models: list[str], dataset: str, limit: int,
+                   accumulate: bool, results_dir: Path) -> None:
+    path.write_text(
+        "# generated by run_3090_benchmark.py — do not edit\n"
+        f"models: [{', '.join(models)}]\n"
+        f"datasets: [{dataset}]\n"
+        f"limit: {limit}\n"
+        f"offset: 0\n"
+        f"accumulate: {'true' if accumulate else 'false'}\n"
+        f"prompt_version: {PROMPT_VERSION}\n"
+        f"normalization_profiles: [{', '.join(NORM_PROFILES)}]\n"
+        "concurrency: 1\n"
+        "max_retries: 2\n"
+        "cache: true\n"
+        f"results_dir: {results_dir.as_posix()}\n",
+        encoding="utf-8",
+    )
+
+
+def _collect_latest(dirs: dict, stage: str, dataset: str) -> str | None:
+    """Copy the newest results/<run_id>/ into <dir>/bench/<stage>/<dataset>/."""
+    runs = sorted(dirs["results"].glob("*/summary.csv"), key=lambda p: p.stat().st_mtime)
+    if not runs:
+        return None
+    src = runs[-1].parent
+    dst = dirs["bench"] / stage / dataset / src.name
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in ("summary.csv", "summary.md", "scores.jsonl", "predictions.jsonl",
+              "run_config.snapshot.yaml"):
+        if (src / f).exists():
+            shutil.copy2(src / f, dst / f)
+    _log(dirs, f"{stage}: {dataset} -> {dst}")
+    return src.name
 
 
 # --------------------------------------------------------------------------- #
@@ -192,12 +268,11 @@ def phase_check(dirs: dict, state: dict, spec: dict, args) -> None:
             f"check: merged weights not found at {merged} — finish the training run "
             f"(its `merge` phase) before benchmarking."
         )
-    rc = _run(dirs, [str(py), "-c",
-                     "import torch,arabic_ocr_bench;"
-                     "assert torch.cuda.is_available(), 'CUDA not available in the venv';"
-                     "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0))"],
-              phase="check")
-    if rc:
+    if _run(dirs, [str(py), "-c",
+                   "import torch,arabic_ocr_bench;"
+                   "assert torch.cuda.is_available(), 'CUDA not available in the venv';"
+                   "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0))"],
+            phase="check"):
         raise SystemExit("check: venv sanity import failed")
     _mark(dirs, state, "check", merged=str(merged))
 
@@ -210,68 +285,104 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
     merged = str(dirs["merged"] / spec["experiment"])
     reg = [str(py), "-m", "arabic_ocr_bench.training.cli", "register", "--arch", spec["arch"]]
     rows = [
-        # name, path, extra flags
-        ("qwen3-vl-4b-bf16", spec["base_hf_id"], []),
-        (f"{spec['experiment']}-ft-4bit", merged, ["--load-in-4bit"]),
-        (f"{spec['experiment']}-ft-bf16", merged, []),
+        ("qwen3-vl-4b-bf16", spec["base_hf_id"], [],
+         f"Untuned {spec['base_hf_id']} at bf16 — base row for the "
+         f"{spec['experiment']} held-out benchmark."),
+        (f"{spec['experiment']}-ft-bf16", merged, [],
+         f"{spec['experiment']} RTX-3090 fine-tune (bf16), merged weights."),
     ]
-    for name, path, extra in rows:
-        card = (
-            f"Untuned {spec['base_hf_id']} at bf16 — base row for the "
-            f"{spec['experiment']} held-out benchmark."
-            if path == spec["base_hf_id"]
-            else f"{spec['experiment']} RTX-3090 fine-tune "
-                 f"({'4-bit' if extra else 'bf16'}), merged weights."
-        )
+    if args.with_4bit:
+        rows.append((f"{spec['experiment']}-ft-4bit", merged, ["--load-in-4bit"],
+                     f"{spec['experiment']} RTX-3090 fine-tune (4-bit), merged weights."))
+    for name, path, extra, card in rows:
         if _run(dirs, [*reg, "--name", name, "--path", path, "--card", card, *extra],
                 phase="register"):
             raise SystemExit(f"register: `bench-train register {name}` failed")
     _mark(dirs, state, "register", models=[r[0] for r in rows])
 
 
-def phase_run(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "run") and not args.force:
-        _log(dirs, "run: already done")
-        return
-    cfg = REPO / spec["run_config"]
-    if not cfg.exists():
-        raise SystemExit(f"run: config not found: {cfg}")
-    banned = sorted(set(_config_datasets(cfg)) & set(BANNED_DATASETS))
+def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
+           limit: int, accumulate: bool) -> bool:
+    """Run one pass over every dataset. Returns True if the stage is complete."""
+    models, datasets = _matrix()
+    if args.with_4bit:
+        models = [*models, f"{spec['experiment']}-ft-4bit"]
+    banned = sorted(set(datasets) & set(BANNED_DATASETS))
     if banned:
-        raise SystemExit(
-            f"run: {cfg.name} lists {banned} — the fine-tune trained on the Muharaf "
-            f"train split, so these would be contaminated. Remove them from `datasets:`."
-        )
+        raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
     py = _venv_python(dirs)
-    rc = _run(dirs, [str(py), "-m", "arabic_ocr_bench.cli", "run",
-                     "--config", str(cfg), "--report"], phase="run")
-    if rc:
-        raise SystemExit("run: `bench run` failed")
-    _mark(dirs, state, "run", config=str(cfg))
+    exhausted: list[str] = []
+    for ds in datasets:
+        key = f"{stage}:{ds}"
+        if _done(state, key) and not args.force:
+            _log(dirs, f"{stage}: {ds} already done")
+            exhausted.append(ds)
+            continue
+        cfg = dirs["cfg"] / f"{stage}__{ds}.run.yaml"
+        _write_run_cfg(cfg, models=models, dataset=ds, limit=limit,
+                       accumulate=accumulate, results_dir=dirs["results"])
+        if _run(dirs, [str(py), "-m", "arabic_ocr_bench.cli", "run",
+                       "--config", str(cfg), "--report"], phase=stage):
+            raise SystemExit(f"{stage}: `bench run` failed on {ds} — fix and re-run (resumes).")
+        run_id = _collect_latest(dirs, stage, ds)
+        # dataset is exhausted when the last batch scored fewer NEW lines than asked
+        new_lines = _run_new_line_count(dirs, run_id, models[0], ds) if run_id else 0
+        if not accumulate or new_lines < limit:
+            _mark(dirs, state, key, run_id=run_id)
+            exhausted.append(ds)
+        else:
+            _log(dirs, f"{stage}: {ds} — {new_lines} more lines scored; re-run to continue")
+    return len(exhausted) == len(datasets)
+
+
+def _run_new_line_count(dirs: dict, run_id: str, model: str, dataset: str) -> int:
+    pred = dirs["results"] / run_id / "predictions.jsonl"
+    if not pred.exists():
+        return 0
+    n = 0
+    for line in pred.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if r.get("model") == model and r.get("dataset") == dataset and not r.get("cached"):
+            n += 1
+    return n
+
+
+def phase_smoke(dirs: dict, state: dict, spec: dict, args) -> None:
+    if _done(state, "smoke") and not args.force:
+        _log(dirs, "smoke: already done")
+        return
+    if _sweep(dirs, state, spec, args, stage="smoke", limit=args.smoke_n, accumulate=False):
+        _mark(dirs, state, "smoke")
+
+
+def phase_full(dirs: dict, state: dict, spec: dict, args) -> None:
+    if _done(state, "full") and not args.force:
+        _log(dirs, "full: already done")
+        return
+    if _sweep(dirs, state, spec, args, stage="full", limit=args.full_n, accumulate=True):
+        _mark(dirs, state, "full")
+        _log(dirs, "full: every dataset exhausted")
+    else:
+        _log(dirs, "full: batch done — re-run this command to score the next batch")
 
 
 def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
-    runs = sorted((REPO / "results").glob("*/summary.csv"), key=lambda p: p.stat().st_mtime)
-    if not runs:
-        raise SystemExit("collect: no results/<run_id>/summary.csv found — did `run` succeed?")
-    src = runs[-1].parent
-    dst = dirs["bench"] / src.name
-    dst.mkdir(parents=True, exist_ok=True)
-    for f in ("summary.csv", "summary.md", "scores.jsonl", "predictions.jsonl",
-              "run_config.snapshot.yaml"):
-        if (src / f).exists():
-            shutil.copy2(src / f, dst / f)
-    _log(dirs, f"collect: {src.name}/ -> {dst}")
     py = _venv_python(dirs)
     _run(dirs, [str(py), str(REPO / "scripts" / "make_leaderboard.py"),
-                str(REPO / "results"), "-o", str(dirs["bench"] / "leaderboard.html")],
+                str(dirs["results"]), "-o", str(dirs["bench"] / "leaderboard.html")],
          phase="collect")
-    _mark(dirs, state, "collect", run_id=src.name, out=str(dst))
+    _mark(dirs, state, "collect", at=_now())
 
 
 PHASE_FN = {
     "check": phase_check, "register": phase_register,
-    "run": phase_run, "collect": phase_collect,
+    "smoke": phase_smoke, "full": phase_full, "collect": phase_collect,
 }
 
 
@@ -332,9 +443,15 @@ def cmd_status(dirs: dict) -> int:
     for ph in PHASES:
         rec = state["phases"].get(ph, {})
         print(f"  {ph:<9} {'done' if rec.get('done') else '--':<6} {rec.get('at', '')}")
-    collected = sorted(dirs["bench"].glob("*/summary.csv"))
-    if collected:
-        print(f"\ncollected      : {collected[-1].parent}")
+    sub = {k: v for k, v in state["phases"].items() if ":" in k}
+    if sub:
+        print("\nper-dataset:")
+        for k in sorted(sub):
+            print(f"  {k:<22} done  {sub[k].get('at', '')}")
+    for stage in ("smoke", "full"):
+        got = sorted((dirs["bench"] / stage).glob("*/*/summary.csv")) if (dirs["bench"] / stage).exists() else []
+        if got:
+            print(f"\n{stage} results : {dirs['bench'] / stage}  ({len(got)} batch summaries)")
     log = dirs["logs"] / "bench.log"
     if log.exists():
         print("\n--- log tail (40) ---")
@@ -361,6 +478,7 @@ def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
     if args.detach:
         return _respawn_detached(dirs, argv)
 
+    _reap_orphans()
     _rotate_log(dirs)
     (dirs["logs"] / "bench.pid").write_text(str(os.getpid()), encoding="utf-8")
     start = args.from_phase or ("check" if not args.only else args.only)
@@ -374,10 +492,11 @@ def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
                 _log(dirs, f"STOP at phase {ph}: {e}")
                 return 1
             state = _read_state(dirs)
-        _log(dirs, "=== all phases complete ===")
-        _log(dirs, f"collected results : {dirs['bench']}")
+        _log(dirs, "=== pass complete ===")
+        _log(dirs, f"results : {dirs['bench']}")
         return 0
     finally:
+        _kill_child()
         pidf = dirs["logs"] / "bench.pid"
         if pidf.exists() and pidf.read_text(encoding="utf-8").strip() == str(os.getpid()):
             pidf.unlink()
@@ -393,11 +512,14 @@ def main(argv: list[str] | None = None) -> int:
                     help="run (default) | status")
     ap.add_argument("--experiment", default=DEFAULT_EXPERIMENT,
                     help=f"merged-dir name under <dir>/merged/ (default: {DEFAULT_EXPERIMENT})")
-    ap.add_argument("--base-hf-id", dest="base_hf_id", default=DEFAULT_BASE_HF_ID,
-                    help="base model hf_id for the bf16 base row")
-    ap.add_argument("--arch", default=DEFAULT_ARCH, help="arch shim for the registry rows")
-    ap.add_argument("--config", dest="run_config", default=DEFAULT_RUN_CONFIG,
-                    help="bench run config (models x datasets matrix)")
+    ap.add_argument("--base-hf-id", dest="base_hf_id", default=DEFAULT_BASE_HF_ID)
+    ap.add_argument("--arch", default=DEFAULT_ARCH)
+    ap.add_argument("--smoke-n", dest="smoke_n", type=int, default=20,
+                    help="lines per dataset per model in the smoke stage (default 20)")
+    ap.add_argument("--full-n", dest="full_n", type=int, default=200,
+                    help="new lines per dataset per full-stage batch (default 200)")
+    ap.add_argument("--with-4bit", dest="with_4bit", action="store_true",
+                    help="also score the 4-bit fine-tune row")
     ap.add_argument("--detach", action="store_true", help="re-spawn free of this shell and return")
     ap.add_argument("--from", dest="from_phase", default=None, choices=PHASES,
                     help="start at this phase")
@@ -411,8 +533,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "status":
         return cmd_status(dirs)
 
-    spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id,
-            "arch": args.arch, "run_config": args.run_config}
+    spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id, "arch": args.arch}
     return drive(dirs, spec, args, argv)
 
 
