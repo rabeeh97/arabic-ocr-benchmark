@@ -156,6 +156,9 @@ def _venv_python(dirs: dict) -> Path:
 def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
     global _CHILD
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
+    # When detached, sys.stdout IS bench.log — only echo to it on a real tty,
+    # else every subprocess line lands in the log twice.
+    tee = sys.stdout.isatty()
     with (dirs["logs"] / "bench.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env={**os.environ},
@@ -165,8 +168,9 @@ def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
         assert proc.stdout is not None
         try:
             for ln in proc.stdout:
-                sys.stdout.write(ln)
-                sys.stdout.flush()
+                if tee:
+                    sys.stdout.write(ln)
+                    sys.stdout.flush()
                 fh.write(ln)
             proc.wait()
         finally:
