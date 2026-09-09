@@ -109,6 +109,18 @@ def _log(dirs: dict, msg: str) -> None:
         fh.write(line + "\n")
 
 
+def _rotate_log(dirs: dict) -> None:
+    """Move a non-empty ``run.log`` aside so each launch starts on a clean log.
+
+    Old sessions are kept as ``run.<UTC-timestamp>.log`` next to it; `status`
+    always tails the current ``run.log`` only.
+    """
+    log = dirs["logs"] / "run.log"
+    if log.exists() and log.stat().st_size > 0:
+        stamp = _now().replace(":", "").replace("-", "")
+        log.rename(dirs["logs"] / f"run.{stamp}.log")
+
+
 def _dirs(root: Path) -> dict:
     d = {
         "root": root,
@@ -499,6 +511,7 @@ PHASE_FN = {
 # detach + status + drive
 # --------------------------------------------------------------------------- #
 def _respawn_detached(dirs: dict, argv: list[str]) -> int:
+    _rotate_log(dirs)
     logf = (dirs["logs"] / "run.log").open("a", encoding="utf-8")
     child_argv = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
     kwargs: dict = {"cwd": str(REPO), "stdout": logf, "stderr": subprocess.STDOUT,
@@ -528,6 +541,20 @@ def _pid_alive(pid: int) -> bool:
         return True
     except (OSError, ValueError):
         return False
+
+
+def _active_worker(dirs: dict) -> int | None:
+    """PID in ``run.pid`` if it names a live process other than us, else None."""
+    pidf = dirs["logs"] / "run.pid"
+    if not pidf.exists():
+        return None
+    try:
+        pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
+    except ValueError:
+        return None
+    if pid and pid != os.getpid() and _pid_alive(pid):
+        return pid
+    return None
 
 
 def cmd_status(dirs: dict) -> int:
@@ -578,24 +605,41 @@ def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
     state.setdefault("started", _now())
     _write_state(dirs, state)
 
+    active = _active_worker(dirs)
+    if active and not args.force:
+        print(
+            f"a run is already active in this folder (pid {active}).\n"
+            f"  watch it : python {Path(__file__).name} --dir {dirs['root']} status\n"
+            f"  stop it  : {'taskkill /F /PID' if IS_WIN else 'kill'} {active}\n"
+            f"  or pass --force to start anyway (only if you know it is dead)."
+        )
+        return 1
+
     if args.detach:
         return _respawn_detached(dirs, argv)
 
+    _rotate_log(dirs)
+    (dirs["logs"] / "run.pid").write_text(str(os.getpid()), encoding="utf-8")
     start = args.from_phase or ("bootstrap" if not args.only else args.only)
     plan = [args.only] if args.only else PHASES[PHASES.index(start):]
     _log(dirs, f"=== run: base={args.base} phases={plan} ===")
-    for ph in plan:
-        try:
-            PHASE_FN[ph](dirs, state, spec, args)
-        except SystemExit as e:
-            _log(dirs, f"STOP at phase {ph}: {e}")
-            return 1
-        state = _read_state(dirs)
-    _log(dirs, "=== all phases complete ===")
-    _log(dirs, f"merged weights : {dirs['merged']}")
-    _log(dirs, f"eval scores    : {dirs['eval']}")
-    _log(dirs, f"plots          : {dirs['plots']}")
-    return 0
+    try:
+        for ph in plan:
+            try:
+                PHASE_FN[ph](dirs, state, spec, args)
+            except SystemExit as e:
+                _log(dirs, f"STOP at phase {ph}: {e}")
+                return 1
+            state = _read_state(dirs)
+        _log(dirs, "=== all phases complete ===")
+        _log(dirs, f"merged weights : {dirs['merged']}")
+        _log(dirs, f"eval scores    : {dirs['eval']}")
+        _log(dirs, f"plots          : {dirs['plots']}")
+        return 0
+    finally:
+        pidf = dirs["logs"] / "run.pid"
+        if pidf.exists() and pidf.read_text(encoding="utf-8").strip() == str(os.getpid()):
+            pidf.unlink()
 
 
 def main(argv: list[str] | None = None) -> int:
