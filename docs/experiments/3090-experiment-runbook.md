@@ -198,20 +198,33 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 
 ## 6b. Held-out benchmark — base vs fine-tune
 
-`scripts/run_3090_benchmark.py` scores **base vs fine-tune** on datasets the
-fine-tune never saw (Muharaf is excluded — it was the training data). It
-**reuses the training folder** (`--dir` = the same `…\a-experiment\exp`): same
-venv, same HF cache, the merged weights already there. Phases
-(`check → register → run → collect`, tracked in `bench_state.json`), and the same
-`--detach` / resume / one-run-lock / log-rotation ergonomics.
+`scripts/run_3090_benchmark.py` scores the **fine-tune vs its untuned base**
+(both bf16) on datasets the fine-tune never saw (Muharaf is excluded — it was the
+training data). It **reuses the training folder** (`--dir` = the same
+`…\a-experiment\exp`): same venv, same HF cache, the merged weights already there.
+Everything it writes goes under `…\exp\bench\` — **never inside the git repo**, so
+re-syncing the repo can't wipe the cache or results.
 
-Datasets and models are the two lists in `configs/training/exp3090_bench.run.yaml`
-— edit them to add more. `nakba_lines` is HF-gated (auto-approve): open
+Phases `check → register → smoke → full → collect` (tracked in `bench_state.json`),
+same `--detach` / resume / one-run-lock / log-rotation as the trainer, plus:
+
+- **`smoke`** — dataset by dataset, score both models on the first `--smoke-n`
+  (20) lines, copy that summary to `…\exp\bench\smoke\<dataset>\`, next dataset.
+- **`full`** — dataset by dataset in **accumulate** mode: each run scores the next
+  `--full-n` (200) *un-scored* lines per dataset (into
+  `…\exp\bench\full\<dataset>\`). **Re-run the same command to score the next
+  batch**; a dataset is finished once a batch returns fewer new lines than asked.
+- **`collect`** — regenerate `…\exp\bench\leaderboard.html` over everything scored
+  so far (runs every pass).
+
+Models and datasets are the two lists in
+`configs/training/exp3090_bench.run.yaml`. `--with-4bit` adds a 4-bit fine-tune
+row. `nakba_lines` is HF-gated (auto-approve): open
 `https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments` while
 logged into the account behind `HF_TOKEN` and click **Agree and access
-repository** once. If you skip it that dataset just errors and the rest still run.
+repository** once — otherwise that one dataset errors and the rest still run.
 
-**Prereqs:** the training run has completed at least its `merge` phase
+**Prereqs:** the training run finished at least `merge`
 (`…\exp\merged\exp3090-qwen3vl4b\` exists).
 
 **Sync the script (Mac):**
@@ -229,6 +242,11 @@ cd C:\Users\User\a-experiment\aocr-repo
 python scripts\run_3090_benchmark.py --dir C:\Users\User\a-experiment\exp --detach
 ```
 
+The first launch runs `check → register → smoke → full (batch 1) → collect`.
+Each later `python scripts\run_3090_benchmark.py --dir … --detach` does the next
+`full` batch (200 more lines/dataset) + `collect`, until every dataset is
+exhausted. `--only smoke` / `--from full` target one stage.
+
 **Watch it (survives logout):**
 
 ```bat
@@ -236,20 +254,21 @@ powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\exp\logs\
 ```
 or the phase table: `python scripts\run_3090_benchmark.py --dir C:\Users\User\a-experiment\exp status`
 
-It writes the scored run into `…\exp\bench\<run_id>\` (`summary.csv/md`,
-`predictions.jsonl`, `scores.jsonl`) plus a standalone `…\exp\bench\leaderboard.html`.
-
 **Fetch the results (Mac):**
 
 ```bash
-mkdir -p ~/aocr-exp-results/bench && cd ~/aocr-exp-results/bench
-scp -r "user@10.100.0.3:a-experiment/exp/bench/*" ./
+mkdir -p ~/aocr-exp-results && cd ~/aocr-exp-results
+scp -r "user@10.100.0.3:a-experiment/exp/bench" ./
 ```
+
+`bench/smoke/<ds>/<run_id>/` and `bench/full/<ds>/<run_id>/` hold the per-batch
+`summary.csv/md` + `predictions.jsonl` + `scores.jsonl`; `bench/leaderboard.html`
+is the cumulative view.
 
 **Merge into this repo's leaderboard:** copy `merged/exp3090-qwen3vl4b/` under the
 repo, re-register the fine-tune rows with **repo-relative** paths (the box's
 `configs/models.yaml` has machine-local absolute paths — don't commit it), drop
-the fetched `bench/<run_id>/` into `results/`, then
+the fetched `bench/full/*/*/` run dirs into `results/`, then
 `uv run python scripts/make_leaderboard.py results -o results/leaderboard.html`.
 
 ## 7. Clean up — leaves nothing behind
