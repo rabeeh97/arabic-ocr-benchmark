@@ -30,8 +30,6 @@ exp3090-qwen3vl4b:
     - nakba_lines
     - rasam1
     - rasam2
-    - kitab_hindawi
-    - kitab_historicalbooks
   hypothesis: >-
     A general VLM has the visual features but no prior for cursive Arabic line
     layout, ligature segmentation, or diacritic placement. A small LoRA on real
@@ -45,4 +43,44 @@ exp3090-qwen3vl4b:
     - "Diacritics: base diac-F1 ~0.03 on KHATT, ~0.35 on NAKBA; LoRA reaches 0.35 / 0.69. Its diac-insensitive vs raw CER are close, so it is not just guessing skeletons."
     - "Open: how much of the gain is the OUTPUT FORMAT prior (line-only, no chat) vs. genuine visual grapheme learning? A prompt-only / format-only control run would separate them."
     - "Open: data-scaling — 8,000 lines was one arbitrary point. Re-run at 1k / 2k / 4k / full to trace where the held-out curve flattens; that sizes the moat for a from-scratch Arabic HTR effort."
-    - "Open: unfreezing the ViT (train_vision: true) is the lever for degraded / historical script (RASAM Maghrebi, HistoricalBooks) where the frozen encoder may be the bottleneck."
+    - "Open: unfreezing the ViT (train_vision: true) is the lever for the Maghrebi RASAM sets, where the fine-tune is weakest (~50% CER vs ~30% on Naskh/Ruq'ah) and the frozen encoder may be the bottleneck."
+    - "kitab_hindawi / kitab_historicalbooks were dropped from this benchmark — paragraph-scale, not lines (see docs/experiments/findings-and-notes.md)."
+
+baseer-nakba:
+  title: "Baseer/NAKBA — Muharaf LoRA (RTX 3090)"
+  base_model: baseer-nakba-bf16
+  ft_models: [exp3090-baseer-nakba-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, 8,000 Muharaf train lines, Misraj/Baseer__Nakba"
+  config: configs/training/exp3090_baseer_nakba.yaml
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets: [kitab_khatt, nakba_lines, rasam1, rasam2]
+  hypothesis: >-
+    Baseer is already an Arabic-manuscript-specialised base (reported CER ~0.08
+    on NAKBA out of the box). Same LoRA recipe as exp3090-qwen3vl4b, same data —
+    so the delta vs the Qwen3-VL fine-tune isolates "how much does starting from
+    an Arabic-specialised base buy you". If it barely beats generic-Qwen + LoRA,
+    the moat is in the SFT, not the base.
+  notes:
+    - "Controlled A/B against exp3090-qwen3vl4b: identical data, recipe, and held-out sets — only the base changes."
+    - "fetch phase prints the checkpoint's real `architectures`; if it is not a Qwen2.5-VL class, the config's arch shim is wrong."
+
+paligemma2-3b:
+  title: "PaliGemma-2-3B — Muharaf LoRA (RTX 3090)"
+  base_model: paligemma2-3b-bf16
+  ft_models: [exp3090-paligemma2-3b-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32), 1 epoch, 8,000 Muharaf train lines, google/paligemma2-3b-pt-448"
+  config: configs/training/exp3090_paligemma2_3b.yaml
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets: [kitab_khatt, nakba_lines, rasam1, rasam2]
+  hypothesis: >-
+    PaliGemma-2 is a different architecture family (SigLIP vision encoder + Gemma
+    decoder, 448px fixed tiling) from Qwen-VL. Same data and recipe — the delta
+    tells us whether the vision-encoder / decoder lineage matters for cursive
+    Arabic, which informs a from-scratch architecture choice.
+  notes:
+    - "Uses a different collator (_make_collator_paligemma) — watch the first training batches: loss should start ~2-4 and fall, labels all -100 except the target span."
+    - "448px fixed input may hurt long / dense lines vs Qwen's dynamic resolution."
