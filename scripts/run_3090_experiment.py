@@ -249,9 +249,15 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     # 2. the benchmark + training extras (editable, from the SSH-copied repo)
     if _run(dirs, [*pipbase, "-e", f"{REPO}[local,train]"], phase="bootstrap"):
         raise SystemExit("bootstrap: `pip install -e .[local,train]` failed")
-    # 3. base-specific transformers floor + plotting for the report phase
-    if spec["needs_transformers"]:
-        _run(dirs, [*pipbase, "-U", f"transformers>={spec['needs_transformers']}"], phase="bootstrap")
+    # 3. pin the training stack to the era this code targets, then plotting.
+    #    The pyproject floors (`transformers>=4.49`, `trl>=0.12`) are unbounded,
+    #    so a fresh resolve drifts to transformers 5.x / trl 1.x — whose
+    #    `SFTConfig` dropped `warmup_ratio` and rewrote the SFT data pipeline.
+    #    Cap both below the next major; bump the transformers floor for bases
+    #    that need a newer minor (Qwen3-VL wants >=4.57).
+    tfloor = spec["needs_transformers"] or "4.49"
+    if _run(dirs, [*pipbase, "-U", f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
+        raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
 
     # 4. verify CUDA + bitsandbytes
