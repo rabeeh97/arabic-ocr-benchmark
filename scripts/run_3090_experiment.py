@@ -255,8 +255,12 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    `SFTConfig` dropped `warmup_ratio` and rewrote the SFT data pipeline.
     #    Cap both below the next major; bump the transformers floor for bases
     #    that need a newer minor (Qwen3-VL wants >=4.57).
+    #    `-P name` upgrades ONLY that package, not its deps — a bare `-U` would
+    #    also pull a fresh PyPI `torch`, replacing the CUDA wheel from step 1
+    #    (and on WDAC-locked boxes the new torch DLLs fail to load, WinError 4551).
     tfloor = spec["needs_transformers"] or "4.49"
-    if _run(dirs, [*pipbase, "-U", f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
+    if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
+                   f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
 

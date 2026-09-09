@@ -250,7 +250,20 @@ training) to prove the whole pipeline before committing to the long run.
   transformers 5.x + trl 1.x, whose `SFTConfig` dropped `warmup_ratio` and rewrote
   the SFT pipeline (`TypeError: SFTConfig.__init__() got an unexpected keyword
   argument 'warmup_ratio'`). `pyproject.toml` now carries the `<5` / `<1.0` caps
-  too. The core repo's transformers floor stays 4.49.
+  too. The core repo's transformers floor stays 4.49. The pin step uses
+  `uv pip install -P transformers -P trl …` — a bare `-U` also upgrades `torch`,
+  replacing the cu124 wheel (see next point). If you ever pin deps by hand, never
+  pass `-U`; reinstall torch from the cu124 index if you do.
+- **`torch` must come from the cu124 index, and WDAC** — the CUDA wheel is
+  installed from `download.pytorch.org/whl/cu124`. A plain PyPI `torch` (what an
+  unscoped `-U` resolve pulls) is either CPU-only or, on a box with Windows
+  Defender Application Control / Smart App Control enabled, fails to load its
+  DLLs: `OSError: [WinError 4551] An Application Control policy has blocked this
+  file … torch\lib\shm.dll`. Fix: `uv pip install --python <venv-py>
+  --reinstall-package torch --reinstall-package torchvision torch torchvision
+  --index-url https://download.pytorch.org/whl/cu124`. If the cu124 wheel *also*
+  hits 4551, the box's WDAC policy blocks PyTorch outright — needs an admin to
+  allowlist it or disable Smart App Control; no pip/code change helps.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
   CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.
