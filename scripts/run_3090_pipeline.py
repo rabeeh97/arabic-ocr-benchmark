@@ -66,9 +66,20 @@ def _pid_alive(pid: int) -> bool:
         return False
 
 
+def _stdout_is_regular_file() -> bool:
+    """True only when this process's stdout is a plain file (the detached
+    worker's own log). A tty or a pipe (parent script reading us) is not — we
+    must still echo to stdout in that case or the parent/log sees nothing."""
+    try:
+        import stat as _s
+        return _s.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     _log(logs, f"=== {step}: {' '.join(cmd)}")
-    tee = sys.stdout.isatty()
+    tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
     with (logs / "pipeline.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ},
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
