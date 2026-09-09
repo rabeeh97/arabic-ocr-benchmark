@@ -43,6 +43,7 @@ import platform
 import shutil
 import subprocess
 import sys
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -55,6 +56,7 @@ PHASES = ["check", "register", "smoke", "full", "collect"]
 
 DEFAULT_EXPERIMENT = "exp3090-qwen3vl4b"
 DEFAULT_BASE_HF_ID = "Qwen/Qwen3-VL-4B-Instruct"
+DEFAULT_BASE_NAME = "qwen3-vl-4b-bf16"   # models.yaml row for the untuned base
 DEFAULT_ARCH = "qwen2_5_vl"
 MATRIX_FILE = "configs/training/exp3090_bench.run.yaml"
 BANNED_DATASETS = ("muharaf_lines", "kitab_muharaf")  # overlap the fine-tune's training data
@@ -203,22 +205,28 @@ def _reap_orphans() -> None:
                        capture_output=True, check=False)
 
 
-def _matrix() -> tuple[list[str], list[str]]:
-    """(models, datasets) from the two lists in MATRIX_FILE (stdlib, no yaml)."""
-    models: list[str] = []
+def _datasets() -> list[str]:
+    """The held-out dataset list from MATRIX_FILE (stdlib, no yaml). The models
+    are derived per experiment from --base-name + <experiment>, not this file."""
     datasets: list[str] = []
-    cur: list[str] | None = None
+    in_block = False
     for raw in (REPO / MATRIX_FILE).read_text(encoding="utf-8").splitlines():
         line = raw.split("#", 1)[0].rstrip()
         if not line:
             continue
         if not line.startswith((" ", "\t")):
-            key = line.strip().rstrip(":")
-            cur = {"models": models, "datasets": datasets}.get(key)
+            in_block = line.strip().rstrip(":") == "datasets"
             continue
-        if cur is not None and line.lstrip().startswith("- "):
-            cur.append(line.lstrip()[2:].strip())
-    return models, datasets
+        if in_block and line.lstrip().startswith("- "):
+            datasets.append(line.lstrip()[2:].strip())
+    return datasets
+
+
+def _bench_models(spec: dict, with_4bit: bool) -> list[str]:
+    m = [spec["base_name"], f"{spec['experiment']}-ft-bf16"]
+    if with_4bit:
+        m.append(f"{spec['experiment']}-ft-4bit")
+    return m
 
 
 def _write_run_cfg(path: Path, *, models: list[str], dataset: str, limit: int,
@@ -289,7 +297,7 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
     merged = str(dirs["merged"] / spec["experiment"])
     reg = [str(py), "-m", "arabic_ocr_bench.training.cli", "register", "--arch", spec["arch"]]
     rows = [
-        ("qwen3-vl-4b-bf16", spec["base_hf_id"], [],
+        (spec["base_name"], spec["base_hf_id"], [],
          f"Untuned {spec['base_hf_id']} at bf16 — base row for the "
          f"{spec['experiment']} held-out benchmark."),
         (f"{spec['experiment']}-ft-bf16", merged, [],
@@ -308,9 +316,8 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
 def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
            limit: int, accumulate: bool) -> bool:
     """Run one pass over every dataset. Returns True if the stage is complete."""
-    models, datasets = _matrix()
-    if args.with_4bit:
-        models = [*models, f"{spec['experiment']}-ft-4bit"]
+    datasets = _datasets()
+    models = _bench_models(spec, args.with_4bit)
     banned = sorted(set(datasets) & set(BANNED_DATASETS))
     if banned:
         raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
@@ -381,7 +388,21 @@ def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
     _run(dirs, [str(py), str(REPO / "scripts" / "make_leaderboard.py"),
                 str(dirs["results"]), "-o", str(dirs["bench"] / "leaderboard.html")],
          phase="collect")
-    _mark(dirs, state, "collect", at=_now())
+    # One fetchable bundle: the curated per-batch summaries + the leaderboard.
+    # Excludes bench/results/ and its _cache/ (hundreds of hash-named JSON that
+    # only matter on the box, for resume).
+    bundle = dirs["bench"] / "bundle.zip"
+    with zipfile.ZipFile(bundle, "w", zipfile.ZIP_DEFLATED) as z:
+        for sub in ("smoke", "full"):
+            root = dirs["bench"] / sub
+            for f in root.rglob("*"):
+                if f.is_file():
+                    z.write(f, f.relative_to(dirs["bench"]))
+        lb = dirs["bench"] / "leaderboard.html"
+        if lb.exists():
+            z.write(lb, lb.name)
+    _log(dirs, f"collect: bundle -> {bundle} ({bundle.stat().st_size // 1024} KB)")
+    _mark(dirs, state, "collect", at=_now(), bundle=str(bundle))
 
 
 PHASE_FN = {
@@ -516,7 +537,10 @@ def main(argv: list[str] | None = None) -> int:
                     help="run (default) | status")
     ap.add_argument("--experiment", default=DEFAULT_EXPERIMENT,
                     help=f"merged-dir name under <dir>/merged/ (default: {DEFAULT_EXPERIMENT})")
-    ap.add_argument("--base-hf-id", dest="base_hf_id", default=DEFAULT_BASE_HF_ID)
+    ap.add_argument("--base-hf-id", dest="base_hf_id", default=DEFAULT_BASE_HF_ID,
+                    help="hf_id of the untuned base to register + score")
+    ap.add_argument("--base-name", dest="base_name", default=DEFAULT_BASE_NAME,
+                    help=f"models.yaml row name for the base (default: {DEFAULT_BASE_NAME})")
     ap.add_argument("--arch", default=DEFAULT_ARCH)
     ap.add_argument("--smoke-n", dest="smoke_n", type=int, default=20,
                     help="lines per dataset per model in the smoke stage (default 20)")
@@ -537,7 +561,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "status":
         return cmd_status(dirs)
 
-    spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id, "arch": args.arch}
+    spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id,
+            "base_name": args.base_name, "arch": args.arch}
     return drive(dirs, spec, args, argv)
 
 

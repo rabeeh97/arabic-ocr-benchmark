@@ -196,6 +196,29 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 
 ---
 
+## 6a. One-command experiment — `run_3090_pipeline.py`
+
+For a whole `train → merge → in-domain eval → held-out benchmark` in a single
+detached command per base (`qwen3vl4b` | `baseer` | `paligemma`):
+
+```bat
+cd C:\Users\User\a-experiment\aocr-repo
+python scripts\run_3090_pipeline.py --dir C:\Users\User\a-experiment\exp --base baseer --detach
+```
+
+- Watch: `powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\exp\logs\pipeline.log -Wait -Tail 50"`
+- Re-run the same line to **resume** (both sub-steps resume; each re-run also
+  scores the next 200 lines/dataset of the benchmark's `full` stage).
+- Fetch **one file**: `scp "user@10.100.0.3:a-experiment/exp/bench/bundle.zip" .` —
+  curated per-batch summaries + `leaderboard.html`, no `_cache/` hash-file mess.
+- `paligemma` is HF-gated — accept `google/paligemma2-3b-pt-448` once.
+
+Runs the same base twice (bf16 base row vs bf16 fine-tune) on the four held-out
+line datasets. `docs/experiments/findings-and-notes.md` is the standing log of
+what each experiment taught us.
+
+---
+
 ## 6b. Held-out benchmark — base vs fine-tune
 
 `scripts/run_3090_benchmark.py` scores the **fine-tune vs its untuned base**
