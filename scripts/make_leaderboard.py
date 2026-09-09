@@ -2008,6 +2008,7 @@ main section{scroll-margin-top:20px;}
   border-right:1px solid var(--line);scrollbar-width:thin;}
 .sidenav-h{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin:0 0 12px 10px;font-weight:500;}
+.sidenav ol[hidden]{display:none;}   /* per-tab list; .sidenav ol sets display:flex, so hide explicitly */
 .sidenav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
   gap:1px;counter-reset:sn;}
 .sidenav a{display:flex;gap:9px;align-items:baseline;padding:7px 10px;border-radius:8px;
