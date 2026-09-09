@@ -213,9 +213,12 @@ python scripts\run_3090_pipeline.py --dir C:\Users\User\a-experiment\exp --base 
   curated per-batch summaries + `leaderboard.html`, no `_cache/` hash-file mess.
 - `paligemma` is HF-gated — accept `google/paligemma2-3b-pt-448` once.
 
-Runs the same base twice (bf16 base row vs bf16 fine-tune) on the four held-out
-line datasets. `docs/experiments/findings-and-notes.md` is the standing log of
-what each experiment taught us.
+Runs the same base twice (bf16 base row vs bf16 fine-tune) on the held-out
+datasets — four line sets (kitab_khatt, nakba_lines, rasam1, rasam2) plus two
+page-scale sets (kitab_hindawi, kitab_historicalbooks) whose rows get
+`--max-new-tokens 640` and a caveat (see findings doc).
+`docs/experiments/findings-and-notes.md` is the standing log of what each
+experiment taught us.
 
 ---
 
