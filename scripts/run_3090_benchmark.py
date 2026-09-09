@@ -136,15 +136,15 @@ def _read_state(dirs: dict) -> dict:
         st = json.loads(p.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {"experiments": {}, "created": _now()}
-    # migrate the legacy flat layout: everything under state["phases"] belonged
-    # to the experiment last run in this folder.
-    flat = st.get("phases")
+    # migrate the legacy flat layout, but only attribute the phases to
+    # state["experiment"] if that experiment has merged weights on disk — a later
+    # --base may have clobbered state["experiment"], making the flat phases stale.
+    flat = st.pop("phases", None)
     exp = st.get("experiment")
-    if flat and exp:
+    if flat and exp and (dirs["merged"] / exp / "config.json").exists():
         bucket = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
         for k, v in flat.items():
             bucket.setdefault(k, v)
-        st.pop("phases", None)
     return st
 
 
