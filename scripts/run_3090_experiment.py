@@ -173,28 +173,37 @@ def _read_state(dirs: dict) -> dict:
         st = json.loads(p.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {"phases": {}, "created": _now()}
-    # migrate the legacy flat layout (all phases under state["phases"]). The flat
-    # phases only get attributed to state["experiment"] if that experiment
-    # actually produced merged weights on disk — otherwise state["experiment"]
-    # may have been clobbered by a later --base and the phases can't be trusted;
-    # keep only `bootstrap` (venv is per-folder) and drop the rest.
-    flat = st.get("phases", {})
-    if "bootstrap" in flat or any(k != "bootstrap" for k in flat):
-        exp = st.get("experiment")
-        legacy = {k: v for k, v in flat.items() if k != "bootstrap"}
-        if legacy and exp and (dirs["merged"] / exp / "config.json").exists():
-            b = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
-            for k, v in legacy.items():
+    # Reconcile phase state against disk. state.json phase records for a
+    # per-experiment phase are only trusted when merged/<exp>/config.json proves
+    # that experiment actually trained + merged here — earlier code tracked
+    # phases in a flat bucket and a second --base could make its phases look
+    # done, or a botched migration could file them under the wrong experiment.
+    trained = {
+        md.name for md in (dirs["merged"].iterdir() if dirs["merged"].exists() else [])
+        if (md / "config.json").exists()
+    }
+    flat = st.pop("phases", {})
+    boot = {"bootstrap": flat["bootstrap"]} if "bootstrap" in flat else {}
+    if not boot and (dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")).exists():
+        boot = {"bootstrap": {"done": True, "at": "reconciled-from-disk"}}
+    st["phases"] = boot
+    exps = st.setdefault("experiments", {})
+    # legacy flat phases -> the experiment that has merged weights, if any
+    legacy_exp = st.get("experiment")
+    if legacy_exp in trained:
+        b = exps.setdefault(legacy_exp, {}).setdefault("phases", {})
+        for k, v in flat.items():
+            if k != "bootstrap":
                 b.setdefault(k, v)
-        st["phases"] = {k: v for k, v in flat.items() if k == "bootstrap"}
-    # reconcile from disk: a merged/<exp>/config.json is proof that <exp> ran
-    # fetch -> prepare -> train -> merge, whatever state.json lost.
-    if dirs["merged"].exists():
-        for md in dirs["merged"].iterdir():
-            if (md / "config.json").exists():
-                b = st.setdefault("experiments", {}).setdefault(md.name, {}).setdefault("phases", {})
-                for ph in ("fetch", "prepare", "train", "merge"):
-                    b.setdefault(ph, {"done": True, "at": "reconciled-from-disk"})
+    # every experiment: keep train-ish marks only if its merged dir exists
+    for name in list(exps) + list(trained):
+        ph = exps.setdefault(name, {}).setdefault("phases", {})
+        if name in trained:
+            for k in ("fetch", "prepare", "train", "merge"):
+                ph.setdefault(k, {"done": True, "at": "reconciled-from-disk"})
+        else:
+            for k in ("fetch", "prepare", "train", "merge", "eval", "report"):
+                ph.pop(k, None)
     return st
 
 

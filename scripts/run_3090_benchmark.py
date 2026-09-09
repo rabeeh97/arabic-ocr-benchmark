@@ -136,15 +136,22 @@ def _read_state(dirs: dict) -> dict:
         st = json.loads(p.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {"experiments": {}, "created": _now()}
-    # migrate the legacy flat layout, but only attribute the phases to
-    # state["experiment"] if that experiment has merged weights on disk — a later
-    # --base may have clobbered state["experiment"], making the flat phases stale.
+    # Reconcile against disk. Phases are trusted per experiment only if
+    # merged/<exp>/config.json exists — a second --base could have clobbered
+    # state["experiment"] and left stale phase records under the wrong name.
+    trained = {
+        md.name for md in (dirs["merged"].iterdir() if dirs["merged"].exists() else [])
+        if (md / "config.json").exists()
+    }
     flat = st.pop("phases", None)
     exp = st.get("experiment")
-    if flat and exp and (dirs["merged"] / exp / "config.json").exists():
-        bucket = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
+    if flat and exp in trained:
+        b = st.setdefault("experiments", {}).setdefault(exp, {}).setdefault("phases", {})
         for k, v in flat.items():
-            bucket.setdefault(k, v)
+            b.setdefault(k, v)
+    for name, edata in list(st.get("experiments", {}).items()):
+        if name not in trained:
+            edata["phases"] = {}
     return st
 
 
