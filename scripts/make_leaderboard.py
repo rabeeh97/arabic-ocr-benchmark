@@ -650,6 +650,158 @@ _MATRIX_JS = r"""
 """
 
 
+_FT_CSS = """<style>
+.ft-view{max-width:900px}
+.ft-view>h2{margin:.2rem 0 .3rem}
+.ft-exp{border:1px solid var(--line);border-radius:10px;padding:.9rem 1.05rem;margin:0 0 1.1rem}
+.ft-exp h3{margin:.1rem 0 .55rem;font-size:1.02rem}
+.ft-meta{font-size:.84rem;color:var(--muted);margin:.18rem 0;line-height:1.55}
+.ft-meta code{font-size:.86em}
+.ft-head{font-size:.92rem;margin:.55rem 0 .7rem}
+.ft-head b{font-variant-numeric:tabular-nums}
+.ft-tbl{border-collapse:collapse;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+.ft-tbl th,.ft-tbl td{padding:.32rem .55rem;border-bottom:1px solid var(--line);text-align:right}
+.ft-tbl th:first-child,.ft-tbl td:first-child{text-align:left}
+.ft-tbl thead th{color:var(--muted);font-weight:600}
+.ft-tbl tr.ft-mean td{border-top:2px solid var(--line);font-weight:600}
+.ft-gain{color:#0a7d3c}.ft-loss{color:#c0392b}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]) .ft-gain{color:#4ade80}
+  :root:not([data-theme=light]) .ft-loss{color:#f87171}}
+:root[data-theme=dark] .ft-gain{color:#4ade80}
+:root[data-theme=dark] .ft-loss{color:#f87171}
+.ft-hyp{font-size:.84rem;font-style:italic;color:var(--muted);margin:.6rem 0 .1rem}
+.ft-note{font-size:.85rem;line-height:1.55;margin:.5rem 0 0;padding-left:1.15rem}
+.ft-note li{margin:.22rem 0}
+.ft-empty{color:var(--muted);font-size:.9rem}
+</style>"""
+
+
+def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[str, str]]]:
+    """The Fine-tuning tab: per training experiment (from
+    ``configs/training/experiments.yaml``), base vs fine-tune on held-out
+    datasets. Returns ``(html, toc_items)``; ``toc_items`` empty => no tab."""
+    try:
+        manifest = yaml.safe_load(
+            (_REPO / "configs" / "training" / "experiments.yaml").read_text(encoding="utf-8")
+        ) or {}
+    except OSError:
+        manifest = {}
+
+    idx: dict[tuple[str, str], dict] = {
+        (r["model"], r.get("dataset", "")): r for r in rows
+    }
+
+    def _cer(model: str, ds: str):
+        r = idx.get((model, ds))
+        try:
+            return float(r["cer_micro_light"]) if r and r.get("cer_micro_light") else None
+        except (TypeError, ValueError):
+            return None
+
+    parts = [
+        _FT_CSS, "<div class='ft-view'>",
+        "<h2>Fine-tuning experiments</h2>",
+        "<p class='board-note'>Each training run, its recipe, and what it gained "
+        "over the untuned base on datasets it never trained on. CER is "
+        "%-of-characters (light-normalised), lower is better; Δ is fine-tune "
+        "minus base.</p>",
+    ]
+    toc: list[tuple[str, str]] = []
+    if not manifest:
+        parts.append("<p class='ft-empty'>No experiments defined "
+                     "(<code>configs/training/experiments.yaml</code>).</p></div>")
+        return "".join(parts), toc
+
+    for exp_id, e in manifest.items():
+        if not isinstance(e, dict):
+            continue
+        sid = f"ft-{exp_id}"
+        toc.append((sid, e.get("title", exp_id)))
+        base = e.get("base_model", "")
+        fts = e.get("ft_models") or []
+        ft = fts[0] if fts else ""
+        dsets = e.get("holdout_datasets") or []
+
+        trip = []  # (dataset, n, base_cer, ft_cer)
+        for ds in dsets:
+            bc, fc = _cer(base, ds), _cer(ft, ds)
+            if bc is not None and fc is not None:
+                n = (idx.get((ft, ds)) or {}).get("n", "?")
+                trip.append((ds, n, bc, fc))
+
+        body = ""
+        if trip:
+            rows_html = ""
+            for ds, n, bc, fc in trip:
+                d, dp = fc - bc, ((fc - bc) / bc * 100 if bc else 0.0)
+                cls = "ft-gain" if d < 0 else ("ft-loss" if d > 0 else "")
+                rows_html += (
+                    f"<tr><td>{html.escape(ds)}</td><td>{html.escape(str(n))}</td>"
+                    f"<td>{bc * 100:.1f}</td><td>{fc * 100:.1f}</td>"
+                    f"<td class='{cls}'>{d * 100:+.1f}</td>"
+                    f"<td class='{cls}'>{dp:+.0f}%</td></tr>"
+                )
+            mb = sum(t[2] for t in trip) / len(trip)
+            mf = sum(t[3] for t in trip) / len(trip)
+            md = mf - mb
+            mcls = "ft-gain" if md < 0 else ("ft-loss" if md > 0 else "")
+            rows_html += (
+                f"<tr class='ft-mean'><td>mean · {len(trip)} set(s)</td><td></td>"
+                f"<td>{mb * 100:.1f}</td><td>{mf * 100:.1f}</td>"
+                f"<td class='{mcls}'>{md * 100:+.1f}</td>"
+                f"<td class='{mcls}'>{(md / mb * 100 if mb else 0):+.0f}%</td></tr>"
+            )
+            headline = (
+                f"held-out CER <b>{mb * 100:.1f}% &rarr; {mf * 100:.1f}%</b> "
+                f"<span class='{mcls}'>({md * 100:+.1f}, {(md / mb * 100 if mb else 0):+.0f}%)</span> "
+                f"across {len(trip)} dataset(s)"
+            )
+            body = (
+                "<div class='scroll'><table class='ft-tbl'><thead><tr>"
+                "<th>dataset</th><th>n</th><th>base CER</th><th>ft CER</th>"
+                "<th>&Delta;</th><th>&Delta;%</th></tr></thead>"
+                f"<tbody>{rows_html}</tbody></table></div>"
+            )
+        else:
+            headline = "no held-out results scored yet"
+
+        io = e.get("in_domain") or {}
+        indom = ""
+        if io.get("dataset"):
+            bc, fc = _cer(base, io["dataset"]), _cer(ft, io["dataset"])
+            indom = (
+                f"<p class='ft-meta'>In-domain (<code>{html.escape(io['dataset'])}</code>"
+                + (f" &mdash; {html.escape(io.get('note', ''))}" if io.get("note") else "")
+                + f"): base {bc * 100:.1f}% &middot; fine-tune {fc * 100:.1f}%</p>"
+                if bc is not None and fc is not None else ""
+            )
+
+        cfg = e.get("config", "")
+        block = [
+            f"<section id='{sid}' class='ft-exp'>",
+            f"<h3>{html.escape(e.get('title', exp_id))}</h3>",
+            f"<p class='ft-meta'><b>Base</b> <code>{html.escape(base)}</code> "
+            f"&nbsp;&nbsp; <b>Fine-tune</b> <code>{html.escape(ft)}</code></p>",
+            f"<p class='ft-meta'>{html.escape(e.get('training', ''))}"
+            + (f" &nbsp;&middot;&nbsp; recipe <code>{html.escape(cfg)}</code>" if cfg else "")
+            + "</p>",
+            f"<p class='ft-head'>{headline}</p>",
+            indom, body,
+        ]
+        if e.get("hypothesis"):
+            block.append(f"<p class='ft-hyp'>Hypothesis &mdash; {html.escape(e['hypothesis'].strip())}</p>")
+        notes = e.get("notes") or []
+        if notes:
+            block.append("<ul class='ft-note'>" + "".join(
+                f"<li>{html.escape(str(x))}</li>" for x in notes) + "</ul>")
+        block.append("</section>")
+        parts.append("".join(block))
+
+    parts.append("</div>")
+    return "".join(parts), toc
+
+
 def _render_matrix(rows: list[dict]) -> str:
     """Datasets down the side, models across the top, each cell CER-light (big)
     over WER-light (small). Best model per dataset is bold; a faint green→red CER
@@ -750,25 +902,28 @@ _TABS_JS = r"""
   [].forEach.call(document.querySelectorAll('.view[data-view]'),function(v){
     views[v.getAttribute('data-view')]=v;
   });
-  var navs={leaderboard:document.getElementById('toc-leaderboard'),
-            findings:document.getElementById('toc-findings')};
+  var TABS=btns.map(function(b){return b.getAttribute('data-tab');});
+  var DEF=TABS[0]||'leaderboard';
+  var navs={};
+  TABS.forEach(function(n){ navs[n]=document.getElementById('toc-'+n); });
 
   function want(){
     var h=location.hash||'';
     if(h.indexOf('#f-')===0||h.indexOf('#findings')===0) return 'findings';
+    if(h.indexOf('#ft-')===0||h.indexOf('#finetuning')===0) return 'finetuning';
     try{ var s=localStorage.getItem('lb_tab');
-         if(s==='findings'||s==='leaderboard') return s; }catch(_){}
-    return 'leaderboard';
+         if(TABS.indexOf(s)>=0) return s; }catch(_){}
+    return DEF;
   }
   function activate(name,push){
-    if(name!=='findings') name='leaderboard';
+    if(TABS.indexOf(name)<0) name=DEF;
     btns.forEach(function(b){
       b.classList.toggle('tab--on', b.getAttribute('data-tab')===name);
     });
     Object.keys(views).forEach(function(k){ if(views[k]) views[k].hidden=(k!==name); });
-    Object.keys(navs).forEach(function(k){ if(navs[k]) navs[k].hidden=(k!==name); });
+    TABS.forEach(function(k){ if(navs[k]) navs[k].hidden=(k!==name); });
     try{ localStorage.setItem('lb_tab',name); }catch(_){}
-    if(push){ try{ history.replaceState(null,'',name==='findings'?'#findings':'#'); }catch(_){} }
+    if(push){ try{ history.replaceState(null,'',name===DEF?'#':'#'+name); }catch(_){} }
   }
 
   var init=want();
@@ -812,11 +967,11 @@ _TABS_JS = r"""
 
 
 def _toc(items: list[tuple[str, str]],
-         findings_items: list[tuple[str, str]] | None = None) -> str:
+         findings_items: list[tuple[str, str]] | None = None,
+         finetuning_items: list[tuple[str, str]] | None = None) -> str:
     """A vertical section index, fixed to the left of the page (scroll-spy in
-    ``_TOC_JS`` highlights the section currently in view). Two lists share the
-    nav — the leaderboard sections and the findings sections — with only the
-    one matching the active tab visible (``_TABS_JS`` swaps ``hidden``)."""
+    ``_TOC_JS`` highlights the section currently in view). One list per tab
+    shares the nav; ``_TABS_JS`` shows only the one matching the active tab."""
     def _ol(pairs: list[tuple[str, str]], oid: str, hidden: bool) -> str:
         lis = "".join(
             f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
@@ -828,6 +983,7 @@ def _toc(items: list[tuple[str, str]],
         "<nav class='sidenav' id='toc' aria-label='sections'>"
         "<p class='sidenav-h'>Contents</p>"
         f"{_ol(items, 'toc-leaderboard', False)}"
+        f"{_ol(finetuning_items or [], 'toc-finetuning', True)}"
         f"{_ol(findings_items or [], 'toc-findings', True)}"
         "</nav>"
     )
@@ -902,11 +1058,14 @@ def render(rows: list[dict], title: str, target: Path | None = None,
         )
     out.append("</header>")
 
+    ft_html, ft_toc = _render_finetuning(rows, Path(_RENDER_CTX["target"]))
     out.append(
         "<div class=\"tabbar\" role=\"tablist\">"
         "<button type=\"button\" class=\"tab tab--on\" data-tab=\"leaderboard\" "
         "role=\"tab\">Leaderboard</button>"
-        "<button type=\"button\" class=\"tab\" data-tab=\"findings\" "
+        + ("<button type=\"button\" class=\"tab\" data-tab=\"finetuning\" "
+           "role=\"tab\">Fine-tuning</button>" if ft_toc else "")
+        + "<button type=\"button\" class=\"tab\" data-tab=\"findings\" "
         "role=\"tab\">Findings &amp; analysis</button>"
         "</div>"
     )
@@ -965,10 +1124,16 @@ def render(rows: list[dict], title: str, target: Path | None = None,
     out.append("</dl></section>")
     present.append(("legend", "Definitions"))
     out[_SIDENAV_AT] = _toc(
-        present, [(f"f-{slug}", label) for slug, label in _lf.FINDINGS_SECTIONS]
+        present,
+        [(f"f-{slug}", label) for slug, label in _lf.FINDINGS_SECTIONS],
+        ft_toc,
     )
 
     out.append("</div>")  # close data-view="leaderboard"
+    if ft_toc:
+        out.append('<div class="view" data-view="finetuning" hidden>')
+        out.append(ft_html)
+        out.append("</div>")
     out.append('<div class="view" data-view="findings" hidden>')
     # A structurally-wrong (but JSON-valid) findings doc can make a "trust the
     # golden shape" renderer raise; degrade the tab to its empty shell rather
