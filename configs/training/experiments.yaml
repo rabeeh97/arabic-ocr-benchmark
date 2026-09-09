@@ -10,6 +10,8 @@
 #   ft_models        list of models.yaml row names of the fine-tune(s)
 #   training         one-line recipe summary (method, data, epochs)
 #   config           path to the training config (for the "recipe" link)
+#   report_dir       where the fetched reports/<exp>/ snapshot lives
+#                    (trainer_state.json -> loss curve; effective_config.yaml)
 #   in_domain        {dataset, note} — the held-out split of the TRAINING corpus
 #   holdout_datasets datasets disjoint from the training data (the real test of
 #                    generalisation); the tab tabulates base vs ft on each
@@ -22,6 +24,7 @@ exp3090-qwen3vl4b:
   ft_models: [exp3090-qwen3vl4b-ft-bf16]
   training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, 8,000 Muharaf train lines, Qwen3-VL-4B-Instruct"
   config: configs/training/exp3090_qwen3vl4b.yaml
+  report_dir: results/training/exp3090-qwen3vl4b
   in_domain:
     dataset: muharaf_lines
     note: "held-out test split of the same Muharaf corpus the LoRA trained on"
@@ -54,6 +57,7 @@ baseer-nakba:
   ft_models: [exp3090-baseer-nakba-ft-bf16]
   training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, 8,000 Muharaf train lines, Misraj/Baseer__Nakba"
   config: configs/training/exp3090_baseer_nakba.yaml
+  report_dir: results/training/exp3090-baseer-nakba
   in_domain:
     dataset: muharaf_lines
     note: "held-out test split of the same Muharaf corpus the LoRA trained on"
@@ -74,6 +78,7 @@ paligemma2-3b:
   ft_models: [exp3090-paligemma2-3b-ft-bf16]
   training: "bf16 LoRA (r=16, α=32), 1 epoch, 8,000 Muharaf train lines, google/paligemma2-3b-pt-448"
   config: configs/training/exp3090_paligemma2_3b.yaml
+  report_dir: results/training/exp3090-paligemma2-3b
   in_domain:
     dataset: muharaf_lines
     note: "held-out test split of the same Muharaf corpus the LoRA trained on"
