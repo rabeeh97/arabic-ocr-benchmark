@@ -307,8 +307,12 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         uv = _uv_bin(dirs)
 
     py = _venv_python(dirs)
+    # --venv-python: build the venv from a specific interpreter (e.g. a signed
+    # python.org 3.11) instead of uv's managed build — needed on boxes where
+    # Smart App Control / WDAC blocks the unrecognised uv CPython (WinError 4551).
+    venv_py = getattr(args, "venv_python", None) or "3.11"
     if not py.exists() and _run(
-        dirs, [uv, "venv", str(dirs["venv"]), "--python", "3.11"], phase="bootstrap"
+        dirs, [uv, "venv", str(dirs["venv"]), "--python", venv_py], phase="bootstrap"
     ):
         raise SystemExit("bootstrap: `uv venv` failed")
 
@@ -737,6 +741,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--only", default=None, choices=PHASES, help="run just this one phase")
     ap.add_argument("--limit", type=int, default=None, help="override training-line limit")
     ap.add_argument("--epochs", type=float, default=None, help="override epochs")
+    ap.add_argument("--venv-python", dest="venv_python", default=None,
+                    help="interpreter for `uv venv` (path or version); default 3.11. "
+                         "Use a signed python.org 3.11 if Smart App Control blocks uv's build")
     ap.add_argument("--torch-index", default=DEFAULT_TORCH_INDEX,
                     help="pip index-url for the CUDA torch wheel")
     ap.add_argument("--allow-contam", action="store_true",

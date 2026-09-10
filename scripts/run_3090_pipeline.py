@@ -120,6 +120,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--dir", required=True, help="self-contained experiment folder")
     ap.add_argument("--base", required=True, choices=list(BASES))
     ap.add_argument("--limit", type=int, default=None, help="training-line count (default: config's 8000)")
+    ap.add_argument("--venv-python", dest="venv_python", default=None,
+                    help="interpreter for `uv venv` — pass a signed python.org 3.11 path "
+                         "if Smart App Control blocks uv's CPython (WinError 4551)")
     ap.add_argument("--detach", action="store_true", help="re-spawn free of this shell and return")
     args = ap.parse_args(argv)
 
@@ -152,6 +155,8 @@ def main(argv: list[str] | None = None) -> int:
                  "--dir", str(root), "--base", args.base, "--allow-contam"]
         if args.limit is not None:
             train += ["--limit", str(args.limit)]
+        if args.venv_python:
+            train += ["--venv-python", args.venv_python]
         if _run(logs, train, step="train"):
             _log(logs, "pipeline: STOP — training/eval did not finish (re-run to resume)")
             return 1
