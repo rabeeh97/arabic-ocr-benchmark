@@ -195,14 +195,18 @@ def _read_state(dirs: dict) -> dict:
         for k, v in flat.items():
             if k != "bootstrap":
                 b.setdefault(k, v)
-    # every experiment: keep train-ish marks only if its merged dir exists
-    for name in list(exps) + list(trained):
+    # Reconcile each experiment's bucket against disk:
+    #  - a merged/<exp>/config.json proves fetch->prepare->train->merge finished;
+    #  - without it, merge/eval/report cannot legitimately be "done" (clear them);
+    #  - fetch/prepare/train records are written by that experiment's own run and
+    #    are trusted as-is (buckets are per-experiment, so no cross-base bleed).
+    for name in set(list(exps) + list(trained)):
         ph = exps.setdefault(name, {}).setdefault("phases", {})
         if name in trained:
             for k in ("fetch", "prepare", "train", "merge"):
                 ph.setdefault(k, {"done": True, "at": "reconciled-from-disk"})
         else:
-            for k in ("fetch", "prepare", "train", "merge", "eval", "report"):
+            for k in ("merge", "eval", "report"):
                 ph.pop(k, None)
     return st
 
