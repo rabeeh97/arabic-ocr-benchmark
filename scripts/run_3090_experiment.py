@@ -284,7 +284,9 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
 # phases
 # --------------------------------------------------------------------------- #
 def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
-    if _done(state, "bootstrap") and not args.force:
+    # "done" is only trusted if the venv interpreter is actually on disk — it may
+    # have been deleted (e.g. rebuilding it from a different --venv-python).
+    if _done(state, "bootstrap") and not args.force and _venv_python(dirs).exists():
         _log(dirs, "bootstrap: already done")
         return
     _log(dirs, "bootstrap: install uv / venv / deps")
