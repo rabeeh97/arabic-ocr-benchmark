@@ -40,9 +40,12 @@ import argparse
 import json
 import os
 import platform
+import queue
 import shutil
 import subprocess
 import sys
+import threading
+import time
 import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -189,6 +192,9 @@ def _stdout_is_regular_file() -> bool:
         return False
 
 
+HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess output
+
+
 def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
     global _CHILD
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
@@ -200,8 +206,26 @@ def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
         )
         _CHILD = proc
         assert proc.stdout is not None
-        try:
+        q: queue.Queue = queue.Queue()
+
+        def _reader() -> None:
             for ln in proc.stdout:
+                q.put(ln)
+            q.put(None)
+
+        threading.Thread(target=_reader, daemon=True).start()
+        last = time.monotonic()
+        try:
+            while True:
+                try:
+                    ln = q.get(timeout=HEARTBEAT_S)
+                except queue.Empty:
+                    _log(dirs, f"...  {phase}: still running (pid {proc.pid}, "
+                               f"{int(time.monotonic() - last)}s since last output)")
+                    continue
+                if ln is None:
+                    break
+                last = time.monotonic()
                 if tee:
                     sys.stdout.write(ln)
                     sys.stdout.flush()

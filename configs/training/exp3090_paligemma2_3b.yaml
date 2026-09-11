@@ -49,8 +49,8 @@ train:
   gradient_checkpointing: true
   max_seq_len: 640         # 448-image tokens + a short line; keep tight
   save_strategy: steps
-  save_steps: 200
-  save_total_limit: 3
+  save_steps: 100        # frequent checkpoints — this box reboots/gets killed a lot
+  save_total_limit: 5    # more, smaller-interval checkpoints -> keep a few more
   resume: true
   push_to_hub: false
 
