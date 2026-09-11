@@ -33,8 +33,11 @@ import json
 import os
 import platform
 import shutil
+import queue
 import subprocess
 import sys
+import threading
+import time
 import urllib.request
 from datetime import datetime, timezone
 
@@ -258,8 +261,14 @@ def _stdout_is_regular_file() -> bool:
         return False
 
 
+HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess output
+
+
 def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> int:
-    """Run a subprocess, streaming combined output to the log and stdout."""
+    """Run a subprocess, streaming combined output to the log and stdout. A
+    background reader thread + queue means a long silent stretch (a big
+    download, a slow training step) gets an explicit heartbeat line instead of
+    looking indistinguishable from a hang."""
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
     e = {**os.environ, **(env or {})}
     tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
@@ -269,7 +278,25 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
         )
         assert proc.stdout is not None
-        for ln in proc.stdout:
+        q: queue.Queue = queue.Queue()
+
+        def _reader() -> None:
+            for ln in proc.stdout:
+                q.put(ln)
+            q.put(None)
+
+        threading.Thread(target=_reader, daemon=True).start()
+        last = time.monotonic()
+        while True:
+            try:
+                ln = q.get(timeout=HEARTBEAT_S)
+            except queue.Empty:
+                _log(dirs, f"...  {phase}: still running (pid {proc.pid}, "
+                           f"{int(time.monotonic() - last)}s since last output)")
+                continue
+            if ln is None:
+                break
+            last = time.monotonic()
             if tee:
                 sys.stdout.write(ln)
                 sys.stdout.flush()

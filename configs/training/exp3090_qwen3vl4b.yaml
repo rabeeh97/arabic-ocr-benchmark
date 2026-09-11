@@ -46,8 +46,8 @@ train:
   gradient_checkpointing: true
   max_seq_len: 1024
   save_strategy: steps
-  save_steps: 200        # a checkpoint well before any interruption
-  save_total_limit: 3
+  save_steps: 100        # frequent checkpoints — this box reboots/gets killed a lot
+  save_total_limit: 5    # more, smaller-interval checkpoints -> keep a few more
   resume: true           # re-run -> continues from the newest checkpoint-*
   push_to_hub: false     # local self-contained folder is the only backup
 
