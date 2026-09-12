@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000195", "model": "pixtral-12b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "بواسطة البلدية.", "raw_text": "كَتَبَ", "cleaned_text": "كَتَبَ", "latency_ms": 2989.66, "input_tokens": 121, "output_tokens": 5, "cost_usd": 1.89e-05, "error": null, "attempts": 1, "cached": false}

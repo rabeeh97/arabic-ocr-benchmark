@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000054", "model": "nvidia-llama-3.2-11b-vl", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "HABIB MASSOUD", "raw_text": "السلام عليكم.", "cleaned_text": "السلام عليكم.", "latency_ms": 15234.53, "input_tokens": 1691, "output_tokens": 6, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
