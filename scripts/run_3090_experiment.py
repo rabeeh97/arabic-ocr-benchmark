@@ -448,11 +448,15 @@ def _effective_config(dirs: dict, spec: dict, args) -> Path:
 
 
 def phase_prepare(dirs: dict, state: dict, spec: dict, args) -> None:
+    # Always rewrite effective_config.yaml from the source config, even when
+    # prepare is cached as done: it's the file `train` reads on every run, and
+    # a resumed experiment must pick up config edits (e.g. max_seq_len) without
+    # needing --force, which would also redo the slow fetch/bootstrap phases.
+    eff = _effective_config(dirs, spec, args)
     if _done(state, "prepare", spec["experiment"]) and not args.force:
-        _log(dirs, "prepare: already done")
+        _log(dirs, "prepare: already done (effective_config.yaml refreshed from source config)")
         return
     py = _venv_python(dirs)
-    eff = _effective_config(dirs, spec, args)
     _log(dirs, "prepare: assemble counts + contamination gate")
     cli = [str(py), "-m", "arabic_ocr_bench.training.cli"]
     _run(dirs, [*cli, "assemble", "--config", str(eff)], phase="prepare")
