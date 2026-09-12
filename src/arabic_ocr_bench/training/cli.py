@@ -81,6 +81,14 @@ def _cmd_merge(args) -> int:
 def _cmd_register(args) -> int:
     from .registry import build_model_entry, register_model
 
+    prompt = None
+    if args.arch == "paligemma":
+        # Must match the collator's actual training prefix, or eval scores
+        # the checkpoint on a prompt it was never fine-tuned with.
+        from .sft_vlm import _PALIGEMMA_PREFIX
+
+        prompt = _PALIGEMMA_PREFIX
+
     entry = build_model_entry(
         args.name,
         args.path,
@@ -90,6 +98,7 @@ def _cmd_register(args) -> int:
         load_in_4bit=args.load_in_4bit,
         max_new_tokens=args.max_new_tokens,
         card=args.card,
+        prompt=prompt,
     )
     register_model(args.name, entry, path=args.models)
     print(f"registered {args.name} -> {args.models}")
