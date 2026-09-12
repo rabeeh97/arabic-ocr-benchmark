@@ -195,6 +195,12 @@ def _make_collator_paligemma(processor, max_seq_len: int):
             f"{_PALIGEMMA_IMAGE_TOKENS + 64}."
         )
 
+    # The processor otherwise infers the image-token count itself and warns on
+    # every single call ("You are passing both `text` and `images`...").
+    # Prepending the exact count ourselves gives it what it expects up front.
+    image_seq_length = getattr(processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
+    prefix_with_image_tokens = "<image>" * image_seq_length + _PALIGEMMA_PREFIX
+
     def _target(row: dict) -> str:
         for m in reversed(row["messages"]):
             if m["role"] == "assistant":
@@ -205,7 +211,7 @@ def _make_collator_paligemma(processor, max_seq_len: int):
 
     def collate(rows: list[dict]):
         images = [row["images"][0] for row in rows]
-        prefixes = [_PALIGEMMA_PREFIX] * len(rows)
+        prefixes = [prefix_with_image_tokens] * len(rows)
         suffixes = [_target(row) for row in rows]
         batch = processor(
             text=prefixes,
