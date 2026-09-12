@@ -117,8 +117,16 @@ def assemble_dataset(
     """
     prompt_text = get_prompt(data.prompt_version)
     rows: list[dict] = []
+    n_skipped = 0
     for src in data.sources:
         for sample in iter_source_samples(src, cfg_path=cfg_path):
+            # Some dataset splits carry None/empty transcriptions (already
+            # anticipated in contamination._match_key); an empty assistant
+            # target isn't a trainable example and crashes the collators
+            # (`"".join([None, ...])`), so drop it here instead.
+            if not sample.ground_truth or not sample.ground_truth.strip():
+                n_skipped += 1
+                continue
             rows.append(
                 {
                     "messages": build_conversation(prompt_text, sample.ground_truth),
@@ -128,6 +136,8 @@ def assemble_dataset(
                     "id": sample.id,
                 }
             )
+    if n_skipped:
+        print(f"[assemble_dataset] skipped {n_skipped} sample(s) with empty/missing ground truth")
 
     random.Random(seed).shuffle(rows)
     n_val = round(len(rows) * data.val_fraction)

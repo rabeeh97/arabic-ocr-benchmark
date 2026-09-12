@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from PIL import Image
 
+from arabic_ocr_bench.datasets.base import Sample
+from arabic_ocr_bench.training import data as data_mod
 from arabic_ocr_bench.training.config import DataSpec, SourceSpec
 from arabic_ocr_bench.training.data import assemble_dataset, build_conversation
 
@@ -41,3 +43,27 @@ def test_assemble_dataset_splits_train_and_val_deterministically():
     row = bundle["train"][0]
     assert isinstance(row["images"][0], Image.Image)
     assert row["source"] == "synthetic"
+
+
+def test_assemble_dataset_skips_samples_with_missing_ground_truth(monkeypatch):
+    # muharaf-public (and similar splits) carry occasional None/empty
+    # transcriptions; assemble_dataset must drop them rather than hand a None
+    # assistant target to the collators (crashes mid-training - see
+    # sft_vlm._target's "".join over content text).
+    img = Image.new("RGB", (4, 4))
+    samples = [
+        Sample(id="a", image=img, ground_truth="valid one", track="line"),
+        Sample(id="b", image=img, ground_truth=None, track="line"),
+        Sample(id="c", image=img, ground_truth="   ", track="line"),
+        Sample(id="d", image=img, ground_truth="valid two", track="line"),
+    ]
+    monkeypatch.setattr(data_mod, "iter_source_samples", lambda src, **kw: iter(samples))
+
+    spec = DataSpec(
+        sources=[SourceSpec(name="fake", adapter="unused:Unused")],
+        val_fraction=0.0,
+        prompt_version="line-v2",
+    )
+    bundle = assemble_dataset(spec, seed=0)
+    targets = {row["messages"][2]["content"][0]["text"] for row in bundle["train"]}
+    assert targets == {"valid one", "valid two"}
