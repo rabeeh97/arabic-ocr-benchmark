@@ -1,0 +1,30 @@
+models:
+- claude-haiku-paid
+- claude-sonnet-paid
+- claude-opus-paid
+- gpt-4o-paid
+- gpt-4o-mini-paid
+- gpt-4.1-paid
+- deepseek-vl-flash
+datasets:
+- kitab_khatt
+- kitab_muharaf
+- kitab_historicalbooks
+- kitab_hindawi
+- kitab_historyar
+- kitab_onlinekhatt
+- rasam2
+prompt_version: line-v2
+limit: 10
+offset: 0
+accumulate: true
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 2
+rpm: 0
+rate_limit_abort: 5
+max_retries: 2
+cache: true
+results_dir: results
