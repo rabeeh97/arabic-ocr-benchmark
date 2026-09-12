@@ -70,21 +70,31 @@ applying the same two claim-strings to both dataset groups.
 
 ## Gotchas hit while building this
 
-- **`muharaf_lines`, `nakba_lines`, `rasam1` are cache-only.** All three have
-  never been successfully downloaded on this machine (unlike the other 5
-  datasets here, which read from a local HF cache from earlier sweeps — no
-  network needed). `muharaf_lines`'s ~36MB parquet drops mid-download via the
+- **`muharaf_lines`, `nakba_lines`, `rasam1`, and now `rasam2` are
+  cache-only.** All four have never been *fully* downloaded on this machine
+  (unlike the other 5-6 datasets here, which read from a local HF cache from
+  earlier sweeps — no network needed; a partial cache dir existing on disk,
+  as `rasam2`'s did, is NOT proof the download completed — it crashed the
+  same way anyway). `muharaf_lines`'s ~36MB parquet drops mid-download via the
   classic HTTP path (repeated `IncompleteRead` from the HF CDN — the same
   reason `configs/run.free-accumulate.yaml` excludes it). `nakba_lines` /
   `rasam1` stalled identically via both HF's "xet" transfer backend
   ("connection struggling", stuck near 100% for 10+ minutes) and, after
   setting `HF_HUB_DISABLE_XET=1` (now set unconditionally at the top of
-  `run_prompt_study.py`), the classic downloader too (dead stop at exactly
-  20MB, no further progress after 20+ seconds). This is a genuine network
-  reliability problem on this machine for first-time large HF downloads, not
-  an xet-specific bug — the driver never attempts a fresh fetch for any of
-  the three; it only reports whatever's cached. All three need retrying from
-  a more reliable network before they can contribute real numbers to this
+  `run_prompt_study.py`, but NOT in the general `bench run` CLI path — that's
+  presumably why `rasam2` hit it too, via a plain `bench run`), the classic
+  downloader too (dead stop at exactly 20MB, no further progress after 20+
+  seconds). `rasam2`, hit through `configs/run.paid-sweep-small.yaml` (plain
+  `bench run`, no `HF_HUB_DISABLE_XET`), raised an *unhandled* `OSError` from
+  `hf_hub_download`'s xet path deep enough in the call stack that it crashed
+  the entire multi-model sweep rather than failing just that one cell — a
+  real robustness gap worth hardening later (a dataset load failure shouldn't
+  be able to take down every other model/dataset queued behind it in the same
+  run). This is a genuine network reliability problem on this machine for
+  first-time large HF downloads, not an xet-specific bug — cache-only drivers
+  never attempt a fresh fetch for any of the four; they only report whatever's
+  cached. All four need retrying from a more reliable network before they can
+  contribute real numbers to this
   study.
 - **`scored_indices` needed a `prompt_version` filter.** It only filtered by
   (model, dataset) before this study — a sample scored under any prompt
