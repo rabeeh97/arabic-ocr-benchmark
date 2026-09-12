@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000011", "model": "gemini-flash-lite", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2-arabic", "ground_truth": "لل لى حعڡر الخادن", "raw_text": "المرجع", "cleaned_text": "المرجع", "latency_ms": 5613.95, "input_tokens": 1216, "output_tokens": 3, "cost_usd": 0.0001228, "error": null, "attempts": 1, "cached": false}

@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000166", "model": "pixtral-12b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "2", "raw_text": "لَا", "cleaned_text": "لَا", "latency_ms": 340.57, "input_tokens": 97, "output_tokens": 3, "cost_usd": 1.5e-05, "error": null, "attempts": 1, "cached": false}

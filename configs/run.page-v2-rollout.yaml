@@ -1,0 +1,43 @@
+# Rolling out the prompt-sensitivity study's `page-v2` finding to production:
+# kitab_hindawi / kitab_historicalbooks are paragraph/page-scale ground truth,
+# not one line — every model here was previously scored with the single-line
+# `line-v2` prompt at each provider's default (256-ish) token cap, truncating
+# the answer. `max_tokens_override: 640` (src/arabic_ocr_bench/runner.py) lifts
+# every listed model's cap for just this run, without touching their registry
+# entries used elsewhere. Free/no-cost hosted models only for this pass — the
+# 3090-box fine-tunes and heavier hf_local models are a separate follow-up.
+#
+# The old line-v2 rows for these exact (model, dataset) pairs were already
+# quarantined out of results/ (see results/_excluded/superseded-by-page-v2.jsonl)
+# so this pass's numbers replace them cleanly rather than merging with them.
+# openrouter-minimax-m3-free (retired :free route), openrouter-qwen2.5-vl-72b,
+# openrouter-qwen3-vl-235b, openrouter-llama-4-maverick (OpenRouter PAID
+# routes — this account currently has $0 credit, confirmed via a live 100%
+# "Insufficient credits" failure on the first attempt) all removed. They were
+# never real candidates for a "free models" rollout; re-add
+# openrouter-qwen2.5-vl-72b/qwen3-vl-235b/llama-4-maverick once the account
+# has credit again.
+models:
+  - gemini-flash
+  - pixtral-12b
+  - mistral-small
+  - mistral-medium
+  - openrouter-gemma-4-31b-free
+  - openrouter-gemma-4-26b-free
+
+datasets:
+  - kitab_hindawi
+  - kitab_historicalbooks
+
+prompt_version: page-v2
+max_tokens_override: 640
+limit: 100
+offset: 0
+accumulate: true
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 3
+rpm: 0
+rate_limit_abort: 5
+max_retries: 3
+cache: true
+results_dir: results

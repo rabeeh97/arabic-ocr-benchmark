@@ -1,0 +1,29 @@
+models:
+- gemini-flash-lite
+datasets:
+- kitab_onlinekhatt
+prompt_version: line-v2-no-modality
+indices:
+- 0
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results

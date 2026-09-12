@@ -1,0 +1,19 @@
+models:
+- gemini-flash-lite
+datasets:
+- muharaf_lines
+prompt_version: line-v2
+indices:
+- 10
+- 11
+- 12
+- 13
+- 14
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+max_retries: 3
+cache: true
+results_dir: results

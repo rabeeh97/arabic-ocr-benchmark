@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000078", "model": "gemini-flash", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "MG26-43   7/12", "raw_text": "HG 26 - 43 7", "cleaned_text": "HG 26 - 43 7", "latency_ms": 4324.19, "input_tokens": 1169, "output_tokens": 252, "cost_usd": 0.0009807, "error": null, "attempts": 1, "cached": false}

@@ -1,0 +1,25 @@
+models:
+- gemini-flash
+- pixtral-12b
+- mistral-small
+- mistral-medium
+- openrouter-gemma-4-31b-free
+- openrouter-gemma-4-26b-free
+datasets:
+- kitab_hindawi
+- kitab_historicalbooks
+prompt_version: page-v2
+max_tokens_override: 640
+limit: 100
+offset: 0
+accumulate: true
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 3
+rpm: 0
+rate_limit_abort: 5
+max_retries: 3
+cache: true
+results_dir: results

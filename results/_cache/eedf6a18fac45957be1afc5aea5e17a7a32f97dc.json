@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000011", "model": "gemini-flash-lite", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2-no-diac", "ground_truth": "لل لى حعڡر الخادن", "raw_text": "سيد محمد", "cleaned_text": "سيد محمد", "latency_ms": 3772.31, "input_tokens": 1188, "output_tokens": 3, "cost_usd": 0.00012, "error": null, "attempts": 1, "cached": false}

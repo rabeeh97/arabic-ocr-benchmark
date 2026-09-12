@@ -1,0 +1,11 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,car_micro_raw,car_macro_raw,wer_micro_raw,mer_micro_raw,mer_macro_raw,wil_micro_raw,wip_micro_raw,exact_raw,cer_micro_light,cer_macro_light,car_micro_light,car_macro_light,wer_micro_light,mer_micro_light,mer_macro_light,wil_micro_light,wip_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,car_micro_diac_insensitive,car_macro_diac_insensitive,wer_micro_diac_insensitive,mer_micro_diac_insensitive,mer_macro_diac_insensitive,wil_micro_diac_insensitive,wip_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+openrouter-gemma-4-26b-free,kitab_hindawi,1,11,0.9167,9358.5,0.0,0.0647,0.0647,0.9353,0.9353,0.3399,0.3355,0.3355,0.5377,0.4623,0.0,0.0416,0.0416,0.9584,0.9584,0.1235,0.1235,0.1235,0.2269,0.7731,0.0,0.0256,0.0256,0.9744,0.9744,0.0802,0.0802,0.0802,0.1488,0.8512,0.0,0.8571
+openrouter-gemma-4-31b-free,kitab_hindawi,1,11,0.9167,11305.9,0.0,0.0662,0.0662,0.9338,0.9338,0.1439,0.1439,0.1439,0.2261,0.7739,0.0,0.0094,0.0094,0.9906,0.9906,0.0455,0.0455,0.0455,0.0888,0.9112,0.0,0.0068,0.0068,0.9932,0.9932,0.0379,0.0379,0.0379,0.0743,0.9257,0.0,0.8333
+pixtral-12b,kitab_hindawi,99,1,0.01,6378.8,0.016893,0.4238,0.4146,0.5762,0.6019,0.7024,0.661,0.6435,0.8636,0.1364,0.0,0.385,0.3756,0.615,0.6408,0.6528,0.6084,0.5863,0.827,0.173,0.0,0.3537,0.3442,0.6463,0.6723,0.6104,0.5686,0.5391,0.7899,0.2101,0.0,0.2392
+gemini-flash,kitab_hindawi,62,10,0.1389,8743.9,0.121427,0.9405,0.9322,0.0595,0.0678,0.9493,0.9489,0.9454,0.9637,0.0363,0.0,0.9386,0.9301,0.0614,0.0699,0.9469,0.9465,0.9431,0.9614,0.0386,0.0,0.9381,0.9294,0.0619,0.0706,0.9445,0.9441,0.9399,0.9578,0.0422,0.0,0.1106
+mistral-medium,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+mistral-small,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-llama-4-maverick,kitab_hindawi,0,100,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-minimax-m3-free,kitab_hindawi,0,100,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-qwen2.5-vl-72b,kitab_hindawi,0,100,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-qwen3-vl-235b,kitab_hindawi,0,100,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

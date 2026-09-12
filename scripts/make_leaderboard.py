@@ -20,6 +20,7 @@ import sys
 from pathlib import Path
 
 import _leaderboard_findings as _lf  # scripts/ sibling; resolvable on sys.path[0]
+import _leaderboard_prompt_study as _lps  # scripts/ sibling; the Research tab
 import yaml
 
 _PROFILES = ("raw", "light", "diac_insensitive")
@@ -987,6 +988,7 @@ _TABS_JS = r"""
     var h=location.hash||'';
     if(h.indexOf('#f-')===0||h.indexOf('#findings')===0) return 'findings';
     if(h.indexOf('#ft-')===0||h.indexOf('#finetuning')===0) return 'finetuning';
+    if(h.indexOf('#rs-')===0||h.indexOf('#research')===0) return 'research';
     try{ var s=localStorage.getItem('lb_tab');
          if(TABS.indexOf(s)>=0) return s; }catch(_){}
     return DEF;
@@ -1004,7 +1006,8 @@ _TABS_JS = r"""
 
   var init=want();
   activate(init,false);
-  if(init==='findings' && location.hash.indexOf('#f-')===0){
+  if((init==='findings' && location.hash.indexOf('#f-')===0)
+     || (init==='research' && location.hash.indexOf('#rs-')===0)){
     var t=document.getElementById(location.hash.slice(1));
     if(t) requestAnimationFrame(function(){ t.scrollIntoView({block:'start'}); });
   }
@@ -1044,7 +1047,8 @@ _TABS_JS = r"""
 
 def _toc(items: list[tuple[str, str]],
          findings_items: list[tuple[str, str]] | None = None,
-         finetuning_items: list[tuple[str, str]] | None = None) -> str:
+         finetuning_items: list[tuple[str, str]] | None = None,
+         research_items: list[tuple[str, str]] | None = None) -> str:
     """A vertical section index, fixed to the left of the page (scroll-spy in
     ``_TOC_JS`` highlights the section currently in view). One list per tab
     shares the nav; ``_TABS_JS`` shows only the one matching the active tab."""
@@ -1061,6 +1065,7 @@ def _toc(items: list[tuple[str, str]],
         f"{_ol(items, 'toc-leaderboard', False)}"
         f"{_ol(finetuning_items or [], 'toc-finetuning', True)}"
         f"{_ol(findings_items or [], 'toc-findings', True)}"
+        f"{_ol(research_items or [], 'toc-research', True)}"
         "</nav>"
     )
 
@@ -1135,6 +1140,7 @@ def render(rows: list[dict], title: str, target: Path | None = None,
     out.append("</header>")
 
     ft_html, ft_toc = _render_finetuning(rows, Path(_RENDER_CTX["target"]))
+    rs_html, rs_toc = _lps.render_research_view(Path(_RENDER_CTX["target"]))
     out.append(
         "<div class=\"tabbar\" role=\"tablist\">"
         "<button type=\"button\" class=\"tab tab--on\" data-tab=\"leaderboard\" "
@@ -1143,6 +1149,8 @@ def render(rows: list[dict], title: str, target: Path | None = None,
            "role=\"tab\">Fine-tuning</button>" if ft_toc else "")
         + "<button type=\"button\" class=\"tab\" data-tab=\"findings\" "
         "role=\"tab\">Findings &amp; analysis</button>"
+        "<button type=\"button\" class=\"tab\" data-tab=\"research\" "
+        "role=\"tab\">Research</button>"
         "</div>"
     )
     out.append('<div class="view" data-view="leaderboard">')
@@ -1203,6 +1211,7 @@ def render(rows: list[dict], title: str, target: Path | None = None,
         present,
         [(f"f-{slug}", label) for slug, label in _lf.FINDINGS_SECTIONS],
         ft_toc,
+        rs_toc,
     )
 
     out.append("</div>")  # close data-view="leaderboard"
@@ -1220,6 +1229,10 @@ def render(rows: list[dict], title: str, target: Path | None = None,
         print(f"findings view render failed: {e}", file=sys.stderr)
         _fv = _lf.render_findings_view({})
     out.append(_fv)
+    out.append("</div>")
+
+    out.append('<div class="view" data-view="research" hidden>')
+    out.append(rs_html)
     out.append("</div>")
 
     out.append(

@@ -1,0 +1,1 @@
+{"sample_id": "kitab_khatt/train/000028", "model": "nvidia-llama-3.2-11b-vl", "dataset": "kitab_khatt", "track": "line", "prompt_version": "line-v2", "ground_truth": "الزراعية والريفية،", "raw_text": "الرأيبة وارقية.", "cleaned_text": "الرأيبة وارقية.", "latency_ms": 1930.7, "input_tokens": 4893, "output_tokens": 10, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}

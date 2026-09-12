@@ -1,0 +1,17 @@
+models:
+- baseer-nakba-bf16
+- exp3090-baseer-nakba-ft-bf16
+datasets:
+- kitab_historicalbooks
+limit: 200
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles:
+- raw
+- light
+- diac_insensitive
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: C:/Users/User/a-experiment/exp/bench/results
