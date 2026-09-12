@@ -40,14 +40,21 @@ image:
 train:
   epochs: 1
   lr: 1.0e-4
-  batch_size: 2            # PaliGemma is lighter; 2 fits
-  grad_accum: 4
+  batch_size: 1            # bumped down from 2 — max_seq_len below nearly doubled
+  grad_accum: 8            # keeps the same effective batch size (8) as the other bases
   scheduler: cosine
   warmup_ratio: 0.03
   seed: 0
   bf16: true
   gradient_checkpointing: true
-  max_seq_len: 640         # 448-image tokens + a short line; keep tight
+  # paligemma2-3b-pt-448 tiles the image into 32x32=1024 placeholder tokens
+  # (patch size 14) that are PREPENDED to the sequence — "448" is the pixel
+  # resolution, not the token count. max_seq_len must clear 1024 by enough to
+  # hold the prefix+suffix text too, or truncation cuts into the image-token
+  # block itself (corrupts the image, not just the label) — see the assert in
+  # _make_collator_paligemma. 1280 leaves ~256 tokens for text, generous for a
+  # single OCR line.
+  max_seq_len: 1280
   save_strategy: steps
   save_steps: 100        # frequent checkpoints — this box reboots/gets killed a lot
   save_total_limit: 5    # more, smaller-interval checkpoints -> keep a few more

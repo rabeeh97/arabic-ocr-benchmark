@@ -172,6 +172,9 @@ def _find_subseq(seq: list[int], sub: list[int]) -> int | None:
 _PALIGEMMA_PREFIX = "transcribe the arabic text in this image"
 
 
+_PALIGEMMA_IMAGE_TOKENS = 1024  # paligemma2-*-448: 448/14 patch size -> 32x32
+
+
 def _make_collator_paligemma(processor, max_seq_len: int):
     """PaliGemma 2 SFT collator (HF `paligemma2` recipe).
 
@@ -182,6 +185,15 @@ def _make_collator_paligemma(processor, max_seq_len: int):
     masking here. Verify the first few batches on the box — `labels` should be
     all -100 except the ground-truth span.
     """
+    if max_seq_len < _PALIGEMMA_IMAGE_TOKENS + 64:
+        raise ValueError(
+            f"max_seq_len={max_seq_len} leaves no room for text after the "
+            f"{_PALIGEMMA_IMAGE_TOKENS} image tokens PaliGemma prepends to every "
+            "example — `truncation=True` below would cut into the image-token "
+            "block itself (silently breaking the image, not just clipping "
+            "labels). Raise train.max_seq_len in the config to at least "
+            f"{_PALIGEMMA_IMAGE_TOKENS + 64}."
+        )
 
     def _target(row: dict) -> str:
         for m in reversed(row["messages"]):
