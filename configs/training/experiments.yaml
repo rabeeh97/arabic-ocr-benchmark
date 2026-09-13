@@ -51,6 +51,36 @@ exp3090-qwen3vl4b:
     - "Open: unfreezing the ViT (train_vision: true) is the lever for the Maghrebi RASAM sets, where the fine-tune is weakest (~50% CER vs ~30% on Naskh/Ruq'ah) and the frozen encoder may be the bottleneck."
     - "kitab_hindawi / kitab_historicalbooks are paragraph-scale (GT ~350 tok), not lines: rows now registered with max_new_tokens=640 so output is not hard-truncated; residual gap is the line-prompt vs page-content mismatch. Treat as a 'volunteers a full-page transcript?' probe, not a clean OCR score (see findings doc)."
 
+exp3090-qwen3vl4b-visft:
+  title: "Qwen3-VL-4B — Muharaf LoRA, vision unfrozen (RTX 3090)"
+  base_model: qwen3-vl-4b-bf16
+  ft_models: [exp3090-qwen3vl4b-visft-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT UNfrozen), 1 epoch, 8,000 Muharaf train lines, Qwen3-VL-4B-Instruct"
+  config: configs/training/exp3090_qwen3vl4b_visft.yaml
+  report_dir: results/training/exp3090-qwen3vl4b-visft
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets:
+    - kitab_khatt
+    - nakba_lines
+    - rasam1
+    - rasam2
+    - kitab_hindawi
+    - kitab_historicalbooks
+  hypothesis: >-
+    Identical recipe and data to exp3090-qwen3vl4b, only train_vision flips
+    false -> true. The base-model A/B/C (exp3090-qwen3vl4b vs -baseer-nakba vs
+    -paligemma2-3b) found all three land at 45-54% CER on the Maghrebi RASAM
+    sets even after fine-tuning, well behind their ~30% on Naskh/Ruq'ah —
+    consistent across three unrelated architectures. A frozen ViT trained only
+    on Ruq'ah-style Muharaf handwriting may never see enough Maghrebi-specific
+    grapheme shapes to adapt; unfreezing it isolates whether that's the cap.
+  notes:
+    - "Compare directly against exp3090-qwen3vl4b on rasam1 / rasam2 — same everything else, so any CER delta there is attributable to train_vision alone."
+    - "Watch VRAM: unfreezing the ViT costs more memory on the 3090 than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
+    - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base qwen3vl4b-visft --detach` (adds a `qwen3vl4b-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts, alongside qwen3vl4b / baseer / paligemma)."
+
 baseer-nakba:
   title: "Baseer/NAKBA — Muharaf LoRA (RTX 3090)"
   base_model: baseer-nakba-bf16

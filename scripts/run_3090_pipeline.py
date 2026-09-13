@@ -7,7 +7,8 @@ line and one file to fetch:
 
     python scripts/run_3090_pipeline.py --dir C:\\Users\\User\\a-experiment\\exp --base baseer --detach
 
-``--base`` is ``qwen3vl4b`` | ``baseer`` | ``paligemma``. Re-run the same command
+``--base`` is ``qwen3vl4b`` | ``qwen3vl4b-visft`` | ``baseer`` | ``paligemma``
+(``-visft`` = same recipe, ViT unfrozen). Re-run the same command
 to resume (both sub-steps are individually resumable); the ``full`` benchmark
 stage scores another 200 lines/dataset each run until every set is exhausted.
 
@@ -35,6 +36,7 @@ IS_WIN = platform.system() == "Windows"
 # base -> (experiment name, base hf_id, benchmark arch shim, base models.yaml row)
 BASES = {
     "qwen3vl4b": ("exp3090-qwen3vl4b", "Qwen/Qwen3-VL-4B-Instruct", "qwen2_5_vl", "qwen3-vl-4b-bf16"),
+    "qwen3vl4b-visft": ("exp3090-qwen3vl4b-visft", "Qwen/Qwen3-VL-4B-Instruct", "qwen2_5_vl", "qwen3-vl-4b-bf16"),
     "baseer":    ("exp3090-baseer-nakba", "Misraj/Baseer__Nakba", "qwen2_5_vl", "baseer-nakba-bf16"),
     "paligemma": ("exp3090-paligemma2-3b", "google/paligemma2-3b-pt-448", "paligemma", "paligemma2-3b-bf16"),
 }

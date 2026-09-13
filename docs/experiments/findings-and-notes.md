@@ -90,6 +90,73 @@ Muharaf `train` lines. Held-out CER-light, base → fine-tune:
   on". If an Arabic-specialised base + LoRA barely beats generic-Qwen + LoRA,
   that itself is the headline.
 
+### exp3090 — base-model A/B/C (Qwen3-VL-4B vs Baseer-Nakba vs PaliGemma-2-3B): the specialised base doesn't benefit from the shared recipe
+
+**Seen (2026-09-13).** Same recipe for all three (bf16 LoRA r=16, α=32, ViT
+frozen, 1 epoch, the same 8k Muharaf `train` lines), scored on the same four
+held-out sets. CER-light, base → fine-tune (n = per-row sample count; small n
+is called out — it's noise, not signal):
+
+| dataset | Qwen3-VL-4B (generic) | Baseer-Nakba (Arabic-specialised) | PaliGemma-2-3B (different arch) |
+|---|---|---|---|
+| kitab_khatt | 77 % → 30 % (n=200) | *(not yet run)* | 66 % → 38 % (n=180) |
+| nakba_lines | 76 % → 30 % (n=220) | **1.0 % → 3.4 %** (n=200, *worse*) | 88 % → 30 % (n=400) |
+| rasam1 (Maghrebi) | 119 % → 52 % (n=20, noisy) | 51 % → 45 % (n=200) | 76 % → 51 % (n=400) |
+| rasam2 (Maghrebi) | 102 % → 49 % (n=20, noisy) | 49 % → **50 %** (n=196, *flat/worse*) | 79 % → 54 % (n=345) |
+
+**Meaning — this is the headline the open question above predicted might
+happen, and it did.** Baseer-Nakba is Misraj's NAKBA-2026 Systems-Track winner
+— already Arabic-manuscript-competent before any fine-tuning (0.079 CER on its
+own eval; 1.0 % here on `nakba_lines`, its home domain). Running the *same*
+generic 8k-Muharaf LoRA recipe on it does not help:
+- On `nakba_lines` — the domain it's already best at — the fine-tune makes it
+  **3× worse** (1.0 % → 3.4 %), even at a deliberately gentle LR (5e-5, chosen
+  in `exp3090_baseer_nakba.yaml` specifically to avoid this).
+- On `rasam2` it's flat-to-slightly-worse (49 % → 50 %); on `rasam1` it's a
+  modest win (51 % → 45 %), nowhere near Qwen's or PaliGemma's ~25–30 point
+  swings on the same two Maghrebi sets.
+
+Meanwhile the two *generic* bases — Qwen3-VL-4B and PaliGemma-2-3B, architecturally
+unrelated (Qwen's dynamic-resolution ViT vs PaliGemma's fixed-448px SigLIP,
+different decoders, no shared pretraining) — start from comparably poor bases
+(66–119 % CER) and converge to a similar post-fine-tune band (30–54 % CER)
+across all four sets. That similarity, despite the architecture difference,
+points at the 8k-line Muharaf recipe/data as the current ceiling, not base
+architecture — echoed by the **"format vs vision"** open question above.
+
+**Per-sample diagnosis of the Baseer regression (2026-09-13).** Paired base-vs-ft
+CER on every sample id scored by *both* rows (not just the aggregate):
+
+- `nakba_lines` (n=63 paired): **35 got worse, 5 got better, 23 flat** — a
+  systematic decline, not a couple of outliers. Most of the damaged lines were
+  at or near CER 0.000 on the base and picked up small-but-real errors after
+  fine-tuning (e.g. `nakba_lines/test/000185` 0.000→0.300,
+  `.../000171` 0.000→0.213, `.../000179` 0.000→0.200). This is genuine mild
+  catastrophic forgetting on Baseer's own best domain, confirmed — not noise.
+- `rasam2` (n=195 paired): 93 worse / 81 better / 21 flat — roughly balanced,
+  with the mean barely moving (0.512→0.532). A few samples swing hard either
+  direction (up to ±0.6 CER), but the aggregate "flat/worse" reading from the
+  summary table is **within per-sample noise here**, unlike `nakba_lines`.
+
+So the finding sharpens: Baseer's fine-tune reliably *hurts* its home domain
+(NAKBA) and is a wash (not a proven regression) on RASAM2 — the recipe isn't
+uniformly bad, it specifically erodes what the base was already good at.
+
+**To do.**
+1. ~~Diagnose the Baseer regression~~ — done above; it's real on `nakba_lines`,
+   noise-level on `rasam2`.
+2. Don't fine-tune Baseer with this recipe again as-is — right now the
+   fine-tuned row is worse than just shipping the untuned base on its strongest
+   domain. Worth trying fewer steps / a lower rank / a replay mix that includes
+   some NAKBA-domain lines alongside the Muharaf data, so the LoRA doesn't
+   overwrite what the base already knew.
+3. `train_vision: true` (unfreeze the ViT) is still untested on any base and is
+   the most promising lever for the still-weak Maghrebi (RASAM) scores (45–54 %
+   CER post-tune across all three bases) — try it before the data-scaling sweep,
+   since scaling data against a possibly wrong recipe wastes compute either way.
+4. Backfill `kitab_khatt` for Baseer-Nakba — it's the one cell in this table
+   with no data at all.
+
 ---
 
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)
