@@ -59,6 +59,18 @@ BASES = {
         "needs_transformers": "4.57",
         "gated": False,
     },
+    "qwen3vl4b-visft": {
+        # Same as "qwen3vl4b" but with the ViT unfrozen (train_vision: true) —
+        # tests whether the frozen encoder is the bottleneck on the Maghrebi
+        # RASAM sets. See docs/experiments/findings-and-notes.md.
+        "experiment": "exp3090-qwen3vl4b-visft",
+        "config": "configs/training/exp3090_qwen3vl4b_visft.yaml",
+        "run_config": "configs/training/exp3090_qwen3vl4b_visft.run.yaml",
+        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
+        "arch": "qwen3_vl",
+        "needs_transformers": "4.57",
+        "gated": False,
+    },
     "baseer": {
         "experiment": "exp3090-baseer-nakba",
         "config": "configs/training/exp3090_baseer_nakba.yaml",
