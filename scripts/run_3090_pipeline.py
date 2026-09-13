@@ -90,7 +90,11 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     _log(logs, f"=== {step}: {' '.join(cmd)}")
     tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
     with (logs / "pipeline.log").open("a", encoding="utf-8") as fh:
-        proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ},
+        # PYTHONUNBUFFERED: without it, the child's stdout is block-buffered
+        # (it's a pipe, not a tty) and pipeline.log can lag far behind the
+        # child's own run.log by a full buffer — losing the tail end (e.g. a
+        # crash traceback) if the child dies before that buffer flushes.
+        proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ, "PYTHONUNBUFFERED": "1"},
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                 text=True, bufsize=1)
         assert proc.stdout is not None
@@ -129,10 +133,22 @@ def _respawn_detached(logs: Path, argv: list[str]) -> int:
     kw: dict = {"cwd": str(REPO), "stdout": fh, "stderr": subprocess.STDOUT,
                 "stdin": subprocess.DEVNULL, "close_fds": True}
     if IS_WIN:
-        kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008
+        # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP survives the launching shell
+        # exiting, but NOT the Job Object Windows' OpenSSH server wraps an SSH
+        # session in — that job kills every process in it (detached or not) when
+        # the session's job winds down, with no crash logged anywhere.
+        # CREATE_BREAKAWAY_FROM_JOB opts out; some job policies refuse breakaway
+        # outright (CreateProcess then raises) -- fall back rather than fail.
+        base_flags = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
+        try:
+            kw["creationflags"] = base_flags | 0x01000000  # CREATE_BREAKAWAY_FROM_JOB
+            proc = subprocess.Popen(child, **kw)
+        except OSError:
+            kw["creationflags"] = base_flags
+            proc = subprocess.Popen(child, **kw)
     else:
         kw["start_new_session"] = True
-    proc = subprocess.Popen(child, **kw)
+        proc = subprocess.Popen(child, **kw)
     (logs / "pipeline.pid").write_text(str(proc.pid), encoding="utf-8")
     print(f"detached pid {proc.pid}")
     print(f"log : {logs / 'pipeline.log'}")

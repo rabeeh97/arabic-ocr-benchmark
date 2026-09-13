@@ -294,7 +294,10 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
     download, a slow training step) gets an explicit heartbeat line instead of
     looking indistinguishable from a hang."""
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
-    e = {**os.environ, **(env or {})}
+    # PYTHONUNBUFFERED: without it, the child's stdout is block-buffered (it's
+    # a pipe, not a tty) and run.log can lag behind by a full buffer — losing
+    # the tail end (e.g. a crash traceback) if the child dies before it flushes.
+    e = {**os.environ, "PYTHONUNBUFFERED": "1", **(env or {})}
     tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
     with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
         proc = subprocess.Popen(
@@ -652,12 +655,23 @@ def _respawn_detached(dirs: dict, argv: list[str]) -> int:
     kwargs: dict = {"cwd": str(REPO), "stdout": logf, "stderr": subprocess.STDOUT,
                     "stdin": subprocess.DEVNULL, "close_fds": True}
     if IS_WIN:
-        kwargs["creationflags"] = (
-            subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
-        )
+        # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP survives the launching shell
+        # exiting, but NOT the Job Object Windows' OpenSSH server wraps an SSH
+        # session in — that job kills every process in it (detached or not) when
+        # the session's job winds down (e.g. a dropped/reconnected connection),
+        # with no crash logged anywhere. CREATE_BREAKAWAY_FROM_JOB opts out of
+        # that. Some job policies refuse breakaway outright (CreateProcess then
+        # raises) -- fall back to the old flags rather than fail the launch.
+        base_flags = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
+        try:
+            kwargs["creationflags"] = base_flags | 0x01000000  # CREATE_BREAKAWAY_FROM_JOB
+            proc = subprocess.Popen(child_argv, **kwargs)
+        except OSError:
+            kwargs["creationflags"] = base_flags
+            proc = subprocess.Popen(child_argv, **kwargs)
     else:
         kwargs["start_new_session"] = True
-    proc = subprocess.Popen(child_argv, **kwargs)
+        proc = subprocess.Popen(child_argv, **kwargs)
     (dirs["logs"] / "run.pid").write_text(str(proc.pid), encoding="utf-8")
     print(f"detached pid {proc.pid}")
     print(f"log : {dirs['logs'] / 'run.log'}")
