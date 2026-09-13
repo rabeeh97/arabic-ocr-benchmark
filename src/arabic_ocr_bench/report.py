@@ -124,10 +124,21 @@ def score_run(run_dir: str | Path, profiles=PROFILES, *, progress: bool = True) 
             row["diac_f1"] = ""
         summary_rows.append(row)
 
-    df = pd.DataFrame(summary_rows).sort_values(
-        ["dataset", "cer_micro_raw"],
-        key=lambda c: pd.to_numeric(c, errors="coerce") if c.name == "cer_micro_raw" else c,
-    )
+    # An accumulate-mode "full" batch on an already-exhausted dataset (e.g. a
+    # 10-row KITAB-Bench subset whose every index is already scored in an
+    # earlier run dir) asks the adapter for indices past the dataset's length
+    # and gets zero samples back, so predictions.jsonl — and summary_rows — is
+    # legitimately empty. That's "nothing new to score", not an error: build
+    # an empty-but-shaped frame instead of letting a columnless DataFrame
+    # blow up sort_values with KeyError.
+    if summary_rows:
+        df = pd.DataFrame(summary_rows).sort_values(
+            ["dataset", "cer_micro_raw"],
+            key=lambda c: pd.to_numeric(c, errors="coerce") if c.name == "cer_micro_raw" else c,
+        )
+    else:
+        df = pd.DataFrame(columns=["model", "dataset", "n", "errors", "refusal_rate",
+                                    "latency_ms_mean", "cost_usd_total"])
     df.to_csv(run_dir / "summary.csv", index=False)
     (run_dir / "summary.md").write_text(
         _render_md(df, run_dir.name, profiles), encoding="utf-8"
