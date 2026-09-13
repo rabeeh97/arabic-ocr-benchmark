@@ -39,6 +39,7 @@ BASES = {
     "qwen3vl4b-visft": ("exp3090-qwen3vl4b-visft", "Qwen/Qwen3-VL-4B-Instruct", "qwen2_5_vl", "qwen3-vl-4b-bf16"),
     "baseer":    ("exp3090-baseer-nakba", "Misraj/Baseer__Nakba", "qwen2_5_vl", "baseer-nakba-bf16"),
     "paligemma": ("exp3090-paligemma2-3b", "google/paligemma2-3b-pt-448", "paligemma", "paligemma2-3b-bf16"),
+    "paligemma-visft": ("exp3090-paligemma2-3b-visft", "google/paligemma2-3b-pt-448", "paligemma", "paligemma2-3b-bf16"),
 }
 
 

@@ -103,6 +103,7 @@ python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp --bas
 | `baseer` | `Misraj/Baseer__Nakba` | `qwen2_5_vl` | Arabic-manuscript SOTA base (CER 0.079 on NAKBA); cc-by-nc-sa (research). The `fetch` phase prints the checkpoint's real `architectures` — if it's **not** a Qwen2.5-VL class, stop and use `--base qwen3vl4b` |
 | `paligemma` | `google/paligemma2-3b-pt-448` | `paligemma` (added) | **gated.** Uses a different collator (`_make_collator_paligemma`) from the published PaliGemma-2 recipe — **watch the first training batches** (loss should start ≈ 2–4 and fall; labels should be all `-100` except the target span) |
 | `qwen3vl4b-visft` | `Qwen/Qwen3-VL-4B-Instruct` | `qwen3_vl` (added) | Same recipe as `qwen3vl4b`, but `train_vision: true` (ViT unfrozen). Tests whether the frozen encoder caps generalisation to the Maghrebi RASAM script family — see `docs/experiments/findings-and-notes.md`. Costs more VRAM; drop `image.max_pixels` first if it OOMs |
+| `paligemma-visft` | `google/paligemma2-3b-pt-448` | `paligemma` (added) | **gated.** Same recipe as `paligemma`, but `train_vision: true` (SigLIP unfrozen) — the PaliGemma counterpart to `qwen3vl4b-visft`, testing the same question on a second, unrelated vision tower. Costs more VRAM; drop `image.max_pixels` first if it OOMs |
 
 `--detach` re-spawns the worker free of your SSH session (Windows
 `DETACHED_PROCESS`), writes `C:\Users\User\a-experiment\exp\logs\run.pid`, prints the log path, and
@@ -200,7 +201,7 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 ## 6a. One-command experiment — `run_3090_pipeline.py`
 
 For a whole `train → merge → in-domain eval → held-out benchmark` in a single
-detached command per base (`qwen3vl4b` | `qwen3vl4b-visft` | `baseer` | `paligemma`):
+detached command per base (`qwen3vl4b` | `qwen3vl4b-visft` | `baseer` | `paligemma` | `paligemma-visft`):
 
 ```bat
 cd C:\Users\User\a-experiment\aocr-repo

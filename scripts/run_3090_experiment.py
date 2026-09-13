@@ -89,6 +89,18 @@ BASES = {
         "needs_transformers": "4.49",
         "gated": True,
     },
+    "paligemma-visft": {
+        # Same as "paligemma" but with the SigLIP tower unfrozen
+        # (train_vision: true) — the PaliGemma counterpart to
+        # qwen3vl4b-visft. See docs/experiments/findings-and-notes.md.
+        "experiment": "exp3090-paligemma2-3b-visft",
+        "config": "configs/training/exp3090_paligemma2_3b_visft.yaml",
+        "run_config": "configs/training/exp3090_paligemma2_3b_visft.run.yaml",
+        "hf_id": "google/paligemma2-3b-pt-448",
+        "arch": "paligemma",
+        "needs_transformers": "4.49",
+        "gated": True,
+    },
 }
 
 # CUDA wheel index for torch on the 3090 box (cu124 covers Ada/Ampere on

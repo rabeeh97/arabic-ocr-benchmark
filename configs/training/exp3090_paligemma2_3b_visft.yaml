@@ -1,0 +1,66 @@
+# RTX 3090 experiment — same recipe as exp3090_paligemma2_3b.yaml, but with the
+# SigLIP vision tower unfrozen (train_vision: true). Companion to
+# exp3090_qwen3vl4b_visft.yaml: tests the same open question from the base-model
+# A/B/C write-up (docs/experiments/findings-and-notes.md) — all three bases land
+# at 45-54% CER on the Maghrebi RASAM sets even after fine-tuning, worse than on
+# Naskh/Ruq'ah — on a second, architecturally unrelated base (fixed-448 SigLIP +
+# Gemma-2 vs Qwen's dynamic-resolution ViT). Everything else (data, epochs, LR,
+# rank) is held identical to exp3090-paligemma2-3b so the only variable is
+# train_vision.
+#
+# GATED: google/paligemma2-3b-pt-448 needs a HF token that has accepted the
+# Gemma license. Put HF_TOKEN in <exp-folder>/experiment.env.
+#
+# NOTE: this uses a different collator (_make_collator_paligemma in
+# src/arabic_ocr_bench/training/sft_vlm.py) built from the published PaliGemma 2
+# recipe. Watch the first training batches — labels should be all -100 except the
+# ground-truth span, and loss should start ~2-4 and fall.
+experiment: exp3090-paligemma2-3b-visft
+method: lora            # bf16 LoRA. Unfrozen SigLIP uses more VRAM — drop image.max_pixels first if you OOM.
+
+base_model:
+  hf_id: google/paligemma2-3b-pt-448
+  arch: paligemma
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true    # <-- the one change vs exp3090_paligemma2_3b.yaml
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000        # same 8k lines as exp3090-paligemma2-3b — only train_vision differs
+  val_fraction: 0.03
+  prompt_version: line-v2   # unused by the PaliGemma collator (terse prefix instead)
+
+image:
+  min_pixels: 200704       # ignored by PaliGemma (fixed 448 in the checkpoint)
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  # paligemma2-3b-pt-448 tiles the image into 32x32=1024 placeholder tokens
+  # (patch size 14) that are PREPENDED to the sequence — see the note in
+  # exp3090_paligemma2_3b.yaml. 1280 leaves ~256 tokens for text.
+  max_seq_len: 1280
+  save_strategy: steps
+  save_steps: 100        # frequent checkpoints — this box reboots/gets killed a lot
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-paligemma2-3b-visft
+eval_datasets: [muharaf_lines]
