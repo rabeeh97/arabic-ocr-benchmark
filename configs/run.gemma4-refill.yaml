@@ -1,0 +1,29 @@
+# Retry pass for the two OpenRouter Gemma-4 :free models only. Previous sweeps
+# (see configs/run.free-fill.yaml) show they hit OpenRouter's daily free-tier
+# quota after only a handful of lines each day — every call after that returns
+# a 429, rate_limit_abort:5 kicks in, and the model gets skipped for the rest
+# of that run. This config re-attempts them on a fresh day so accumulate mode
+# can pick up more of the still-unscored cells before the quota resets again.
+models:
+  - openrouter-gemma-4-26b-free
+  - openrouter-gemma-4-31b-free
+
+datasets:
+  - kitab_khatt
+  - kitab_muharaf
+  - kitab_historicalbooks
+  - kitab_hindawi
+  - kitab_historyar
+  - kitab_onlinekhatt
+
+limit: 40
+offset: 0
+accumulate: true
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 3
+rpm: 0
+rate_limit_abort: 5
+max_retries: 3
+cache: true
+results_dir: results
