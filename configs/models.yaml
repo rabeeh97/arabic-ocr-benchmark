@@ -762,6 +762,36 @@ exp3090-baseer-nakba-ft-bf16:
     Baseer-Nakba fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
     an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 — isolates
     the effect of starting from an Arabic-specialised base.
+paligemma2-3b-bf16:
+  # bf16 sibling of paligemma-arabic-hw's base — the untuned base row for the
+  # exp3090-paligemma2-3b-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # `prompt` must match the fine-tune's training prefix (PaliGemma has no chat
+  # template) — see training.sft_vlm._PALIGEMMA_PREFIX.
+  client: hf_local
+  hf_id: google/paligemma2-3b-pt-448
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    Untuned google/paligemma2-3b-pt-448 at bf16 — base row for the
+    exp3090-paligemma2-3b held-out benchmark.
+exp3090-paligemma2-3b-ft-bf16:
+  # RTX-3090 LoRA of PaliGemma-2-3B on Muharaf handwriting, merged to bf16
+  # weights. hf_id is a repo-relative dir: drop the merged weights there to
+  # re-run it.
+  client: hf_local
+  hf_id: models/exp3090-paligemma2-3b-ft
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines)
+    on an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 /
+    exp3090-baseer-nakba-ft-bf16 — isolates the effect of the SigLIP+Gemma-2 base.
 nakba-misraj-baseer:
   # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
   # family (via Misraj's "Baseer" 3B VLM), slerp-merged checkpoints. ~7.6 GB
