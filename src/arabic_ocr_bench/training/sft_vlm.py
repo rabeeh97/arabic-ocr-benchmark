@@ -198,7 +198,15 @@ def _make_collator_paligemma(processor, max_seq_len: int):
     # The processor otherwise infers the image-token count itself and warns on
     # every single call ("You are passing both `text` and `images`...").
     # Prepending the exact count ourselves gives it what it expects up front.
-    image_seq_length = getattr(processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
+    #
+    # NOT `getattr(processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)`:
+    # on transformers 4.57.6 that attribute came back as 1024**2 (1,048,576)
+    # for this exact checkpoint instead of 1024, blowing the prefix up to a
+    # million "<image>" tokens and failing processor()'s own image-token-count
+    # check. _PALIGEMMA_IMAGE_TOKENS is a hardcoded, verified-correct constant
+    # for this single checkpoint (paligemma2-3b-pt-448) -- trust it over a
+    # library attribute that can silently change meaning across versions.
+    image_seq_length = _PALIGEMMA_IMAGE_TOKENS
     prefix_with_image_tokens = "<image>" * image_seq_length + _PALIGEMMA_PREFIX
 
     def _target(row: dict) -> str:
