@@ -592,8 +592,13 @@ FINDINGS_NOTES = {
 
 
 def _panel(slug: str, title: str, note: str, body: str) -> str:
-    """The section shell every ``_render_*`` returns, matching the leaderboard
-    section contract (``<section id=... class='f-panel'><h2>…</h2>…``)."""
+    """The section shell every ``_render_*`` returns. Collapsible via the same
+    ``.panel-d`` / ``.panel-sum`` / ``.panel-body`` markup the leaderboard tab's
+    "By dataset" / "Models" / "Cost" etc. sections use (make_leaderboard.py's
+    own ``_panel()``) -- reusing it here (rather than duplicating a second
+    collapse mechanism) means these get the same styling, the generic
+    ``details.panel-d[data-key]`` open/closed persistence and TOC
+    click-to-expand already wired in ``_TOC_JS``, for free."""
     n = f'<p class="board-note">{_esc(note)}</p>' if note else ""
     notes = FINDINGS_NOTES.get(slug) or []
     nl = (
@@ -601,8 +606,15 @@ def _panel(slug: str, title: str, note: str, body: str) -> str:
         + "".join(f"<li>{_esc(x)}</li>" for x in notes)
         + "</ul></details>"
     ) if notes else ""
-    return (f"<section id='f-{_esc(slug)}' class='f-panel'>"
-            f"<h2>{_esc(title)}</h2>{n}{body}{nl}</section>")
+    pid = f"f-{_esc(slug)}"
+    return (
+        f"<section id='{pid}' class='f-panel panel'>"
+        f"<details class='panel-d' data-key='{pid}' open>"
+        f"<summary class='panel-sum'><span class='panel-ttl'>{_esc(title)}</span>"
+        f"<span class='panel-chev' aria-hidden='true'></span></summary>"
+        f"<div class='panel-body'>{n}{body}{nl}</div>"
+        f"</details></section>"
+    )
 
 
 def _fig(caption: str, chart: str) -> str:

@@ -498,7 +498,8 @@ _EXPLORER_JS = r"""
   var el=function(id){return document.getElementById(id);};
   var D={}; try{D=JSON.parse(el('ex-data').textContent);}catch(e){return;}
   var COLS=D.cols, DS=D.ds;
-  var sel=el('ex-ds'), card=el('ex-card'), out=el('ex-out');
+  var sel=el('ex-ds'), modeSel=el('ex-mode'), card=el('ex-card'), out=el('ex-out'),
+      modeNote=el('ex-modenote');
   var sortKey='cl', sortDir=1;
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -507,14 +508,32 @@ _EXPLORER_JS = r"""
     var n=Number(v); if(isNaN(n)) return '—';
     return (pct?n*100:n).toFixed(dp);
   }
+  // Same fair-comparison modes as the matrix section: 'full' keeps only rows
+  // scored on the entire dataset; 'pfxN' keeps only rows whose scored lines
+  // are a clean, zero-based prefix covering at least the first N -- i.e. the
+  // SAME N lines every other qualifying model in this view was scored on.
+  function passRow(r){
+    var md=modeSel?modeSel.value:'all';
+    if(md==='all') return true;
+    if(md==='full') return !!r.full;
+    var need = md==='pfx10'?10 : md==='pfx20'?20 : md==='pfx40'?40 : 0;
+    return (r.pfx||0) >= need;
+  }
   function render(){
     var d=DS[sel.value]; if(!d) return;
     card.textContent=d.card||'';
-    var rows=d.rows.slice().sort(function(a,b){
+    var rows=d.rows.filter(passRow).slice().sort(function(a,b){
       var x=a[sortKey], y=b[sortKey];
       x=(x==null||x==='')?Infinity:Number(x); y=(y==null||y==='')?Infinity:Number(y);
       return (x-y)*sortDir;
     });
+    var modeMsgs={full:'showing only models scored on every line of this dataset.',
+      pfx10:'showing only models scored on the same first 10 lines.',
+      pfx20:'showing only models scored on the same first 20 lines.',
+      pfx40:'showing only models scored on the same first 40 lines.'};
+    var md=modeSel?modeSel.value:'all';
+    if(modeNote) modeNote.textContent = md==='all' ? '' :
+      (rows.length+' of '+d.rows.length+' model(s) qualify — '+(modeMsgs[md]||''));
     var head="<th class='exm' data-k='m'>model</th>"+COLS.map(function(c){
       var tip=c[5]?" title='"+esc(c[5])+"'":"";
       var lab=c[5]?"<abbr class='gloss'"+tip+">"+esc(c[1])+"</abbr>":esc(c[1]);
@@ -547,6 +566,7 @@ _EXPLORER_JS = r"""
     });
   }
   sel.addEventListener('change',render);
+  if(modeSel) modeSel.addEventListener('change',render);
   render();
 })();
 """
@@ -588,6 +608,7 @@ def _render_explorer(rows: list[dict], target: Path) -> str:
                     "wil": r.get("wil_micro_light", ""),
                     "ex": r.get("exact_light", ""), "df": r.get("diac_f1", ""),
                     "ms": r.get("latency_ms_mean", ""), "cost": r.get("cost_usd_total", ""),
+                    "full": bool(r.get("_full")), "pfx": int(r.get("_pfx") or 0),
                 }
                 for r in drows
             ],
@@ -597,8 +618,16 @@ def _render_explorer(rows: list[dict], target: Path) -> str:
     return f"""<section class='explorer'><h2>By dataset</h2>
 <p class='board-note'>Pick a dataset to see its description and every model scored on it —
 same lines, same metrics. Click a column header to sort.</p>
-<div class='ex-controls'><label>dataset <select id='ex-ds'>{opts}</select></label></div>
+<div class='ex-controls'><label>dataset <select id='ex-ds'>{opts}</select></label>
+<label>comparison <select id='ex-mode'>
+<option value='all'>All scored (uneven coverage)</option>
+<option value='full'>Full dataset only</option>
+<option value='pfx10'>First 10 lines (aligned)</option>
+<option value='pfx20'>First 20 lines (aligned)</option>
+<option value='pfx40'>First 40 lines (aligned)</option>
+</select></label></div>
 <p class='ex-card' id='ex-card'></p>
+<p class='board-note' id='ex-modenote'></p>
 <div id='ex-out'></div>
 <script id='ex-data' type='application/json'>{blob}</script>
 <script>{_EXPLORER_JS}</script>
@@ -1029,7 +1058,10 @@ def _render_matrix(rows: list[dict]) -> str:
 _TOC_JS = r"""
 (function(){
   var toc=document.getElementById('toc'); if(!toc) return;
-  var links=[].slice.call(toc.querySelectorAll('a'));
+  // Only the per-section <ol> links participate in scroll-spy / click-to-jump
+  // below -- the "Back to top" link (outside any <ol>, shown on every tab)
+  // gets its own plain listener right after this IIFE's other setup.
+  var links=[].slice.call(toc.querySelectorAll('ol a'));
   var byId={};
   function openAncestor(t){ var d=t&&t.closest('details'); if(d && !d.open) d.open=true; }
   links.forEach(function(a){
@@ -1068,6 +1100,12 @@ _TOC_JS = r"""
     var t=document.getElementById(location.hash.slice(1));
     if(t){ openAncestor(t); requestAnimationFrame(function(){ t.scrollIntoView(); }); }
   }
+  var topLink=document.getElementById('sidenav-top');
+  if(topLink) topLink.addEventListener('click',function(e){
+    e.preventDefault();
+    window.scrollTo({top:0,left:0,behavior:'smooth'});
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(_){}
+  });
 })();
 """
 
@@ -1163,6 +1201,7 @@ def _toc(items: list[tuple[str, str]],
     return (
         "<nav class='sidenav' id='toc' aria-label='sections'>"
         "<p class='sidenav-h'>Contents</p>"
+        "<a href='#' class='sidenav-top' id='sidenav-top'>&uarr; Back to top</a>"
         f"{_ol(items, 'toc-leaderboard', False)}"
         f"{_ol(finetuning_items or [], 'toc-finetuning', True)}"
         f"{_ol(findings_items or [], 'toc-findings', True)}"
@@ -2198,6 +2237,9 @@ main section{scroll-margin-top:20px;}
   border-right:1px solid var(--line);scrollbar-width:thin;}
 .sidenav-h{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin:0 0 12px 10px;font-weight:500;}
+.sidenav-top{margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line);
+  font-weight:500;}
+.sidenav-top::before{content:none!important;}   /* not in the numbered <ol>, no counter digit */
 .sidenav ol[hidden]{display:none;}   /* per-tab list; .sidenav ol sets display:flex, so hide explicitly */
 .sidenav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
   gap:1px;counter-reset:sn;}
