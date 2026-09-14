@@ -77,6 +77,7 @@ exp3090-qwen3vl4b-visft:
     on Ruq'ah-style Muharaf handwriting may never see enough Maghrebi-specific
     grapheme shapes to adapt; unfreezing it isolates whether that's the cap.
   notes:
+    - "RESULT (2026-09-14): unfreezing wins everywhere vs the frozen-ViT fine-tune — kitab_khatt 30.0%->25.3%, nakba_lines 32.6%->20.8%, rasam1 52.1%->43.2%, rasam2 49.4%->48.6% (rasam1/rasam2 baseline was n=20/noisy; unfrozen numbers are n>=195). Confirms unfreezing helps generally, and closes a real chunk of the rasam1 Maghrebi gap, but rasam2 barely moves — see docs/experiments/findings-and-notes.md for the full writeup and open questions."
     - "Compare directly against exp3090-qwen3vl4b on rasam1 / rasam2 — same everything else, so any CER delta there is attributable to train_vision alone."
     - "Watch VRAM: unfreezing the ViT costs more memory on the 3090 than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
     - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base qwen3vl4b-visft --detach` (adds a `qwen3vl4b-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts, alongside qwen3vl4b / baseer / paligemma)."

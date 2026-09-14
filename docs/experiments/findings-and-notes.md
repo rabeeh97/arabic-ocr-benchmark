@@ -37,9 +37,73 @@ whole pages more readily — do better.
 
 **To do.** (1) For a real printed-Arabic *line* regression check, add a
 line-level printed set. (2) Add a `page` prompt/track for genuinely page-scale
-data. (3) The runner should surface `empty_rate` and median `len(pred)/len(gt)`
-per (model, dataset) — an all-models-truncated dataset should raise a loud "wrong
-granularity" flag instead of just a mediocre CER.
+data. (3) ~~The runner should surface `empty_rate` and median `len(pred)/len(gt)`
+per (model, dataset)~~ — done below (2026-09-13), see `report.py`'s
+`len_ratio_median` column and truncation warning.
+
+### Same bug, almost every hosted model: only 6 of ~35 models were ever fixed, and one of those 6 was still broken for a different reason
+
+**Seen (2026-09-13).** Checked which models actually got the `page-v2` /
+raised-token-cap fix above. `run.page-v2-rollout.yaml`'s own header said
+"Free/no-cost hosted models only for this pass" — literally 6 models
+(`gemini-flash`, `pixtral-12b`, `mistral-small`, `mistral-medium`,
+`openrouter-gemma-4-31b-free`, `openrouter-gemma-4-26b-free`). Every other run
+config that lists `kitab_hindawi` / `kitab_historicalbooks` — `run.paid-*.yaml`,
+`run.free-*.yaml`, `run.gemini-full.yaml` — still uses `prompt_version: line-v2`
+with no token-cap override. Median prediction length vs ground truth across the
+whole roster (`len(pred)/len(gt)`, cheap to check directly on `results/*/predictions.jsonl`):
+almost every paid and free model comes in under 0.5, several under 0.15 (see
+`report.py`'s new `len_ratio_median` column for the mechanism now built to
+catch this automatically). No other dataset shows this pattern — every one
+besides these two has a ~40-70 char mean ground truth (checked directly), well
+within any reasonable line-level cap.
+
+**A second, distinct bug hiding inside the "already fixed" list.** `gemini-flash`
+was supposedly already fixed (page-v2 prompt, 640-token cap via
+`run.page-v2-rollout.yaml`) but its cached `kitab_hindawi` results still showed
+`len_ratio` ≈ 0.07 — worse than several *unfixed* models. Per-sample inspection:
+`output_tokens` was consistently ~636/640 (i.e. it always used its whole
+budget) while the actual visible answer (`raw_text`, not just `cleaned_text` —
+ruled out a parsing artifact) was only 40-90 characters. This is not "cap too
+low", it's Gemini 3.x's adaptive thinking consuming nearly the entire output
+budget on hidden reasoning before the visible transcription starts — the exact
+failure mode this repo already defends against for the `-paid` reasoning rows
+(`gpt-5-paid`, `gpt-5.6-*-paid`, `claude-*-paid`: `reasoning_effort` set to
+`minimal`/`none` and `max_tokens` raised to 4000-8000, see the "thinking/reasoning
+models" comment block in `configs/models.yaml`) — just never applied to Gemini.
+
+**Done.**
+1. `runner.py`'s `max_tokens_override` now only *raises* a model's cap
+   (`max(existing, override)`), never lowers it — so one run config can safely
+   mix reasoning models (already at 4000-8000) with plain ones (at the
+   256 default) without silently clobbering the reasoning models' headroom.
+2. `report.py` now records a per-sample `len_ratio` (prediction length /
+   ground-truth length) and a per-(model, dataset) `len_ratio_median`, and
+   prints a loud `WARNING` when ≥60% of a dataset's scored models have a
+   median ratio under 0.5 — this is the "wrong granularity" flag the original
+   to-do above asked for, and it would have caught this whole class of bug
+   automatically instead of it hiding as a uniformly bad CER.
+3. New model rows `gemini-flash-page` / `gemini-flash-lite-page`:
+   `reasoning_effort: none`, `max_tokens: 900`. New names, not edits to
+   `gemini-flash` / `gemini-flash-lite` in place — the cache key is
+   `(sample_id, model, prompt_version, CACHE_REV)`, so an in-place edit would
+   have kept silently serving the already-cached, still-thinking-enabled
+   predictions under the old name.
+4. `run.page-v2-rollout.yaml` extended to cover every remaining genuinely-free
+   hosted model (`nvidia-gemma-4-31b`, `nvidia-llama-3.2-11b-vl/90b-vl`,
+   `openrouter-dots3-note-free`, `openrouter-minimax-m3-free`) and bumped
+   640 → 900 tokens (640 wasn't enough for `kitab_hindawi`'s longer tail —
+   p90 ≈ 530 tokens, max ≈ 660).
+5. New `run.page-v2-paid.yaml` for the 14 paid models — not run without
+   sign-off (real spend; ~$2 estimated for `limit: 10` per dataset across all
+   14, dominated by `claude-fable-paid` / `claude-fable-5-1-paid`).
+
+**To do.** Extend the same `reasoning_effort: none` treatment to `gemini-pro`
+if it's ever used for OCR (same model family, same risk). The 3090-box
+fine-tunes (`qwen3-vl-4b-bf16` etc.) also still register `prompt_version:
+line-v2` for these two datasets, mitigated only by the 640-token cap already
+described above — worth the same `page-v2` treatment eventually, but that's a
+GPU-box change, tracked separately from this hosted-API fix.
 
 ---
 
@@ -156,6 +220,46 @@ uniformly bad, it specifically erodes what the base was already good at.
    since scaling data against a possibly wrong recipe wastes compute either way.
 4. Backfill `kitab_khatt` for Baseer-Nakba — it's the one cell in this table
    with no data at all.
+
+### exp3090 — Qwen3-VL-4B, vision unfrozen (qwen3vl4b-visft): the frozen ViT was leaving real gain on the table
+
+**Seen (2026-09-14).** Identical recipe and 8k-line Muharaf data to
+exp3090-qwen3vl4b, only `train_vision` flips `false` → `true`. CER (raw),
+frozen-ViT fine-tune → vision-unfrozen fine-tune, same four held-out sets:
+
+| dataset | script | frozen ViT (n) | ViT unfrozen (n) | Δ |
+|---|---|---|---|---|
+| kitab_khatt | Naskh/Ruq'ah HW | 30.0 % (n=180) | 25.3 % (n=180) | −4.7 |
+| nakba_lines | 20th-c. degraded HW | 32.6 % (n=200) | 20.8 % (n=200) | −11.8 |
+| rasam1 (Maghrebi) | Maghrebi manuscript | 52.1 % (n=20, noisy) | 43.2 % (n=200) | −8.9 |
+| rasam2 (Maghrebi) | Maghrebi manuscript | 49.4 % (n=20, noisy) | 48.6 % (n=195) | −0.8 |
+
+**Meaning.** Unfreezing the ViT wins everywhere, not just on Maghrebi —
+`nakba_lines` moved the most in absolute terms (−11.8 pts), with `kitab_khatt`
+and `rasam1` both showing solid, clean gains at n≥180 (the frozen-ViT rasam1/
+rasam2 numbers were n=20 and flagged noisy at the time; unfrozen has n≥195 on
+both, so this is a much cleaner read than the original single-base writeup).
+The hypothesis that motivated this run — that a frozen ViT trained only on
+Ruq'ah-style Muharaf strokes can't learn Maghrebi-specific grapheme shapes —
+is **partially confirmed**: `rasam1` closes a real chunk of the gap (52 %→43 %),
+but `rasam2` barely moves (49.4 %→48.6 %), so whatever residual is capping
+`rasam2` isn't (only) the frozen encoder. diac_f1 also improved across the
+board (e.g. nakba_lines 0.69→0.75), consistent with genuinely better visual
+features, not just better formatting.
+
+**To do.**
+1. Run the same `train_vision: true` flip on PaliGemma-2-3B
+   (`paligemma-visft`, registered, not yet launched) — a second, unrelated
+   vision tower (fixed-448 SigLIP vs Qwen's dynamic-res ViT) tells us whether
+   "unfreezing helps, but doesn't fully close Maghrebi" is a property of the
+   *recipe* or of Qwen's ViT specifically.
+2. `rasam2`'s stubbornness despite unfreezing is now the most interesting open
+   question in this whole programme — worth a per-sample diff (same method as
+   the Baseer regression diagnosis above) against `rasam1` to see what's
+   different about the errors that don't move.
+3. This makes vision-unfrozen the new default recipe going forward, given the
+   consistent (if partial) win and no observed downside — worth carrying into
+   any future data-scaling sweep instead of testing frozen-ViT scaling first.
 
 ---
 

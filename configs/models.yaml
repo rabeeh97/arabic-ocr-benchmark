@@ -74,6 +74,46 @@ gemini-flash-lite-640tok:
   card: >-
     gemini-flash-lite at 640 max_tokens — for the page-v2 prompt-sensitivity
     variant on paragraph/page-scale datasets only.
+    SUPERSEDED for production page-scale runs by gemini-flash-lite-page below
+    (640 tokens still truncated hindawi — see that row's comment); kept as-is
+    so the prompt-sensitivity study's own cached results stay reproducible.
+gemini-flash-page:
+  # gemini-flash, fixed for kitab_hindawi / kitab_historicalbooks: 640 tokens
+  # (and even gemini-flash-lite-640tok's 640) still truncated hindawi's longer
+  # samples down to ~40-90 chars against a ~970-char ground truth, at
+  # output_tokens consistently ~636/640 — Gemini 3.x's adaptive thinking was
+  # consuming nearly the whole budget before the visible answer started, not
+  # a plain "cap too low" truncation. reasoning_effort: none disables that;
+  # max_tokens: 900 covers hindawi's p90 (~530 tok) with headroom for the
+  # (now much smaller) reasoning overhead. New row (not edited in place) so
+  # its cache key is fresh — the existing "gemini-flash" + page-v2 cache
+  # entries are the stale, still-thinking-enabled predictions.
+  client: litellm
+  litellm_id: gemini/gemini-3.6-flash
+  env_key: GEMINI_API_KEY
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
+  params: { temperature: 0, reasoning_effort: none }
+  max_tokens: 900
+  pricing: { input_usd_per_1m: 1.55, output_usd_per_1m: 8.00 }
+  card: >-
+    gemini-flash with thinking disabled (reasoning_effort: none) and
+    max_tokens: 900 — for page-scale kitab_hindawi / kitab_historicalbooks,
+    where adaptive thinking otherwise ate the output budget before the
+    transcription started.
+gemini-flash-lite-page:
+  # Same fix as gemini-flash-page, for gemini-flash-lite.
+  client: litellm
+  litellm_id: gemini/gemini-3.5-flash-lite
+  env_key: GEMINI_API_KEY
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
+  params: { temperature: 0, reasoning_effort: none }
+  max_tokens: 900
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }
+  card: >-
+    gemini-flash-lite with thinking disabled (reasoning_effort: none) and
+    max_tokens: 900 — for page-scale kitab_hindawi / kitab_historicalbooks.
 gemini-pro:
   client: litellm
   litellm_id: gemini/gemini-3.1-pro-preview
@@ -698,6 +738,20 @@ exp3090-qwen3vl4b-ft-bf16:
   card: >-
     Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
     an RTX 3090. Cuts held-out handwriting CER by ~half vs the untuned base.
+exp3090-qwen3vl4b-visft-ft-bf16:
+  # Same recipe/data as exp3090-qwen3vl4b-ft-bf16, but train_vision: true (ViT
+  # unfrozen). hf_id is a repo-relative dir: drop the merged weights there to
+  # re-run it. See docs/experiments/findings-and-notes.md for the comparison.
+  client: hf_local
+  hf_id: models/exp3090-qwen3vl4b-visft-ft
+  arch: qwen2_5_vl
+  min_ram_gb: 16
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines,
+    vision tower UNfrozen) on an RTX 3090. Beats the frozen-ViT fine-tune on
+    every held-out set, most on nakba_lines and the Maghrebi rasam1 set.
 qwen3-vl-8b:
   # 4-bit on a T4 (~6 GB weights); dropped automatically in CPU mode.
   # Needs a transformers new enough to know Qwen3-VL (>= 4.57) — the Colab
