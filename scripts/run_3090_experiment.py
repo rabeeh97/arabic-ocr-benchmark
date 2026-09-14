@@ -86,16 +86,19 @@ BASES = {
         "run_config": "configs/training/exp3090_paligemma2_3b.run.yaml",
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
-        "needs_transformers": "4.49",
         # transformers 4.57.6's PaliGemmaProcessor computes an internal
         # image-token-count expectation of 1024**2 (1,048,576) for this
         # checkpoint instead of 1024, unconditionally failing
         # _check_special_mm_tokens regardless of what the collator passes as
         # text (see the fix in training/sft_vlm.py's collator, which turned
-        # out not to be the actual cause). Cap to the 4.49.x series this
-        # recipe was originally validated against until a newer transformers
-        # is confirmed not to regress this checkpoint's processor.
-        "transformers_max": "4.50",
+        # out not to be the actual cause). Originally tried capping to the
+        # 4.49.x series this recipe predates, but `trl>=0.21` (the floor
+        # below) hard-requires `transformers>=4.55.0` -- uv's resolver
+        # confirmed 4.49 and trl>=0.21 are jointly unsatisfiable. So: floor
+        # raised to 4.55 (the lowest trl-compatible version) and capped just
+        # below 4.57, where the regression was actually observed.
+        "needs_transformers": "4.55",
+        "transformers_max": "4.57",
         "gated": True,
     },
     "paligemma-visft": {
@@ -107,8 +110,8 @@ BASES = {
         "run_config": "configs/training/exp3090_paligemma2_3b_visft.run.yaml",
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
-        "needs_transformers": "4.49",
-        "transformers_max": "4.50",  # see the "paligemma" entry's comment above
+        "needs_transformers": "4.55",
+        "transformers_max": "4.57",  # see the "paligemma" entry's comment above
         "gated": True,
     },
 }
