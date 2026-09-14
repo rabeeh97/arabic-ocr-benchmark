@@ -294,6 +294,11 @@ def _run_meta(run_dir: Path) -> dict:
     return meta
 
 
+_MIN_N = 10  # a handful of lines (a smoke batch, a rate-limit-truncated pass)
+             # isn't a meaningful score -- keep it off the board entirely
+             # rather than show a misleadingly precise CER from n<10.
+
+
 def collect(target: Path) -> list[dict]:
     rows: list[dict] = []
     run_dirs: dict[str, Path] = {}
@@ -308,7 +313,65 @@ def collect(target: Path) -> list[dict]:
                 if r.get("dataset") == "synthetic":
                     continue
                 rows.append({**meta, **r})
-    return _merge_duplicate_runs(rows, run_dirs)
+    merged = _merge_duplicate_runs(rows, run_dirs)
+    _compute_coverage(merged, run_dirs)
+    return [r for r in merged if int(r.get("n") or 0) >= _MIN_N]
+
+
+def _sample_index(sample_id: str) -> int | None:
+    """`<dataset>/<split>/000123` -> 123, the row's position in that split."""
+    tail = sample_id.rsplit("/", 1)[-1]
+    return int(tail) if tail.isdigit() else None
+
+
+def _compute_coverage(rows: list[dict], run_dirs: dict[str, Path]) -> None:
+    """Attach `_full` (bool) and `_pfx` (int) to every row for the "fair
+    comparison" leaderboard views: `_full` is whether the model was scored on
+    every line of the dataset (per `_dataset_rows()`); `_pfx` is the length of
+    the largest *clean, zero-based prefix* of sample indices it covers (0 if
+    the covered indices aren't a contiguous 0..k-1 run -- e.g. accumulate mode
+    filling in scattered gaps across passes). A model with `_pfx >= 20` was
+    scored on exactly the same first-20 lines as any other model with
+    `_pfx >= 20` on that dataset, so comparing them there is apples-to-apples
+    even if neither has finished the whole dataset.
+
+    Reads each contributing run's predictions.jsonl once (cached per run_dir,
+    not per row) rather than trusting `n` alone, since `n` doesn't say *which*
+    lines were scored -- only a contiguous-from-0 index set does.
+    """
+    sizes = _dataset_rows()
+    cache: dict[str, dict[tuple[str, str], set[int]]] = {}
+
+    def idx_for(run_name: str, model: str, dataset: str) -> set[int]:
+        if run_name not in cache:
+            m: dict[tuple[str, str], set[int]] = {}
+            rd = run_dirs.get(run_name)
+            pf = rd / "predictions.jsonl" if rd else None
+            if pf and pf.exists():
+                with pf.open(encoding="utf-8") as fh:
+                    for line in fh:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            p = json.loads(line)
+                        except json.JSONDecodeError:
+                            continue
+                        if p.get("error"):
+                            continue
+                        i = _sample_index(p.get("sample_id", ""))
+                        if i is not None:
+                            m.setdefault((p.get("model"), p.get("dataset")), set()).add(i)
+            cache[run_name] = m
+        return cache[run_name].get((model, dataset), set())
+
+    for r in rows:
+        idxs: set[int] = set()
+        for run_name in (r.get("run") or "").split("+"):
+            idxs |= idx_for(run_name, r["model"], r["dataset"])
+        total = sizes.get(r["dataset"])
+        r["_full"] = bool(total and idxs == set(range(total)))
+        r["_pfx"] = len(idxs) if idxs and idxs == set(range(len(idxs))) else 0
 
 
 def _merge_duplicate_runs(rows: list[dict], run_dirs: dict[str, Path]) -> list[dict]:
@@ -595,19 +658,33 @@ _MATRIX_JS = r"""
 (function(){
   var el=function(id){return document.getElementById(id);};
   var P={}; try{P=JSON.parse(el('mx-data').textContent);}catch(e){return;}
-  var DS=P.ds, M=P.m, C=P.c;                 // C[di][mi] = [cerLight, werLight] | null
-  var out=el('mx-out'), note=el('mx-sortnote');
+  var DS=P.ds, M=P.m, C=P.c, FULL=P.full, PFX=P.pfx;  // C[di][mi]=[cerLight,werLight]|null
+  var out=el('mx-out'), note=el('mx-sortnote'), modeSel=el('mx-mode');
   var meanOrder=P.order;                     // default model column order (indices)
   var sortDi=-1;                             // >=0 => columns sorted by that dataset
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function pc(v){return (v==null||isNaN(v))?'—':(v*100).toFixed(1);}
   function tcls(cer){ if(cer==null||isNaN(cer)) return ''; return 'mx-t'+Math.min(7,Math.max(0,Math.floor(cer/0.15))); }
+  function mode(){ return modeSel ? modeSel.value : 'all'; }
+  // Is this cell shown under the current comparison mode? 'full' = model
+  // scored the entire dataset; 'pfxN' = model's scored lines are a clean,
+  // zero-based prefix covering at least the first N -- i.e. the SAME N lines
+  // every other qualifying model was scored on, for a fair head-to-head.
+  function pass(di,mi){
+    if(!C[di][mi]) return false;
+    var md=mode();
+    if(md==='all') return true;
+    if(md==='full') return !!(FULL && FULL[di] && FULL[di][mi]);
+    var need = md==='pfx10'?10 : md==='pfx20'?20 : md==='pfx40'?40 : 0;
+    return !!(PFX && PFX[di] && PFX[di][mi] >= need);
+  }
   function colOrder(){
     if(sortDi<0) return meanOrder.slice();
     var row=C[sortDi];
     return M.map(function(_,i){return i;}).sort(function(a,b){
-      var x=row[a]?row[a][0]:Infinity, y=row[b]?row[b][0]:Infinity;
+      var x=(pass(sortDi,a) && row[a])?row[a][0]:Infinity;
+      var y=(pass(sortDi,b) && row[b])?row[b][0]:Infinity;
       return x-y;
     });
   }
@@ -618,11 +695,11 @@ _MATRIX_JS = r"""
     var body=DS.map(function(ds,di){
       var row=C[di];
       var best=Infinity;
-      row.forEach(function(c){ if(c && c[0]<best) best=c[0]; });
+      row.forEach(function(c,mi){ if(c && pass(di,mi) && c[0]<best) best=c[0]; });
       var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+"</th>";
       cells+=ord.map(function(i){
         var c=row[i];
-        if(!c) return "<td class='mx-empty'>·</td>";
+        if(!c || !pass(di,i)) return "<td class='mx-empty'>·</td>";
         var isBest=c[0]===best;
         return "<td class='"+tcls(c[0])+(isBest?" mx-best":"")+"'>"+
           "<span class='mx-cer'>"+pc(c[0])+"</span><span class='mx-wer'>"+pc(c[1])+"</span></td>";
@@ -631,9 +708,13 @@ _MATRIX_JS = r"""
     }).join('');
     out.innerHTML="<div class='scroll'><table class='mx-tbl'><thead><tr>"+head+
       "</tr></thead><tbody>"+body+"</tbody></table></div>";
-    note.textContent = sortDi>=0
+    var modeNote={full:' — only models scored on every line of the dataset are shown.',
+      pfx10:' — only models scored on the same first 10 lines are shown.',
+      pfx20:' — only models scored on the same first 20 lines are shown.',
+      pfx40:' — only models scored on the same first 40 lines are shown.'}[mode()] || '';
+    note.textContent = (sortDi>=0
       ? ("columns sorted best→worst on "+DS[sortDi]+" — click it again (or the corner) to reset")
-      : "click a dataset name to sort the model columns best→worst on it";
+      : "click a dataset name to sort the model columns best→worst on it") + modeNote;
   }
   out.addEventListener('click',function(e){
     var t=e.target.closest('[data-di],[data-reset]'); if(!t) return;
@@ -646,6 +727,13 @@ _MATRIX_JS = r"""
     var t=e.target.closest('[data-di]'); if(!t) return;
     e.preventDefault(); var di=+t.getAttribute('data-di'); sortDi=(di===sortDi?-1:di); render();
   });
+  if(modeSel){
+    try{ var saved=localStorage.getItem('lb_mx_mode'); if(saved) modeSel.value=saved; }catch(_){}
+    modeSel.addEventListener('change',function(){
+      try{ localStorage.setItem('lb_mx_mode', modeSel.value); }catch(_){}
+      render();
+    });
+  }
   render();
 })();
 """
@@ -891,17 +979,21 @@ def _render_matrix(rows: list[dict]) -> str:
     m_ix = {m: i for i, m in enumerate(models)}
     idx = {(r["model"], r["dataset"]): r for r in rows}
 
-    cell = []
+    cell, full, pfx = [], [], []
     for ds in datasets:
-        row = []
+        row, frow, prow = [], [], []
         for m in models:
             r = idx.get((m, ds))
             cl = _num(r.get("cer_micro_light"), 1.0) if r else None
             wl = _num(r.get("wer_micro_light"), 1.0) if r else None
             row.append([cl, wl] if cl is not None else None)
+            frow.append(bool(r and r.get("_full")))
+            prow.append(int(r["_pfx"]) if r else 0)
         cell.append(row)
+        full.append(frow)
+        pfx.append(prow)
 
-    payload = {"ds": datasets, "m": models, "c": cell,
+    payload = {"ds": datasets, "m": models, "c": cell, "full": full, "pfx": pfx,
                "order": list(range(len(models)))}  # already best-mean-CER first
     _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
     blob = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
@@ -913,11 +1005,20 @@ def _render_matrix(rows: list[dict]) -> str:
            "corpus-weighted.'>WER&middot;light</abbr>")
     return (
         f"<section class='matrix'><h2>All results — {_cl} / {_wl}</h2>"
-        f"<p class='board-note'>Every model &times; dataset in one grid. Top number is "
+        f"<p class='board-note'>Every model &times; dataset in one grid (models scored on "
+        f"fewer than {_MIN_N} lines are left off the board entirely). Top number is "
         f"<b>{_cl}&nbsp;%</b>, smaller number below is <b>{_wl}&nbsp;%</b> "
         "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
         "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
-        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset.</p>"
+        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset "
+        "(or not run under the comparison mode below).</p>"
+        "<div class='mx-controls'><label>comparison <select id='mx-mode'>"
+        "<option value='all'>All scored (n&ge;10, uneven coverage)</option>"
+        "<option value='full'>Full dataset only (model scored every line)</option>"
+        "<option value='pfx10'>First 10 lines (same lines across models)</option>"
+        "<option value='pfx20'>First 20 lines (same lines across models)</option>"
+        "<option value='pfx40'>First 40 lines (same lines across models)</option>"
+        "</select></label></div>"
         "<p class='board-note mx-sortnote' id='mx-sortnote'></p>"
         f"<div id='mx-out'></div>"
         f"<script id='mx-data' type='application/json'>{blob}</script>"
@@ -1872,11 +1973,11 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 
 /* --- dataset explorer + model reference --- */
 .explorer,.modelref{margin:40px 0 0;}
-.ex-controls,.mr-controls{display:flex;gap:10px;align-items:center;margin:10px 0 8px;}
-.ex-controls label,.mr-controls label{display:flex;align-items:center;gap:7px;
+.ex-controls,.mr-controls,.mx-controls{display:flex;gap:10px;align-items:center;margin:10px 0 8px;}
+.ex-controls label,.mr-controls label,.mx-controls label{display:flex;align-items:center;gap:7px;
   font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
   text-transform:uppercase;color:var(--muted);}
-.ex-controls select,.mr-controls select{font:inherit;font-size:12.5px;padding:5px 9px;
+.ex-controls select,.mr-controls select,.mx-controls select{font:inherit;font-size:12.5px;padding:5px 9px;
   border:1px solid var(--line);border-radius:7px;background:var(--surface);
   color:var(--ink);text-transform:none;letter-spacing:0;max-width:70vw;}
 .ex-card,.mr-out{font-size:13.5px;line-height:1.6;color:var(--ink);max-width:70ch;
