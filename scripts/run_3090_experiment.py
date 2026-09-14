@@ -87,6 +87,15 @@ BASES = {
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
         "needs_transformers": "4.49",
+        # transformers 4.57.6's PaliGemmaProcessor computes an internal
+        # image-token-count expectation of 1024**2 (1,048,576) for this
+        # checkpoint instead of 1024, unconditionally failing
+        # _check_special_mm_tokens regardless of what the collator passes as
+        # text (see the fix in training/sft_vlm.py's collator, which turned
+        # out not to be the actual cause). Cap to the 4.49.x series this
+        # recipe was originally validated against until a newer transformers
+        # is confirmed not to regress this checkpoint's processor.
+        "transformers_max": "4.50",
         "gated": True,
     },
     "paligemma-visft": {
@@ -99,6 +108,7 @@ BASES = {
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
         "needs_transformers": "4.49",
+        "transformers_max": "4.50",  # see the "paligemma" entry's comment above
         "gated": True,
     },
 }
@@ -132,8 +142,13 @@ def _download(url: str, dest) -> None:
 def _log(dirs: dict, msg: str) -> None:
     line = f"[{_now()}] {msg}"
     print(line, flush=True)
-    with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
+    # A detached run's own stdout IS run.log (redirected in _respawn_detached)
+    # -- print() above already lands there, so writing it again below would
+    # duplicate every line. Only a foreground invocation (stdout is a tty or a
+    # pipe, not that regular file) needs the explicit write to reach the file.
+    if not _stdout_is_regular_file():
+        with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
+            fh.write(line + "\n")
 
 
 def _rotate_log(dirs: dict) -> None:
@@ -390,8 +405,9 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    also pull a fresh PyPI `torch`, replacing the CUDA wheel from step 1
     #    (and on WDAC-locked boxes the new torch DLLs fail to load, WinError 4551).
     tfloor = spec["needs_transformers"] or "4.49"
+    tmax = spec.get("transformers_max") or "5"
     if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
-                   f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
+                   f"transformers>={tfloor},<{tmax}", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
 
