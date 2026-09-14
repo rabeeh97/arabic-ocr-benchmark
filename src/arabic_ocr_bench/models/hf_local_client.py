@@ -19,10 +19,6 @@ from .litellm_client import clean_output, looks_like_refusal
 # these keep it honest and let EOS fire naturally.
 _GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
 
-# paligemma2-*-448: 448/14 patch size -> 32x32, matching training/sft_vlm.py's
-# _PALIGEMMA_IMAGE_TOKENS (kept as a separate constant - models/ shouldn't
-# import from training/).
-_PALIGEMMA_IMAGE_TOKENS = 1024
 _DEFAULT_PALIGEMMA_PROMPT = "ocr\n"  # matches the paligemma-arabic-hw adapter's training
 
 
@@ -519,10 +515,20 @@ class HFLocalClient:
         import torch
 
         # PaliGemma uses a task-prefix, not a chat template (see self.paligemma_prompt).
-        # Prepending the image tokens ourselves stops the processor from inferring
-        # them itself and logging a warning on every single call.
-        image_seq_length = getattr(self._processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
-        pg_prompt = "<image>" * image_seq_length + self.paligemma_prompt
+        #
+        # Exactly ONE "<image>" placeholder -- NOT `image_seq_length` copies.
+        # PaliGemmaProcessor.__call__ (transformers/models/paligemma/
+        # processing_paligemma.py) detects that the text already contains
+        # "<image>" and expands EVERY occurrence into `self.image_seq_length`
+        # copies itself (`sample.replace(IMAGE_TOKEN, IMAGE_TOKEN *
+        # self.image_seq_length)`). Passing image_seq_length copies here made
+        # it expand each of those into another image_seq_length -- e.g.
+        # 1024*1024 = 1,048,576 total "<image>" tokens for the -448 checkpoint
+        # -- failing the processor's own image-token-count check on every
+        # single call (100% error rate). See the identical bug/fix in
+        # training/sft_vlm.py's _make_collator_paligemma for the full story;
+        # this is the same mistake in the separate inference code path.
+        pg_prompt = "<image>" + self.paligemma_prompt
         inputs = self._processor(text=pg_prompt, images=image, return_tensors="pt").to(
             self._device
         )
