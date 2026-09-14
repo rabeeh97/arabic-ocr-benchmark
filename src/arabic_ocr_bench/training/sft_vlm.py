@@ -39,7 +39,17 @@ def _load_processor(cfg: TrainingConfig):
     if cfg.base_model.arch == "paligemma":
         # PaliGemma's processor has a fixed image size baked into the checkpoint;
         # it rejects the Qwen min_pixels / max_pixels kwargs.
-        return AutoProcessor.from_pretrained(cfg.base_model.hf_id)
+        #
+        # use_fast=True: without it, transformers warns "Using a slow image
+        # processor as `use_fast` is unset and a slow processor was saved
+        # with this model" and silently loads the SLOW image processor for
+        # this checkpoint. That slow processor's internal expected-image-
+        # token-count computation is what was producing 1024**2 (1,048,576)
+        # in _check_special_mm_tokens regardless of transformers version
+        # (4.56.2 and 4.57.6 both hit it identically) -- not a version
+        # regression, a slow-vs-fast processor bug. Forcing the fast
+        # processor is exactly what the warning itself recommends.
+        return AutoProcessor.from_pretrained(cfg.base_model.hf_id, use_fast=True)
     return AutoProcessor.from_pretrained(
         cfg.base_model.hf_id,
         min_pixels=cfg.image.min_pixels,
@@ -200,12 +210,13 @@ def _make_collator_paligemma(processor, max_seq_len: int):
     # Prepending the exact count ourselves gives it what it expects up front.
     #
     # NOT `getattr(processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)`:
-    # on transformers 4.57.6 that attribute came back as 1024**2 (1,048,576)
-    # for this exact checkpoint instead of 1024, blowing the prefix up to a
-    # million "<image>" tokens and failing processor()'s own image-token-count
-    # check. _PALIGEMMA_IMAGE_TOKENS is a hardcoded, verified-correct constant
-    # for this single checkpoint (paligemma2-3b-pt-448) -- trust it over a
-    # library attribute that can silently change meaning across versions.
+    # that attribute isn't guaranteed to exist or stay correct across
+    # transformers versions for this checkpoint. _PALIGEMMA_IMAGE_TOKENS is a
+    # hardcoded, verified-correct constant for this single checkpoint
+    # (paligemma2-3b-pt-448) -- trust it over a library attribute. (Note: a
+    # 1024**2 image-token-count mismatch was chased here at one point and
+    # looked related, but the actual cause was _load_processor loading the
+    # SLOW image processor by default -- see the use_fast=True fix there.)
     image_seq_length = _PALIGEMMA_IMAGE_TOKENS
     prefix_with_image_tokens = "<image>" * image_seq_length + _PALIGEMMA_PREFIX
 

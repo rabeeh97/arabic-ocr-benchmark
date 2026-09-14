@@ -86,17 +86,17 @@ BASES = {
         "run_config": "configs/training/exp3090_paligemma2_3b.run.yaml",
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
-        # transformers 4.57.6's PaliGemmaProcessor computes an internal
-        # image-token-count expectation of 1024**2 (1,048,576) for this
-        # checkpoint instead of 1024, unconditionally failing
-        # _check_special_mm_tokens regardless of what the collator passes as
-        # text (see the fix in training/sft_vlm.py's collator, which turned
-        # out not to be the actual cause). Originally tried capping to the
-        # 4.49.x series this recipe predates, but `trl>=0.21` (the floor
-        # below) hard-requires `transformers>=4.55.0` -- uv's resolver
-        # confirmed 4.49 and trl>=0.21 are jointly unsatisfiable. So: floor
-        # raised to 4.55 (the lowest trl-compatible version) and capped just
-        # below 4.57, where the regression was actually observed.
+        # This checkpoint's SLOW image processor (loaded by default when
+        # `use_fast` is unset -- see _load_processor in training/sft_vlm.py)
+        # computes an internal expected-image-token-count of 1024**2
+        # (1,048,576) instead of 1024, unconditionally failing
+        # _check_special_mm_tokens. Confirmed identical on both transformers
+        # 4.56.2 and 4.57.6 -- NOT a version regression, a slow-vs-fast
+        # processor bug, fixed by passing use_fast=True (done). The
+        # transformers floor/cap below is unrelated: `trl>=0.21` (required
+        # floor) hard-requires `transformers>=4.55.0`, so this pin only
+        # exists to keep both packages jointly installable, not to work
+        # around the image-token bug.
         "needs_transformers": "4.55",
         "transformers_max": "4.57",
         "gated": True,
