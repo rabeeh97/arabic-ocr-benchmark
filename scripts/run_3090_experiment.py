@@ -86,17 +86,13 @@ BASES = {
         "run_config": "configs/training/exp3090_paligemma2_3b.run.yaml",
         "hf_id": "google/paligemma2-3b-pt-448",
         "arch": "paligemma",
-        # This checkpoint's SLOW image processor (loaded by default when
-        # `use_fast` is unset -- see _load_processor in training/sft_vlm.py)
-        # computes an internal expected-image-token-count of 1024**2
-        # (1,048,576) instead of 1024, unconditionally failing
-        # _check_special_mm_tokens. Confirmed identical on both transformers
-        # 4.56.2 and 4.57.6 -- NOT a version regression, a slow-vs-fast
-        # processor bug, fixed by passing use_fast=True (done). The
-        # transformers floor/cap below is unrelated: `trl>=0.21` (required
-        # floor) hard-requires `transformers>=4.55.0`, so this pin only
-        # exists to keep both packages jointly installable, not to work
-        # around the image-token bug.
+        # This pin exists ONLY to keep transformers/trl jointly installable
+        # (`trl>=0.21`, the required floor, hard-requires
+        # `transformers>=4.55.0`) -- it has nothing to do with the
+        # 1024**2 image-token-count crash chased around this base for a
+        # while; that was a genuine double-expansion bug in
+        # _make_collator_paligemma (training/sft_vlm.py), unrelated to
+        # transformers version or the slow/fast image processor.
         "needs_transformers": "4.55",
         "transformers_max": "4.57",
         "gated": True,
