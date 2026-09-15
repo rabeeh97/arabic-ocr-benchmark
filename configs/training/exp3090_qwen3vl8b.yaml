@@ -1,0 +1,70 @@
+# RTX 3090 experiment — QLoRA on Qwen3-VL-8B-Instruct (vs the 4B family tested
+# everywhere else so far). Answers "does a bigger base actually help, or is
+# 8k Muharaf lines the ceiling regardless of model size" -- same question the
+# base-model A/B/C write-up (docs/experiments/findings-and-notes.md) asked
+# across architectures, this time across scale within the same Qwen3-VL family.
+#
+# QLoRA (not plain bf16 LoRA): an 8B model plus its own bf16 gradients/optimizer
+# state doesn't comfortably fit a single 3090's 24 GB alongside activations for
+# a ViT-unfrozen run; 4-bit weights (via BitsAndBytesConfig, nf4 + double-quant,
+# bf16 compute dtype) free up the headroom the same way the existing
+# `qwen3-vl-8b` EVAL row already needs `load_in_4bit: true` just to inference on
+# a T4 (see configs/models.yaml). ViT stays frozen here for the same VRAM
+# reason -- unlike qwen3vl4b_visft.yaml, there isn't room to also unfreeze the
+# vision tower on top of the quantized 8B backbone; if this fits comfortably,
+# a `-visft` sibling unfreezing it is the natural next step.
+#
+# Cost heads-up: the paligemma-visft run (a 3B-class model) took ~24 wall hours
+# for one epoch at 8k lines on this 3090. An 8B QLoRA run will likely be
+# slower still -- sanity-check with `--limit 1000` or `2000` before committing
+# to a full 8k-line run.
+#
+# Needs transformers>=4.57 for Qwen3-VL support (same floor as qwen3vl4b*.yaml).
+experiment: exp3090-qwen3vl8b
+method: qlora            # 4-bit NF4 base + LoRA adapter -- see header note above.
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-8B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false    # frozen -- no VRAM headroom left after 4-bit + 8B; see header
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000         # same 8k lines as the 4B baselines -- scale is the only variable
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704      # 448*448
+  max_pixels: 702464      # ~896*784 -- reduced from the 4B configs' 1003520; 8B+4-bit
+                           # leaves less headroom for large image tokens. Raise if it fits.
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 100         # frequent checkpoints — this box reboots/gets killed a lot
+  save_total_limit: 5
+  resume: true            # re-run -> continues from the newest checkpoint-*
+  push_to_hub: false
+
+# The experiment script overrides output_dir to <exp-folder>/runs/<experiment>.
+output_dir: results/training/exp3090-qwen3vl8b
+eval_datasets: [muharaf_lines]

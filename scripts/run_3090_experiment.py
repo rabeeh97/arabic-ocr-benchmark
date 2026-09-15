@@ -94,6 +94,23 @@ BASES = {
         "needs_transformers": None,
         "gated": False,
     },
+    "qwen3vl8b": {
+        # Same 8k-line Muharaf recipe as the 4B family, but on Qwen3-VL-8B --
+        # tests whether a bigger base within the same architecture family
+        # actually helps, or 8k lines is the ceiling regardless of scale.
+        # QLoRA (4-bit NF4), ViT frozen -- no VRAM headroom for bf16 LoRA or
+        # an unfrozen ViT on top of an 8B backbone on a single 3090. See
+        # configs/training/exp3090_qwen3vl8b.yaml's header for the full
+        # rationale, including the cost heads-up (likely slower than the
+        # ~24h/epoch paligemma-visft run) -- sanity-check with --limit first.
+        "experiment": "exp3090-qwen3vl8b",
+        "config": "configs/training/exp3090_qwen3vl8b.yaml",
+        "run_config": "configs/training/exp3090_qwen3vl8b.run.yaml",
+        "hf_id": "Qwen/Qwen3-VL-8B-Instruct",
+        "arch": "qwen3_vl",
+        "needs_transformers": "4.57",
+        "gated": False,
+    },
     "baseer-mixed": {
         # Same base as "baseer" (Misraj/Baseer__Nakba, ViT frozen, gentle 5e-5
         # LR), but replays 2k NAKBA train lines alongside 6k Muharaf instead
