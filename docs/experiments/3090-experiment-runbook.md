@@ -26,6 +26,19 @@ in with a normal shell (PowerShell or cmd both work).
 | ~60 GB free disk on `C:` | `Get-PSDrive C` | venv + HF cache + base weights (~8 GB) + checkpoints |
 | Python 3.9+ for the *launcher* only | `python --version` | launcher is **stdlib-only** (no pip installs needed); the venv it builds is separate and pulls its own 3.11 via uv |
 | PowerShell available (for the uv installer) | `powershell -?` | present on every modern Windows |
+| Windows Defender Application Control / Smart App Control status | `Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard` (nonzero `Available/RequiredSecurityProperties` means it's on) | **if enabled, do the two steps below once before your first experiment** — otherwise every fresh `--dir` hits `OSError: [WinError 4551] An Application Control policy has blocked this file` partway through `bootstrap`. See "WDAC/4551" in §9 Gotchas for the full failure modes; this is the one-time fix that avoids all of them. |
+
+If WDAC/Smart App Control is on, do this **once per box**, not per experiment:
+1. Install Python 3.11 from [python.org](https://www.python.org/downloads/) (a
+   signed installer — not the `uv`-managed build, which is what gets blocked).
+   Confirm it registered with the launcher: `py -0p` should list a `3.11` line
+   with its path (e.g. `C:\Users\User\AppData\Local\Programs\Python\Python311\python.exe`).
+2. `setx UV_PYTHON_PREFERENCE system` — makes `uv` prefer that already-installed,
+   signed interpreter over downloading its own (unsigned, blocked) one, for
+   **every** `uv venv` / `uv pip install` call this launcher makes, in every
+   experiment folder, from here on. Close and reopen your shell (or `ssh` back
+   in) so the new env var takes effect, then just run experiments normally —
+   no `--venv-python` flag, no per-run workaround needed.
 
 Nothing else is installed globally — `uv`, torch, transformers, bitsandbytes all
 go **inside the experiment folder**.
@@ -381,23 +394,17 @@ training) to prove the whole pipeline before committing to the long run.
 - **WDAC/4551 can block THREE different interpreters, one at a time, at three
   different bootstrap steps** — same root cause (Smart App Control / WDAC
   distrusts an "unrecognised" Windows binary), three separate fixes, because
-  each blocked `python.exe`/DLL is a **different** file on disk:
+  each blocked `python.exe`/DLL is a **different** file on disk. **Do the
+  §0 one-time fix (`UV_PYTHON_PREFERENCE=system` + a python.org 3.11 install)
+  before your first experiment on a WDAC box and none of these three ever
+  trigger** — they're documented here in full only for a box where that
+  wasn't done up front, or mid-experiment as a manual workaround:
   1. `uv venv`'s own managed CPython build (`OSError: [WinError 4551] …
-     python.exe`, right when the venv is created). Fix: `--venv-python
-     <path>` pointing at a **signed python.org installer's** 3.11 (not the uv
-     managed build) — see the flag's own `--help` text. Find that path with
-     the Python launcher: `py -0p` lists every installed interpreter with its
-     full path (look for the `3.11` line, not whichever version is marked
-     `*` default — that default is unrelated and doesn't need to match).
-     **To stop needing `--venv-python` by hand on every launch**: `uv` picks
-     its own managed (unsigned) CPython over an already-installed one by
-     default, regardless of the box's default `python`/`py` version — so
-     changing that default doesn't help. What does: `setx
-     UV_PYTHON_PREFERENCE system` (once, persists for new shells), which
-     tells `uv` to prefer an already-installed system interpreter and only
-     fall back to downloading its own if none matches. With that set, the
-     launcher's own default (`--python 3.11`, used whenever `--venv-python`
-     is omitted) resolves to the already-installed, signed 3.11 automatically.
+     python.exe`, right when the venv is created). One-off workaround
+     without touching the box's `UV_PYTHON_PREFERENCE`: `--venv-python
+     <path>` pointing at the signed python.org 3.11 (find its path with
+     `py -0p` — look for the `3.11` line, not whichever version is marked
+     `*` default; that default is unrelated and doesn't need to match).
   2. **The editable-install build-isolation venv** (`Failed to build
      arabic-ocr-bench … Failed to run
      <dir>\uv_cache\builds-v0\.tmp…\Scripts\python.exe … (os error 4551)`,
