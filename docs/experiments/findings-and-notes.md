@@ -546,3 +546,37 @@ high-empty-rate models above.
   collection; structured book OCR (chapters, symbols); government forms (MSA +
   handwritten fields); domain-vocabulary-conditioned OCR; dialect / font
   generalisation ("is it a model per font?").
+
+### OCR-conditioned correction (2026-09-15) — a "per-product" post-processing axis, not yet run
+
+Implemented per arXiv 2608.22366's finding that feeding a classical OCR
+engine's rough pass to a VLM as a correction prior helps a lot on clean
+printed text (up to 53% relative CER improvement over Tesseract alone on
+their aged-print analog) but *hurts* on cursive/Maghrebi manuscripts, where
+Tesseract's own output is unreliable enough to mislead the corrector more
+than it helps — this matches our own independent struggles on RASAM/Muharaf
+for unrelated reasons, so this technique is deliberately scoped to
+`kitab_hindawi` / `kitab_historicalbooks` only.
+
+- `src/arabic_ocr_bench/models/tesseract_client.py`: `TesseractClient` (a
+  Tier-5 classical-OCR anchor, ignores the prompt) and `OCRCorrectedClient`
+  (wraps any other registered `ModelClient`, runs Tesseract first, and if it
+  succeeds, appends its raw output to the prompt as an explicitly-untrusted
+  "for reference only" prior before delegating to the wrapped client — a
+  Tesseract failure falls back to the wrapped client's plain-prompt behavior
+  rather than erroring the whole call).
+- New `client: tesseract` / `client: ocr_corrected` cases in
+  `models/registry.py`'s `build_model()`.
+- New rows in `configs/models.yaml`: `tesseract-ara` (the anchor) and
+  `gemini-flash-lite-page-corrected` (wraps the already-fixed
+  `gemini-flash-lite-page` row — thinking disabled, max_tokens: 900 — with a
+  Tesseract Arabic prior).
+- `pyproject.toml`: new `ocr` extra (`pytesseract`) — needs the system
+  `tesseract-ocr` binary + Arabic traineddata installed separately (not a
+  pip package); not installed in this dev environment, so this is
+  code-complete but **not yet run** against real data.
+- **To do**: install the system Tesseract binary + `ara` traineddata, run
+  `gemini-flash-lite-page-corrected` vs. plain `gemini-flash-lite-page` and
+  `tesseract-ara` alone on `kitab_hindawi` / `kitab_historicalbooks`, and
+  confirm (or refute) the paper's finding on our own data. No GPU needed —
+  Tesseract runs on CPU and the corrector reuses an existing hosted API call.

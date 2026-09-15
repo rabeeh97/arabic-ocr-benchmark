@@ -48,6 +48,13 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.6",
 ]
+# classical-OCR baseline + OCR-conditioned correction (Tier 5 in docs/models.md).
+# Needs the system `tesseract-ocr` binary plus its Arabic traineddata
+# (`tesseract-ocr-ara` on Debian/Ubuntu, `brew install tesseract-lang` on
+# macOS) — pytesseract is just a thin subprocess wrapper around it.
+ocr = [
+    "pytesseract>=0.3.10",
+]
 
 [project.scripts]
 bench = "arabic_ocr_bench.cli:main"

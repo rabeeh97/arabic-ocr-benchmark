@@ -1019,3 +1019,38 @@ minicpm-v:
     MiniCPM-V 2.6 (8B), a compact multimodal model with multilingual document
     OCR across 30+ languages including Arabic. The strongest non-Qwen small VLM
     in the set; also the one to run locally via Ollama (`ollama pull minicpm-v`).
+
+# --- Tier 5 classical-OCR anchor + OCR-conditioned correction (2026-09) -------
+# From arXiv 2608.22366 ("When Do VLMs Help Arabic Manuscript OCR?"): feeding
+# a classical OCR engine's rough pass to a VLM as a correction prior helps a
+# lot on clean printed text (up to 53% relative CER improvement over
+# Tesseract alone in their aged-print analog) but HURTS on cursive/Maghrebi
+# manuscripts, where Tesseract's own output is unreliable enough to mislead
+# the corrector. Needs pytesseract (`pip install -e .[ocr]`) plus the system
+# tesseract-ocr binary and its Arabic traineddata — see docs/models.md Tier 5.
+tesseract-ara:
+  client: tesseract
+  lang: ara
+  pricing: null
+  card: >-
+    Tesseract 5 (via pytesseract), Arabic traineddata, ignores the prompt.
+    Classical-OCR floor the project's "does a VLM help" hypothesis is
+    measured against. Fast, free, expected weak on cursive manuscripts —
+    that's the point (see docs/models.md Tier 5).
+gemini-flash-lite-page-corrected:
+  # OCR-conditioned correction: Tesseract's raw pass is fed to
+  # gemini-flash-lite-page (the established best row for kitab_hindawi /
+  # kitab_historicalbooks — thinking disabled, max_tokens: 900) as a prior
+  # in the prompt, asking it to correct against the image rather than
+  # transcribe cold. Target THESE two page-scale printed sets specifically;
+  # do not expect this to help (and do not run it on) RASAM/Maghrebi or
+  # handwriting — the paper shows OCR-conditioning actively hurts there, and
+  # a Tesseract pass on cursive manuscripts is closer to noise than a prior.
+  client: ocr_corrected
+  inner: gemini-flash-lite-page
+  lang: ara
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }   # same as the wrapped gemini-flash-lite-page row
+  card: >-
+    gemini-flash-lite-page, given a Tesseract Arabic OCR pass as a correction
+    prior instead of transcribing cold. kitab_hindawi / kitab_historicalbooks
+    only — see docs/models.md Tier 5 and the header comment above this row.
