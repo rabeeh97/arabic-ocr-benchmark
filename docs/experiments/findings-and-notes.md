@@ -316,13 +316,65 @@ different line samples.
 1. Don't default to `train_vision: true` for PaliGemma the way we now do for
    Qwen — the frozen-ViT PaliGemma recipe is currently the better one on 4/5
    held-out sets.
-2. The `kitab_hindawi` regression (+11.4 pts, the largest swing in either
-   direction across both vision-unfrozen experiments) is the most interesting
-   single result here — worth a per-sample diff (same method as the Baseer
-   regression diagnosis) to see whether it's broad degradation or a few
-   badly-hit samples dragging the mean.
+2. ~~The `kitab_hindawi` regression is worth a per-sample diff~~ — done below;
+   it's broad, systematic degradation, and the actual mechanism (premature
+   EOS, not truncation) is now understood.
 3. If a third vision-unfrozen base is ever run, this is now a real ambiguous
    result to break the tie on, not a confirmatory rerun.
+
+**`kitab_hindawi` regression diagnosis (2026-09-15).** Used the new
+`scripts/pair_diff.py` (generalizing the ad-hoc method used for the Baseer
+diagnosis into a reusable tool) to compare frozen vs. vision-unfrozen
+PaliGemma per sample_id on `kitab_hindawi`:
+
+```
+uv run python scripts/pair_diff.py \
+    --model-a exp3090-paligemma2-3b-ft-bf16 \
+    --model-b exp3090-paligemma2-3b-visft-ft-bf16 \
+    --dataset kitab_hindawi
+```
+
+`n paired = 178, worse = 150 (84%), better = 27, flat = 1` — broad, systematic
+degradation, not a handful of outliers dragging the mean (the same pattern as
+Baseer's genuine `nakba_lines` forgetting, not Baseer's noise-level `rasam2`
+result).
+
+**Root cause: premature EOS, not the missing-token-budget bug.** Both frozen
+and vision-unfrozen rows already carry the same explicit `max_new_tokens: 640`
+(set in the same fix as the truncation bug above), so this looked at first
+like it could be the same class of problem — it isn't. A median
+`len(prediction)/len(ground_truth)` check confirmed vision-unfrozen's ratio
+(0.70) is still meaningfully lower than frozen's (0.83) despite the equal cap,
+and looking at the actual predicted text for the two biggest regressions
+confirms why: the model is **stopping generation on its own, far short of the
+token budget**, not being cut off by it.
+
+- `kitab_hindawi/train/000171` (GT 879 chars): frozen predicts 736 chars (a
+  near-complete, plausible transcription); vision-unfrozen predicts **11
+  characters** — `"الطويل ولكن"` ("The long but"), the first two words of the
+  line, then EOS.
+- `kitab_hindawi/train/000173` (GT 541 chars): frozen predicts 465 chars;
+  vision-unfrozen predicts 71.
+
+**Interpretation.** The 8k-line Muharaf training set is exclusively short,
+line-level handwriting (median ~50 chars per line). Unfreezing the vision
+tower during that fine-tune appears to have made the model overfit more
+strongly to "the response ends soon" as a length prior tied to what it was
+actually shown, at the cost of generalizing that prior to genuinely longer,
+page-scale printed content it never saw during training. The frozen-ViT
+fine-tune, whose vision tower was never touched, evidently retains more of
+its original pretrained length calibration for longer documents. This is a
+plausible, secondary explanation for the `kitab_hindawi` regression on top of
+the two architectural theories above — and it's specific to output *length*
+control, not visual reading quality per se (both models get plenty of
+individual words/phrases right in what they do produce, per the raw text
+above).
+
+**To do.** This EOS-timing effect is now the clearer of the two `train_vision`
+questions raised on this base and worth a small targeted check: does it show
+up on `kitab_historicalbooks` too (also page-scale, shorter GT so a milder
+version of the same test), or only on the longest-GT dataset (`kitab_hindawi`
+has the longest median ground truth of any dataset in the benchmark)?
 
 ### kitab_hindawi / kitab_historicalbooks — most models are being measured wrong, not performing badly
 
@@ -418,21 +470,40 @@ have them) is very likely the same shape needed for the other
 high-empty-rate models above.
 
 **To do.**
-1. Set `max_new_tokens: 640` explicitly on the Qwen3-VL and Baseer-Nakba
-   `hf_local` rows in `configs/models.yaml` (matching what PaliGemma already
-   got) — this alone should fix the truncation-driven numbers without
-   touching any code.
+1. ~~Set `max_new_tokens: 640`~~ — superseded by a proper fix: `runner.py` now
+   resolves a real per-`(model, dataset)` generation budget from
+   `configs/datasets.yaml`'s `max_tokens_hint` field, not a hardcoded
+   per-model edit. See the "real per-dataset generation-token budget" entry
+   below.
 2. Debug `gemini-flash-page`'s remaining 64% empty rate — the existing page
-   fix isn't fully working.
-3. Re-run the 7 free-tier models flagged as "fully broken" against a
-   line-scale dataset (`kitab_khatt` is cheap and fast) before concluding
-   they need to be dropped from the sweep entirely.
-4. Investigate GLM-5.3's empty-output / `cer=1.0` pattern specifically,
-   given the project's explicit interest in it.
-5. Once the above are fixed, every "-page" style CER on these two datasets
-   should be treated as provisional and re-scored — several of the numbers
-   currently on the leaderboard for these two datasets are measuring
-   truncation, not OCR quality.
+   fix isn't fully working. Still open.
+3. ~~Re-run the 7 free-tier models flagged as "fully broken" against a
+   line-scale dataset~~ — done. **Confirmed: the "fully broken" verdict was a
+   page-scale artifact for 5 of the 8 flagged models.** Re-ran all 8 against
+   `kitab_khatt` (line-scale): `openrouter-qwen3-vl-235b` (33% CER, 0 errors),
+   `openrouter-qwen2.5-vl-72b` (37%), `openrouter-llama-4-maverick` (56%),
+   `glm-5.3-flash-paid` (81% CER — high, but producing real output, not
+   empty), and `mistral-small` (82%) are all healthy on line-scale data. The
+   two `openrouter-gemma-4-*-free` rows hit a genuine free-tier daily-quota
+   wall mid-run (`5+ consecutive rate-limit errors`) — a real, separate,
+   already-understood issue (see `skip-rate-limited-free-models` /
+   `stalled-sweep-diagnosis`), not page-scale-related. `mistral-medium`
+   failed with a live `RateLimitError` (429) that traces to running
+   back-to-back with `mistral-small` in the same short test, sharing one
+   Mistral account's rate limit — also not page-scale-related, just needs
+   its own isolated run or a gap between the two Mistral models.
+4. **GLM-5.3 is not actually broken** — it was returning empty output
+   specifically on the page-scale datasets (now understood as a page-scale
+   generation-budget problem, addressed by fix #1 above); on `kitab_khatt` it
+   produces real predictions (81% CER — poor, but a real signal to act on,
+   not a pipeline failure).
+5. Once `gemini-flash-page` (#2) is fixed, every "-page" style CER on these
+   two datasets should be treated as provisional and re-scored — several
+   numbers currently on the leaderboard for these two datasets were measuring
+   truncation/empty-output bugs, not OCR quality. Re-running the free-tier
+   sweep (`configs/run.free-accumulate.yaml`) now that the real per-dataset
+   budget mechanism is live should recover most of these models' `kitab_hindawi`
+   coverage too.
 
 ---
 
