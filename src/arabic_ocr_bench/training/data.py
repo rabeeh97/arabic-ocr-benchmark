@@ -29,13 +29,17 @@ class ScoredSplitLeakError(RuntimeError):
 def _hf_id_for(cfg: dict) -> str | None:
     """The HF repo id a dataset entry pulls from, mirroring the adapters.
 
-    KITAB-Bench entries carry it as `params.subset` (a bare suffix under
-    `ahmedheakl/`, or a full `org/name`); everything else uses a top-level
-    `hf_id`. In-repo datasets (synthetic) have neither.
+    KITAB-Bench entries carry it as `subset` -- nested under `params.subset`
+    in the configs/datasets.yaml registry shape, or as a top-level `subset`
+    in a training SourceSpec's shape (see training/config.py's SourceSpec
+    and _source_cfg() above, which copies a SourceSpec's `subset` field to
+    the top level, not into `params`) -- a bare suffix under `ahmedheakl/`,
+    or a full `org/name`. Everything else uses a top-level `hf_id`. In-repo
+    datasets (synthetic) have neither.
     """
     if cfg.get("hf_id"):
         return cfg["hf_id"]
-    subset = (cfg.get("params") or {}).get("subset")
+    subset = cfg.get("subset") or (cfg.get("params") or {}).get("subset")
     if subset:
         return subset if "/" in subset else f"ahmedheakl/{subset}"
     return None
@@ -99,7 +103,14 @@ def iter_source_samples(src, *, cfg_path: str | Path = _DEFAULT_CFG):
     from ..datasets.registry import build_dataset
 
     get = src.get if isinstance(src, dict) else lambda k, d=None: getattr(src, k, d)
-    hf_id, split = get("hf_id"), get("split")
+    # _hf_id_for (not just get("hf_id")): a KITAB-Bench-adapter source (e.g.
+    # nakba_lines_train, rasam1/rasam2) carries its real HF id under `subset`,
+    # not a top-level `hf_id` -- without this, the no-leak check below never
+    # fires for that whole class of source (silently, no error), since
+    # `hf_id` would just be None. This mirrors scored_splits()'s own
+    # subset-aware derivation so both sides of the leak check agree on what
+    # "the same dataset" means.
+    hf_id, split = _hf_id_for(_source_cfg(src)), get("split")
     if hf_id and split:
         check_source_not_scored(hf_id, split, cfg_path=cfg_path)
     adapter = build_dataset(get("name"), _source_cfg(src), limit=get("limit"))

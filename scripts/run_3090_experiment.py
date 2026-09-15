@@ -71,6 +71,20 @@ BASES = {
         "needs_transformers": "4.57",
         "gated": False,
     },
+    "qwen3vl4b-mixed": {
+        # Same as "qwen3vl4b-visft" (vision-unfrozen), but trained on 6k
+        # Muharaf + 2k NAKBA train lines instead of 8k Muharaf alone -- tests
+        # whether a NAKBA replay slice closes the nakba_lines/rasam1/rasam2
+        # gaps every Muharaf-only fine-tune has shown so far. See
+        # docs/experiments/findings-and-notes.md.
+        "experiment": "exp3090-qwen3vl4b-mixed",
+        "config": "configs/training/exp3090_qwen3vl4b_mixed.yaml",
+        "run_config": "configs/training/exp3090_qwen3vl4b_mixed.run.yaml",
+        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
+        "arch": "qwen3_vl",
+        "needs_transformers": "4.57",
+        "gated": False,
+    },
     "baseer": {
         "experiment": "exp3090-baseer-nakba",
         "config": "configs/training/exp3090_baseer_nakba.yaml",

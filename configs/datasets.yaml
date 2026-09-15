@@ -117,6 +117,24 @@ nakba_lines:
     from the Palestinian Nakba oral-history archive. Real degraded 20th-century
     handwriting with a curated line-level transcription (`image` + `text`).
     CC-BY-4.0; the `test` split of the shared task's Systems Track.
+nakba_lines_train:
+  # Same corpus/adapter as nakba_lines, but its `train` split -- a separate
+  # dataset NAME (not just a different split on the same name) so the
+  # contamination gate treats it as a distinct training source to check
+  # against nakba_lines (the eval set) rather than silently aliasing them.
+  # Wired in for mixed-corpus training experiments (Muharaf + a NAKBA
+  # replay slice) -- see configs/training/exp3090_qwen3vl4b_mixed.yaml and
+  # exp3090_baseer_nakba_mixed.yaml.
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+  track: line
+  split: train
+  license: CC-BY-4.0
+  source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
+  card: >-
+    NAKBA NLP 2026 -- the `train` split of the same Omar Al-Saleh memoirs
+    corpus as nakba_lines (whose `test` split is the held-out eval set).
+    Training-only; not meant to be benchmarked directly.
 
 # --- RASAM (Calfa / BULAC) — Maghribi-script historical manuscripts ------------
 # HF, ungated, apache-2.0. Same `KitabBench` generic adapter: columns are

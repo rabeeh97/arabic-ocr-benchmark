@@ -1,0 +1,70 @@
+# RTX 3090 experiment — mixed-corpus training. Every exp3090_* fine-tune so
+# far has trained on Muharaf alone (8k lines); this is the first to mix in a
+# second corpus. Same recipe as exp3090_qwen3vl4b_visft.yaml (vision-unfrozen,
+# the now-established better recipe for Qwen) in every other respect, so the
+# only variable is the training-data mix.
+#
+# Why: Muharaf is predominantly Naskh/Ruq'ah. Every Muharaf-only fine-tune so
+# far (Qwen, Baseer, PaliGemma, frozen and vision-unfrozen) is meaningfully
+# weaker on nakba_lines and the Maghrebi rasam1/rasam2 sets than on
+# kitab_khatt/muharaf_lines -- and Baseer-Nakba's Muharaf-only fine-tune
+# actively makes it WORSE on nakba_lines (its own home domain, 1.0%->3.4%
+# CER, genuine forgetting -- see the base-model A/B/C writeup in
+# docs/experiments/findings-and-notes.md). A NAKBA replay slice tests whether
+# some of that domain (real 20th-century degraded handwriting, a different
+# distribution from Muharaf) held out during training closes those gaps
+# without giving up what Muharaf-only already buys on Naskh/Ruq'ah.
+#
+# 6k Muharaf + 2k NAKBA keeps the total line count at the same 8k the
+# Muharaf-only baseline uses, so this is a fair "same total data, different
+# mix" comparison, not "more data helps" confounded with the mix question.
+experiment: exp3090-qwen3vl4b-mixed
+method: lora
+base_model:
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: nakba_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      subset: U4RASD/omar-al-saleh-manuscripts-segments
+      split: train
+      limit: 2000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 100
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-qwen3vl4b-mixed
+eval_datasets: [muharaf_lines]
