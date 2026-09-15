@@ -385,7 +385,19 @@ training) to prove the whole pipeline before committing to the long run.
   1. `uv venv`'s own managed CPython build (`OSError: [WinError 4551] …
      python.exe`, right when the venv is created). Fix: `--venv-python
      <path>` pointing at a **signed python.org installer's** 3.11 (not the uv
-     managed build) — see the flag's own `--help` text.
+     managed build) — see the flag's own `--help` text. Find that path with
+     the Python launcher: `py -0p` lists every installed interpreter with its
+     full path (look for the `3.11` line, not whichever version is marked
+     `*` default — that default is unrelated and doesn't need to match).
+     **To stop needing `--venv-python` by hand on every launch**: `uv` picks
+     its own managed (unsigned) CPython over an already-installed one by
+     default, regardless of the box's default `python`/`py` version — so
+     changing that default doesn't help. What does: `setx
+     UV_PYTHON_PREFERENCE system` (once, persists for new shells), which
+     tells `uv` to prefer an already-installed system interpreter and only
+     fall back to downloading its own if none matches. With that set, the
+     launcher's own default (`--python 3.11`, used whenever `--venv-python`
+     is omitted) resolves to the already-installed, signed 3.11 automatically.
   2. **The editable-install build-isolation venv** (`Failed to build
      arabic-ocr-bench … Failed to run
      <dir>\uv_cache\builds-v0\.tmp…\Scripts\python.exe … (os error 4551)`,
