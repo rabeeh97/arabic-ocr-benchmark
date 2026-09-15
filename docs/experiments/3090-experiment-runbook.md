@@ -378,6 +378,27 @@ training) to prove the whole pipeline before committing to the long run.
   --index-url https://download.pytorch.org/whl/cu124`. If the cu124 wheel *also*
   hits 4551, the box's WDAC policy blocks PyTorch outright — needs an admin to
   allowlist it or disable Smart App Control; no pip/code change helps.
+- **WDAC/4551 can block THREE different interpreters, one at a time, at three
+  different bootstrap steps** — same root cause (Smart App Control / WDAC
+  distrusts an "unrecognised" Windows binary), three separate fixes, because
+  each blocked `python.exe`/DLL is a **different** file on disk:
+  1. `uv venv`'s own managed CPython build (`OSError: [WinError 4551] …
+     python.exe`, right when the venv is created). Fix: `--venv-python
+     <path>` pointing at a **signed python.org installer's** 3.11 (not the uv
+     managed build) — see the flag's own `--help` text.
+  2. **The editable-install build-isolation venv** (`Failed to build
+     arabic-ocr-bench … Failed to run
+     <dir>\uv_cache\builds-v0\.tmp…\Scripts\python.exe … (os error 4551)`,
+     during `pip install -e .[local,train]`) — a *third*, throwaway
+     interpreter `uv pip install -e` spawns for itself to run the PEP 517
+     build backend, separate from the main venv `--venv-python` already
+     fixed. Since this project's build backend (hatchling) has no build-time
+     dependencies of its own, the fix is to install `hatchling` into the
+     main (already-trusted) venv first and pass `--no-build-isolation` so
+     `uv` builds inside that venv instead of spawning a new one — wired into
+     `run_3090_experiment.py`'s bootstrap step 2 already, nothing to do by
+     hand unless running the `pip install -e` command manually.
+  3. `torch`'s own DLLs (`shm.dll`) — see the next point below.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
   CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.

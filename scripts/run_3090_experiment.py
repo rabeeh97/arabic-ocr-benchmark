@@ -438,8 +438,21 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    resolve would pick.
     if _run(dirs, [*pipbase, "torch", "torchvision", "--index-url", args.torch_index], phase="bootstrap"):
         raise SystemExit("bootstrap: torch (CUDA) install failed - check --torch-index / driver")
-    # 2. the benchmark + training extras (editable, from the SSH-copied repo)
-    if _run(dirs, [*pipbase, "-e", f"{REPO}[local,train]"], phase="bootstrap"):
+    # 2. the benchmark + training extras (editable, from the SSH-copied repo).
+    #    --no-build-isolation: by default `uv pip install -e` builds this
+    #    package's PEP 517 backend (hatchling) in a throwaway venv of its own
+    #    under <dir>\uv_cache\builds-v0\ -- a SEPARATE interpreter from the
+    #    one `--venv-python` just pinned, so on a WDAC/Smart-App-Control box
+    #    it hits the exact same "unrecognised python.exe blocked" (WinError
+    #    4551) that --venv-python was supposed to have already solved, one
+    #    step later. hatchling has no build-time dependencies beyond itself,
+    #    so installing it into the (already-trusted) main venv first and
+    #    skipping isolation avoids spawning that second interpreter entirely.
+    if _run(dirs, [*pipbase, "hatchling"], phase="bootstrap"):
+        raise SystemExit("bootstrap: `pip install hatchling` failed")
+    if _run(
+        dirs, [*pipbase, "--no-build-isolation", "-e", f"{REPO}[local,train]"], phase="bootstrap"
+    ):
         raise SystemExit("bootstrap: `pip install -e .[local,train]` failed")
     # 3. pin the training stack to the era this code targets, then plotting.
     #    The pyproject floors (`transformers>=4.49`, `trl>=0.12`) are unbounded,
