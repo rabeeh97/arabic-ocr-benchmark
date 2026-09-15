@@ -141,9 +141,24 @@ Muharaf `train` lines. Held-out CER-light, base → fine-tune:
   diac-insensitive CER are close — it is not just guessing skeletons.
 
 **Open questions to design experiments around.**
-- **Format vs vision.** How much of the gain is the *output-format prior*
-  (line-only, no chat) vs. genuine visual grapheme learning? A control that only
-  changes the prompt / system message on the *base* model would separate them.
+- **Format vs vision — RESOLVED (2026-09-15), using data that already existed.**
+  How much of the gain is the *output-format prior* (line-only, no chat) vs.
+  genuine visual grapheme learning? A control that only changes the prompt /
+  system message on the *base* model would separate them — and it turns out
+  this control was already run, just never framed as one: every held-out
+  `qwen3-vl-4b-bf16` (untuned base) row already used `prompt_version: line-v2`
+  (`"Do NOT add HTML tags, Markdown... Do NOT repeat words... Output only the
+  transcription — nothing before or after it"` — src/arabic_ocr_bench/prompting.py),
+  the exact kind of anti-commentary, format-only instruction this question was
+  asking about. The base *under that strict formatting prompt* still scores
+  76–119% CER on `kitab_khatt`/`nakba_lines`/`rasam1`/`rasam2` — barely
+  different from its behavior described earlier in this doc (`"mostly emits
+  meta-commentary, wrong-script text, or fully-diacritised confabulation"`).
+  **Telling the base model to format its output correctly does not close
+  meaningfully any of the gap to the ~25–55% CER the LoRA fine-tune reaches.**
+  The fine-tuning gain is overwhelmingly genuine visual/script learning, not
+  output-format learning — no new GPU run needed to answer this, the answer
+  was already sitting in the existing base-vs-fine-tune table.
 - **Data scaling.** 8k lines was one arbitrary point. Re-run at 1k / 2k / 4k /
   full on the chosen base and trace where the held-out curve flattens. That
   number sizes the moat for a from-scratch Arabic HTR effort and tells us how
