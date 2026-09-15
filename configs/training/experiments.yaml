@@ -113,6 +113,7 @@ exp3090-paligemma2-3b-visft:
     - "Watch VRAM: unfreezing SigLIP costs more memory than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
     - "GATED base (google/paligemma2-3b-pt-448) — needs HF_TOKEN with the Gemma license accepted in <exp-folder>/experiment.env."
     - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base paligemma-visft --detach` (adds a `paligemma-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts)."
+    - "RESULT (2026-09-15): the OPPOSITE of the qwen3vl4b-visft result — unfreezing SigLIP is flat-to-worse on 4/5 held-out sets (kitab_khatt 37.7%->39.2%, rasam1 52.0%->54.5%, rasam2 53.8%->55.6%, kitab_hindawi 39.5%->50.9% -- the largest regression seen in either vision-unfrozen experiment), only nakba_lines improved (31.8%->30.6%, marginal). \"Unfreeze the vision tower\" is NOT a universal win; don't default to it for PaliGemma. See docs/experiments/findings-and-notes.md for the full writeup and two candidate explanations (SigLIP's own OCR-adjacent pretraining leaving less headroom; a proportionally larger LoRA perturbation to a smaller vision tower)."
 
 baseer-nakba:
   title: "Baseer/NAKBA — Muharaf LoRA (RTX 3090)"

@@ -261,6 +261,69 @@ features, not just better formatting.
    consistent (if partial) win and no observed downside — worth carrying into
    any future data-scaling sweep instead of testing frozen-ViT scaling first.
 
+### exp3090 — PaliGemma-2-3B, vision unfrozen (paligemma-visft): the opposite result from Qwen
+
+**Seen (2026-09-15).** Same question as qwen3vl4b-visft, on a second,
+architecturally unrelated base — PaliGemma's fixed-448 SigLIP + Gemma-2 vs
+Qwen's dynamic-resolution ViT. Identical recipe and 8k-line Muharaf data to
+exp3090-paligemma2-3b, only `train_vision` flips `false` → `true`. CER
+(light), frozen-ViT fine-tune → vision-unfrozen fine-tune:
+
+| dataset | script | frozen ViT (n) | ViT unfrozen (n) | Δ |
+|---|---|---|---|---|
+| kitab_khatt | Naskh/Ruq'ah HW | 37.7 % (n=180) | 39.2 % (n=199) | +1.5 (worse) |
+| nakba_lines | 20th-c. degraded HW | 31.8 % (n=200) | 30.6 % (n=200) | −1.2 (better) |
+| rasam1 (Maghrebi) | Maghrebi manuscript | 52.0 % (n=199) | 54.5 % (n=200) | +2.5 (worse) |
+| rasam2 (Maghrebi) | Maghrebi manuscript | 53.8 % (n=196) | 55.6 % (n=196) | +1.8 (worse) |
+| kitab_hindawi | clean printed | 39.5 % (n=178) | 50.9 % (n=180) | +11.4 (much worse) |
+
+**Meaning — this directly contradicts the Qwen3-VL-4B result above.**
+Unfreezing the ViT helped Qwen on every held-out set (biggest win on
+`nakba_lines`, real gains on `rasam1`/`kitab_khatt`). For PaliGemma,
+unfreezing SigLIP is flat-to-worse on four of five sets, and a large
+regression on `kitab_hindawi` (clean printed Arabic — the easiest, most
+in-distribution-for-a-pretrained-vision-encoder set, which is exactly where
+you'd expect unfreezing to hurt least if it hurts at all). Only `nakba_lines`
+improved, and only marginally. So "unfreeze the vision tower" is **not** a
+universal recipe improvement — it's at best base-architecture-dependent, and
+for PaliGemma this run it actively cost accuracy on the majority of sets
+including the domain (Maghrebi) the intervention was designed to help.
+
+Two architectural differences are plausible explanations, neither confirmed
+here: (1) SigLIP-so400m (PaliGemma's vision tower) is already extensively
+pretrained on OCR/document-adjacent data via PaliGemma's own multi-task
+pretraining mixture, so there may be less headroom to gain and more to lose
+by perturbing it with only 8k lines; Qwen3-VL's ViT has no equivalent
+document-specific pretraining. (2) PaliGemma's LoRA setup here touches a
+much smaller, more specialized vision tower (SigLIP-so400m, ~400M params)
+relative to Gemma-2, vs Qwen3-VL's ViT being a larger share of the overall
+dynamic-resolution architecture — the same nominal LoRA rank may be a
+proportionally more disruptive perturbation for PaliGemma's vision tower.
+
+Base-model note for this run: the untuned `paligemma2-3b-bf16` base scores
+95–99 % CER across every held-out set here (vs. 66–88 % in the original
+base-model A/B/C table) — checked the raw predictions and it's not a
+pipeline bug, the base is emitting English image captions
+(`"arabic calligraphy"`, `"the first line of a poem"`) rather than
+attempting transcription at all, the same "unusable, emits meta-commentary"
+failure mode already documented for untrained Qwen3-VL-4B. The gap from the
+earlier 66–88 % reading is most likely just different specific lines being
+sampled (accumulate-mode offsets differ run to run), not a behavior change —
+a fundamentally non-OCR-following base's CER is inherently noisy across
+different line samples.
+
+**To do.**
+1. Don't default to `train_vision: true` for PaliGemma the way we now do for
+   Qwen — the frozen-ViT PaliGemma recipe is currently the better one on 4/5
+   held-out sets.
+2. The `kitab_hindawi` regression (+11.4 pts, the largest swing in either
+   direction across both vision-unfrozen experiments) is the most interesting
+   single result here — worth a per-sample diff (same method as the Baseer
+   regression diagnosis) to see whether it's broad degradation or a few
+   badly-hit samples dragging the mean.
+3. If a third vision-unfrozen base is ever run, this is now a real ambiguous
+   result to break the tie on, not a confirmatory rerun.
+
 ---
 
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)
