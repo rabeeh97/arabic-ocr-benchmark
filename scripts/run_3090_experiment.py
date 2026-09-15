@@ -445,11 +445,14 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    one `--venv-python` just pinned, so on a WDAC/Smart-App-Control box
     #    it hits the exact same "unrecognised python.exe blocked" (WinError
     #    4551) that --venv-python was supposed to have already solved, one
-    #    step later. hatchling has no build-time dependencies beyond itself,
-    #    so installing it into the (already-trusted) main venv first and
-    #    skipping isolation avoids spawning that second interpreter entirely.
-    if _run(dirs, [*pipbase, "hatchling"], phase="bootstrap"):
-        raise SystemExit("bootstrap: `pip install hatchling` failed")
+    #    step later. With isolation skipped, `uv` no longer auto-fetches the
+    #    build backend's own requirements into a throwaway env, so they have
+    #    to be installed into the main venv by hand first: hatchling itself,
+    #    plus `editables` -- hatchling's build_editable() imports it lazily
+    #    (hatchling/builders/wheel.py) only for an EDITABLE build specifically
+    #    (a plain `pip install .` wouldn't need it), so it's easy to miss.
+    if _run(dirs, [*pipbase, "hatchling", "editables"], phase="bootstrap"):
+        raise SystemExit("bootstrap: `pip install hatchling editables` failed")
     if _run(
         dirs, [*pipbase, "--no-build-isolation", "-e", f"{REPO}[local,train]"], phase="bootstrap"
     ):
