@@ -49,6 +49,14 @@ kitab_historicalbooks:
   split: train
   license: see KITAB-Bench paper
   source: https://huggingface.co/datasets/ahmedheakl/arocrbench_historicalbooks
+  # max_tokens_hint: this is paragraph-scale ground truth (median 363 chars,
+  # p95 439), not line-scale, despite `track: line` above -- measured directly
+  # from results/**/predictions.jsonl. 640 comfortably covers the p95. See
+  # runner.py's per-dataset max_tokens_hint mechanism and
+  # docs/experiments/findings-and-notes.md's kitab_hindawi/kitab_historicalbooks
+  # writeup for why this exists (most models were silently truncating every
+  # prediction here before this).
+  max_tokens_hint: 640
   card: >-
     KITAB-Bench / historical printed books — degraded historical *printed*
     Arabic. Harder than modern print, easier than handwriting.
@@ -59,6 +67,13 @@ kitab_hindawi:
   split: train
   license: see KITAB-Bench paper
   source: https://huggingface.co/datasets/ahmedheakl/arocrbench_hindawi
+  # max_tokens_hint: paragraph-scale ground truth (median 892 chars, p95 1504)
+  # -- measured directly from results/**/predictions.jsonl. 1536 is sized to
+  # the p95, not just the median (the earlier same-day fix that set
+  # max_new_tokens: 640 on five specific hf_local model rows undershoots the
+  # long tail of this dataset; this per-dataset mechanism supersedes that and
+  # applies to every model, not just the five that got manually edited).
+  max_tokens_hint: 1536
   card: >-
     KITAB-Bench / Hindawi — clean digitised printed books. An easy printed-Arabic
     anchor: strong models should approach 0 % CER here.

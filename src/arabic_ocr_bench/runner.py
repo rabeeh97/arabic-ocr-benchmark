@@ -208,6 +208,14 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         if is_mock(cfg):
             prompt = build_mock_prompt(base_prompt, sample.ground_truth, cfg.get("mode", "empty"))
 
+        # Per-dataset generation-length hint (configs/datasets.yaml's
+        # `max_tokens_hint`, if the dataset sets one) -- e.g. a page-scale
+        # dataset needs far more room than a line-scale one, and a line-scale
+        # one benefits from a TIGHT cap that cuts off repetition loops before
+        # they burn the whole budget. Resolved per-call inside transcribe()
+        # against each client's own registered cap (never lowers it).
+        max_tokens_hint = datasets_cfg.get(ds_name, {}).get("max_tokens_hint")
+
         client = clients[model_name]
         attempts = 0
         while True:
@@ -215,7 +223,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             if not is_mock(cfg):
                 limiter.acquire()   # stay under the provider's requests/min cap
             t0 = time.perf_counter()
-            pred = client.transcribe(sample.image, prompt)
+            pred = client.transcribe(sample.image, prompt, max_tokens=max_tokens_hint)
             if pred.latency_ms == 0.0:
                 pred.latency_ms = (time.perf_counter() - t0) * 1000
             if not (_is_transient(pred.error) and attempts <= max_retries):

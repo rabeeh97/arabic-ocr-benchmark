@@ -29,7 +29,9 @@ class MockClient:
         self.name = name
         self.mode = mode
 
-    def transcribe(self, image: Image.Image, prompt: str) -> Prediction:
+    def transcribe(self, image: Image.Image, prompt: str,
+                    max_tokens: int | None = None) -> Prediction:
+        del max_tokens  # mock output length doesn't depend on a generation cap
         if self.mode == "empty":
             text = ""
         else:  # echo_gt

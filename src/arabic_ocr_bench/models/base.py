@@ -33,4 +33,5 @@ class Prediction:
 class ModelClient(Protocol):
     name: str
 
-    def transcribe(self, image: Image.Image, prompt: str) -> Prediction: ...
+    def transcribe(self, image: Image.Image, prompt: str,
+                    max_tokens: int | None = None) -> Prediction: ...

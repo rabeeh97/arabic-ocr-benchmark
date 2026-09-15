@@ -609,7 +609,10 @@ def _panel(slug: str, title: str, note: str, body: str) -> str:
     pid = f"f-{_esc(slug)}"
     return (
         f"<section id='{pid}' class='f-panel panel'>"
-        f"<details class='panel-d' data-key='{pid}' open>"
+        # open="" (not bare `open`): identical HTML5 boolean-attribute semantics,
+        # but a bare attribute isn't well-formed XML -- keeps this parseable by
+        # tests/tools that validate the fragment as XML.
+        f"<details class='panel-d' data-key='{pid}' open=\"\">"
         f"<summary class='panel-sum'><span class='panel-ttl'>{_esc(title)}</span>"
         f"<span class='panel-chev' aria-hidden='true'></span></summary>"
         f"<div class='panel-body'>{n}{body}{nl}</div>"

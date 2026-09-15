@@ -1229,7 +1229,9 @@ def _panel(section_html: str, *, pid: str, collapsible: bool,
     if not collapsible:
         return f"<section id='{pid}' class='{cls}'><h2>{h2}</h2>\n{rest}</section>"
     hint_html = f"<span class='panel-hint'>{html.escape(hint)}</span>" if hint else ""
-    op = " open" if open else ""
+    # open="" (not bare `open`): identical HTML5 boolean-attribute semantics,
+    # but a bare attribute isn't well-formed XML.
+    op = ' open=""' if open else ""
     return (
         f"<section id='{pid}' class='{cls} panel'>"
         f"<details class='panel-d' data-key='{pid}'{op}>"
