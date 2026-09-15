@@ -272,7 +272,12 @@ def _read_state(dirs: dict) -> dict:
     }
     flat = st.pop("phases", {})
     boot = {"bootstrap": flat["bootstrap"]} if "bootstrap" in flat else {}
-    if not boot and (dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")).exists():
+    # Migration shim for state.json files written before phase records
+    # existed. Must prove the bootstrap actually FINISHED (import check),
+    # not just that `uv venv` created an interpreter file -- see
+    # _bootstrap_complete()'s docstring for why bare existence is a false
+    # positive that's bitten repeatedly on this box.
+    if not boot and _bootstrap_complete(dirs):
         boot = {"bootstrap": {"done": True, "at": "reconciled-from-disk"}}
     st["phases"] = boot
     exps = st.setdefault("experiments", {})
@@ -324,6 +329,31 @@ def _done(state: dict, phase: str, exp: str | None = None) -> bool:
 
 def _venv_python(dirs: dict) -> Path:
     return dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")
+
+
+def _bootstrap_complete(dirs: dict) -> bool:
+    """True only if the venv's interpreter can actually import this package
+    and its core deps -- proof the FULL bootstrap finished, not just that
+    `uv venv` created an interpreter file. `uv venv` itself is fast and
+    rarely fails; the slow steps after it (CUDA torch, the editable install,
+    the transformers/trl pins) are what actually go wrong (WDAC blocks,
+    missing build-time deps, a flaky download) -- and when one of them does,
+    python.exe is still sitting on disk from the successful `uv venv` step,
+    making a partial bootstrap indistinguishable from a finished one to a
+    bare existence check. That false positive is exactly what silently
+    skipped straight to `fetch` (missing `pandas`/`huggingface_hub`) on a
+    supposedly-fresh re-run here more than once."""
+    py = _venv_python(dirs)
+    if not py.exists():
+        return False
+    try:
+        r = subprocess.run(
+            [str(py), "-c", "import arabic_ocr_bench, torch, pandas, transformers"],
+            capture_output=True, timeout=60,
+        )
+        return r.returncode == 0
+    except OSError:
+        return False
 
 
 def _uv_bin(dirs: dict) -> str:
@@ -399,9 +429,13 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
 # phases
 # --------------------------------------------------------------------------- #
 def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
-    # "done" is only trusted if the venv interpreter is actually on disk — it may
-    # have been deleted (e.g. rebuilding it from a different --venv-python).
-    if _done(state, "bootstrap") and not args.force and _venv_python(dirs).exists():
+    # "done" is only trusted if the venv can actually import this package and
+    # its core deps -- not just that a python.exe file exists (it may have
+    # been deleted, e.g. rebuilding from a different --venv-python; or it may
+    # be a survivor of a PARTIAL bootstrap where `uv venv` succeeded but a
+    # later pip-install step failed, which looks identical to a finished
+    # bootstrap under a bare existence check). See _bootstrap_complete().
+    if _done(state, "bootstrap") and not args.force and _bootstrap_complete(dirs):
         _log(dirs, "bootstrap: already done")
         return
     _log(dirs, "bootstrap: install uv / venv / deps")
