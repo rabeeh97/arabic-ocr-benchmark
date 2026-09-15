@@ -846,6 +846,22 @@ exp3090-paligemma2-3b-ft-bf16:
     PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines)
     on an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 /
     exp3090-baseer-nakba-ft-bf16 — isolates the effect of the SigLIP+Gemma-2 base.
+exp3090-paligemma2-3b-visft-ft-bf16:
+  # Same recipe/data as exp3090-paligemma2-3b-ft-bf16, but train_vision: true
+  # (SigLIP unfrozen). hf_id is a repo-relative dir: drop the merged weights
+  # there to re-run it. See docs/experiments/findings-and-notes.md.
+  client: hf_local
+  hf_id: models/exp3090-paligemma2-3b-visft-ft
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines,
+    vision tower UNfrozen) on an RTX 3090. Companion to
+    exp3090-qwen3vl4b-visft-ft-bf16 -- second, unrelated vision tower testing
+    the same train_vision:true question.
 nakba-misraj-baseer:
   # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
   # family (via Misraj's "Baseer" 3B VLM), slerp-merged checkpoints. ~7.6 GB
