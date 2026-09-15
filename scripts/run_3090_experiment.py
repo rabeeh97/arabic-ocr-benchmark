@@ -690,7 +690,12 @@ def _respawn_detached(dirs: dict, argv: list[str]) -> int:
     (dirs["logs"] / "run.pid").write_text(str(proc.pid), encoding="utf-8")
     print(f"detached pid {proc.pid}")
     print(f"log : {dirs['logs'] / 'run.log'}")
-    print(f"poll: python {Path(__file__).name} --dir {dirs['root']} status")
+    # Users always launch this as `python scripts\run_3090_experiment.py ...`
+    # (or scripts/... on posix) from the repo root -- Path(__file__).name alone
+    # prints a bare filename that only works if the cwd happens to already be
+    # scripts/, which it normally isn't, producing a confusing "No such file".
+    _script_rel = ("scripts\\" if IS_WIN else "scripts/") + Path(__file__).name
+    print(f"poll: python {_script_rel} --dir {dirs['root']} status")
     return 0
 
 

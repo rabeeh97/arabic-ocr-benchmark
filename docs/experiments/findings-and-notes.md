@@ -324,6 +324,116 @@ different line samples.
 3. If a third vision-unfrozen base is ever run, this is now a real ambiguous
    result to break the tie on, not a confirmatory rerun.
 
+### kitab_hindawi / kitab_historicalbooks — most models are being measured wrong, not performing badly
+
+**Seen (2026-09-15).** Every model's CER on these two datasets looked
+uniformly bad (`exact_light = 0.0` for essentially every model in the
+leaderboard, including ones scoring 1-4% CER elsewhere) — worth checking
+whether that's real model failure or a granularity mismatch, since both
+datasets ship page/paragraph-scale ground truth, not line-scale, unlike
+every other dataset in the benchmark. Pulled every prediction's
+`len(cleaned_text) / len(ground_truth)` ratio and empty-output rate across
+all ~40 models scored on either set. Confirmed: median ground truth is
+**~880-920 characters** for `kitab_hindawi` and **~380 characters** for
+`kitab_historicalbooks` — several paragraphs, not a line (a Muharaf line
+ground truth is typically 30-80 characters). Two distinct, previously
+undiagnosed failure modes explain most of the damage:
+
+**1. Silent truncation from an undersized generation cap.** Every
+`hf_local` model (the RTX-3090 fine-tunes, their untuned bases, `qari-ocr-*`)
+defaults to `max_new_tokens=160` in `hf_local_client.py` unless a config row
+explicitly overrides it — nowhere near enough for an 880-character target.
+Only the two PaliGemma rows (`paligemma2-3b-bf16`,
+`exp3090-paligemma2-3b-*-ft-bf16`) got an explicit `max_new_tokens: 640`
+written into `configs/models.yaml`; Qwen3-VL and Baseer-Nakba's rows never
+did, despite `run_3090_benchmark.py --max-new-tokens 640` defaulting to 640
+for exactly this reason. Median prediction-length ratios on `kitab_hindawi`:
+
+| model | ratio (pred len / gt len) |
+|---|---|
+| `baseer-nakba-bf16` / `exp3090-baseer-nakba-ft-bf16` | 0.10 |
+| `paligemma2-3b-bf16` (base) | 0.02 |
+| `qari-ocr-0.2` | 0.15 |
+| `trocr-large-arabic` (own cap: 96) | 0.06 |
+| `exp3090-qwen3vl4b-ft-bf16` (frozen) | 0.32 |
+| `qwen3-vl-4b-bf16` (base) | 0.52 |
+| `exp3090-qwen3vl4b-visft-ft-bf16` | 0.88 |
+| `exp3090-paligemma2-3b-*-ft-bf16` (both, explicit 640 cap) | 0.70-0.83 |
+
+A CER computed against a reference 5-10x longer than what the model was
+even allowed to emit isn't measuring OCR quality, it's measuring the
+truncation cap. `trocr-large-arabic` is a structurally different case worth
+calling out separately: it's a line-level CRNN-style architecture, not a
+VLM — a 96-token cap isn't a bug to fix, it's evidence this dataset is the
+wrong task shape for that model entirely, and its number here should
+probably be excluded rather than "fixed."
+
+**2. High empty-output rates on several hosted/API models — a different bug,
+not truncation.** Some models return nothing at all on a meaningful fraction
+of `kitab_hindawi` samples, with `n` (successfully-scored count) already
+excluding these, so this doesn't show up as a low CER — it shows up as a
+quietly small sample count nobody had flagged as suspicious:
+
+| model | empty rate |
+|---|---|
+| `deepseek-vl-flash`, `mistral-medium`, `mistral-small`, `openrouter-dots3-note-free` | 100% |
+| `openrouter-gemma-4-26b-free`, `openrouter-gemma-4-31b-free` | 97% |
+| `openrouter-minimax-m3-free` | 91% |
+| `glm-5.3-flash-paid` | 87% |
+| `openrouter-llama-4-maverick`, `openrouter-qwen2.5-vl-72b`, `openrouter-qwen3-vl-235b` | 71% |
+| `gemini-flash-page` (the already-attempted page-scale fix, see below) | 64% |
+| `gemini-flash-lite-page` | 29% |
+| `gemini-flash` (vanilla, non-page) | 23% |
+
+**This overlaps almost exactly with the "7 fully-broken free-tier models"
+flagged from the interrupted free-accumulate sweep** (`mistral-medium`,
+`mistral-small`, `openrouter-gemma-4-26b-free`, `openrouter-gemma-4-31b-free`,
+`openrouter-llama-4-maverick`, `openrouter-qwen2.5-vl-72b`,
+`openrouter-qwen3-vl-235b` — 7 for 7). That sweep's config
+(`configs/run.free-accumulate.yaml`) includes `kitab_hindawi` in its dataset
+list, so it's very plausible those models aren't broken across the board —
+they may specifically choke on page-scale/long-context requests (a large
+image, a long expected output, or both), which would make "100% error rate"
+from the earlier free-tier investigation a measurement artifact of testing a
+long-context-hostile model against a page-scale dataset, not a real API/auth
+break. **Needs re-verification on a line-scale dataset before writing those
+7 off** — they may be perfectly fine on `kitab_khatt` / `muharaf_lines`.
+
+**GLM-5.3 specifically is worth flagging** given it's a named model of
+interest for this project (frontier + trainable via Thinking Machines'
+Tinker) — 87% empty on `kitab_hindawi` and outright `cer_light=1.0` (every
+sample either empty or maximally wrong) on `kitab_historicalbooks`. Whatever
+is causing this needs to be understood before GLM-5.3 can be evaluated fairly
+at all, on *any* dataset, not just resolved for these two.
+
+**A fix already exists for part of this and should be generalised.**
+`gemini-flash-page` / `gemini-flash-lite-page` are a prior attempt at a
+page-scale-specific config (`reasoning_effort: none` — Gemini 3.x's
+"thinking" was consuming the whole token budget before the visible answer
+even started — plus `max_tokens: 900`). `gemini-flash-lite-page` mostly
+worked (93% length ratio) but `gemini-flash-page` still shows a 64% empty
+rate, so even that fix is incomplete. The general shape of the fix (bump the
+token budget, disable/limit any hidden "thinking" tokens for models that
+have them) is very likely the same shape needed for the other
+high-empty-rate models above.
+
+**To do.**
+1. Set `max_new_tokens: 640` explicitly on the Qwen3-VL and Baseer-Nakba
+   `hf_local` rows in `configs/models.yaml` (matching what PaliGemma already
+   got) — this alone should fix the truncation-driven numbers without
+   touching any code.
+2. Debug `gemini-flash-page`'s remaining 64% empty rate — the existing page
+   fix isn't fully working.
+3. Re-run the 7 free-tier models flagged as "fully broken" against a
+   line-scale dataset (`kitab_khatt` is cheap and fast) before concluding
+   they need to be dropped from the sweep entirely.
+4. Investigate GLM-5.3's empty-output / `cer=1.0` pattern specifically,
+   given the project's explicit interest in it.
+5. Once the above are fixed, every "-page" style CER on these two datasets
+   should be treated as provisional and re-scored — several of the numbers
+   currently on the leaderboard for these two datasets are measuring
+   truncation, not OCR quality.
+
 ---
 
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)

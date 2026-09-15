@@ -633,23 +633,31 @@ glm-5.3-flash-paid:
 
 # --- local open-weight / Arabic-specific VLMs (needs: uv sync --extra local)
 qari-ocr-0.3:
+  # max_new_tokens: the hf_local default (160) truncates page-scale output;
+  # this row is explicitly "full-page" per its own card below, so it needs
+  # the larger cap more than most -- see qwen3-vl-4b-bf16's comment / the
+  # kitab_hindawi/kitab_historicalbooks writeup in findings-and-notes.md.
   client: hf_local
   hf_id: NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct
   arch: qwen2_vl
   min_ram_gb: 7       # CPU: skip (don't OOM-kill) if less free RAM
   dtype: float16
+  max_new_tokens: 640
   pricing: null
   card: >-
     NAMAA-Space's Arabic OCR model, 2B params, fine-tuned from Qwen2-VL-2B. The
     v0.3 line is "structure-first" — tuned for full-page documents with layout and
     Markdown output, so on single lines it can add markup or over-generate.
 qari-ocr-0.2:
+  # max_new_tokens: see qari-ocr-0.3's comment above -- measured at a 0.15
+  # prediction/reference length ratio on kitab_hindawi before this.
   client: hf_local
   hf_id: Qwen/Qwen2-VL-2B-Instruct
   adapter_id: NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct
   arch: qwen2_vl
   min_ram_gb: 7       # CPU: skip (don't OOM-kill) if less free RAM
   dtype: float16
+  max_new_tokens: 640
   pricing: null
   card: >-
     NAMAA-Space's earlier Arabic OCR checkpoint (v0.2.2.1), a LoRA adapter on
@@ -717,11 +725,19 @@ qwen3-vl-4b:
 qwen3-vl-4b-bf16:
   # bf16 (not 4-bit) sibling of qwen3-vl-4b — the same-precision base row for the
   # exp3090-qwen3vl4b-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  #
+  # max_new_tokens: the hf_local default (160) truncates every prediction on
+  # the page-scale kitab_hindawi/kitab_historicalbooks sets (median ground
+  # truth ~880/380 chars) -- see docs/experiments/findings-and-notes.md's
+  # kitab_hindawi/kitab_historicalbooks writeup. 640 matches what
+  # run_3090_benchmark.py already defaults to and what the paligemma rows
+  # already have.
   client: hf_local
   hf_id: Qwen/Qwen3-VL-4B-Instruct
   arch: qwen2_5_vl
   min_ram_gb: 16
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Alibaba's Qwen3-VL 4B at bf16 — the untuned, same-precision baseline for the
@@ -729,11 +745,13 @@ qwen3-vl-4b-bf16:
 exp3090-qwen3vl4b-ft-bf16:
   # RTX-3090 LoRA of Qwen3-VL-4B on Muharaf handwriting, merged to bf16 weights.
   # hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
   client: hf_local
   hf_id: models/exp3090-qwen3vl4b-ft
   arch: qwen2_5_vl
   min_ram_gb: 16
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
@@ -742,11 +760,13 @@ exp3090-qwen3vl4b-visft-ft-bf16:
   # Same recipe/data as exp3090-qwen3vl4b-ft-bf16, but train_vision: true (ViT
   # unfrozen). hf_id is a repo-relative dir: drop the merged weights there to
   # re-run it. See docs/experiments/findings-and-notes.md for the comparison.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
   client: hf_local
   hf_id: models/exp3090-qwen3vl4b-visft-ft
   arch: qwen2_5_vl
   min_ram_gb: 16
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines,
@@ -793,11 +813,14 @@ nakba-baseline-qwen3vl:
 baseer-nakba-bf16:
   # bf16 sibling of nakba-misraj-baseer — the same-precision base row for the
   # exp3090-baseer-nakba-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above -- this row measured
+  # at a 0.10 prediction/reference length ratio on kitab_hindawi before this.
   client: hf_local
   hf_id: Misraj/Baseer__Nakba
   arch: qwen2_5_vl
   min_ram_gb: 12
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Misraj's Baseer-Nakba at bf16 — the untuned, same-precision baseline for the
@@ -806,11 +829,13 @@ baseer-nakba-bf16:
 exp3090-baseer-nakba-ft-bf16:
   # RTX-3090 LoRA of Misraj/Baseer__Nakba on Muharaf handwriting, merged to bf16
   # weights. hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
   client: hf_local
   hf_id: models/exp3090-baseer-nakba-ft
   arch: qwen2_5_vl
   min_ram_gb: 12
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Baseer-Nakba fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
