@@ -94,6 +94,22 @@ BASES = {
         "needs_transformers": None,
         "gated": False,
     },
+    "baseer-mixed": {
+        # Same base as "baseer" (Misraj/Baseer__Nakba, ViT frozen, gentle 5e-5
+        # LR), but replays 2k NAKBA train lines alongside 6k Muharaf instead
+        # of 8k Muharaf alone -- tests whether that anchors the LoRA against
+        # the genuine catastrophic forgetting the Muharaf-only recipe causes
+        # on nakba_lines (Baseer's own home domain: 1.0%->3.4% CER,
+        # confirmed via per-sample paired diff). See
+        # docs/experiments/findings-and-notes.md.
+        "experiment": "exp3090-baseer-nakba-mixed",
+        "config": "configs/training/exp3090_baseer_nakba_mixed.yaml",
+        "run_config": "configs/training/exp3090_baseer_nakba_mixed.run.yaml",
+        "hf_id": "Misraj/Baseer__Nakba",
+        "arch": "qwen2_5_vl",
+        "needs_transformers": None,
+        "gated": False,
+    },
     "paligemma": {
         "experiment": "exp3090-paligemma2-3b",
         "config": "configs/training/exp3090_paligemma2_3b.yaml",
