@@ -7,10 +7,14 @@ line and one file to fetch:
 
     python scripts/run_3090_pipeline.py --dir C:\\Users\\User\\a-experiment\\exp --base baseer --detach
 
-``--base`` is ``qwen3vl4b`` | ``qwen3vl4b-visft`` | ``baseer`` | ``paligemma``
-(``-visft`` = same recipe, ViT unfrozen). Re-run the same command
+``--base`` is any name in ``_experiment_bases.BASES`` (see that module for the
+full, single source-of-truth list — originally ``qwen3vl4b`` | ``qwen3vl4b-visft``
+| ``baseer`` | ``paligemma``, plus the suite_v1 round-1 entries ``qwen3vl4b_suite``
+| ``qwen3vl8b`` | ``ain7b`` | ``fanar2_oryx``). Re-run the same command
 to resume (both sub-steps are individually resumable); the ``full`` benchmark
 stage scores another 200 lines/dataset each run until every set is exhausted.
+For running the whole round-1 queue in sequence, use
+``run_experiment_suite.py`` instead of calling this per base by hand.
 
 Watch it:  Get-Content <dir>\\logs\\pipeline.log -Wait -Tail 50
 Fetch:     <dir>\\bench\\bundle.zip   (curated summaries + leaderboard, no cache junk)
@@ -33,13 +37,9 @@ UTC = timezone.utc
 REPO = Path(__file__).resolve().parents[1]
 IS_WIN = platform.system() == "Windows"
 
-# base -> (experiment name, base hf_id, benchmark arch shim, base models.yaml row)
-BASES = {
-    "qwen3vl4b": ("exp3090-qwen3vl4b", "Qwen/Qwen3-VL-4B-Instruct", "qwen2_5_vl", "qwen3-vl-4b-bf16"),
-    "qwen3vl4b-visft": ("exp3090-qwen3vl4b-visft", "Qwen/Qwen3-VL-4B-Instruct", "qwen2_5_vl", "qwen3-vl-4b-bf16"),
-    "baseer":    ("exp3090-baseer-nakba", "Misraj/Baseer__Nakba", "qwen2_5_vl", "baseer-nakba-bf16"),
-    "paligemma": ("exp3090-paligemma2-3b", "google/paligemma2-3b-pt-448", "paligemma", "paligemma2-3b-bf16"),
-}
+# Shared with run_3090_experiment.py / run_3090_benchmark.py / run_experiment_suite.py
+# — see _experiment_bases.py's own docstring for why it's plain Python.
+from _experiment_bases import BASES  # noqa: E402
 
 
 def _now() -> str:
@@ -172,7 +172,10 @@ def main(argv: list[str] | None = None) -> int:
 
     _rotate(logs)
     pidf.write_text(str(os.getpid()), encoding="utf-8")
-    exp, hf_id, arch, base_name = BASES[args.base]
+    spec = BASES[args.base]
+    exp, hf_id, arch, base_name = (
+        spec["experiment"], spec["hf_id"], spec["arch"], spec["base_model_row"]
+    )
     py = sys.executable
     try:
         _log(logs, f"pipeline: base={args.base} experiment={exp} dir={root}")
@@ -189,7 +192,8 @@ def main(argv: list[str] | None = None) -> int:
 
         bench = [py, str(REPO / "scripts" / "run_3090_benchmark.py"),
                  "--dir", str(root), "--experiment", exp,
-                 "--base-hf-id", hf_id, "--base-name", base_name, "--arch", arch]
+                 "--base-hf-id", hf_id, "--base-name", base_name, "--arch", arch,
+                 "--training-config", spec["config"]]
         if _run(logs, bench, step="benchmark"):
             _log(logs, "pipeline: STOP — benchmark did not finish (re-run to resume / next full batch)")
             return 1

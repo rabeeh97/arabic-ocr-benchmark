@@ -12,7 +12,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field
 
-from .data import check_source_not_scored
+from .data import check_source_not_scored, resolve_source_hf_id
 
 Method = Literal["qlora", "lora", "full", "trocr"]
 Arch = Literal["qwen2_vl", "qwen2_5_vl", "qwen3_vl", "trocr", "paligemma", "minicpmv"]
@@ -123,6 +123,12 @@ def load_training_config(
 ) -> TrainingConfig:
     cfg = TrainingConfig.model_validate(yaml.safe_load(Path(path).read_text(encoding="utf-8")))
     for src in cfg.data.sources:
-        if src.hf_id and src.split:
-            check_source_not_scored(src.hf_id, src.split, cfg_path=datasets_cfg)
+        # Resolves hf_id however the source names its corpus (top-level
+        # hf_id, top-level subset, or params.subset) — a source declared
+        # via subset (e.g. a KitabBench-style `rasam1_train`) must not
+        # silently skip this guard just because it isn't spelled the same
+        # way `MuharafLines`-style sources are.
+        hf_id = resolve_source_hf_id(src)
+        if hf_id and src.split:
+            check_source_not_scored(hf_id, src.split, cfg_path=datasets_cfg)
     return cfg

@@ -399,3 +399,60 @@ training) to prove the whole pipeline before committing to the long run.
 - **`--from` / `--only`** — if `eval` fails because a transient network hiccup
   broke the register step, `--from eval` re-runs just eval + report without
   re-training.
+
+---
+
+## 10. Multi-model suite — `run_experiment_suite.py`
+
+Sequential `train → merge → in-domain eval → full cross-domain benchmark`
+across the whole `suite_v1` round-1 model queue
+(`scripts/_experiment_bases.round1_queue()` — currently
+`qwen3vl4b_suite`, `qwen3vl8b`, `ain7b`, `fanar2_oryx`), one model at a time
+on this one GPU. It's a thin orchestrator over the exact same
+`run_3090_experiment.py` / `run_3090_benchmark.py` phase machines described in
+§3/§6a/§6b above — nothing about crash-safety, resuming or venv handling is
+reimplemented, only sequencing across models is new. See
+`docs/experiments/misraj-baseer-research.md` for why this data mix (Muharaf +
+AraMS-28k-HTR + RASAM-1/2, NAKBA deliberately excluded) and this model lineup.
+
+**One-time prerequisite — fetch the shared training data once, not once per
+model:**
+
+```bat
+cd C:\Users\User\a-experiment\aocr-repo
+python scripts\fetch_training_corpus.py --dir C:\Users\User\a-experiment\suite-v1
+```
+
+(Needs the `datasets`/`huggingface_hub` libraries — run it inside a venv that
+already has this repo's `[local,train]` extra installed, e.g. after any prior
+`run_3090_experiment.py` bootstrap phase has built one.) This fetches
+Muharaf/RASAM-1/2 into a shared HF cache and AraMS-28k-HTR into the
+repo-relative `data/arams_28k_htr/` that every `suite_v1/*.yaml` config
+already points at — so none of the four sequential model runs below
+re-downloads the same corpora independently.
+
+**Launch the whole queue, detached:**
+
+```bat
+python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach
+```
+
+- Watch: `powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\suite-v1\logs\suite.log -Wait -Tail 50"`
+- Status (phase-per-model table + log tail):
+  `python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 status`
+- Re-run the same `--detach` line to **resume** — suite-level progress lives in
+  `suite_state.json` (queued/running/done/failed/skipped per model); an
+  already-`done` model is skipped, the in-progress one resumes via its own
+  `<suite-dir>/<model>/state.json` exactly as in §5.
+- `fanar2_oryx` is skipped automatically (logged, doesn't block the other
+  three) until `scripts/_experiment_bases.py`'s `license_check` field for it
+  is flipped from `"pending"` to `"ok"` — see that module's docstring before
+  changing it.
+- Each model's checkpoint cadence is `save_steps: 5` (not the older configs'
+  `100`) — a crash loses at most a few samples, not the better part of an
+  hour; cheap because these are small LoRA-adapter checkpoints, not full
+  model saves.
+- Per-model results land under `<suite-dir>/<model>/bench/` exactly as in
+  §6b; after every model finishes, the suite also re-renders the **top-level**
+  `results/leaderboard.html` (not just each model's own bench folder) so the
+  whole queue's results are visible in one place without a manual step.

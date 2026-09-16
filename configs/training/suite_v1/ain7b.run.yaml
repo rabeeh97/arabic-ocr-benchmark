@@ -1,0 +1,13 @@
+# Held-out in-domain eval for suite-v1-ain7b — see qwen3vl4b.run.yaml's header.
+models:
+  - suite-v1-ain7b-ft
+datasets:
+  - muharaf_lines
+limit: 200
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

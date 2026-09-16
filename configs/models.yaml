@@ -660,6 +660,18 @@ ain-7b:
   card: >-
     AIN (MBZUAI), an Arabic-centric vision-language model built on Qwen2-VL-7B and
     trained on a large bilingual Arabic-English multimodal corpus. Run 4-bit here.
+ain-7b-bf16:
+  # bf16 (not 4-bit) sibling of ain-7b — the same-precision base row for the
+  # suite-v1-ain7b fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: MBZUAI/AIN
+  arch: qwen2_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    AIN (MBZUAI) at bf16 — the untuned, same-precision baseline for the
+    suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
 qwen3-vl-4b:
   # The small dense Qwen3-VL. Untuned reference for the RTX-3090 fine-tune
   # (configs/training/exp3090_qwen3vl4b.yaml). Needs transformers >= 4.57 — an
@@ -714,6 +726,18 @@ qwen3-vl-8b:
     Alibaba's Qwen3-VL, 8B params, run 4-bit. Current-generation general VLM and
     the base for the NAKBA NLP 2026 shared-task baseline; included both as a
     fresh untuned reference and as the backbone of `nakba-baseline-qwen3vl`.
+qwen3-vl-8b-bf16:
+  # bf16 (not 4-bit) sibling of qwen3-vl-8b — the same-precision base row for
+  # the suite-v1-qwen3vl8b fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: Qwen/Qwen3-VL-8B-Instruct
+  arch: qwen3_vl
+  min_ram_gb: 24
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Alibaba's Qwen3-VL 8B at bf16 — the untuned, same-precision baseline for the
+    suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
 nakba-baseline-qwen3vl:
   # 4-bit base + LoRA adapter; dropped automatically in CPU mode.
   client: hf_local
@@ -794,8 +818,11 @@ exp3090-paligemma2-3b-ft-bf16:
     exp3090-baseer-nakba-ft-bf16 — isolates the effect of the SigLIP+Gemma-2 base.
 nakba-misraj-baseer:
   # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
-  # family (via Misraj's "Baseer" 3B VLM), slerp-merged checkpoints. ~7.6 GB
-  # bf16 — fits a T4 without quantization. License CC-BY-NC-SA-4.0 (research).
+  # family (via Misraj's general "Baseer" 3B VLM, further fine-tuned on
+  # Muharaf->NAKBA with a differential vision/decoder LR, then epoch-1+epoch-5
+  # weight-averaged — NOT a cross-model SLERP merge, see
+  # docs/experiments/misraj-baseer-research.md). ~7.6 GB bf16 — fits a T4
+  # without quantization. License CC-BY-NC-SA-4.0 (research).
   client: hf_local
   hf_id: Misraj/Baseer__Nakba
   arch: qwen2_5_vl
@@ -883,6 +910,21 @@ fanar-oryx-7b:
     Fanar-2-Oryx-IVU (QCRI) — an Arabic-first vision-language model fine-tuned
     from Qwen2.5-VL-7B for culturally-aware image understanding. Not OCR-tuned;
     the un-adapted base of nakba-warraq-fanar. Run 4-bit.
+fanar-oryx-7b-bf16:
+  # bf16 (not 4-bit) sibling of fanar-oryx-7b — the same-precision base row for
+  # the suite-v1-fanar2-oryx fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # Fine-tuning/redistribution license unconfirmed as of 2026-09-16 — see
+  # scripts/_experiment_bases.py's `license_check` gate before actually running
+  # this experiment slot.
+  client: hf_local
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  arch: qwen2_5_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Fanar-2-Oryx-IVU (QCRI) at bf16 — the untuned, same-precision baseline for
+    the suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
 # NOT addable: factlogic/phoenix-arabic-manuscript-htr is a Kraken (CTC) model,
 # not a HF-transformers model — it needs the `kraken` runtime, a different
 # inference path — and is CC-BY-NC-SA. Strong on historical Arabic manuscripts
