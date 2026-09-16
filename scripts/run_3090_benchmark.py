@@ -261,9 +261,41 @@ def _reap_orphans() -> None:
                        capture_output=True, check=False)
 
 
-def _datasets() -> list[str]:
-    """The held-out dataset list from MATRIX_FILE (stdlib, no yaml). The models
-    are derived per experiment from --base-name + <experiment>, not this file."""
+def _datasets(dirs: dict, training_config: str | None) -> list[str]:
+    """The held-out dataset list to sweep.
+
+    With `--training-config <path>` (the model's own training YAML), this
+    calls `safe_eval_datasets()` in the venv — every registered line-track
+    dataset EXCEPT `synthetic` and anything that overlaps one of that config's
+    `data.sources` (either an exact scored (hf_id, split) match, or a declared
+    `overlaps_source`, e.g. `kitab_muharaf` when Muharaf is a training
+    source). This generalizes the sweep to "every dataset" per model, instead
+    of the fixed 6-dataset MATRIX_FILE list every model used to share
+    regardless of what it was actually trained on.
+
+    Without `--training-config` (back-compat / ad-hoc standalone use), falls
+    back to parsing MATRIX_FILE's curated list (stdlib, no yaml — this
+    function itself must stay launcher-safe; the training-config path below
+    shells out to the venv precisely because `safe_eval_datasets` needs
+    pydantic/yaml that may not exist in the bare launcher Python).
+    """
+    if training_config:
+        py = _venv_python(dirs)
+        code = (
+            "from arabic_ocr_bench.training.config import load_training_config;"
+            "from arabic_ocr_bench.training.data import safe_eval_datasets;"
+            f"cfg = load_training_config({training_config!r});"
+            "print('\\n'.join(safe_eval_datasets(cfg.data)))"
+        )
+        out = subprocess.run(
+            [str(py), "-c", code], cwd=str(REPO), capture_output=True, text=True, check=False
+        )
+        if out.returncode != 0:
+            raise SystemExit(
+                f"_datasets: failed to compute safe_eval_datasets for {training_config}:\n{out.stderr}"
+            )
+        return [ln for ln in out.stdout.splitlines() if ln.strip()]
+
     datasets: list[str] = []
     in_block = False
     for raw in (REPO / MATRIX_FILE).read_text(encoding="utf-8").splitlines():
@@ -376,11 +408,19 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
 def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
            limit: int, accumulate: bool) -> bool:
     """Run one pass over every dataset. Returns True if the stage is complete."""
-    datasets = _datasets()
+    training_config = spec.get("training_config")
+    datasets = _datasets(dirs, training_config)
     models = _bench_models(spec, args.with_4bit)
-    banned = sorted(set(datasets) & set(BANNED_DATASETS))
-    if banned:
-        raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
+    if not training_config:
+        # Legacy MATRIX_FILE path only — it has no `overlaps_source` check of
+        # its own, so this hardcoded net is still load-bearing there. The
+        # training-config-driven path above already resolved this correctly
+        # (and deliberately INCLUDES muharaf_lines when it's genuinely safe —
+        # e.g. a model trained on `muharaf_train`, scored on the disjoint
+        # `test` split — so this same check must not run for that path).
+        banned = sorted(set(datasets) & set(BANNED_DATASETS))
+        if banned:
+            raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
     py = _venv_python(dirs)
     exhausted: list[str] = []
     for ds in datasets:
@@ -610,6 +650,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--base-name", dest="base_name", default=DEFAULT_BASE_NAME,
                     help=f"models.yaml row name for the base (default: {DEFAULT_BASE_NAME})")
     ap.add_argument("--arch", default=DEFAULT_ARCH)
+    ap.add_argument(
+        "--training-config",
+        dest="training_config",
+        default=None,
+        help="the model's own training YAML — when given, the dataset sweep "
+        "is every safe_eval_datasets() result for it (every registered "
+        "line-track dataset except what it trained on), instead of the "
+        "fixed MATRIX_FILE list",
+    )
     ap.add_argument("--smoke-n", dest="smoke_n", type=int, default=20,
                     help="lines per dataset per model in the smoke stage (default 20)")
     ap.add_argument("--full-n", dest="full_n", type=int, default=200,
@@ -632,7 +681,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_status(dirs, args.experiment)
 
     spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id,
-            "base_name": args.base_name, "arch": args.arch}
+            "base_name": args.base_name, "arch": args.arch,
+            "training_config": args.training_config}
     return drive(dirs, spec, args, argv)
 
 

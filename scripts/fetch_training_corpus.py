@@ -1,0 +1,106 @@
+"""Pre-fetch every real training-data source once, shared across a whole suite run.
+
+    python scripts/fetch_training_corpus.py --dir C:\\Users\\User\\suite-v1
+
+NOT run automatically — the box operator runs this once, after the shared
+venv exists (needs the `datasets`/`huggingface_hub` libraries, so run it
+*inside* the suite venv, e.g. via `run_3090_experiment.py`'s bootstrap phase
+having already created one, or any environment with this repo's `[local]`
+extra installed) and before `run_experiment_suite.py` starts the sequential
+model queue.
+
+Without this, each of the ~4 sequential model runs in the suite would
+independently re-download the same HF corpora (Muharaf, RASAM-1, RASAM-2)
+via its own `phase_fetch`, since every run gets its own `--dir`. This script
+points every download at ONE shared cache
+(`<--dir>/data_cache/hf`, via `HF_HOME`) so it happens exactly once for the
+whole suite; each per-model `run_3090_experiment.py --dir <suite>/<model>`
+invocation should have its `HF_HOME` pointed at the same shared cache
+directory (see `run_experiment_suite.py`) to actually benefit from this.
+
+Also runs `fetch_arams.py` (AraMS-28k-HTR, the one non-HF source) into the
+SAME repo-relative `data/arams_28k_htr` that `configs/datasets.yaml`'s
+`arams_htr` entry and every `arams_train` training source already hardcode as
+`params.root` — deliberately not a suite-specific path, so eval and every
+model's training config keep agreeing on where the corpus lives without a
+per-suite override mechanism. Override with `--arams-dest` only if you
+genuinely want a different location (and update every config that
+references it to match).
+"""
+
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+import fetch_arams  # noqa: E402  (local script import, path set above)
+
+# Every real (non-synthetic) training-data source in the round-1 mix — kept
+# as a flat list here rather than re-parsing training YAML configs, since
+# pre-fetching is deliberately a superset: it's fine (just a few extra small
+# `val` splits) to always fetch everything any suite model config might use.
+_HF_SOURCES: list[tuple[str, str]] = [
+    ("aamijar/muharaf-public", "train"),
+    ("calfa-ai/RASAM-1", "train"),
+    ("calfa-ai/RASAM-1", "val"),
+    ("calfa-ai/RASAM-2", "train"),
+    ("calfa-ai/RASAM-2", "val"),
+]
+
+
+def _fetch_hf(hf_id: str, split: str) -> None:
+    from datasets import load_dataset
+
+    print(f"fetch {hf_id}:{split} ...")
+    ds = load_dataset(hf_id, split=split)
+    print(f"  {len(ds)} rows cached")
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--dir", required=True, help="the suite's shared directory (for the HF cache)")
+    ap.add_argument(
+        "--arams-dest",
+        default="data/arams_28k_htr",
+        help="repo-relative path AraMS is fetched into — must match every "
+        "config's params.root (default matches configs/datasets.yaml's arams_htr entry)",
+    )
+    ap.add_argument("--skip-arams", action="store_true", help="HF sources only")
+    ap.add_argument("--skip-hf", action="store_true", help="AraMS only")
+    args = ap.parse_args()
+
+    suite_dir = Path(args.dir)
+    hf_cache = suite_dir / "data_cache" / "hf"
+    arams_root = Path(args.arams_dest)
+    hf_cache.mkdir(parents=True, exist_ok=True)
+
+    import os
+
+    os.environ["HF_HOME"] = str(hf_cache)
+
+    if not args.skip_hf:
+        for hf_id, split in _HF_SOURCES:
+            _fetch_hf(hf_id, split)
+
+    if not args.skip_arams:
+        arams_root.mkdir(parents=True, exist_ok=True)
+        old_argv = sys.argv
+        sys.argv = ["fetch_arams.py", "--dest", str(arams_root)]
+        try:
+            rc = fetch_arams.main()
+        finally:
+            sys.argv = old_argv
+        if rc:
+            print(f"fetch_arams.py exited {rc} — inspect {arams_root} before starting the suite")
+            return rc
+
+    print(f"\nShared cache ready under {suite_dir / 'data_cache'}")
+    print(f"  HF_HOME:   {hf_cache}")
+    print(f"  AraMS root: {arams_root}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

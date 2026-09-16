@@ -49,47 +49,10 @@ IS_WIN = platform.system() == "Windows"
 
 PHASES = ["bootstrap", "fetch", "prepare", "train", "merge", "eval", "report"]
 
-BASES = {
-    "qwen3vl4b": {
-        "experiment": "exp3090-qwen3vl4b",
-        "config": "configs/training/exp3090_qwen3vl4b.yaml",
-        "run_config": "configs/training/exp3090_qwen3vl4b.run.yaml",
-        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
-        "arch": "qwen3_vl",
-        "needs_transformers": "4.57",
-        "gated": False,
-    },
-    "qwen3vl4b-visft": {
-        # Same as "qwen3vl4b" but with the ViT unfrozen (train_vision: true) —
-        # tests whether the frozen encoder is the bottleneck on the Maghrebi
-        # RASAM sets. See docs/experiments/findings-and-notes.md.
-        "experiment": "exp3090-qwen3vl4b-visft",
-        "config": "configs/training/exp3090_qwen3vl4b_visft.yaml",
-        "run_config": "configs/training/exp3090_qwen3vl4b_visft.run.yaml",
-        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
-        "arch": "qwen3_vl",
-        "needs_transformers": "4.57",
-        "gated": False,
-    },
-    "baseer": {
-        "experiment": "exp3090-baseer-nakba",
-        "config": "configs/training/exp3090_baseer_nakba.yaml",
-        "run_config": "configs/training/exp3090_baseer_nakba.run.yaml",
-        "hf_id": "Misraj/Baseer__Nakba",
-        "arch": "qwen2_5_vl",
-        "needs_transformers": None,
-        "gated": False,
-    },
-    "paligemma": {
-        "experiment": "exp3090-paligemma2-3b",
-        "config": "configs/training/exp3090_paligemma2_3b.yaml",
-        "run_config": "configs/training/exp3090_paligemma2_3b.run.yaml",
-        "hf_id": "google/paligemma2-3b-pt-448",
-        "arch": "paligemma",
-        "needs_transformers": "4.49",
-        "gated": True,
-    },
-}
+# The base-model registry is shared with run_3090_pipeline.py,
+# run_3090_benchmark.py and run_experiment_suite.py — see
+# _experiment_bases.py's own docstring for why it's plain Python, not YAML.
+from _experiment_bases import BASES  # noqa: E402
 
 # CUDA wheel index for torch on the 3090 box (cu124 covers Ada/Ampere on
 # driver >= 550). Override with --torch-index if the box has an older driver.

@@ -56,3 +56,26 @@ def test_rejects_a_config_that_names_a_scored_split(tmp_path):
     )
     with pytest.raises(ScoredSplitLeakError):
         load_training_config(bad)
+
+
+def test_rejects_a_scored_split_named_via_subset_not_top_level_hf_id(tmp_path):
+    # Regression: check_source_not_scored used to only look at a source's
+    # literal `hf_id` field, silently skipping the guard for a KitabBench-style
+    # source that names its corpus via `params.subset` instead (e.g. a RASAM
+    # training source) — see resolve_source_hf_id in training/data.py.
+    bad = tmp_path / "bad_subset.yaml"
+    bad.write_text(
+        "experiment: bad-subset\n"
+        "method: qlora\n"
+        "base_model: {hf_id: Qwen/Qwen2-VL-2B-Instruct, arch: qwen2_vl}\n"
+        "data:\n"
+        "  sources:\n"
+        "    - name: leak\n"
+        "      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench\n"
+        "      params: {subset: calfa-ai/RASAM-1}\n"
+        "      split: test\n"
+        "output_dir: results/training/bad-subset\n"
+        "eval_datasets: [rasam1]\n"
+    )
+    with pytest.raises(ScoredSplitLeakError):
+        load_training_config(bad)
