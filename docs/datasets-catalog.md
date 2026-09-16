@@ -83,7 +83,44 @@ classical print) so the board isn't only handwriting.
 
 ---
 
-## 5. How to add a dataset
+## 5. Surveyed from papers (2026-09-16) — reference only, not yet triaged into §3
+
+A literature pass over the KITAB-Bench paper (arXiv:2502.14949), Qari-OCR
+(arXiv:2506.02295), the Muharaf NeurIPS listing, and adjacent 2024-2026
+Arabic-OCR work, done to catch anything our own crawl of HF/Zenodo missed.
+Nothing here is wired or vetted for contamination yet — this is a shopping
+list for the next pass, not a commitment.
+
+| name | source | size | content | license/access | fit note |
+| --- | --- | --- | --- | --- | --- |
+| **RASM** (British Library / PRImA RASM2018/2019 competitions) | [BL repository](https://bl.iro.bl.uk/concern/datasets/f866aefa-b025-4675-b37d-44647649ba71), [PRImA](https://www.primaresearch.org/RASM2019/) | 120 pages, 10th–19th c. scientific manuscripts, PAGE-XML line transcriptions + polygons | handwritten historical, different genre (scientific mss) than Muharaf/NAKBA | **CC Public Domain Mark 1.0**, direct download | small but public-domain and genuinely different era/genre — plausible §3 candidate once someone writes the PAGE-XML adapter |
+| **MIRATH** | [Springer 2026 chapter](https://link.springer.com/chapter/10.1007/978-3-032-22032-5_23) (abstract only, paywalled) | 3,000 pages, 9th–19th c., Naskh/Farisi/Maghribi/Thuluth scripts | historical manuscripts | unconfirmed | title says "for Text-Line Segmentation" — **may be layout/polygon-only, not transcribed text**; verify before counting on it as an OCR source |
+| **BADAM** | [arXiv:1907.04041](https://arxiv.org/pdf/1907.04041) | unverified | Arabic-script manuscript baseline detection | public, license unconfirmed | layout/baseline-detection only, no transcriptions — segmentation-track use only |
+| **Arabic OCR Corpus v2 (QNL)** | [Manara/Figshare](https://manara.qnl.qa/articles/dataset/Arabic_OCR_Corpus_2_894_items_from_QNL_Collection_/26984785) | 2,894 printed works | printed, modern/historical mix, Qatar National Library | open, exact license unconfirmed | printed-text diversity, not handwriting — check format/license before adopting |
+| **DuwatBench** | [arXiv:2601.19898](https://arxiv.org/pdf/2601.19898), HF+GitHub | 1,272 samples, 6 calligraphic styles | **artistic/stylized calligraphy**, sentence-level | CC BY 4.0, open | too small/stylized for training; interesting as a robustness eval add-on only |
+| **QariOCR-v0.3-markdown-mixed-dataset** | HF `NAMAA-Space/QariOCR-v0.3-markdown-mixed-dataset` | 37,000 synthetic (29.6k/3.7k/3.7k) | **synthetic** printed, HTML/Markdown-structured | open on HF | same category as SARD — parked with the rest of synthetic data until that's back in scope |
+| **SythenAR** (KITAB-Bench internal) | via `mbzuai/KITAB-Bench` (gated) or upstream source | 500 samples | **synthetic** printed Arabic, distinct from SARD | gated repo | small, synthetic, low priority — noted for completeness |
+| **BCE-Arabic-v1** (KITAB-Bench internal) | via `mbzuai/KITAB-Bench` (gated) | 1,700 samples | layout/box detection only, not OCR text | gated | not an OCR-text source; layout-track only |
+| **CHURRO / CHURRO-DS** | [arXiv:2509.19768](https://arxiv.org/pdf/2509.19768) | 99,491 pages, 155 historical corpora, 46 language clusters | multilingual historical text recognition | unconfirmed | **could not confirm Arabic is even one of the 46 language clusters** — do not treat as an Arabic source until that's checked directly |
+
+**Confirmed detail, not a new dataset:** Muharaf's public corpus is broader
+than "personal letters" — per its NeurIPS listing it spans personal letters,
+diaries, notes, poems, church records, and legal correspondences (1,600+ page
+images, 1,216 public), all still in one consistent Ruq'ah-family calligraphic
+tradition and era. So its narrowness is calligraphic-style/era consistency,
+not lack of content-genre variety — worth keeping precise when arguing "we
+need more than Muharaf."
+
+**Dead ends** (named in review papers/titles but no working, checkable
+source found this pass): IFN/ENIT and AHDB exist but are word/vocabulary-level
+(town names, cheque amounts) rather than running-text lines — poor HTR-line
+fit regardless of license. APTI, PATS-A01/A02, VML-AHTE/HADARA — no working
+link found standalone (only mentioned inside other papers' related-work).
+"Digital Maktaba LP" — only an Academia.edu listing, content unverifiable.
+
+---
+
+## 6. How to add a dataset
 
 1. **If it's an HF `image` + text-column dataset** (any of `text` / `answer` /
    `transcription` / `label` / `gt` / `target`): just add a `configs/datasets.yaml`
