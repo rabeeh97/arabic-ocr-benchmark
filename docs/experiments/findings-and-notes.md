@@ -157,6 +157,16 @@ uniformly bad, it specifically erodes what the base was already good at.
 4. Backfill `kitab_khatt` for Baseer-Nakba — it's the one cell in this table
    with no data at all.
 
+**External research (2026-09-16).** See `misraj-baseer-research.md` for the
+full writeup: Misraj's own system paper confirms this table's finding from
+their side — Baseer-Nakba is two stacked fine-tunes on Qwen2.5-VL-3B (general
+Baseer, then a Muharaf→NAKBA HTR specialization with a differential
+vision/decoder LR and epoch weight-averaging), and their own ethics section
+admits the model is tied to NAKBA's specific calligraphic/historical
+distribution. Their disclosed recipe is fully reproducible and directly
+actionable for us: the `train_vision: true` + differential-LR idea in item 3
+above is exactly what gave them their biggest single jump (CER 0.16→0.10).
+
 ---
 
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)
