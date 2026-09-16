@@ -258,6 +258,22 @@ same `--detach` / resume / one-run-lock / log-rotation as the trainer, plus:
 - **`collect`** — regenerate `…\exp\bench\leaderboard.html` over everything scored
   so far (runs every pass).
 
+**The untuned base model's own scores are cached and shared across every
+`--dir`** that reuses the same base (`--base-name`), in
+`…\a-experiment\_shared-bench-cache\<base-name>\` — a sibling of every
+experiment folder, not inside any of them. Its weights never change between
+experiments (same HF checkpoint, deterministic at temperature 0), so a
+data-scaling sweep's four `--dir`s (1k/2k/4k/8k, all `qwen3vl4b-visft`) only
+ever score the untuned base **once**, total — every later `--dir` reuses
+those rows instantly instead of re-running the same inference. Only the
+fine-tune row is scored fresh per `--dir` (its registry name is fixed per
+`--base` choice, not per `--dir`, so its predictions must stay private —
+sharing them would silently serve one experiment's predictions for another's
+genuinely different merged weights). Deleting one `--dir` does not remove its
+contribution to this shared cache; delete
+`…\a-experiment\_shared-bench-cache\` itself to force every base to be
+re-scored from scratch.
+
 Models and datasets are the two lists in
 `configs/training/exp3090_bench.run.yaml`. `--with-4bit` adds a 4-bit fine-tune
 row. `nakba_lines` is HF-gated (auto-approve): open

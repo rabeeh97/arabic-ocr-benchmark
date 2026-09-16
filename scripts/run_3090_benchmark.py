@@ -8,7 +8,19 @@ the merged weights, adds two model rows to ``configs/models.yaml`` and scores
     python scripts/run_3090_benchmark.py --dir C:\\Users\\User\\a-experiment\\exp --detach
 
 Everything it writes lives under ``<dir>/bench/`` (never inside the git repo, so
-re-syncing the repo can't wipe the cache or results).
+re-syncing the repo can't wipe the cache or results) -- EXCEPT the untuned
+base model's own predictions, which are cached in a directory SHARED across
+every ``--dir`` that scores the same base (``<a-experiment-root>/_shared-bench-cache/<base_name>/``,
+a sibling of every experiment folder). The base's weights never change
+between experiments (same HF checkpoint every time, deterministic at
+temperature 0), so once any experiment has scored it on a dataset, every
+later ``--dir`` reusing that base gets those rows for free instead of
+re-running the exact same inference. The fine-tune row is never shared this
+way -- its registry name is fixed per ``--base`` choice, not per ``--dir``
+(e.g. every data-scaling point registers the same
+``exp3090-qwen3vl4b-visft-ft-bf16`` name despite genuinely different merged
+weights per line-count), so sharing it across folders would silently serve
+one experiment's predictions for another's different weights.
 
 Phases (idempotent, tracked in ``<dir>/bench_state.json``):
 
@@ -278,11 +290,38 @@ def _datasets() -> list[str]:
     return datasets
 
 
-def _bench_models(spec: dict, with_4bit: bool) -> list[str]:
-    m = [spec["base_name"], f"{spec['experiment']}-ft-bf16"]
+def _ft_models(spec: dict, with_4bit: bool) -> list[str]:
+    m = [f"{spec['experiment']}-ft-bf16"]
     if with_4bit:
         m.append(f"{spec['experiment']}-ft-4bit")
     return m
+
+
+def _shared_base_dirs(dirs: dict, spec: dict) -> dict:
+    """Persistent, box-wide cache for the UNTUNED base model's predictions,
+    keyed by `base_name` and shared across every --dir that scores that same
+    base (same HF weights every time -- deterministic at temperature 0, so
+    reusing a prior experiment's base-model scores is exactly as correct as
+    re-running them, just free). Lives as a SIBLING of the experiment `--dir`
+    folders (dirs['root'].parent), not inside any one of them, so it survives
+    a repo re-sync, outlives any single --dir being deleted, and is shared by
+    every future experiment that reuses this base -- the whole point being to
+    stop re-scoring the same untuned model from scratch every time a new
+    data-scaling / mixed-corpus / etc. variant is benchmarked on top of it.
+
+    Deliberately NOT used for the fine-tune row: `spec['experiment']` (and so
+    its `-ft-bf16` registry name) is fixed per --base choice, not per --dir --
+    e.g. every qwen3vl4b-visft data-scaling point (1k/2k/4k/8k) registers the
+    SAME name (`exp3090-qwen3vl4b-visft-ft-bf16`) even though each --dir's
+    merged weights are genuinely different (trained on a different line
+    count). Sharing the fine-tune's cache across --dir folders would silently
+    serve one experiment's predictions for another's different weights --
+    the fine-tune row stays on dirs['results'] (private, per-experiment)."""
+    root = dirs["root"].parent / "_shared-bench-cache" / spec["base_name"]
+    shared = {"root": root, "results": root / "results", "cfg": root / "_cfg"}
+    for p in (shared["results"], shared["cfg"]):
+        p.mkdir(parents=True, exist_ok=True)
+    return shared
 
 
 def _write_run_cfg(path: Path, *, models: list[str], dataset: str, limit: int,
@@ -304,9 +343,12 @@ def _write_run_cfg(path: Path, *, models: list[str], dataset: str, limit: int,
     )
 
 
-def _collect_latest(dirs: dict, stage: str, dataset: str) -> str | None:
-    """Copy the newest results/<run_id>/ into <dir>/bench/<stage>/<dataset>/."""
-    runs = sorted(dirs["results"].glob("*/summary.csv"), key=lambda p: p.stat().st_mtime)
+def _collect_latest(dirs: dict, stage: str, dataset: str, results_dir: Path) -> str | None:
+    """Copy the newest <results_dir>/<run_id>/ into <dir>/bench/<stage>/<dataset>/.
+    `results_dir` is dirs['results'] for the fine-tune row, or the shared
+    base-cache's own results dir for the base row -- either way the curated
+    copy always lands in this experiment's own <dir>/bench/ tree."""
+    runs = sorted(results_dir.glob("*/summary.csv"), key=lambda p: p.stat().st_mtime)
     if not runs:
         return None
     src = runs[-1].parent
@@ -373,41 +415,10 @@ def phase_register(dirs: dict, state: dict, spec: dict, args) -> None:
     _mark(dirs, state, "register", spec["experiment"], models=[r[0] for r in rows])
 
 
-def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
-           limit: int, accumulate: bool) -> bool:
-    """Run one pass over every dataset. Returns True if the stage is complete."""
-    datasets = _datasets()
-    models = _bench_models(spec, args.with_4bit)
-    banned = sorted(set(datasets) & set(BANNED_DATASETS))
-    if banned:
-        raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
-    py = _venv_python(dirs)
-    exhausted: list[str] = []
-    for ds in datasets:
-        key = f"{stage}:{ds}"
-        if _done(state, key, spec["experiment"]) and not args.force:
-            _log(dirs, f"{stage}: {ds} already done")
-            exhausted.append(ds)
-            continue
-        cfg = dirs["cfg"] / f"{stage}__{ds}.run.yaml"
-        _write_run_cfg(cfg, models=models, dataset=ds, limit=limit,
-                       accumulate=accumulate, results_dir=dirs["results"])
-        if _run(dirs, [str(py), "-m", "arabic_ocr_bench.cli", "run",
-                       "--config", str(cfg), "--report"], phase=stage):
-            raise SystemExit(f"{stage}: `bench run` failed on {ds} — fix and re-run (resumes).")
-        run_id = _collect_latest(dirs, stage, ds)
-        # dataset is exhausted when the last batch scored fewer NEW lines than asked
-        new_lines = _run_new_line_count(dirs, run_id, models[0], ds) if run_id else 0
-        if not accumulate or new_lines < limit:
-            _mark(dirs, state, key, spec["experiment"], run_id=run_id)
-            exhausted.append(ds)
-        else:
-            _log(dirs, f"{stage}: {ds} — {new_lines} more lines scored; re-run to continue")
-    return len(exhausted) == len(datasets)
-
-
-def _run_new_line_count(dirs: dict, run_id: str, model: str, dataset: str) -> int:
-    pred = dirs["results"] / run_id / "predictions.jsonl"
+def _run_new_line_count(run_id: str | None, results_dir: Path, model: str, dataset: str) -> int:
+    if not run_id:
+        return 0
+    pred = results_dir / run_id / "predictions.jsonl"
     if not pred.exists():
         return 0
     n = 0
@@ -422,6 +433,67 @@ def _run_new_line_count(dirs: dict, run_id: str, model: str, dataset: str) -> in
         if r.get("model") == model and r.get("dataset") == dataset and not r.get("cached"):
             n += 1
     return n
+
+
+def _sweep_group(dirs: dict, state: dict, spec: dict, args, *, stage: str, limit: int,
+                 accumulate: bool, models: list[str], results_dir: Path, cfg_dir: Path,
+                 key_suffix: str, label: str) -> bool:
+    """One pass over every dataset for one model group. Returns True once every
+    dataset is exhausted for this group specifically."""
+    datasets = _datasets()
+    banned = sorted(set(datasets) & set(BANNED_DATASETS))
+    if banned:
+        raise SystemExit(f"{stage}: {MATRIX_FILE} lists {banned} (Muharaf = training data).")
+    py = _venv_python(dirs)
+    exhausted: list[str] = []
+    for ds in datasets:
+        key = f"{stage}:{ds}:{key_suffix}"
+        if _done(state, key, spec["experiment"]) and not args.force:
+            _log(dirs, f"{stage}: {ds} ({label}) already done")
+            exhausted.append(ds)
+            continue
+        cfg = cfg_dir / f"{stage}__{ds}__{key_suffix}.run.yaml"
+        _write_run_cfg(cfg, models=models, dataset=ds, limit=limit,
+                       accumulate=accumulate, results_dir=results_dir)
+        if _run(dirs, [str(py), "-m", "arabic_ocr_bench.cli", "run",
+                       "--config", str(cfg), "--report"], phase=stage):
+            raise SystemExit(
+                f"{stage}: `bench run` failed on {ds} ({label}) — fix and re-run (resumes)."
+            )
+        run_id = _collect_latest(dirs, stage, ds, results_dir)
+        # dataset is exhausted when the last batch scored fewer NEW lines than asked
+        new_lines = _run_new_line_count(run_id, results_dir, models[0], ds)
+        if not accumulate or new_lines < limit:
+            _mark(dirs, state, key, spec["experiment"], run_id=run_id)
+            exhausted.append(ds)
+        else:
+            _log(dirs, f"{stage}: {ds} ({label}) — {new_lines} more lines scored; re-run to continue")
+    return len(exhausted) == len(datasets)
+
+
+def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
+          limit: int, accumulate: bool) -> bool:
+    """One pass over every dataset for both the base row and this experiment's
+    own fine-tune row. The base row scores against the SHARED, base_name-keyed
+    cache (_shared_base_dirs) -- once any experiment has scored it, every
+    later --dir reusing this base gets those rows for free instead of
+    re-running inference for a model whose weights never change. The
+    fine-tune row stays on this experiment's own private results_dir, since
+    its registry name isn't unique to its actual (per --dir) weights -- see
+    _shared_base_dirs()'s docstring. Returns True once BOTH groups are
+    exhausted on every dataset."""
+    shared = _shared_base_dirs(dirs, spec)
+    base_done = _sweep_group(
+        dirs, state, spec, args, stage=stage, limit=limit, accumulate=accumulate,
+        models=[spec["base_name"]], results_dir=shared["results"], cfg_dir=shared["cfg"],
+        key_suffix="base", label="base",
+    )
+    ft_done = _sweep_group(
+        dirs, state, spec, args, stage=stage, limit=limit, accumulate=accumulate,
+        models=_ft_models(spec, args.with_4bit), results_dir=dirs["results"], cfg_dir=dirs["cfg"],
+        key_suffix="ft", label="fine-tune",
+    )
+    return base_done and ft_done
 
 
 def phase_smoke(dirs: dict, state: dict, spec: dict, args) -> None:
@@ -445,8 +517,27 @@ def phase_full(dirs: dict, state: dict, spec: dict, args) -> None:
 
 def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
     py = _venv_python(dirs)
+    # make_leaderboard.py scans ONE flat directory (`target/*/summary.csv`).
+    # The base row's predictions now live in the shared, base_name-keyed
+    # cache (_shared_base_dirs), not dirs['results'] -- pointing it at
+    # dirs['results'] alone would silently drop the base row from this
+    # experiment's leaderboard. Rebuild a flat directory from the curated
+    # per-{stage,dataset,group} copies _collect_latest already made under
+    # <dir>/bench/{smoke,full}/<dataset>/<run_id>/, which cover BOTH groups.
+    src = dirs["bench"] / "_leaderboard_src"
+    if src.exists():
+        shutil.rmtree(src)
+    src.mkdir(parents=True, exist_ok=True)
+    for stage_dir in (dirs["bench"] / "smoke", dirs["bench"] / "full"):
+        if not stage_dir.exists():
+            continue
+        for run_dir in stage_dir.glob("*/*"):
+            if not (run_dir / "summary.csv").exists():
+                continue
+            dst = src / f"{stage_dir.name}-{run_dir.parent.name}-{run_dir.name}"
+            shutil.copytree(run_dir, dst, dirs_exist_ok=True)
     _run(dirs, [str(py), str(REPO / "scripts" / "make_leaderboard.py"),
-                str(dirs["results"]), "-o", str(dirs["bench"] / "leaderboard.html")],
+                str(src), "-o", str(dirs["bench"] / "leaderboard.html")],
          phase="collect")
     # One fetchable bundle: the curated per-batch summaries + the leaderboard.
     # Excludes bench/results/ and its _cache/ (hundreds of hash-named JSON that
