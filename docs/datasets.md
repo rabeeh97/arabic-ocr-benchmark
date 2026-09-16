@@ -175,7 +175,7 @@ U4RASD/omar-al-saleh-manuscripts-segments`, `split: test`. The page-level repo
 
 | model row | team / repo | reported CER | notes |
 | --- | --- | --- | --- |
-| `nakba-misraj-baseer` | Misraj AI — `Misraj/Baseer__Nakba` | **0.079** (winner) | 3B Baseer VLM (Qwen2.5-VL family), SLERP-merged. CC-BY-NC-SA-4.0 |
+| `nakba-misraj-baseer` | Misraj AI — `Misraj/Baseer__Nakba` | **0.079** (winner) | 3B, fine-tuned from Misraj's own general-purpose `Baseer` (Qwen2.5-VL-3B-Instruct base). Full encoder-decoder SFT on Muharaf→NAKBA with a differential vision/decoder LR, then epoch-1+epoch-5 weight-averaging (not a cross-model SLERP merge — see `misraj-baseer-research.md`). CC-BY-NC-SA-4.0 |
 | `nakba-ketaba-ocr` | Ketaba-OCR — `HassanB4/Ketaba-OCR-LoRA` | 0.082 | DoRA/rslora adapter on `sherif1313/Arabic-English-handwritten-OCR-v3` |
 | `sherif-arabic-htr-v3` | `sherif1313/Arabic-English-handwritten-OCR-v3` | — | the un-adapted base of the Ketaba entry; strong standalone Arabic HTR |
 | `nakba-moankhaled-qwen3vl` | `Moankhaled10/nakba-ocr` (no paper) | — | full Qwen3-VL fine-tune, weights under `final_model/` |
