@@ -111,6 +111,32 @@ BASES = {
         "needs_transformers": "4.57",
         "gated": False,
     },
+    "fanar2": {
+        # QLoRA (4-bit NF4), ViT frozen, on QCRI's Fanar-2-Oryx-IVU
+        # (Qwen2.5-VL-7B, Arabic-first general VLM -- NOT OCR-tuned, unlike
+        # Baseer-Nakba). A second Arabic-specialised base for the A/B/C-style
+        # comparison. Not HF-gated. See
+        # configs/training/exp3090_fanar2.yaml's header for the full
+        # rationale.
+        "experiment": "exp3090-fanar2",
+        "config": "configs/training/exp3090_fanar2.yaml",
+        "run_config": "configs/training/exp3090_fanar2.run.yaml",
+        "hf_id": "QCRI/Fanar-2-Oryx-IVU",
+        "arch": "qwen2_5_vl",
+        "needs_transformers": None,
+        "gated": False,
+    },
+    "fanar2-visft": {
+        # Same as "fanar2" but with the ViT unfrozen (train_vision: true) --
+        # the Fanar counterpart to qwen3vl4b-visft / paligemma-visft.
+        "experiment": "exp3090-fanar2-visft",
+        "config": "configs/training/exp3090_fanar2_visft.yaml",
+        "run_config": "configs/training/exp3090_fanar2_visft.run.yaml",
+        "hf_id": "QCRI/Fanar-2-Oryx-IVU",
+        "arch": "qwen2_5_vl",
+        "needs_transformers": None,
+        "gated": False,
+    },
     "baseer-mixed": {
         # Same base as "baseer" (Misraj/Baseer__Nakba, ViT frozen, gentle 5e-5
         # LR), but replays 2k NAKBA train lines alongside 6k Muharaf instead
