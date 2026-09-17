@@ -145,6 +145,16 @@ powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\suite-v1\
 
 ## 5. Check on it / resume after any interruption
 
+The fastest check needs no command at all — a single always-current file is
+kept at the suite root, rewritten on every state change and refreshed at
+least every ~90s while a model is mid-run:
+
+```powershell
+Get-Content C:\Users\User\a-experiment\suite-v1\STATUS.txt
+```
+
+For the same information plus a log tail:
+
 ```powershell
 python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 status
 ```

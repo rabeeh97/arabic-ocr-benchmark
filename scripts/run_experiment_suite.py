@@ -93,13 +93,57 @@ def _write_state(root: Path, state: dict) -> None:
     _state_path(root).write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
+def _model_phase_summary(model_dir: Path) -> str:
+    """The newest completed phase for one model, read from its own state.json —
+    the finest-grained "where is this model right now" available without
+    parsing its live log."""
+    p = model_dir / "state.json"
+    if not p.exists():
+        return "not started"
+    try:
+        st = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return "state.json unreadable"
+    phases = st.get("phases", {})
+    done = [ph for ph, rec in phases.items() if rec.get("done")]
+    if not done:
+        return "bootstrapping"
+    # PHASES order lives in run_3090_experiment.py; a plain string sort of a
+    # handful of fixed phase names ("bootstrap" < "eval" alphabetically, e.g.)
+    # would misorder them, so pick the one with the latest "at" timestamp.
+    latest = max(done, key=lambda ph: phases[ph].get("at", ""))
+    return f"{latest} done ({phases[latest].get('at', '?')})"
+
+
+def _write_status_file(root: Path, state: dict) -> None:
+    """A single always-current, plain-text snapshot — `Get-Content
+    <dir>\\STATUS.txt` shows exactly where the suite stands without running
+    any command or parsing JSON. Overwritten (not appended) on every queue
+    status change, so it never goes stale relative to suite_state.json."""
+    lines = [f"suite status — last updated {_now()}", f"suite dir: {root}", ""]
+    for name in round1_queue():
+        q = state.get("queue", {}).get(name, {})
+        status = q.get("status", "queued")
+        detail = _model_phase_summary(root / name) if status in ("running", "done") else ""
+        reason = f" — {q['reason']}" if q.get("reason") else ""
+        lines.append(f"  {name:<20} {status:<10} {detail}{reason}")
+    (root / "STATUS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _set(root: Path, state: dict, name: str, status: str, **extra) -> None:
     state.setdefault("queue", {})[name] = {"status": status, "at": _now(), **extra}
     _write_state(root, state)
+    _write_status_file(root, state)
 
 
-def _run(logs: Path, cmd: list[str], *, step: str) -> int:
-    """Stream a child process's output to the suite log, with a heartbeat."""
+def _run(logs: Path, cmd: list[str], *, step: str, on_heartbeat=None) -> int:
+    """Stream a child process's output to the suite log, with a heartbeat.
+
+    `on_heartbeat`, if given, fires on every heartbeat tick (same ~90s
+    cadence as the "still running" log line) — used to refresh STATUS.txt
+    while a model is mid-train/mid-bench, not just at queue transitions,
+    so it never goes stale for the many hours a single model can run.
+    """
     _log(logs, f"--- {step}: {' '.join(cmd)}")
     proc = subprocess.Popen(
         cmd, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
@@ -128,6 +172,8 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
                     f"...  {step}: still running (pid {proc.pid}, "
                     f"{int(time.monotonic() - last)}s since last output)",
                 )
+                if on_heartbeat:
+                    on_heartbeat()
                 continue
             if ln is None:
                 break
@@ -186,6 +232,9 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
     shared = _shared_dir(root)
     py = sys.executable
 
+    def _refresh() -> None:
+        _write_status_file(root, _read_state(root))
+
     train_cmd = [
         py, str(REPO / "scripts" / "run_3090_experiment.py"),
         "--dir", str(model_dir), "--base", name, "--allow-contam",
@@ -195,7 +244,7 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
         train_cmd.append("--prune-checkpoints")
     if args.venv_python:
         train_cmd += ["--venv-python", args.venv_python]
-    rc = _run(logs, train_cmd, step=f"{name}: train")
+    rc = _run(logs, train_cmd, step=f"{name}: train", on_heartbeat=_refresh)
     if rc:
         return rc
 
@@ -214,7 +263,10 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
     # bench_state.json reports `full` exhausted, mirroring how a human
     # operator would "re-run to continue" per that script's own docstring.
     for i in range(args.max_bench_iters):
-        rc = _run(logs, bench_cmd, step=f"{name}: bench (pass {i + 1}/{args.max_bench_iters})")
+        rc = _run(
+            logs, bench_cmd, step=f"{name}: bench (pass {i + 1}/{args.max_bench_iters})",
+            on_heartbeat=_refresh,
+        )
         if rc:
             return rc
         if _bench_full_done(model_dir, spec["experiment"]):
@@ -299,6 +351,7 @@ def drive(root: Path, args) -> int:
     _rotate(logs)
     pidf.write_text(str(os.getpid()), encoding="utf-8")
     state = _read_state(root)
+    _write_status_file(root, state)  # exists from the first instant, not just after a transition
     try:
         for name in round1_queue():
             if state.get("queue", {}).get(name, {}).get("status") == "done" and not args.force:
