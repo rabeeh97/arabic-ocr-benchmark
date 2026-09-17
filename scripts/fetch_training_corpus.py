@@ -11,12 +11,12 @@ model queue.
 
 Without this, each of the ~4 sequential model runs in the suite would
 independently re-download the same HF corpora (Muharaf, RASAM-1, RASAM-2)
-via its own `phase_fetch`, since every run gets its own `--dir`. This script
-points every download at ONE shared cache
-(`<--dir>/data_cache/hf`, via `HF_HOME`) so it happens exactly once for the
-whole suite; each per-model `run_3090_experiment.py --dir <suite>/<model>`
-invocation should have its `HF_HOME` pointed at the same shared cache
-directory (see `run_experiment_suite.py`) to actually benefit from this.
+via its own `phase_fetch`. This script warms **the same** shared cache the
+suite's runs use — `<--dir>/_shared/hf_cache`, which is exactly what
+`run_experiment_suite.py` passes as `--shared <--dir>/_shared` to both
+`run_3090_experiment.py` and `run_3090_benchmark.py`, and what those pin as
+`HF_HOME`. Keep these paths in sync: if the shared layout changes, this
+prefetch silently warms a cache nobody reads.
 
 Also runs `fetch_arams.py` (AraMS-28k-HTR, the one non-HF source) into the
 SAME repo-relative `data/arams_28k_htr` that `configs/datasets.yaml`'s
@@ -72,7 +72,9 @@ def main() -> int:
     args = ap.parse_args()
 
     suite_dir = Path(args.dir)
-    hf_cache = suite_dir / "data_cache" / "hf"
+    # Must match run_experiment_suite.py's _shared_dir() + the `hf_cache` key in
+    # run_3090_experiment.py's _dirs(), or this warms a cache nothing reads.
+    hf_cache = suite_dir / "_shared" / "hf_cache"
     arams_root = Path(args.arams_dest)
     hf_cache.mkdir(parents=True, exist_ok=True)
 
@@ -96,7 +98,7 @@ def main() -> int:
             print(f"fetch_arams.py exited {rc} — inspect {arams_root} before starting the suite")
             return rc
 
-    print(f"\nShared cache ready under {suite_dir / 'data_cache'}")
+    print(f"\nShared cache ready under {suite_dir / '_shared'}")
     print(f"  HF_HOME:   {hf_cache}")
     print(f"  AraMS root: {arams_root}")
     return 0

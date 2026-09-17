@@ -99,13 +99,24 @@ def _rotate_log(dirs: dict) -> None:
         log.rename(dirs["logs"] / f"run.{stamp}.log")
 
 
-def _dirs(root: Path) -> dict:
+def _dirs(root: Path, shared: Path | None = None) -> dict:
+    """Folder layout. By default everything is self-contained under `root`.
+
+    `shared` (from `--shared`) moves the four *reusable, expensive* pieces —
+    the venv, the HF cache, the uv cache and the uv binary — to a path shared
+    across several experiments, while keeping each experiment's own outputs
+    (runs/merged/eval/plots/logs/state.json) under its own `root`. That's what
+    a multi-model queue needs: one venv and one model/dataset cache instead of
+    N copies (N x ~7 GB venv + N x every base weight and dataset download).
+    Without it, a 4-model sweep costs well over 100 GB in duplicated caches.
+    """
+    reusable = shared or root
     d = {
         "root": root,
-        "venv": root / "venv",
-        "hf_cache": root / "hf_cache",
-        "uv_cache": root / "uv_cache",
-        "bin": root / "bin",
+        "venv": reusable / "venv",
+        "hf_cache": reusable / "hf_cache",
+        "uv_cache": reusable / "uv_cache",
+        "bin": reusable / "bin",
         "data": root / "data",
         "runs": root / "runs",
         "merged": root / "merged",
@@ -116,6 +127,18 @@ def _dirs(root: Path) -> dict:
     for p in d.values():
         p.mkdir(parents=True, exist_ok=True)
     return d
+
+
+def _max_transformers_floor() -> str:
+    """The highest `needs_transformers` floor across every registered base.
+
+    A shared venv serves models with different floors (Qwen3-VL needs >=4.57,
+    the Qwen2.x-VL ones only 4.49), so it must satisfy the strictest one or
+    the second model in a queue would install a transformers too old for the
+    first. Returns a version string.
+    """
+    floors = [s.get("needs_transformers") or "4.49" for s in BASES.values()]
+    return max(floors, key=lambda v: tuple(int(x) for x in v.split(".") if x.isdigit()))
 
 
 def _load_env_file(path: Path) -> None:
@@ -337,7 +360,13 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    `-P name` upgrades ONLY that package, not its deps — a bare `-U` would
     #    also pull a fresh PyPI `torch`, replacing the CUDA wheel from step 1
     #    (and on WDAC-locked boxes the new torch DLLs fail to load, WinError 4551).
-    tfloor = spec["needs_transformers"] or "4.49"
+    # With a shared venv the pin must satisfy every base that will reuse it,
+    # not just this one — otherwise the next model in the queue could install a
+    # transformers older than an earlier model needs (Qwen3-VL wants >=4.57).
+    if getattr(args, "shared", None):
+        tfloor = _max_transformers_floor()
+    else:
+        tfloor = spec["needs_transformers"] or "4.49"
     if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
                    f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
@@ -489,6 +518,20 @@ def phase_merge(dirs: dict, state: dict, spec: dict, args) -> None:
     if rc:
         raise SystemExit("merge: failed")
     _mark(dirs, state, "merge", exp=spec["experiment"], merged=str(out))
+
+    # Only after the merge is confirmed on disk: the checkpoint-* dirs are now
+    # pure redundancy (the merged weights contain the same training result), so
+    # dropping them is lossless and frees the largest remaining per-model item
+    # apart from the merged weights themselves.
+    if getattr(args, "prune_checkpoints", False) and (out / "config.json").exists():
+        freed = 0
+        for ck in sorted(adapter.glob("checkpoint-*")):
+            if not ck.is_dir():
+                continue
+            freed += sum(f.stat().st_size for f in ck.rglob("*") if f.is_file())
+            shutil.rmtree(ck, ignore_errors=True)
+        if freed:
+            _log(dirs, f"merge: pruned checkpoint-* under {adapter} ({freed // (1 << 20)} MB freed)")
 
 
 def phase_eval(dirs: dict, state: dict, spec: dict, args) -> None:
@@ -758,13 +801,26 @@ def main(argv: list[str] | None = None) -> int:
                     help="proceed even if the contamination check flags an overlap")
     ap.add_argument("--force", action="store_true", help="re-run phases already marked done")
     ap.add_argument("--yes", action="store_true", help="clean: actually delete")
+    ap.add_argument(
+        "--shared", default=None,
+        help="put the venv, HF cache, uv cache and uv binary under this path instead "
+             "of inside --dir, so several experiments reuse ONE venv and ONE "
+             "model/dataset cache (a multi-model queue otherwise duplicates ~7 GB of "
+             "venv plus every base-weight and dataset download per model). "
+             "Each experiment's own runs/merged/eval/plots/logs stay under --dir",
+    )
+    ap.add_argument(
+        "--prune-checkpoints", dest="prune_checkpoints", action="store_true",
+        help="after a successful merge, delete runs/<experiment>/checkpoint-* — the "
+             "merged weights supersede them, so this loses nothing but frees disk",
+    )
     args = ap.parse_args(argv)
 
     root = Path(args.dir).expanduser().resolve()
     if args.cmd == "clean":
         return cmd_clean(root, args.yes)
 
-    dirs = _dirs(root)
+    dirs = _dirs(root, Path(args.shared).expanduser().resolve() if args.shared else None)
     _pin_env(dirs)
     if args.cmd == "status":
         return cmd_status(dirs)

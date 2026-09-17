@@ -76,12 +76,18 @@ def _now() -> str:
     return datetime.now(UTC).isoformat(timespec="seconds")
 
 
-def _dirs(root: Path) -> dict:
+def _dirs(root: Path, shared: Path | None = None) -> dict:
+    """Same layout rule as run_3090_experiment.py's `_dirs`: `shared` (from
+    `--shared`) moves the venv and the HF/uv caches out to a path reused across
+    experiments, so a multi-model queue keeps ONE venv and ONE model cache.
+    Must be given the same value the training run used, or this would build a
+    second venv and re-download every base model it scores."""
+    reusable = shared or root
     d = {
         "root": root,
-        "venv": root / "venv",
-        "hf_cache": root / "hf_cache",
-        "uv_cache": root / "uv_cache",
+        "venv": reusable / "venv",
+        "hf_cache": reusable / "hf_cache",
+        "uv_cache": reusable / "uv_cache",
         "merged": root / "merged",
         "bench": root / "bench",
         "results": root / "bench" / "results",
@@ -673,9 +679,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--only", default=None, choices=PHASES, help="run just this one phase")
     ap.add_argument("--force", action="store_true",
                     help="re-run phases already marked done, and ignore the run lock")
+    ap.add_argument(
+        "--shared", default=None,
+        help="shared venv + HF/uv cache path — pass the SAME value the training run "
+             "used (run_3090_experiment.py --shared), or this builds a second venv "
+             "and re-downloads every base model it scores",
+    )
     args = ap.parse_args(argv)
 
-    dirs = _dirs(Path(args.dir).expanduser().resolve())
+    dirs = _dirs(
+        Path(args.dir).expanduser().resolve(),
+        Path(args.shared).expanduser().resolve() if args.shared else None,
+    )
     _pin_env(dirs)
     if args.cmd == "status":
         return cmd_status(dirs, args.experiment)

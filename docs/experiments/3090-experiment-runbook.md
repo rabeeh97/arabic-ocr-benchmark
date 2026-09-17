@@ -415,6 +415,19 @@ reimplemented, only sequencing across models is new. See
 `docs/experiments/misraj-baseer-research.md` for why this data mix (Muharaf +
 AraMS-28k-HTR + RASAM-1/2, NAKBA deliberately excluded) and this model lineup.
 
+**Shared venv and cache (the reason a 4-model queue doesn't cost 4x the
+disk).** The orchestrator passes `--shared <suite-dir>/_shared` to every child
+run, which moves the venv, the HF cache, the uv cache and the uv binary out of
+the per-model folders into one shared location — so there is exactly **one**
+venv (~7 GB) and **one** model/dataset cache for the whole suite, and no base
+weight or dataset is ever downloaded twice. Only each model's own
+`runs/merged/eval/plots/logs` stay under its own folder. `--shared` is also
+available on `run_3090_experiment.py`/`run_3090_benchmark.py` directly if you
+hand-run several experiments — pass the *same* path to both, or the benchmark
+will build a second venv and re-download what it scores. A shared venv is
+pinned to the strictest `needs_transformers` floor across all registered bases
+(4.57), so it serves every model in the queue.
+
 **One-time prerequisite — fetch the shared training data once, not once per
 model:**
 
@@ -434,8 +447,14 @@ re-downloads the same corpora independently.
 **Launch the whole queue, detached:**
 
 ```bat
-python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach
+python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach --prune-weights
 ```
+
+Disk-minimising flags: post-merge LoRA checkpoints are pruned by default
+(lossless; `--keep-checkpoints` opts out), and `--prune-weights` additionally
+deletes each model's merged weights once its benchmark sweep is finished,
+keeping all results — ~8 GB (4B) to ~16 GB (8B) reclaimed per model, at the
+cost of having to re-run that config if you later want the weights back.
 
 - Watch: `powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\suite-v1\logs\suite.log -Wait -Tail 50"`
 - Status (phase-per-model table + log tail):

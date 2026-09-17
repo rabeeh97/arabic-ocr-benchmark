@@ -15,10 +15,29 @@ Everything below uses one experiment root: **`C:\Users\User\a-experiment\suite-v
 
 ## 0. One-time box prerequisites
 
-Same as the single-experiment runbook §0: NVIDIA driver ≥ 550, ~60 GB free
-disk (this suite runs 4 models sequentially, so budget more like 150-200 GB
-if you don't clean up between models), Python 3.9+ available as `python` for
-the stdlib-only launcher scripts, PowerShell available.
+Same as the single-experiment runbook §0: NVIDIA driver ≥ 550, Python 3.9+
+available as `python` for the stdlib-only launcher scripts, PowerShell
+available.
+
+**Disk budget.** The suite deliberately shares one venv and one HF cache
+across all four models (`--shared`, applied automatically by the
+orchestrator), so it does *not* multiply per model the way running
+`run_3090_experiment.py` four times by hand would:
+
+| item | size | shared? |
+|---|---|---|
+| venv (torch + CUDA) | ~7 GB | **once** for the whole suite |
+| uv cache | ~2 GB | **once** |
+| HF cache — base weights | ~8 GB (4B) + ~16 GB (8B) + ~15 GB (AIN-7B) [+ ~15 GB Fanar if enabled] | **once each**, never re-downloaded |
+| HF cache — datasets (Muharaf, RASAM-1/2) | ~2-3 GB | **once** |
+| AraMS-28k-HTR in the repo | ~2.4 GB | **once** |
+| merged weights, per model | ~8-16 GB | per model; deleted as you go with `--prune-weights` |
+| LoRA checkpoints, per model | small (adapter + optimizer state) | pruned automatically after merge |
+
+So **~60 GB** covers the whole 4-model queue when launched with
+`--prune-weights`, or ~95-100 GB if you keep every model's merged weights.
+Without the sharing (i.e. four hand-run experiments) the same work costs
+140-180 GB — that's what filled the box previously.
 
 ---
 
@@ -59,24 +78,25 @@ ssh user@10.100.0.3 "powershell -NoProfile -Command \"New-Item -ItemType Directo
 
 ## 3. Fetch the shared training data ONCE (not once per model)
 
-This needs `datasets`/`huggingface_hub`, so it must run inside a venv that
-already has the repo's `[local,train]` extra — the simplest way is to let
-`run_experiment_suite.py`'s first model bootstrap a venv, then reuse it. On
-the box:
+This needs `datasets`/`huggingface_hub`, so it must run inside the venv that
+has the repo's `[local,train]` extra. Build that **one shared** venv first —
+note `--shared`, which is what keeps the whole suite down to a single venv and
+a single model/dataset cache instead of one per model:
 
 ```powershell
 cd C:\Users\User\a-experiment\aocr-repo
-python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\suite-v1\qwen3vl4b_suite --base qwen3vl4b_suite --only bootstrap
+python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\suite-v1\qwen3vl4b_suite --base qwen3vl4b_suite --shared C:\Users\User\a-experiment\suite-v1\_shared --only bootstrap
 ```
 
 Wait for that to finish (a few minutes — it just builds the venv), then:
 
 ```powershell
-C:\Users\User\a-experiment\suite-v1\qwen3vl4b_suite\venv\Scripts\python.exe scripts\fetch_training_corpus.py --dir C:\Users\User\a-experiment\suite-v1
+C:\Users\User\a-experiment\suite-v1\_shared\venv\Scripts\python.exe scripts\fetch_training_corpus.py --dir C:\Users\User\a-experiment\suite-v1
 ```
 
-This downloads Muharaf/RASAM-1/RASAM-2 into a shared HF cache under
-`suite-v1\data_cache\hf` and AraMS-28k-HTR (~2.4 GB) into the repo-relative
+This downloads Muharaf/RASAM-1/RASAM-2 into the shared HF cache at
+`suite-v1\_shared\hf_cache` — the same one every model run reads, so nothing
+gets downloaded twice — and AraMS-28k-HTR (~2.4 GB) into the repo-relative
 `aocr-repo\data\arams_28k_htr\` that every `suite_v1/*.yaml` config already
 points at. **After it finishes**, sanity-check the AraMS extraction landed
 flat (`<id>.png` next to `<id>.gt.txt`, not nested a directory deeper) — see
@@ -89,8 +109,16 @@ summary; you may need `--strip-components 1`.
 
 ```powershell
 cd C:\Users\User\a-experiment\aocr-repo
-python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach
+python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach --prune-weights
 ```
+
+`--shared` is applied automatically by the orchestrator (all models reuse
+`suite-v1\_shared`), and post-merge LoRA checkpoints are pruned by default
+(lossless — the merged weights supersede them; pass `--keep-checkpoints` to
+keep them). `--prune-weights` additionally deletes each model's merged weights
+once its benchmark finishes, keeping every result — recommended here, since
+weights are regenerable from the config and they're ~8 GB (4B) to ~16 GB (8B)
+each. Drop that flag if you want the trained weights kept on the box.
 
 This runs `qwen3vl4b_suite → qwen3vl8b → ain7b → fanar2_oryx` in that order,
 one at a time — each one trains, merges, scores its own in-domain

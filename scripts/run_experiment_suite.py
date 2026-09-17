@@ -41,6 +41,7 @@ import json
 import os
 import platform
 import queue
+import shutil
 import subprocess
 import sys
 import threading
@@ -148,15 +149,46 @@ def _bench_full_done(model_dir: Path, experiment: str) -> bool:
     )
 
 
+def _shared_dir(root: Path) -> Path:
+    """The one venv + HF/uv cache every model in the queue reuses.
+
+    Without this each model would get its own ~7 GB venv and its own HF cache,
+    re-downloading every dataset (and, for repeats of the same base, the same
+    weights) per model — the layout that ran the box to ~217 GB before.
+    """
+    return root / "_shared"
+
+
+def _prune_weights(logs: Path, model_dir: Path, name: str) -> None:
+    """Delete a finished model's merged weights, keeping all of its results.
+
+    Only called once that model's benchmark sweep is fully exhausted, so every
+    number has already been scored and copied into <model>/bench/ and
+    <model>/eval/. The weights are the single largest per-model item (~8 GB for
+    a 4B, ~16 GB for an 8B) and are regenerable by re-running the config, which
+    is the tradeoff this flag exists to make.
+    """
+    merged = model_dir / "merged"
+    if not merged.exists():
+        return
+    freed = sum(f.stat().st_size for f in merged.rglob("*") if f.is_file())
+    shutil.rmtree(merged, ignore_errors=True)
+    _log(logs, f"{name}: pruned merged weights ({freed // (1 << 30)} GB freed) — results kept")
+
+
 def _run_one(root: Path, logs: Path, name: str, args) -> int:
     spec = BASES[name]
     model_dir = root / name
+    shared = _shared_dir(root)
     py = sys.executable
 
     train_cmd = [
         py, str(REPO / "scripts" / "run_3090_experiment.py"),
         "--dir", str(model_dir), "--base", name, "--allow-contam",
+        "--shared", str(shared),
     ]
+    if not args.keep_checkpoints:
+        train_cmd.append("--prune-checkpoints")
     if args.venv_python:
         train_cmd += ["--venv-python", args.venv_python]
     rc = _run(logs, train_cmd, step=f"{name}: train")
@@ -171,6 +203,7 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
         "--base-name", spec["base_model_row"],
         "--arch", spec["arch"],
         "--training-config", spec["config"],
+        "--shared", str(shared),
     ]
     # `full` is an accumulate stage — one call only scores the next batch per
     # dataset; keep calling (each call idempotently resumes) until its own
@@ -181,6 +214,8 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
         if rc:
             return rc
         if _bench_full_done(model_dir, spec["experiment"]):
+            if args.prune_weights:
+                _prune_weights(logs, model_dir, name)
             return 0
     _log(
         logs,
@@ -304,6 +339,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--venv-python", dest="venv_python", default=None,
         help="forwarded to run_3090_experiment.py — see its own --venv-python help",
+    )
+    ap.add_argument(
+        "--keep-checkpoints", dest="keep_checkpoints", action="store_true",
+        help="keep each model's runs/<exp>/checkpoint-* after its merge succeeds "
+             "(default: prune them — the merged weights supersede them, so pruning "
+             "is lossless)",
+    )
+    ap.add_argument(
+        "--prune-weights", dest="prune_weights", action="store_true",
+        help="delete each model's merged weights once its benchmark sweep is fully "
+             "exhausted, keeping every result. Saves ~8 GB (4B) to ~16 GB (8B) per "
+             "model; the weights are regenerable by re-running that model's config",
     )
     ap.add_argument(
         "--max-bench-iters", dest="max_bench_iters", type=int, default=50,
