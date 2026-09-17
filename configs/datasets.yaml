@@ -194,22 +194,25 @@ kitab_arabicocr:
 # ~27,971 real, pre-segmented handwritten-manuscript line crops. Not an HF
 # dataset — `scripts/fetch_arams.py` downloads + extracts it to `params.root`
 # (default `data/arams_28k_htr/`, not run automatically; see the fetch script).
-# No official split ships with the corpus; the adapter carves its own
-# deterministic train/test split (see `datasets/arams.py`) — `params.root`
-# must point at the SAME directory from any training config's matching
-# `data.sources` entry (split: train) so the two splits stay disjoint.
+# The corpus ships its OWN held-out split, BY BOOK not by line
+# (train_manifest.txt / val_manifest.txt / test_manifest.txt — 19,739 / 1,486
+# / 6,744 lines, confirmed different manuscript books entirely in each file,
+# 2026-09-17) — `datasets/arams.py` reads these directly rather than inventing
+# a split. `params.root` must point at the SAME directory from any training
+# config's matching `data.sources` entry (split: train) so both stay disjoint
+# (guaranteed here since they're disjoint books, not just disjoint indices).
 arams_htr:
   adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
   params: { root: data/arams_28k_htr }
   track: line
-  split: test              # ~1,800 lines reserved; remainder is the `train` split
+  split: test              # the corpus's own test_manifest.txt — 6,744 lines
   license: see Zenodo record 10.5281/zenodo.21499649
   source: https://zenodo.org/records/21499649
   card: >-
     AraMS-28k-HTR — ~27,971 real historical-manuscript lines, pre-segmented
     (Kraken-style) line crops, a genuinely different corpus from Muharaf/NAKBA.
-    This is the ~1,800-line held-out `test` slice; the remainder is reserved
-    for fine-tuning.
+    This is the corpus's own held-out `test` split (6,744 lines, disjoint
+    manuscript books from `train`/`val`).
 
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic
