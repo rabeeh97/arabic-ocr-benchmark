@@ -413,6 +413,18 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
                    f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
+    # `datasets`' unbounded pyarrow floor resolves to whatever is newest on
+    # the day this runs (25.0.1 as of 2026-09-17) — that build's native
+    # `_dataset` extension got hard-blocked by this box's Application Control
+    # policy (DLL load failed while importing _dataset), the exact same class
+    # of problem as the transformers/trl drift above, just a different
+    # dependency. pyarrow==17 is old enough to dodge that block but too old
+    # for datasets 5.x's API (AttributeError: module 'pyarrow' has no
+    # attribute 'json_'); 21.0.0 is confirmed on this box to satisfy both.
+    # Re-verify this pin if it ever needs bumping — Application Control
+    # blocks are about the specific compiled file, not a clean version rule.
+    if _run(dirs, [*pipbase, "-P", "pyarrow", "pyarrow==21.0.0"], phase="bootstrap"):
+        raise SystemExit("bootstrap: pyarrow pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
 
     # 4. verify CUDA (always) + bitsandbytes (only hard-required for qlora —
@@ -423,6 +435,11 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         "import torch;"
         "assert torch.cuda.is_available(), 'CUDA not available in the venv';"
         "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0));"
+        # Catches the pyarrow-DLL-blocked-by-Application-Control-policy class
+        # of failure HERE, at bootstrap, instead of silently at the `fetch`
+        # phase's first dataset download — same reasoning as probing the
+        # base model's real architectures in phase_fetch.
+        "import datasets;print('datasets', datasets.__version__);"
     )
     if needs_qlora:
         check += "import bitsandbytes;print('bitsandbytes', bitsandbytes.__version__)"

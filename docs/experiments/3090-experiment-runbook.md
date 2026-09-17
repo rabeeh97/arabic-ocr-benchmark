@@ -379,7 +379,25 @@ training) to prove the whole pipeline before committing to the long run.
   allowlist it or disable Smart App Control; no pip/code change helps.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
-  CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.
+  CUDA runtime mismatches. Only hard-required when a config's `method:` is
+  actually `qlora` (checked via `_config_uses_qlora()`) — for `lora`/`full` a
+  failed import is logged and non-fatal, it was never going to be imported.
+- **`pyarrow`'s native extension also gets Application-Control-blocked** —
+  found 2026-09-17 fetching real training data for the first time on a fresh
+  `--shared` venv: `datasets`' unbounded pyarrow floor resolved to 25.0.1,
+  whose compiled `_dataset` extension this box's Application Control policy
+  rejected outright (`DLL load failed while importing _dataset: An
+  Application Control policy has blocked this file`) — the same failure
+  class as torch's WinError 4551, a different dependency. Unlike the
+  torch/bitsandbytes cases, downgrading enough to dodge the block (pyarrow
+  17) broke on `datasets` 5.x's own API (`AttributeError: module 'pyarrow'
+  has no attribute 'json_'`) — **pyarrow==21.0.0** is confirmed on this box
+  to satisfy both, and bootstrap now pins it explicitly right after the
+  transformers/trl pin. If this box's policy ever changes (or a different
+  box hits the same thing at a different pyarrow version), re-bisect between
+  "new enough for the installed `datasets` version's API" and "old enough
+  the specific compiled file is already trusted" — it is not a clean
+  monotonic version boundary, it's about the specific file's signature/hash.
 - **PaliGemma collator is new** — from the standard PaliGemma-2 SFT recipe but
   not yet run on hardware in this repo. First run: confirm loss starts finite
   (~2–4) and the processor's label mask looks right (spot-check
