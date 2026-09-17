@@ -85,6 +85,9 @@ def _dirs(root: Path, shared: Path | None = None) -> dict:
     reusable = shared or root
     d = {
         "root": root,
+        # See run_3090_experiment.py's _dirs(): where a single shared
+        # experiment.env lives when --shared is used. None otherwise.
+        "shared_root": shared.parent if shared else None,
         "venv": reusable / "venv",
         "hf_cache": reusable / "hf_cache",
         "uv_cache": reusable / "uv_cache",
@@ -94,7 +97,9 @@ def _dirs(root: Path, shared: Path | None = None) -> dict:
         "cfg": root / "bench" / "_cfg",
         "logs": root / "logs",
     }
-    for p in d.values():
+    for k, p in d.items():
+        if k == "shared_root" and p is None:
+            continue
         p.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -131,6 +136,8 @@ def _pin_env(dirs: dict) -> None:
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "0")
     _load_env_file(dirs["root"] / "experiment.env")
+    if dirs.get("shared_root"):
+        _load_env_file(dirs["shared_root"] / "experiment.env")
 
 
 def _state_path(dirs: dict) -> Path:

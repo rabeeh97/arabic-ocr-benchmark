@@ -113,6 +113,12 @@ def _dirs(root: Path, shared: Path | None = None) -> dict:
     reusable = shared or root
     d = {
         "root": root,
+        # The directory --shared's caller considers "the suite root" — where a
+        # single experiment.env belongs when several models share one --shared
+        # (run_experiment_suite.py always passes --shared <suite-dir>/_shared,
+        # so this is <suite-dir>). None when --shared isn't used at all, in
+        # which case dirs["root"] is already the only place to look.
+        "shared_root": shared.parent if shared else None,
         "venv": reusable / "venv",
         "hf_cache": reusable / "hf_cache",
         "uv_cache": reusable / "uv_cache",
@@ -124,7 +130,9 @@ def _dirs(root: Path, shared: Path | None = None) -> dict:
         "plots": root / "plots",
         "logs": root / "logs",
     }
-    for p in d.values():
+    for k, p in d.items():
+        if k == "shared_root" and p is None:
+            continue  # nothing to create — it's just a path to look for experiment.env in
         p.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -182,7 +190,13 @@ def _pin_env(dirs: dict) -> None:
     os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "0")
+    # Per-model override, if anyone ever wants one, wins (setdefault below is a
+    # no-op for any key this one already set).
     _load_env_file(dirs["root"] / "experiment.env")
+    # With --shared, one experiment.env at the suite root serves every model
+    # in the queue rather than being duplicated per model.
+    if dirs.get("shared_root"):
+        _load_env_file(dirs["shared_root"] / "experiment.env")
 
 
 def _state_path(dirs: dict) -> Path:

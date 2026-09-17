@@ -31,11 +31,29 @@ references it to match).
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import fetch_arams  # noqa: E402  (local script import, path set above)
+
+
+def _load_env_file(path: Path) -> None:
+    """Load KEY=VALUE lines from <dir>/experiment.env into os.environ — same
+    convention as run_3090_experiment.py's `_load_env_file`, duplicated here
+    (not imported) because that module is a `__main__`-oriented launcher, not
+    a library. Muharaf is gated; without this, HF_TOKEN is never set and the
+    gated download fails with an auth error instead of using the token that's
+    sitting right next to this script's --dir."""
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        s = raw.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        k, v = s.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 # Every real (non-synthetic) training-data source in the round-1 mix — kept
 # as a flat list here rather than re-parsing training YAML configs, since
@@ -78,9 +96,10 @@ def main() -> int:
     arams_root = Path(args.arams_dest)
     hf_cache.mkdir(parents=True, exist_ok=True)
 
-    import os
-
     os.environ["HF_HOME"] = str(hf_cache)
+    # experiment.env lives next to --dir (same convention as
+    # run_3090_experiment.py) — load it BEFORE any gated download.
+    _load_env_file(suite_dir / "experiment.env")
 
     if not args.skip_hf:
         for hf_id, split in _HF_SOURCES:
