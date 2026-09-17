@@ -102,7 +102,11 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     """Stream a child process's output to the suite log, with a heartbeat."""
     _log(logs, f"--- {step}: {' '.join(cmd)}")
     proc = subprocess.Popen(
-        cmd, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1
+        cmd, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+        # Without this, Windows decodes child stdout as cp1252 — a child
+        # printing Arabic text raises UnicodeDecodeError right here, silently
+        # freezing suite.log (the one log meant to always be current).
+        encoding="utf-8", errors="replace",
     )
     q: "queue.Queue[str | None]" = queue.Queue()
 
@@ -249,7 +253,8 @@ def _respawn_detached(logs: Path, argv: list[str]) -> int:
 def _pid_alive(pid: int) -> bool:
     if IS_WIN:
         out = subprocess.run(
-            ["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True, check=False
+            ["tasklist", "/FI", f"PID eq {pid}"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
         )
         return str(pid) in out.stdout
     try:

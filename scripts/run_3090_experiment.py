@@ -129,6 +129,29 @@ def _dirs(root: Path, shared: Path | None = None) -> dict:
     return d
 
 
+def _config_uses_qlora(config_path: str | None) -> bool:
+    """Cheap stdlib-only scan for `method: qlora` in a training YAML.
+
+    Not a real YAML parse (the launcher must stay dependency-free — see this
+    file's own docstring / the runbook's gotchas) — a plain top-level
+    `method: <value>` line is all the schema allows for this field
+    (training/config.py's `Method` literal), so a substring scan is exact
+    here, unlike the free-form `data.sources` block `_datasets()` in
+    run_3090_benchmark.py has to walk line-by-line.
+    """
+    if not config_path:
+        return False
+    try:
+        text = (REPO / config_path).read_text(encoding="utf-8")
+    except OSError:
+        return False
+    for line in text.splitlines():
+        line = line.split("#", 1)[0].strip()
+        if line.replace(" ", "") == "method:qlora":
+            return True
+    return False
+
+
 def _max_transformers_floor() -> str:
     """The highest `needs_transformers` floor across every registered base.
 
@@ -274,6 +297,12 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env=e,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+            # Without this, Windows decodes child stdout as cp1252 (the locale
+            # default) — any Arabic text a child prints (a sample prediction, a
+            # warning) raises UnicodeDecodeError *in this log-streaming reader*,
+            # silently freezing run.log mid-run. errors="replace" means a truly
+            # undecodable byte degrades one character, not the whole log.
+            encoding="utf-8", errors="replace",
         )
         assert proc.stdout is not None
         q: queue.Queue = queue.Queue()
@@ -372,15 +401,30 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
 
-    # 4. verify CUDA + bitsandbytes
+    # 4. verify CUDA (always) + bitsandbytes (only hard-required for qlora —
+    # a broken bitsandbytes wheel used to fail bootstrap outright even for a
+    # pure `method: lora` config that never imports it).
+    needs_qlora = _config_uses_qlora(spec.get("config"))
     check = (
-        "import torch,bitsandbytes;"
+        "import torch;"
         "assert torch.cuda.is_available(), 'CUDA not available in the venv';"
         "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0));"
-        "print('bitsandbytes', bitsandbytes.__version__)"
     )
+    if needs_qlora:
+        check += "import bitsandbytes;print('bitsandbytes', bitsandbytes.__version__)"
+    else:
+        check += (
+            "\ntry:\n"
+            "    import bitsandbytes\n"
+            "    print('bitsandbytes', bitsandbytes.__version__)\n"
+            "except Exception as e:\n"
+            "    print('bitsandbytes: unavailable, not needed for method: lora/full ->', e)"
+        )
     if _run(dirs, [str(py), "-c", check], phase="bootstrap"):
-        raise SystemExit("bootstrap: CUDA / bitsandbytes self-check failed (see log)")
+        raise SystemExit(
+            "bootstrap: CUDA self-check failed (see log)"
+            + (" — bitsandbytes is required because this config uses qlora" if needs_qlora else "")
+        )
     _mark(dirs, state, "bootstrap", uv=str(uv), python=str(py))
 
 
@@ -408,7 +452,7 @@ def phase_fetch(dirs: dict, state: dict, spec: dict, args) -> None:
     probe = (
         "import json,glob,os;from huggingface_hub import hf_hub_download;"
         f"c=hf_hub_download({hf_id!r}, 'config.json', token=os.environ.get('HF_TOKEN'));"
-        "d=json.load(open(c));print('architectures:', d.get('architectures'));"
+        "d=json.load(open(c, encoding='utf-8'));print('architectures:', d.get('architectures'));"
         "print('model_type:', d.get('model_type'))"
     )
     _run(dirs, [str(py), "-c", probe], phase="fetch")
@@ -578,7 +622,7 @@ direct = os.path.join(RUN, "trainer_state.json")
 if os.path.exists(direct):
     cands.append(direct)
 if cands:
-    hist = json.load(open(max(cands, key=os.path.getmtime)))["log_history"]
+    hist = json.load(open(max(cands, key=os.path.getmtime), encoding="utf-8"))["log_history"]
     tr = [(x["step"], x["loss"]) for x in hist if "loss" in x]
     ev = [(x["step"], x["eval_loss"]) for x in hist if "eval_loss" in x]
     if tr:
@@ -663,7 +707,8 @@ def _pid_alive(pid: int) -> bool:
     try:
         if IS_WIN:
             out = subprocess.run(
-                ["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, check=False
+                ["tasklist", "/FI", f"PID eq {pid}", "/NH"],
+                capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
             ).stdout
             return str(pid) in out
         os.kill(pid, 0)
@@ -693,7 +738,7 @@ def cmd_status(dirs: dict) -> int:
     print(f"base           : {spec_name}")
     pidf = dirs["logs"] / "run.pid"
     if pidf.exists():
-        pid = int(pidf.read_text().strip() or 0)
+        pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
         print(f"worker pid     : {pid}  ({'alive' if _pid_alive(pid) else 'not running'})")
     exp = state.get("experiment")
     print(f"\nphases ({exp or '?'}):")

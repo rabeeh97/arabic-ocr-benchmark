@@ -209,6 +209,11 @@ def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env={**os.environ},
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+            # See run_3090_experiment.py's identical fix: without this, a child
+            # printing Arabic text (a scored prediction, a warning) crashes THIS
+            # log-streaming reader under Windows' cp1252 default, freezing
+            # bench.log mid-run rather than just that one line looking odd.
+            encoding="utf-8", errors="replace",
         )
         _CHILD = proc
         assert proc.stdout is not None
@@ -294,7 +299,8 @@ def _datasets(dirs: dict, training_config: str | None) -> list[str]:
             "print('\\n'.join(safe_eval_datasets(cfg.data)))"
         )
         out = subprocess.run(
-            [str(py), "-c", code], cwd=str(REPO), capture_output=True, text=True, check=False
+            [str(py), "-c", code], cwd=str(REPO), capture_output=True,
+            text=True, encoding="utf-8", errors="replace", check=False,
         )
         if out.returncode != 0:
             raise SystemExit(
@@ -548,7 +554,8 @@ def _pid_alive(pid: int) -> bool:
     try:
         if IS_WIN:
             out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"],
-                                 capture_output=True, text=True, check=False).stdout
+                                 capture_output=True, text=True, encoding="utf-8",
+                                 errors="replace", check=False).stdout
             return str(pid) in out
         os.kill(pid, 0)
         return True
