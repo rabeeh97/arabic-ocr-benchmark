@@ -62,9 +62,9 @@ def _load_env_file(path: Path) -> None:
 _HF_SOURCES: list[tuple[str, str]] = [
     ("aamijar/muharaf-public", "train"),
     ("calfa-ai/RASAM-1", "train"),
-    ("calfa-ai/RASAM-1", "val"),
+    ("calfa-ai/RASAM-1", "validation"),  # RASAM's own split name — NOT "val" (confirmed 2026-09-17)
     ("calfa-ai/RASAM-2", "train"),
-    ("calfa-ai/RASAM-2", "val"),
+    ("calfa-ai/RASAM-2", "validation"),
 ]
 
 

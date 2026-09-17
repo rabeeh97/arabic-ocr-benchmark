@@ -79,3 +79,18 @@ def test_rejects_a_scored_split_named_via_subset_not_top_level_hf_id(tmp_path):
     )
     with pytest.raises(ScoredSplitLeakError):
         load_training_config(bad)
+
+
+@pytest.mark.parametrize("name", ["qwen3vl4b", "qwen3vl8b", "ain7b", "fanar2_oryx"])
+def test_suite_v1_configs_use_rasams_real_validation_split_name(name):
+    # Regression: RASAM's HF splits are ['train', 'validation', 'test'] — an
+    # earlier version of every suite_v1 config used `split: val`, which
+    # doesn't exist and only surfaced as a crash on the actual box, mid-fetch,
+    # after Muharaf and RASAM-train had already downloaded successfully.
+    cfg = load_training_config(f"configs/training/suite_v1/{name}.yaml")
+    rasam_val_sources = [
+        s for s in cfg.data.sources
+        if (s.params or {}).get("subset", "").startswith("calfa-ai/RASAM") and s.split != "train"
+    ]
+    assert len(rasam_val_sources) == 2  # rasam1_val, rasam2_val
+    assert all(s.split == "validation" for s in rasam_val_sources)
