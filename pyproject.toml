@@ -10,6 +10,9 @@ authors = [{ name = "rabeeh97" }]
 dependencies = [
     "jiwer>=3.0",
     "datasets>=3.0",
+    # 25.x's _dataset.pyd is WDAC-blocked on the 3090 box (Application Control
+    # policy); 21.0.0 is the wheel the suite venv already loads successfully.
+    "pyarrow>=15,<22",
     "pillow>=10.0",
     "pyyaml>=6.0",
     "pydantic>=2.0",
@@ -47,6 +50,12 @@ train = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.6",
+]
+# PaddleOCR recognition client. The GPU wheel (`paddlepaddle-gpu`) MUST come
+# from Paddle's own index, not PyPI — see docs/experiments/paddleocr-runbook.md.
+# Do not install this extra into the suite's torch venv.
+paddleocr = [
+    "paddleocr>=3.7",
 ]
 
 [project.scripts]

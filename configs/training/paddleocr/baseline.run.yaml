@@ -1,0 +1,27 @@
+# Source of truth for `scripts/run_paddleocr_experiment.py` — the datasets
+# the *untuned* arabic_PP-OCRv5_mobile_rec baseline is scored on. The script
+# generates one real `bench run` config per (stage, dataset) from this list;
+# it does NOT run this file as a single multi-dataset bench invocation.
+#
+# Same held-out mix as configs/training/exp3090_bench.run.yaml, plus
+# muharaf_lines (the suite_v1 in-domain test split). Paddle was not trained
+# on any of these, so the whole list is a fair raw-model baseline. After
+# fine-tuning on suite_v1's train mix, muharaf_lines + rasam1/2 test become
+# in-domain; kitab_khatt / nakba_lines stay unseen-domain.
+#
+# kitab_hindawi / kitab_historicalbooks are paragraph-scale, not lines.
+# Paddle rec is a line model — those two rows are a "will it volunteer a
+# full-page transcript" probe, not a clean line-OCR score (same caveat as
+# the 3090 VLM bench; see docs/experiments/findings-and-notes.md).
+
+models:
+  - arabic-paddleocr-v5
+
+datasets:
+  - muharaf_lines             # held-out Muharaf test (in-domain after FT)
+  - kitab_khatt               # modern handwritten Arabic (KHATT) — line-level
+  - nakba_lines               # 20th-c. degraded handwriting — line-level (gated)
+  - rasam1                    # Maghrebi-script manuscripts — line-level
+  - rasam2                    # Maghrebi-script manuscripts, dense diacritics
+  - kitab_hindawi             # printed; GT is PARAGRAPH-scale
+  - kitab_historicalbooks     # degraded historical print; also paragraph-scale

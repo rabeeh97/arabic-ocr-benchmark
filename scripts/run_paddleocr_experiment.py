@@ -1,0 +1,725 @@
+"""Untuned PaddleOCR baseline + label prep (Windows-first, also POSIX).
+
+Scores the pretrained ``arabic_PP-OCRv5_mobile_rec`` on the datasets in
+``configs/training/paddleocr/baseline.run.yaml``, then (optionally) writes
+PaddleOCR/PaddleX recognition labels from the suite_v1 training mix.
+
+    python scripts/run_paddleocr_experiment.py --dir C:\\Users\\User\\a-experiment\\paddleocr --detach
+
+**Does not share a venv with the VLM suite.** Uses the dedicated
+``paddleocr_venv`` and pins inference to CPU (``CUDA_VISIBLE_DEVICES`` empty,
+``PADDLEOCR_DEVICE=cpu``) so a concurrent Qwen/Ain training run keeps the
+3090. Fine-tuning itself is a later, GPU-bound step — see
+``scripts/finetune_paddleocr.py``.
+
+Phases (idempotent, tracked in ``<dir>/state.json``):
+
+    install -> check -> smoke -> full -> collect -> labels
+
+Everything it writes lives under ``<dir>/`` (never inside the git repo).
+Same detach / status / resume ergonomics as ``run_3090_benchmark.py``.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import platform
+import queue
+import shutil
+import subprocess
+import sys
+import threading
+import time
+import zipfile
+from datetime import datetime, timezone
+from pathlib import Path
+
+UTC = timezone.utc
+
+REPO = Path(__file__).resolve().parents[1]
+IS_WIN = platform.system() == "Windows"
+
+from _detach_spawn import emit_log_line, spawn_surviving_logout, stdout_is_regular_file
+
+PHASES = ["install", "check", "smoke", "full", "collect", "labels"]
+MATRIX_FILE = "configs/training/paddleocr/baseline.run.yaml"
+LABELS_CONFIG = "configs/training/suite_v1/qwen3vl4b.yaml"
+PROMPT_VERSION = "line-v2"
+NORM_PROFILES = ("raw", "light", "diac_insensitive")
+MODEL = "arabic-paddleocr-v5"
+
+DEFAULT_VENV_WIN = Path(r"C:\Users\User\a-experiment\paddleocr_venv")
+DEFAULT_VENV_WIN311 = Path(r"C:\Users\User\a-experiment\paddleocr_venv311")
+DEFAULT_HF_WIN = Path(r"C:\Users\User\a-experiment\suite-v1\_shared\hf_cache")
+DEFAULT_ENV_WIN = Path(r"C:\Users\User\a-experiment\suite-v1\experiment.env")
+PYTHON311_WIN = Path(r"C:\Users\User\AppData\Local\Programs\Python\Python311\python.exe")
+PADDLE_GPU_INDEX = "https://www.paddlepaddle.org.cn/packages/stable/cu126/"
+
+_CHILD: subprocess.Popen | None = None
+HEARTBEAT_S = 90
+
+
+def _now() -> str:
+    return datetime.now(UTC).isoformat(timespec="seconds")
+
+
+def _dirs(root: Path) -> dict:
+    d = {
+        "root": root,
+        "bench": root / "bench",
+        "results": root / "bench" / "results",
+        "cfg": root / "bench" / "_cfg",
+        "labels": root / "labels" / "suite_v1",
+        "logs": root / "logs",
+        "hf_cache": root / "hf_cache",
+    }
+    for p in d.values():
+        p.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def _log(dirs: dict, msg: str) -> None:
+    emit_log_line(dirs["logs"] / "paddleocr.log", f"[{_now()}] {msg}")
+
+
+def _rotate_log(dirs: dict) -> None:
+    log = dirs["logs"] / "paddleocr.log"
+    if log.exists() and log.stat().st_size > 0:
+        stamp = _now().replace(":", "").replace("-", "")
+        log.rename(dirs["logs"] / f"paddleocr.{stamp}.log")
+
+
+def _load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        s = raw.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        k, v = s.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+def pin_cpu_inference_env() -> None:
+    """Keep Paddle off a GPU another process already owns."""
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    os.environ["PADDLEOCR_DEVICE"] = "cpu"
+    os.environ["FLAGS_use_gpu"] = "0"
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    os.environ.setdefault("PYTHONUTF8", "1")
+
+
+def _pin_env(dirs: dict, *, venv: Path, hf_home: Path | None) -> None:
+    pin_cpu_inference_env()
+    os.environ["HF_HOME"] = str(hf_home or dirs["hf_cache"])
+    os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
+    os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "0")
+    if IS_WIN and DEFAULT_ENV_WIN.exists():
+        _load_env_file(DEFAULT_ENV_WIN)
+    _load_env_file(dirs["root"] / "experiment.env")
+    os.environ["VIRTUAL_ENV"] = str(venv)
+
+
+def parse_matrix_datasets(text: str) -> list[str]:
+    """Stdlib YAML-subset parser for MATRIX_FILE's ``datasets:`` list."""
+    datasets: list[str] = []
+    in_block = False
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].rstrip()
+        if not line:
+            continue
+        if not line.startswith((" ", "\t")):
+            in_block = line.strip().rstrip(":") == "datasets"
+            continue
+        if in_block and line.lstrip().startswith("- "):
+            datasets.append(line.lstrip()[2:].strip())
+    return datasets
+
+
+def write_run_cfg(
+    path: Path,
+    *,
+    dataset: str,
+    limit: int,
+    accumulate: bool,
+    results_dir: Path,
+) -> None:
+    path.write_text(
+        "# generated by run_paddleocr_experiment.py — do not edit\n"
+        f"models: [{MODEL}]\n"
+        f"datasets: [{dataset}]\n"
+        f"limit: {limit}\n"
+        f"offset: 0\n"
+        f"accumulate: {'true' if accumulate else 'false'}\n"
+        f"prompt_version: {PROMPT_VERSION}\n"
+        f"normalization_profiles: [{', '.join(NORM_PROFILES)}]\n"
+        "concurrency: 1\n"
+        "max_retries: 2\n"
+        "cache: true\n"
+        f"results_dir: {results_dir.as_posix()}\n",
+        encoding="utf-8",
+    )
+
+
+def _state_path(dirs: dict) -> Path:
+    return dirs["root"] / "state.json"
+
+
+def _read_state(dirs: dict) -> dict:
+    p = _state_path(dirs)
+    if not p.exists():
+        return {"phases": {}, "created": _now()}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {"phases": {}, "created": _now()}
+
+
+def _write_state(dirs: dict, state: dict) -> None:
+    _state_path(dirs).write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
+def _mark(dirs: dict, state: dict, phase: str, **extra) -> None:
+    state.setdefault("phases", {})[phase] = {"done": True, "at": _now(), **extra}
+    _write_state(dirs, state)
+
+
+def _done(state: dict, phase: str) -> bool:
+    return bool(state.get("phases", {}).get(phase, {}).get("done"))
+
+
+def _venv_python(venv: Path) -> Path:
+    return venv / ("Scripts/python.exe" if IS_WIN else "bin/python")
+
+
+def _python_mm(py: Path) -> tuple[int, int]:
+    out = subprocess.run(
+        [str(py), "-c", "import sys; print(sys.version_info.major, sys.version_info.minor)"],
+        capture_output=True, text=True, check=False,
+    )
+    parts = (out.stdout or "").split()
+    if len(parts) != 2:
+        return (0, 0)
+    return int(parts[0]), int(parts[1])
+
+
+def _ensure_py311_venv(dirs: dict, spec: dict) -> Path:
+    """This repo needs Python >=3.11; the original paddleocr_venv is 3.10.
+
+    Create ``paddleocr_venv311`` next to it (leave the 3.10 tree in place —
+    it still has the verified CUDA wheels as a fallback) and install
+    paddlepaddle-gpu + paddleocr into the new venv.
+    """
+    py = _venv_python(spec["venv"])
+    if py.exists() and _python_mm(py) >= (3, 11):
+        return spec["venv"]
+    host = PYTHON311_WIN if IS_WIN and PYTHON311_WIN.exists() else Path(sys.executable)
+    if _python_mm(host) < (3, 11):
+        raise SystemExit(
+            f"install: need Python 3.11+ to run this repo (got {host} "
+            f"{_python_mm(host)}). The existing paddleocr_venv is 3.10."
+        )
+    venv311 = DEFAULT_VENV_WIN311 if IS_WIN else spec["venv"].parent / (spec["venv"].name + "311")
+    py311 = _venv_python(venv311)
+    if not py311.exists():
+        _log(dirs, f"install: creating Python 3.11 venv at {venv311}")
+        if _run(dirs, [str(host), "-m", "venv", str(venv311)], phase="install"):
+            raise SystemExit("install: venv creation failed")
+    spec["venv"] = venv311
+    probe = subprocess.run(
+        [str(py311), "-c", "import paddleocr, paddle"],
+        capture_output=True, text=True, check=False,
+    )
+    if probe.returncode != 0:
+        if _run(dirs, [str(py311), "-m", "pip", "install", "-U", "pip"], phase="install"):
+            raise SystemExit("install: pip upgrade failed")
+        if _run(
+            dirs,
+            [
+                str(py311), "-m", "pip", "install", "paddlepaddle-gpu==3.2.2",
+                "-i", PADDLE_GPU_INDEX,
+            ],
+            phase="install",
+        ):
+            raise SystemExit("install: paddlepaddle-gpu install failed")
+        if _run(dirs, [str(py311), "-m", "pip", "install", "paddleocr"], phase="install"):
+            raise SystemExit("install: paddleocr install failed")
+    return venv311
+
+
+def _run(dirs: dict, cmd: list[str], *, phase: str, cwd: Path | None = None) -> int:
+    global _CHILD
+    _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
+    tee = not stdout_is_regular_file()
+    fh = (dirs["logs"] / "paddleocr.log").open("a", encoding="utf-8") if tee else None
+    try:
+        proc = subprocess.Popen(
+            [str(c) for c in cmd],
+            cwd=str(cwd or REPO),
+            env={**os.environ},
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            bufsize=1,
+        )
+        _CHILD = proc
+        assert proc.stdout is not None
+        q: queue.Queue = queue.Queue()
+
+        def _reader() -> None:
+            for ln in proc.stdout:
+                q.put(ln)
+            q.put(None)
+
+        threading.Thread(target=_reader, daemon=True).start()
+        last = time.monotonic()
+        try:
+            while True:
+                try:
+                    ln = q.get(timeout=HEARTBEAT_S)
+                except queue.Empty:
+                    _log(
+                        dirs,
+                        f"...  {phase}: still running (pid {proc.pid}, "
+                        f"{int(time.monotonic() - last)}s since last output)",
+                    )
+                    continue
+                if ln is None:
+                    break
+                last = time.monotonic()
+                sys.stdout.write(ln)
+                sys.stdout.flush()
+                if fh is not None:
+                    fh.write(ln)
+            proc.wait()
+        finally:
+            _CHILD = None
+    finally:
+        if fh is not None:
+            fh.close()
+    if proc.returncode != 0:
+        _log(dirs, f"!! phase {phase}: command exited {proc.returncode}")
+    return proc.returncode
+
+
+def _kill_child() -> None:
+    if _CHILD and _CHILD.poll() is None:
+        _CHILD.terminate()
+        try:
+            _CHILD.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            _CHILD.kill()
+
+
+def phase_install(dirs: dict, state: dict, spec: dict, args) -> None:
+    venv = _ensure_py311_venv(dirs, spec)
+    spec["venv"] = venv
+    state["venv"] = str(venv)
+    py = _venv_python(venv)
+    if _run(
+        dirs,
+        [str(py), "-m", "pip", "install", "-e", str(REPO)],
+        phase="install",
+    ):
+        raise SystemExit("install: pip install -e failed")
+    # datasets pulls an unbounded pyarrow; 25.x's _dataset.pyd is WDAC-blocked
+    # on this box. Pin the wheel the suite venv already loads (21.0.0).
+    if _run(
+        dirs,
+        [str(py), "-m", "pip", "install", "pyarrow==21.0.0"],
+        phase="install",
+    ):
+        raise SystemExit("install: pyarrow pin failed")
+    _mark(dirs, state, "install", venv=str(venv))
+
+
+def phase_check(dirs: dict, state: dict, spec: dict, args) -> None:
+    py = _venv_python(spec["venv"])
+    code = (
+        "import os, arabic_ocr_bench, paddleocr, pyarrow\n"
+        "from paddleocr import TextRecognition\n"
+        "from datasets import load_dataset  # noqa: F401 — WDAC can block pyarrow.dataset\n"
+        "import pyarrow.dataset as pds  # noqa: F401\n"
+        "assert os.environ.get('CUDA_VISIBLE_DEVICES') == '', os.environ.get('CUDA_VISIBLE_DEVICES')\n"
+        "assert os.environ.get('PADDLEOCR_DEVICE') == 'cpu'\n"
+        "print('paddleocr', paddleocr.__version__)\n"
+        "print('pyarrow', pyarrow.__version__)\n"
+        "print('device', os.environ.get('PADDLEOCR_DEVICE'))\n"
+        "print('hf_home', os.environ.get('HF_HOME'))\n"
+        "print('hf_token', 'yes' if os.environ.get('HF_TOKEN') else 'MISSING')\n"
+    )
+    if _run(dirs, [str(py), "-c", code], phase="check"):
+        raise SystemExit("check: paddleocr_venv sanity import failed")
+    _mark(dirs, state, "check")
+
+
+def _datasets() -> list[str]:
+    return parse_matrix_datasets((REPO / MATRIX_FILE).read_text(encoding="utf-8"))
+
+
+def _collect_latest(dirs: dict, stage: str, dataset: str) -> str | None:
+    runs = sorted(dirs["results"].glob("*/summary.csv"), key=lambda p: p.stat().st_mtime)
+    if not runs:
+        return None
+    src = runs[-1].parent
+    dst = dirs["bench"] / stage / dataset / src.name
+    dst.mkdir(parents=True, exist_ok=True)
+    for f in (
+        "summary.csv",
+        "summary.md",
+        "scores.jsonl",
+        "predictions.jsonl",
+        "run_config.snapshot.yaml",
+    ):
+        if (src / f).exists():
+            shutil.copy2(src / f, dst / f)
+    _log(dirs, f"{stage}: {dataset} -> {dst}")
+    return src.name
+
+
+def _run_new_line_count(dirs: dict, run_id: str, dataset: str) -> int:
+    pred = dirs["results"] / run_id / "predictions.jsonl"
+    if not pred.exists():
+        return 0
+    n = 0
+    for line in pred.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            r = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if r.get("model") == MODEL and r.get("dataset") == dataset and not r.get("cached"):
+            n += 1
+    return n
+
+
+def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str, limit: int, accumulate: bool) -> bool:
+    py = _venv_python(spec["venv"])
+    exhausted: list[str] = []
+    for ds in _datasets():
+        key = f"{stage}:{ds}"
+        if _done(state, key) and not args.force:
+            _log(dirs, f"{stage}: {ds} already done")
+            exhausted.append(ds)
+            continue
+        cfg = dirs["cfg"] / f"{stage}__{ds}.run.yaml"
+        write_run_cfg(
+            cfg,
+            dataset=ds,
+            limit=limit,
+            accumulate=accumulate,
+            results_dir=dirs["results"],
+        )
+        if _run(
+            dirs,
+            [str(py), "-m", "arabic_ocr_bench.cli", "run", "--config", str(cfg), "--report"],
+            phase=stage,
+        ):
+            raise SystemExit(f"{stage}: `bench run` failed on {ds} — fix and re-run (resumes).")
+        run_id = _collect_latest(dirs, stage, ds)
+        new_lines = _run_new_line_count(dirs, run_id, ds) if run_id else 0
+        if not accumulate or new_lines < limit:
+            _mark(dirs, state, key, run_id=run_id)
+            exhausted.append(ds)
+        else:
+            _log(dirs, f"{stage}: {ds} — {new_lines} more lines scored; re-run to continue")
+    return len(exhausted) == len(_datasets())
+
+
+def phase_smoke(dirs: dict, state: dict, spec: dict, args) -> None:
+    if _done(state, "smoke") and not args.force:
+        _log(dirs, "smoke: already done")
+        return
+    if _sweep(dirs, state, spec, args, stage="smoke", limit=args.smoke_n, accumulate=False):
+        _mark(dirs, state, "smoke")
+
+
+def phase_full(dirs: dict, state: dict, spec: dict, args) -> None:
+    if _done(state, "full") and not args.force:
+        _log(dirs, "full: already done")
+        return
+    if _sweep(dirs, state, spec, args, stage="full", limit=args.full_n, accumulate=True):
+        _mark(dirs, state, "full")
+        _log(dirs, "full: every dataset exhausted")
+    else:
+        _log(dirs, "full: batch done — re-run this command to score the next batch")
+
+
+def phase_collect(dirs: dict, state: dict, spec: dict, args) -> None:
+    py = _venv_python(spec["venv"])
+    _run(
+        dirs,
+        [
+            str(py),
+            str(REPO / "scripts" / "make_leaderboard.py"),
+            str(dirs["results"]),
+            "-o",
+            str(dirs["bench"] / "leaderboard.html"),
+        ],
+        phase="collect",
+    )
+    bundle = dirs["bench"] / "bundle.zip"
+    with zipfile.ZipFile(bundle, "w", zipfile.ZIP_DEFLATED) as z:
+        for sub in ("smoke", "full"):
+            root = dirs["bench"] / sub
+            for f in root.rglob("*"):
+                if f.is_file():
+                    z.write(f, f.relative_to(dirs["bench"]))
+        lb = dirs["bench"] / "leaderboard.html"
+        if lb.exists():
+            z.write(lb, lb.name)
+    _log(dirs, f"collect: bundle -> {bundle} ({bundle.stat().st_size // 1024} KB)")
+    _mark(dirs, state, "collect", bundle=str(bundle))
+
+
+def phase_labels(dirs: dict, state: dict, spec: dict, args) -> None:
+    if _done(state, "labels") and not args.force:
+        _log(dirs, "labels: already done")
+        return
+    py = _venv_python(spec["venv"])
+    cmd = [
+        str(py),
+        str(REPO / "scripts" / "prep_paddleocr_labels.py"),
+        "--config",
+        LABELS_CONFIG,
+        "--out",
+        str(dirs["labels"]),
+        "--split",
+        "both",
+    ]
+    if args.labels_limit:
+        cmd.extend(["--per-source-limit", str(args.labels_limit)])
+    if _run(dirs, cmd, phase="labels"):
+        raise SystemExit("labels: prep_paddleocr_labels.py failed")
+    _mark(dirs, state, "labels", out=str(dirs["labels"]))
+
+
+PHASE_FN = {
+    "install": phase_install,
+    "check": phase_check,
+    "smoke": phase_smoke,
+    "full": phase_full,
+    "collect": phase_collect,
+    "labels": phase_labels,
+}
+
+
+def _respawn_detached(dirs: dict, argv: list[str]) -> int:
+    _rotate_log(dirs)
+    child_argv = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
+    pid = spawn_surviving_logout(
+        child_argv,
+        cwd=REPO,
+        log_path=dirs["logs"] / "paddleocr.log",
+        pid_path=dirs["logs"] / "paddleocr.pid",
+    )
+    print(f"detached pid {pid}")
+    print(f"log : {dirs['logs'] / 'paddleocr.log'}")
+    print(f"poll: python {Path(__file__).name} --dir {dirs['root']} status")
+    return 0
+
+
+def _pid_alive(pid: int) -> bool:
+    try:
+        if IS_WIN:
+            out = subprocess.run(
+                ["tasklist", "/FI", f"PID eq {pid}", "/NH"],
+                capture_output=True,
+                text=True,
+                check=False,
+            ).stdout
+            return str(pid) in out
+        os.kill(pid, 0)
+        return True
+    except (OSError, ValueError):
+        return False
+
+
+def _active_worker(dirs: dict) -> int | None:
+    pidf = dirs["logs"] / "paddleocr.pid"
+    if not pidf.exists():
+        return None
+    try:
+        pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
+    except ValueError:
+        return None
+    if pid and pid not in (os.getpid(), os.getppid()) and _pid_alive(pid):
+        return pid
+    return None
+
+
+def print_log_tail(text: str, n: int = 40, stream=None) -> None:
+    """Print the last ``n`` log lines without crashing a cp1252 Windows console."""
+    stream = stream if stream is not None else sys.stdout
+    payload = "\n".join(text.splitlines()[-n:])
+    try:
+        stream.write(payload + "\n")
+        stream.flush()
+    except UnicodeEncodeError:
+        enc = getattr(stream, "encoding", None) or "utf-8"
+        buf = getattr(stream, "buffer", None)
+        data = (payload + "\n").encode(enc, errors="replace")
+        if buf is not None:
+            buf.write(data)
+        else:
+            stream.write(data.decode(enc, errors="replace"))
+
+
+def configure_stdio() -> None:
+    """Windows ``python.exe`` defaults to cp1252; Arabic in the log is not that."""
+    os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+    os.environ.setdefault("PYTHONUTF8", "1")
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except (OSError, ValueError, AttributeError):
+            pass
+
+
+def cmd_status(dirs: dict) -> int:
+    state = _read_state(dirs)
+    print(f"experiment dir : {dirs['root']}")
+    pidf = dirs["logs"] / "paddleocr.pid"
+    if pidf.exists():
+        pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
+        print(f"worker pid     : {pid}  ({'alive' if _pid_alive(pid) else 'not running'})")
+    print("\nphases:")
+    for ph in PHASES:
+        rec = state.get("phases", {}).get(ph, {})
+        print(f"  {ph:<9} {'done' if rec.get('done') else '--':<6} {rec.get('at', '')}")
+    sub = {k: v for k, v in state.get("phases", {}).items() if ":" in k}
+    if sub:
+        print("\nper-dataset:")
+        for k in sorted(sub):
+            print(f"  {k:<28} done  {sub[k].get('at', '')}")
+    for stage in ("smoke", "full"):
+        got = (
+            sorted((dirs["bench"] / stage).glob("*/*/summary.csv"))
+            if (dirs["bench"] / stage).exists()
+            else []
+        )
+        if got:
+            print(f"\n{stage} results : {dirs['bench'] / stage}  ({len(got)} batch summaries)")
+    log = dirs["logs"] / "paddleocr.log"
+    if log.exists():
+        print("\n--- log tail (40) ---")
+        print_log_tail(log.read_text(encoding="utf-8", errors="replace"))
+    return 0
+
+
+def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
+    state = _read_state(dirs)
+    state.setdefault("started", _now())
+    _write_state(dirs, state)
+
+    active = _active_worker(dirs)
+    if active and not args.force:
+        print(
+            f"a paddleocr run is already active in this folder (pid {active}).\n"
+            f"  watch it : python {Path(__file__).name} --dir {dirs['root']} status\n"
+            f"  stop it  : {'taskkill /F /PID' if IS_WIN else 'kill'} {active}\n"
+            f"  or pass --force to start anyway (only if you know it is dead)."
+        )
+        return 1
+
+    if args.detach:
+        return _respawn_detached(dirs, argv)
+
+    if not stdout_is_regular_file():
+        _rotate_log(dirs)
+    (dirs["logs"] / "paddleocr.pid").write_text(str(os.getpid()), encoding="utf-8")
+    start = args.from_phase or ("install" if not args.only else args.only)
+    plan = [args.only] if args.only else PHASES[PHASES.index(start):]
+    _log(dirs, f"=== paddleocr baseline: phases={plan} cpu-only ===")
+    try:
+        for ph in plan:
+            try:
+                PHASE_FN[ph](dirs, state, spec, args)
+            except SystemExit as e:
+                _log(dirs, f"STOP at phase {ph}: {e}")
+                return 1
+            state = _read_state(dirs)
+        _log(dirs, "=== pass complete ===")
+        _log(dirs, f"results : {dirs['bench']}")
+        return 0
+    finally:
+        _kill_child()
+        pidf = dirs["logs"] / "paddleocr.pid"
+        if pidf.exists() and pidf.read_text(encoding="utf-8").strip() == str(os.getpid()):
+            pidf.unlink()
+
+
+def _resolve_venv(args, dirs: dict) -> Path:
+    if args.venv:
+        return Path(args.venv).expanduser().resolve()
+    saved = _read_state(dirs).get("venv")
+    if saved and _venv_python(Path(saved)).exists():
+        return Path(saved)
+    if IS_WIN and DEFAULT_VENV_WIN311.exists():
+        return DEFAULT_VENV_WIN311
+    if IS_WIN and DEFAULT_VENV_WIN.exists():
+        return DEFAULT_VENV_WIN
+    raise SystemExit(
+        "no --venv given and the default paddleocr_venv was not found. "
+        "See docs/experiments/paddleocr-runbook.md §1."
+    )
+
+
+def _resolve_hf_home(args, dirs: dict) -> Path:
+    if args.hf_home:
+        return Path(args.hf_home).expanduser().resolve()
+    if IS_WIN and DEFAULT_HF_WIN.exists():
+        return DEFAULT_HF_WIN
+    return dirs["hf_cache"]
+
+
+def main(argv: list[str] | None = None) -> int:
+    argv = list(sys.argv[1:] if argv is None else argv)
+    ap = argparse.ArgumentParser(
+        prog="run_paddleocr_experiment",
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    ap.add_argument("--dir", required=True, help="experiment folder (logs, bench, labels)")
+    ap.add_argument("cmd", nargs="?", default="run", choices=["run", "status"])
+    ap.add_argument("--venv", default=None, help="dedicated paddleocr_venv (not the suite venv)")
+    ap.add_argument("--hf-home", dest="hf_home", default=None, help="reuse an existing HF cache")
+    ap.add_argument("--smoke-n", dest="smoke_n", type=int, default=20)
+    ap.add_argument("--full-n", dest="full_n", type=int, default=200)
+    ap.add_argument(
+        "--labels-limit",
+        dest="labels_limit",
+        type=int,
+        default=None,
+        help="cap each training source when writing labels (omit for the full mix)",
+    )
+    ap.add_argument("--detach", action="store_true")
+    ap.add_argument("--from", dest="from_phase", default=None, choices=PHASES)
+    ap.add_argument("--only", default=None, choices=PHASES)
+    ap.add_argument("--force", action="store_true")
+    args = ap.parse_args(argv)
+
+    configure_stdio()
+    dirs = _dirs(Path(args.dir).expanduser().resolve())
+    venv = _resolve_venv(args, dirs)
+    hf_home = _resolve_hf_home(args, dirs)
+    _pin_env(dirs, venv=venv, hf_home=hf_home)
+    if args.cmd == "status":
+        return cmd_status(dirs)
+
+    spec = {"venv": venv, "hf_home": hf_home}
+    return drive(dirs, spec, args, argv)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
