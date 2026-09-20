@@ -24,9 +24,27 @@ refused CER is higher (0.41 vs 0.26 base; 0.57 vs 0.42 ft).
 Controls: mean confidence is 0.95 on ground truth, 0.87-0.89 on the model output, 0.84-0.85 on
 character-shuffled output. AUROC ground-truth vs shuffled is 0.91-0.92.
 
+## Second model: qari-ocr-0.2 on muharaf_lines (short handwritten lines)
+
+Run `results/20260831T185739Z`, all 1319 non-errored lines; output
+`results/gliner2_verifier/20260920T151011Z/`. Overall CER 0.798 (matches `summary.csv`).
+
+| threshold | accepted (n) | accepted CER | refused (n) | refused CER |
+|---|---|---|---|---|
+| 0.5 | 1287 | 0.795 | 32 | 0.910 |
+| 0.7 | 1221 | 0.794 | 98 | 0.843 |
+| 0.9 | 1076 | 0.784 | 243 | 0.848 |
+
+**The gate is uninformative here.** Mean confidence is 0.924 on ground truth and 0.925 on
+character-shuffled text (AUROC 0.53, chance), and confidence predicts low-CER lines at AUROC 0.45
+(below chance). The small accepted/refused CER gaps should not be read as signal. Qari is also close
+to failing outright on this set (CER 0.80), so there is little good output to separate from bad.
+Short lines give the classifier little to work with compared with the long kitab_hindawi pages.
+
 ## Notes
 
-- **Direction is right, effect is small.** Accepted CER is 2-3 points below overall and refused is
+- **Direction is right on PaliGemma / kitab_hindawi, effect is small, and it does not carry over
+  to Qari / Muharaf (above).** Accepted CER is 2-3 points below overall and refused is
   higher, but the AUROC is 0.65-0.68 and n is 92-178; no significance test was run, so treat the
   gap as suggestive, not established.
 - **Overconfident, as the model card warns.** Even shuffled gibberish scores ~0.85, so useful
@@ -48,4 +66,8 @@ character-shuffled output. AUROC ground-truth vs shuffled is 0.91-0.92.
     PYTHONPATH=src /tmp/gliner_venv/bin/python scripts/experiment_gliner2_verifier.py \
         --run results/20260913T093935Z --models paligemma2-3b-bf16 exp3090-paligemma2-3b-ft-bf16
 
-Model confidences are cached in `results/gliner2_verifier/_cache.jsonl`, so reruns are instant.
+For the Qari run use `--run results/20260831T185739Z --models qari-ocr-0.2 --dataset muharaf_lines`.
+
+Model confidences are cached by text hash in `results/gliner2_verifier/_cache.jsonl` (committed;
+4442 texts, covering both runs), so reruns and any other model that produced the same text are
+instant.

@@ -43,11 +43,11 @@ def normalize_for_model(s: str) -> str:
     return re.sub(r"\s+", " ", _STRIP.sub("", s)).strip()[:MAX_CHARS]
 
 
-def load_rows(run: Path, models: list[str]) -> list[dict]:
+def load_rows(run: Path, models: list[str], dataset: str | None) -> list[dict]:
     rows = []
     for line in (run / "predictions.jsonl").open(encoding="utf-8"):
         r = json.loads(line)
-        if r["model"] in models and not r.get("error"):
+        if r["model"] in models and not r.get("error") and dataset in (None, r["dataset"]):
             rows.append(r)
     return rows
 
@@ -125,6 +125,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", required=True, type=Path)
     ap.add_argument("--models", nargs="+", required=True)
+    ap.add_argument("--dataset", default=None, help="only rows from this dataset")
     ap.add_argument("--limit", type=int, default=None, help="max rows per model")
     ap.add_argument("--out", type=Path, default=REPO / "results" / "gliner2_verifier")
     args = ap.parse_args()
@@ -134,7 +135,7 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     scorer = Scorer(args.out / "_cache.jsonl")
 
-    rows = load_rows(run, args.models)
+    rows = load_rows(run, args.models, args.dataset)
     if args.limit:
         per: dict[str, int] = {}
         kept = []
