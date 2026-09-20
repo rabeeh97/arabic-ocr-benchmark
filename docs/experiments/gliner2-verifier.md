@@ -41,6 +41,27 @@ character-shuffled text (AUROC 0.53, chance), and confidence predicts low-CER li
 to failing outright on this set (CER 0.80), so there is little good output to separate from bad.
 Short lines give the classifier little to work with compared with the long kitab_hindawi pages.
 
+## Third family: Qwen3-VL-4B base vs fine-tuned (short lines)
+
+Runs `results/20260909T184119Z` (nakba_lines, 200 lines/model) and `results/20260909T174517Z`
+(kitab_khatt, 180 lines/model); outputs `results/gliner2_verifier/20260920T151739Z/` and
+`.../20260920T151852Z/`. Overall CERs match `summary.csv`. Threshold 0.9, CER raw micro:
+
+| dataset | model | overall | accepted (n) | refused (n) | AUROC conf vs low-CER | AUROC GT vs shuffled |
+|---|---|---|---|---|---|---|
+| nakba_lines | qwen3-vl-4b base | 0.768 | 0.707 (129) | 0.836 (71) | 0.72 | 0.65 |
+| nakba_lines | qwen3-vl-4b ft | 0.326 | 0.315 (124) | 0.338 (76) | 0.64 | 0.56 |
+| kitab_khatt | qwen3-vl-4b base | 0.771 | 0.705 (108) | 0.860 (72) | 0.72 | 0.76 |
+| kitab_khatt | qwen3-vl-4b ft | 0.300 | 0.266 (110) | 0.349 (70) | 0.62 | 0.72 |
+
+Here the direction holds on all four: accepted CER is below overall, refused above. The gap is
+largest for the weak base model (about 6 points below overall, 6-9 above at 0.9) and for the
+fine-tuned model on kitab_khatt (3.4 below); it is negligible for the fine-tuned model on
+nakba_lines. The controls are only moderate (GT-vs-shuffled AUROC 0.56-0.76, and on ft/khatt the
+shuffled text scores higher on average, 0.892, than the model output, 0.872), so the gate
+separates "clearly bad" output rather than certifying good output. n is 180-200 per cell with no
+significance test.
+
 ## Notes
 
 - **Direction is right on PaliGemma / kitab_hindawi, effect is small, and it does not carry over
@@ -69,5 +90,5 @@ Short lines give the classifier little to work with compared with the long kitab
 For the Qari run use `--run results/20260831T185739Z --models qari-ocr-0.2 --dataset muharaf_lines`.
 
 Model confidences are cached by text hash in `results/gliner2_verifier/_cache.jsonl` (committed;
-4442 texts, covering both runs), so reruns and any other model that produced the same text are
+6403 texts, covering every run above), so reruns and any other model that produced the same text are
 instant.
