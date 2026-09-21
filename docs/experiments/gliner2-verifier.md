@@ -11,6 +11,10 @@
 - **Cost:** none (local CPU); 270 rows x 3 texts scored.
 - **Output:** `results/gliner2_verifier/20260920T144005Z/{summary.csv,confidences.jsonl}`
 
+> Follow-up (2026-09-21): `confidence-signal-baselines.md` compares this gate against cross-model
+> agreement, LM perplexity and trivial heuristics within each model. Agreement wins clearly; this
+> gate is indistinguishable from random there.
+
 ## Result (CER raw, micro)
 
 | model | n | overall | thr 0.9: accepted (n) | thr 0.9: refused (n) | AUROC conf vs low-CER |
