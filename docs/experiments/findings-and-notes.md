@@ -169,6 +169,130 @@ above is exactly what gave them their biggest single jump (CER 0.16→0.10).
 
 ---
 
+### suite_v1 (Qwen3-VL-4B/8B, AIN-7B, Fanar-2-Oryx): Arabic-tuned 7B bases crush generic Qwen zero-shot, and Fanar's fine-tune breaks the Maghrebi plateau
+
+**Seen (2026-09-20/21, suite_v1 on the 3090, artifacts at
+`/Volumes/PortableSSD/repos/arabic_ocr/suite-v1-artifacts/`, not in git — see
+memory `suite-v1-artifacts-location`).** Same LoRA recipe for all four models
+(bf16, r=16/α=32, ViT frozen, 1 epoch, 6k Muharaf + 6k AraMS + 3k RASAM-1 + 2k
+RASAM-2). CER-light, base → fine-tune, on the held-out panel (n=200 unless noted):
+
+| dataset | Qwen3-VL-4B | Qwen3-VL-8B | AIN-7B | Fanar-2-Oryx |
+|---|---|---|---|---|
+| kitab_khatt | 94%→28% | 48%→23% | **7%→7%** | 40%→22% |
+| nakba_lines | 98%→32%(n=820) | 58%→28% | **13%→11%** | 49%→14% |
+| rasam1 (Maghrebi) | 150%→27%(n=734) | 88%→25% | 39%→18% | 65%→**11%** |
+| rasam2 (Maghrebi) | 139%→33%(n=372) | 85%→32% | 39%→24% | 67%→**17%** |
+
+**Meaning.**
+- **AIN-7B's base (zero-shot, before any of our fine-tuning) already beats
+  every one of our own fine-tunes on printed/mixed KHATT and NAKBA** (7%/13%
+  CER). It is a genuinely different regime from generic Qwen3-VL, not a small
+  edge.
+- **Fanar-2-Oryx's fine-tune takes RASAM-1 (Maghrebi) to 11% CER** — the
+  45–54% Maghrebi plateau reported in the base-model A/B/C entry above is
+  **not a hard limit of the script or data**. It was a base-model-choice
+  problem. This substantially answers greenfield area 3 (script-family
+  coverage): the fix so far has been "start from a better-pretrained base,"
+  not a script-balanced data mix or a novel architecture.
+- **Correction to an earlier claim in this session:** AIN and Fanar do *not*
+  obviously keep an unchanged, web-caption-only vision encoder. AIN
+  ([arXiv:2502.00094](https://arxiv.org/abs/2502.00094)) is a **full-parameter**
+  fine-tune of Qwen2-VL-7B on 3.6M Arabic-English pairs; Fanar-2-Oryx
+  ([arXiv:2603.16397](https://arxiv.org/abs/2603.16397)) came from "targeted
+  continual pre-training" on 62M bilingual examples. Neither paper states the
+  vision tower was frozen, so both plausibly adapted it. Combined with
+  Baseer-Nakba's own best ablation being ViT-unfrozen + differential LR
+  (0.16→0.10 CER), **every model we know of that adapted its vision encoder to
+  Arabic ended up far ahead, and every one of our own frozen-ViT runs plateaus
+  well behind.** This is now a repeated pattern across three independent
+  sources, not a single result — treat it as the leading hypothesis for
+  greenfield area 1, to be tested directly (see the AIN+NAKBA entry below)
+  before considering a from-scratch encoder.
+
+**Per-sample diagnosis (paired base→ft, same 200 lines, full predictions
+recovered from `bench/bundle.zip` — bundle.zip's `full/<dataset>/` holds both
+base and fine-tuned model rows in one run, unlike `eval/` which only has the
+in-domain set):**
+
+| run | worse | better | flat | mean CER base→ft |
+|---|---|---|---|---|
+| AIN-7B on rasam1 | 7 | 185 | 8 | 40.5%→19.9% |
+| Fanar on rasam1 | 1 | 199 | 0 | 70.6%→12.9% |
+| AIN-7B on nakba_lines | 46 | 71 | 83 | 21.6%→19.3% |
+| Fanar on nakba_lines | 6 | 182 | 12 | 58.7%→22.2% |
+
+AIN's nakba_lines result echoes the Baseer-Nakba mild-forgetting pattern from
+the entry above (a fair number of individual regressions against an
+already-decent base) — same mechanism, much milder, since AIN's base wasn't
+already at Baseer's home-domain ceiling.
+
+**Reading the actual text surfaced four distinct failure modes** (CER alone
+hides all of these):
+
+1. **Base models hallucinate fluent, unrelated Arabic.** AIN base on
+   `rasam1/test/000142`: ground truth "خيمة ضربها حول" (a tent, pitched
+   around); base output "مَنْ يُحِبّ طَهارةً تَعالى" — grammatical, fully
+   diacritised, and invented. Fine-tuning fixes most of this class — it's a
+   decoding-prior problem, not primarily a vision problem.
+2. **Real dot/letter-shape confusion survives fine-tuning.** Fanar-ft on
+   `rasam1/test/000058`: "الطيور" (the birds) → "الظيرون" — ط/ظ differ by one
+   dot, ي/ر got scrambled too. This is the concrete, script-level error the
+   Arabic-native-encoder hypothesis is actually about, and it's still present
+   post-fine-tune on Maghrebi script specifically.
+3. **Fine-tuning imposes a strong "always output Arabic" prior that breaks on
+   genuinely non-Arabic content.** AIN nakba/test/000123: ground truth is the
+   English header "TUESDAY"; base copied it correctly, the fine-tune
+   translated it to "الثلاثاء". Worth its own metric (foreign-token fidelity)
+   — invisible in aggregate CER, and a real risk for any deployed reader.
+4. **Very short/fragment lines are noisy for everyone**
+   (`rasam1/test/000199`, ground truth just "هم") — both base and fine-tune
+   guess wildly. An eval-protocol note (down-weight or flag very short lines),
+   not a modeling finding.
+
+**To do.** Add a dot/diacritic-confusion rate and a foreign-token-fidelity
+check to the standard eval, alongside CER. Recover base-model predictions for
+Qwen3-VL-4B/8B the same way (`bench/bundle.zip`) to complete the four-way
+per-sample comparison.
+
+### AIN-7B + NAKBA-specific training: within ~1.4 CER points of Baseer, ViT-unfreeze run in flight
+
+**Seen (2026-09-21), official Systems-Track protocol** (HF
+`U4RASD/omar-al-saleh-manuscripts-segments` split `blind_test`, n=2,671, corpus
+CER = micro raw, matching the contest's own ranking metric — see
+`suite-v1-artifacts/ain7b_nakba/official/README.md` for the full metric
+reconciliation against the published Baseer number):
+
+| model | n | corpus CER (raw) | WER (raw) | CER-light |
+|---|---|---|---|---|
+| AIN-7B+NAKBA LoRA, ckpt-1600 | 2670 | **10.78%** | 34.28% | 8.63% |
+| AIN-7B+NAKBA LoRA, ckpt-1936 (epoch end) | 2670 | 10.82% | 34.22% | 8.67% |
+| nakba-misraj-baseer (our re-score, same harness) | 2671 | 9.38% | 29.30% | 7.28% |
+| Baseer-Nakba, published | 2671 | **7.9%** | 24.4% | — |
+
+**Meaning.** A single LoRA on AIN-7B, trained only on NAKBA's own train split
+(no Muharaf pretraining stage), gets within **1.4 CER points of Baseer-Nakba**
+in our harness — a much cheaper recipe than Baseer's two-stage
+(Muharaf-then-NAKBA, full-parameter, weight-averaged) pipeline. The training
+curve (ckpt 400→1600, CER-light 7.9%→6.2% on the easier public 200-line
+`nakba_lines`) was still improving, not saturating, at the point this was
+scored. Our own re-score of published Baseer (9.4% vs their 7.9%) has a known,
+unclosed ~1.5-point gap attributed to prompt/decoding differences (Baseer's
+contest prompt + `repetition_penalty=1.1` vs our `line-v2` greedy) — so AIN's
+true gap to Baseer *on identical decoding* is likely smaller than 1.4 points,
+not larger.
+
+**In flight.** Next run: unfreeze AIN's ViT with a differential LR (decoder
+faster, encoder slower — the same shape as Baseer's stage-2 recipe and the
+exp3090 `visft` config), retrained on NAKBA. This is a same-model
+before/after test of the vision-encoder-adaptation hypothesis above, cleaner
+evidence than the cross-model comparison since architecture and data are held
+fixed. **This is the opening experiment of P1** in the greenfield-areas design
+(`docs/superpowers/specs/` — write-up pending); write full results here once
+the checkpoint lands.
+
+---
+
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)
 
 - **Per-model vs per-product.** A purely per-model benchmark stays academic. The
