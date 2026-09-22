@@ -251,9 +251,38 @@ hides all of these):
    not a modeling finding.
 
 **To do.** Add a dot/diacritic-confusion rate and a foreign-token-fidelity
-check to the standard eval, alongside CER. Recover base-model predictions for
-Qwen3-VL-4B/8B the same way (`bench/bundle.zip`) to complete the four-way
-per-sample comparison.
+check to the standard eval, alongside CER.
+
+**Qwen3-VL-4B/8B added (2026-09-21) — a fifth failure mode, and it's the
+opposite direction from AIN's.** Paired base→ft, same recovery method:
+
+| run | worse | better | flat | mean CER base→ft |
+|---|---|---|---|---|
+| Qwen3-VL-8B on rasam1 | 2 | 194 | 4 | 95.3%→27.5% |
+| Qwen3-VL-8B on nakba_lines | 10 | 154 | 36 | 61.0%→31.4% |
+| Qwen3-VL-4B on rasam1 | 0 | 198 | 2 | 131.5%→28.3% |
+| Qwen3-VL-4B on nakba_lines | 4 | 182 | 14 | 95.5%→34.9% |
+
+Reading the text: **generic Qwen3-VL base models do not hallucinate unrelated
+fluent phrases the way AIN's base sometimes does (failure mode 1 above).**
+Instead they attempt a real character-level reading and mangle it with heavy,
+compulsive invented diacritics — e.g. `rasam1/test/000001`, ground truth
+"سنة ست وخمسين من الهجرة..." (largely undiacritised, as real manuscripts
+are), Qwen3-VL-8B base output "اسمُ سَتْ رَضِي مَا عَنْهُمَا..." — fully
+voweled with shadda/fatha/damma on nearly every letter, unrelated to what's on
+the page, while still tracking the rough consonant skeleton. This is **failure
+mode 5: compulsive over-diacritization as part of the "fluent Arabic" prior**,
+distinct from mode 1 (AIN inventing whole disconnected phrases) — different
+base models default to different failure shapes even on the same kind of
+error. Fine-tuning removes nearly all of it (`rasam1/test/000005`: base
+"واجتمعت علييد اعل الساحل" vs ft "واجتمعت عليه اهل الساحل", an exact match).
+
+**Relevance to area 5 (diacritics as a separate problem).** This is direct
+evidence for the split: base models are guessing diacritics as a fluency
+reflex, disconnected from the image, on datasets that are themselves mostly
+undiacritised. A "read the letters only, no diacritics" task framing on the
+base model — removing the temptation to sound fluent — is now a concretely
+motivated first probe for that experiment, not just a hypothesis.
 
 ### AIN-7B + NAKBA-specific training: within ~1.4 CER points of Baseer, ViT-unfreeze run in flight
 
