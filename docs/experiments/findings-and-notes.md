@@ -408,10 +408,49 @@ threshold, not a real semantic check) — good enough to confirm the pattern,
 not precise enough to be the area-4 hallucination metric itself.
 
 **To do.** Build the real hallucination-rate metric for area 4 (this proxy
-is a starting point, not the final version); run the per-diacritic-type
-breakdown and the letters-only-prompt probe for area 5, scoped to
-muharaf_lines/kitab_khatt only given the coverage numbers above; the
-Unicode/tokenization consistency check is still open.
+is a starting point, not the final version); the letters-only-prompt probe
+for area 5 needs a new inference run (below).
+
+**4. Per-diacritic-type breakdown (muharaf_lines/kitab_khatt only, the two
+corpora with enough diacritics to score) — fine-tuning trades hallucination
+for omission, it does not learn real restoration.** Precision/recall per mark
+type, char-aligned via edit distance on the harakat-only subsequence, Qwen3-VL-4B
+base → fine-tune on muharaf_lines:
+
+| mark | support | base P / R | ft P / R |
+|---|---|---|---|
+| fatha | 113 | 0.02 / 0.86 | 0.26 / 0.24 |
+| fathatan | 44 | 0.15 / 0.41 | 0.30 / 0.55 |
+| shadda | 43 | 0.04 / 0.67 | 0.24 / 0.33 |
+| sukun | 13 | 0.01 / 0.92 | 0.14 / 0.08 |
+| kasra | 13 | 0.00 / 0.85 | 0.00 / 0.00 |
+| damma | 6 | 0.00 / 0.33 | 0.00 / 0.00 |
+
+**Meaning.** The base model has near-zero precision but fairly high recall on
+every mark (it emits diacritics almost everywhere, so it "catches" most real
+ones by flooding — fatha alone has 5,410 false positives on 200 lines).
+Fine-tuning fixes precision a lot (still far from good) but **recall
+collapses for the rarer marks** — kasra and damma go to 0.00 recall, sukun
+drops to 0.08. Support is tiny per mark (6–113 instances across 200 lines,
+consistent with the base-rate finding above), so the fine-tune's easiest way
+to raise precision is to **stop emitting diacritics almost entirely**, not to
+place them correctly. This is direct, quantified evidence for the two-stage
+split (area 5, decision D1): a single fine-tune trained mostly on
+undiacritised text has no real pressure to learn restoration — it learns
+suppression instead, which looks like an improvement on aggregate diac_f1
+without being one.
+
+**5. Unicode/tokenization check — mostly clean, one small exception.** No
+Arabic presentation-form characters (U+FB50–FDFF, U+FE70–FEFF) found in any
+ground truth checked (kitab_khatt, muharaf_lines). NFC normalization changes
+0/180 kitab_khatt lines and 6/400 muharaf_lines lines — a small, non-zero rate
+worth a closer look (likely non-canonical combining-mark order in the source
+transcriptions) but not the dominant source of diac_f1 noise; the base-rate
+and per-type findings above explain most of it. Closes the long-open
+cross-cutting research note on this question.
+
+**Still open, needs a new inference run (waiting on the 3090):** the
+letters-only-prompt ablation and the two-stage read/restore pipeline.
 
 ---
 
@@ -425,10 +464,13 @@ Unicode/tokenization consistency check is still open.
   20th-century* Arabic — most benchmarks test clean modern or synthetic. State
   what claims only our data supports (e.g. "model X collapses on natural
   diacritic use / ligature density Y").
-- **Unicode & tokenisation.** Diacritic score gaps partly reflect *ambiguous
-  Unicode representation* of Arabic harakat. Check whether tokenisation is
-  inconsistent across the same rendered text, and whether we can influence the
-  tokenisation seen by a vision-encoder architecture.
+- **Unicode & tokenisation — checked 2026-09-23, see the "Three quick
+  re-analyses" entry above.** No presentation-form artifacts found; NFC
+  normalization changes 0/180 kitab_khatt and 6/400 muharaf_lines ground-truth
+  lines. Not the dominant source of diac_f1 noise — the base-rate and
+  per-diacritic-type findings in that entry explain most of it instead.
+  Whether we can influence tokenisation seen by a vision-encoder architecture
+  remains open, folded into greenfield area 1.
 - **Architectures.** Catalogue what current Arabic OCR products actually use
   (RNN/CTC vs Transformer decoder vs VLM). That maps where an SFT or a
   from-scratch effort has leverage.
