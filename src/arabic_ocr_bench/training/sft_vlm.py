@@ -227,6 +227,54 @@ def _make_collator_paligemma(processor, max_seq_len: int):
     return collate
 
 
+def _differential_lr_optimizer(model, cfg: TrainingConfig, args):
+    """Build a two-param-group AdamW when `train.vision_lr` is set, so the
+    (LoRA-adapted) vision tower trains at its own, usually much smaller, LR
+    than the rest of the model — mirrors Baseer-Nakba's disclosed recipe
+    (decoder 1e-4 / vision encoder 9e-6). Returns None to fall back to
+    SFTTrainer's normal single-LR optimizer when `vision_lr` isn't set, or
+    when `lora.train_vision` is off (there's no vision-tower LoRA params to
+    split out).
+
+    Vision-tower params are identified by name containing ".visual." — the
+    attribute `_load_model` already checks (`hasattr(model, "visual")`) for
+    the Qwen2-VL/Qwen2.5-VL/Qwen3-VL family PaliGemma isn't run through this
+    path since `_load_model` freezes/unfreezes it differently and this repo
+    hasn't unfrozen it with a differential LR yet.
+    """
+    if cfg.train.vision_lr is None or not cfg.lora.train_vision:
+        return None
+    import torch
+
+    def _is_vision_param(name: str) -> bool:
+        # PEFT wraps the model (e.g. "base_model.model.visual.blocks...."), so
+        # "visual" is usually preceded by a dot — but check the unprefixed,
+        # top-level case too ("visual.blocks....") rather than assume wrapping.
+        return ".visual." in name or name.startswith("visual.")
+
+    vision_params, other_params = [], []
+    for name, p in model.named_parameters():
+        if not p.requires_grad:
+            continue
+        (vision_params if _is_vision_param(name) else other_params).append(p)
+    if not vision_params:
+        raise ValueError(
+            "train.vision_lr is set but no trainable parameter name contains "
+            "'.visual.' — lora.train_vision may not have produced vision-tower "
+            "adapters for this base_model.arch, or the vision-tower attribute "
+            "name differs from the Qwen2-VL family's 'visual'."
+        )
+    return torch.optim.AdamW(
+        [
+            {"params": other_params, "lr": cfg.train.lr},
+            {"params": vision_params, "lr": cfg.train.vision_lr},
+        ],
+        betas=(args.adam_beta1, args.adam_beta2),
+        eps=args.adam_epsilon,
+        weight_decay=args.weight_decay,
+    )
+
+
 def train(cfg: TrainingConfig) -> Path:
     """Run SFT and write the adapter (or full weights) to ``cfg.output_dir``."""
     from datasets import Dataset
@@ -271,12 +319,14 @@ def train(cfg: TrainingConfig) -> Path:
         if cfg.base_model.arch == "paligemma"
         else _make_collator(processor, cfg.train.max_seq_len)
     )
+    optimizer = _differential_lr_optimizer(model, cfg, args)
     trainer = SFTTrainer(
         model=model,
         args=args,
         train_dataset=train_ds,
         eval_dataset=eval_ds,
         data_collator=collator,
+        optimizers=(optimizer, None) if optimizer is not None else (None, None),
     )
     trainer.train(resume_from_checkpoint=resume_ckpt)
     trainer.save_model(str(out))

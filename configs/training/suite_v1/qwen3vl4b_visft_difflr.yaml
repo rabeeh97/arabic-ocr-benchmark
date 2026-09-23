@@ -1,0 +1,100 @@
+# suite_v1 round 2 — Qwen3-VL-4B, IDENTICAL data/recipe to qwen3vl4b.yaml
+# (already run: suite-v1-qwen3vl4b), except the vision tower is unfrozen
+# (lora.train_vision: true) with its own, much smaller LR (train.vision_lr) —
+# the same shape as Baseer-Nakba's disclosed recipe (decoder 1e-4 / vision
+# encoder 9e-6, their single biggest CER jump: 0.16 -> 0.10).
+#
+# Purpose: replicate, on a second base model, the causal frozen-vs-unfrozen
+# ViT test already running as the AIN-7B+NAKBA stage 2 experiment
+# (docs/experiments/2026-09-21-ain7b-nakba-specialisation.md). AIN's own
+# pretraining recipe is unknown to us, so a positive result there could still
+# be AIN-specific; this config holds architecture AND data fixed against the
+# already-committed suite-v1-qwen3vl4b run, so ONLY train_vision/vision_lr
+# differ — the cleanest test of the encoder-adaptation hypothesis
+# (findings-and-notes.md, "suite_v1" and "Three quick re-analyses" entries:
+# dot/letter-shape confusion rate RISES after a frozen-ViT fine-tune in 14/16
+# model-dataset pairs — this run tests whether unfreezing reverses that).
+#
+# Scoring: run the standard held-out panel (kitab_khatt, nakba_lines, rasam1,
+# rasam2 — nakba_lines is deliberately excluded from training below, same as
+# qwen3vl4b.yaml, so it stays an unseen-domain check) plus the dot-confusion
+# and paired per-sample analysis already used on suite-v1-qwen3vl4b.
+#
+# NEW capability required: train.vision_lr (added 2026-09-24 to
+# training/config.py + sft_vlm.py — was not previously implemented; without
+# it this config would silently train the whole unfrozen model at a single
+# LR, which is not the recipe being tested here).
+#
+# Needs transformers>=4.57, same as exp3090_qwen3vl4b_visft.yaml.
+experiment: suite-v1-qwen3vl4b-visft-difflr
+method: lora
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true    # <-- the one structural change vs. suite_v1/qwen3vl4b.yaml
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation  # RASAM's own split name — not "val" (confirmed 2026-09-17)
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation  # RASAM's own split name — not "val" (confirmed 2026-09-17)
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 1003520    # ~1120*896 — lower this first if unfreezing the ViT OOMs
+                          # (same value as qwen3vl4b.yaml; unfrozen ViT uses more
+                          # VRAM at the same resolution, so this is the first knob)
+
+train:
+  epochs: 1
+  lr: 1.0e-4              # decoder LR — identical to qwen3vl4b.yaml
+  vision_lr: 9.0e-6       # vision-tower LR — Baseer-Nakba's disclosed ratio
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-qwen3vl4b-visft-difflr
+eval_datasets: [muharaf_lines]

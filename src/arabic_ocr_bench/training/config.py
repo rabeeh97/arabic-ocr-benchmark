@@ -66,6 +66,14 @@ class ImageSpec(BaseModel):
 class TrainSpec(BaseModel):
     epochs: float = 1.0
     lr: float = 1e-4
+    # Differential LR for an unfrozen vision tower (lora.train_vision: true).
+    # None (default) = single LR for the whole model, as before. Set this to
+    # give vision-tower LoRA params (any parameter whose name contains
+    # ".visual.") their own, usually much smaller, LR than the rest of the
+    # model — the same shape as Baseer-Nakba's disclosed recipe (decoder
+    # 1e-4 / vision encoder 9e-6), which was their single biggest CER jump.
+    # Ignored when lora.train_vision is false (there's nothing to split).
+    vision_lr: float | None = None
     batch_size: int = 1
     grad_accum: int = 8
     scheduler: str = "cosine"
