@@ -322,6 +322,99 @@ the checkpoint lands.
 
 ---
 
+### Three quick re-analyses (no GPU needed) — diacritic base rate, dot-confusion rate, hallucination proxy
+
+**Done (2026-09-23), reusing the suite_v1 predictions already recovered from
+`bench/bundle.zip` for AIN-7B, Fanar, Qwen3-VL-4B/8B — base and fine-tuned,
+across rasam1/rasam2/nakba_lines/kitab_khatt (+ muharaf_lines/arams_htr for
+the base-rate check). All three are pure re-analysis of existing predictions
+and ground truth, no training or inference run.**
+
+**1. Diacritic base rate — the benchmark barely tests restoration at all.**
+Fraction of ground-truth *characters* that are a diacritic mark, per corpus:
+
+| dataset | diac rate (chars) | lines with ≥1 diacritic |
+|---|---|---|
+| arams_htr | 0.00% | 0.0% |
+| rasam2 | 0.01% | 0.5% |
+| nakba_lines | 0.03% | 2.0% |
+| rasam1 | 0.13% | 7.5% |
+| kitab_khatt | 0.40% | 18.9% |
+| muharaf_lines | 1.42% | 36.0% |
+
+**Meaning.** Every corpus is overwhelmingly undiacritised, and three of six
+(arams_htr, rasam2, nakba_lines) have almost no diacritics to restore at all
+— a diacritic-restoration experiment run against them would be measuring
+noise. Only **muharaf_lines (36% of lines) and kitab_khatt (19%) have enough
+diacritised lines to say anything meaningful about restoration** — any area-5
+experiment should score on those two specifically, not the full panel.
+
+This also reframes `diac_f1` as currently computed: `metrics.py::diacritic_prf`
+special-cases an empty reference to P=R=F1=1.0 if the hypothesis is also
+empty, and to F1=0.0 for a single invented mark otherwise. Since the
+reference is empty on 63–100% of lines depending on corpus, **the aggregate
+diac_f1 score is mostly measuring "does this model refrain from inventing
+diacritics," not restoration quality** — which is a real and useful thing to
+measure, but is not the same claim as "this model restores diacritics well,"
+and explains the previously-unexplained cross-corpus diac_f1 swings (e.g.
+0.97 on arams_htr, a corpus with literally zero ground-truth diacritics,
+vs 0.55 on muharaf, the corpus with the most).
+
+**2. Dot/letter-shape confusion rate — a big, consistent, and initially
+counter-intuitive pattern.** Of all character-level *substitution* errors
+(ref→hyp, via edit-distance alignment), the fraction that fall within a
+one-dot-different confusable group (ب/ت/ث/ن/ي, ج/ح/خ, د/ذ, ر/ز, س/ش, ص/ض,
+ط/ظ, ع/غ, ف/ق):
+
+| model | rasam1 base→ft | rasam2 base→ft | nakba base→ft | khatt base→ft |
+|---|---|---|---|---|
+| Qwen3-VL-4B | 4.4%→18.6% | 4.0%→16.2% | 3.2%→11.0% | 5.7%→14.5% |
+| Qwen3-VL-8B | 5.4%→16.5% | 5.7%→14.9% | 5.9%→12.7% | 8.9%→13.7% |
+| AIN-7B | 15.0%→18.9% | 15.2%→17.7% | 11.9%→11.1% | 20.7%→20.8% |
+| Fanar | 8.2%→29.3% | 8.5%→24.3% | 7.0%→12.3% | 10.4%→16.2% |
+
+**Meaning.** In 14 of 16 model/dataset pairs, the dot-confusion rate *rises*
+after fine-tuning, even though the *total* number of substitution errors
+drops sharply everywhere (e.g. Fanar on rasam1: 2059→601 total substitutions,
+a 3.4× drop, while the dot-confusable share of what's left nearly quadruples).
+The direction is consistent across all four models and all four datasets —
+not noise from a shrinking denominator alone. **Reading:** fine-tuning clears
+the "easy" errors first (wrong words, hallucinated phrases, big misreads —
+decoder/fluency-prior problems), and what's left behind is increasingly the
+hard, fine-grained visual-discrimination errors — exactly the class a better
+encoder should address. This is the sharpest evidence yet that **encoder
+quality, not decoder exposure, is the binding constraint on the errors that
+remain after a normal fine-tune** — directly motivating area 1's encoder
+work as the next lever, not a replacement for what's already been tried.
+
+**3. Hallucination-rate proxy (length-ratio + CER heuristic: prediction
+>1.8× ground-truth length *and* CER >0.6) confirms failure mode 1 is
+concentrated and fixable, not universal.**
+
+| model | rasam1 | rasam2 | nakba | khatt |
+|---|---|---|---|---|
+| Qwen3-VL-4B base | 17.5% | 22.0% | 5.0% | 7.2% |
+| Qwen3-VL-8B base | 8.5% | 9.5% | 2.5% | 1.0% |
+| AIN-7B base | 0.5% | 2.0% | 1.0% | 0.0% |
+| Fanar base | 1.5% | 3.5% | 1.0% | 0.5% |
+| every fine-tuned model | ≤1.0% (mostly 0%) | ≤1.0% | ≤1.0% | 0% |
+
+**Meaning.** The fluent-hallucination failure mode (mode 1) is concentrated
+almost entirely in **generic Qwen3-VL's base model on the hardest script
+(Maghrebi, 17–22% of lines)** — the already-Arabic-tuned bases (AIN, Fanar)
+rarely show it even zero-shot (0.5–3.5%). Any of our fine-tuning recipes
+essentially eliminates it. This is a crude proxy (length ratio + CER
+threshold, not a real semantic check) — good enough to confirm the pattern,
+not precise enough to be the area-4 hallucination metric itself.
+
+**To do.** Build the real hallucination-rate metric for area 4 (this proxy
+is a starting point, not the final version); run the per-diacritic-type
+breakdown and the letters-only-prompt probe for area 5, scoped to
+muharaf_lines/kitab_khatt only given the coverage numbers above; the
+Unicode/tokenization consistency check is still open.
+
+---
+
 ## Cross-cutting research direction (from the project brief — treat as hypotheses)
 
 - **Per-model vs per-product.** A purely per-model benchmark stays academic. The
