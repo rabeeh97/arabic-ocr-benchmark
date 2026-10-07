@@ -1,0 +1,73 @@
+# E1 condition (b): suite_v1 Qwen3-VL-4B with the ViT UNfrozen at the SAME LR
+# as the LLM LoRA. Identical to qwen3vl4b.yaml (condition (a), frozen) except
+# train_vision. Not run yet. Watch VRAM: drop image.max_pixels first on OOM.
+experiment: suite-v1-qwen3vl4b-visft
+method: lora
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true    # E1: the only change vs qwen3vl4b.yaml (plus vision_lr below)
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 1003520    # ~1120*896  (lower first if you OOM)
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5           # tight cadence — a crash must lose a few samples, not
+                           # hundreds; cheap because LoRA checkpoints are small
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-qwen3vl4b-visft
+eval_datasets: [muharaf_lines]
