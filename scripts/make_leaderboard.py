@@ -62,6 +62,32 @@ def load_cards() -> dict[str, dict[str, str]]:
     return out
 
 
+def in_train_datasets() -> dict[str, str]:
+    """{dataset -> training corpus it overlaps}, from ``overlaps_source`` in
+    configs/datasets.yaml. Every fine-tune so far samples from Muharaf train,
+    so a fine-tuned score on one of these measures recall, not recognition
+    (e.g. 86.5 % of `kitab_muharaf` long lines occur in Muharaf train)."""
+    try:
+        cfg = yaml.safe_load((_REPO / "configs" / "datasets.yaml").read_text(encoding="utf-8")) or {}
+    except OSError:
+        return {}
+    return {name: str(e["overlaps_source"]) for name, e in cfg.items()
+            if isinstance(e, dict) and e.get("overlaps_source")}
+
+
+def fine_tuned_models(models) -> set[str]:
+    """Rows that are fine-tunes: every ``ft_models`` entry in
+    configs/training/experiments.yaml, plus any name carrying an ``-ft`` tag."""
+    try:
+        manifest = yaml.safe_load(
+            (_REPO / "configs" / "training" / "experiments.yaml").read_text(encoding="utf-8")
+        ) or {}
+    except OSError:
+        manifest = {}
+    out = {m for e in manifest.values() if isinstance(e, dict) for m in (e.get("ft_models") or [])}
+    return out | {m for m in models if re.search(r"-ft(-|$)", m)}
+
+
 def collect_samples(target: Path) -> dict:
     """Merge every results/*/samples.json into {sample_id -> image + GT + per-model preds}."""
     files = (
@@ -595,7 +621,8 @@ _MATRIX_JS = r"""
 (function(){
   var el=function(id){return document.getElementById(id);};
   var P={}; try{P=JSON.parse(el('mx-data').textContent);}catch(e){return;}
-  var DS=P.ds, M=P.m, C=P.c;                 // C[di][mi] = [cerLight, werLight] | null
+  var DS=P.ds, M=P.m, C=P.c, IT=P.it||{};    // C[di][mi] = [cerLight, werLight] | "it" | null
+  function num(c){return Array.isArray(c)?c[0]:Infinity;}  // "it" = fine-tune on an in-train set
   var out=el('mx-out'), note=el('mx-sortnote');
   var meanOrder=P.order;                     // default model column order (indices)
   var sortDi=-1;                             // >=0 => columns sorted by that dataset
@@ -607,7 +634,7 @@ _MATRIX_JS = r"""
     if(sortDi<0) return meanOrder.slice();
     var row=C[sortDi];
     return M.map(function(_,i){return i;}).sort(function(a,b){
-      var x=row[a]?row[a][0]:Infinity, y=row[b]?row[b][0]:Infinity;
+      var x=num(row[a]), y=num(row[b]);
       return x-y;
     });
   }
@@ -618,11 +645,15 @@ _MATRIX_JS = r"""
     var body=DS.map(function(ds,di){
       var row=C[di];
       var best=Infinity;
-      row.forEach(function(c){ if(c && c[0]<best) best=c[0]; });
-      var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+"</th>";
+      row.forEach(function(c){ if(num(c)<best) best=c[0]; });
+      var it=IT[ds]?" <span class='mx-it' title='overlaps the training corpus "+esc(IT[ds])+
+        " — fine-tuned scores here are hidden'>in-train</span>":"";
+      var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+it+"</th>";
       cells+=ord.map(function(i){
         var c=row[i];
         if(!c) return "<td class='mx-empty'>·</td>";
+        if(c==="it") return "<td class='mx-masked' title='fine-tuned on "+esc(IT[ds])+
+          ", which contains these lines: score not quoted'>in-train</td>";
         var isBest=c[0]===best;
         return "<td class='"+tcls(c[0])+(isBest?" mx-best":"")+"'>"+
           "<span class='mx-cer'>"+pc(c[0])+"</span><span class='mx-wer'>"+pc(c[1])+"</span></td>";
@@ -781,8 +812,10 @@ def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[
         "<p class='board-note'>Each training run, its recipe, and what it gained "
         "over the untuned base on datasets it never trained on. CER is "
         "%-of-characters (light-normalised), lower is better; Δ is fine-tune "
-        "minus base.</p>",
+        "minus base. Sets that overlap the training corpus (<b>in-train</b>, "
+        "e.g. <code>kitab_muharaf</code>) are never counted as held-out.</p>",
     ]
+    in_train = in_train_datasets()
     toc: list[tuple[str, str]] = []
     if not manifest:
         parts.append("<p class='ft-empty'>No experiments defined "
@@ -797,7 +830,9 @@ def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[
         base = e.get("base_model", "")
         fts = e.get("ft_models") or []
         ft = fts[0] if fts else ""
-        dsets = e.get("holdout_datasets") or []
+        listed = e.get("holdout_datasets") or []
+        dsets = [ds for ds in listed if ds not in in_train]
+        dropped = [ds for ds in listed if ds in in_train]
 
         trip = []  # (dataset, n, base_cer, ft_cer)
         for ds in dsets:
@@ -868,7 +903,11 @@ def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[
         ]
         if e.get("hypothesis"):
             block.append(f"<p class='ft-hyp'>Hypothesis &mdash; {html.escape(e['hypothesis'].strip())}</p>")
-        notes = e.get("notes") or []
+        notes = list(e.get("notes") or [])
+        if dropped:
+            notes.append("Not counted as held-out (in-train, overlaps "
+                         + ", ".join(sorted({in_train[d] for d in dropped})) + "): "
+                         + ", ".join(dropped) + ".")
         if notes:
             block.append("<ul class='ft-note'>" + "".join(
                 f"<li>{html.escape(str(x))}</li>" for x in notes) + "</ul>")
@@ -890,6 +929,8 @@ def _render_matrix(rows: list[dict]) -> str:
         return ""
     m_ix = {m: i for i, m in enumerate(models)}
     idx = {(r["model"], r["dataset"]): r for r in rows}
+    in_train = in_train_datasets()
+    fts = fine_tuned_models(models)
 
     cell = []
     for ds in datasets:
@@ -898,10 +939,16 @@ def _render_matrix(rows: list[dict]) -> str:
             r = idx.get((m, ds))
             cl = _num(r.get("cer_micro_light"), 1.0) if r else None
             wl = _num(r.get("wer_micro_light"), 1.0) if r else None
-            row.append([cl, wl] if cl is not None else None)
+            # a fine-tune scored on a set that overlaps its training corpus:
+            # keep the cell visible as "in-train" but never show the number
+            if cl is not None and ds in in_train and m in fts:
+                row.append("it")
+            else:
+                row.append([cl, wl] if cl is not None else None)
         cell.append(row)
 
     payload = {"ds": datasets, "m": models, "c": cell,
+               "it": {ds: src for ds, src in in_train.items() if ds in datasets},
                "order": list(range(len(models)))}  # already best-mean-CER first
     _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
     blob = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
@@ -917,7 +964,9 @@ def _render_matrix(rows: list[dict]) -> str:
         f"<b>{_cl}&nbsp;%</b>, smaller number below is <b>{_wl}&nbsp;%</b> "
         "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
         "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
-        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset.</p>"
+        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset. "
+        "Datasets tagged <b>in-train</b> overlap the Muharaf training corpus: base models "
+        "are scored there as usual, fine-tunes are not quoted.</p>"
         "<p class='board-note mx-sortnote' id='mx-sortnote'></p>"
         f"<div id='mx-out'></div>"
         f"<script id='mx-data' type='application/json'>{blob}</script>"
@@ -1856,6 +1905,9 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 .mx-tbl .mx-cer{display:block;font-family:"IBM Plex Mono",monospace;color:var(--ink);}
 .mx-tbl .mx-wer{display:block;font-size:10px;color:var(--muted);margin-top:2px;}
 .mx-tbl td.mx-empty{color:var(--line);}
+.mx-tbl td.mx-masked{color:var(--muted);font-size:10px;font-style:italic;}
+.mx-it{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--line);
+  border-radius:4px;font-size:9.5px;color:var(--muted);}
 .mx-tbl td.mx-best .mx-cer{font-weight:700;}
 .mx-tbl td.mx-best{box-shadow:inset 0 0 0 1px var(--accent);}
 /* CER wash — green (low) -> amber -> red (high), .15 alpha; theme-agnostic */
