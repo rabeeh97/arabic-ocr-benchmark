@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000020", "model": "openrouter-dots3-note-free", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "EAC-D-47c (copie)", "raw_text": "", "cleaned_text": "", "latency_ms": 4287.94, "input_tokens": 118, "output_tokens": 256, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
