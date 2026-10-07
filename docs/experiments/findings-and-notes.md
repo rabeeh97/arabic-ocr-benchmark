@@ -55,13 +55,18 @@ few models. R9 causal probe: downscale KHATT lines to 60 px and re-score.
 
 ### Image features explain part of what text cannot
 
-**Seen (2026-10-07, R6.0, 7 of 10 blocks).** Adding 11 image features (size,
+**Seen (2026-10-07, R6.0, all 10 blocks; RASAM-1 and NAKBA added the same day).** Adding 11 image features (size,
 aspect, ink density, core height, stroke width, ink per character, contrast,
 blur, skew, edge ink) to the nine text features raises the rank-regression R²
 from 0.06–0.32 (text) to **0.15–0.58** (text + image): `kitab_historyar`
 0.32 → 0.58, `kitab_onlinekhatt` 0.16 → 0.43, `kitab_khatt` 0.32 → 0.39,
-`rasam2` 0.10 → 0.25, `muharaf_lines` 0.06 → 0.15. Individual image coefficients
-are unstable (features are collinear), so no single image feature is claimed yet.
+`rasam2` 0.10 → 0.25, `rasam1` 0.11 → 0.36, `nakba_blind` 0.17 → 0.27,
+`nakba_lines` 0.51 → 0.63, `muharaf_lines` 0.06 → 0.15: **0.15–0.63** overall.
+Most individual image coefficients are unstable (features are collinear). The
+exception is resolution: **ink pixels per character** is significantly negative
+*within* `rasam1` (−0.56) and `nakba_blind` (−0.22, n = 2,669). Lines with fewer
+pixels per character are harder, which is the within-dataset counterpart of
+the Muharaf 60 px observation.
 
 **Meaning.** The image layer helps, but most of Muharaf's within-dataset
 difficulty is still unexplained, which points to handwriting style or writer.

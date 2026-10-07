@@ -28,15 +28,10 @@ below except E1 runs offline on CPU.
    if it is the pipeline, a fix is proposed. *Done:* pipeline artefact, namely
    model-specific early stopping and output-token caps (gemini-flash truncated on
    74 % of lines); no line ends are cropped. Fix → X6.
-2. [~] **R6.0 Image layer, first pass (closes the R² gap).** 7 of 10 blocks
-   done (R² 0.15–0.58 with image features; Muharaf stored at 60 px). Remaining:
-   `rasam1`, `nakba_lines`, `nakba_blind`, whose test parquets are downloading (NAKBA
-   is gated: HF_TOKEN from `experiment.env`). Per line image in
-   the 10 complete blocks: height, width, aspect, ink density, stroke width,
-   estimated x-height in px, contrast, blur (Laplacian variance), skew. Add them
-   to the R3 regression next to the text features.
-   *Done when:* there is an R² with and without image features per block, and
-   the features that survive.
+2. [x] (2026-10-07) **R6.0 Image layer, first pass.** All 10 blocks: R² from
+   0.06–0.51 (text) to 0.15–0.63 (text + image). Ink pixels per character is
+   significant within RASAM-1 and NAKBA-blind; the public Muharaf copy is stored at
+   60 px. Next: writer IDs (R0.4) for the remaining variance; R9 resolution probe.
 3. [ ] **X5 Length-stratified reporting (D4).** Short lines (≤ 20 characters)
    fail disproportionately and drive whole-line failures. Report CER per length
    band on the leaderboard and Atlas, and flag fragment lines (digits, single

@@ -191,15 +191,15 @@
    "status": "active",
    "tasks": [
     {
-     "t": "Image features on 7/10 blocks: R² 0.15–0.58 with text+image",
+     "t": "Image features on all 10 blocks: R² 0.15–0.63 with text+image",
      "s": "done"
     },
     {
-     "t": "RASAM-1 and NAKBA blocks (downloading)",
-     "s": "active"
+     "t": "Ink px per character predicts difficulty within RASAM-1 and NAKBA-blind",
+     "s": "done"
     },
     {
-     "t": "Full-resolution Muharaf? (public copy is 60 px tall)",
+     "t": "Full-resolution Muharaf? (public copy is 60 px tall) + resolution probe",
      "s": "next"
     }
    ]
@@ -244,7 +244,7 @@
   {
    "date": "2026-10-07",
    "kind": "finding",
-   "text": "The public Muharaf copy, our training data, is stored at 60 px line height (≈12 px letter core) vs ≈146 px for KHATT. Image features raise explained line difficulty from 6–32 % (text only) to 15–58 %."
+   "text": "The public Muharaf copy, our training data, is stored at 60 px line height (≈12 px letter core) vs ≈146 px for KHATT. Across all 10 blocks, image features raise explained line difficulty from 6–51 % (text only) to 15–63 %; within RASAM-1 and NAKBA-blind, fewer ink pixels per character means a harder line."
   },
   {
    "date": "2026-10-07",
