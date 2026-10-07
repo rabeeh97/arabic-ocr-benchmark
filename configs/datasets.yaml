@@ -100,7 +100,7 @@ nakba_lines:
   adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
   params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
   track: line
-  split: test               # also has train/ (fine-tuning) and blind_test/ (no GT)
+  split: test               # 2,095 labeled lines (public test / dev). Official ranking used blind_test.
   license: CC-BY-4.0
   source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
   card: >-
@@ -108,7 +108,22 @@ nakba_lines:
     Arabic documents, 1951-1965; the full collection is ~1.6M words / 6,395 pages)
     from the Palestinian Nakba oral-history archive. Real degraded 20th-century
     handwriting with a curated line-level transcription (`image` + `text`).
-    CC-BY-4.0; the `test` split of the shared task's Systems Track.
+    CC-BY-4.0; the public labeled `test` split (2,095 lines), not the Systems-Track
+    ranking set.
+
+# Official Systems-Track ranking set (corpus CER 0.079 winner). GT was held out
+# during the contest; the Hub copy now ships transcriptions for all 2,671 lines.
+nakba_blind:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+  track: line
+  split: blind_test
+  license: CC-BY-4.0
+  source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
+  card: >-
+    NAKBA NLP 2026 Systems Track official test — 2,671 held-out line images.
+    Corpus-level CER on this split is the published leaderboard metric
+    (Misraj Baseer 0.079). Score with no `limit` and report `cer_micro_raw`.
 
 # --- RASAM (Calfa / BULAC) — Maghribi-script historical manuscripts ------------
 # HF, ungated, apache-2.0. Same `KitabBench` generic adapter: columns are

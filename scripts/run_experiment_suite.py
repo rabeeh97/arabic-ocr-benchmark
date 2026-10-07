@@ -10,18 +10,15 @@ at the same time anyway. For each model:
      <this-dir>/<model>` — reuses that script's bootstrap/fetch/prepare/
      train/merge/eval/report phase machine, crash-safety and resume-on-reboot
      state file UNCHANGED. Blocking (no `--detach` passed to the child).
-  2. the full cross-domain benchmark sweep, via `run_3090_benchmark.py
-     --training-config <that model's training yaml>` — scores every
-     `safe_eval_datasets()` result for that config (every registered
-     line-track dataset except what it actually trained on), not a fixed
-     curated list. `full` is an accumulate stage (one call scores only the
-     next batch of new lines per dataset), so this re-invokes it repeatedly
-     until its own `bench_state.json` reports `full` exhausted.
+  2. a curated cross-domain benchmark, via `run_3090_benchmark.py
+     --datasets-file configs/training/suite_v1/bench.run.yaml` (kitab_khatt,
+     nakba_lines, rasam1, rasam2 — one 200-line batch each, not every
+     registered line-track dataset and not accumulate-until-exhausted).
 
 Only after BOTH finish does the queue move to the next model. A model whose
 manifest entry (`_experiment_bases.py`) is `gated` with `license_check` not
-`"ok"` (currently: `fanar2_oryx`, pending an actual license check) is
-skipped — logged, not queue-blocking.
+`"ok"` is skipped — logged, not queue-blocking. `fanar2_oryx` was confirmed
+Apache-2.0 on 2026-09-18 and is in the queue.
 
 Resumable: suite-level progress is tracked in `<dir>/suite_state.json`
 (queued/running/done/failed/skipped per model); re-running the same command
@@ -49,6 +46,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _detach_spawn import emit_log_line, spawn_surviving_logout, stdout_is_regular_file  # noqa: E402
+from _envfile import load_experiment_env  # noqa: E402
 from _experiment_bases import BASES, is_runnable, round1_queue  # noqa: E402
 
 UTC = timezone.utc
@@ -62,10 +61,7 @@ def _now() -> str:
 
 
 def _log(logs: Path, msg: str) -> None:
-    line = f"[{_now()}] {msg}"
-    print(line, flush=True)
-    with (logs / "suite.log").open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
+    emit_log_line(logs / "suite.log", f"[{_now()}] {msg}")
 
 
 def _rotate(logs: Path) -> None:
@@ -97,6 +93,17 @@ def _set(root: Path, state: dict, name: str, status: str, **extra) -> None:
     _write_state(root, state)
 
 
+def _venv_python(root: Path) -> Path:
+    """Python that has `arabic_ocr_bench` installed — not the system 3.10 launcher."""
+    rel = Path("Scripts") / "python.exe" if IS_WIN else Path("bin") / "python"
+    candidates = [root / "_shared" / "venv" / rel]
+    candidates.extend(root / name / "venv" / rel for name in round1_queue())
+    for p in candidates:
+        if p.exists():
+            return p
+    return Path(sys.executable)
+
+
 def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     """Stream a child process's output to the suite log, with a heartbeat."""
     _log(logs, f"--- {step}: {' '.join(cmd)}")
@@ -113,7 +120,10 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
 
     threading.Thread(target=_reader, daemon=True).start()
     last = time.monotonic()
-    with (logs / "suite.log").open("a", encoding="utf-8") as fh:
+    # cmd.exe >> suite.log already holds the file; a second open('a') is
+    # PermissionError 13 on Windows. When stdout is that log, write it only.
+    fh = None if stdout_is_regular_file() else (logs / "suite.log").open("a", encoding="utf-8")
+    try:
         while True:
             try:
                 ln = q.get(timeout=HEARTBEAT_S)
@@ -129,8 +139,12 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
             last = time.monotonic()
             sys.stdout.write(ln)
             sys.stdout.flush()
-            fh.write(ln)
+            if fh is not None:
+                fh.write(ln)
         proc.wait()
+    finally:
+        if fh is not None:
+            fh.close()
     _log(logs, f"=== {step}: exit {proc.returncode}")
     return proc.returncode or 0
 
@@ -171,11 +185,12 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
         "--base-name", spec["base_model_row"],
         "--arch", spec["arch"],
         "--training-config", spec["config"],
+        "--datasets-file", str(REPO / "configs" / "training" / "suite_v1" / "bench.run.yaml"),
+        "--no-full-accumulate",
     ]
-    # `full` is an accumulate stage — one call only scores the next batch per
-    # dataset; keep calling (each call idempotently resumes) until its own
-    # bench_state.json reports `full` exhausted, mirroring how a human
-    # operator would "re-run to continue" per that script's own docstring.
+    # One 200-line full batch per curated dataset (see bench.run.yaml). The
+    # loop remains so a crash mid-sweep still resumes; with accumulate off,
+    # `full` is marked done after a single successful pass.
     for i in range(args.max_bench_iters):
         rc = _run(logs, bench_cmd, step=f"{name}: bench (pass {i + 1}/{args.max_bench_iters})")
         if rc:
@@ -192,19 +207,11 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
 
 def _respawn_detached(logs: Path, argv: list[str]) -> int:
     _rotate(logs)
-    fh = (logs / "suite.log").open("a", encoding="utf-8")
     child = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
-    kw: dict = {
-        "cwd": str(REPO), "stdout": fh, "stderr": subprocess.STDOUT,
-        "stdin": subprocess.DEVNULL, "close_fds": True,
-    }
-    if IS_WIN:
-        kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008
-    else:
-        kw["start_new_session"] = True
-    proc = subprocess.Popen(child, **kw)
-    (logs / "suite.pid").write_text(str(proc.pid), encoding="utf-8")
-    print(f"detached pid {proc.pid}")
+    pid = spawn_surviving_logout(
+        child, cwd=REPO, log_path=logs / "suite.log", pid_path=logs / "suite.pid"
+    )
+    print(f"detached pid {pid}")
     print(f"log : {logs / 'suite.log'}")
     print(f"watch: powershell -NoProfile -Command \"Get-Content {logs / 'suite.log'} -Wait -Tail 50\"")
     print(f"status: python {Path(__file__).name} --dir {logs.parent} status")
@@ -246,7 +253,9 @@ def drive(root: Path, args) -> int:
             other = int(pidf.read_text(encoding="utf-8").strip() or 0)
         except ValueError:
             other = 0
-        if other and other != os.getpid() and _pid_alive(other):
+        # WMI wrapper writes cmd.exe's pid first; the python child must not
+        # treat its own parent as a rival run.
+        if other and other not in (os.getpid(), os.getppid()) and _pid_alive(other):
             print(
                 f"a suite run is already active here (pid {other}). Watch it, or "
                 f"{'taskkill /F /PID' if IS_WIN else 'kill'} {other}."
@@ -256,8 +265,16 @@ def drive(root: Path, args) -> int:
     if args.detach:
         return _respawn_detached(logs, sys.argv[1:])
 
-    _rotate(logs)
+    # Parent already rotated before WMI spawn; renaming while cmd.exe holds
+    # suite.log fails on Windows.
+    if not stdout_is_regular_file():
+        _rotate(logs)
     pidf.write_text(str(os.getpid()), encoding="utf-8")
+    load_experiment_env(root)
+    _log(
+        logs,
+        "env: HF_TOKEN=" + ("set" if os.environ.get("HF_TOKEN") else "MISSING"),
+    )
     state = _read_state(root)
     try:
         for name in round1_queue():
@@ -279,13 +296,15 @@ def drive(root: Path, args) -> int:
             _set(root, state, name, "done")
             _log(logs, f"=== {name}: done ===")
         _log(logs, "=== suite complete — rebuilding the top-level leaderboard ===")
-        _run(
+        rc = _run(
             logs,
-            [sys.executable, str(REPO / "scripts" / "make_leaderboard.py"),
+            [str(_venv_python(root)), str(REPO / "scripts" / "make_leaderboard.py"),
              "results", "-o", "results/leaderboard.html"],
             step="leaderboard",
         )
-        return 0
+        if rc:
+            _log(logs, f"leaderboard rebuild failed (exit {rc}) — models are done; re-run make_leaderboard.py")
+        return rc
     finally:
         if pidf.exists() and pidf.read_text(encoding="utf-8").strip() == str(os.getpid()):
             pidf.unlink()
@@ -308,8 +327,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--max-bench-iters", dest="max_bench_iters", type=int, default=50,
         help="cap on repeated full-stage bench passes per model before giving up "
-        "(each pass scores --full-n new lines/dataset across ~15 datasets; "
-        "resumable regardless — re-run the suite to keep going past the cap)",
+        "(each pass scores --full-n new lines per curated dataset; with "
+        "--no-full-accumulate a single pass marks full done)",
     )
     args = ap.parse_args(argv)
 

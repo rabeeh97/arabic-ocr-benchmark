@@ -18,7 +18,10 @@ dependencies = [
     "pydantic>=2.0",
     "tqdm>=4.66",
     "tenacity>=8.2",
-    "pandas>=2.0",
+    # 3.x's indexing.pyd is WDAC-blocked on the 3090 box (same class of
+    # Application Control failure as pyarrow 25.x). 2.3.3 already imports
+    # cleanly in paddleocr_venv on that machine.
+    "pandas>=2.0,<3",
     "numpy>=1.26",
     "pyarabic>=0.6.15",
     "litellm>=1.50",

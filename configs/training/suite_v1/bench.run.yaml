@@ -1,0 +1,13 @@
+# Curated held-out set for suite_v1. The suite used to pass --training-config
+# alone, which expands to every registered line-track dataset (~15) and then
+# accumulate-scores each until exhausted (Muharaf test 1.3k, AraMS test 1.8k,
+# page-scale Hindawi). That is ~24h per model. This list is the original
+# exp3090 *line-level* core: one handwriting contrast, the unseen NAKBA
+# domain, and the two Maghrebi test splits. In-domain Muharaf is already
+# scored by run_3090_experiment.py's eval phase (200 lines). One --full-n
+# batch (200 lines, no accumulate) per dataset.
+datasets:
+  - kitab_khatt
+  - nakba_lines
+  - rasam1
+  - rasam2

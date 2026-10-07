@@ -110,6 +110,11 @@ PAGE_V2 = (
     "Output only the transcription. No translation, no commentary."
 )
 
+# Misraj Baseer's NAKBA-NLP 2026 inference prompt
+# (misraj-ai/Nakba-pipeline Baseer_Nakba.py). Used only when reproducing their
+# published 0.079 corpus CER — not for AIN LoRA scoring.
+NAKBA_CONTEST = "Extract the text from the above document."
+
 _PROMPTS = {
     "line-v1": LINE_V1,
     "line-v2": LINE_V2,
@@ -120,6 +125,7 @@ _PROMPTS = {
     "line-v2-persona": LINE_V2_PERSONA,
     "line-v2-no-diac": LINE_V2_NO_DIAC,
     "page-v2": PAGE_V2,
+    "nakba-contest": NAKBA_CONTEST,
 }
 
 

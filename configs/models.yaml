@@ -837,6 +837,20 @@ nakba-misraj-baseer:
     competition (corpus CER 0.079). Adapts the 3B Baseer Arabic VLM to cursive
     historical manuscripts with a progressive training pipeline, domain-matched
     augmentation and SLERP checkpoint merging. CC-BY-NC-SA-4.0.
+nakba-misraj-baseer-contest:
+  # Same weights as nakba-misraj-baseer, decoded the way Misraj published:
+  # prompt "Extract the text from the above document.", max 128 new tokens
+  # (misraj-ai/Nakba-pipeline). A separate row so line-v2 cache stays intact.
+  client: hf_local
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  max_new_tokens: 128
+  pricing: null
+  card: >-
+    Misraj Baseer-Nakba re-scored with the contest inference prompt and 128-token
+    cap from misraj-ai/Nakba-pipeline, to compare against the published 0.079 CER.
 nakba-ketaba-ocr:
   # Ketaba-OCR team (self-reported CER 0.082). A DoRA + rslora adapter (r=32) on
   # a dedicated Arabic-English handwritten-OCR model that is itself a

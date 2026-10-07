@@ -38,7 +38,7 @@ data:
     - name: rasam1_val
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-1 }
-      split: val
+      split: validation
     - name: rasam2_train
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-2 }
@@ -47,7 +47,7 @@ data:
     - name: rasam2_val
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-2 }
-      split: val
+      split: validation
   val_fraction: 0.03
   prompt_version: line-v2
 

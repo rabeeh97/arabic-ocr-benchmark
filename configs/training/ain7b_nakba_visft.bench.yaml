@@ -1,0 +1,7 @@
+# Same forgetting + NAKBA short list as the frozen-ViT stage-2 job.
+datasets:
+  - nakba_lines
+  - kitab_khatt
+  - muharaf_lines
+  - rasam1
+  - rasam2

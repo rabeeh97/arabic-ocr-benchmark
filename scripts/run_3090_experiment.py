@@ -11,9 +11,10 @@ folder removes every trace (no writes anywhere else). The run is:
   * **resumable**    — re-run the same command and it continues from the last
                        finished phase; training itself resumes from the newest
                        ``checkpoint-*``.
-  * **detachable**   — ``--detach`` re-spawns the process free of the SSH session
-                       (Windows ``DETACHED_PROCESS``; POSIX ``start_new_session``)
-                       and returns immediately. It keeps running after logout.
+  * **detachable**   — ``--detach`` re-spawns the process free of the SSH
+                       session (Windows: WMI ``Win32_Process.Create``, which
+                       leaves OpenSSH's kill-on-close Job; POSIX:
+                       ``start_new_session``) and returns immediately.
   * **observable**   — ``status`` prints the phase table, the newest checkpoint
                        and the tail of the log; everything streams to
                        ``<dir>/logs/run.log``.
@@ -52,7 +53,12 @@ PHASES = ["bootstrap", "fetch", "prepare", "train", "merge", "eval", "report"]
 # The base-model registry is shared with run_3090_pipeline.py,
 # run_3090_benchmark.py and run_experiment_suite.py — see
 # _experiment_bases.py's own docstring for why it's plain Python, not YAML.
-from _experiment_bases import BASES  # noqa: E402
+from _detach_spawn import (  # noqa: E402
+    emit_log_line, pid_alive, pid_is_cmd, pidfile_is_other_worker,
+    spawn_surviving_logout, stdout_is_regular_file,
+)
+from _envfile import load_experiment_env  # noqa: E402
+from _experiment_bases import BASES, is_local_checkpoint  # noqa: E402
 
 # CUDA wheel index for torch on the 3090 box (cu124 covers Ada/Ampere on
 # driver >= 550). Override with --torch-index if the box has an older driver.
@@ -81,10 +87,7 @@ def _download(url: str, dest) -> None:
 
 
 def _log(dirs: dict, msg: str) -> None:
-    line = f"[{_now()}] {msg}"
-    print(line, flush=True)
-    with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
+    emit_log_line(dirs["logs"] / "run.log", f"[{_now()}] {msg}")
 
 
 def _rotate_log(dirs: dict) -> None:
@@ -118,25 +121,13 @@ def _dirs(root: Path) -> dict:
     return d
 
 
-def _load_env_file(path: Path) -> None:
-    """Load KEY=VALUE lines from <dir>/experiment.env into os.environ."""
-    if not path.exists():
-        return
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        s = raw.strip()
-        if not s or s.startswith("#") or "=" not in s:
-            continue
-        k, v = s.split("=", 1)
-        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-
-
 def _pin_env(dirs: dict) -> None:
     os.environ["HF_HOME"] = str(dirs["hf_cache"])
     os.environ["UV_CACHE_DIR"] = str(dirs["uv_cache"])
     os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "0")
-    _load_env_file(dirs["root"] / "experiment.env")
+    load_experiment_env(dirs["root"])
 
 
 def _state_path(dirs: dict) -> Path:
@@ -225,17 +216,6 @@ def _uv_bin(dirs: dict) -> str:
     return str(local)
 
 
-def _stdout_is_regular_file() -> bool:
-    """True only when this process's stdout is a plain file (the detached
-    worker's own log). A tty or a pipe (parent script reading us) is not — we
-    must still echo to stdout in that case or the parent/log sees nothing."""
-    try:
-        import stat as _s
-        return _s.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)
-    except Exception:  # noqa: BLE001
-        return False
-
-
 HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess output
 
 
@@ -246,8 +226,9 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
     looking indistinguishable from a hang."""
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
     e = {**os.environ, **(env or {})}
-    tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
-    with (dirs["logs"] / "run.log").open("a", encoding="utf-8") as fh:
+    tee = not stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
+    fh = (dirs["logs"] / "run.log").open("a", encoding="utf-8") if tee else None
+    try:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env=e,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
@@ -272,11 +253,14 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
             if ln is None:
                 break
             last = time.monotonic()
-            if tee:
-                sys.stdout.write(ln)
-                sys.stdout.flush()
-            fh.write(ln)
+            sys.stdout.write(ln)
+            sys.stdout.flush()
+            if fh is not None:
+                fh.write(ln)
         proc.wait()
+    finally:
+        if fh is not None:
+            fh.close()
     if proc.returncode != 0:
         _log(dirs, f"!! phase {phase}: command exited {proc.returncode}")
     return proc.returncode
@@ -342,13 +326,23 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
                    f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
+    # WDAC on this box blocks pandas 3.x indexing.pyd and pyarrow 25.x
+    # _dataset.pyd. Re-pin after the editable install in case the resolver
+    # still pulled a newer wheel.
+    if _run(dirs, [*pipbase, "-P", "pandas", "-P", "pyarrow",
+                   "pandas>=2.0,<3", "pyarrow>=15,<22"], phase="bootstrap"):
+        raise SystemExit("bootstrap: pandas/pyarrow WDAC pin failed")
 
-    # 4. verify CUDA + bitsandbytes
+    # 4. verify CUDA + bitsandbytes + the WDAC-sensitive native wheels
     check = (
-        "import torch,bitsandbytes;"
+        "import torch,bitsandbytes,pandas,pyarrow;"
+        "from pandas.core.frame import DataFrame;"
+        "import pyarrow.dataset as pds;"
         "assert torch.cuda.is_available(), 'CUDA not available in the venv';"
         "print('cuda', torch.version.cuda, torch.cuda.get_device_name(0));"
-        "print('bitsandbytes', bitsandbytes.__version__)"
+        "print('bitsandbytes', bitsandbytes.__version__);"
+        "print('pandas', pandas.__version__);"
+        "print('pyarrow', pyarrow.__version__)"
     )
     if _run(dirs, [str(py), "-c", check], phase="bootstrap"):
         raise SystemExit("bootstrap: CUDA / bitsandbytes self-check failed (see log)")
@@ -363,35 +357,61 @@ def phase_fetch(dirs: dict, state: dict, spec: dict, args) -> None:
     hf_id = spec["hf_id"]
     _log(dirs, f"fetch: base weights + dataset + fonts ({hf_id})")
 
-    # base model — snapshot_download gives a clean progress bar and fails fast on
-    # a gated repo without a valid token.
-    dl = (
-        "import os;from huggingface_hub import snapshot_download;"
-        f"p=snapshot_download({hf_id!r}, token=os.environ.get('HF_TOKEN'));"
-        "print('base ->', p)"
-    )
-    if _run(dirs, [str(py), "-c", dl], phase="fetch"):
-        gated = " (gated - is HF_TOKEN in experiment.env and has it accepted the licence?)" if spec["gated"] else ""
-        raise SystemExit(f"fetch: could not download {hf_id}{gated}")
+    if is_local_checkpoint(hf_id):
+        # Stacked fine-tune: LoRA goes on already-merged local weights. Do not
+        # snapshot_download a Windows path, and do not re-pull MBZUAI/AIN.
+        _log(dirs, f"fetch: local checkpoint, skip Hub download ({hf_id})")
+        probe = (
+            "import json;from pathlib import Path;"
+            f"d=json.load(open(Path({json.dumps(hf_id)})/'config.json',encoding='utf-8'));"
+            "print('architectures:', d.get('architectures'));"
+            "print('model_type:', d.get('model_type'))"
+        )
+        _run(dirs, [str(py), "-c", probe], phase="fetch")
+    else:
+        # base model — snapshot_download gives a clean progress bar and fails fast
+        # on a gated repo without a valid token.
+        dl = (
+            "import os;from huggingface_hub import snapshot_download;"
+            f"p=snapshot_download({hf_id!r}, token=os.environ.get('HF_TOKEN'));"
+            "print('base ->', p)"
+        )
+        if _run(dirs, [str(py), "-c", dl], phase="fetch"):
+            gated = " (gated - is HF_TOKEN in experiment.env and has it accepted the licence?)" if spec["gated"] else ""
+            raise SystemExit(f"fetch: could not download {hf_id}{gated}")
 
-    # probe the real architecture class so a wrong --base fails here, not after
-    # a 20-minute train start.
-    probe = (
-        "import json,glob,os;from huggingface_hub import hf_hub_download;"
-        f"c=hf_hub_download({hf_id!r}, 'config.json', token=os.environ.get('HF_TOKEN'));"
-        "d=json.load(open(c));print('architectures:', d.get('architectures'));"
-        "print('model_type:', d.get('model_type'))"
-    )
-    _run(dirs, [str(py), "-c", probe], phase="fetch")
+        # probe the real architecture class so a wrong --base fails here, not after
+        # a 20-minute train start.
+        probe = (
+            "import json,glob,os;from huggingface_hub import hf_hub_download;"
+            f"c=hf_hub_download({hf_id!r}, 'config.json', token=os.environ.get('HF_TOKEN'));"
+            "d=json.load(open(c));print('architectures:', d.get('architectures'));"
+            "print('model_type:', d.get('model_type'))"
+        )
+        _run(dirs, [str(py), "-c", probe], phase="fetch")
 
-    # training dataset (Muharaf train split)
-    ds = (
-        "from datasets import load_dataset;"
-        "d=load_dataset('aamijar/muharaf-public', split='train');"
-        "print('muharaf train rows:', len(d))"
-    )
-    if _run(dirs, [str(py), "-c", ds], phase="fetch"):
-        raise SystemExit("fetch: muharaf-public train split download failed (HF_TOKEN for the gated set?)")
+    extra = spec.get("fetch_datasets")
+    if extra:
+        for repo, split in extra:
+            ds = (
+                "import os;from datasets import load_dataset;"
+                f"d=load_dataset({repo!r}, split={split!r}, token=os.environ.get('HF_TOKEN'));"
+                f"print({repo!r}, {split!r}, 'rows:', len(d))"
+            )
+            if _run(dirs, [str(py), "-c", ds], phase="fetch"):
+                raise SystemExit(
+                    f"fetch: {repo} {split} download failed (HF_TOKEN for the gated set?)"
+                )
+    else:
+        # training dataset (Muharaf train split) — default for the original
+        # exp3090 / suite_v1 jobs.
+        ds = (
+            "from datasets import load_dataset;"
+            "d=load_dataset('aamijar/muharaf-public', split='train');"
+            "print('muharaf train rows:', len(d))"
+        )
+        if _run(dirs, [str(py), "-c", ds], phase="fetch"):
+            raise SystemExit("fetch: muharaf-public train split download failed (HF_TOKEN for the gated set?)")
 
     fonts = REPO / "scripts" / "fetch_fonts.py"
     if fonts.exists():
@@ -413,6 +433,7 @@ def _effective_config(dirs: dict, spec: dict, args) -> Path:
         "import sys,yaml;"
         f"c=yaml.safe_load(open(r'{src}',encoding='utf-8').read());"
         f"c['output_dir']=r'{outdir}';"
+        f"c['base_model']['hf_id']={json.dumps(spec['hf_id'])};"
         + (f"[s.__setitem__('limit',{args.limit}) for s in c['data']['sources']];" if args.limit is not None else "")
         + (f"c['train']['epochs']={args.epochs};" if args.epochs is not None else "")
         + f"open(r'{out}','w',encoding='utf-8').write(yaml.safe_dump(c,allow_unicode=True,sort_keys=False))"
@@ -499,7 +520,7 @@ def phase_eval(dirs: dict, state: dict, spec: dict, args) -> None:
     exp = spec["experiment"]
     merged = dirs["merged"] / exp
     name = f"{exp}-ft"
-    _log(dirs, f"eval: register {name} + score on the held-out muharaf_lines test split")
+    _log(dirs, f"eval: register {name} + score the held-out eval config")
     _run(dirs, [str(py), "-m", "arabic_ocr_bench.training.cli", "register",
                 "--name", name, "--path", str(merged), "--arch", spec["arch"]], phase="eval")
     rc = _run(dirs, [str(py), "-m", "arabic_ocr_bench.cli", "run",
@@ -598,35 +619,21 @@ PHASE_FN = {
 # --------------------------------------------------------------------------- #
 def _respawn_detached(dirs: dict, argv: list[str]) -> int:
     _rotate_log(dirs)
-    logf = (dirs["logs"] / "run.log").open("a", encoding="utf-8")
     child_argv = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
-    kwargs: dict = {"cwd": str(REPO), "stdout": logf, "stderr": subprocess.STDOUT,
-                    "stdin": subprocess.DEVNULL, "close_fds": True}
-    if IS_WIN:
-        kwargs["creationflags"] = (
-            subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
-        )
-    else:
-        kwargs["start_new_session"] = True
-    proc = subprocess.Popen(child_argv, **kwargs)
-    (dirs["logs"] / "run.pid").write_text(str(proc.pid), encoding="utf-8")
-    print(f"detached pid {proc.pid}")
+    pid = spawn_surviving_logout(
+        child_argv,
+        cwd=REPO,
+        log_path=dirs["logs"] / "run.log",
+        pid_path=dirs["logs"] / "run.pid",
+    )
+    print(f"detached pid {pid}")
     print(f"log : {dirs['logs'] / 'run.log'}")
     print(f"poll: python {Path(__file__).name} --dir {dirs['root']} status")
     return 0
 
 
 def _pid_alive(pid: int) -> bool:
-    try:
-        if IS_WIN:
-            out = subprocess.run(
-                ["tasklist", "/FI", f"PID eq {pid}", "/NH"], capture_output=True, text=True, check=False
-            ).stdout
-            return str(pid) in out
-        os.kill(pid, 0)
-        return True
-    except (OSError, ValueError):
-        return False
+    return pid_alive(pid)
 
 
 def _active_worker(dirs: dict) -> int | None:
@@ -638,7 +645,10 @@ def _active_worker(dirs: dict) -> int | None:
         pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
     except ValueError:
         return None
-    if pid and pid != os.getpid() and _pid_alive(pid):
+    if pidfile_is_other_worker(
+        pid, os.getpid(), os.getppid(),
+        alive=_pid_alive(pid), is_cmd=pid_is_cmd(pid),
+    ):
         return pid
     return None
 
@@ -709,7 +719,8 @@ def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
     if args.detach:
         return _respawn_detached(dirs, argv)
 
-    _rotate_log(dirs)
+    if not stdout_is_regular_file():
+        _rotate_log(dirs)
     (dirs["logs"] / "run.pid").write_text(str(os.getpid()), encoding="utf-8")
     start = args.from_phase or ("bootstrap" if not args.only else args.only)
     plan = [args.only] if args.only else PHASES[PHASES.index(start):]

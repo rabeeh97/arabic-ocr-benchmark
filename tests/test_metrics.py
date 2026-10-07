@@ -7,9 +7,13 @@ from arabic_ocr_bench.metrics import (
     car,
     cer,
     char_edit_counts,
+    contest_aggregate,
+    contest_cer_line,
+    contest_wer_line,
     diacritic_prf,
     mer,
     score_pair,
+    unicode_levenshtein,
     wer,
     wil,
     wip,
@@ -192,3 +196,27 @@ class TestAggregate:
         out = score_pair("مرحبا", "مرحبا", profiles=("light",))
         for k in ("car", "mer", "wil", "wip"):
             assert k in out and "light" in out[k]
+
+
+class TestContestCer:
+    """NAKBA-NLP 2026 evaluate.py + paper corpus recipes, no normalization."""
+
+    def test_kitten_sitting_is_three(self):
+        assert unicode_levenshtein("kitten", "sitting") == 3
+
+    def test_line_clips_at_one(self):
+        # 2 ref chars, 8 insertions -> unclipped CER 4.0
+        assert contest_cer_line("ab", "abXXXXXXXX") == 1.0
+        assert cer("ab", "abXXXXXXXX") == pytest.approx(4.0)
+
+    def test_empty_hyp_is_one(self):
+        assert contest_cer_line("abcd", "") == 1.0
+
+    def test_macro_is_mean_of_clipped_lines(self):
+        # line1 CER 0.5, line2 CER 0 -> macro 0.25; micro 1/6
+        agg = contest_aggregate([("ab", "ax"), ("abcd", "abcd")])
+        assert agg["cer_macro"] == pytest.approx(0.25)
+        assert agg["cer_micro"] == pytest.approx(1 / 6)
+
+    def test_wer_splits_on_whitespace(self):
+        assert contest_wer_line("the cat sat", "the cat") == pytest.approx(1 / 3)
