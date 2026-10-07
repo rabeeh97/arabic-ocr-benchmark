@@ -122,8 +122,8 @@
      "s": "planned"
     },
     {
-     "t": "End-of-line error excess: truncation, downscaling or script? (R2.8)",
-     "s": "next"
+     "t": "End-of-line excess = model-specific early stopping + token caps, not script (R2.8)",
+     "s": "done"
     }
    ],
    "doc": "src/arabic_ocr_bench/characterize/errors.py"
@@ -188,10 +188,18 @@
   {
    "id": "P6",
    "title": "Image layer: px per x-height, dot size, degradation, style",
-   "status": "next",
+   "status": "active",
    "tasks": [
     {
-     "t": "Image features per block line (size, ink, stroke, x-height, blur, skew) added to the difficulty regression",
+     "t": "Image features on 7/10 blocks: R² 0.15–0.58 with text+image",
+     "s": "done"
+    },
+    {
+     "t": "RASAM-1 and NAKBA blocks (downloading)",
+     "s": "active"
+    },
+    {
+     "t": "Full-resolution Muharaf? (public copy is 60 px tall)",
      "s": "next"
     }
    ]
@@ -228,6 +236,21 @@
   }
  ],
  "updates": [
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "The end-of-line error rise is a pipeline artefact. Gemini 3.6 Flash spends its default 256-token output budget on hidden reasoning and truncates 74 % of lines; four more models pile up at their caps. No line end is cropped in the images."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "The public Muharaf copy, our training data, is stored at 60 px line height (≈12 px letter core) vs ≈146 px for KHATT. Image features raise explained line difficulty from 6–32 % (text only) to 15–58 %."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Supervisor tracker and teaching explainer published as Claude Docs (links in GUIDELINES §4). 3090 checked: reachable but empty of weights; E1 needs only a 142 MB adapter, planned on Colab."
+  },
   {
    "date": "2026-10-07",
    "kind": "finding",
