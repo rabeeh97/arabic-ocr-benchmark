@@ -1,0 +1,3628 @@
+[
+ {
+  "model": "ain-7b-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/kitab_khatt/20260920T044812Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain-7b-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/nakba_lines/20260920T050352Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain-7b-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/rasam1/20260920T051803Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain-7b-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/rasam2/20260920T053530Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1200",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T121405Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1200",
+  "dataset": "nakba_blind",
+  "prompt_version": "line-v2",
+  "n": 2671,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/official/ain7b-nakba-ckpt-1200/20260922T092821Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1200",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T113041Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1600",
+  "dataset": "nakba_blind",
+  "prompt_version": "line-v2",
+  "n": 2671,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/official/ain7b-nakba-ckpt-1600/20260921T174715Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1600",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T142224Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1936",
+  "dataset": "nakba_blind",
+  "prompt_version": "line-v2",
+  "n": 2671,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/official/ain7b-nakba-ckpt-1936/20260921T144145Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-1936",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 79,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T143614Z/predictions.jsonl": 79
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-400",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T114443Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-400",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T122900Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-400",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T110325Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-800",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T115929Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-800",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T124142Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-ckpt-800",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/ckpt_eval/results/20260921T111702Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "ain7b-nakba-visft-ckpt-400",
+  "dataset": "nakba_blind",
+  "prompt_version": "line-v2",
+  "n": 2671,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba_visft/official/ain7b-nakba-visft-ckpt-400/20260923T115022Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T135017Z/predictions.jsonl": 180,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134632Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134643Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134725Z/predictions.jsonl": 180,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134536Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 220,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134652Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134443Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 220,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134810Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134550Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 220,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134852Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134612Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "arabic-paddleocr-v5",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 220,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134934Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/paddleocr/bench/results/20260918T134622Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "baseer-nakba-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 1,
+  "files": {
+   "results/20260911T222627Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "baseer-nakba-bf16",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260911T230005Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "baseer-nakba-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260911T212318Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "baseer-nakba-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260911T214052Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "baseer-nakba-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 4,
+  "files": {
+   "results/20260911T220429Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-5-1-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-fable-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T210703Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 1,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T210703Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T210703Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T210703Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-haiku-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 29,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10,
+   "results/20260912T210703Z/predictions.jsonl": 9
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-opus-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "claude-sonnet-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "deepseek-vl-flash",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 1,
+  "files": {
+   "results/20260911T222627Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260911T230005Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260911T212318Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260911T214052Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 5,
+  "files": {
+   "results/20260911T220429Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 2,
+  "files": {
+   "results/20260913T093935Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "results/20260912T221509Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 400,
+  "n_error": 0,
+  "files": {
+   "results/20260912T222743Z/predictions.jsonl": 200,
+   "results/20260913T090632Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 399,
+  "n_error": 1,
+  "files": {
+   "results/20260913T091549Z/predictions.jsonl": 200,
+   "results/20260912T223736Z/predictions.jsonl": 199
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 352,
+  "n_error": 7,
+  "files": {
+   "results/20260912T225147Z/predictions.jsonl": 196,
+   "results/20260913T092922Z/predictions.jsonl": 156
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "exp3090-results/bench/results/20260909T173404Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "exp3090-results/bench/results/20260909T173924Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260909T174517Z/predictions.jsonl": 180,
+   "results/20260909T170822Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 220,
+  "n_error": 0,
+  "files": {
+   "results/20260909T184119Z/predictions.jsonl": 200,
+   "results/20260909T171228Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260909T171608Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260909T172724Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "fanar-oryx-7b-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/kitab_khatt/20260920T210222Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "fanar-oryx-7b-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/nakba_lines/20260920T212021Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "fanar-oryx-7b-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/rasam1/20260920T213629Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "fanar-oryx-7b-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/rasam2/20260920T215630Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 74,
+  "n_error": 9,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 62,
+   "results/20260912T145604Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155718Z/predictions.jsonl": 59,
+   "results/20260905T165958Z/predictions.jsonl": 37,
+   "results/20260907T121451Z/predictions.jsonl": 33,
+   "results/20260905T100451Z/predictions.jsonl": 23,
+   "results/20260903T173754Z/predictions.jsonl": 6,
+   "results/20260905T182245Z/predictions.jsonl": 6,
+   "results/20260906T193519Z/predictions.jsonl": 6,
+   "results/20260906T172233Z/predictions.jsonl": 4,
+   "results/20260904T005848Z/predictions.jsonl": 3,
+   "results/20260904T034451Z/predictions.jsonl": 3,
+   "results/20260904T060328Z/predictions.jsonl": 3,
+   "results/20260905T121042Z/predictions.jsonl": 3,
+   "results/20260905T145420Z/predictions.jsonl": 3,
+   "results/20260906T161252Z/predictions.jsonl": 3,
+   "results/20260905T192908Z/predictions.jsonl": 2,
+   "results/20260906T160620Z/predictions.jsonl": 2,
+   "results/20260906T160938Z/predictions.jsonl": 2,
+   "results/20260906T182855Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 151,
+  "n_error": 2,
+  "files": {
+   "results/20260908T104458Z/predictions.jsonl": 66,
+   "results/20260911T235904Z-3/predictions.jsonl": 36,
+   "results/20260907T121451Z/predictions.jsonl": 24,
+   "results/20260902T082546Z/predictions.jsonl": 7,
+   "results/20260908T105118Z/predictions.jsonl": 4,
+   "results/20260908T120417Z/predictions.jsonl": 3,
+   "results/20260908T120106Z/predictions.jsonl": 2,
+   "results/20260908T132043Z/predictions.jsonl": 2,
+   "results/20260908T132725Z/predictions.jsonl": 2,
+   "results/20260908T105437Z/predictions.jsonl": 1,
+   "results/20260908T131724Z/predictions.jsonl": 1,
+   "results/20260908T120745Z/predictions.jsonl": 1,
+   "results/20260908T121056Z/predictions.jsonl": 1,
+   "results/20260908T132409Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 2,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260903T173754Z/predictions.jsonl": 80,
+   "results/20260905T100451Z/predictions.jsonl": 50,
+   "results/20260904T140500Z/predictions.jsonl": 42,
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T091932Z/predictions.jsonl": 7,
+   "results/20260905T102543Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {
+   "line-v2-no-modality": 15,
+   "line-v2-claims-printed": 15,
+   "line-v2-arabic": 15,
+   "line-v2-persona": 15,
+   "line-v2-no-diac": 15
+  }
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {
+   "line-v2-no-modality": 10,
+   "line-v2-claims-printed": 10,
+   "line-v2-arabic": 10,
+   "line-v2-persona": 10,
+   "line-v2-no-diac": 10
+  }
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260903T173754Z/predictions.jsonl": 80,
+   "results/20260905T100451Z/predictions.jsonl": 50,
+   "results/20260905T102543Z/predictions.jsonl": 38,
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260904T140500Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {
+   "line-v2-no-modality": 15,
+   "line-v2-claims-printed": 15,
+   "line-v2-arabic": 15,
+   "line-v2-persona": 15,
+   "line-v2-no-diac": 15
+  }
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260903T173754Z/predictions.jsonl": 80,
+   "results/20260905T090222Z/predictions.jsonl": 35,
+   "results/20260904T005214Z/predictions.jsonl": 32,
+   "results/20260904T140500Z/predictions.jsonl": 22,
+   "results/20260831T230511Z/predictions.jsonl": 12,
+   "results/20260901T160440Z/predictions.jsonl": 10,
+   "results/20260904T034451Z/predictions.jsonl": 3,
+   "results/20260904T060328Z/predictions.jsonl": 3,
+   "results/20260905T091932Z/predictions.jsonl": 2,
+   "results/20260904T005848Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {
+   "line-v2-no-modality": 15,
+   "line-v2-claims-printed": 15,
+   "line-v2-arabic": 15,
+   "line-v2-persona": 15,
+   "line-v2-no-diac": 15
+  }
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260903T173754Z/predictions.jsonl": 79,
+   "results/20260905T091932Z/predictions.jsonl": 49,
+   "results/20260904T140500Z/predictions.jsonl": 30,
+   "results/20260905T100451Z/predictions.jsonl": 22,
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260903T173754Z/predictions.jsonl": 80,
+   "results/20260905T100451Z/predictions.jsonl": 50,
+   "results/20260905T102543Z/predictions.jsonl": 50,
+   "results/20260903T163311Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {
+   "line-v2-no-modality": 15,
+   "line-v2-claims-printed": 15,
+   "line-v2-arabic": 15,
+   "line-v2-persona": 15,
+   "line-v2-no-diac": 15
+  }
+ },
+ {
+  "model": "gemini-flash-lite",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash-lite-640tok",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 15,
+  "n_error": 0,
+  "files": {
+   "results/20260912T101346Z/predictions.jsonl": 15
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-flash-lite-640tok",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "page-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T101408Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-pro",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 10,
+  "files": {
+   "results/20260905T145420Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gemini-pro",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 25,
+  "n_error": 25,
+  "files": {
+   "results/20260905T121042Z/predictions.jsonl": 15,
+   "results/20260905T145420Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "glm-5.3-flash-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 15,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155935Z/predictions.jsonl": 15
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "glm-5.3-flash-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 25,
+  "n_error": 0,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 20,
+   "results/20260906T155935Z/predictions.jsonl": 5
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "glm-5.3-flash-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 25,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155935Z/predictions.jsonl": 15,
+   "results/20260905T091838Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 1,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 19,
+  "n_error": 1,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10,
+   "results/20260903T130126Z/predictions.jsonl": 9
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4.1-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 1,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 19,
+  "n_error": 2,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10,
+   "results/20260903T130126Z/predictions.jsonl": 9
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-mini-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 19,
+  "n_error": 1,
+  "files": {
+   "results/20260912T215127Z/predictions.jsonl": 10,
+   "results/20260903T130126Z/predictions.jsonl": 9
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-4o-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10,
+   "results/20260912T215127Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5-paid",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T171104Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-luna-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-luna-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-sol-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-sol-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-terra-paid",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "gpt-5.6-terra-paid",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T130126Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 12,
+  "n_error": 12,
+  "files": {
+   "results/20260912T145604Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 7,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 12,
+  "n_error": 12,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260902T165533Z/predictions.jsonl": 10,
+   "results/20260903T101613Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 8,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-medium",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260902T165533Z/predictions.jsonl": 10,
+   "results/20260903T101613Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 12,
+  "n_error": 12,
+  "files": {
+   "results/20260912T145604Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 6,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 34,
+  "n_error": 12,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 12,
+   "results/20260901T160440Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 2,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 6,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "mistral-small",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nakba-baseline-qwen3vl",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 500,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155538Z/predictions.jsonl": 20,
+   "results/20260906T160644Z/predictions.jsonl": 20,
+   "results/20260906T161206Z/predictions.jsonl": 20,
+   "results/20260906T161747Z/predictions.jsonl": 20,
+   "results/20260906T162310Z/predictions.jsonl": 20,
+   "results/20260906T162828Z/predictions.jsonl": 20,
+   "results/20260906T163427Z/predictions.jsonl": 20,
+   "results/20260906T164010Z/predictions.jsonl": 20,
+   "results/20260906T164606Z/predictions.jsonl": 20,
+   "results/20260906T165221Z/predictions.jsonl": 20,
+   "results/20260906T165753Z/predictions.jsonl": 20,
+   "results/20260906T170321Z/predictions.jsonl": 20,
+   "results/20260906T170918Z/predictions.jsonl": 20,
+   "results/20260906T171454Z/predictions.jsonl": 20,
+   "results/20260906T172031Z/predictions.jsonl": 20,
+   "results/20260906T172554Z/predictions.jsonl": 20,
+   "results/20260906T173101Z/predictions.jsonl": 20,
+   "results/20260906T173615Z/predictions.jsonl": 20,
+   "results/20260906T174133Z/predictions.jsonl": 20,
+   "results/20260906T174643Z/predictions.jsonl": 20,
+   "results/20260906T175203Z/predictions.jsonl": 20,
+   "results/20260906T175735Z/predictions.jsonl": 20,
+   "results/20260906T180313Z/predictions.jsonl": 20,
+   "results/20260906T180947Z/predictions.jsonl": 20,
+   "results/20260906T181526Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nakba-misraj-baseer",
+  "dataset": "nakba_blind",
+  "prompt_version": "line-v2",
+  "n": 2671,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/official/nakba-misraj-baseer/20260921T205131Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nakba-misraj-baseer-contest",
+  "dataset": "nakba_blind",
+  "prompt_version": "nakba-contest",
+  "n": 2671,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b_nakba/official/nakba-misraj-baseer-contest/20260922T163144Z/predictions.jsonl": 2671
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-gemma-4-31b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 3,
+  "files": {
+   "results/20260903T101613Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 90,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260903T084931Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-11b-vl",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260903T084931Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 40,
+  "n_error": 9,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 60,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260902T165533Z/predictions.jsonl": 10,
+   "results/20260903T084931Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "nvidia-llama-3.2-90b-vl",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260902T165533Z/predictions.jsonl": 10,
+   "results/20260903T084931Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-dots3-note-free",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-dots3-note-free",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 9,
+   "results/20260914T131518Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-dots3-note-free",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 12,
+  "n_error": 6,
+  "files": {
+   "results/20260914T131518Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-dots3-note-free",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 40,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-dots3-note-free",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 40,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-26b-free",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 13,
+  "n_error": 12,
+  "files": {
+   "results/20260912T145604Z/predictions.jsonl": 12,
+   "results/20260912T125612Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-26b-free",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 25,
+  "n_error": 19,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 12,
+   "results/20260912T125655Z/predictions.jsonl": 8,
+   "results/20260914T131518Z/predictions.jsonl": 5
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-31b-free",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 13,
+  "n_error": 12,
+  "files": {
+   "results/20260912T145604Z/predictions.jsonl": 12,
+   "results/20260912T125612Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-31b-free",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 12,
+  "n_error": 10,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-31b-free",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 13,
+  "n_error": 12,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 12,
+   "results/20260914T131518Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-gemma-4-31b-free",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 8,
+  "files": {
+   "results/20260902T165533Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 100,
+  "n_error": 100,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 100
+  },
+  "excluded_prompts": {
+   "line-v2": 40
+  }
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 82,
+  "n_error": 40,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260901T160440Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-llama-4-maverick",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 100,
+  "n_error": 100,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 100
+  },
+  "excluded_prompts": {
+   "line-v2": 20
+  }
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 100,
+  "n_error": 20,
+  "files": {
+   "results/20260907T130807Z/predictions.jsonl": 40,
+   "results/20260903T165059Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 132,
+  "n_error": 20,
+  "files": {
+   "results/20260906T173130Z/predictions.jsonl": 40,
+   "results/20260907T130807Z/predictions.jsonl": 40,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 12
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 116,
+  "n_error": 20,
+  "files": {
+   "results/20260906T173130Z/predictions.jsonl": 39,
+   "results/20260907T130807Z/predictions.jsonl": 37,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-minimax-m3-free",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 100,
+  "n_error": 20,
+  "files": {
+   "results/20260907T130807Z/predictions.jsonl": 40,
+   "results/20260903T165059Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 100,
+  "n_error": 100,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 100
+  },
+  "excluded_prompts": {
+   "line-v2": 40
+  }
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 84,
+  "n_error": 40,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260901T160440Z/predictions.jsonl": 2,
+   "results/20260906T173130Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen2.5-vl-72b",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 100,
+  "n_error": 100,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 100
+  },
+  "excluded_prompts": {
+   "line-v2": 40
+  }
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 82,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 102,
+  "n_error": 20,
+  "files": {
+   "results/20260915T122718Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260901T160440Z/predictions.jsonl": 2
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 100,
+  "n_error": 20,
+  "files": {
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 40,
+  "files": {
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260907T130807Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "openrouter-qwen3-vl-235b",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "paligemma2-3b-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 94,
+  "n_error": 2,
+  "files": {
+   "results/20260913T093935Z/predictions.jsonl": 94
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "paligemma2-3b-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "results/20260912T221509Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "paligemma2-3b-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 399,
+  "n_error": 1,
+  "files": {
+   "results/20260913T090632Z/predictions.jsonl": 200,
+   "results/20260912T222743Z/predictions.jsonl": 199
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "paligemma2-3b-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 400,
+  "n_error": 0,
+  "files": {
+   "results/20260912T223736Z/predictions.jsonl": 200,
+   "results/20260913T091549Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "paligemma2-3b-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 352,
+  "n_error": 7,
+  "files": {
+   "results/20260912T225147Z/predictions.jsonl": 196,
+   "results/20260913T092922Z/predictions.jsonl": 156
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "page-v2",
+  "n": 180,
+  "n_error": 1,
+  "files": {
+   "results/20260912T125612Z/predictions.jsonl": 99,
+   "results/20260912T145604Z/predictions.jsonl": 81
+  },
+  "excluded_prompts": {
+   "line-v2": 21
+  }
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260912T125655Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155935Z/predictions.jsonl": 40,
+   "results/20260906T173130Z/predictions.jsonl": 39,
+   "results/20260903T163311Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 18,
+   "results/20260914T131518Z/predictions.jsonl": 12,
+   "results/20260911T235904Z-2/predictions.jsonl": 11
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260906T173130Z/predictions.jsonl": 40,
+   "results/20260907T130807Z/predictions.jsonl": 30,
+   "results/20260905T111156Z/predictions.jsonl": 20,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260907T083052Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 20,
+   "results/20260908T104456Z/predictions.jsonl": 20,
+   "results/20260831T230556Z/predictions.jsonl": 12,
+   "results/20260901T160440Z/predictions.jsonl": 10,
+   "results/20260911T235904Z-2/predictions.jsonl": 8
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260906T173130Z/predictions.jsonl": 37,
+   "results/20260906T155935Z/predictions.jsonl": 35,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260907T083052Z/predictions.jsonl": 20,
+   "results/20260911T235904Z-2/predictions.jsonl": 20,
+   "results/20260905T111156Z/predictions.jsonl": 15,
+   "results/20260907T121449Z/predictions.jsonl": 15,
+   "results/20260908T104456Z/predictions.jsonl": 15,
+   "results/20260902T082546Z/predictions.jsonl": 10,
+   "results/20260902T142223Z/predictions.jsonl": 7,
+   "results/20260912T125655Z/predictions.jsonl": 6
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 188,
+  "n_error": 0,
+  "files": {
+   "results/20260906T155935Z/predictions.jsonl": 37,
+   "results/20260906T173130Z/predictions.jsonl": 36,
+   "results/20260905T183429Z/predictions.jsonl": 20,
+   "results/20260907T121449Z/predictions.jsonl": 20,
+   "results/20260912T125655Z/predictions.jsonl": 20,
+   "results/20260914T131518Z/predictions.jsonl": 20,
+   "results/20260903T163311Z/predictions.jsonl": 18,
+   "results/20260908T104456Z/predictions.jsonl": 17
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "pixtral-12b",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260902T082546Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 1,
+  "files": {
+   "results/20260906T163300Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T133557Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 40,
+  "n_error": 0,
+  "files": {
+   "results/20260906T004716Z/predictions.jsonl": 20,
+   "results/20260906T005025Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 80,
+  "n_error": 0,
+  "files": {
+   "results/20260906T143809Z/predictions.jsonl": 20,
+   "results/20260906T144147Z/predictions.jsonl": 20,
+   "results/20260906T144415Z/predictions.jsonl": 20,
+   "results/20260901T085245Z/predictions.jsonl": 10,
+   "results/20260905T131106Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 21,
+  "n_error": 1,
+  "files": {
+   "results/20260901T122605Z/predictions.jsonl": 10,
+   "results/20260905T132750Z/predictions.jsonl": 9,
+   "results/20260905T203230Z/predictions.jsonl": 1,
+   "results/20260905T203537Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.2",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 1334,
+  "n_error": 15,
+  "files": {
+   "results/20260831T185739Z/predictions.jsonl": 1334
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.3",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T133828Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.3",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T090841Z/predictions.jsonl": 10,
+   "results/20260905T131350Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.3",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T124224Z/predictions.jsonl": 10,
+   "results/20260905T132931Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.3",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T204013Z/predictions.jsonl": 10,
+   "results/20260905T204223Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qari-ocr-0.3",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260831T194503Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2-vl-2b",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T092414Z/predictions.jsonl": 10,
+   "results/20260905T131558Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2-vl-2b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 1,
+  "files": {
+   "results/20260901T130021Z/predictions.jsonl": 10,
+   "results/20260905T133113Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2-vl-2b",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 22,
+  "n_error": 2,
+  "files": {
+   "results/20260905T205313Z/predictions.jsonl": 10,
+   "results/20260831T230858Z/predictions.jsonl": 9,
+   "results/20260905T205600Z/predictions.jsonl": 2,
+   "results/20260905T205726Z/predictions.jsonl": 1
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2.5-vl-3b",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T204359Z/predictions.jsonl": 10,
+   "results/20260905T204819Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2.5-vl-3b",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T110021Z/predictions.jsonl": 10,
+   "results/20260905T131733Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2.5-vl-3b",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T131540Z/predictions.jsonl": 10,
+   "results/20260905T133243Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2.5-vl-3b",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260906T000323Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen2.5-vl-3b",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T170639Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "arams_htr",
+  "prompt_version": "line-v2",
+  "n": 1000,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260918T171406Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T031635Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T070246Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T100232Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T123329Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_adab",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_adab/20260918T174823Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_arabicocr",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_arabicocr/20260918T175413Z/predictions.jsonl": 30
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_evarest",
+  "prompt_version": "line-v2",
+  "n": 780,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260918T182130Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T035238Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T073811Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T104025Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_hindawi/20260918T182605Z/predictions.jsonl": 180,
+   "exp3090-results/bench/results/20260909T173404Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "exp3090-results/bench/results/20260909T173924Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_historyar/20260918T221912Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_isippt",
+  "prompt_version": "line-v2",
+  "n": 480,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260918T225356Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260919T035632Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260919T074204Z/predictions.jsonl": 80
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_khatt/20260918T230802Z/predictions.jsonl": 180,
+   "results/20260909T170822Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_onlinekhatt/20260918T234145Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "kitab_patsocr",
+  "prompt_version": "line-v2",
+  "n": 480,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T000219Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T040949Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T074812Z/predictions.jsonl": 80
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 800,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T002921Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T043929Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T075941Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T104406Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 820,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T131842Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T050859Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T082959Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T112425Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T010906Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 734,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T014414Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T053915Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T090945Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T115953Z/predictions.jsonl": 114,
+   "results/20260909T171608Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-4b-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 372,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam2/20260919T023207Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam2/20260919T063225Z/predictions.jsonl": 152,
+   "results/20260909T172724Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-8b-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/kitab_khatt/20260919T211753Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-8b-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/nakba_lines/20260919T214542Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-8b-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/rasam1/20260919T221222Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "qwen3-vl-8b-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/rasam2/20260919T224931Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-ain7b-ft",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/eval/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-ain7b-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/kitab_khatt/20260920T044812Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-ain7b-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/nakba_lines/20260920T050352Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-ain7b-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/rasam1/20260920T051803Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-ain7b-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/ain7b/bench/full/rasam2/20260920T053530Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-fanar2-oryx-ft",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/eval/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-fanar2-oryx-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/kitab_khatt/20260920T210222Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-fanar2-oryx-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/nakba_lines/20260920T212021Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-fanar2-oryx-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/rasam1/20260920T213629Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-fanar2-oryx-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/fanar2_oryx/bench/full/rasam2/20260920T215630Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/eval/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "arams_htr",
+  "prompt_version": "line-v2",
+  "n": 999,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260918T171406Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T031635Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T070246Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T123329Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/arams_htr/20260919T100232Z/predictions.jsonl": 199
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_adab",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_adab/20260918T174823Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_arabicocr",
+  "prompt_version": "line-v2",
+  "n": 30,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_arabicocr/20260918T175413Z/predictions.jsonl": 30
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_evarest",
+  "prompt_version": "line-v2",
+  "n": 780,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260918T182130Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T035238Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T073811Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_evarest/20260919T104025Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_hindawi/20260918T182605Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_historyar/20260918T221912Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_isippt",
+  "prompt_version": "line-v2",
+  "n": 480,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260918T225356Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260919T035632Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_isippt/20260919T074204Z/predictions.jsonl": 80
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_khatt/20260918T230802Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_onlinekhatt",
+  "prompt_version": "line-v2",
+  "n": 180,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_onlinekhatt/20260918T234145Z/predictions.jsonl": 180
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "kitab_patsocr",
+  "prompt_version": "line-v2",
+  "n": 480,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T000219Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T040949Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/kitab_patsocr/20260919T074812Z/predictions.jsonl": 80
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 800,
+  "n_error": 2,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T002921Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T043929Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T075941Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/muharaf_lines/20260919T104406Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 820,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T131842Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T050859Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T082959Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T112425Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/nakba_lines/20260919T010906Z/predictions.jsonl": 20
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 714,
+  "n_error": 1,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T014414Z/predictions.jsonl": 199,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T053915Z/predictions.jsonl": 199,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T090945Z/predictions.jsonl": 199,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam1/20260919T115953Z/predictions.jsonl": 117
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 352,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam2/20260919T023207Z/predictions.jsonl": 200,
+   "suite-v1-artifacts/qwen3vl4b_suite/bench/full/rasam2/20260919T063225Z/predictions.jsonl": 152
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl4b-visft-difflr-ft",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl4b_visft_difflr/eval/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl8b-ft",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/eval/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl8b-ft-bf16",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/kitab_khatt/20260919T211753Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl8b-ft-bf16",
+  "dataset": "nakba_lines",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/nakba_lines/20260919T214542Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl8b-ft-bf16",
+  "dataset": "rasam1",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/rasam1/20260919T221222Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "suite-v1-qwen3vl8b-ft-bf16",
+  "dataset": "rasam2",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "suite-v1-artifacts/qwen3vl8b/bench/full/rasam2/20260919T224931Z/predictions.jsonl": 200
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "kitab_hindawi",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260905T203703Z/predictions.jsonl": 10,
+   "results/20260905T203855Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "kitab_historicalbooks",
+  "prompt_version": "line-v2",
+  "n": 10,
+  "n_error": 0,
+  "files": {
+   "results/20260905T205144Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "kitab_historyar",
+  "prompt_version": "line-v2",
+  "n": 200,
+  "n_error": 0,
+  "files": {
+   "results/20260906T003316Z/predictions.jsonl": 20,
+   "results/20260906T003516Z/predictions.jsonl": 20,
+   "results/20260906T003647Z/predictions.jsonl": 20,
+   "results/20260906T003819Z/predictions.jsonl": 20,
+   "results/20260906T003948Z/predictions.jsonl": 20,
+   "results/20260906T004113Z/predictions.jsonl": 20,
+   "results/20260906T004245Z/predictions.jsonl": 20,
+   "results/20260906T004413Z/predictions.jsonl": 20,
+   "results/20260906T004544Z/predictions.jsonl": 20,
+   "results/20260905T170304Z/predictions.jsonl": 10,
+   "results/20260905T170524Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "kitab_khatt",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T121008Z/predictions.jsonl": 10,
+   "results/20260905T132549Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "kitab_muharaf",
+  "prompt_version": "line-v2",
+  "n": 20,
+  "n_error": 0,
+  "files": {
+   "results/20260901T134723Z/predictions.jsonl": 10,
+   "results/20260905T133442Z/predictions.jsonl": 10
+  },
+  "excluded_prompts": {}
+ },
+ {
+  "model": "trocr-large-arabic",
+  "dataset": "muharaf_lines",
+  "prompt_version": "line-v2",
+  "n": 1334,
+  "n_error": 0,
+  "files": {
+   "results/20260906T143837Z/predictions.jsonl": 20,
+   "results/20260906T144206Z/predictions.jsonl": 20,
+   "results/20260906T144347Z/predictions.jsonl": 20,
+   "results/20260906T144523Z/predictions.jsonl": 20,
+   "results/20260906T144654Z/predictions.jsonl": 20,
+   "results/20260906T144829Z/predictions.jsonl": 20,
+   "results/20260906T145018Z/predictions.jsonl": 20,
+   "results/20260906T145155Z/predictions.jsonl": 20,
+   "results/20260906T145337Z/predictions.jsonl": 20,
+   "results/20260906T145525Z/predictions.jsonl": 20,
+   "results/20260906T145700Z/predictions.jsonl": 20,
+   "results/20260906T145835Z/predictions.jsonl": 20,
+   "results/20260906T150019Z/predictions.jsonl": 20,
+   "results/20260906T150201Z/predictions.jsonl": 20,
+   "results/20260906T150339Z/predictions.jsonl": 20,
+   "results/20260906T150509Z/predictions.jsonl": 20,
+   "results/20260906T150638Z/predictions.jsonl": 20,
+   "results/20260906T150808Z/predictions.jsonl": 20,
+   "results/20260906T150939Z/predictions.jsonl": 20,
+   "results/20260906T151109Z/predictions.jsonl": 20,
+   "results/20260906T151237Z/predictions.jsonl": 20,
+   "results/20260906T151411Z/predictions.jsonl": 20,
+   "results/20260906T151543Z/predictions.jsonl": 20,
+   "results/20260906T151713Z/predictions.jsonl": 20,
+   "results/20260906T151846Z/predictions.jsonl": 20,
+   "results/20260906T152030Z/predictions.jsonl": 20,
+   "results/20260906T152209Z/predictions.jsonl": 20,
+   "results/20260906T152358Z/predictions.jsonl": 20,
+   "results/20260906T152543Z/predictions.jsonl": 20,
+   "results/20260906T152741Z/predictions.jsonl": 20,
+   "results/20260906T152919Z/predictions.jsonl": 20,
+   "results/20260906T153057Z/predictions.jsonl": 20,
+   "results/20260906T153235Z/predictions.jsonl": 20,
+   "results/20260906T153411Z/predictions.jsonl": 20,
+   "results/20260906T153542Z/predictions.jsonl": 20,
+   "results/20260906T153728Z/predictions.jsonl": 20,
+   "results/20260906T153917Z/predictions.jsonl": 20,
+   "results/20260906T154049Z/predictions.jsonl": 20,
+   "results/20260906T154227Z/predictions.jsonl": 20,
+   "results/20260906T154426Z/predictions.jsonl": 20,
+   "results/20260906T154609Z/predictions.jsonl": 20,
+   "results/20260906T154757Z/predictions.jsonl": 20,
+   "results/20260906T154926Z/predictions.jsonl": 20,
+   "results/20260906T155057Z/predictions.jsonl": 20,
+   "results/20260906T155241Z/predictions.jsonl": 20,
+   "results/20260906T155423Z/predictions.jsonl": 20,
+   "results/20260906T155610Z/predictions.jsonl": 20,
+   "results/20260906T155803Z/predictions.jsonl": 20,
+   "results/20260906T160006Z/predictions.jsonl": 20,
+   "results/20260906T160159Z/predictions.jsonl": 20,
+   "results/20260906T160354Z/predictions.jsonl": 20,
+   "results/20260906T160546Z/predictions.jsonl": 20,
+   "results/20260906T160718Z/predictions.jsonl": 20,
+   "results/20260906T160900Z/predictions.jsonl": 20,
+   "results/20260906T161044Z/predictions.jsonl": 20,
+   "results/20260906T161227Z/predictions.jsonl": 20,
+   "results/20260906T161412Z/predictions.jsonl": 20,
+   "results/20260906T161554Z/predictions.jsonl": 20,
+   "results/20260906T161737Z/predictions.jsonl": 20,
+   "results/20260906T161929Z/predictions.jsonl": 20,
+   "results/20260906T162105Z/predictions.jsonl": 20,
+   "results/20260906T162241Z/predictions.jsonl": 20,
+   "results/20260906T162423Z/predictions.jsonl": 20,
+   "results/20260906T162624Z/predictions.jsonl": 20,
+   "results/20260906T162802Z/predictions.jsonl": 20,
+   "results/20260906T162942Z/predictions.jsonl": 20,
+   "results/20260906T163125Z/predictions.jsonl": 14
+  },
+  "excluded_prompts": {}
+ }
+]

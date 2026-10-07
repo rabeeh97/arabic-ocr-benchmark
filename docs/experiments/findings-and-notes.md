@@ -7,6 +7,65 @@ saw, what it means, what to do about it. Newest section first within each area.
 
 ## Benchmark validity
 
+### Muharaf label noise does not move our test comparisons
+
+**Seen (2026-10-07, X2, `scripts/rescore_muharaf_clean.py`).** The CER-HV review
+logs (`alazzawi2026labelerr`, github.com/SanaNGU/CER-HV @ a39544d, **no licence
+file**) flag 126 of 1,334 Muharaf test lines (9.4 %) and 1,424 train lines as
+label errors: script mismatch, segmentation, orientation, wrong transcription,
+signature or non-text. Lines judged "valid but hard" are not counted. Their IDs
+are our `muharaf_lines/test/NNNNNN` (all 218 reviewed lines match our GT
+exactly). Dropping the flagged lines changes CER·light by −0.4 to +0.9 points
+across 13 models and **changes no rank**.
+
+**Meaning.** Test-side label noise is not distorting model comparisons. Our
+samples are mostly the first 200 lines, about 19 of them flagged. The logs
+are flags, not corrected text, so they cannot fix labels, only exclude them.
+
+**To do.** X3 (retrain without the flagged train lines) is low priority. Use the
+flags as ground truth when validating R4.1's label-noise detector.
+
+### Error decomposition: dots are a small tax, PAW gaps attract spaces, diacritics are a policy tax
+
+**Seen (2026-10-07, characterisation P2, `scripts/decompose_errors.py`).** Every
+canonical prediction (`characterize/runs.py`: standard prompt, latest success
+per sample, no smoke runs) was re-scored on the normalisation ladder and
+aligned edit by edit. 194 model × dataset pairs have n ≥ 20; 91 are competent
+(diacritic-insensitive CER ≤ 40 %).
+- **Dot tax.** CER(−diacritics) − rasm-CER has a median of **1.8 CER points**,
+  or **8 %** of diacritic-insensitive error (IQR 7–9 %). For the best models it
+  is 0.1–1.3 points.
+- **PAW-gap spaces.** Of the 10,655 spaces wrongly inserted inside GT words,
+  **60 %** sit at a PAW boundary, after a letter that cannot join forward. The
+  chance rate, the share of word-internal letter boundaries that are PAW gaps,
+  is **35 %** (31–38 % across datasets).
+- **Diacritic tax.** Base Qwen3-VL-4B inserts **10.5 marks per 100 letters**
+  on `kitab_patsocr` (3.3 on `kitab_isippt`). Its raw CER is 18.8 %, against
+  7.1 % with marks folded. The suite-v1 fine-tune is at about 0.1 marks per
+  100. Claude Opus is at 8 points of tax on `kitab_historyar`.
+- **Taxonomy over competent pairs:** other letter errors 58 %, whole-line
+  failures 10 %, space 9 %, diacritic 7 %, orthographic 6 %, dot 5 %,
+  shape-similar 3 %, lam-alef 3 %. Over *all* pairs, whole-line failures
+  (line CER > 80 %) are 57 % of edits, so pooled numbers have to be restricted
+  to competent pairs.
+- One smoke run (`qwen3vl4b_visft_difflr/bench/smoke`) wrote a different
+  checkpoint's output under the model name `exp3090-qwen3vl4b-ft-bf16`, so
+  "latest run wins" would have silently swapped models. Smoke runs are now
+  excluded.
+
+**Meaning.** For VLMs that already read the script, dots alone are not the
+bottleneck. That is far below the ~30 % share of substitutions that
+`alazzawi2026gap` reports for a CRNN. The two numbers measure different things
+(share of all edits vs share of substitutions; VLMs vs CRNN), so this is a
+hypothesis to test, not a contradiction. Word segmentation follows the ink: a
+PAW gap looks like a word gap. The diacritic tax is a D4 (metric) question
+more than a model fault. CER·light keeps harakat, so on undiacritised GT it
+penalises a model for adding correct marks.
+
+**To do.** R2.6: split the "other" bucket. R2.7: score undiacritised sets with
+marks stripped and compare rankings. Feed the PAW-gap rate and dot tax into
+the R7 validity model as candidate per-sample predictors.
+
 ### `kitab_muharaf` overlaps Muharaf train, so fine-tuned scores on it are leaked
 
 **Seen (2026-10-07, characterisation P1, `scripts/profile_datasets.py`).** Among
@@ -19,8 +78,8 @@ other benchmark set is at ≤ 6 % (`muharaf_lines` test 5.7 %, `kitab_evarest`
 **Meaning.** A fine-tune's `kitab_muharaf` row measures recall of training
 lines, not recognition. Base-model rows are unaffected.
 
-**To do.** Exclude `kitab_muharaf` from base-vs-fine-tune comparisons, or label it
-"in-train". Check the ~6 % of `muharaf_lines` test lines that also occur in train
+**To do.** ~~Exclude `kitab_muharaf` from base-vs-fine-tune comparisons, or label it
+"in-train".~~ Done 2026-10-07 (X1): the leaderboard masks it for fine-tunes. Check the ~6 % of `muharaf_lines` test lines that also occur in train
 (formulaic letter openings?) before quoting in-domain gains.
 
 ### `kitab_hindawi` / `kitab_historicalbooks` are page-scale, not lines — kept, with a raised token cap and a caveat
@@ -60,6 +119,29 @@ granularity" flag instead of just a mediocre CER.
 ---
 
 ## Fine-tuning results
+
+### E1 preliminary: unfreezing the ViT (differential LR) helps letter identity, not dots
+
+**Seen (2026-10-07, from the 2026-09-24 box run, recovered config
+`configs/training/suite_v1/qwen3vl4b_visft_difflr.yaml`).** Same suite_v1 data,
+seed and recipe as `suite-v1-qwen3vl4b` (frozen). Only `train_vision: true` and
+`vision_lr: 9e-6` differ. On the same 200 Muharaf test lines:
+
+| arm | CER·light | −diacritics | rasm-CER | dot share |
+|---|---|---|---|---|
+| frozen (`suite-v1-qwen3vl4b-ft`) | 36.3 % | 34.5 % | 32.0 % | 7.2 % |
+| unfrozen, diff-LR | **28.7 %** | 26.6 % | 24.4 % | 8.3 % |
+
+Paired bootstrap on the difference: −7.6 points, 95 % CI −9.1 to −6.2. The run
+wrote its outputs as `exp3090-qwen3vl4b-ft` (launched under the `qwen3vl4b`
+BASES entry); `characterize/runs.py` renames it.
+
+**Meaning.** The frozen encoder *is* a bottleneck in-domain. But the gain is not
+the dot-specific gain E1 hypothesised: the dot share holds steady while
+skeleton-level errors fall. One seed, in-domain only.
+
+**To do.** E1.1 bench this arm on the held-out panel (RASAM is the real test);
+E1.2 train the same-LR arm; E1.3 compare all three.
 
 ### exp3090 — Qwen3-VL-4B + LoRA on 8k Muharaf lines: large, script-transferable gain
 

@@ -90,6 +90,7 @@ From [`characteristics-framework.md`](characteristics-framework.md):
 | Characterisation plan | `characterization-plan.md` (layers L1–L7, revised phases P0–P11) |
 | Own-dataset spec | `dataset-design.md` |
 | Text analyzer | `src/arabic_ocr_bench/characterize/text.py` (positional forms, rasm, PAWs, diacritics, hygiene), tests in `tests/test_characterize_text.py` |
+| Canonical predictions + error decomposition | `characterize/runs.py`, `characterize/errors.py`, `scripts/decompose_errors.py` → `results/characterize/canonical_runs.json`, `results/characterize/<stamp>/errors.json` |
 | Profiler | `scripts/profile_datasets.py` → `results/characterize/<stamp>/{summary.json,lines.jsonl}` |
 | Atlas builder | `scripts/build_atlas.py` + `docs/research/atlas/template.html` → `docs/research/atlas/index.html` |
 | Experiment findings | `docs/experiments/findings-and-notes.md` |
@@ -103,8 +104,8 @@ From [`characteristics-framework.md`](characteristics-framework.md):
   in a heavy-tailed distribution, and dot confusions: about 30 % of
   substitutions in Arabic vs 15 % in Latin (`alazzawi2026gap`).
 - **Label noise.** Muharaf, our training set, has 6–9 % label errors
-  (`alazzawi2026labelerr`). Whether a cleaned version is public is not yet
-  confirmed.
+  (`alazzawi2026labelerr`). The flag logs are public (CER-HV, no licence).
+  Removing flagged test lines moves CER by < 1 point and changes no rank.
 - **Leakage.** **`kitab_muharaf` is 86.5 % in Muharaf train**, so fine-tuned
   scores on it are leaked. The other sets are at ≤ 6 %.
 - **Diacritic policy differs.** About a third of Muharaf lines carry sparse
@@ -112,10 +113,16 @@ From [`characteristics-framework.md`](characteristics-framework.md):
 - **Dots and shapes.** About 50 % of letters in every dataset are
   dot-ambiguous, and the dots carry about 0.6–0.8 bits per letter. Each
   dataset has 112–131 distinct shapes, of which 63–85 cover 95 % of letters.
+- **Where model errors come from** (P2, competent pairs). Dots alone are about
+  8 % of diacritic-insensitive error. 60 % of wrongly inserted word-internal
+  spaces fall at PAW gaps, against 35 % by chance. Base VLMs pay a large
+  diacritic-policy tax on printed sets (up to 10 points of CER). Most error is
+  plain wrong, missing or extra letters.
 - **Fine-tuning.** A Qwen3-VL-4B LoRA on 8k Muharaf lines transfers across
   handwriting (KHATT/NAKBA ~30 % CER). Maghrebi stays weak (~50 %).
-  Baseer-Nakba gets worse on its home domain with the generic recipe. The ViT
-  has been frozen in every run so far.
+  Baseer-Nakba gets worse on its home domain with the generic recipe. Unfreezing the
+  ViT with a differential LR cut in-domain CER by 7.6 points (one seed). The
+  gain is in letter identity, not dots; the held-out bench is pending (E1.1).
 - **Children's handwriting.** Individuality emerges around grades 3–4
   (`srihari2016children`). No study links writer demographics to HTR error,
   which is an open gap our dataset can address.
@@ -132,6 +139,7 @@ After any research step:
 3. Rebuild:
    ```bash
    PYTHONPATH=src .venv/bin/python scripts/profile_datasets.py --muharaf-train   # only if data or the analyzer changed (~4 min, CPU)
+   PYTHONPATH=src .venv/bin/python scripts/decompose_errors.py                  # only if predictions or errors.py changed (~90 s)
    PYTHONPATH=src .venv/bin/python scripts/build_atlas.py
    ```
 4. Republish `docs/research/atlas/index.html` to the **same** Atlas URL.
