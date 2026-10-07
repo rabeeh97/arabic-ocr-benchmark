@@ -31,9 +31,16 @@ Every entry:
     base_model_row      str        — the untuned base's row name in configs/models.yaml,
                                      used by run_3090_pipeline.py / run_experiment_suite.py
                                      when invoking run_3090_benchmark.py's --base-name
+    fetch_datasets      list[(str,str)] optional — Hub (repo, split) pairs fetch
+                                     should download instead of the default Muharaf train
+    bench_datasets_file str | None optional — curated YAML for run_3090_pipeline
+                                     to pass as --datasets-file
+    no_full_accumulate  bool       optional — pipeline passes --no-full-accumulate
 """
 
 from __future__ import annotations
+
+from pathlib import Path
 
 BASES: dict[str, dict] = {
     # --- original exp3090 single-dataset experiments (unchanged) --------------
@@ -140,12 +147,55 @@ BASES: dict[str, dict] = {
         "needs_transformers": None,
         "gated": True,
         "enabled": True,
-        # Fine-tuning/redistribution license unconfirmed as of 2026-09-16 (see
-        # docs/experiments/misraj-baseer-research.md) — the suite orchestrator
-        # skips this entry (logs why, doesn't block the queue) until someone
-        # flips this to "ok" after actually checking QCRI's terms.
-        "license_check": "pending",
+        # HF repo is ungated Apache 2.0 (model card + Qwen2.5-VL-7B base).
+        # Confirmed 2026-09-18: no click-through gate; fine-tune/redistribute
+        # allowed with the usual Apache notices. Fanar's api.fanar.qa request
+        # form is a different product and is not required for local training.
+        "license_check": "ok",
         "base_model_row": "fanar-oryx-7b-bf16",
+    },
+    # --- stage-2: AIN suite-v1 FT → NAKBA train LoRA (not in round-1 queue) ---
+    # Continues from the merged suite-v1-ain7b weights already on the 3090 box.
+    # NAKBA test stays held out. Do not add this to ROUND1_ORDER — Fanar is
+    # still the live suite job; launch only via run_3090_pipeline.py --base
+    # ain7b_nakba when asked.
+    "ain7b_nakba": {
+        "experiment": "ain7b-nakba-sft",
+        "config": "configs/training/ain7b_nakba.yaml",
+        "run_config": "configs/training/ain7b_nakba.run.yaml",
+        "hf_id": r"C:\Users\User\a-experiment\suite-v1\ain7b\merged\suite-v1-ain7b",
+        "arch": "qwen2_vl",
+        "needs_transformers": None,
+        "gated": False,
+        "enabled": False,
+        "license_check": None,
+        "base_model_row": "suite-v1-ain7b-ft-bf16",
+        "fetch_datasets": [
+            ("U4RASD/omar-al-saleh-manuscripts-segments", "train"),
+        ],
+        "bench_datasets_file": "configs/training/ain7b_nakba.bench.yaml",
+        "no_full_accumulate": True,
+    },
+    "ain7b_nakba_visft": {
+        # Stage-3: unfreeze ViT. Prefer scripts/stage_ain_nakba_visft.py
+        # (train 400 → official score → continue only if CER improves).
+        "experiment": "ain7b-nakba-visft",
+        "config": "configs/training/ain7b_nakba_visft.yaml",
+        "run_config": "configs/training/ain7b_nakba_visft.run.yaml",
+        "hf_id": r"C:\Users\User\a-experiment\suite-v1\ain7b\merged\suite-v1-ain7b",
+        "arch": "qwen2_vl",
+        "needs_transformers": None,
+        "gated": False,
+        "enabled": False,
+        "license_check": None,
+        "base_model_row": "suite-v1-ain7b-ft-bf16",
+        "fetch_datasets": [
+            ("U4RASD/omar-al-saleh-manuscripts-segments", "train"),
+        ],
+        "bench_datasets_file": "configs/training/ain7b_nakba_visft.bench.yaml",
+        "no_full_accumulate": True,
+        "official_all_ckpts": True,
+        "ckpt_eval_after_train": True,
     },
 }
 
@@ -167,3 +217,29 @@ def is_runnable(name: str) -> tuple[bool, str]:
         state = spec.get("license_check") or "unset"
         return False, f"{name}: gated, license_check={state!r} (needs 'ok' to run)"
     return True, ""
+
+
+def is_local_checkpoint(hf_id: str) -> bool:
+    """True when ``hf_id`` is a merged-weights folder, not a Hub repo id."""
+    p = Path(hf_id)
+    try:
+        return p.is_dir() and (p / "config.json").exists()
+    except OSError:
+        return False
+
+
+def pipeline_bench_args(spec: dict) -> list[str]:
+    """Extra ``run_3090_benchmark.py`` flags from optional BASES keys.
+
+    Round-1 suite entries omit these (the suite runner hardcodes its own
+    short list). Stage-2 jobs set ``bench_datasets_file`` /
+    ``no_full_accumulate`` so ``run_3090_pipeline.py`` cannot fall back to
+    the 24h accumulate-every-line-set sweep.
+    """
+    extra: list[str] = []
+    ds = spec.get("bench_datasets_file")
+    if ds:
+        extra += ["--datasets-file", ds]
+    if spec.get("no_full_accumulate"):
+        extra.append("--no-full-accumulate")
+    return extra

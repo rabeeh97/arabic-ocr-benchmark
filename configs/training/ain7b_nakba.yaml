@@ -1,0 +1,64 @@
+# Stage-2: LoRA the already-merged suite-v1 AIN-7B FT on NAKBA *train* only.
+# NAKBA test (`nakba_lines`) stays held out. Starting point is the Maghrebi-
+# adapted merged weights on the 3090 box, not raw MBZUAI/AIN — merge must use
+# the same local path (scripts/_experiment_bases.py `ain7b_nakba.hf_id`).
+#
+# Not in the suite_v1 round-1 queue. Launch only when asked:
+#   python scripts\run_3090_pipeline.py --dir C:\Users\User\a-experiment\suite-v1\ain7b_nakba --base ain7b_nakba --detach
+#
+# Gentler LR than round-1: the base already transcribes Arabic (same reason
+# exp3090_baseer_nakba.yaml used 5e-5). ViT stays frozen; unfreeze is a later
+# lever, not this run.
+#
+# 2 epochs, not 1: NAKBA train is ~16k lines (Misraj's count), so one epoch is
+# about as long as a suite-v1 epoch. A second pass is cheap enough to be worth
+# it, and `load_best_model_at_end` reloads the lowest-eval_loss adapter from
+# the 3% NAKBA *val* split — not the held-out test. Checkpoints every 400
+# steps are kept (up to 12) so we can still merge a specific step later.
+# 3+ epochs is how Baseer-style forgetting showed up; don't go there yet.
+experiment: ain7b-nakba-sft
+method: lora
+
+base_model:
+  hf_id: C:/Users/User/a-experiment/suite-v1/ain7b/merged/suite-v1-ain7b
+  arch: qwen2_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: nakba_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+      split: train
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 802816     # same trim as suite_v1/ain7b.yaml
+
+train:
+  epochs: 2
+  lr: 5.0e-5
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 400
+  save_total_limit: 12
+  load_best_model_at_end: true
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/ain7b-nakba-sft
+eval_datasets: [nakba_lines]

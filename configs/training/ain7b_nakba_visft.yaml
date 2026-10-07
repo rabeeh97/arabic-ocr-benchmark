@@ -1,0 +1,60 @@
+# Stage-3: unfreeze the ViT on top of the best frozen-ViT NAKBA LoRA (ckpt-1600).
+# Merges that adapter into suite-v1 AIN, then a new LoRA covers LLM + ViT
+# (`qkv`/`proj`) with Baseer's differential LR (decoder 5e-5, vision 9e-6).
+# 1 epoch, checkpoint every 400 steps. Prefer the staged controller
+# (`scripts/stage_ain_nakba_visft.py`): train→official score→continue only if
+# corpus CER-raw improves vs frozen ckpt-1600 / prior chunk. Mid-train val eval
+# is off (ViT LoRA OOM'd evaluate() at step 400). Not in suite_v1.
+#
+# Launch (after the frozen-ViT official job, including contest-prompt Baseer):
+#   python scripts\run_3090_pipeline.py --dir C:\Users\User\a-experiment\suite-v1\ain7b_nakba_visft --base ain7b_nakba_visft --detach
+experiment: ain7b-nakba-visft
+method: lora
+
+base_model:
+  hf_id: C:/Users/User/a-experiment/suite-v1/ain7b/merged/suite-v1-ain7b
+  arch: qwen2_vl
+  adapter_id: C:/Users/User/a-experiment/suite-v1/ain7b_nakba/ckpt_snapshots/checkpoint-1600
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true
+
+data:
+  sources:
+    - name: nakba_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+      split: train
+  val_fraction: 0.0
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 802816
+
+train:
+  epochs: 1
+  lr: 5.0e-5
+  vision_lr: 9.0e-6
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 400
+  save_total_limit: 16
+  load_best_model_at_end: false
+  # Staged loop overrides this per chunk (400, 800, …).
+  max_steps: 400
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/ain7b-nakba-visft
+eval_datasets: [nakba_lines]

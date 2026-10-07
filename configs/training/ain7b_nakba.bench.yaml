@@ -1,0 +1,10 @@
+# Cross-domain + forgetting sweep for ain7b-nakba-sft. One 200-line batch
+# each, no accumulate. NAKBA is now in-domain; KHATT / Muharaf / RASAM check
+# that the stage-2 LoRA did not wipe suite-v1 Maghrebi / script transfer.
+# Page-scale KITAB subsets stay out (hours each).
+datasets:
+  - nakba_lines
+  - kitab_khatt
+  - muharaf_lines
+  - rasam1
+  - rasam2

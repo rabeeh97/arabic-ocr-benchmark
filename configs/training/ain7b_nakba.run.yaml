@@ -1,0 +1,14 @@
+# Held-out in-domain eval for ain7b-nakba-sft — NAKBA test split, 200 lines.
+# Run by scripts/run_3090_experiment.py after merge.
+models:
+  - ain7b-nakba-sft-ft
+datasets:
+  - nakba_lines
+limit: 200
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

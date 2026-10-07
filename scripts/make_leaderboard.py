@@ -43,7 +43,7 @@ def _dataset_rows() -> dict[str, int]:
     out = dict(_DATASET_ROWS)
     f = _REPO / "results" / "_dataset_sizes.json"
     try:
-        out.update({k: int(v) for k, v in json.loads(f.read_text()).items()})
+        out.update({k: int(v) for k, v in json.loads(f.read_text(encoding="utf-8")).items()})
     except (OSError, json.JSONDecodeError, ValueError, TypeError):
         pass
     return out
@@ -53,7 +53,7 @@ def load_cards() -> dict[str, dict[str, str]]:
     out: dict[str, dict[str, str]] = {"models": {}, "datasets": {}}
     for kind, fname in (("models", "models.yaml"), ("datasets", "datasets.yaml")):
         try:
-            cfg = yaml.safe_load((_REPO / "configs" / fname).read_text()) or {}
+            cfg = yaml.safe_load((_REPO / "configs" / fname).read_text(encoding="utf-8")) or {}
         except OSError:
             continue
         for name, entry in cfg.items():
@@ -72,7 +72,7 @@ def collect_samples(target: Path) -> dict:
     by_id: dict[str, dict] = {}
     for f in files:
         try:
-            data = json.loads(f.read_text())
+            data = json.loads(f.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
         for s in data.get("samples", []):
@@ -184,12 +184,12 @@ def collect_costs(target: Path) -> dict[str, dict]:
     import statistics
 
     priced = {
-        name for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        name for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text(encoding="utf-8")) or {}).items()
         if isinstance(c, dict) and (c.get("pricing") or {}).get("input_usd_per_1m") is not None
     }
     pricing = {
         name: (c.get("pricing") or {})
-        for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text(encoding="utf-8")) or {}).items()
         if isinstance(c, dict)
     }
     seen: dict[tuple[str, str], dict] = {}
@@ -280,13 +280,13 @@ def _run_meta(run_dir: Path) -> dict:
     meta = {"run": run_dir.name, "when": "", "limit": "", "prompt_version": ""}
     try:
         stamp = run_dir.name.split("-")[0]  # tolerate a "-2" same-second suffix
-        parsed = dt.datetime.strptime(stamp, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.UTC)
+        parsed = dt.datetime.strptime(stamp, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.timezone.utc)
         meta["when"] = parsed.strftime("%Y-%m-%d %H:%M UTC")
     except ValueError:
         pass
     snap = run_dir / "run_config.snapshot.yaml"
     if snap.exists():
-        for line in snap.read_text().splitlines():
+        for line in snap.read_text(encoding="utf-8").splitlines():
             if line.startswith("limit:"):
                 meta["limit"] = line.split(":", 1)[1].strip()
             if line.startswith("prompt_version:"):
@@ -1107,7 +1107,7 @@ def render(rows: list[dict], title: str, target: Path | None = None,
     preview = _is_preview(rows)
     real = [r for r in rows if not (r["model"].startswith("mock") or r["dataset"] == "synthetic")]
 
-    gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    gen = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     n_runs = len({r["run"] for r in rows})
 
     out = [_HEAD.replace("{{TITLE}}", html.escape(title))]
@@ -2183,7 +2183,7 @@ _HEAD = _HEAD.replace("\n</style>", "\n" + _lf.FINDINGS_CSS.strip() + "\n</style
 
 
 def _render_empty(title: str) -> str:
-    gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    gen = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return _HEAD.replace("{{TITLE}}", html.escape(title)) + f"""
 <main>
 <header class='top'>

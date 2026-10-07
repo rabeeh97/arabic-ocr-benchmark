@@ -14,6 +14,7 @@ from PIL import Image
 from ..imaging import cap_image
 from .base import Prediction
 from .litellm_client import clean_output, looks_like_refusal
+from ..regex_compat import ensure_regex
 
 # greedy decoding on a hard manuscript line collapses into "الشبق الشبق ..." loops;
 # these keep it honest and let EOS fire naturally.
@@ -129,6 +130,7 @@ def _cpu_dtype():
 def _load_model(hf_id: str, load_kwargs: dict):
     """Try the vision-text auto classes in order — which one carries a given
     architecture shifts between transformers releases."""
+    ensure_regex()
     import transformers
 
     errors = []
@@ -269,6 +271,7 @@ class HFLocalClient:
             raise
 
     def _load_dispatch(self):
+        ensure_regex()
         if self.arch == "trocr":
             self._ensure_loaded_trocr()
             return
@@ -289,11 +292,13 @@ class HFLocalClient:
             )
 
         try:
+            ensure_regex()
             import torch
             from transformers import AutoProcessor
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         import torch
@@ -380,7 +385,8 @@ class HFLocalClient:
             from transformers import TrOCRProcessor, VisionEncoderDecoderModel
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         device = "mps" if torch.backends.mps.is_available() else (
@@ -402,7 +408,8 @@ class HFLocalClient:
             from transformers import AutoModel, AutoTokenizer
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         device = "cuda" if torch.cuda.is_available() else (

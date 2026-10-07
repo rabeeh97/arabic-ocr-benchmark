@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from collections.abc import Sequence
 
 import jiwer
 
@@ -106,6 +107,88 @@ def char_edit_counts(ref: str, hyp: str) -> dict[str, int]:
         return {"sub": 0, "del": 0, "ins": len(hyp), "ref_len": 0}
     s, d, i, h = _char_counts(ref, hyp)
     return {"sub": s, "del": d, "ins": i, "ref_len": s + d + h}
+
+
+# --------------------------------------------------------------------------- #
+# NAKBA-NLP 2026 contest CER / WER (no Arabic normalization)
+# --------------------------------------------------------------------------- #
+# Two recipes exist in the public materials:
+#
+# * U4RASD/ar-ms-baseline ``evaluate.py``: Unicode-codepoint Levenshtein, each
+#   line clipped to 1.0, then the *mean* of those per-line scores (macro).
+#   Empty hypothesis -> 1.0. This is what their baseline script prints as CER.
+# * The shared-task paper: corpus-level CERc = sum(dchar) / sum(|R|), then
+#   clip the *ratio* to [0, 1]. That is the official ranking metric.
+#
+# Neither applies our ``raw``/``light`` profiles. ``contest_aggregate`` reports
+# both so a stored ``predictions.jsonl`` can be compared to the paper table
+# without re-running the model.
+
+
+def unicode_levenshtein(ref: Sequence[str] | str, hyp: Sequence[str] | str) -> int:
+    """Codepoint (or token) Levenshtein; insert / delete / substitute = 1."""
+    if ref == hyp:
+        return 0
+    if not ref:
+        return len(hyp)
+    if not hyp:
+        return len(ref)
+    prev = list(range(len(hyp) + 1))
+    for i, ca in enumerate(ref, 1):
+        cur = [i]
+        for j, cb in enumerate(hyp, 1):
+            ins = cur[j - 1] + 1
+            dele = prev[j] + 1
+            sub = prev[j - 1] + (0 if ca == cb else 1)
+            cur.append(min(ins, dele, sub))
+        prev = cur
+    return prev[-1]
+
+
+def contest_cer_line(ref: str, hyp: str) -> float:
+    """Per-line CER from ``U4RASD/ar-ms-baseline/evaluate.py:get_cer``."""
+    if not ref:
+        return 1.0 if hyp else 0.0
+    if not hyp:
+        return 1.0
+    return min(unicode_levenshtein(ref, hyp) / len(ref), 1.0)
+
+
+def contest_wer_line(ref: str, hyp: str) -> float:
+    """Per-line WER from ``U4RASD/ar-ms-baseline/evaluate.py:get_wer``."""
+    ref_words = ref.split()
+    hyp_words = hyp.split()
+    if not ref_words:
+        return 1.0 if hyp_words else 0.0
+    if not hyp_words:
+        return 1.0
+    return min(unicode_levenshtein(ref_words, hyp_words) / len(ref_words), 1.0)
+
+
+def contest_aggregate(pairs: list[tuple[str, str]]) -> dict[str, float]:
+    """Paper corpus (micro, then clip) + baseline-script macro (mean of clipped)."""
+    n = len(pairs)
+    if n == 0:
+        return {
+            "n": 0,
+            "cer_macro": 0.0,
+            "wer_macro": 0.0,
+            "cer_micro": 0.0,
+            "wer_micro": 0.0,
+        }
+    cer_lines = [contest_cer_line(r, h) for r, h in pairs]
+    wer_lines = [contest_wer_line(r, h) for r, h in pairs]
+    char_edits = sum(unicode_levenshtein(r, h) for r, h in pairs)
+    char_ref = sum(len(r) for r, h in pairs)
+    word_edits = sum(unicode_levenshtein(r.split(), h.split()) for r, h in pairs)
+    word_ref = sum(len(r.split()) for r, h in pairs)
+    return {
+        "n": float(n),
+        "cer_macro": sum(cer_lines) / n,
+        "wer_macro": sum(wer_lines) / n,
+        "cer_micro": min(char_edits / char_ref, 1.0) if char_ref else 0.0,
+        "wer_micro": min(word_edits / word_ref, 1.0) if word_ref else 0.0,
+    }
 
 
 def word_edit_counts(ref: str, hyp: str) -> dict[str, int]:

@@ -40,3 +40,9 @@ def test_collate_prepends_exact_image_token_count_to_avoid_processor_inference()
     assert text.count("<image>") == processor.image_seq_length
     assert text.endswith(sft_vlm._PALIGEMMA_PREFIX)
     assert processor.last_call["suffix"][0] == "target text"
+
+
+def test_visual_param_names():
+    assert sft_vlm._is_visual_param("base_model.model.visual.blocks.0.attn.qkv.lora_A.default.weight")
+    assert sft_vlm._is_visual_param("model.visual.patch_embed.proj.weight")
+    assert not sft_vlm._is_visual_param("base_model.model.model.layers.0.self_attn.q_proj.lora_A.default.weight")

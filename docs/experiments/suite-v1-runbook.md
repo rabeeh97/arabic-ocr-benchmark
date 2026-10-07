@@ -238,3 +238,28 @@ If a faster first pass is wanted, lower every `limit:` in
 or run just one model first with `run_3090_experiment.py --base
 qwen3vl4b_suite` directly to sanity-check the whole pipeline before
 committing to the full queue.
+
+---
+
+## 10. Stage-2 — AIN NAKBA LoRA (do not start until asked)
+
+Stacked LoRA on the **already-merged** suite-v1 AIN-7B weights, NAKBA
+**train** only. Not in the round-1 queue (`enabled: false`). Fanar must
+stay the live GPU job.
+
+```powershell
+cd C:\Users\User\a-experiment\aocr-repo
+python scripts\run_3090_pipeline.py --dir C:\Users\User\a-experiment\suite-v1\ain7b_nakba --base ain7b_nakba --detach
+```
+
+Watch:
+
+```powershell
+powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\suite-v1\ain7b_nakba\logs\pipeline.log -Wait -Tail 50"
+```
+
+HF_TOKEN comes from `suite-v1\experiment.env` (parent of the new dir).
+Fetch skips Hub model download if `ain7b\merged\suite-v1-ain7b\config.json`
+exists, then pulls NAKBA train. Bench is 200 lines × {nakba, KHATT,
+Muharaf, RASAM-1/2}, no accumulate.
+

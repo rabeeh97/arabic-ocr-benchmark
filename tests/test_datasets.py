@@ -1,6 +1,6 @@
 """Offline dataset-adapter checks — no network."""
 
-from arabic_ocr_bench.datasets.kitab_bench import KitabBench
+from arabic_ocr_bench.datasets.kitab_bench import KitabBench, resolve_hf_split
 from arabic_ocr_bench.datasets.registry import build_dataset
 from arabic_ocr_bench.datasets.synthetic import Synthetic
 
@@ -97,3 +97,31 @@ def test_muharaf_lines_ids_reflect_absolute_row_when_offset(monkeypatch):
     ids = [s.id for s in ds]
     assert ids == ["muharaf_lines/test/000003", "muharaf_lines/test/000004"]
     assert [s.meta["row"] for s in ds] == [3, 4]
+
+
+def test_resolve_hf_split_aliases_val_to_validation():
+    assert resolve_hf_split("val", ["train", "validation", "test"]) == "validation"
+    assert resolve_hf_split("validation", ["train", "validation", "test"]) == "validation"
+    assert resolve_hf_split("train", ["train", "validation", "test"]) == "train"
+
+
+def test_resolve_hf_split_keeps_val_when_the_dataset_actually_has_it():
+    assert resolve_hf_split("val", ["train", "val", "test"]) == "val"
+
+
+def test_splits_from_unknown_split_error_parses_datasets_message():
+    from arabic_ocr_bench.datasets.kitab_bench import _splits_from_unknown_split_error
+
+    err = ValueError("Unknown split \"val\". Should be one of ['train', 'validation', 'test'].")
+    assert _splits_from_unknown_split_error(err) == ["train", "validation", "test"]
+    assert _splits_from_unknown_split_error(ValueError("boom")) is None
+
+
+def test_resolve_hf_split_unknown_raises():
+    try:
+        resolve_hf_split("holdout", ["train", "test"])
+    except ValueError as e:
+        assert "holdout" in str(e)
+        assert "train" in str(e)
+    else:  # pragma: no cover
+        raise AssertionError("expected ValueError")

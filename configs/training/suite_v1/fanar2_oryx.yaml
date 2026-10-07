@@ -3,12 +3,11 @@
 # Misraj/Baseer__Nakba's training config) — no new training-dispatch code
 # needed.
 #
-# GATED: fine-tuning/redistribution license unconfirmed as of 2026-09-16 (see
-# docs/experiments/misraj-baseer-research.md). scripts/_experiment_bases.py's
-# `fanar2_oryx` entry carries `license_check: "pending"` — run_experiment_suite.py
-# skips this slot (logs why, doesn't block the queue) until that's flipped to
-# "ok" after actually checking QCRI's terms. Do not run this config by hand
-# before that check either.
+# HF repo is ungated Apache 2.0 (model card + Qwen2.5-VL-7B base). Confirmed
+# 2026-09-18: no click-through gate; fine-tune/redistribute allowed with the
+# usual Apache notices. Fanar's api.fanar.qa request form is a different
+# product and is not required for local training. scripts/_experiment_bases.py
+# has `license_check: "ok"` so the suite queue runs this slot.
 #
 # `data.sources` is identical to qwen3vl4b.yaml — see that file's header.
 experiment: suite-v1-fanar2-oryx
@@ -44,7 +43,7 @@ data:
     - name: rasam1_val
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-1 }
-      split: val
+      split: validation
     - name: rasam2_train
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-2 }
@@ -53,7 +52,7 @@ data:
     - name: rasam2_val
       adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
       params: { subset: calfa-ai/RASAM-2 }
-      split: val
+      split: validation
   val_fraction: 0.03
   prompt_version: line-v2
 

@@ -10,11 +10,13 @@ line and one file to fetch:
 ``--base`` is any name in ``_experiment_bases.BASES`` (see that module for the
 full, single source-of-truth list — originally ``qwen3vl4b`` | ``qwen3vl4b-visft``
 | ``baseer`` | ``paligemma``, plus the suite_v1 round-1 entries ``qwen3vl4b_suite``
-| ``qwen3vl8b`` | ``ain7b`` | ``fanar2_oryx``). Re-run the same command
+| ``qwen3vl8b`` | ``ain7b`` | ``fanar2_oryx``, plus the later stacked job
+``ain7b_nakba``). Re-run the same command
 to resume (both sub-steps are individually resumable); the ``full`` benchmark
-stage scores another 200 lines/dataset each run until every set is exhausted.
-For running the whole round-1 queue in sequence, use
-``run_experiment_suite.py`` instead of calling this per base by hand.
+stage scores another 200 lines/dataset each run until every set is exhausted
+unless the base sets ``no_full_accumulate``. For running the whole round-1 queue
+in sequence, use ``run_experiment_suite.py`` instead of calling this per base
+by hand.
 
 Watch it:  Get-Content <dir>\\logs\\pipeline.log -Wait -Tail 50
 Fetch:     <dir>\\bench\\bundle.zip   (curated summaries + leaderboard, no cache junk)
@@ -39,7 +41,11 @@ IS_WIN = platform.system() == "Windows"
 
 # Shared with run_3090_experiment.py / run_3090_benchmark.py / run_experiment_suite.py
 # — see _experiment_bases.py's own docstring for why it's plain Python.
-from _experiment_bases import BASES  # noqa: E402
+from _detach_spawn import (  # noqa: E402
+    emit_log_line, pid_alive, pid_is_cmd, pidfile_is_other_worker,
+    spawn_surviving_logout, stdout_is_regular_file,
+)
+from _experiment_bases import BASES, pipeline_bench_args  # noqa: E402
 
 
 def _now() -> str:
@@ -47,10 +53,7 @@ def _now() -> str:
 
 
 def _log(logs: Path, msg: str) -> None:
-    line = f"[{_now()}] {msg}"
-    print(line, flush=True)
-    with (logs / "pipeline.log").open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
+    emit_log_line(logs / "pipeline.log", f"[{_now()}] {msg}")
 
 
 def _rotate(logs: Path) -> None:
@@ -60,26 +63,7 @@ def _rotate(logs: Path) -> None:
 
 
 def _pid_alive(pid: int) -> bool:
-    try:
-        if IS_WIN:
-            out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/NH"],
-                                 capture_output=True, text=True, check=False).stdout
-            return str(pid) in out
-        os.kill(pid, 0)
-        return True
-    except (OSError, ValueError):
-        return False
-
-
-def _stdout_is_regular_file() -> bool:
-    """True only when this process's stdout is a plain file (the detached
-    worker's own log). A tty or a pipe (parent script reading us) is not — we
-    must still echo to stdout in that case or the parent/log sees nothing."""
-    try:
-        import stat as _s
-        return _s.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)
-    except Exception:  # noqa: BLE001
-        return False
+    return pid_alive(pid)
 
 
 HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess output
@@ -87,8 +71,9 @@ HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess outpu
 
 def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     _log(logs, f"=== {step}: {' '.join(cmd)}")
-    tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
-    with (logs / "pipeline.log").open("a", encoding="utf-8") as fh:
+    tee = not stdout_is_regular_file()
+    fh = (logs / "pipeline.log").open("a", encoding="utf-8") if tee else None
+    try:
         proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ},
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                 text=True, bufsize=1)
@@ -112,28 +97,25 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
             if ln is None:
                 break
             last = time.monotonic()
-            if tee:
-                sys.stdout.write(ln)
-                sys.stdout.flush()
-            fh.write(ln)
+            sys.stdout.write(ln)
+            sys.stdout.flush()
+            if fh is not None:
+                fh.write(ln)
         proc.wait()
+    finally:
+        if fh is not None:
+            fh.close()
     _log(logs, f"=== {step}: exit {proc.returncode}")
     return proc.returncode
 
 
 def _respawn_detached(logs: Path, argv: list[str]) -> int:
     _rotate(logs)
-    fh = (logs / "pipeline.log").open("a", encoding="utf-8")
     child = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
-    kw: dict = {"cwd": str(REPO), "stdout": fh, "stderr": subprocess.STDOUT,
-                "stdin": subprocess.DEVNULL, "close_fds": True}
-    if IS_WIN:
-        kw["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008
-    else:
-        kw["start_new_session"] = True
-    proc = subprocess.Popen(child, **kw)
-    (logs / "pipeline.pid").write_text(str(proc.pid), encoding="utf-8")
-    print(f"detached pid {proc.pid}")
+    pid = spawn_surviving_logout(
+        child, cwd=REPO, log_path=logs / "pipeline.log", pid_path=logs / "pipeline.pid"
+    )
+    print(f"detached pid {pid}")
     print(f"log : {logs / 'pipeline.log'}")
     print(f"watch: powershell -NoProfile -Command \"Get-Content {logs / 'pipeline.log'} -Wait -Tail 50\"")
     return 0
@@ -162,7 +144,10 @@ def main(argv: list[str] | None = None) -> int:
             other = int(pidf.read_text(encoding="utf-8").strip() or 0)
         except ValueError:
             other = 0
-        if other and other != os.getpid() and _pid_alive(other):
+        if pidfile_is_other_worker(
+            other, os.getpid(), os.getppid(),
+            alive=_pid_alive(other), is_cmd=pid_is_cmd(other),
+        ):
             print(f"a pipeline is already running here (pid {other}). Watch it, or "
                   f"{'taskkill /F /PID' if IS_WIN else 'kill'} {other}.")
             return 1
@@ -170,7 +155,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.detach:
         return _respawn_detached(logs, argv)
 
-    _rotate(logs)
+    if not stdout_is_regular_file():
+        _rotate(logs)
     pidf.write_text(str(os.getpid()), encoding="utf-8")
     spec = BASES[args.base]
     exp, hf_id, arch, base_name = (
@@ -190,10 +176,25 @@ def main(argv: list[str] | None = None) -> int:
             _log(logs, "pipeline: STOP — training/eval did not finish (re-run to resume)")
             return 1
 
+        if spec.get("ckpt_eval_after_train"):
+            ckpt_eval = [
+                py, str(REPO / "scripts" / "eval_ain_nakba_ckpts.py"),
+                "--dir", str(root), "--base", args.base,
+                "--official", "--no-wait",
+            ]
+            if _run(logs, ckpt_eval, step="ckpt_official"):
+                _log(logs, "pipeline: STOP — official checkpoint walk did not finish")
+                return 1
+
         bench = [py, str(REPO / "scripts" / "run_3090_benchmark.py"),
                  "--dir", str(root), "--experiment", exp,
                  "--base-hf-id", hf_id, "--base-name", base_name, "--arch", arch,
                  "--training-config", spec["config"]]
+        extra = pipeline_bench_args(spec)
+        if "--datasets-file" in extra:
+            i = extra.index("--datasets-file")
+            extra[i + 1] = str(REPO / extra[i + 1])
+        bench += extra
         if _run(logs, bench, step="benchmark"):
             _log(logs, "pipeline: STOP — benchmark did not finish (re-run to resume / next full batch)")
             return 1

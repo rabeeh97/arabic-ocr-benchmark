@@ -24,12 +24,50 @@ License / citation: per each source dataset and the KITAB-Bench paper.
 
 from __future__ import annotations
 
+import ast
+import os
+import re
 from collections.abc import Iterator
 
 from ..imaging import cap_image
 from .base import Sample
 
 _GT_KEYS = ("text", "answer", "label", "ground_truth", "transcription", "gt", "target")
+
+# HuggingFace's canonical validation split is `validation`. Older configs and
+# some cached builders used `val` / `dev`. RASAM-1/2 on the Hub today only
+# expose train/validation/test — a fresh venv raises
+# `Unknown split "val"` (Fanar prepare, 2026-09-20).
+_SPLIT_ALIASES = {
+    "val": ("validation", "valid", "dev"),
+    "validation": ("val", "valid", "dev"),
+    "valid": ("validation", "val"),
+    "dev": ("validation", "val"),
+}
+
+
+def resolve_hf_split(requested: str, available: list[str] | tuple[str, ...]) -> str:
+    """Map a requested split name onto one the dataset actually ships."""
+    names = list(available)
+    if requested in names:
+        return requested
+    for alias in _SPLIT_ALIASES.get(requested, ()):
+        if alias in names:
+            return alias
+    raise ValueError(f'Unknown split "{requested}". Should be one of {names}.')
+
+
+def _splits_from_unknown_split_error(exc: BaseException) -> list[str] | None:
+    m = re.search(r"Should be one of (\[.*\])", str(exc))
+    if not m:
+        return None
+    try:
+        names = ast.literal_eval(m.group(1))
+    except (SyntaxError, ValueError):
+        return None
+    if isinstance(names, list) and all(isinstance(x, str) for x in names):
+        return names
+    return None
 
 
 class KitabBench:
@@ -62,7 +100,19 @@ class KitabBench:
         if self._rows is None:
             from datasets import load_dataset
 
-            ds = load_dataset(self.hf_id, split=self.split)
+            token = os.environ.get("HF_TOKEN")
+            try:
+                ds = load_dataset(self.hf_id, split=self.split, token=token)
+            except ValueError as e:
+                # `datasets` error: Unknown split "val". Should be one of [...].
+                available = _splits_from_unknown_split_error(e)
+                if available is None:
+                    raise
+                resolved = resolve_hf_split(self.split, available)
+                if resolved == self.split:
+                    raise
+                ds = load_dataset(self.hf_id, split=resolved, token=token)
+                self.split = resolved
             n = len(ds)
             if self.indices is not None:
                 sel = [i for i in self.indices if 0 <= i < n]

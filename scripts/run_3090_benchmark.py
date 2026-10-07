@@ -55,6 +55,9 @@ UTC = timezone.utc  # datetime.UTC alias; not present before Python 3.11
 REPO = Path(__file__).resolve().parents[1]
 IS_WIN = platform.system() == "Windows"
 
+from _detach_spawn import emit_log_line, spawn_surviving_logout, stdout_is_regular_file  # noqa: E402
+from _envfile import load_experiment_env  # noqa: E402
+
 PHASES = ["check", "register", "smoke", "full", "collect"]
 
 DEFAULT_EXPERIMENT = "exp3090-qwen3vl4b"
@@ -94,10 +97,7 @@ def _dirs(root: Path) -> dict:
 
 
 def _log(dirs: dict, msg: str) -> None:
-    line = f"[{_now()}] {msg}"
-    print(line, flush=True)
-    with (dirs["logs"] / "bench.log").open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
+    emit_log_line(dirs["logs"] / "bench.log", f"[{_now()}] {msg}")
 
 
 def _rotate_log(dirs: dict) -> None:
@@ -107,24 +107,14 @@ def _rotate_log(dirs: dict) -> None:
         log.rename(dirs["logs"] / f"bench.{stamp}.log")
 
 
-def _load_env_file(path: Path) -> None:
-    if not path.exists():
-        return
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        s = raw.strip()
-        if not s or s.startswith("#") or "=" not in s:
-            continue
-        k, v = s.split("=", 1)
-        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
-
-
 def _pin_env(dirs: dict) -> None:
     os.environ["HF_HOME"] = str(dirs["hf_cache"])
     os.environ["UV_CACHE_DIR"] = str(dirs["uv_cache"])
     os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     os.environ.setdefault("HF_HUB_ENABLE_HF_TRANSFER", "0")
-    _load_env_file(dirs["root"] / "experiment.env")
+    # Model dir first, then the suite parent (where experiment.env actually lives).
+    load_experiment_env(dirs["root"])
 
 
 def _state_path(dirs: dict) -> Path:
@@ -181,25 +171,15 @@ def _venv_python(dirs: dict) -> Path:
     return dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")
 
 
-def _stdout_is_regular_file() -> bool:
-    """True only when this process's stdout is a plain file (the detached
-    worker's own log). A tty or a pipe (parent script reading us) is not — we
-    must still echo to stdout in that case or the parent/log sees nothing."""
-    try:
-        import stat as _s
-        return _s.S_ISREG(os.fstat(sys.stdout.fileno()).st_mode)
-    except Exception:  # noqa: BLE001
-        return False
-
-
 HEARTBEAT_S = 90  # log a liveness line after this long with no subprocess output
 
 
 def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
     global _CHILD
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
-    tee = not _stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
-    with (dirs["logs"] / "bench.log").open("a", encoding="utf-8") as fh:
+    tee = not stdout_is_regular_file()  # tty or pipe -> also write the log file
+    fh = (dirs["logs"] / "bench.log").open("a", encoding="utf-8") if tee else None
+    try:
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env={**os.environ},
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
@@ -226,13 +206,16 @@ def _run(dirs: dict, cmd: list[str], *, phase: str) -> int:
                 if ln is None:
                     break
                 last = time.monotonic()
-                if tee:
-                    sys.stdout.write(ln)
-                    sys.stdout.flush()
-                fh.write(ln)
+                sys.stdout.write(ln)
+                sys.stdout.flush()
+                if fh is not None:
+                    fh.write(ln)
             proc.wait()
         finally:
             _CHILD = None
+    finally:
+        if fh is not None:
+            fh.close()
     if proc.returncode != 0:
         _log(dirs, f"!! phase {phase}: command exited {proc.returncode}")
     return proc.returncode
@@ -261,44 +244,11 @@ def _reap_orphans() -> None:
                        capture_output=True, check=False)
 
 
-def _datasets(dirs: dict, training_config: str | None) -> list[str]:
-    """The held-out dataset list to sweep.
-
-    With `--training-config <path>` (the model's own training YAML), this
-    calls `safe_eval_datasets()` in the venv — every registered line-track
-    dataset EXCEPT `synthetic` and anything that overlaps one of that config's
-    `data.sources` (either an exact scored (hf_id, split) match, or a declared
-    `overlaps_source`, e.g. `kitab_muharaf` when Muharaf is a training
-    source). This generalizes the sweep to "every dataset" per model, instead
-    of the fixed 6-dataset MATRIX_FILE list every model used to share
-    regardless of what it was actually trained on.
-
-    Without `--training-config` (back-compat / ad-hoc standalone use), falls
-    back to parsing MATRIX_FILE's curated list (stdlib, no yaml — this
-    function itself must stay launcher-safe; the training-config path below
-    shells out to the venv precisely because `safe_eval_datasets` needs
-    pydantic/yaml that may not exist in the bare launcher Python).
-    """
-    if training_config:
-        py = _venv_python(dirs)
-        code = (
-            "from arabic_ocr_bench.training.config import load_training_config;"
-            "from arabic_ocr_bench.training.data import safe_eval_datasets;"
-            f"cfg = load_training_config({training_config!r});"
-            "print('\\n'.join(safe_eval_datasets(cfg.data)))"
-        )
-        out = subprocess.run(
-            [str(py), "-c", code], cwd=str(REPO), capture_output=True, text=True, check=False
-        )
-        if out.returncode != 0:
-            raise SystemExit(
-                f"_datasets: failed to compute safe_eval_datasets for {training_config}:\n{out.stderr}"
-            )
-        return [ln for ln in out.stdout.splitlines() if ln.strip()]
-
+def parse_datasets_block(text: str) -> list[str]:
+    """Stdlib parse of a YAML ``datasets:`` list (comments stripped)."""
     datasets: list[str] = []
     in_block = False
-    for raw in (REPO / MATRIX_FILE).read_text(encoding="utf-8").splitlines():
+    for raw in text.splitlines():
         line = raw.split("#", 1)[0].rstrip()
         if not line:
             continue
@@ -308,6 +258,57 @@ def _datasets(dirs: dict, training_config: str | None) -> list[str]:
         if in_block and line.lstrip().startswith("- "):
             datasets.append(line.lstrip()[2:].strip())
     return datasets
+
+
+def intersect_listed(listed: list[str], safe: list[str]) -> list[str]:
+    """Keep ``listed`` order; drop names that are not in ``safe``."""
+    allow = set(safe)
+    return [name for name in listed if name in allow]
+
+
+def _safe_eval_names(dirs: dict, training_config: str) -> list[str]:
+    py = _venv_python(dirs)
+    code = (
+        "from arabic_ocr_bench.training.config import load_training_config;"
+        "from arabic_ocr_bench.training.data import safe_eval_datasets;"
+        f"cfg = load_training_config({training_config!r});"
+        "print('\\n'.join(safe_eval_datasets(cfg.data)))"
+    )
+    out = subprocess.run(
+        [str(py), "-c", code], cwd=str(REPO), capture_output=True, text=True, check=False
+    )
+    if out.returncode != 0:
+        raise SystemExit(
+            f"_datasets: failed to compute safe_eval_datasets for {training_config}:\n{out.stderr}"
+        )
+    return [ln for ln in out.stdout.splitlines() if ln.strip()]
+
+
+def _datasets(dirs: dict, training_config: str | None,
+              datasets_file: str | None = None) -> list[str]:
+    """The held-out dataset list to sweep.
+
+    Resolution order:
+
+    * ``--datasets-file`` — curated YAML list (stdlib parse). If
+      ``--training-config`` is also set, intersect with ``safe_eval_datasets()``
+      so a curated name that overlaps training data cannot sneak in.
+    * ``--training-config`` alone — every registered line-track dataset except
+      ``synthetic`` and anything that overlaps that config's ``data.sources``.
+      This is the slow "all datasets, accumulate until exhausted" path; the
+      suite_v1 runner now passes ``--datasets-file`` instead.
+    * neither — MATRIX_FILE's curated list (back-compat / ad-hoc standalone).
+    """
+    if datasets_file:
+        listed = parse_datasets_block(Path(datasets_file).read_text(encoding="utf-8"))
+        if not listed:
+            raise SystemExit(f"_datasets: no datasets: entries in {datasets_file}")
+        if training_config:
+            return intersect_listed(listed, _safe_eval_names(dirs, training_config))
+        return listed
+    if training_config:
+        return _safe_eval_names(dirs, training_config)
+    return parse_datasets_block((REPO / MATRIX_FILE).read_text(encoding="utf-8"))
 
 
 def _bench_models(spec: dict, with_4bit: bool) -> list[str]:
@@ -409,7 +410,7 @@ def _sweep(dirs: dict, state: dict, spec: dict, args, *, stage: str,
            limit: int, accumulate: bool) -> bool:
     """Run one pass over every dataset. Returns True if the stage is complete."""
     training_config = spec.get("training_config")
-    datasets = _datasets(dirs, training_config)
+    datasets = _datasets(dirs, training_config, spec.get("datasets_file"))
     models = _bench_models(spec, args.with_4bit)
     if not training_config:
         # Legacy MATRIX_FILE path only — it has no `overlaps_source` check of
@@ -476,7 +477,10 @@ def phase_full(dirs: dict, state: dict, spec: dict, args) -> None:
     if _done(state, "full", spec["experiment"]) and not args.force:
         _log(dirs, "full: already done")
         return
-    if _sweep(dirs, state, spec, args, stage="full", limit=args.full_n, accumulate=True):
+    if _sweep(
+        dirs, state, spec, args, stage="full",
+        limit=args.full_n, accumulate=args.full_accumulate,
+    ):
         _mark(dirs, state, "full", spec["experiment"])
         _log(dirs, "full: every dataset exhausted")
     else:
@@ -522,17 +526,14 @@ PHASE_FN = {
 # --------------------------------------------------------------------------- #
 def _respawn_detached(dirs: dict, argv: list[str]) -> int:
     _rotate_log(dirs)
-    logf = (dirs["logs"] / "bench.log").open("a", encoding="utf-8")
     child_argv = [sys.executable, str(Path(__file__).resolve()), *[a for a in argv if a != "--detach"]]
-    kwargs: dict = {"cwd": str(REPO), "stdout": logf, "stderr": subprocess.STDOUT,
-                    "stdin": subprocess.DEVNULL, "close_fds": True}
-    if IS_WIN:
-        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000008  # DETACHED_PROCESS
-    else:
-        kwargs["start_new_session"] = True
-    proc = subprocess.Popen(child_argv, **kwargs)
-    (dirs["logs"] / "bench.pid").write_text(str(proc.pid), encoding="utf-8")
-    print(f"detached pid {proc.pid}")
+    pid = spawn_surviving_logout(
+        child_argv,
+        cwd=REPO,
+        log_path=dirs["logs"] / "bench.log",
+        pid_path=dirs["logs"] / "bench.pid",
+    )
+    print(f"detached pid {pid}")
     print(f"log : {dirs['logs'] / 'bench.log'}")
     print(f"poll: python {Path(__file__).name} --dir {dirs['root']} status")
     return 0
@@ -558,7 +559,7 @@ def _active_worker(dirs: dict) -> int | None:
         pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
     except ValueError:
         return None
-    if pid and pid != os.getpid() and _pid_alive(pid):
+    if pid and pid not in (os.getpid(), os.getppid()) and _pid_alive(pid):
         return pid
     return None
 
@@ -612,7 +613,8 @@ def drive(dirs: dict, spec: dict, args, argv: list[str]) -> int:
         return _respawn_detached(dirs, argv)
 
     _reap_orphans()
-    _rotate_log(dirs)
+    if not stdout_is_regular_file():
+        _rotate_log(dirs)
     (dirs["logs"] / "bench.pid").write_text(str(os.getpid()), encoding="utf-8")
     start = args.from_phase or ("check" if not args.only else args.only)
     plan = [args.only] if args.only else PHASES[PHASES.index(start):]
@@ -654,10 +656,24 @@ def main(argv: list[str] | None = None) -> int:
         "--training-config",
         dest="training_config",
         default=None,
-        help="the model's own training YAML — when given, the dataset sweep "
-        "is every safe_eval_datasets() result for it (every registered "
-        "line-track dataset except what it trained on), instead of the "
-        "fixed MATRIX_FILE list",
+        help="the model's own training YAML — when given without "
+        "--datasets-file, the dataset sweep is every safe_eval_datasets() "
+        "result for it. With --datasets-file, used only as an overlap filter",
+    )
+    ap.add_argument(
+        "--datasets-file",
+        dest="datasets_file",
+        default=None,
+        help="YAML with a curated datasets: list. Prefer this over sweeping "
+        "every registered line-track dataset (page-scale KITAB subsets take hours)",
+    )
+    ap.add_argument(
+        "--full-accumulate",
+        dest="full_accumulate",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="full stage keeps scoring until each dataset is exhausted "
+        "(default). --no-full-accumulate scores one --full-n batch per dataset",
     )
     ap.add_argument("--smoke-n", dest="smoke_n", type=int, default=20,
                     help="lines per dataset per model in the smoke stage (default 20)")
@@ -682,7 +698,8 @@ def main(argv: list[str] | None = None) -> int:
 
     spec = {"experiment": args.experiment, "base_hf_id": args.base_hf_id,
             "base_name": args.base_name, "arch": args.arch,
-            "training_config": args.training_config}
+            "training_config": args.training_config,
+            "datasets_file": args.datasets_file}
     return drive(dirs, spec, args, argv)
 
 
