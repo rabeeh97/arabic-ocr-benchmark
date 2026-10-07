@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000072", "model": "nvidia-llama-3.2-11b-vl", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "عدد", "raw_text": "عدد", "cleaned_text": "عدد", "latency_ms": 628.14, "input_tokens": 1691, "output_tokens": 3, "cost_usd": 0.0, "error": null, "attempts": 1, "cached": false}
