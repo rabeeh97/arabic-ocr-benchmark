@@ -7,6 +7,22 @@ saw, what it means, what to do about it. Newest section first within each area.
 
 ## Benchmark validity
 
+### `kitab_muharaf` overlaps Muharaf train, so fine-tuned scores on it are leaked
+
+**Seen (2026-10-07, characterisation P1, `scripts/profile_datasets.py`).** Among
+`kitab_muharaf` lines of 20 characters or more, after diacritic-insensitive
+normalisation, **86.5 % appear word for word in `aamijar/muharaf-public`
+train**, the 22k lines every exp3090 and suite_v1 fine-tune samples from. Every
+other benchmark set is at ≤ 6 % (`muharaf_lines` test 5.7 %, `kitab_evarest`
+5.7 % on mostly very short lines).
+
+**Meaning.** A fine-tune's `kitab_muharaf` row measures recall of training
+lines, not recognition. Base-model rows are unaffected.
+
+**To do.** Exclude `kitab_muharaf` from base-vs-fine-tune comparisons, or label it
+"in-train". Check the ~6 % of `muharaf_lines` test lines that also occur in train
+(formulaic letter openings?) before quoting in-domain gains.
+
 ### `kitab_hindawi` / `kitab_historicalbooks` are page-scale, not lines — kept, with a raised token cap and a caveat
 
 **Seen (2026-09-09, exp3090 smoke).** On `kitab_hindawi` both `qwen3-vl-4b-bf16`

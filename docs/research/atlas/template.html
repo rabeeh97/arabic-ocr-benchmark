@@ -1,0 +1,680 @@
+<title>Arabic Script Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap">
+<style>
+/* Layout: one research notebook column; a sticky section index; the script itself (Naskh) is the only large type. */
+:root {
+  --paper: #f6f8f8;
+  --sheet: #fcfdfd;
+  --ink: #102027;
+  --ink-2: #4a5a60;
+  --ink-3: #7d8b90;
+  --rule: #dde4e6;
+  --rule-strong: #c3cdd0;
+  --lapis: #1f5f9e;
+  --lapis-wash: #e3edf7;
+  --tint-a: #e9eef0;
+  --tint-b: #d6e3ea;
+  /* chart slots (reference palette, light) */
+  --pos-isolated: #2a78d6;
+  --pos-initial: #eb6834;
+  --pos-medial: #1baf7a;
+  --pos-final: #eda100;
+  --muted-mark: #898781;
+  --good: #0ca30c; --warning: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --good-ink: #006300; --critical-ink: #b02a2a; --warning-ink: #8a5a00;
+  --font-ui: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-head: "IBM Plex Sans Condensed", "IBM Plex Sans", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-ar: "Noto Naskh Arabic", "Geeza Pro", "Arabic Typesetting", "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1517; --sheet: #151d20; --ink: #e8eef0; --ink-2: #b4c0c4; --ink-3: #85959a;
+    --rule: #263236; --rule-strong: #34444a; --lapis: #7fb2e8; --lapis-wash: #18293a;
+    --tint-a: #1e2a2e; --tint-b: #24394a;
+    --pos-isolated: #3987e5; --pos-initial: #d95926; --pos-medial: #199e70; --pos-final: #c98500;
+    --good-ink: #2fc42f; --critical-ink: #ef7a7a; --warning-ink: #f5c04a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1517; --sheet: #151d20; --ink: #e8eef0; --ink-2: #b4c0c4; --ink-3: #85959a;
+  --rule: #263236; --rule-strong: #34444a; --lapis: #7fb2e8; --lapis-wash: #18293a;
+  --tint-a: #1e2a2e; --tint-b: #24394a;
+  --pos-isolated: #3987e5; --pos-initial: #d95926; --pos-medial: #199e70; --pos-final: #c98500;
+  --good-ink: #2fc42f; --critical-ink: #ef7a7a; --warning-ink: #f5c04a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-ui); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 80px; }
+h1, h2, h3 { font-family: var(--font-head); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 34px; font-weight: 600; letter-spacing: -0.01em; }
+h2 { font-size: 24px; font-weight: 600; }
+h3 { font-size: 16px; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-family: var(--font-data); font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.lede { color: var(--ink-2); font-size: 16px; }
+.mono { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.ar { font-family: var(--font-ar); direction: rtl; unicode-bidi: isolate; }
+a { color: var(--lapis); }
+:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+
+header.top { display: grid; gap: 14px; padding-bottom: 22px; border-bottom: 1px solid var(--rule-strong); }
+.title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px; justify-content: space-between; }
+.title-ar { font-family: var(--font-ar); font-size: 30px; color: var(--ink-2); direction: rtl; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 22px; color: var(--ink-2); font-size: 13.5px; }
+.facts b { color: var(--ink); font-family: var(--font-data); font-weight: 500; }
+
+nav.index { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); margin-inline: -20px; padding-inline: 20px; }
+nav.index ol { list-style: none; display: flex; gap: 4px 18px; margin: 0; padding: 10px 0; overflow-x: auto; white-space: nowrap; }
+nav.index a { text-decoration: none; color: var(--ink-2); font-size: 13.5px; }
+nav.index a:hover { color: var(--lapis); }
+nav.index .n { font-family: var(--font-data); color: var(--ink-3); margin-inline-end: 4px; }
+
+section { padding-top: 40px; display: grid; gap: 16px; scroll-margin-top: 48px; }
+.sec-head { display: grid; gap: 6px; }
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; padding: 18px; min-width: 0; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.grid-2 > * { min-width: 0; }
+.note { font-size: 13px; color: var(--ink-3); }
+
+/* tracker */
+.tracker { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 820px) { .tracker { grid-template-columns: 1fr; } }
+.phase { border-top: 1px solid var(--rule); padding: 10px 0; }
+.phase:first-child { border-top: 0; padding-top: 0; }
+.phase summary { list-style: none; display: grid; grid-template-columns: 46px 1fr auto; gap: 10px; align-items: baseline; cursor: pointer; }
+.phase summary::-webkit-details-marker { display: none; }
+.phase .pid { font-family: var(--font-data); font-size: 12px; color: var(--ink-3); }
+.phase .ptitle { font-weight: 500; }
+.phase ul { list-style: none; margin: 8px 0 0 56px; padding: 0; display: grid; gap: 4px; font-size: 13.5px; color: var(--ink-2); }
+.phase li { display: grid; grid-template-columns: 16px 1fr; gap: 8px; }
+.tick { font-family: var(--font-data); color: var(--ink-3); }
+.tick.done { color: var(--good-ink); }
+.tick.next, .tick.active { color: var(--lapis); }
+.pill { font-family: var(--font-data); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--rule-strong); color: var(--ink-2); white-space: nowrap; }
+.pill.done { border-color: var(--good); color: var(--good-ink); }
+.pill.active { background: var(--lapis); border-color: var(--lapis); color: var(--sheet); }
+.pill.next { border-color: var(--lapis); color: var(--lapis); }
+.progress-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--tint-a); gap: 2px; }
+.progress-bar span { display: block; height: 100%; }
+.feed { display: grid; gap: 12px; }
+.gates { margin: 0; padding-inline-start: 18px; display: grid; gap: 6px; font-size: 13.5px; color: var(--ink-2); }
+.stars { color: var(--lapis); letter-spacing: 1px; }
+.feed article { display: grid; gap: 3px; padding-inline-start: 12px; border-inline-start: 2px solid var(--rule-strong); }
+.feed article.finding { border-color: var(--serious); }
+.feed article.done { border-color: var(--good); }
+.feed .meta { font-family: var(--font-data); font-size: 11.5px; color: var(--ink-3); }
+.feed p { font-size: 13.5px; color: var(--ink-2); }
+
+/* loci explorer */
+.controls { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+select, button.chip { font: inherit; font-size: 13.5px; color: var(--ink); background: var(--sheet); border: 1px solid var(--rule-strong); border-radius: 5px; padding: 5px 10px; }
+button.chip { cursor: pointer; font-family: var(--font-data); }
+button.chip[aria-pressed="true"] { background: var(--lapis); color: var(--sheet); border-color: var(--lapis); }
+.specimen { display: grid; gap: 4px; padding: 14px 0; border-bottom: 1px dashed var(--rule); }
+.specimen .lbl { display: flex; justify-content: space-between; gap: 12px; }
+.specimen .line { font-family: var(--font-ar); font-size: 34px; line-height: 1.9; direction: rtl; text-align: right; overflow-wrap: anywhere; }
+.line .paw { border-radius: 4px; padding: 0 1px; }
+.line .paw.a { background: var(--tint-a); }
+.line .paw.b { background: var(--tint-b); }
+.line .dotted { text-decoration: underline 2px var(--critical); text-underline-offset: 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-inline-end: 6px; vertical-align: -1px; }
+.tape { display: flex; flex-direction: row-reverse; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
+.cell { flex: 0 0 76px; border: 1px solid var(--rule); border-radius: 5px; padding: 6px 4px 8px; display: grid; justify-items: center; gap: 2px; background: var(--paper); border-top: 3px solid var(--c, var(--rule)); }
+.cell .g { font-family: var(--font-ar); font-size: 30px; line-height: 1.5; }
+.cell .f { font-size: 11.5px; color: var(--ink-2); }
+.cell .r { font-family: var(--font-ar); font-size: 18px; color: var(--ink-3); }
+.cell .k { font-family: var(--font-data); font-size: 10.5px; color: var(--ink-3); }
+.cell .dotflag { font-family: var(--font-data); font-size: 10px; color: var(--critical-ink); }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; counter-reset: step; }
+.steps > div { display: grid; gap: 4px; align-content: start; }
+.steps h3::before { counter-increment: step; content: counter(step) " · "; font-family: var(--font-data); color: var(--ink-3); font-weight: 400; }
+.steps p { font-size: 13.5px; color: var(--ink-2); }
+table.truth { border-collapse: collapse; font-size: 13px; }
+table.truth td, table.truth th { border: 1px solid var(--rule); padding: 4px 10px; text-align: left; }
+table.truth th { color: var(--ink-3); font-weight: 500; }
+
+/* charts */
+.chart { width: 100%; overflow-x: auto; }
+.chart svg { display: block; max-width: 100%; height: auto; }
+.chart text { fill: var(--ink-2); font-family: var(--font-ui); font-size: 11.5px; }
+.chart .axis text { fill: var(--ink-3); font-family: var(--font-data); font-size: 10.5px; }
+.chart .grid line { stroke: var(--rule); stroke-width: 1; }
+.chart .base { stroke: var(--rule-strong); }
+.chart .lab-in { fill: #ffffff; font-family: var(--font-data); font-size: 10.5px; }
+.chart .ds-label { fill: var(--ink); font-family: var(--font-data); font-size: 11px; }
+.chart .ds-label.small { fill: var(--ink-3); }
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--paper); font-size: 12.5px; padding: 6px 9px; border-radius: 4px; max-width: 280px; line-height: 1.4; }
+.tip b { font-family: var(--font-data); font-weight: 500; }
+
+/* overview table */
+.tablewrap { overflow-x: auto; }
+table.ov { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 900px; }
+table.ov th, table.ov td { padding: 6px 8px; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
+table.ov th { font-weight: 500; color: var(--ink-3); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; position: sticky; top: 0; background: var(--sheet); }
+table.ov th:first-child, table.ov td:first-child { text-align: left; }
+table.ov td { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+table.ov td:first-child { font-family: var(--font-data); color: var(--ink); }
+.flag { font-family: var(--font-data); font-size: 10.5px; padding: 1px 6px; border-radius: 3px; margin-inline-start: 6px; border: 1px solid var(--rule-strong); color: var(--ink-3); }
+.flag.leak { border-color: var(--critical); color: var(--critical-ink); }
+.flag.train { border-color: var(--lapis); color: var(--lapis); }
+@media (prefers-reduced-motion: no-preference) { .cell, button.chip { transition: background .15s, border-color .15s; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">arabic_ocr · research layer · characterisation</div>
+    <div class="title-row">
+      <h1>Arabic Script Atlas</h1>
+      <span class="title-ar" lang="ar">أطلس الخط العربي</span>
+    </div>
+    <p class="lede">What our datasets are made of at the level of the script itself: which letter forms (the letter's <em>locus</em> in the word) they contain, how much rests on dots alone, how words break into pieces, how much diacritisation there is, and where the data overlaps our training set. The research tracker at the top updates as the work does.</p>
+    <div class="facts" id="facts"></div>
+  </header>
+
+  <nav class="index" aria-label="Sections">
+    <ol>
+      <li><a href="#progress"><span class="n">1</span>Progress</a></li>
+      <li><a href="#why"><span class="n">2</span>What we measure</a></li>
+      <li><a href="#loci"><span class="n">3</span>How loci are extracted</a></li>
+      <li><a href="#forms"><span class="n">4</span>Positional forms</a></li>
+      <li><a href="#dots"><span class="n">5</span>Dots &amp; skeletons</a></li>
+      <li><a href="#paws"><span class="n">6</span>Word pieces</a></li>
+      <li><a href="#diac"><span class="n">7</span>Diacritics</a></li>
+      <li><a href="#leak"><span class="n">8</span>Overlap with training</a></li>
+      <li><a href="#table"><span class="n">9</span>All numbers</a></li>
+    </ol>
+  </nav>
+
+  <section id="progress">
+    <div class="sec-head">
+      <span class="eyebrow">1 · Research tracker</span>
+      <h2>Where the work stands</h2>
+      <p class="note" id="prog-note"></p>
+    </div>
+    <div class="progress-bar" id="prog-bar" aria-hidden="true"></div>
+    <div class="tracker">
+      <div class="panel" id="phases"></div>
+      <div class="panel"><h3 style="margin-bottom:12px">Updates &amp; findings</h3><div class="feed" id="feed"></div></div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="sec-head">
+      <span class="eyebrow">2 · Framework</span>
+      <h2>What we measure, and why</h2>
+      <p class="lede">A characteristic stays on this list only if it can change a decision about <b>D1</b> data, <b>D2</b> model, <b>D3</b> transformations (normalisation, pre- and post-processing) or <b>D4</b> evaluation. It counts as validated once it predicts model errors on held-out datasets and models, and a controlled change reproduces the effect.</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel tablewrap"><table class="ov" id="cat" style="min-width:520px"></table></div>
+      <div class="panel" style="display:grid;gap:10px">
+        <h3>Validation gates</h3>
+        <ol class="gates">
+          <li><b>V1 Reliable.</b> Deterministic and unit-tested, with tight bootstrap intervals.</li>
+          <li><b>V2 Predictive.</b> Explains per-sample error beyond line length, and holds when a dataset or model family is left out.</li>
+          <li><b>V3 Causal.</b> A synthetic or natural single-factor change reproduces the effect.</li>
+          <li><b>V4 Generalises.</b> Works unchanged on Persian, Urdu and Pashto, and reproduces known Latin results.</li>
+          <li><b>V5 Useful.</b> Acting on it changes an outcome: a ranking, a conclusion, or the data we choose.</li>
+          <li><b>V6 Adoptable.</b> Released as a library, datasheet template and this page.</li>
+        </ol>
+        <p class="note">Full reasoning and prior art: docs/research/characteristics-framework.md</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="loci">
+    <div class="sec-head">
+      <span class="eyebrow">3 · Method, on real lines</span>
+      <h2>How a letter's locus is extracted</h2>
+      <p class="lede">Every Arabic letter is drawn in up to four shapes, chosen by whether it connects to the letter before it and the letter after it. We recover the intended shape from the transcription the same way a text renderer does. These are the forms the writer was <em>meant</em> to draw. Handwriting sometimes breaks or adds a join.</p>
+    </div>
+    <div class="panel steps">
+      <div><h3>Clean the encoding</h3><p>Strip invisible bidi and zero-width characters, turn presentation-form code points back into plain letters, and apply Unicode NFC so combining marks sit in canonical order.</p></div>
+      <div><h3>Read each joining type</h3><p>From Unicode's <span class="mono">ArabicShaping.txt</span>: <b>D</b> joins both sides (ب ج س …), <b>R</b> joins only to the letter before it (ا د ذ ر ز و ة), <b>U</b> never joins (ء), <b>C</b> is tatweel, and diacritics are <b>T</b>, transparent, so they are skipped.</p></div>
+      <div><h3>Decide the form</h3><p>A letter joins backward if the previous letter is D or C and it is D or R itself. It joins forward if it is D and the next letter is D, R or C.</p>
+        <table class="truth" aria-label="Form from joins">
+          <tr><th>joins back</th><th>joins fwd</th><th>form</th></tr>
+          <tr><td>no</td><td>no</td><td>isolated</td></tr>
+          <tr><td>no</td><td>yes</td><td>initial</td></tr>
+          <tr><td>yes</td><td>yes</td><td>medial</td></tr>
+          <tr><td>yes</td><td>no</td><td>final</td></tr>
+        </table></div>
+      <div><h3>Map to the skeleton</h3><p>Each (letter, form) maps to one of 19 dotless skeletons, the <em>rasm</em>. The map depends on position: initial ن and ي share ب's tooth, but their final forms have their own shapes. A letter is <b>dot-ambiguous</b> if another letter shares its skeleton at that position.</p></div>
+      <div><h3>Cut word pieces</h3><p>A new PAW (piece of Arabic word) starts at every letter that does not join backward. دار is three PAWs; بيت is one.</p></div>
+    </div>
+    <div class="panel" style="display:grid;gap:12px">
+      <div class="controls">
+        <label for="ex-ds" class="note">Dataset</label>
+        <select id="ex-ds"></select>
+        <div id="ex-pick" class="controls" role="group" aria-label="Example line"></div>
+      </div>
+      <div class="note mono" id="ex-id"></div>
+      <div class="specimen">
+        <div class="lbl"><span class="eyebrow">A · each letter coloured by its form</span><span class="legend" id="pos-legend"></span></div>
+        <div class="line" id="ex-forms" lang="ar"></div>
+      </div>
+      <div class="specimen">
+        <div class="lbl"><span class="eyebrow">B · word pieces (PAWs), alternating shade · dot-ambiguous letters underlined</span></div>
+        <div class="line" id="ex-paws" lang="ar"></div>
+      </div>
+      <div class="specimen">
+        <div class="lbl"><span class="eyebrow">C · the same line as bare skeleton (rasm): what remains when the dots go</span></div>
+        <div class="line" id="ex-rasm" lang="ar"></div>
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:6px">D · letter by letter, right to left</div>
+        <div class="tape" id="ex-tape"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="forms">
+    <div class="sec-head">
+      <span class="eyebrow">4 · Positional forms</span>
+      <h2>Which forms each dataset contains</h2>
+      <p class="lede">Share of letters in each form, per dataset. Count isolated and final together and they are over half of all letters, which follows from the six non-connecting letters.</p>
+    </div>
+    <div class="panel"><div class="legend" id="pos-legend-2" style="margin-bottom:8px"></div><div class="chart" id="ch-forms"></div></div>
+    <div class="grid-2">
+      <div class="panel" style="display:grid;gap:10px">
+        <div class="controls"><h3>Letter × form</h3><select id="hm-ds" aria-label="Dataset for heatmap"></select></div>
+        <p class="note">Occurrences per 1,000 letters. A dash marks a form the letter cannot take (letters like ا د ر و never join forward).</p>
+        <div class="chart" id="ch-heat"></div>
+      </div>
+      <div class="panel" style="display:grid;gap:10px">
+        <h3>The long tail of shapes</h3>
+        <p class="note">Shapes, meaning (letter, form) pairs, ranked by frequency on a log scale. Muharaf train, our fine-tuning data, is highlighted. A flatter, longer curve means each shape has fewer training examples.</p>
+        <div class="chart" id="ch-tail"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dots">
+    <div class="sec-head">
+      <span class="eyebrow">5 · Dots &amp; skeletons</span>
+      <h2>How much rests on the dots</h2>
+      <p class="lede">The share of letters that only their dots tell apart from another letter in the same position, and the information the dots carry: shape entropy minus skeleton entropy, in bits per letter.</p>
+    </div>
+    <div class="grid-2">
+      <div class="panel"><h3 style="margin-bottom:8px">Dot-ambiguous letters</h3><div class="chart" id="ch-amb"></div></div>
+      <div class="panel" style="display:grid;gap:10px">
+        <div class="controls"><h3>Inside the skeleton groups</h3><select id="dg-ds" aria-label="Dataset for dot groups"></select></div>
+        <p class="note">For each dot-ambiguous skeleton group, which letters fill it. Every one of these pairs is a possible dot confusion.</p>
+        <div class="chart" id="ch-groups"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="paws">
+    <div class="sec-head">
+      <span class="eyebrow">6 · Word pieces</span>
+      <h2>How words break into PAWs</h2>
+      <p class="lede">The gap between two pieces of one word can look like the gap between two words. The more pieces per word, the more chances a model has to insert or drop a space.</p>
+    </div>
+    <div class="panel"><div class="chart" id="ch-paws"></div></div>
+  </section>
+
+  <section id="diac">
+    <div class="sec-head">
+      <span class="eyebrow">7 · Diacritics</span>
+      <h2>How much each dataset is diacritised</h2>
+      <p class="lede">Lines grouped by the share of letters that carry a mark: none, sparse (under 15&nbsp;%), partial (under 60&nbsp;%), full.</p>
+    </div>
+    <div class="panel"><div class="legend" id="diac-legend" style="margin-bottom:8px"></div><div class="chart" id="ch-diac"></div></div>
+  </section>
+
+  <section id="leak">
+    <div class="sec-head">
+      <span class="eyebrow">8 · Overlap with training data</span>
+      <h2>Lines that also appear in Muharaf train</h2>
+      <p class="lede">Lines of 20 characters or more, after diacritic-insensitive normalisation, that occur word for word in the 22k Muharaf train lines our fine-tunes learn from. A high share means fine-tuned scores on that dataset are inflated.</p>
+    </div>
+    <div class="panel"><div class="chart" id="ch-leak"></div></div>
+  </section>
+
+  <section id="table">
+    <div class="sec-head">
+      <span class="eyebrow">9 · All numbers</span>
+      <h2>Per-dataset profile</h2>
+      <p class="note">Click a column to sort. Rates per 1,000 characters unless marked otherwise. OOV is the share of word tokens not seen in Muharaf train.</p>
+    </div>
+    <div class="panel tablewrap"><table class="ov" id="ov"></table></div>
+    <p class="note" id="src-note"></p>
+  </section>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const ATLAS = /*__ATLAS_DATA__*/null;
+const S = ATLAS.summary, P = ATLAS.progress;
+const DS = S.datasets;
+const NAMES = Object.keys(DS).sort((a, b) => (a === "muharaf_train" ? -1 : b === "muharaf_train" ? 1 : a.localeCompare(b)));
+const POS = ["isolated", "initial", "medial", "final"];
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const posColor = p => css("--pos-" + p);
+const fmtPct = (x, d = 0) => (100 * x).toFixed(d) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const isDark = () => document.documentElement.dataset.theme === "dark" ||
+  (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+const SEQ_LIGHT = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#256abf", "#184f95", "#0d366b"];
+const SEQ_DARK = ["#1c2a38", "#184f95", "#1c5cab", "#2a78d6", "#5598e7", "#86b6ef", "#cde2fb"];
+function seq(t) {
+  const r = isDark() ? SEQ_DARK : SEQ_LIGHT;
+  const x = Math.max(0, Math.min(1, t)) * (r.length - 1), i = Math.floor(x), f = x - i;
+  if (i >= r.length - 1) return r[r.length - 1];
+  const a = r[i], b = r[i + 1], h = (s, k) => parseInt(s.slice(1 + 2 * k, 3 + 2 * k), 16);
+  return "#" + [0, 1, 2].map(k => Math.round(h(a, k) + (h(b, k) - h(a, k)) * f).toString(16).padStart(2, "0")).join("");
+}
+const textOn = t => (t > 0.5) !== isDark() ? "#ffffff" : "#102027";
+
+// ---------- tooltip
+const tip = document.getElementById("tip");
+function bindTip(el, html) {
+  el.addEventListener("pointermove", e => { tip.innerHTML = html; tip.hidden = false;
+    const x = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8); tip.style.left = x + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+  el.addEventListener("pointerleave", () => { tip.hidden = true; });
+}
+const NS = "http://www.w3.org/2000/svg";
+function svg(w, h) { const s = document.createElementNS(NS, "svg"); s.setAttribute("viewBox", `0 0 ${w} ${h}`); s.setAttribute("width", w); return s; }
+function el(tag, attrs, parent, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; parent && parent.appendChild(e); return e; }
+const dsLabel = n => n + (DS[n].small ? " (n<50)" : "");
+
+// ---------- header facts
+(function () {
+  const nTest = NAMES.filter(n => n !== "muharaf_train").length;
+  const lines = Object.values(DS).reduce((a, d) => a + d.n, 0);
+  const letters = Object.values(DS).reduce((a, d) => a + d.letters_total, 0);
+  document.getElementById("facts").innerHTML =
+    `<span><b>${lines.toLocaleString()}</b> lines</span><span><b>${(letters / 1e6).toFixed(2)}M</b> letters</span>` +
+    `<span><b>${nTest}</b> benchmark sets + Muharaf train</span><span>ground truth from <b>${S.source.prediction_files}</b> prediction files</span>` +
+    `<span>profiled <b>${S.generated.slice(0, 16).replace("T", " ")}</b> UTC</span>`;
+  document.getElementById("src-note").textContent = `Source: ${S.summary_path}. Built by scripts/profile_datasets.py → scripts/build_atlas.py.`;
+})();
+
+// ---------- tracker
+(function () {
+  const order = { done: 0, active: 1, next: 2, planned: 3, blocked: 4 };
+  const all = P.phases.flatMap(p => p.tasks);
+  const cnt = s => all.filter(t => t.s === s).length;
+  const bar = document.getElementById("prog-bar");
+  [["done", "var(--good)"], ["active", "var(--lapis)"], ["next", "var(--lapis)"], ["planned", "var(--rule-strong)"]].forEach(([s, c]) => {
+    const n = cnt(s); if (!n) return; const sp = document.createElement("span"); sp.style.flex = n; sp.style.background = c; sp.style.opacity = s === "next" ? .45 : 1; bar.appendChild(sp); });
+  document.getElementById("prog-note").textContent = `${cnt("done")} of ${all.length} tracked tasks done · ${P.phases.filter(p => p.status === "done").length} of ${P.phases.length} phases complete · tracker file docs/research/progress.json`;
+  const box = document.getElementById("phases");
+  const sym = { done: "✓", active: "●", next: "→", planned: "·", blocked: "!" };
+  P.phases.forEach(p => {
+    const d = document.createElement("details"); d.className = "phase"; d.open = p.status === "active" || p.status === "next";
+    const doneN = p.tasks.filter(t => t.s === "done").length;
+    d.innerHTML = `<summary><span class="pid">${esc(p.id)}</span><span class="ptitle">${esc(p.title)}${p.tasks.length ? ` <span class="note mono">${doneN}/${p.tasks.length}</span>` : ""}</span><span class="pill ${p.status}">${p.status}</span></summary>` +
+      (p.tasks.length ? `<ul>${p.tasks.map(t => `<li><span class="tick ${t.s}" aria-label="${t.s}">${sym[t.s] || "·"}</span><span>${esc(t.t)}</span></li>`).join("")}</ul>` : "") +
+      (p.doc ? `<p class="note mono" style="margin:6px 0 0 56px">${esc(p.doc)}</p>` : "");
+    box.appendChild(d);
+  });
+  document.getElementById("feed").innerHTML = P.updates.map(u =>
+    `<article class="${u.kind}"><span class="meta">${esc(u.date)} · ${esc(u.kind)}</span><p>${esc(u.text)}</p></article>`).join("");
+})();
+
+
+// ---------- catalogue
+(function () {
+  const t = document.getElementById("cat"); if (!P.catalogue) return;
+  t.innerHTML = `<thead><tr><th scope="col">#</th><th scope="col">characteristic</th><th scope="col">decisions</th><th scope="col">priority</th><th scope="col">status</th></tr></thead><tbody>` +
+    P.catalogue.map(c => `<tr><td>${esc(c.k)}</td><td style="font-family:var(--font-ui)">${esc(c.name)}</td><td>${esc(c.dec)}</td><td class="stars" aria-label="priority ${c.pri} of 3">${"★".repeat(c.pri)}${"☆".repeat(3 - c.pri)}</td><td style="font-family:var(--font-ui);color:var(--ink-2);white-space:normal">${esc(c.state)}</td></tr>`).join("") + "</tbody>";
+})();
+
+// ---------- legends
+function posLegend(id) { document.getElementById(id).innerHTML = POS.map(p => `<span><i style="background:${posColor(p)}"></i>${p}</span>`).join(""); }
+
+// ---------- loci explorer
+const exDs = document.getElementById("ex-ds");
+let exIdx = 0;
+NAMES.forEach(n => exDs.add(new Option(dsLabel(n), n)));
+exDs.value = DS.muharaf_lines ? "muharaf_lines" : NAMES[0];
+const ZWJ = "‍";
+const contextual = (ch, pos) => pos === "initial" ? ch + ZWJ : pos === "medial" ? ZWJ + ch + ZWJ : pos === "final" ? ZWJ + ch : ch;
+const MARK_NAMES = { "ً": "fathatan", "ٌ": "dammatan", "ٍ": "kasratan", "َ": "fatha", "ُ": "damma", "ِ": "kasra", "ّ": "shadda", "ْ": "sukun", "ٰ": "dagger alef" };
+function renderExample() {
+  const ds = DS[exDs.value], exs = ds.examples;
+  const pick = document.getElementById("ex-pick"); pick.innerHTML = "";
+  exs.forEach((_, i) => { const b = document.createElement("button"); b.className = "chip"; b.textContent = "line " + (i + 1);
+    b.setAttribute("aria-pressed", i === exIdx); b.onclick = () => { exIdx = i; renderExample(); }; pick.appendChild(b); });
+  if (!exs.length) return;
+  const ex = exs[Math.min(exIdx, exs.length - 1)], text = ex.text;
+  document.getElementById("ex-id").textContent = ex.sample_id + " · " + ex.letters.length + " letters, " + new Set(ex.letters.map(l => l.paw)).size + " PAWs";
+  const byIdx = new Map(ex.letters.map(l => [l.i, l]));
+  // A + C: walk the string, letter spans carry their marks
+  let A = "", C = "", B = "", i = 0, curPaw = null, pawOpen = false;
+  while (i < text.length) {
+    const li = byIdx.get(i);
+    if (li) {
+      const unit = text.slice(i, i + 1 + li.marks.length);
+      A += `<span style="color:${posColor(li.pos)}">${esc(unit)}</span>`;
+      C += esc(li.rd);
+      if (li.paw !== curPaw) { if (pawOpen) B += "</span>"; B += `<span class="paw ${li.paw % 2 ? "b" : "a"}">`; pawOpen = true; curPaw = li.paw; }
+      B += li.amb ? `<span class="dotted">${esc(unit)}</span>` : esc(unit);
+      i += 1 + li.marks.length;
+    } else {
+      const ch = text[i];
+      if (pawOpen && ch !== "ـ") { B += "</span>"; pawOpen = false; curPaw = null; }
+      A += esc(ch); B += esc(ch); if (!/[ً-ٰٟ]/.test(ch)) C += esc(ch);
+      i += 1;
+    }
+  }
+  if (pawOpen) B += "</span>";
+  document.getElementById("ex-forms").innerHTML = A;
+  document.getElementById("ex-paws").innerHTML = B;
+  document.getElementById("ex-rasm").innerHTML = C;
+  document.getElementById("ex-tape").innerHTML = ex.letters.map(l =>
+    `<div class="cell" style="--c:${posColor(l.pos)}" title="${esc(l.ch)} · ${l.pos} · joining type ${l.jt}">
+      <span class="g" lang="ar">${esc(contextual(l.ch, l.pos))}</span>
+      <span class="f">${l.pos}</span>
+      <span class="r" lang="ar" aria-label="skeleton">${esc(l.rd)}</span>
+      <span class="k">type ${l.jt} · PAW ${l.paw + 1}</span>
+      ${l.amb ? '<span class="dotflag">dots decide</span>' : '<span class="k">&nbsp;</span>'}
+      ${l.marks ? `<span class="k">${[...l.marks].map(m => MARK_NAMES[m] || "mark").join("+")}</span>` : ""}
+    </div>`).join("");
+}
+exDs.onchange = () => { exIdx = 0; renderExample(); };
+
+// ---------- chart: 100% stacked horizontal bars
+function stackChart(target, rows, keys, colorOf, labelOf) {
+  const box = document.getElementById(target); box.innerHTML = "";
+  const W = 1000, L = 190, R = 16, rowH = 24, gap = 6, T = 20, H = T + rows.length * (rowH + gap) + 8;
+  const s = svg(W, H); const plotW = W - L - R;
+  const g = el("g", { class: "grid" }, s);
+  [0, .25, .5, .75, 1].forEach(t => { el("line", { x1: L + t * plotW, x2: L + t * plotW, y1: T - 4, y2: H - 8 }, g);
+    el("text", { x: L + t * plotW, y: 11, "text-anchor": t === 0 ? "start" : t === 1 ? "end" : "middle", class: "axis" }, s, fmtPct(t)).setAttribute("style", "fill:var(--ink-3);font-family:var(--font-data);font-size:10.5px"); });
+  rows.forEach((r, k) => {
+    const y = T + k * (rowH + gap);
+    el("text", { x: L - 10, y: y + rowH / 2 + 4, "text-anchor": "end", class: "ds-label" + (r.small ? " small" : "") }, s, r.label);
+    let x = L; const tot = keys.reduce((a, key) => a + (r.v[key] || 0), 0) || 1;
+    keys.forEach((key, j) => {
+      const w = plotW * (r.v[key] || 0) / tot; if (w <= 0) return;
+      const rect = el("rect", { x: x + (j ? 1 : 0), y, width: Math.max(0, w - (j ? 2 : 0) - (j === keys.length - 1 ? 0 : 0)), height: rowH, fill: colorOf(key), rx: 2 }, s);
+      bindTip(rect, `<b>${esc(r.label)}</b><br>${esc(labelOf ? labelOf(key) : key)}: ${fmtPct((r.v[key] || 0) / tot, 1)}`);
+      if (w > 44) el("text", { x: x + w / 2, y: y + rowH / 2 + 4, "text-anchor": "middle", class: "lab-in", "pointer-events": "none" }, s, fmtPct((r.v[key] || 0) / tot));
+      x += w;
+    });
+  });
+  box.appendChild(s);
+}
+
+function renderForms() {
+  stackChart("ch-forms", NAMES.map(n => ({ label: dsLabel(n), small: DS[n].small, v: DS[n].positions })), POS, posColor);
+}
+
+// ---------- heatmap letter x form
+const hmDs = document.getElementById("hm-ds");
+NAMES.forEach(n => hmDs.add(new Option(dsLabel(n), n))); hmDs.value = "muharaf_train" in DS ? "muharaf_train" : NAMES[0];
+const R_SET = new Set([..."اأإآٱدذرزوؤة"]); const U_SET = new Set(["ء"]);
+function renderHeat() {
+  const d = DS[hmDs.value], tot = d.letters_total;
+  const rows = [...S.alphabet, ..."أإآؤئءةى"].filter(ch => d.letters[ch]);
+  const cellW = 74, cellH = 26, L = 46, T = 26, W = L + 4 * cellW + 10, H = T + rows.length * cellH + 4;
+  const s = svg(W, H); const box = document.getElementById("ch-heat"); box.innerHTML = "";
+  let max = 0; rows.forEach(ch => POS.forEach(p => { max = Math.max(max, (d.shapes[ch + "|" + p] || 0) / tot * 1000); }));
+  POS.forEach((p, j) => el("text", { x: L + j * cellW + cellW / 2, y: 16, "text-anchor": "middle" }, s, p));
+  rows.forEach((ch, i) => {
+    const y = T + i * cellH;
+    el("text", { x: L - 12, y: y + cellH / 2 + 6, "text-anchor": "end", style: "font-family:var(--font-ar);font-size:17px;fill:var(--ink)" }, s, ch);
+    POS.forEach((p, j) => {
+      const x = L + j * cellW, impossible = (R_SET.has(ch) || U_SET.has(ch)) && (p === "initial" || p === "medial") || U_SET.has(ch) && p === "final";
+      const v = (d.shapes[ch + "|" + p] || 0) / tot * 1000;
+      if (impossible) { el("text", { x: x + cellW / 2, y: y + cellH / 2 + 4, "text-anchor": "middle", style: "fill:var(--ink-3)" }, s, "—"); return; }
+      const t = max ? Math.sqrt(v / max) : 0;
+      const r = el("rect", { x: x + 1, y: y + 1, width: cellW - 2, height: cellH - 2, rx: 3, fill: v ? seq(t) : "var(--tint-a)" }, s);
+      bindTip(r, `<b>${esc(ch)}</b> ${p}: ${v.toFixed(1)} per 1k letters<br>${(d.shapes[ch + "|" + p] || 0).toLocaleString()} occurrences`);
+      if (v >= 1) el("text", { x: x + cellW / 2, y: y + cellH / 2 + 4, "text-anchor": "middle", "pointer-events": "none", style: `font-family:var(--font-data);font-size:10.5px;fill:${textOn(t)}` }, s, v.toFixed(v >= 10 ? 0 : 1));
+    });
+  });
+  box.appendChild(s);
+}
+
+// ---------- tail (rank-frequency, log y)
+function renderTail() {
+  const box = document.getElementById("ch-tail"); box.innerHTML = "";
+  const W = 560, H = 330, L = 50, R = 16, T = 14, B = 34, pw = W - L - R, ph = H - T - B;
+  const s = svg(W, H);
+  const maxRank = Math.max(...NAMES.map(n => DS[n].shape_rank_freq.length));
+  const ymin = 1e-5, ymax = 0.2, ly = v => T + ph * (Math.log10(ymax) - Math.log10(Math.max(v, ymin))) / (Math.log10(ymax) - Math.log10(ymin));
+  const lx = r => L + pw * (r - 1) / (maxRank - 1);
+  const g = el("g", { class: "grid" }, s);
+  [1e-1, 1e-2, 1e-3, 1e-4, 1e-5].forEach(v => { el("line", { x1: L, x2: W - R, y1: ly(v), y2: ly(v) }, g);
+    el("text", { x: L - 6, y: ly(v) + 3, "text-anchor": "end", style: "fill:var(--ink-3);font-family:var(--font-data);font-size:10.5px" }, s, v >= 1e-2 ? fmtPct(v, v >= .1 ? 0 : 0) : (v * 100).toPrecision(1) + "%"); });
+  [1, 20, 40, 60, 80, 100, 120].filter(r => r <= maxRank).forEach(r => el("text", { x: lx(r), y: H - B + 16, "text-anchor": "middle", style: "fill:var(--ink-3);font-family:var(--font-data);font-size:10.5px" }, s, r));
+  el("text", { x: L + pw / 2, y: H - 4, "text-anchor": "middle" }, s, "shape rank");
+  const path = arr => arr.map((v, i) => `${i ? "L" : "M"}${lx(i + 1).toFixed(1)},${ly(v).toFixed(1)}`).join("");
+  const order = NAMES.filter(n => n !== "muharaf_train" && !DS[n].small);
+  order.forEach(n => { const p = el("path", { d: path(DS[n].shape_rank_freq), fill: "none", stroke: "var(--rule-strong)", "stroke-width": 1.5 }, s);
+    const hit = el("path", { d: path(DS[n].shape_rank_freq), fill: "none", stroke: "transparent", "stroke-width": 8 }, s);
+    bindTip(hit, `<b>${esc(n)}</b><br>${DS[n].distinct_shapes} shapes · ${DS[n].shapes_for_95pct} cover 95% of letters`);
+    hit.addEventListener("pointerenter", () => { p.setAttribute("stroke", "var(--ink-2)"); }); hit.addEventListener("pointerleave", () => { p.setAttribute("stroke", "var(--rule-strong)"); }); });
+  if (DS.muharaf_train) { const arr = DS.muharaf_train.shape_rank_freq;
+    el("path", { d: path(arr), fill: "none", stroke: posColor("isolated"), "stroke-width": 2.5 }, s);
+    el("text", { x: lx(arr.length) - 4, y: ly(arr[arr.length - 1]) - 8, "text-anchor": "end", style: "fill:var(--ink);font-family:var(--font-data);font-size:11px" }, s, "muharaf_train");
+  }
+  box.appendChild(s);
+}
+
+// ---------- dot plot helper (one value per dataset)
+function dotPlot(target, rows, fmt, domainMax, colorOf, tipOf) {
+  const box = document.getElementById(target); box.innerHTML = "";
+  const W = 560, L = 170, R = 40, rowH = 22, T = 20, H = T + rows.length * rowH + 8, pw = W - L - R;
+  const s = svg(W, H); const x = v => L + pw * v / domainMax;
+  const g = el("g", { class: "grid" }, s);
+  [0, .25, .5, .75, 1].map(t => t * domainMax).forEach(v => { el("line", { x1: x(v), x2: x(v), y1: T - 4, y2: H - 6 }, g);
+    el("text", { x: x(v), y: 11, "text-anchor": "middle", style: "fill:var(--ink-3);font-family:var(--font-data);font-size:10.5px" }, s, fmt(v)); });
+  rows.forEach((r, k) => { const y = T + k * rowH + rowH / 2;
+    el("text", { x: L - 10, y: y + 4, "text-anchor": "end", class: "ds-label" + (r.small ? " small" : "") }, s, r.label);
+    el("line", { x1: L, x2: x(r.v), y1: y, y2: y, stroke: "var(--rule-strong)", "stroke-width": 1 }, s);
+    const c = el("circle", { cx: x(r.v), cy: y, r: 5, fill: colorOf ? colorOf(r) : posColor("isolated"), stroke: "var(--sheet)", "stroke-width": 2 }, s);
+    el("text", { x: x(r.v) + 9, y: y + 4, style: "fill:var(--ink-2);font-family:var(--font-data);font-size:10.5px" }, s, fmt(r.v));
+    const hit = el("rect", { x: 0, y: y - rowH / 2, width: W, height: rowH, fill: "transparent" }, s);
+    bindTip(hit, tipOf ? tipOf(r) : `<b>${esc(r.label)}</b>: ${fmt(r.v)}`);
+  });
+  box.appendChild(s);
+}
+
+function renderAmb() {
+  const rows = NAMES.map(n => ({ label: dsLabel(n), small: DS[n].small, v: DS[n].ambiguous_share, n })).sort((a, b) => b.v - a.v);
+  dotPlot("ch-amb", rows, v => fmtPct(v), 0.7, null, r => `<b>${esc(r.n)}</b><br>${fmtPct(r.v, 1)} of letters are dot-ambiguous<br>dots carry ${DS[r.n].dot_bits.toFixed(2)} bits/letter<br>dotted letters: ${fmtPct(DS[r.n].dotted_share, 1)}`);
+}
+
+// ---------- dot groups (stacked per skeleton class, letters as segments)
+const dgDs = document.getElementById("dg-ds");
+NAMES.forEach(n => dgDs.add(new Option(dsLabel(n), n))); dgDs.value = "muharaf_train" in DS ? "muharaf_train" : NAMES[0];
+function renderGroups() {
+  const d = DS[dgDs.value], groups = {};
+  Object.entries(d.dot_pairs).forEach(([k, v]) => { const [r, ch] = k.split("|"); (groups[r] = groups[r] || {})[ch] = v; });
+  const order = Object.keys(groups).sort((a, b) => Object.values(groups[b]).reduce((x, y) => x + y) - Object.values(groups[a]).reduce((x, y) => x + y));
+  const box = document.getElementById("ch-groups"); box.innerHTML = "";
+  const W = 560, L = 44, R = 70, rowH = 30, T = 6, H = T + order.length * rowH + 6, pw = W - L - R;
+  const s = svg(W, H); const tot = d.letters_total;
+  const maxSum = Math.max(...order.map(r => Object.values(groups[r]).reduce((x, y) => x + y)));
+  order.forEach((r, k) => {
+    const y = T + k * rowH, letters = Object.entries(groups[r]).sort((a, b) => b[1] - a[1]);
+    el("text", { x: L - 10, y: y + 19, "text-anchor": "end", style: "font-family:var(--font-ar);font-size:18px;fill:var(--ink)" }, s, ({ "ب": "ٮ", "ف": "ڡ" })[r] || r);
+    let x = L; const sum = letters.reduce((a, [, v]) => a + v, 0);
+    letters.forEach(([ch, v], j) => { const w = pw * v / maxSum;
+      const rect = el("rect", { x: x + (j ? 1 : 0), y: y + 4, width: Math.max(1, w - (j ? 2 : 0)), height: rowH - 10, rx: 2, fill: seq(0.85 - 0.6 * j / Math.max(1, letters.length - 1)) }, s);
+      bindTip(rect, `skeleton <b>${esc(r)}</b> → <b>${esc(ch)}</b>: ${(1000 * v / tot).toFixed(1)} per 1k letters (${fmtPct(v / sum)} of the group)`);
+      if (w > 22) el("text", { x: x + w / 2, y: y + 20, "text-anchor": "middle", "pointer-events": "none", style: `font-family:var(--font-ar);font-size:15px;fill:${textOn(0.85 - 0.6 * j / Math.max(1, letters.length - 1))}` }, s, ch);
+      x += w; });
+    el("text", { x: x + 6, y: y + 19, style: "fill:var(--ink-3);font-family:var(--font-data);font-size:10.5px" }, s, (1000 * sum / tot).toFixed(0) + "‰");
+  });
+  box.appendChild(s);
+}
+
+// ---------- PAWs per word
+function renderPaws() {
+  const keys = ["1", "2", "3", "4", "5", "6"];
+  const cols = { 1: seq(0.12), 2: seq(0.3), 3: seq(0.48), 4: seq(0.66), 5: seq(0.82), 6: seq(1) };
+  stackChart("ch-paws", NAMES.map(n => ({ label: `${dsLabel(n)} · ${DS[n].paws_per_word_mean.toFixed(2)}`, small: DS[n].small, v: DS[n].paws_per_word })),
+    keys, k => cols[k], k => (k === "6" ? "6+" : k) + (k === "1" ? " piece" : " pieces") + " per word");
+}
+
+// ---------- diacritics
+const DLEV = ["none", "sparse", "partial", "full"];
+const dCol = k => ({ none: "var(--tint-b)", sparse: seq(0.35), partial: seq(0.65), full: seq(1) })[k];
+function renderDiac() {
+  document.getElementById("diac-legend").innerHTML = DLEV.map(k => `<span><i style="background:${dCol(k)}"></i>${k}</span>`).join("");
+  const box = "ch-diac";
+  stackChart(box, NAMES.map(n => ({ label: dsLabel(n), small: DS[n].small, v: DS[n].diac_levels })), DLEV, dCol, k => k + " diacritisation");
+  // in-bar labels on the pale "none" segment need dark ink
+  document.querySelectorAll("#ch-diac .lab-in").forEach(t => t.setAttribute("style", "fill:var(--ink)"));
+}
+
+// ---------- leakage
+function renderLeak() {
+  const rows = NAMES.filter(n => DS[n].overlap_muharaf_train).map(n => ({ label: dsLabel(n), small: DS[n].small, v: DS[n].overlap_muharaf_train.long, n }))
+    .sort((a, b) => b.v - a.v);
+  dotPlot("ch-leak", rows, v => fmtPct(v), 1, r => r.v >= 0.2 ? "var(--critical)" : r.v >= 0.03 ? "var(--warning)" : "var(--good)",
+    r => `<b>${esc(r.n)}</b><br>${fmtPct(r.v, 1)} of ${DS[r.n].overlap_muharaf_train.long_n} long lines occur in Muharaf train<br>all lines: ${fmtPct(DS[r.n].overlap_muharaf_train.all, 1)}`);
+}
+
+// ---------- table
+const COLS = [
+  ["dataset", n => n, null],
+  ["lines", n => DS[n].n, v => v.toLocaleString()],
+  ["chars/line", n => DS[n].chars_median, v => v.toFixed(0)],
+  ["shapes", n => DS[n].distinct_shapes, v => v],
+  ["shapes 95%", n => DS[n].shapes_for_95pct, v => v],
+  ["dot-amb.", n => DS[n].ambiguous_share, v => fmtPct(v, 1)],
+  ["dot bits", n => DS[n].dot_bits, v => v.toFixed(2)],
+  ["PAW/word", n => DS[n].paws_per_word_mean, v => v.toFixed(2)],
+  ["lam-alef /100w", n => DS[n].lam_alef_per_100_words, v => v.toFixed(1)],
+  ["diac. lines", n => 1 - DS[n].diac_levels.none, v => fmtPct(v, 0)],
+  ["bad marks ‰", n => DS[n].diac_invalid_per_1k_letters, v => v.toFixed(1)],
+  ["H letter", n => DS[n].h_letter, v => v.toFixed(2)],
+  ["TTR", n => DS[n].type_token_ratio, v => v.toFixed(2)],
+  ["OOV", n => DS[n].oov_vs_muharaf_train ?? -1, v => v < 0 ? "—" : fmtPct(v, 0)],
+  ["Persian forms", n => DS[n].hygiene_per_1k_chars.persian_lookalikes || 0, v => v.toFixed(1)],
+  ["digits", n => (DS[n].hygiene_per_1k_chars.digits_arabic_indic || 0) + (DS[n].hygiene_per_1k_chars.digits_western || 0), v => v.toFixed(1)],
+];
+let sortK = 1, sortDir = -1;
+function renderTable() {
+  const t = document.getElementById("ov");
+  const rows = [...NAMES].sort((a, b) => { const x = COLS[sortK][1](a), y = COLS[sortK][1](b); return (typeof x === "string" ? x.localeCompare(y) : x - y) * sortDir; });
+  t.innerHTML = `<thead><tr>${COLS.map((c, i) => `<th scope="col" tabindex="0" data-i="${i}" aria-sort="${i === sortK ? (sortDir > 0 ? "ascending" : "descending") : "none"}">${c[0]}${i === sortK ? (sortDir > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>` +
+    rows.map(n => `<tr>${COLS.map((c, i) => { const v = c[1](n); if (!i) {
+      const ov = DS[n].overlap_muharaf_train; const flags = (n === "muharaf_train" ? '<span class="flag train">train</span>' : "") +
+        (ov && ov.long >= 0.2 ? '<span class="flag leak">leak</span>' : "") + (DS[n].page_scale ? '<span class="flag">page</span>' : "") + (DS[n].small ? '<span class="flag">n&lt;50</span>' : "");
+      return `<td>${esc(n)}${flags}</td>`; } return `<td>${c[2](v)}</td>`; }).join("")}</tr>`).join("") + "</tbody>";
+  t.querySelectorAll("th").forEach(th => { const go = () => { const i = +th.dataset.i; if (i === sortK) sortDir *= -1; else { sortK = i; sortDir = i ? -1 : 1; } renderTable(); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }; });
+}
+
+function renderAll() {
+  posLegend("pos-legend"); posLegend("pos-legend-2");
+  renderExample(); renderForms(); renderHeat(); renderTail(); renderAmb(); renderGroups(); renderPaws(); renderDiac(); renderLeak(); renderTable();
+}
+hmDs.onchange = renderHeat; dgDs.onchange = renderGroups;
+renderAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
