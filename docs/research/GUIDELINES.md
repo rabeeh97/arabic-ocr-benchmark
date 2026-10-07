@@ -86,6 +86,8 @@ From [`characteristics-framework.md`](characteristics-framework.md):
 | Backlog | `docs/research/NEXT_STEPS.md` |
 | Tracker shown on the Atlas | `docs/research/progress.json` (phases, tasks, `updates` feed, `catalogue`) |
 | Live page | Arabic Script Atlas, https://claude.ai/artifact/8Z6dsabo5FDFPW11XQn7yf (private) |
+| Supervisor tracker (papers / experiments / ideas) | Claude Doc "Arabic OCR research — plan and task tracker", https://claude.ai/code/artifact/6783c351-c3f3-4132-8591-8b1d7e0054a5 (update its status chips after each session) |
+| Teaching explainer of the characteristics | Claude Doc "Characterising Arabic script for OCR — what we measure and why", https://claude.ai/code/artifact/221d1c72-01c4-4799-90b2-522fcad49420 |
 | Literature | `script-characteristics.md`, `characteristics-framework.md`, future topic files; `references.bib` |
 | Characterisation plan | `characterization-plan.md` (layers L1–L7, revised phases P0–P11) |
 | Own-dataset spec | `dataset-design.md` |
@@ -150,6 +152,8 @@ After any research step:
    PYTHONPATH=src .venv/bin/python scripts/build_atlas.py
    ```
 4. Republish `docs/research/atlas/index.html` to the **same** Atlas URL.
+5. Update the supervisor tracker doc (status chips, "Next two weeks") and, when a
+   characteristic's result changes, its section in the explainer doc.
 
 ## 7. Standing working rules (from earlier sessions; still in force)
 

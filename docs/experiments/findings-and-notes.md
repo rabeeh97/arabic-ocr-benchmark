@@ -7,6 +7,66 @@ saw, what it means, what to do about it. Newest section first within each area.
 
 ## Benchmark validity
 
+### Line-end errors are a pipeline artefact; several models are scored on truncated output
+
+**Seen (2026-10-07, R2.8, `scripts/line_end_check.py`).** The last tenth of the
+line is the worst in 9 of 10 complete blocks. Split by edit type, the excess is
+deletions (+3 to +10 points) and insertions after the line's end (overrun, up to
++0.9 per character on `kitab_muharaf`). Substitutions rise by only 0.1–3.7 points.
+**No line is cut short by a majority of models** (0–1 lines per block), so the
+images do not crop line ends. Tail cuts (the last ≥ 10 % of a line deleted
+outright) are model-specific: `gemini-flash` 44–46 % of lines, PaddleOCR 31 %
+(plus 23 % head cuts, consistent with its text detector), Qari-0.2 11 %; most
+models 0.5–6 %.
+
+The `gemini-flash` cause: it has no `max_tokens` in `configs/models.yaml`, so the
+litellm client default of 256 applies. Gemini 3.6 Flash is a thinking model, so
+its reasoning tokens use up the budget: 74 % of its outputs stop at 252 tokens,
+and some contain reasoning text ("Wait, let's"). A scan of all models for
+outputs piling up at one token count also flags `openrouter-dots3-note-free`
+(100 % at 256), `glm-5.3-flash-paid` (39 % at its 4,000 cap),
+`nvidia-llama-3.2-11b-vl` (25 % at 256, mostly rambling) and
+`openrouter-qwen3-vl-235b` (12 % at 256).
+
+**Meaning.** The end-of-line effect is not a script property. Those models'
+leaderboard rows understate them; `gemini-flash` most of all.
+
+**To do.** X6: set `max_tokens` (and a minimal thinking budget) for the capped
+models, flag their current rows, and re-score within free quota.
+
+### The public Muharaf copy is stored at 60 px line height
+
+**Seen (2026-10-07, R6.0, `scripts/image_layer.py`).** Every image in
+`aamijar/muharaf-public`, train and test, is 60 px tall (widths vary): a
+letter core of about 12 px, strokes of about 2 px, about 11 px of ink per
+character. KHATT lines are about 146 px tall (38 px core, 33 px per character),
+HistoryAr about 230 px (57 px core). Muharaf is the hardest handwriting set for
+every model (best single model 34 % CER vs 5.5 % on KHATT). Every fine-tune so
+far learned from these 60 px lines.
+
+**Meaning.** Low resolution is a strong candidate explanation for Muharaf's
+difficulty, and a D1 question for our training data. It is a between-dataset
+comparison (resolution is constant within Muharaf), so it is a hypothesis, not
+a measured effect.
+
+**To do.** X7: find out whether full-resolution Muharaf scans (with line
+polygons) are available; if so, re-crop at native resolution and re-score a
+few models. R9 causal probe: downscale KHATT lines to 60 px and re-score.
+
+### Image features explain part of what text cannot
+
+**Seen (2026-10-07, R6.0, 7 of 10 blocks).** Adding 11 image features (size,
+aspect, ink density, core height, stroke width, ink per character, contrast,
+blur, skew, edge ink) to the nine text features raises the rank-regression R²
+from 0.06–0.32 (text) to **0.15–0.58** (text + image): `kitab_historyar`
+0.32 → 0.58, `kitab_onlinekhatt` 0.16 → 0.43, `kitab_khatt` 0.32 → 0.39,
+`rasam2` 0.10 → 0.25, `muharaf_lines` 0.06 → 0.15. Individual image coefficients
+are unstable (features are collinear), so no single image feature is claimed yet.
+
+**Meaning.** The image layer helps, but most of Muharaf's within-dataset
+difficulty is still unexplained, which points to handwriting style or writer.
+That needs writer IDs (R0.4).
+
 ### What makes a line hard: per-sample characteristics over complete model blocks
 
 **Seen (2026-10-07, `scripts/sample_characteristics.py`, Atlas §10).** Ten

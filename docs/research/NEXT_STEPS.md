@@ -19,14 +19,19 @@ is built on them. All block datasets are in the local HF cache, so everything
 below except E1 runs offline on CPU.
 
 **CPU track**
-1. [ ] **R2.8 End-of-line check (D3).** The last tenth of the line is the worst
+1. [x] (2026-10-07) **R2.8 End-of-line check (D3).** The last tenth of the line is the worst
    in 9 of 10 blocks. Split the end-of-line excess into deletions
    (truncation, early stop) and substitutions, and relate it to image aspect
    ratio and to downscaling (`max_pixels`, the 1024 px cap). Also check
    whether GT lines are cut at the image edge.
    *Done when:* the excess is attributed to a cause (or ruled an artefact), and
-   if it is the pipeline, a fix is proposed.
-2. [ ] **R6.0 Image layer, first pass (closes the R² gap).** Per line image in
+   if it is the pipeline, a fix is proposed. *Done:* pipeline artefact, namely
+   model-specific early stopping and output-token caps (gemini-flash truncated on
+   74 % of lines); no line ends are cropped. Fix → X6.
+2. [~] **R6.0 Image layer, first pass (closes the R² gap).** 7 of 10 blocks
+   done (R² 0.15–0.58 with image features; Muharaf stored at 60 px). Remaining:
+   `rasam1`, `nakba_lines`, `nakba_blind`, whose test parquets are downloading (NAKBA
+   is gated: HF_TOKEN from `experiment.env`). Per line image in
    the 10 complete blocks: height, width, aspect, ink density, stroke width,
    estimated x-height in px, contrast, blur (Laplacian variance), skew. Add them
    to the R3 regression next to the text features.
@@ -48,7 +53,17 @@ below except E1 runs offline on CPU.
 6. [ ] **R2.7 Diacritic-policy metric decision (D4)**, then **R2.6** (split
    "other").
 
-**GPU track (3090, in parallel; commands below)**
+**GPU track (Colab or 3090; checked 2026-10-07)**
+
+The 3090 is reachable over SSH and idle (187 GB free), but all merged models and
+cached base models were deleted in clean-up; `a-experiment` holds only the
+AIN-NAKBA LoRA checkpoints, char-CTC and Paddle (3.6 GB). E1 arm (c) needs only
+its **142 MB LoRA adapter** (`suite-v1-artifacts/qwen3vl4b_visft_difflr/runs/exp3090-qwen3vl4b/adapter_model.safetensors`)
+on the public Qwen3-VL-4B base, so either machine works. **Colab plan:** upload the
+adapter to a private Hub repo, then one crash-safe notebook (src-layout path setup,
+predictions checkpointed to Drive per batch) loads the base, applies the adapter, and
+scores `e1.bench.yaml` (4 sets × 200 lines; fits a T4). Arm (b) trains in the
+same notebook on an L4/A100 with step checkpoints mirrored to the Hub.
 7. [ ] **E1.1 (~1 h):** bench condition (c) on the E1 panel. Copy the merged
    weights from `suite-v1-artifacts/qwen3vl4b_visft_difflr/merged/exp3090-qwen3vl4b/`
    (8.3 GB) to `<dir>\merged\suite-v1-qwen3vl4b-visft-difflr\` on the box, then
@@ -218,6 +233,13 @@ Atlas §9. Findings in `../experiments/findings-and-notes.md`.
   in the mix, to avoid forgetting (findings-and-notes).
 
 ## X: fixes and follow-ups from findings
+- [ ] **X6** Output-token caps: add `max_tokens` (and a minimal thinking budget)
+  to `gemini-flash`, `openrouter-dots3-note-free`, `glm-5.3-flash-paid` and the
+  other models that pile up at their cap; flag their current leaderboard rows;
+  re-score within free quota. *Done when:* no model has > 5 % of lines at its cap.
+- [ ] **X7** Full-resolution Muharaf: are the original scans and line polygons
+  available above the public copy's 60 px line height? If so, re-crop and
+  re-score a few models; pair with an R9 probe (KHATT downscaled to 60 px).
 - [ ] **X3** Retrain without the 1,424 CER-HV-flagged Muharaf train lines
   (add an `exclude_ids` option to the training data spec, fed from
   `rescore_muharaf_clean.flagged("train")`). Low priority: the test-side effect
