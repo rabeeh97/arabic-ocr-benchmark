@@ -120,6 +120,10 @@
     {
      "t": "Fluency-hallucination rate (R2.5)",
      "s": "planned"
+    },
+    {
+     "t": "End-of-line error excess: truncation, downscaling or script? (R2.8)",
+     "s": "next"
     }
    ],
    "doc": "src/arabic_ocr_bench/characterize/errors.py"
@@ -127,8 +131,30 @@
   {
    "id": "P3",
    "title": "Consensus difficulty: quality groups, IRT, challenge subsets",
-   "status": "next",
-   "tasks": []
+   "status": "active",
+   "tasks": [
+    {
+     "t": "Consensus difficulty over complete blocks + split-half reliability (V1)",
+     "s": "done"
+    },
+    {
+     "t": "Rank regression of difficulty on text features",
+     "s": "done"
+    },
+    {
+     "t": "Letter error by positional form, dot ambiguity, line position",
+     "s": "done"
+    },
+    {
+     "t": "Challenge subsets (hard quintile, dot-dense, OOV-heavy, medial-dense, fragments)",
+     "s": "next"
+    },
+    {
+     "t": "IRT 2PL difficulty / discrimination",
+     "s": "planned"
+    }
+   ],
+   "doc": "src/arabic_ocr_bench/characterize/samples.py"
   },
   {
    "id": "P4",
@@ -140,8 +166,8 @@
      "s": "done"
     },
     {
-     "t": "Model-consensus label-noise flags + manual top-50",
-     "s": "planned"
+     "t": "Model-consensus label-noise ranking (AUC 0.94 on real CER-HV noise, n=7) + manual top-30 review",
+     "s": "next"
     },
     {
      "t": "MinHash / image-hash near-duplicates",
@@ -162,8 +188,13 @@
   {
    "id": "P6",
    "title": "Image layer: px per x-height, dot size, degradation, style",
-   "status": "planned",
-   "tasks": []
+   "status": "next",
+   "tasks": [
+    {
+     "t": "Image features per block line (size, ink, stroke, x-height, blur, skew) added to the difficulty regression",
+     "s": "next"
+    }
+   ]
   },
   {
    "id": "P7",
@@ -197,6 +228,26 @@
   }
  ],
  "updates": [
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Line difficulty is a property of the line: split-half reliability of consensus difficulty is 0.54–0.81 on handwriting line sets (0.23 on page-scale Hindawi). But nine text features together explain only 6–32 % of it, so most difficulty is visual. The image layer (R6) moves up."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Letter level, across 10 complete blocks: medial forms are hardest (9/10), isolated easiest (8/10). Dot-ambiguous letters fail 10–17 points more often at every position. Hardest shapes are medial dotted letters (ف ح ض ث خ ج ش) and small final non-joiners (ز ذ د); easiest are the tall strokes ا and ل. Errors rise in the last tenth of the line (9/10)."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Short lines (≤ 20 characters) carry the whole-line failures. Ensembling would gain only 0.8–3.6 CER points. Half of word substitutions are real words, which limits lexicon post-correction. CER-HV \"script mismatch\" flags are correct labels for VLMs; consensus difficulty finds the real noise (AUC 0.94, n = 7)."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Backlog re-ordered: end-of-line check (R2.8), image layer (R6.0), length-stratified reporting (X5), challenge subsets, label-noise review on CPU; E1 on GPU with letter error on medial and dot-ambiguous letters as its new primary outcome."
+  },
   {
    "date": "2026-10-07",
    "kind": "finding",

@@ -7,6 +7,76 @@ saw, what it means, what to do about it. Newest section first within each area.
 
 ## Benchmark validity
 
+### What makes a line hard: per-sample characteristics over complete model blocks
+
+**Seen (2026-10-07, `scripts/sample_characteristics.py`, Atlas §10).** Ten
+complete blocks, meaning sets of models that all read the same lines:
+`kitab_khatt` 18×180, `rasam1` 13×177, `rasam2` 13×174, `nakba_lines` 18×62,
+`muharaf_lines` 5×472, `nakba_blind` 6×2,669 (closely related models, so its
+reliability is optimistic), plus `kitab_historyar`, `kitab_hindawi`,
+`kitab_muharaf` and `kitab_onlinekhatt`. Line CER is diacritic-insensitive and
+capped at 1.
+
+1. **Difficulty belongs to the line.** Split-half reliability of consensus
+   difficulty is 0.80 (`kitab_khatt`), 0.81 (`nakba_blind`), 0.76 / 0.62
+   (RASAM-2 / 1), 0.65 (`nakba_lines`) and 0.54 (`muharaf_lines`). On
+   page-scale `kitab_hindawi` it is 0.23: there, model failures are
+   idiosyncratic (pairwise ρ 0.07).
+2. **Text explains little of it.** A rank regression on nine GT features
+   (length, word length, PAWs/word, dot-ambiguous share, OOV share,
+   non-Arabic share, diacritics, lam-alef, hamza) explains **6–32 %** of the
+   variance (51 % on the 62-line `nakba_lines`). Most line difficulty is
+   visual or writer-related.
+3. **The features that survive, all others held fixed:** OOV share +
+   (significant in 3 sets, positive in 7 of 10, never significantly negative);
+   dot-ambiguous share + (3 significant positive, 1 negative); non-Arabic
+   content + (2); short words − (2). **PAWs per word drops out** once word
+   length is controlled: the raw correlation was word length.
+4. **Letter forms.** Medial is the hardest positional form in 9 of 10 blocks.
+   Isolated is the easiest in 8 of 10. Dot-ambiguous letters fail 10–17 points
+   more often than other letters in every handwriting block, at every
+   position. The hardest shapes (error ÷ dataset mean, in ≥ 4 sets) are
+   medial ف ح ض ث خ ج ش (1.3–1.5×), isolated ء, final ى, and the small final
+   non-joiners ز ذ د. The easiest are the tall strokes ا and ل in every
+   position (0.6–0.8×) and و / م. That is the Arabic analogue of the Latin
+   result that ascenders are easy and minims hard.
+5. **Errors pile up at the end of the line.** The last tenth of the line is
+   the worst in 9 of 10 blocks (1.10–1.32× the line average); the first tenth
+   is usually the best.
+6. **Short lines are disproportionately hard.** The shortest length quintile
+   (≈1–20 characters: numbers, single words, marginalia) has the highest
+   consensus CER on the historical sets (`nakba_lines` 0.66 vs 0.18 mid-length;
+   `kitab_historyar` 0.70 vs 0.38). Whole-line failures concentrate on short
+   lines (ρ −0.54 / −0.40 / −0.26).
+7. **Ensembling will not help much.** Picking the best model per line beats
+   the best single model by only 0.8–3.6 CER points on line sets (7 on
+   Hindawi).
+8. **About half of word substitutions produce a real Arabic word** (43–63 %,
+   against the Muharaf-train vocabulary). When both words are in the
+   vocabulary, the model's word is only slightly more often the more frequent
+   one (46–55 %). A lexicon post-corrector can address at most half of the
+   word errors.
+9. **Label noise.** Against CER-HV's human-verified Muharaf flags, consensus
+   difficulty ranks all flags at chance (AUC 0.52). That is because their
+   largest category, "script mismatch (non-Arabic)", is read well by VLMs
+   (median consensus CER 0.43 vs 0.58 unflagged). Those labels are correct;
+   only the CRNN's Arabic charset failed on them. On the real-noise flags
+   (segmentation, non-text), AUC is **0.94**, but on only 7 lines.
+
+**Meaning.** The R3 difficulty measure passes V1 (reliable) on handwriting line
+sets. The text layer, our P1 profiler, cannot explain most difficulty, so the
+image layer (R6) is the main gap. The letter-level results point to *where*
+models fail (medial, dotted, small final strokes, line ends). The line-level
+ladder said dots are a small tax; both hold, because dotted letters fail mostly
+by losing their skeleton too, not by a clean dot swap. The end-of-line and
+short-line effects are D3/D4 issues (cropping, truncation, how CER is
+averaged), not script properties, and need a check before they are quoted as
+such.
+
+**To do.** See NEXT_STEPS "Now": the end-of-line check (R2.8), the image layer
+(R6.0), length-stratified reporting (X5), challenge subsets (R3.3) and
+consensus label-noise review (R4.1).
+
 ### Muharaf label noise does not move our test comparisons
 
 **Seen (2026-10-07, X2, `scripts/rescore_muharaf_clean.py`).** The CER-HV review
