@@ -187,7 +187,8 @@ table.ov td:first-child { font-family: var(--font-data); color: var(--ink); }
       <li><a href="#paws"><span class="n">6</span>Word pieces</a></li>
       <li><a href="#diac"><span class="n">7</span>Diacritics</a></li>
       <li><a href="#leak"><span class="n">8</span>Overlap with training</a></li>
-      <li><a href="#table"><span class="n">9</span>All numbers</a></li>
+      <li><a href="#errors"><span class="n">9</span>Where errors come from</a></li>
+      <li><a href="#table"><span class="n">10</span>All numbers</a></li>
     </ol>
   </nav>
 
@@ -337,9 +338,33 @@ table.ov td:first-child { font-family: var(--font-data); color: var(--ink); }
     <div class="panel"><div class="chart" id="ch-leak"></div></div>
   </section>
 
+  <section id="errors">
+    <div class="sec-head">
+      <span class="eyebrow">9 · Error decomposition (P2)</span>
+      <h2>Where the models' errors come from</h2>
+      <p class="lede">Every canonical prediction is re-scored on a <em>normalisation ladder</em>: each rung forgives one more kind of difference, from encoding through orthography, diacritics, dots (the rasm skeleton) and spaces. The edits that disappear at a rung are the share of error owed to it. What survives the last rung is wrong letter identity: wrong, missing or extra letters. Pooled over competent model × dataset pairs (diacritic-insensitive CER ≤ <span id="err-comp"></span>), excluding fine-tunes on in-train sets.</p>
+    </div>
+    <div class="facts" id="err-facts" style="margin-bottom:14px"></div>
+    <div class="panel"><div class="legend" id="lad-legend" style="margin-bottom:8px"></div><div class="chart" id="ch-ladder"></div>
+      <p class="note">Share of raw-rung edits removed at each rung. "Letters" is the residual. Hover a segment for the value.</p></div>
+    <div class="panel" style="margin-top:14px">
+      <div class="eyebrow" style="margin-bottom:6px">Aligned error taxonomy · share of edits per dataset</div>
+      <div class="tablewrap"><table class="ov" id="tax"></table></div>
+      <p class="note">Each edit from a Levenshtein alignment at the canonical rung, classified in this order: whole-line failure (line CER &gt; 80&nbsp;%), diacritic, lam-alef ligature, space, orthographic (alef/hamza/yaa/taa-marbuta/digit forms, tatweel), dot (same skeleton, different dots), shape-similar (heuristic look-alike groups such as د/ر, ح/ع), other.</p>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="controls" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <label>Dataset <select id="err-ds"></select></label>
+        <label><input type="checkbox" id="err-comp-only" checked> competent pairs only</label>
+      </div>
+      <div class="tablewrap"><table class="ov" id="err-pairs"></table></div>
+      <p class="note">CER columns are corpus (micro) CER at that rung. Dot tax = CER(−diacritics) − rasm-CER. Diacritic tax = CER(+orthographic) − CER(−diacritics). Marks+ = diacritics the model added per 100 aligned letters where the GT letter has none. PAW gap = share of spaces wrongly inserted inside a word that fall at a PAW boundary (chance level in brackets). <span id="err-src"></span></p>
+    </div>
+  </section>
+
   <section id="table">
     <div class="sec-head">
-      <span class="eyebrow">9 · All numbers</span>
+      <span class="eyebrow">10 · All numbers</span>
       <h2>Per-dataset profile</h2>
       <p class="note">Click a column to sort. Rates per 1,000 characters unless marked otherwise. OOV is the share of word tokens not seen in Muharaf train.</p>
     </div>
@@ -482,7 +507,7 @@ function renderExample() {
 exDs.onchange = () => { exIdx = 0; renderExample(); };
 
 // ---------- chart: 100% stacked horizontal bars
-function stackChart(target, rows, keys, colorOf, labelOf) {
+function stackChart(target, rows, keys, colorOf, labelOf, inkOf) {
   const box = document.getElementById(target); box.innerHTML = "";
   const W = 1000, L = 190, R = 16, rowH = 24, gap = 6, T = 20, H = T + rows.length * (rowH + gap) + 8;
   const s = svg(W, H); const plotW = W - L - R;
@@ -497,7 +522,8 @@ function stackChart(target, rows, keys, colorOf, labelOf) {
       const w = plotW * (r.v[key] || 0) / tot; if (w <= 0) return;
       const rect = el("rect", { x: x + (j ? 1 : 0), y, width: Math.max(0, w - (j ? 2 : 0) - (j === keys.length - 1 ? 0 : 0)), height: rowH, fill: colorOf(key), rx: 2 }, s);
       bindTip(rect, `<b>${esc(r.label)}</b><br>${esc(labelOf ? labelOf(key) : key)}: ${fmtPct((r.v[key] || 0) / tot, 1)}`);
-      if (w > 44) el("text", { x: x + w / 2, y: y + rowH / 2 + 4, "text-anchor": "middle", class: "lab-in", "pointer-events": "none" }, s, fmtPct((r.v[key] || 0) / tot));
+      if (w > 44) { const t = el("text", { x: x + w / 2, y: y + rowH / 2 + 4, "text-anchor": "middle", class: "lab-in", "pointer-events": "none" }, s, fmtPct((r.v[key] || 0) / tot));
+        if (inkOf) t.setAttribute("style", "fill:" + inkOf(key)); }
       x += w;
     });
   });
@@ -669,9 +695,60 @@ function renderTable() {
     th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }; });
 }
 
+// ---------- error decomposition
+const ERR = ATLAS.errors;
+const RUNG_LABEL = { canonical: "encoding", tatweel_digits: "tatweel & digits", orthographic: "orthography", no_diacritics: "diacritics", rasm: "dots", no_spaces: "spaces", residual: "letters" };
+const TAX_LABEL = { whole_line: "whole line", diacritic: "diacritic", ligature: "ligature", space: "space", orthographic: "orthogr.", dot: "dot", shape: "shape-sim.", other: "other" };
+const errDs = document.getElementById("err-ds");
+if (ERR) { errDs.add(new Option("all datasets", "")); [...new Set(ERR.pairs.map(p => p.dataset))].sort().forEach(d => errDs.add(new Option(d, d))); }
+let errSort = "di", errDir = 1;
+function renderErrors() {
+  const sec = document.getElementById("errors");
+  if (!ERR) { sec.hidden = true; return; }
+  const H = ERR.headline;
+  document.getElementById("err-comp").textContent = fmtPct(ERR.competent_cer);
+  document.getElementById("err-facts").innerHTML =
+    `<span><b>${fmtPct(H.paw_gap_share)}</b> of word-internal inserted spaces fall at a PAW gap (chance ≈ ${fmtPct(H.paw_gap_base_rate_median)})</span>` +
+    `<span><b>${fmtPct(H.dot_tax_share_median)}</b> median share of diacritic-insensitive error owed to dots alone</span>` +
+    `<span><b>${H.competent_pairs}</b> competent of ${H.usable_pairs} scored model × dataset pairs</span>`;
+  const keys = [...ERR.rungs.slice(1), "residual"];
+  const tOf = k => 0.2 + 0.8 * keys.indexOf(k) / (keys.length - 2);
+  const col = k => k === "residual" ? css("--rule-strong") : seq(tOf(k));
+  const ink = k => k === "residual" ? css("--ink") : textOn(tOf(k));
+  document.getElementById("lad-legend").innerHTML = keys.map(k => `<span><i style="background:${col(k)}"></i>${RUNG_LABEL[k]}</span>`).join("");
+  const dsn = Object.keys(ERR.by_dataset).sort();
+  const pairsOf = d => ERR.by_dataset[d].pairs;
+  stackChart("ch-ladder", dsn.map(d => ({ label: `${d} (${pairsOf(d)})`, v: Object.fromEntries(keys.map(k => [k, Math.max(0, ERR.by_dataset[d].share[k])])) })), keys, col, k => RUNG_LABEL[k], ink);
+  // taxonomy heat table
+  const C = ERR.categories;
+  const mx = Math.max(...dsn.flatMap(d => C.map(c => ERR.by_dataset[d].taxonomy_share[c])));
+  document.getElementById("tax").innerHTML = `<thead><tr><th>dataset</th><th>pairs</th>${C.map(c => `<th>${TAX_LABEL[c]}</th>`).join("")}</tr></thead><tbody>` +
+    [...dsn, "all"].map(d => { const t = d === "all" ? ERR.overall.taxonomy_share : ERR.by_dataset[d].taxonomy_share;
+      return `<tr><td>${d === "all" ? "<b>all competent</b>" : esc(d)}</td><td>${d === "all" ? ERR.overall.pairs : pairsOf(d)}</td>` + C.map(c => { const v = t[c], k = v / mx;
+        return `<td style="background:${seq(k)};color:${textOn(k)}">${fmtPct(v, 0)}</td>`; }).join("") + "</tr>"; }).join("") + "</tbody>";
+  // pair table
+  const only = document.getElementById("err-comp-only").checked, dsSel = errDs.value;
+  const COLSE = [["model", p => p.model], ["dataset", p => p.dataset], ["n", p => p.n_scored], ["raw", p => p.cer.raw], ["−diac", p => p.cer.no_diacritics], ["rasm", p => p.cer.rasm],
+    ["dot tax", p => p.cer.no_diacritics - p.cer.rasm], ["diac tax", p => p.cer.orthographic - p.cer.no_diacritics], ["marks+ /100", p => p.ins100], ["PAW gap", p => p.paw.paw_gap_share ?? -1]];
+  const key = { model: 0, dataset: 1, n: 2, raw: 3, di: 4, rasm: 5, dot: 6, diac: 7, ins: 8, paw: 9 };
+  const ci = typeof errSort === "number" ? errSort : key[errSort];
+  const rows = ERR.pairs.filter(p => !p.in_train && !p.small && (!dsSel || p.dataset === dsSel) && (!only || p.cer.no_diacritics <= ERR.competent_cer))
+    .sort((a, b) => { const x = COLSE[ci][1](a), y = COLSE[ci][1](b); return (typeof x === "string" ? x.localeCompare(y) : x - y) * errDir; });
+  const pc = v => fmtPct(v, 1);
+  const t = document.getElementById("err-pairs");
+  t.innerHTML = `<thead><tr>${COLSE.map((c, i) => `<th scope="col" tabindex="0" data-i="${i}">${c[0]}${i === ci ? (errDir > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>` +
+    rows.map(p => `<tr><td>${esc(p.model)}${p.fine_tuned ? '<span class="flag">ft</span>' : ""}</td><td>${esc(p.dataset)}</td><td>${p.n_scored}</td><td>${pc(p.cer.raw)}</td><td>${pc(p.cer.no_diacritics)}</td><td>${pc(p.cer.rasm)}</td>` +
+      `<td>${pc(p.cer.no_diacritics - p.cer.rasm)}</td><td>${pc(p.cer.orthographic - p.cer.no_diacritics)}</td><td>${p.ins100.toFixed(1)}</td>` +
+      `<td>${p.paw.paw_gap_share == null ? "—" : fmtPct(p.paw.paw_gap_share) + ` <span class="note">(${fmtPct(p.paw.paw_gap_base_rate)})</span>`}</td></tr>`).join("") + "</tbody>";
+  t.querySelectorAll("th").forEach(th => { const go = () => { const i = +th.dataset.i; if (i === ci) errDir *= -1; else { errSort = i; errDir = i < 2 ? 1 : (i === 2 ? -1 : 1); } renderErrors(); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } }; });
+  document.getElementById("err-src").textContent = `${rows.length} pairs shown. Source: ${ERR.path} (scripts/decompose_errors.py).`;
+}
+errDs.onchange = renderErrors; document.getElementById("err-comp-only").onchange = renderErrors;
+
 function renderAll() {
   posLegend("pos-legend"); posLegend("pos-legend-2");
-  renderExample(); renderForms(); renderHeat(); renderTail(); renderAmb(); renderGroups(); renderPaws(); renderDiac(); renderLeak(); renderTable();
+  renderExample(); renderForms(); renderHeat(); renderTail(); renderAmb(); renderGroups(); renderPaws(); renderDiac(); renderLeak(); renderErrors(); renderTable();
 }
 hmDs.onchange = renderHeat; dgDs.onchange = renderGroups;
 renderAll();
