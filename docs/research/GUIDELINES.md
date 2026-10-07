@@ -91,6 +91,7 @@ From [`characteristics-framework.md`](characteristics-framework.md):
 | Own-dataset spec | `dataset-design.md` |
 | Text analyzer | `src/arabic_ocr_bench/characterize/text.py` (positional forms, rasm, PAWs, diacritics, hygiene), tests in `tests/test_characterize_text.py` |
 | Canonical predictions + error decomposition | `characterize/runs.py`, `characterize/errors.py`, `scripts/decompose_errors.py` → `results/characterize/canonical_runs.json`, `results/characterize/<stamp>/errors.json` |
+| Per-sample characteristics | `characterize/samples.py`, `scripts/sample_characteristics.py` → `results/characterize/<stamp>/samples.json` |
 | Profiler | `scripts/profile_datasets.py` → `results/characterize/<stamp>/{summary.json,lines.jsonl}` |
 | Atlas builder | `scripts/build_atlas.py` + `docs/research/atlas/template.html` → `docs/research/atlas/index.html` |
 | Experiment findings | `docs/experiments/findings-and-notes.md` |
@@ -118,6 +119,11 @@ From [`characteristics-framework.md`](characteristics-framework.md):
   spaces fall at PAW gaps, against 35 % by chance. Base VLMs pay a large
   diacritic-policy tax on printed sets (up to 10 points of CER). Most error is
   plain wrong, missing or extra letters.
+- **What makes a line hard** (R3, complete blocks). Difficulty is reliable
+  across models (split-half up to 0.81), but text features explain only
+  6–32 % of it. The image layer is the gap. Medial forms and dot-ambiguous
+  letters fail most; tall strokes (ا ل) least. Errors rise at line ends.
+  Short lines carry the whole-line failures. Ensembles gain ≤ 3.6 points.
 - **Fine-tuning.** A Qwen3-VL-4B LoRA on 8k Muharaf lines transfers across
   handwriting (KHATT/NAKBA ~30 % CER). Maghrebi stays weak (~50 %).
   Baseer-Nakba gets worse on its home domain with the generic recipe. Unfreezing the
@@ -140,6 +146,7 @@ After any research step:
    ```bash
    PYTHONPATH=src .venv/bin/python scripts/profile_datasets.py --muharaf-train   # only if data or the analyzer changed (~4 min, CPU)
    PYTHONPATH=src .venv/bin/python scripts/decompose_errors.py                  # only if predictions or errors.py changed (~90 s)
+   PYTHONPATH=src HF_HUB_OFFLINE=1 .venv/bin/python scripts/sample_characteristics.py  # if predictions changed (~80 s)
    PYTHONPATH=src .venv/bin/python scripts/build_atlas.py
    ```
 4. Republish `docs/research/atlas/index.html` to the **same** Atlas URL.

@@ -188,7 +188,8 @@ table.ov td:first-child { font-family: var(--font-data); color: var(--ink); }
       <li><a href="#diac"><span class="n">7</span>Diacritics</a></li>
       <li><a href="#leak"><span class="n">8</span>Overlap with training</a></li>
       <li><a href="#errors"><span class="n">9</span>Where errors come from</a></li>
-      <li><a href="#table"><span class="n">10</span>All numbers</a></li>
+      <li><a href="#hard"><span class="n">10</span>What makes a line hard</a></li>
+      <li><a href="#table"><span class="n">11</span>All numbers</a></li>
     </ol>
   </nav>
 
@@ -362,9 +363,26 @@ table.ov td:first-child { font-family: var(--font-data); color: var(--ink); }
     </div>
   </section>
 
+  <section id="hard">
+    <div class="sec-head">
+      <span class="eyebrow">10 · Per-sample characteristics (R3)</span>
+      <h2>What makes a line hard</h2>
+      <p class="lede">Complete blocks only: every model in a block read every line in it, so all comparisons are over identical lines. Line CER is diacritic-insensitive and capped at 100&nbsp;%; a line's difficulty is the median across models.</p>
+    </div>
+    <div class="facts" id="hard-facts" style="margin-bottom:14px"></div>
+    <div class="panel tablewrap"><table class="ov" id="hard-rel"></table>
+      <p class="note">Split-half: random halves of the models, consensus difficulty in each half, rank correlation between halves (mean of 200 splits). High means difficulty belongs to the line, not to the model. Oracle gap: best single model minus picking the best model per line. R²: share of the rank variance in difficulty explained by the text features below.</p></div>
+    <div class="panel tablewrap" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:6px">Letter error rate by positional form and dot ambiguity</div><table class="ov" id="hard-pos"></table>
+      <p class="note">Share of GT letters not reproduced exactly (outside an aligned match), pooled over the block's models. Shading is relative within each row.</p></div>
+    <div class="panel tablewrap" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:6px">Where in the line errors happen · letter error by tenth of the line, relative to the line average</div><table class="ov" id="hard-dec"></table>
+      <p class="note">Tenth 1 is the start of the line (the right edge of the image), tenth 10 the end. Values above 1.00 mean more errors than the line average.</p></div>
+    <div class="panel tablewrap" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:6px">What predicts a hard line · rank-regression coefficients</div><table class="ov" id="hard-reg"></table>
+      <p class="note">All features entered together, as standardised ranks. Bold = |t| &gt; 2. Positive = lines with more of this are harder. OOV = share of words not seen in Muharaf train. <span id="hard-src"></span></p></div>
+  </section>
+
   <section id="table">
     <div class="sec-head">
-      <span class="eyebrow">10 · All numbers</span>
+      <span class="eyebrow">11 · All numbers</span>
       <h2>Per-dataset profile</h2>
       <p class="note">Click a column to sort. Rates per 1,000 characters unless marked otherwise. OOV is the share of word tokens not seen in Muharaf train.</p>
     </div>
@@ -746,9 +764,40 @@ function renderErrors() {
 }
 errDs.onchange = renderErrors; document.getElementById("err-comp-only").onchange = renderErrors;
 
+// ---------- per-sample characteristics
+const SMP = ATLAS.samples;
+const REG_LABEL = { log_chars: "length", word_len: "word length", paws_per_word: "PAWs/word", ambiguous_share: "dot-ambiguous", oov_share: "OOV words", non_arabic_share: "non-Arabic", diac_coverage: "diacritics", lam_alef_per_word: "lam-alef", hamza_share: "hamza" };
+function heatRow(vals, fmt) { const fin = vals.filter(v => v != null); const lo = Math.min(...fin), hi = Math.max(...fin);
+  return vals.map(v => { if (v == null) return "<td>—</td>"; const k = hi > lo ? (v - lo) / (hi - lo) : 0; return `<td style="background:${seq(k * 0.85)};color:${textOn(k * 0.85)}">${fmt(v)}</td>`; }).join(""); }
+function renderHard() {
+  const sec = document.getElementById("hard");
+  if (!SMP) { sec.hidden = true; return; }
+  const B = SMP.blocks, lines = B.filter(b => b.dataset !== "kitab_hindawi");
+  const sh = lines.map(b => b.reliability.split_half_rho), r2 = B.map(b => b.regression.r2), gap = lines.map(b => b.oracle.best_single_model_cer - b.oracle.per_line_oracle_cer);
+  const medFinal = B.filter(b => b.position_err.medial === Math.max(...Object.values(b.position_err))).length;
+  const endWorst = B.filter(b => b.decile_err[9] === Math.max(...b.decile_err)).length;
+  document.getElementById("hard-facts").innerHTML =
+    `<span>split-half reliability <b>${Math.min(...sh).toFixed(2)}–${Math.max(...sh).toFixed(2)}</b> on line sets</span>` +
+    `<span>text features explain <b>${fmtPct(Math.min(...r2))}–${fmtPct(Math.max(...r2))}</b> of difficulty</span>` +
+    `<span>medial forms hardest in <b>${medFinal}/${B.length}</b> blocks</span><span>last tenth of the line worst in <b>${endWorst}/${B.length}</b></span>` +
+    `<span>oracle gap <b>${(100 * Math.min(...gap)).toFixed(1)}–${(100 * Math.max(...gap)).toFixed(1)}</b> CER points</span>`;
+  document.getElementById("hard-rel").innerHTML = `<thead><tr><th>dataset</th><th>models × lines</th><th>consensus CER</th><th>pairwise rho</th><th>split-half rho</th><th>best model</th><th>oracle</th><th>R²</th><th>real-word subs</th></tr></thead><tbody>` +
+    B.map(b => `<tr><td>${esc(b.dataset)}</td><td>${b.models} × ${b.n}</td><td>${fmtPct(b.consensus, 1)}</td><td>${b.reliability.pairwise_rho_median.toFixed(2)}</td><td>${b.reliability.split_half_rho.toFixed(2)}</td><td>${fmtPct(b.oracle.best_single_model_cer, 1)}</td><td>${fmtPct(b.oracle.per_line_oracle_cer, 1)}</td><td>${b.regression.r2.toFixed(2)}</td><td>${fmtPct(b.word_subs.real_word_share)}</td></tr>`).join("") + "</tbody>";
+  const PC = ["isolated", "initial", "medial", "final"];
+  document.getElementById("hard-pos").innerHTML = `<thead><tr><th>dataset</th>${PC.map(p => `<th>${p}</th>`).join("")}<th>dot-ambiguous</th><th>not ambiguous</th></tr></thead><tbody>` +
+    B.map(b => `<tr><td>${esc(b.dataset)}</td>${heatRow([...PC.map(p => b.position_err[p]), b.ambiguous_err["True"], b.ambiguous_err["False"]], v => fmtPct(v, 1))}</tr>`).join("") + "</tbody>";
+  document.getElementById("hard-dec").innerHTML = `<thead><tr><th>dataset</th>${[...Array(10)].map((_, i) => `<th>${i + 1}</th>`).join("")}</tr></thead><tbody>` +
+    B.map(b => { const m = b.decile_err.reduce((a, x) => a + x, 0) / 10; return `<tr><td>${esc(b.dataset)}</td>${heatRow(b.decile_err.map(x => x / m), v => v.toFixed(2))}</tr>`; }).join("") + "</tbody>";
+  const K = Object.keys(REG_LABEL);
+  document.getElementById("hard-reg").innerHTML = `<thead><tr><th>dataset</th>${K.map(k => `<th>${REG_LABEL[k]}</th>`).join("")}<th>R²</th></tr></thead><tbody>` +
+    B.map(b => `<tr><td>${esc(b.dataset)}</td>${K.map(k => { const c = b.regression.coef[k]; if (!c) return "<td>—</td>"; const s = (c.beta >= 0 ? "+" : "") + c.beta.toFixed(2);
+      return `<td>${Math.abs(c.t) > 2 ? `<b>${s}</b>` : `<span style="color:var(--ink-3)">${s}</span>`}</td>`; }).join("")}<td>${b.regression.r2.toFixed(2)}</td></tr>`).join("") + "</tbody>";
+  document.getElementById("hard-src").textContent = `Source: ${SMP.path} (scripts/sample_characteristics.py).`;
+}
+
 function renderAll() {
   posLegend("pos-legend"); posLegend("pos-legend-2");
-  renderExample(); renderForms(); renderHeat(); renderTail(); renderAmb(); renderGroups(); renderPaws(); renderDiac(); renderLeak(); renderErrors(); renderTable();
+  renderExample(); renderForms(); renderHeat(); renderTail(); renderAmb(); renderGroups(); renderPaws(); renderDiac(); renderLeak(); renderErrors(); renderHard(); renderTable();
 }
 hmDs.onchange = renderHeat; dgDs.onchange = renderGroups;
 renderAll();

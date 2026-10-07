@@ -8,50 +8,76 @@
 > - Each task has an ID, the gate or decision it serves, its inputs and outputs,
 >   and a **done when** line. Tick tasks off in place: `[x]` plus the date.
 
-## Now (in this order)
+## Now (re-ordered 2026-10-07 after the per-sample findings)
 
-1. [x] (2026-10-07, branch `research-characterization`) **H1:** commit the research layer (docs/research/*, characterize/, the
-   profiler, the Atlas builder, the tests, the findings entry) on a branch, so
-   nothing lives only in the working tree.
-2. [x] (2026-10-07) **X1:** stop quoting fine-tuned `kitab_muharaf` scores. Mark the set
-   "in-train" in the leaderboard and fine-tune panel. *Done:* `make_leaderboard.py`
-   reads `overlaps_source`, masks fine-tune cells on in-train sets and never counts
-   them as held-out (`tests/test_leaderboard_in_train.py`). No such score had been
-   published: the 3090 runners already ban the set.
-3. [x] (2026-10-07) **R2.1–R2.4:** error decomposition: the normalisation ladder, rasm-CER,
-   the diacritic-mismatch tax and the taxonomy. This is the next research
-   deliverable.
-4. [x] (2026-10-07) **X2:** find out whether the cleaned Muharaf release
-   (`alazzawi2026labelerr`) is public. If it is, plan a re-score and a
-   retraining. *Done:* public as human-verified flag logs (no corrected text;
-   the paper removes flagged lines) at github.com/SanaNGU/CER-HV, **no licence
-   file**, so nothing is vendored. IDs map 1:1 onto `muharaf_lines/test/*`.
-   Re-score (`scripts/rescore_muharaf_clean.py`): dropping the 126 flagged test
-   lines moves CER·light by < 1 point and changes no rank. Retraining → X3.
-5. [x] (2026-10-07) **E1.0:** prepare the controlled ViT-unfreeze runs so the GPU works
-   while P2–P4 run on CPU. *Done:* condition (c) had already trained on the box
-   (2026-09-24) under the wrong BASES entry; its config is recovered as
-   `configs/training/suite_v1/qwen3vl4b_visft_difflr.yaml`, condition (b) is
-   `qwen3vl4b_visft.yaml`, both identical to the frozen suite recipe except the
-   vision settings, with BASES entries and the shared panel `e1.bench.yaml`.
-   Preliminary in-domain result in findings. GPU steps → E1.1–E1.3.
+Why this order: per-sample analysis (findings: "What makes a line hard") showed
+that line difficulty is reliable (split-half up to 0.81), but text features
+explain only 6–32 % of it. So the **image layer** is the biggest gap. Two
+effects, end-of-line errors and short-line failures, may be pipeline
+artefacts rather than script properties, and must be checked before anything
+is built on them. All block datasets are in the local HF cache, so everything
+below except E1 runs offline on CPU.
 
-## Next (in this order)
+**CPU track**
+1. [ ] **R2.8 End-of-line check (D3).** The last tenth of the line is the worst
+   in 9 of 10 blocks. Split the end-of-line excess into deletions
+   (truncation, early stop) and substitutions, and relate it to image aspect
+   ratio and to downscaling (`max_pixels`, the 1024 px cap). Also check
+   whether GT lines are cut at the image edge.
+   *Done when:* the excess is attributed to a cause (or ruled an artefact), and
+   if it is the pipeline, a fix is proposed.
+2. [ ] **R6.0 Image layer, first pass (closes the R² gap).** Per line image in
+   the 10 complete blocks: height, width, aspect, ink density, stroke width,
+   estimated x-height in px, contrast, blur (Laplacian variance), skew. Add them
+   to the R3 regression next to the text features.
+   *Done when:* there is an R² with and without image features per block, and
+   the features that survive.
+3. [ ] **X5 Length-stratified reporting (D4).** Short lines (≤ 20 characters)
+   fail disproportionately and drive whole-line failures. Report CER per length
+   band on the leaderboard and Atlas, and flag fragment lines (digits, single
+   words, marginalia) as their own subset.
+   *Done when:* the leaderboard shows CER for fragments vs full lines.
+4. [ ] **R3.3 Challenge subsets.** Using the now-reliable consensus difficulty:
+   top-quintile-hard, dot-dense, OOV-heavy, medial-dense and fragment subsets,
+   registered as dataset filters.
+5. [ ] **R4.1 Label-noise review.** Rank lines by consensus difficulty and
+   model agreement in every block; hand-review the top 30 per dataset. CER-HV's
+   "script mismatch" flags are *not* label noise for VLMs (correct labels the
+   CRNN charset could not read); segmentation and non-text flags are (AUC 0.94,
+   n = 7). *Done when:* an estimated label-error rate per dataset.
+6. [ ] **R2.7 Diacritic-policy metric decision (D4)**, then **R2.6** (split
+   "other").
 
-1. [ ] **E1.1 (GPU, ~1 h):** bench condition (c) on the E1 panel. Copy the merged
+**GPU track (3090, in parallel; commands below)**
+7. [ ] **E1.1 (~1 h):** bench condition (c) on the E1 panel. Copy the merged
    weights from `suite-v1-artifacts/qwen3vl4b_visft_difflr/merged/exp3090-qwen3vl4b/`
    (8.3 GB) to `<dir>\merged\suite-v1-qwen3vl4b-visft-difflr\` on the box, then
    `python scripts/run_3090_benchmark.py --dir <dir> --experiment suite-v1-qwen3vl4b-visft-difflr --datasets-file configs/training/suite_v1/e1.bench.yaml --no-full-accumulate --detach`.
-   The new name keeps its rows apart from the old frozen `exp3090-qwen3vl4b-ft-bf16`.
-2. [ ] **E1.2 (GPU, ~10 h):** train + bench condition (b):
+8. [ ] **E1.2 (~10 h):** train + bench condition (b):
    `python scripts/run_3090_pipeline.py --dir <dir> --base qwen3vl4b_suite_visft --detach`.
-3. [ ] **E1.3:** re-run `scripts/decompose_errors.py` and compare the three arms
-   on the panel: CER, rasm-CER, dot share (primary), RASAM CER. Paired bootstrap
-   on shared lines. A second seed for the winner if the gap is under 3 points.
-4. [ ] **R2.6 / R2.7** (CPU): split the "other" error bucket; decide the
-   diacritic-policy metric question.
-5. [ ] **R3.1–R3.3** consensus difficulty, then **R4.1** label-noise flags, which
-   can now be validated against the CER-HV Muharaf flags as ground truth.
+9. [ ] **E1.3:** compare the three arms. **Primary outcome changed:** letter error
+   on medial and dot-ambiguous letters (where the per-sample analysis puts the
+   failures), not the dot share of CER, which the in-domain result showed does
+   not move. Secondary: RASAM CER and the end-of-line excess. Paired bootstrap;
+   a second seed if the gap is under 3 points.
+
+**Dropped or demoted by the findings**
+- Ensembles / ROVER: the per-line oracle beats the best single model by only
+  0.8–3.6 CER points.
+- PAWs per word as a difficulty predictor: it was word length. (PAW-gap
+  *space* errors, R2.4, still stand.)
+- R5 language layer: OOV share is already measured and is the strongest text
+  predictor. The rest of R5 waits until R6 says how much is left to explain.
+
+### Done 2026-10-07
+- **H1** research layer committed on `research-characterization`.
+- **X1** `kitab_muharaf` tagged in-train; fine-tune scores on it are never quoted.
+- **R0.3 + R2.1–R2.4** canonical predictions and the error decomposition.
+- **X2** cleaned Muharaf: public flag logs (CER-HV, no licence). Removing the
+  flagged test lines moves CER < 1 point and changes no rank.
+- **E1.0** E1 configs; preliminary in-domain result −7.6 CER points.
+- **R3.1 / R3.2-lite** per-sample characteristics over complete blocks
+  (`characterize/samples.py`, `scripts/sample_characteristics.py`, Atlas §10).
 
 ---
 
@@ -114,12 +140,14 @@ Atlas §9. Findings in `../experiments/findings-and-notes.md`.
   *Done when:* there is a rank-correlation table and a recommendation.
 
 ### R3 Consensus difficulty (P3)
-- [ ] **R3.1** ISRI-style quality groups: per sample, the median CER across
-  models, split into quintiles per dataset.
+- [x] **R3.1** (2026-10-07) ISRI-style quality groups: per sample, the median CER across
+  models, split into quintiles per dataset. *Done* over complete blocks, with
+  split-half reliability (0.54–0.81 on line sets) and a rank regression on text
+  features (R² 0.06–0.32).
 - [ ] **R3.2** IRT (2PL) difficulty and discrimination per sample, with models
   as respondents.
-- [ ] **R3.3** Challenge subsets (dot-dense, diacritised, long, high-PAW, top
-  difficulty quintile) registered as dataset filters.
+- [ ] **R3.3** Challenge subsets: see "Now" #4 (high-PAW replaced by
+  medial-dense and OOV-heavy, per the findings).
 
 ### R4 Annotation audit (P4)
 - [x] R4.0 Exact-line leakage vs Muharaf train (2026-10-07)
@@ -138,7 +166,7 @@ Atlas §9. Findings in `../experiments/findings-and-notes.md`.
   density. Reference corpora (Arabic Wikipedia, Tashkeela, IAM, English
   Wikipedia). Tokenizer view: fertility, whether dot-pairs share tokens.
   CAMeL Tools as an optional extra.
-- [ ] **R6** Image layer: px per x-height, dot size in px, blur, noise,
+- [ ] **R6** Image layer (first pass is "Now" #2, R6.0): px per x-height, dot size in px, blur, noise,
   contrast, skew/slant, overlap. Script-style labels on 50 lines per dataset.
 - [ ] **R7** Validity analysis (gate V2): mixed-effects model of per-sample
   CER plus leave-one-dataset-out and leave-one-model-family-out. Output: a

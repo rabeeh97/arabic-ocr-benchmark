@@ -2,7 +2,8 @@
 
 Reads the newest results/characterize/<stamp>/summary.json, the newest
 error decomposition (results/characterize/<stamp>/errors.json, from
-scripts/decompose_errors.py) and the research tracker docs/research/progress.json, and inlines both into
+scripts/decompose_errors.py), the newest per-sample analysis
+(results/characterize/<stamp>/samples.json, from scripts/sample_characteristics.py) and the research tracker docs/research/progress.json, and inlines both into
 docs/research/atlas/template.html. Re-run after every profiler run or tracker
 edit; the page is then republished to the same artifact URL.
 
@@ -53,6 +54,25 @@ def latest_errors() -> dict | None:
     return doc
 
 
+def latest_samples() -> dict | None:
+    runs = sorted((ROOT / "results/characterize").glob("*/samples.json"))
+    if not runs:
+        return None
+    doc = json.loads(runs[-1].read_text(encoding="utf-8"))
+    blocks = []
+    for b in doc["blocks"]:
+        L = b["letters"]
+        blocks.append({
+            "dataset": b["dataset"], "models": len(b["models"]), "n": b["n_samples"],
+            "consensus": b["consensus_cer_mean"], "reliability": b["reliability"],
+            "regression": b["regression"], "oracle": b["oracle"],
+            "position_err": L["position_err"], "ambiguous_err": L["ambiguous_err"],
+            "decile_err": L["decile_err"], "length_quintiles": b["length_quintiles"],
+            "word_subs": b["word_subs"], "cerhv": b["label_noise"].get("cerhv"),
+        })
+    return {"path": str(runs[-1].relative_to(ROOT)), "blocks": blocks}
+
+
 def enrich(summary: dict) -> dict:
     for ds in summary["datasets"].values():
         for ex in ds["examples"]:
@@ -70,7 +90,8 @@ def main() -> None:
     summary = enrich(json.loads(path.read_text(encoding="utf-8")))
     summary["summary_path"] = str(path.relative_to(ROOT))
     progress = json.loads(PROGRESS.read_text(encoding="utf-8"))
-    payload = json.dumps({"summary": summary, "progress": progress, "errors": latest_errors()},
+    payload = json.dumps({"summary": summary, "progress": progress, "errors": latest_errors(),
+                          "samples": latest_samples()},
                          ensure_ascii=False)
     payload = payload.replace("</", "<\\/")  # keep the inline <script> intact
     html = TEMPLATE.read_text(encoding="utf-8").replace("/*__ATLAS_DATA__*/null", payload)
