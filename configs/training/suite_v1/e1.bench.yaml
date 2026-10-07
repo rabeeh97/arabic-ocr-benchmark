@@ -1,0 +1,8 @@
+# E1 held-out panel: the suite_v1 panel (bench.run.yaml), so all three arms are
+# scored on the same 200 lines per set. kitab_muharaf is excluded (in-train).
+# The primary outcome (dot-error share) comes from scripts/decompose_errors.py.
+datasets:
+  - kitab_khatt
+  - nakba_lines
+  - rasam1
+  - rasam2

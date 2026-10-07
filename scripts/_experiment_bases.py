@@ -114,6 +114,39 @@ BASES: dict[str, dict] = {
         "license_check": None,
         "base_model_row": "qwen3-vl-4b-bf16",
     },
+    # --- E1: frozen vs unfrozen ViT, controlled (docs/research/NEXT_STEPS.md) ---
+    # Same data/seed/recipe as qwen3vl4b_suite (the frozen arm, already run);
+    # only train_vision / vision_lr differ. Launch only via run_3090_pipeline.py
+    # --base <name> when asked. The difflr arm already trained (2026-09-24,
+    # under the qwen3vl4b entry); it only needs the bench, see NEXT_STEPS E1.0.
+    "qwen3vl4b_suite_visft": {
+        "experiment": "suite-v1-qwen3vl4b-visft",
+        "config": "configs/training/suite_v1/qwen3vl4b_visft.yaml",
+        "run_config": "configs/training/suite_v1/qwen3vl4b_visft.run.yaml",
+        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
+        "arch": "qwen3_vl",
+        "needs_transformers": "4.57",
+        "gated": False,
+        "enabled": False,
+        "license_check": None,
+        "base_model_row": "qwen3-vl-4b-bf16",
+        "bench_datasets_file": "configs/training/suite_v1/e1.bench.yaml",
+        "no_full_accumulate": True,
+    },
+    "qwen3vl4b_suite_visft_difflr": {
+        "experiment": "suite-v1-qwen3vl4b-visft-difflr",
+        "config": "configs/training/suite_v1/qwen3vl4b_visft_difflr.yaml",
+        "run_config": "configs/training/suite_v1/qwen3vl4b_visft_difflr.run.yaml",
+        "hf_id": "Qwen/Qwen3-VL-4B-Instruct",
+        "arch": "qwen3_vl",
+        "needs_transformers": "4.57",
+        "gated": False,
+        "enabled": False,
+        "license_check": None,
+        "base_model_row": "qwen3-vl-4b-bf16",
+        "bench_datasets_file": "configs/training/suite_v1/e1.bench.yaml",
+        "no_full_accumulate": True,
+    },
     "qwen3vl8b": {
         "experiment": "suite-v1-qwen3vl8b",
         "config": "configs/training/suite_v1/qwen3vl8b.yaml",
