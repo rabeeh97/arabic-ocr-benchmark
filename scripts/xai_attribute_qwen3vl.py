@@ -315,6 +315,7 @@ def main() -> None:
         gen_ids = ids[0, n_prompt:].tolist()
         pieces = token_pieces(tok, gen_ids)
         hyp = "".join(pieces)
+        starts = np.cumsum([0] + [len(p) for p in pieces])  # character offset of each token inside hyp (for the pointing game)
         ctx = Ctx(model, proc, inputs, ids, n_prompt)
         # choose tokens: target-letter ones first
         cand = [(i, pieces[i]) for i in range(len(gen_ids)) if pieces[i].strip()]
@@ -339,6 +340,9 @@ def main() -> None:
         d.mkdir(exist_ok=True)
         rimg = img.resize((ctx.gw * P, ctx.gh * P), Image.BICUBIC)
         rimg.save(d / "orig.png")
+        # raw maps for the pointing game (X-B2): patch grids per method, plus the gradient map's pixel-level column profile
+        np.savez_compressed(d / "maps.npz", **{f"{m}_{i}": grids[m][p].astype(np.float32) for m in METHODS for i, p in zip(chosen, positions)},
+                            **{f"gxicol_{i}": maps["gxi"][p].sum(0).astype(np.float32) for i, p in zip(chosen, positions)})
         toks = []
         ink = ink_mask(rimg)
         with torch.no_grad():
@@ -346,7 +350,7 @@ def main() -> None:
             lps = {p: ctx.logprob(full, p).item() for p in positions}
             del full
         for i, p in zip(chosen, positions):
-            row = {"t": i, "id": gen_ids[i], "text": pieces[i], "targets": sorted(k for k, s in TARGETS.items() if s & set(pieces[i])),
+            row = {"t": i, "id": gen_ids[i], "text": pieces[i], "start": int(starts[i]), "end": int(starts[i + 1]), "targets": sorted(k for k, s in TARGETS.items() if s & set(pieces[i])),
                    "err": flags[i][0], "gt_span": flags[i][1], "lp": lps[p], "conc": {}, "ink": {}}
             row["deletion"] = {}
             n = ctx.gh * ctx.gw
