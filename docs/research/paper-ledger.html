@@ -437,7 +437,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
   <!-- 6b. attribution spike -->
   <article class="dpart" id="d-xai">
     <h3>Attribution and localization spike (2026-10-10)</h3>
-    <div class="verdict"><p><b>Where a vision-language model looks can be measured, and three maps pass the checks.</b> On Qwen3-VL-4B with our fine-tuned LoRA adapter (43 lines, 482 generated tokens), hiding the patches a map points to removes 4.3 to 5.1 nats of the token’s log-probability, against 0.8 for random patches. One of the three maps works at pixel level and puts 9× more attribution on ink than chance. Wrong tokens differ from correct ones in the model’s confidence (log-prob −0.99 against −0.53) and not in how sharp their maps are. Tokens containing <bdi class="ar">خ</bdi> were wrong 7 times out of 10 in the letter panel, a lead that needs a larger sample.</p></div>
+    <div class="verdict"><p><b>Where a vision-language model looks can be measured, and three maps pass the checks.</b> On Qwen3-VL-4B with our fine-tuned LoRA adapter (43 lines, 482 generated tokens), hiding the patches a map points to removes 4.3 to 5.1 nats of the token’s log-probability, against 0.8 for random patches. One of the three maps works at pixel level and puts 9× more attribution on ink than chance. Wrong tokens differ from correct ones in the model’s confidence (log-prob −0.99 against −0.53) and not in how sharp their maps are. Tokens containing <bdi class="ar">خ</bdi> were wrong 7 times out of 10 in the letter panel, a lead that needs a larger sample. A zero-shot probe of NVIDIA’s LocateAnything-3B for finding words and letters failed (see the probe below).</p></div>
     <p>The question came from the freeze-and-protect idea in the experiments below: before guessing which weights matter for a letter, check where the model looks for it. Explorer page with every line, token and map: <a href="https://claude.ai/artifact/DFauaBS38qdXFXdJaB7io5" style="color:var(--accent)">Arabic Attribution Explorer</a>. Setup: Qwen3-VL-4B with the E1 LoRA adapter merged, run on the 3090, greedy decoding, lines capped at 1024 px wide. The letter panel is 20 lines from RASAM-1 and Muharaf chosen for ا ل and ج ح خ; the error panel is the 15 worst Muharaf lines of this model (outputs 0.5 to 1.5 times the reference length, so misreadings and not runaway generations) plus 8 easy controls.</p>
     <figure class="fig">
       <span class="ft">One token, three maps: the word <bdi class="ar">بخلافات</bdi></span>
@@ -479,6 +479,29 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
       </tbody>
     </table></div>
     <p>A token can contain more than one of these letters, and the jim, ha and kha counts are small. Read the خ row as a lead. If it holds on a larger sample it is the first letter-specific weakness we have, and a natural target for the freezing idea.</p>
+    <h4>LocateAnything-3B zero-shot probe</h4>
+    <div class="verdict"><p><b>No-go for zero-shot.</b> NVIDIA’s grounding model cannot find an Arabic word, PAW, letter or dot on a handwritten line from a text query. At full size it returns the whole image for the first-word query on 42 of 42 lines. Padding the line to a square gives specific boxes, but they are still line-wide (median 89 % of the line, against 18 % expected for a word). The plain text-detection query on a padded line does draw word-sized boxes on 14 of 42 lines, but it fragments words, and the box count is within one of the true word count on only 4 of those 14.</p></div>
+    <p>Setup: 42 lines from RASAM-1 and Muharaf (the letter panel and the error panel together, skipping lines with fewer than three words), greedy decoding, the model’s own documented prompt for text grounding (“Please locate the text referred as …”) and for detection, on the 3090 in its own environment, model pinned to revision c32291ca. Per line: the first, a middle and the last word of the ground truth, one PAW, one letter (ل or خ) and “the dots of the letter” (ب ت ث ن), plus plain text detection.</p>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Input to the model</th><th>Whole-image box: first / middle / last word (of 42)</th><th>First-word box width (expected about 18 % of the line)</th><th>Word boxes in right-to-left order</th><th>Letter query: whole-image box</th><th>Dots query: whole-image box</th></tr></thead>
+      <tbody>
+        <tr><td>Full size, about 2040 × 312</td><td class="n">42 / 39 / 40</td><td class="n">at least 95 %</td><td class="n">1 of 42</td><td class="n">34 of 40</td><td class="n">10 of 40</td></tr>
+        <tr><td>Downscaled to 1024 px wide</td><td class="n">42 / 39 / 40</td><td class="n">at least 95 %</td><td class="n">1 of 42</td><td class="n">34 of 40</td><td class="n">13 of 40</td></tr>
+        <tr><td>Downscaled, padded to a square</td><td class="n">11 / 8 / 10</td><td class="n">89 % (median)</td><td class="n">3 of 42</td><td class="n">8 of 40</td><td class="n">4 of 40</td></tr>
+      </tbody>
+    </table></div>
+    <p>A full-size padded square ran out of GPU memory on 40 of 42 lines; that run is excluded. With padding, the letter and dot boxes have a median width of 12 % and 17 % of the line, where a single letter is about 3 %, so they are word-sized or larger.</p>
+    <figure class="fig">
+      <span class="ft">Downscaled, not padded: the model answers with the whole line</span>
+      <img src="xai-locany-raw.jpg" alt="Three handwritten lines, each framed by coloured boxes covering the whole image" style="width:100%;max-width:1000px;height:auto;border:1px solid var(--line);border-radius:4px" loading="lazy">
+      <figcaption>First three lines. Each coloured frame is the answer to one query: red, blue and green are the first, middle and last word, orange a PAW, purple a letter, cyan the dots, grey text detection. Nearly all of them are the whole image, and the labels the model returns are echoes of the query or unrelated strings (text detection returned “中国” on one Arabic line).</figcaption>
+    </figure>
+    <figure class="fig">
+      <span class="ft">Padded: the lines where the letter or dot box is not the whole line</span>
+      <img src="xai-locany-pad.jpg" alt="Seven handwritten lines with grey word-sized detection boxes and larger teal and purple boxes for dot and letter queries" style="width:100%;max-width:1000px;height:auto;border:1px solid var(--line);border-radius:4px" loading="lazy">
+      <figcaption>Grey: text detection, which now draws boxes around real word-sized pieces on several lines. Teal: the dots of a letter. Purple: a letter. The dot boxes cover whole words or much larger regions and sometimes the wrong word; none sits on a dot.</figcaption>
+    </figure>
+    <p>Limits: one run per variant at temperature 0, one wording per query, 42 lines from two datasets, and “whole image” is judged by a 95 % coverage rule. A different prompt wording or a few-shot visual prompt might do better; the model’s visual-prompt mode is not enabled in the public checkpoint. Even so, text-conditioned grounding fails because the model cannot match Arabic handwriting to the query string, so fine-tuning is the only route, and that needs pseudo-labels from CTC spans first.</p>
     <h4>What we learned on the way</h4>
     <div class="keys">
       <div class="key"><b>Speed</b><span>The first version took 66 minutes for one line, because the whole model ran in eager-attention mode to expose attention weights. With fast attention for everything except one pass, lines capped at 1024 px and three methods, a line takes about 15 s.</span></div>
@@ -490,7 +513,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
     <h4>Ideas on the table</h4>
     <div class="keys">
       <div class="key"><b>CTC alignment as a location reference <span class="pill o">X-B1, X-B2</span></b><span>A CTC recogniser gives a frame-by-frame letter alignment, so every line gets approximate letter spans without box labels. We would validate them against VML-HD sub-word boxes, then score each attribution map by how much of a token’s attribution falls inside its own span (a pointing game). Both sides come from different models, which is the point, and also a risk on cursive joins.</span></div>
-      <div class="key"><b>Letter and word grounding with LocateAnything-3B <span class="pill o">X-C1, X-C2</span></b><span>NVIDIA’s grounding model finds words and text in images and ships a LoRA recipe (r = 64 on the LLM, projector trainable). It needs its own environment (transformers 4.57.1, peft 0.12.0) and a non-commercial research licence. Plan: a zero-shot probe on 30 lines for a word, a PAW, a letter and the dots, then a LoRA fine-tune on word and PAW pseudo-labels from X-B1 only if the probe shows promise.</span></div>
+      <div class="key"><b>Letter and word grounding with LocateAnything-3B <span class="pill">X-C1 done, X-C2 gated</span></b><span>The zero-shot probe failed (above). A LoRA fine-tune (r = 64 on the LLM, projector trainable, NVIDIA’s recipe) on word and PAW pseudo-labels from X-B1 is the next step, and only after the CTC spans exist. Its value over CTC spans is a text-to-region interface for models that have no CTC head. Environment on the 3090: <span class="mono">a-experiment/locany</span>.</span></div>
       <div class="key"><b>Attribution-guided LoRA freezing <span class="pill">X-D1, gated</span></b><span>Pixel attribution says which patches matter, not which weights. The weight-level step needs parameter attribution (per-letter gradient or Fisher information on the LoRA matrices, plus layer and head ablation). Then a freeze sweep on groups of similar letters (ا ل; ج ح خ). Expected gain is small; the main output is whether letter-specific circuits exist. Starts only if the maps hold up and X-B1 gives a trustworthy reference.</span></div>
       <div class="key"><b>Error patterns <span class="pill o">X-A2b</span></b><span>More lines, per-letter confusion pairs next to their maps, and whether the maps land on dots. The panels so far show lower confidence on wrong tokens and a possible خ weakness.</span></div>
       <div class="key"><b>Other models</b><span>The same checks on the char-CTC CRNN (its alignment is attribution by construction) and on the larger VLMs we benchmark. Attention maps need eager weights, which some model code does not expose.</span></div>
@@ -786,8 +809,8 @@ const P = [
  m:"MoonViT-SO-400M vision encoder, Qwen2.5-3B language model and an MLP projector. Predicts a whole box in one parallel step instead of token by token. Tasks: detection, phrase and text grounding, scene-text detection, GUI grounding, pointing, document layout and OCR localization. Coordinates are integers in [0, 1000].",
  r:"Trained on about 12 M images and 785 M boxes. Secondary coverage reports 2.5× to about 10× the throughput of earlier approaches (the baseline varies) and +3.8 F1 on LVIS over Rex-Omni; neither is verified here.",
  b:"A ready model for “where is this word or letter”, with an official full fine-tune script and a LoRA recipe in NVlabs/Eagle (Embodied): LLM LoRA r = 64, projector trainable, vision backbone frozen.",
- d:"none", o:"Not installed yet. Found so far: the weights carry an NVIDIA non-commercial research licence plus the Qwen Research License (fine for the academic phase, and fine-tuned weights inherit it); the code is Apache 2.0; it pins transformers 4.57.1, peft 0.12.0 and trust_remote_code, so it needs its own environment next to our attribution one; the model card lists 4B parameters in BF16.",
- n:"gpu", x:"X-C1: zero-shot probe on 30 lines with word, PAW, single-letter and “the dots under the letter” prompts, scored against CTC spans (X-B1). X-C2: LoRA fine-tune on word and PAW pseudo-labels only if the probe shows promise; letters last.", id:"X-C1 · X-C2"},
+ d:"applied", o:"Zero-shot probe done on 42 lines (2026-10-10, model revision c32291ca): it cannot find Arabic handwriting from a text query. It returns the whole image for the first-word query on 42 of 42 lines at full size, and line-wide boxes after downscaling and padding (median 89 % of the line against 18 % expected). Details in the attribution section below. Setup constraints found: NVIDIA non-commercial research licence plus the Qwen Research License, code Apache 2.0, pins transformers 4.57.1 and peft 0.12.0, and its remote code needs opencv and lmdb. We scanned that code before running it and found no subprocess, eval or network calls outside input handling.",
+ n:"later", x:"Not before X-B1. If CTC spans give usable word and PAW pseudo-labels, X-C2 fine-tunes with LoRA against this baseline (no usable word box in 42 lines). Its added value over CTC spans is a text-to-region interface for models that have no CTC head.", id:"X-C2"},
 {g:"xai", key:"qmask2026", t:"Q-Mask and the TABench text-anchoring benchmark", v:"Xiaomi · arXiv 2604.00161, 2026", warn:"abstract level only",
  m:"Query-driven causal masks to ground a queried piece of text to its image region; TABench measures whether VLMs can anchor text to fine-grained regions.",
  r:"Reports that VLMs struggle to establish precise text anchors (per the abstract).",
@@ -870,7 +893,6 @@ const QUEUE = [
  ["Image-reliance check", "Maps only mean something if the model uses the image.", "greekvlm2026", "Per-token log-prob with and without the image, per model.", "gpu", "X-A3"],
  ["CTC character spans, validated on VML-HD", "A location reference for each letter without box labels.", "bullinger2025ctcalign, vmlhd", "Span error against hand-checked boxes on 30 lines.", "gpu", "X-B1"],
  ["Pointing game against the CTC spans", "Scores each map by whether it lands on its own token.", "attribution-eval", "Share of a token’s attribution inside its aligned span, per map.", "cpu", "X-B2"],
- ["LocateAnything-3B zero-shot probe", "Can an off-the-shelf grounding model find a word, a PAW or a letter?", "wang2026locateanything", "IoU against X-B1 spans on 30 lines for word, PAW, letter and dot prompts.", "gpu", "X-C1"]
 ];
 
 const $ = s=>document.querySelector(s);
@@ -1251,8 +1273,8 @@ const EXP = [
  ["X-A5","Sensitivity of each map to noise level, baseline and aggregation","GPU","Map stability under setting changes"],
  ["X-B1","CTC character spans for panel lines; validate on VML-HD sub-word boxes","GPU (3090)","Span error against hand-checked boxes"],
  ["X-B2","Pointing game: share of each token’s attribution inside its CTC span","CPU","Score per method"],
- ["X-C1","LocateAnything-3B zero-shot probe: word, PAW, letter, dots","GPU","IoU against X-B1 spans on 30 lines"],
- ["X-C2","LoRA fine-tune LocateAnything on word and PAW pseudo-labels; letters if justified","GPU","IoU on held-out manuscripts"],
+ ["X-C1","LocateAnything-3B zero-shot probe: word, PAW, letter, dots","GPU","Done 2026-10-10: no-go. 42 lines; whole-image boxes for word queries at full size, line-wide boxes after padding"],
+ ["X-C2","LoRA fine-tune LocateAnything on word and PAW pseudo-labels from X-B1; letters if justified","GPU (gated on X-B1)","IoU on held-out manuscripts, against the zero-shot baseline of no usable word box in 42 lines"],
  ["X-D1","Parameter-level attribution and a freeze sweep over similar letters (gated on X-A and X-B)","GPU","Whether letter-specific circuits exist, and ΔCER from protecting them"],
  ["S1","Script-styles inventory: traits, datasets, visual samples with licences","Design","Design approved, then one record per style"]
 ];
