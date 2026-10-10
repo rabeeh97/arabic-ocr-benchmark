@@ -173,24 +173,28 @@ def attention_maps(ctx: Ctx, positions: list[int]):
 
 def grad_maps(ctx: Ctx, positions: list[int], ig_steps: int, sg_steps: int = 8):
     gxi, ig = {}, {p: torch.zeros_like(ctx.px) for p in positions}
+    # Baseline = blank paper (median patch), not zero. Normalised pixels are + for paper and - for ink,
+    # so with a zero baseline the positive part of grad*input kept the paper and dropped the ink.
+    base = ctx.px.median(0).values.expand_as(ctx.px)
+    diff = ctx.px - base
     # gradient x input at the real image
     x = ctx.px.clone().requires_grad_(True)
     with torch.enable_grad():
         logits = ctx.forward(x).logits
         for p in positions:
             (g,) = torch.autograd.grad(ctx.logprob(logits, p), x, retain_graph=True)
-            gxi[p] = pixel_map(g * ctx.px, ctx.gh, ctx.gw)
+            gxi[p] = pixel_map(g * diff, ctx.gh, ctx.gw)
     del logits
     # integrated gradients (right Riemann sum along the straight path from grey)
     for k in range(1, ig_steps + 1):
-        xa = (ctx.px * (k / ig_steps)).clone().requires_grad_(True)
+        xa = (base + diff * (k / ig_steps)).clone().requires_grad_(True)
         with torch.enable_grad():
             logits = ctx.forward(xa).logits
             for p in positions:
                 (g,) = torch.autograd.grad(ctx.logprob(logits, p), xa, retain_graph=True)
                 ig[p] += g / ig_steps
         del logits
-    igm = {p: pixel_map(ig[p] * ctx.px, ctx.gh, ctx.gw) for p in positions}
+    igm = {p: pixel_map(ig[p] * diff, ctx.gh, ctx.gw) for p in positions}
     # SmoothGrad x input: average the gradient over noisy copies (tames the ViT's gradient speckle)
     sg_acc = {p: torch.zeros_like(ctx.px) for p in positions}
     torch.manual_seed(0)
@@ -203,7 +207,7 @@ def grad_maps(ctx: Ctx, positions: list[int], ig_steps: int, sg_steps: int = 8):
                 (g,) = torch.autograd.grad(ctx.logprob(logits, p), xn, retain_graph=True)
                 sg_acc[p] += g / sg_steps
         del logits
-    sgm = {p: pixel_map(sg_acc[p] * ctx.px, ctx.gh, ctx.gw) for p in positions}
+    sgm = {p: pixel_map(sg_acc[p] * diff, ctx.gh, ctx.gw) for p in positions}
     return gxi, sgm, igm
 
 
@@ -299,6 +303,7 @@ def main() -> None:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--ig-steps", type=int, default=12)
     ap.add_argument("--max-tokens", type=int, default=12)
+    ap.add_argument("--del-methods", default=",".join(METHODS), help="comma list; deletion test is the slow part")
     ap.add_argument("--select", choices=["targets", "errors"], default="targets")
     a = ap.parse_args()
     proc, model = load(a.base, a.adapter)
@@ -361,7 +366,8 @@ def main() -> None:
                 grid = grids[m][p]
                 pm = maps[m][p] if m in PIXEL_METHODS else np.kron(grid, np.ones((P, P)))
                 overlay(rimg, pm).save(d / f"ov_{m}_{i}.png")
-                row["deletion"][m] = deletion(ctx, p, grid)
+                if m in a.del_methods.split(","):
+                    row["deletion"][m] = deletion(ctx, p, grid)
                 row.setdefault("cx", {})[m] = centroid_x(grid)
                 row["conc"][m] = conc(grid)
                 row["ink"][m] = ink_enrichment(pm, ink)
@@ -380,7 +386,7 @@ def main() -> None:
                                                     "grid": [ctx.gh, ctx.gw], "tokens": toks, "rtl": rtl}, ensure_ascii=False, indent=1), encoding="utf-8")
         per_line.append({"line": li, "id": item["id"], "dataset": item["dataset"], "rtl": rtl})
         for r in toks:
-            for m in METHODS + ["random"]:
+            for m in [k for k in METHODS if k in r["deletion"]] + ["random"]:
                 for f, v in r["deletion"][m].items():
                     agg.setdefault(m, {}).setdefault(str(f), []).append(v)
             g = by_err.setdefault("err" if r["err"] else "ok", {"lp": [], **{f"{m}_{k}": [] for m in METHODS for k in ("conc", "del0.1", "ink")}})
@@ -388,7 +394,8 @@ def main() -> None:
             for m in METHODS:
                 g[f"{m}_conc"].append(r["conc"][m])
                 g[f"{m}_ink"].append(r["ink"][m])
-                g[f"{m}_del0.1"].append(r["deletion"][m][0.1])
+                if m in r["deletion"]:
+                    g[f"{m}_del0.1"].append(r["deletion"][m][0.1])
         print(f"[{li + 1}/{len(manifest)}] {item['id']} {len(toks)} tokens {time.time() - t0:.0f}s  hyp={hyp[:40]!r}", flush=True)
         torch.cuda.empty_cache()
     summary = {m: {f: {"mean_drop": float(np.mean(v)), "n": len(v)} for f, v in fs.items()} for m, fs in agg.items()}
