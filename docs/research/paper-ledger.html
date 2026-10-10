@@ -1,0 +1,1280 @@
+<title>Arabic OCR Paper Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@500;700&display=swap">
+<style>
+/* Layout: a research ledger. Summary and "test now" queue first, then one row-card per paper, grouped by theme, filterable by what we've done and what to run next. */
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --ink:#18202b; --muted:#5a6676; --line:#dde2e8;
+  --accent:#1f5f8b; --accent-soft:#e3eef6;
+  --ok:#2c7a4b; --ok-soft:#e2f2e8;
+  --part:#9a6a12; --part-soft:#f7eed9; --risk:#a8402c; --risk-soft:#f8e4df;
+  --none:#6b7380; --none-soft:#eceff2;
+  --cpu:#1f5f8b; --cpu-soft:#e3eef6;
+  --gpu:#6b4bb0; --gpu-soft:#ece6f8;
+  --later:#6b7380; --later-soft:#eceff2;
+  --design:#a24a6a; --design-soft:#f6e4ec;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --f-ar:"Noto Naskh Arabic","Geeza Pro","Arial",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11161d; --surface:#18202a; --ink:#e4e9ef; --muted:#9aa6b4; --line:#2a3542;
+  --accent:#7db7e0; --accent-soft:#1c3346;
+  --ok:#7cc79a; --ok-soft:#1b3326; --part:#e0b45e; --part-soft:#3a2f17; --risk:#f0907a; --risk-soft:#3d201a;
+  --none:#a3acb8; --none-soft:#252e39; --cpu:#7db7e0; --cpu-soft:#1c3346;
+  --gpu:#b9a2ee; --gpu-soft:#2c2442; --later:#a3acb8; --later-soft:#252e39;
+  --design:#e597b4; --design-soft:#3a2230; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161d; --surface:#18202a; --ink:#e4e9ef; --muted:#9aa6b4; --line:#2a3542;
+  --accent:#7db7e0; --accent-soft:#1c3346;
+  --ok:#7cc79a; --ok-soft:#1b3326; --part:#e0b45e; --part-soft:#3a2f17; --risk:#f0907a; --risk-soft:#3d201a;
+  --none:#a3acb8; --none-soft:#252e39; --cpu:#7db7e0; --cpu-soft:#1c3346;
+  --gpu:#b9a2ee; --gpu-soft:#2c2442; --later:#a3acb8; --later-soft:#252e39;
+  --design:#e597b4; --design-soft:#3a2230; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:32px 64px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:20px;font-weight:600}
+.lede{color:var(--muted);max-width:68ch;margin:10px 0 0}
+.ar{font-family:var(--f-ar);font-size:1.12em;line-height:1}
+.mono{font-family:var(--f-mono);font-size:.86em}
+.eyebrow{font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:6px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:13px;margin-top:8px}
+
+/* summary */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-size:26px;font-variant-numeric:tabular-nums;font-weight:600}
+.stat span{font-size:13px;color:var(--muted)}
+
+section{margin-top:36px}
+.section-head{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.section-head p{color:var(--muted);margin:0;max-width:72ch}
+
+/* queue */
+.queue{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:14px}
+.qwrap{overflow-x:auto;border-radius:8px}
+.queue th,.queue td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.queue th{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500;background:var(--bg)}
+.queue tr:last-child td{border-bottom:0}
+.queue td:first-child{font-variant-numeric:tabular-nums;color:var(--muted);width:2.2em}
+.queue .what{font-weight:600}
+.queue .why{color:var(--muted);font-size:13px;margin-top:2px}
+.queue td.src{min-width:130px}
+.queue td.done{min-width:200px;font-size:13px}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap;line-height:1.5}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.s-applied{color:var(--ok);background:var(--ok-soft)}
+.s-partial{color:var(--part);background:var(--part-soft)}
+.s-none{color:var(--none);background:var(--none-soft)}
+.n-cpu{color:var(--cpu);background:var(--cpu-soft)}
+.n-gpu{color:var(--gpu);background:var(--gpu-soft)}
+.n-later{color:var(--later);background:var(--later-soft)}
+.n-design{color:var(--design);background:var(--design-soft)}
+.n-none{color:var(--none);background:var(--none-soft)}
+.tag{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);background:var(--accent-soft);padding:1px 6px;border-radius:4px;white-space:nowrap}
+.warn{font-size:12px;color:var(--part)}
+
+/* filters */
+.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.frow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.frow .lbl{font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);min-width:84px}
+.fbtn{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:3px 11px;cursor:pointer}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.fbtn:focus-visible,#q:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#q{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 10px;flex:1;min-width:0;max-width:360px}
+.count{font-size:13px;color:var(--muted);margin-left:auto}
+
+/* paper cards */
+.group{margin-top:28px}
+.group h3{font-size:16px;font-weight:600;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.group h3 small{font-weight:400;color:var(--muted);font-size:13px}
+.cards{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.chead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-start;justify-content:space-between}
+.ctitle{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1 1 420px}
+.ctitle .t{font-weight:600;font-size:16px;line-height:1.35}
+.ctitle .v{color:var(--muted);font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px}
+.cell{min-width:0}
+.cell h4{margin:0 0 3px;font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:500}
+.cell p{margin:0}
+.cell.full{grid-column:1/-1}
+.ours{border-left:2px solid var(--line);padding-left:12px}
+.next{background:var(--bg);border-radius:6px;padding:10px 12px}
+.next p{margin:0}
+.empty{color:var(--muted);padding:24px 0}
+footer{margin-top:48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:720px){
+  .grid{grid-template-columns:1fr}
+  h1{font-size:24px}
+  .wrap{padding-inline:16px}
+  .frow .lbl{min-width:0;width:100%}
+}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}.card:hover{border-color:var(--muted)}}
+
+.augbtn{font:inherit;font-size:12.5px;color:var(--accent);background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:2px 10px;cursor:pointer;white-space:nowrap;margin-top:4px;display:block}
+.augbtn:hover{border-color:var(--accent)}
+.vd{font-family:var(--f-mono);font-size:11px;padding:1px 7px;border-radius:4px;white-space:nowrap}
+.vd-safe{color:var(--ok);background:var(--ok-soft)}.vd-promising{color:var(--accent);background:var(--accent-soft)}
+.vd-caution{color:var(--part);background:var(--part-soft)}.vd-risky{color:var(--risk);background:var(--risk-soft)}.vd-none{color:var(--none);background:var(--none-soft)}
+tr.augrow>td{background:var(--bg);padding:12px}
+.augdet{display:flex;flex-direction:column;gap:10px}
+.augnote{max-width:90ch;font-size:13.5px}
+.auggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.augfig{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.augfig.orig{border-color:var(--accent)}
+.augfig.rej{border-style:dashed;border-color:var(--risk)}.augfig.rej img{opacity:.75}
+.augfig img{display:block;max-width:100%;height:auto;background:#fff;border-radius:3px}
+.augtext{font-family:"Noto Naskh Arabic",serif;font-size:21px;line-height:1.9;white-space:nowrap;overflow-x:auto;color:#111;background:#fff;padding:4px 10px;border-radius:3px}
+.augfig figcaption{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}
+.auglab{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;color:var(--ink)}
+.auglab .ar{font-size:15px;line-height:1.6}
+/* dossier: Arabic-script HTR studies */
+:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--grid:#e6e9ee;--axis:#8a95a3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#26303b;--axis:#7d8896}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--grid:#26303b;--axis:#7d8896}
+.dossier{display:flex;flex-direction:column;gap:18px}
+.dnav{display:flex;flex-wrap:wrap;gap:6px}
+.dnav a{font-size:13px;color:var(--accent);text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:3px 11px;background:var(--surface)}
+.dnav a:hover{border-color:var(--accent)}
+.dpart{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+.dpart>h3{font-size:18px;font-weight:600}
+.dpart h4{font-size:14px;font-weight:600;margin:6px 0 0}
+.dpart p,.dpart li{max-width:76ch}
+.dpart p{margin:0}
+.dpart ul,.dpart ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.key{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.key b{display:block;font-size:13px;margin-bottom:2px}
+.key span{font-size:13.5px;color:var(--ink)}
+.fig{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fig figcaption{font-size:13px;color:var(--muted);max-width:76ch}
+.fig .ft{font-weight:600;font-size:14px;color:var(--ink)}
+.chartbox{position:relative;overflow-x:auto}
+.chartbox svg{display:block;width:100%;height:auto;min-width:520px;font-family:var(--f-body)}
+.chartbox svg text{fill:var(--muted);font-size:11.5px}
+.chartbox svg .lbl{fill:var(--ink);font-size:12px}
+.chartbox svg .title{fill:var(--ink);font-size:12.5px;font-weight:600}
+.smalls{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.smalls .chartbox svg{min-width:280px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+.legend i.dash{border-top-style:dashed}
+.legend i.dot{width:9px;height:9px;border:0;border-radius:50%;margin-right:6px}
+.tip{position:fixed;z-index:20;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:12.5px;box-shadow:0 4px 14px rgb(0 0 0 / .12);max-width:280px}
+.tip .h{color:var(--muted);font-size:11.5px;margin-bottom:3px}
+.tip .r{display:flex;gap:7px;align-items:center;white-space:nowrap}
+.tip .r i{width:12px;border-top:2px solid;display:inline-block}
+.tip .r b{font-variant-numeric:tabular-nums}
+details.tbl summary{cursor:pointer;font-size:13px;color:var(--accent)}
+details.tbl .qwrap{margin-top:6px}
+table.dt{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface)}
+table.dt th,table.dt td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+table.dt th{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
+table.dt td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.barlist{display:flex;flex-direction:column;gap:4px}
+.barlist .br{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr) 54px;gap:10px;align-items:center;font-size:13px}
+.barlist .tr{height:10px;background:var(--bg);border-radius:3px;overflow:hidden}
+.barlist .tr span{display:block;height:100%;background:var(--accent);border-radius:0 3px 3px 0}
+.barlist .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pill{font-size:11px;padding:1px 7px;border-radius:99px;background:var(--bg);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.b{color:var(--ok);border-color:var(--ok)}
+.pill.o{color:var(--accent);border-color:var(--accent)}
+.verdict{border-left:3px solid var(--accent);padding:8px 12px;background:var(--accent-soft);border-radius:0 6px 6px 0}
+.verdict p{max-width:none}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.tl{border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:3px}
+.tl .d{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.tl .t{font-weight:600;font-size:13.5px;line-height:1.35}
+.tl .s{font-size:13px;color:var(--muted)}
+@media (max-width:720px){.dpart{padding:14px}.barlist .br{grid-template-columns:110px minmax(0,1fr) 46px}}
+.layout{display:grid;grid-template-columns:minmax(0,1080px);justify-content:center;padding-inline:16px}
+.layout>.wrap{padding-inline:0;min-width:0;max-width:none;margin:0}
+.toc{padding-top:16px;min-width:0}
+.tocbox{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.tocbox summary{cursor:pointer;font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc>details>ol{margin-top:8px;gap:8px}
+.toc ol ol{padding-left:12px;border-left:1px solid var(--line);margin:4px 0 0 2px}
+.toc a{display:block;color:var(--muted);text-decoration:none;font-size:13px;line-height:1.35;padding:2px 6px;border-radius:4px}
+.toc>details>ol>li>a{color:var(--ink);font-weight:600}
+.toc a:hover{color:var(--accent)}
+.toc a.on{color:var(--accent);background:var(--accent-soft)}
+section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
+@media (min-width:1180px){
+  .layout{grid-template-columns:230px minmax(0,1080px);gap:28px;padding-inline:20px}
+  .toc{padding-top:32px}
+  .tocbox{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow-y:auto;border:0;background:none;padding:0}
+  .tocbox summary{pointer-events:none;list-style:none;margin-bottom:4px}
+  .tocbox summary::-webkit-details-marker{display:none}
+  .dnav{display:none}
+}
+</style>
+
+<div class="layout">
+<aside class="toc" aria-label="Contents">
+  <details class="tocbox" open>
+  <summary>Contents</summary>
+  <ol>
+    <li><a href="#papers">1 · All papers</a>
+      <ol>
+        <li><a href="#grp-htr">Arabic-script HTR studies</a></li>
+        <li><a href="#grp-sys">OCR systems and benchmarks</a></li>
+        <li><a href="#grp-script">Script structure and language</a></li>
+        <li><a href="#grp-eval">Evaluation methodology</a></li>
+        <li><a href="#grp-data">Datasets and writers</a></li>
+        <li><a href="#grp-read">Reading and perception</a></li>
+        <li><a href="#grp-xai">Attribution and localization</a></li>
+      </ol></li>
+    <li><a href="#htr-dossier">2 · Results: HTR deep dive</a>
+      <ol>
+        <li><a href="#d-programme">The research programme</a></li>
+        <li><a href="#d-gap">Gap paper</a></li>
+        <li><a href="#d-r26">R2.6 re-measured</a></li>
+        <li><a href="#d-labels">Label errors</a></li>
+        <li><a href="#d-cross">Cross-lingual transfer</a></li>
+        <li><a href="#d-styles">Script styles: Maghrebi</a></li>
+        <li><a href="#d-xai">Attribution spike</a></li>
+        <li><a href="#d-aug">Augmentation catalogue</a></li>
+        <li><a href="#d-exp">Experiments</a></li>
+      </ol></li>
+    <li><a href="#run-next">3 · Tests we can run now</a></li>
+  </ol>
+  </details>
+</aside>
+<div class="wrap">
+<header>
+  <div class="eyebrow">arabic_ocr · research phase · literature track</div>
+  <h1>Arabic OCR Paper Ledger</h1>
+  <p class="lede">Every paper the research layer has drawn on so far: its main method, what we can borrow, what we have already built from it, and the next test our current results make possible. The papers come first, then our results from the deep dive, then the queue of tests we can run now without new data.</p>
+  <div class="meta">
+    <span>Snapshot 2026-10-10</span>
+    <span>Sources: <span class="mono">references.bib</span>, <span class="mono">misraj-baseer-research.md</span>, <span class="mono">findings-and-notes.md</span>, <span class="mono">NEXT_STEPS.md</span></span>
+    <span>Live numbers: <a href="https://claude.ai/artifact/8Z6dsabo5FDFPW11XQn7yf" style="color:var(--accent)">Arabic Script Atlas</a></span>
+  </div>
+</header>
+
+<div class="summary" id="summary"></div>
+
+<section id="papers">
+  <div class="section-head">
+    <div class="eyebrow">Part 1 · Ledger</div>
+    <h2>All papers</h2>
+    <p>Grouped by theme. “What we did” is our own result, not the paper’s. Items marked <span class="warn">unverified</span> have details not yet checked against the primary source (task L7).</p>
+  </div>
+  <div class="filters" role="region" aria-label="Filters">
+    <div class="frow" id="f-done"><span class="lbl">Our status</span></div>
+    <div class="frow" id="f-next"><span class="lbl">Next step</span></div>
+    <div class="frow"><span class="lbl">Search</span><input id="q" type="search" placeholder="Key, method, dataset, task ID…" aria-label="Search papers"><span class="count" id="count"></span></div>
+  </div>
+  <div id="ledger"></div>
+</section>
+
+<section id="htr-dossier">
+  <div class="section-head">
+    <div class="eyebrow">Part 2 · Results · deep dive 2026-10-09</div>
+    <h2>Arabic-script HTR studies: results, notes and next experiments</h2>
+    <p>The four Luleå preprints are the closest prior work to ours. This section plots their results, shows what we re-measured on our own data, and lists the experiments and augmentation ideas they lead to. Paper numbers are transcribed from the papers; “ours” numbers come from <span class="mono">scripts/substitution_analysis.py</span> (R2.6). The attribution and localization spike of 2026-10-10 has its own part below, with a link to its explorer page.</p>
+  </div>
+  <nav class="dnav" aria-label="Dossier sections">
+    <a href="#d-programme">The research programme</a><a href="#d-gap">Gap paper</a><a href="#d-r26">R2.6 re-measured</a><a href="#d-labels">Label errors</a><a href="#d-cross">Cross-lingual transfer</a><a href="#d-styles">Script styles: Maghrebi</a><a href="#d-xai">Attribution spike</a><a href="#d-aug">Augmentation catalogue</a><a href="#d-exp">Experiments</a>
+  </nav>
+  <div class="dossier">
+
+  <!-- 1. programme -->
+  <article class="dpart" id="d-programme">
+    <h3>One group, four papers in six months</h3>
+    <p>All four come from Sana Al-azzawi’s work in Marcus Liwicki’s group at Luleå University of Technology, co-supervised by Elisa Barney Smith (document image analysis), funded by the EU MARTINA project and WASP. They read as chapters of one PhD thesis, built on one CRNN code base and the same six Arabic-script datasets.</p>
+    <div class="timeline">
+      <div class="tl"><span class="d">Jan 2026 · v4 Jun</span><span class="t">Label errors (CER-HV)</span><span class="s">Clean the data first: 6–9 % errors in Muharaf and Ajami.</span></div>
+      <div class="tl"><span class="d">May 2026</span><span class="t">Cross-lingual joint training</span><span class="s">Arabic + Urdu + Persian help each other at 100–1,000 lines.</span></div>
+      <div class="tl"><span class="d">May 2026</span><span class="t">Role of sequence modelling</span><span class="s">The gain comes with the BiLSTM, not the shared CNN features.</span></div>
+      <div class="tl"><span class="d">Jun 2026 · ICPR-W</span><span class="t">Arabic–Latin gap</span><span class="s">The gap persists after cleaning; shape count and dots explain part of it.</span></div>
+    </div>
+    <h4>What this tells us</h4>
+    <ul>
+      <li><b>The arc is data quality → transfer → explaining the gap.</b> Their stated next steps are synthetic data, pre-training then fine-tuning, transformer models, and Latin↔Arabic transfer. Two of our ideas (multilingual pre-training with frozen layers, and data-scaling curves) sit on that path, so we risk overlapping with them. We should move on these early or talk to them.</li>
+      <li><b>They never test VLMs.</b> Every result is a 10 M-parameter CRNN or HTR-VT. Our angle (large VLMs, diacritic policy, Maghrebi and NAKBA, error decomposition) complements theirs and does not duplicate it. Their public CRNN predictions give us a free CRNN reference on Muharaf and KHATT.</li>
+      <li><b>All four are preprints</b>, apart from one ICPR 2026 workshop paper, and they share one first author and one pipeline. The numbers are consistent across papers (KHATT CRNN about 8.5 % CER in all of them), but nobody outside the group has replicated them yet.</li>
+      <li><b>A possible contact.</b> We use their logs and need a licence answer for them (task X3), their PHTD cleaned set is on the Hub, and their cross-lingual code is “under reconstruction”. A short email could cover the licence, the release status of the code, and our VLM-side numbers.</li>
+    </ul>
+  </article>
+
+  <!-- 2. gap -->
+  <article class="dpart" id="d-gap">
+    <h3>Gap paper (<span class="mono">alazzawi2026gap</span>): what the results show</h3>
+    <figure class="fig">
+      <span class="ft">The gap is large with little data and never closes</span>
+      <div class="legend" id="lg-curves"></div>
+      <div class="chartbox" id="ch-curves" role="img" aria-label="CER against training lines for nine datasets, log scale"></div>
+      <figcaption>CRNN test CER against training lines (log scale), Table 3; the last point of each line is the full training set. Arabic-script sets (solid) sit above the Latin sets (dashed) at every size except NUST-UHWR, the cleanest set. Muharaf’s 74 % at 100 lines comes largely from label noise.</figcaption>
+      <details class="tbl"><summary>Show the table</summary><div class="qwrap" id="tb-curves"></div></details>
+    </figure>
+    <figure class="fig">
+      <span class="ft">Cleaning halves the gap at 100 lines; a 4-point gap remains at full data</span>
+      <div class="legend" id="lg-clean"></div>
+      <div class="chartbox" id="ch-clean" role="img" aria-label="Average CER of Arabic-script sets before and after cleaning, and of Latin sets"></div>
+      <figcaption>Average CER of the three noisy Arabic-script sets (Muharaf, Ajami, PHTI) before and after CER-HV cleaning, against the Latin average, Table 5. The gap falls from +24.2 to +11.8 points at K = 100 and from +6.0 to +4.4 at full data.</figcaption>
+      <details class="tbl"><summary>Show the table</summary><div class="qwrap" id="tb-clean"></div></details>
+    </figure>
+    <div class="keys">
+      <div class="key"><b>Shapes, not lines</b><span>KHATT needs about 150k training characters to reach 10 % CER, IAM about 34k. Arabic has more visual classes and a heavier tail, so data should be sized in characters per (letter × position) shape.</span></div>
+      <div class="key"><b>82 vs 50 shapes</b><span>Their count merges isolated and final forms. Under that rule Muharaf train has 88 shapes (72 for the 28 core letters). Our profiler’s 112–131 keeps isolated and final apart and includes hamza carriers.</span></div>
+      <div class="key"><b>Positional labels did not help</b><span>Encoding initial, medial and final forms explicitly in the CTC labels gave no consistent gain. That matters for our output-unit question (D2).</span></div>
+      <div class="key"><b>Architecture does not close it</b><span>HTR-VT (53.5 M parameters) matches the 10 M CRNN: 8.9 vs 8.5 % on KHATT and 11.8 vs 10.1 % on Muharaf.</span></div>
+    </div>
+    <h4>Is the similar-substitution metric the only thing we can borrow? No.</h4>
+    <table class="dt">
+      <thead><tr><th>Measure from the paper</th><th>Can we compute it?</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Deletion / substitution / insertion rates and similar-substitution share (Table 6)</td><td>Yes, on our predictions and on their published CRNN predictions</td><td><span class="pill b">done, R2.6</span></td></tr>
+        <tr><td>Shape inventory, iso/fin-merged definition</td><td>Yes, text only</td><td><span class="pill b">done: Muharaf train 88</span></td></tr>
+        <tr><td>Train vs test shape-frequency tail (Fig. 6)</td><td>Yes, text only: the share of test letters whose shape has fewer than N training examples</td><td><span class="pill o">new task R1.7</span></td></tr>
+        <tr><td>Lexical diversity: unique lines, duplication, mean max Jaccard, unique words, TTR (cross-lingual Table 3)</td><td>Yes, text only, for every dataset and K-subset</td><td><span class="pill o">new task R1.6</span></td></tr>
+        <tr><td>CER vs training lines and vs training characters (Fig. 3, Fig. 5)</td><td>Needs training. Run E3 on their K grid with our LoRA recipe, and a CRNN reference (E5)</td><td><span class="pill o">E3 regridded, new E5</span></td></tr>
+        <tr><td>Top confusion pairs (Fig. 7)</td><td>Yes</td><td><span class="pill b">done, R2.6</span></td></tr>
+      </tbody>
+    </table>
+  </article>
+
+  <!-- 3. R2.6 -->
+  <article class="dpart" id="d-r26">
+    <h3>R2.6: their metric, on the same lines, for their CRNN and our models</h3>
+    <div class="verdict"><p><b>VLMs do not confuse dots less than the CRNN.</b> On the same Muharaf test lines, similar-letter substitutions are 16–23 % of a fine-tuned VLM’s substitutions against 29–41 % of the CRNN’s. Per character, though, the VLMs make as many or more (1.7–3.6 % against 1.2–1.5 %). Their share is lower only because they make two to five times more of every other substitution.</p></div>
+    <figure class="fig">
+      <span class="ft">Similar-letter substitutions per 100 GT characters</span>
+      <div class="legend" id="lg-sim"></div>
+      <div class="chartbox" id="ch-sim" role="img" aria-label="Similar-letter substitution rate and share for CRNN and VLM models"></div>
+      <figcaption>Harakat stripped on both sides. Dot = the model; open ring = the CER-HV CRNN scored on exactly the same lines. Paper rows are Table 6 (rate = substitution rate × similar share). First check: on their own published predictions our metric reproduces their substitution rate exactly (4.17 %) and gives a 25.7 % similar share, 32.3 % if hamza, <bdi class="ar">ة/ه</bdi> and <bdi class="ar">ى/ي</bdi> pairs count as similar. The paper’s 29.4 % lies between the two.</figcaption>
+      <details class="tbl"><summary>Show the table</summary><div class="qwrap" id="tb-sim"></div></details>
+    </figure>
+    <div class="smalls">
+      <figure class="fig">
+        <span class="ft">The “other” bucket, named</span>
+        <div class="barlist" id="bl-other"></div>
+        <figcaption>Share of all edits, 85 competent model × dataset pairs. “Other” was 58 % of edits. It splits into letter substitutions outside the dot and shape groups (25 %), letter deletions (17 %), letter insertions (12 %) and non-letters (4 %). Done criterion met: its parts are named.</figcaption>
+      </figure>
+      <figure class="fig">
+        <span class="ft">Most-confused letter pairs</span>
+        <div class="barlist" id="bl-pairs"></div>
+        <figcaption>Share of 185,902 letter substitutions. Only 6 % fall in our hand-written shape groups and 13 % are dot pairs; 65 % match no group. Loop and stroke pairs (<bdi dir="ltr" class="ar">ا/ل, ل/ن, ع/م, ح/م, ف/م</bdi>) are frequent, so the groups should be position-aware and learned from data. Adding them leave-one-dataset-out raises the similar share from 14–28 % to 20–37 %.</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- 4. label errors -->
+  <article class="dpart" id="d-labels">
+    <h3>Label-error paper (<span class="mono">alazzawi2026labelerr</span>): what is released, and how to use it</h3>
+    <table class="dt">
+      <thead><tr><th>Artefact</th><th>Where</th><th>What it lets us do</th></tr></thead>
+      <tbody>
+        <tr><td>Human-verified review logs per split (ImageID, verdict, GT, CRNN prediction) for Muharaf, KHATT, PHTI, NUST-UHWR, Ajami</td><td><span class="mono">github.com/SanaNGU/CER-HV</span> · error-analysis/&lt;set&gt;/hitl_labels_log_*.csv</td><td>Exclude flagged lines (X2, done), or use the CRNN prediction as a pseudo-label for “wrong transcription” lines</td></tr>
+        <tr><td>CRNN predictions for every line (raw and clean-trained)</td><td>same repo, *_results_epoch_*.csv</td><td>A CRNN reference with no training (R2.6 above)</td></tr>
+        <tr><td>Cleaned PHTD line images and splits</td><td><span class="mono">huggingface.co/datasets/sana-ngu/PHTD</span></td><td>A Persian set for the V4 cross-script gate</td></tr>
+        <tr><td>Cleaned Muharaf, KHATT, PHTI, Ajami images</td><td>Not released as images. “Cleaned” means the logs’ exclusion lists.</td><td>Rebuild the clean split from the logs, as <span class="mono">rescore_muharaf_clean.py</span> does</td></tr>
+      </tbody>
+    </table>
+    <p>Two limits: the repository has no licence file, so we download the logs and do not vendor them; and they clean by <i>exclusion</i>, not correction. Their “script mismatch” flags (998 of the 1,431 Muharaf train flags) are correct labels that their Arabic-only charset could not read. For a VLM they are valid training data.</p>
+    <div class="keys">
+      <div class="key"><b>Their result</b><span>Cleaning test splits moves CER by up to −1.6 points (Muharaf); retraining on cleaned train adds little except for Ajami.</span></div>
+      <div class="key"><b>Our result (X2)</b><span>Dropping the 126 flagged Muharaf test lines moves our models’ CER by −0.4 to +0.9 points and changes no rank.</span></div>
+      <div class="key"><b>Review tool</b><span><a href="https://claude.ai/artifact/FAEdbYULz3g88KQhXoKiPQ" style="color:var(--accent)">Label review</a>: 458 candidates, made up of all 218 CER-HV-reviewed Muharaf test lines (their verdict hidden until you decide) and the top 25 consensus suspects in each block. Verdicts are stored per reviewer, outside the datasets. It feeds R4.1.</span></div>
+    </div>
+  </article>
+
+  <!-- 5. cross-lingual -->
+  <article class="dpart" id="d-cross">
+    <h3>Cross-lingual papers (<span class="mono">alazzawi2026crossling</span>, <span class="mono">alazzawi2026seqmodel</span>)</h3>
+    <figure class="fig">
+      <span class="ft">What joint training buys, by architecture and target size</span>
+      <div class="legend" id="lg-cross"></div>
+      <div class="smalls" id="ch-cross"></div>
+      <figcaption>ΔCER = CER with both auxiliary Arabic-script sets (J = 2) minus target-only CER (J = 0); below zero is a gain. CRNN and HTR-VT from the cross-lingual paper, Table 1; CNN-only from the sequence-modelling paper, Table 2. HTR-VT gains most because it starts worst. The CNN-only model gains little and sometimes loses at K ≥ 500, which the authors read as transfer living in the sequence model.</figcaption>
+      <details class="tbl"><summary>Show the table</summary><div class="qwrap" id="tb-cross"></div></details>
+    </figure>
+    <div class="keys">
+      <div class="key"><b>Gains go to shared, rare letters</b><span><bdi class="ar">ث ض ظ خ</bdi> gain 5–8 points on KHATT. Letters unique to one language stay flat or get worse (Urdu <bdi class="ar">ٹ ڈ ڑ</bdi>, +3–4 points).</span></div>
+      <div class="key"><b>Diversity matters more than size</b><span>PHTD (738 unique words, TTR 0.05 at K = 1000) gains most. Mixing data helps a narrow target most.</span></div>
+      <div class="key"><b>Balanced batches did not help</b><span>Equal target/auxiliary batches did no better than proportional mixing.</span></div>
+    </div>
+    <h4>Your idea: multilingual pre-training, then freeze the early layers</h4>
+    <p>This has been tested within Latin, but not across scripts into Arabic as far as our search found. Aradillas et al. pretrained a CNN-BLSTM on a large Latin set and fine-tuned on small historical sets with layers frozen or free. Unfreezing everything was best; freezing at most CNN layers 1–3 was harmless; freezing more always hurt (<span class="mono">aradillas2021boosting</span>). Kohút and Hradiš found plain full fine-tuning a strong baseline for new writers: −25 % relative CER with 16 lines, −50 % with 256 (<span class="mono">kohut2023finetuning</span>). The sequence-modelling paper adds a twist: cross-script gain goes with the BiLSTM, not the shared CNN. So the open question is which part transfers <i>across scripts</i>:</p>
+    <ul>
+      <li><b>Hypothesis A (yours):</b> early CNN layers learn script-independent stroke features (edges, curvature, stroke width) and can be frozen after Latin + Arabic-script pre-training.</li>
+      <li><b>Hypothesis B (theirs):</b> the transferable part is sequential context, so a pretrained BiLSTM matters more than a frozen CNN.</li>
+      <li><b>Test (E7):</b> pretrain the CRNN on Latin (IAM, READ, NorHand), on Arabic-script (KHATT, NUST, PHTD) and on both. Fine-tune on K ∈ {100, 500, 1000} target lines with four freeze settings: none, CNN 1–3, all CNN, BiLSTM only. Report ΔCER against joint training. E1 (frozen vs unfrozen ViT) is the same question at VLM scale.</li>
+    </ul>
+  </article>
+
+  <!-- 6. styles -->
+  <article class="dpart" id="d-styles">
+    <h3>Script styles: the Maghrebi dot convention, measured</h3>
+    <div class="verdict"><p><b>New finding.</b> In Maghrebi script qāf carries one dot <i>above</i> (where Mashriqi writes fā) and fā one dot <i>below</i>. A Mashriqi-trained model should therefore read Maghrebi qāf as fā. Base AIN-7B does so on <b>23–27 %</b> of qāfs in RASAM, against 2–3 % in KHATT and NAKBA. The opposite error (<bdi dir="ltr" class="ar">ف→ق</bdi>) stays at 2–3 % everywhere. Fine-tuning on Muharaf cuts the error to 4–10 %. That confusion would sit inside the “dot” bucket, where nobody would otherwise see it.</p></div>
+    <figure class="fig">
+      <span class="ft">ق read as ف, per qāf in the ground truth</span>
+      <div class="legend" id="lg-mag"></div>
+      <div class="chartbox" id="ch-mag" role="img" aria-label="Rate of qaf read as fa per model and dataset with 95 percent intervals"></div>
+      <figcaption>Each model competent on a RASAM set, on the datasets it read; bars are line-bootstrap 95 % intervals. The RASAM-2 paper describes the same family of errors qualitatively for its CRNN: fā read as bā, both with a dot below (<span class="mono">vidalgorene2024rasam2</span>). A 2026 cross-dataset study finds that OCR-conditioned VLM correction fails when “the prior is script-mismatched … as in Maghribi manuscripts” (<span class="mono">farazi2026vlmocr</span>).</figcaption>
+      <details class="tbl"><summary>Show the table</summary><div class="qwrap" id="tb-mag"></div></details>
+    </figure>
+    <h4>What this opens up</h4>
+    <ul>
+      <li><b>Style is a variable, not noise.</b> The cross-lingual result (shared letters gain, unique letters do not) has a style analogue. Maghrebi shares letters with Mashriqi but not their dot conventions, which is why plain transfer fails on exactly those letters. Ajami (Maghrebi, Hausa Naskh and Thuluth hands; line images released by the CER-HV authors) is a third style-varied set for this.</li>
+      <li><b>Style-aware metric (D4):</b> report the <bdi dir="ltr" class="ar">ق→ف</bdi> and <bdi dir="ltr" class="ar">ف→ب</bdi> rates as a “style-convention error” next to the dot tax, per dataset.</li>
+      <li><b>Cheap fixes to test:</b> a one-line prompt hint (“Maghrebi script: qāf has one dot above, fā one dot below”), adding RASAM train lines (5,864 are reserved) to the fine-tune mix, and a synthetic dot-convention augmentation (catalogue item 17).</li>
+      <li><b>AraMS shows the same asymmetry</b> (<bdi dir="ltr" class="ar">ق→ف</bdi> 8 %, <bdi dir="ltr" class="ar">ف→ق</bdi> 1 %), so it may contain Maghrebi manuscripts. We should check with script-style labels (R6).</li>
+    </ul>
+  </article>
+
+  <!-- 6b. attribution spike -->
+  <article class="dpart" id="d-xai">
+    <h3>Attribution and localization spike (2026-10-10)</h3>
+    <div class="verdict"><p><b>Where a vision-language model looks can be measured, and three maps pass the checks.</b> On Qwen3-VL-4B with our fine-tuned LoRA adapter (43 lines, 482 generated tokens), hiding the patches a map points to removes 4.3 to 5.1 nats of the token’s log-probability, against 0.8 for random patches. One of the three maps works at pixel level and puts 9× more attribution on ink than chance. Wrong tokens differ from correct ones in the model’s confidence (log-prob −0.99 against −0.53) and not in how sharp their maps are. Tokens containing <bdi class="ar">خ</bdi> were wrong 7 times out of 10 in the letter panel, a lead that needs a larger sample.</p></div>
+    <p>The question came from the freeze-and-protect idea in the experiments below: before guessing which weights matter for a letter, check where the model looks for it. Explorer page with every line, token and map: <a href="https://claude.ai/artifact/DFauaBS38qdXFXdJaB7io5" style="color:var(--accent)">Arabic Attribution Explorer</a>. Setup: Qwen3-VL-4B with the E1 LoRA adapter merged, run on the 3090, greedy decoding, lines capped at 1024 px wide. The letter panel is 20 lines from RASAM-1 and Muharaf chosen for ا ل and ج ح خ; the error panel is the 15 worst Muharaf lines of this model (outputs 0.5 to 1.5 times the reference length, so misreadings and not runaway generations) plus 8 easy controls.</p>
+    <figure class="fig">
+      <span class="ft">One token, three maps: the word <bdi class="ar">بخلافات</bdi></span>
+      <img src="xai-sheet.jpg" alt="A RASAM-1 line and three overlays for the generated token خلاف: attention, relative attention, and gradient times input minus paper" style="width:100%;max-width:1100px;height:auto;border:1px solid var(--line);border-radius:4px" loading="lazy">
+      <figcaption>Top to bottom: the line, attention, relative attention, and gradient × (input − blank paper), all for the generated token «خلاف». Brighter means more attribution. The attention maps work on 32 px patches and find the word; the gradient map traces its strokes and stays quiet on the paper.</figcaption>
+    </figure>
+    <h4>Do the maps work?</h4>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Check</th><th>Attention</th><th>Relative attention</th><th>Gradient × (input − paper)</th><th>Random patches</th></tr></thead>
+      <tbody>
+        <tr><td>Log-prob lost with the top 10 % of patches hidden (nats)</td><td class="n">5.1</td><td class="n">5.1</td><td class="n">4.3</td><td class="n">0.8</td></tr>
+        <tr><td>Attribution on ink (1 = chance)</td><td class="n">1.2</td><td class="n">1.0</td><td class="n">9.0</td><td class="n">–</td></tr>
+        <tr><td>Right-to-left order along the line (−1 = perfect)</td><td class="n">−0.94</td><td class="n">−0.91</td><td class="n">−0.95</td><td class="n">–</td></tr>
+        <tr><td>Share of attribution in the top 10 % of patches</td><td class="n">0.47</td><td class="n">0.36</td><td class="n">0.58</td><td class="n">–</td></tr>
+      </tbody>
+    </table></div>
+    <p>The ink check cannot separate the two attention maps from chance, because a 32 px patch holds both ink and paper. For them the deletion test and the overlays carry the evidence.</p>
+    <h4>Wrong tokens against correct tokens</h4>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th></th><th>Correct tokens</th><th>Wrong tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Tokens</td><td class="n">283</td><td class="n">199</td></tr>
+        <tr><td>Model log-prob of its own token</td><td class="n">−0.53</td><td class="n">−0.99</td></tr>
+        <tr><td>Concentration, attention</td><td class="n">0.47</td><td class="n">0.47</td></tr>
+        <tr><td>Concentration, gradient map</td><td class="n">0.59</td><td class="n">0.57</td></tr>
+        <tr><td>Log-prob lost when the top 10 % is hidden, relative attention (nats)</td><td class="n">5.5</td><td class="n">4.6</td></tr>
+      </tbody>
+    </table></div>
+    <p>The error panel was built from the worst lines, so 41 % wrong tokens is not an error rate. Hiding the highlighted patches costs a wrong token a little less than a correct one, which fits a model leaning less on what it looks at. We did not find the pattern we had expected, diffuse attention on errors.</p>
+    <h4>Letter families (letter panel only)</h4>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Letter</th><th>Tokens</th><th>Wrong</th><th>Mean log-prob</th></tr></thead>
+      <tbody>
+        <tr><td><bdi class="ar">ا</bdi> alef</td><td class="n">104</td><td class="n">37 %</td><td class="n">−0.55</td></tr>
+        <tr><td><bdi class="ar">ل</bdi> lam</td><td class="n">63</td><td class="n">27 %</td><td class="n">−0.57</td></tr>
+        <tr><td><bdi class="ar">ج</bdi> jim</td><td class="n">8</td><td class="n">25 %</td><td class="n">−0.63</td></tr>
+        <tr><td><bdi class="ar">ح</bdi> ha</td><td class="n">12</td><td class="n">25 %</td><td class="n">−0.40</td></tr>
+        <tr><td><bdi class="ar">خ</bdi> kha</td><td class="n">10</td><td class="n">70 %</td><td class="n">−0.88</td></tr>
+      </tbody>
+    </table></div>
+    <p>A token can contain more than one of these letters, and the jim, ha and kha counts are small. Read the خ row as a lead. If it holds on a larger sample it is the first letter-specific weakness we have, and a natural target for the freezing idea.</p>
+    <h4>What we learned on the way</h4>
+    <div class="keys">
+      <div class="key"><b>Speed</b><span>The first version took 66 minutes for one line, because the whole model ran in eager-attention mode to expose attention weights. With fast attention for everything except one pass, lines capped at 1024 px and three methods, a line takes about 15 s.</span></div>
+      <div class="key"><b>A sign bug hid the ink</b><span>Normalised pixels are positive for paper and negative for ink, so the positive part of gradient × input with a zero baseline kept the paper. A blank-paper baseline fixed it: ink enrichment went from 0.25 to 9.</span></div>
+      <div class="key"><b>Dropped methods</b><span>Attention rollout (flat on deletion, mass on the scan border) and its relative variant failed. SmoothGrad and Integrated Gradients were dropped for cost and were not retested after the baseline fix.</span></div>
+      <div class="key"><b>Deletion alone is not enough</b><span>The literature warns that deletion and insertion depend on the fill and can contradict each other. We filled with a median paper patch and added a random baseline, ink enrichment and right-to-left order.</span></div>
+      <div class="key"><b>Limits</b><span>Two datasets, 43 lines, one model, the width cap changed at least one output, and the Muharaf public copy is stored at 60 px. No check yet that the model depends on the image at all.</span></div>
+    </div>
+    <h4>Ideas on the table</h4>
+    <div class="keys">
+      <div class="key"><b>CTC alignment as a location reference <span class="pill o">X-B1, X-B2</span></b><span>A CTC recogniser gives a frame-by-frame letter alignment, so every line gets approximate letter spans without box labels. We would validate them against VML-HD sub-word boxes, then score each attribution map by how much of a token’s attribution falls inside its own span (a pointing game). Both sides come from different models, which is the point, and also a risk on cursive joins.</span></div>
+      <div class="key"><b>Letter and word grounding with LocateAnything-3B <span class="pill o">X-C1, X-C2</span></b><span>NVIDIA’s grounding model finds words and text in images and ships a LoRA recipe (r = 64 on the LLM, projector trainable). It needs its own environment (transformers 4.57.1, peft 0.12.0) and a non-commercial research licence. Plan: a zero-shot probe on 30 lines for a word, a PAW, a letter and the dots, then a LoRA fine-tune on word and PAW pseudo-labels from X-B1 only if the probe shows promise.</span></div>
+      <div class="key"><b>Attribution-guided LoRA freezing <span class="pill">X-D1, gated</span></b><span>Pixel attribution says which patches matter, not which weights. The weight-level step needs parameter attribution (per-letter gradient or Fisher information on the LoRA matrices, plus layer and head ablation). Then a freeze sweep on groups of similar letters (ا ل; ج ح خ). Expected gain is small; the main output is whether letter-specific circuits exist. Starts only if the maps hold up and X-B1 gives a trustworthy reference.</span></div>
+      <div class="key"><b>Error patterns <span class="pill o">X-A2b</span></b><span>More lines, per-letter confusion pairs next to their maps, and whether the maps land on dots. The panels so far show lower confidence on wrong tokens and a possible خ weakness.</span></div>
+      <div class="key"><b>Other models</b><span>The same checks on the char-CTC CRNN (its alignment is attribution by construction) and on the larger VLMs we benchmark. Attention maps need eager weights, which some model code does not expose.</span></div>
+      <div class="key"><b>Script-styles inventory <span class="pill">S1, design pending</span></b><span>An inventory of the handwritten and calligraphic styles (naskh, thuluth, muhaqqaq, rayḥānī, tawqīʿ, dīwānī, ruqʿa, nastaʿlīq, kūfī, and the Maghrebi family), with written traits, period and region, which of our datasets contain each, and visual samples with licences recorded. Maghrebi is a regional script family and not another name for thuluth, which is one of the six classical pens. It would also give a style label to split CER by.</span></div>
+    </div>
+    <h4>Risks</h4>
+    <ul>
+      <li><b>Circular evaluation.</b> The reference spans and the maps come from different models, but both can be wrong in the same direction on cursive joins. Check spans against VML-HD boxes and by hand.</li>
+      <li><b>Letters are not objects.</b> Initial, medial and final forms of one letter differ and dots are separate marks. Start at PAW and word level and treat dots as their own target.</li>
+      <li><b>Low resolution.</b> The public Muharaf copy is 60 px high, so its maps are coarse whatever the method.</li>
+      <li><b>Licence.</b> LocateAnything weights are non-commercial research; anything fine-tuned from them is too. Record that next to any released artefact.</li>
+      <li><b>Compute.</b> One 24 GB GPU is shared between attribution runs and any LocateAnything work.</li>
+    </ul>
+  </article>
+
+  <!-- 7. augmentation -->
+  <article class="dpart" id="d-aug">
+    <h3>Augmentation catalogue</h3>
+    <p>“Borrowed” items come from the literature, with the source given. “Ours” items did not turn up in our search and should be checked again before we claim them. “Label kept” means the transcription does not change. Each item names the finding it targets.</p>
+    <p>Each row has a verdict and an <b>Examples</b> button that opens the same augmentation applied to real lines from KHATT, Muharaf and RASAM-1, with the label underneath. Verdicts come from looking at these previews: <span class="vd vd-safe">safe</span> <span class="vd vd-promising">promising</span> <span class="vd vd-caution">caution</span> <span class="vd vd-risky">risky</span> <span class="vd vd-none">none</span> (no preview). Built by <span class="mono">scripts/build_aug_gallery.py</span>.</p>
+    <div class="qwrap" id="tb-aug"></div>
+  </article>
+
+  <!-- 8. experiments -->
+  <article class="dpart" id="d-exp">
+    <h3>Experiments this section adds to the backlog</h3>
+    <div class="qwrap" id="tb-exp"></div>
+  </article>
+  </div>
+</section>
+
+<section id="run-next">
+  <div class="section-head">
+    <div class="eyebrow">Part 3 · Outcomes · run next</div>
+    <h2>Tests we can run now</h2>
+    <p>Ordered by cost and how much they settle. CPU items use only predictions, ground truth and images already in the local cache. GPU items reuse adapters and checkpoints we already have.</p>
+  </div>
+  <div class="qwrap"><table class="queue" id="queue">
+    <thead><tr><th>#</th><th>Test</th><th>From</th><th>Done when</th><th>Compute</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</section>
+
+<footer>
+  <span>Statuses: <b>Applied</b> = we built it and have a result. <b>Partly applied</b> = some of the method is in our pipeline. <b>Not yet</b> = read, not acted on.</span>
+  <span>Task IDs (R2.6, E1.1 …) refer to <span class="mono">docs/research/NEXT_STEPS.md</span>. New tasks proposed here are marked “new” and have been added to the backlog.</span>
+  <span>The X-A, X-B, X-C and X-D tasks come from the attribution spike. Their plan is <span class="mono">docs/research/xai-attribution-plan.md</span> on branch <span class="mono">worktree-xai-attribution-spike</span>; they are not yet in <span class="mono">NEXT_STEPS.md</span>.</span>
+</footer>
+</div>
+</div>
+
+<script src="htr-dossier-data.js" charset="utf-8"></script>
+<script src="aug-gallery-data.js" charset="utf-8"></script>
+<script>
+const DONE = {applied:["Applied","s-applied"], partial:["Partly applied","s-partial"], none:["Not yet","s-none"]};
+const NEXT = {cpu:["Test now · CPU","n-cpu"], gpu:["Test now · GPU","n-gpu"], design:["Dataset design","n-design"], later:["Later","n-later"], none:["Background only","n-none"]};
+
+const GROUPS = [
+ {id:"htr", name:"Arabic-script HTR studies", note:"The closest prior work to ours; same authors, same datasets. Plots and notes: see the deep dive below"},
+ {id:"sys", name:"Arabic OCR systems and benchmarks", note:"How current models are built and scored"},
+ {id:"script", name:"Script structure and language statistics", note:"Rasm, dots, components, normalisation, entropy"},
+ {id:"eval", name:"Evaluation and dataset methodology", note:"The measurement lineage we copy"},
+ {id:"data", name:"Datasets and writers", note:"Datasheet fields and the school-dataset design"},
+ {id:"read", name:"Reading and perception", note:"The human-side analogue of each property"},
+ {id:"xai", name:"Attribution, grounding and localization", note:"Where a model looks, and finding a letter or word in the image. Results: see the attribution spike below"}
+];
+
+const P = [
+// ---------- HTR
+{g:"htr", key:"alazzawi2026gap", t:"Performance Gap Analysis between Latin and Arabic Scripts HTR", v:"Al-azzawi, Barney, Liwicki · ICPR 2026 Workshops (TIPS) · arXiv 2606.18884",
+ m:"One CRNN trained on 6 Arabic-script sets (KHATT, Muharaf, PHTD, NUST-UHWR, PHTI, Ajami) and 3 Latin sets (IAM, READ-2016, NorHand) at training sizes from 100 lines to full; HTR-VT transformer as a control. Counts visual shapes and the share of substitutions between visually similar letters.",
+ r:"Arabic−Latin gap +26.6 CER at 100 lines, +5.8 at full data; cleaning halves it at 100 lines (+24.2 → +11.8) but +4.4 remains at full data. 82 visual shapes vs 50 in IAM, heavy-tailed. About 30 % of Arabic substitutions are similar-shape confusions vs 15 % in IAM (top pairs <span class='ar'>ف↔ق ب↔ي ت↔ن</span>). KHATT needs ~150k training characters for 10 % CER, IAM ~34k. Explicit positional-form labels did not help.",
+ b:"The similar-substitution metric and the deletion/substitution/insertion profile; the shape count and tail; sizing training data in characters per shape; their K grid for learning curves; lexical-diversity statistics.",
+ d:"applied", o:"R2.6 done (<a href='#d-r26' style='color:var(--accent)'>deep dive</a>). Our metric reproduces their substitution rate on their published CRNN predictions (4.17 %). On the same Muharaf lines, similar-letter substitutions are 16–23 % of a VLM's substitutions against 29–41 % of the CRNN's, but 1.7–3.6 vs 1.2–1.5 per 100 characters: VLMs do not confuse dots less, they make more of every other error. Their 82 shapes merge isolated and final forms; under that rule Muharaf train has 88.",
+ n:"cpu", x:"R1.6 lexical diversity and R1.7 train/test shape tail (text only), then E3′: our LoRA learning curve on their K grid, next to their CRNN curve, and E5, their CRNN as a reference on all our blocks.", id:"R1.6 · R1.7 · E3′ · E5"},
+{g:"htr", key:"alazzawi2026labelerr", t:"A Human-in-the-Loop Label Error Detection Framework Applied to Arabic-Script HTR Datasets", v:"Al-azzawi, Barney, Kovács, Liwicki · arXiv 2601.16713, 2026",
+ m:"A CER-based detector ranks suspicious lines; humans verify and categorise each flag (script mismatch, segmentation, orientation, wrong transcription, non-text).",
+ r:"Muharaf: 6.4 % train and 9.4 % val/test label errors; Ajami 8.5–9.2 %; KHATT and NUST-UHWR under 1 %. Cleaning test splits gives up to −1.6 CER; retraining on cleaned train adds little except for Ajami. Released: review logs, CRNN predictions for every line, pseudo-labels, cleaned PHTD on the Hub (no licence file).",
+ b:"Label-error audit before any comparison; flag categories; the human-verified logs as ground truth for our detector; their CRNN predictions as a free CRNN reference.",
+ d:"applied", o:"X2: dropping the 126 flagged Muharaf test lines moves CER by −0.4 to +0.9 points over 13 models and changes no rank. Their “script mismatch” flags are correct labels that VLMs read well. A <a href='https://claude.ai/artifact/FAEdbYULz3g88KQhXoKiPQ' style='color:var(--accent)'>label-review tool</a> now holds 458 candidates (all 218 CER-HV-reviewed test lines plus the top consensus suspects per block); verdicts are stored per reviewer, outside the datasets.",
+ n:"cpu", x:"R4.1: review the candidates in the tool, then report a label-error rate per dataset and the agreement (κ) with the CER-HV verdicts on the 218 lines they reviewed.", id:"R4.1"},
+{g:"htr", key:"alazzawi2026crossling", t:"Cross-lingual Learning within Arabic Script for Low-resource HTR", v:"Al-azzawi, Barney, Liwicki · arXiv 2605.02089, 2026",
+ m:"Joint training across Arabic-script languages (KHATT, NUST-UHWR Urdu, PHTD Persian; UNHD as a check) with K ∈ {100, 500, 1000} target lines and the auxiliary sets in full, for CRNN and HTR-VT.",
+ r:"Joint training helps at 100–1,000 lines (KHATT CRNN 26.0 → 19.8 at K = 100), most for the low-diversity PHTD (32.5 → 18.3). Gains go to shared, rare letters (ث ض ظ); language-unique letters stay flat or get worse. CRNN is more data-efficient than HTR-VT. Balanced batches did not help.",
+ b:"Cross-script check for gate V4; Persian/Urdu lines as cheap extra data at small sizes; per-character ΔCER by frequency; their diversity statistics (duplication, Jaccard, TTR).",
+ d:"partial", o:"Related results: our Qwen3-VL-4B LoRA on 8k Muharaf lines transfers to KHATT and NAKBA (~30 % CER) but not to Maghrebi RASAM (~50 %). We found why for one letter: in Maghrebi script qāf has its dot above, so base AIN-7B reads <span class='ar'>ق</span> as <span class='ar'>ف</span> on 23–27 % of RASAM qāfs (2–3 % elsewhere). See the <a href='#d-styles' style='color:var(--accent)'>styles</a> and <a href='#d-aug' style='color:var(--accent)'>augmentation</a> notes.",
+ n:"gpu", x:"E7: multilingual pre-training with a freeze sweep (none, CNN 1–3, all CNN, BiLSTM only) against their joint training; E6: Maghrebi adaptation (prompt hint, RASAM train lines, dot-convention augmentation).", id:"E6 · E7 · R10"},
+{g:"htr", key:"alazzawi2026seqmodel", t:"Understanding Cross-Language Transfer Improvements in Low-Resource HTR: The Role of Sequence Modeling", v:"Al-azzawi, Liu, Habib, Barney, Liwicki · arXiv 2605.05900, 2026",
+ m:"The same J = 0 vs J = 2 protocol for a CNN-only CTC model (5.8 M; widened to 10.4 M as a capacity control) and the CRNN (10.1 M) on KHATT, NUST-UHWR and PHTD.",
+ r:"The CRNN gains more and more steadily from cross-language data (PHTD −13.1 at K = 100) than CNN-only (−6.1), which sometimes loses at K ≥ 500. Widening the CNN does not close the difference: the transfer goes with sequence modelling, not shared visual features (association, not causation).",
+ b:"Report ΔCER, not only absolute CER, for transfer; a capacity-matched control arm; the question of which component transfers.",
+ d:"none", o:"Bears directly on the freeze-early-layers idea: within Latin, freezing more than the first CNN layers hurts (aradillas2021boosting), and this paper places cross-script gain in the BiLSTM. Our E1 (frozen vs unfrozen ViT) asks the same question at VLM scale.",
+ n:"gpu", x:"E7 freeze sweep, with their CNN-only arm as a control.", id:"E7"},
+// ---------- systems
+{g:"sys", key:"vidalgorene2024rasam2", t:"Enhancing Arabic Maghribi Handwritten Text Recognition with RASAM 2", v:"Vidal-Gorène, Salah, Lucas, Decours-Perez, Perrier · CHR 2024 (CEUR 3834)",
+ m:"3,750 lines from 15 Maghribi manuscripts (BULAC); word-based CRNN; in-domain and out-of-domain (Oriental) tests.",
+ r:"~40 % lower CER than the RASAM-1 model across new manuscripts; documents Maghribi-specific confusions (fā read as bā, nūn as qāf, each with a dot below).",
+ b:"A catalogue of style-specific letter confusions; RASAM train lines for adaptation.",
+ d:"partial", o:"We quantified the qāf→fā error it predicts: 23–27 % of RASAM qāfs for base AIN-7B, 2–3 % elsewhere.",
+ n:"gpu", x:"E6 Maghrebi adaptation arms.", id:"E6"},
+{g:"sys", key:"farazi2026vlmocr", t:"When Do VLMs Help Arabic Manuscript OCR? A Cross-Dataset Study", v:"Farazi, Alam, Maaradji, Maamar, Mubarak, Zaghouani · arXiv 2608.22366, 2026",
+ m:"Traditional OCR, general and Arabic VLMs, and OCR-conditioned VLM correction on eight Arabic datasets.",
+ r:"No method wins everywhere. VLMs match Tesseract on line-level manuscripts and beat it at page level. OCR-conditioned correction fails when the prior is script-mismatched (Maghribi, student handwriting).",
+ b:"Style as a failure axis for VLM priors; page vs line comparisons.",
+ d:"none", o:"Consistent with our Maghrebi finding. Read in full before E6 (only the abstract has been checked).",
+ n:"later", x:"Compare their dataset list with ours; take their correction setup as an E6 arm if it is cheap.", id:"E6"},
+{g:"eval", key:"aradillas2021boosting", t:"Boosting Offline Handwritten Text Recognition in Historical Documents with Few Labeled Lines", v:"Aradillas, Murillo-Fuentes, Olmos · IEEE Access 9, 2021",
+ m:"Transfer from a large Latin HTR set to small historical sets, freezing CNN layers or not; augmentation; a correction for noisy labels.",
+ r:"Unfreezing every layer works best; freezing at most the first 1–3 CNN layers is harmless; freezing more always hurts. Up to −6 CER points.",
+ b:"The freeze-sweep design and its prior result, for E7.",
+ d:"none", o:"Prior for the freeze-early-layers idea. Within Latin, freezing more than the first CNN layers does not pay.",
+ n:"gpu", x:"E7 extends it across scripts (Latin and Arabic-script pre-training into Arabic).", id:"E7"},
+{g:"eval", key:"kohut2023finetuning", t:"Finetuning Is a Surprisingly Effective Domain Adaptation Baseline in Handwriting Recognition", v:"Kohút, Hradiš · ICDAR 2023, LNCS 14190",
+ m:"Full fine-tuning of a pretrained HTR model to new writers and domains; effect of augmentation, data size and the quality of the pretrained network.",
+ r:"−25 % relative CER with 16 lines and −50 % with 256 lines of a new writer.",
+ b:"A strong baseline every adaptation arm (E6, E7) must beat.",
+ d:"none", o:"—",
+ n:"later", x:"Use full fine-tuning as the control arm in E6 and E7.", id:"E7"},
+{g:"sys", key:"Baseer-Nakba", t:"Baseer-Nakba (NAKBA-NLP 2026 shared-task system, 1st place)", v:"Hennara et al. · ACL Anthology 2026.nakbanlp-1.27",
+ m:"Two stacked fine-tunes: general Baseer, then Muharaf as an intermediate domain (grayscale), then NAKBA. Vision encoder unfrozen with a differential LR (decoder 1e-4, encoder 9e-6). Final model averages epoch-1 and epoch-5 weights.",
+ r:"Ablation ladder on NAKBA dev: 0.19 CER (NAKBA only) → 0.16 (+Muharaf first) → 0.10 (+unfrozen encoder, diff-LR) → 0.079 (+weight averaging). Sequential Muharaf→NAKBA beat a joint mix (0.16 vs 0.18).",
+ b:"Differential-LR encoder unfreezing; curriculum instead of a single mix; checkpoint weight averaging; replay to avoid forgetting.",
+ d:"applied", o:"E1 arm (c) uses their exact encoder LR (9e-6): in-domain Muharaf CER 36.3 % → 28.7 % (−7.6, 95 % CI −9.1 to −6.2, one seed). The gain is in letter identity; the dot share did not fall. We also found Baseer-Nakba forgets its home domain under our generic recipe (1.0 % → 3.4 % CER).",
+ n:"gpu", x:"(1) E1.1: bench arm (c) on KHATT, NAKBA, RASAM-1/2 with the 142 MB adapter. (2) Weight averaging: the AIN-7B NAKBA run has spread checkpoints (400, 800, 1200, 1600, 1936 steps), so averaging early and late adapters is a cheap test; the visft-difflr run only kept its last 20 steps. (3) E4 replay later.", id:"E1.1 · new"},
+{g:"sys", key:"Baseer", t:"Baseer: general Arabic document-to-Markdown VLM", v:"Hennara et al. · arXiv 2509.18174, 2025",
+ m:"Qwen2.5-VL-3B, full fine-tune with the vision encoder frozen, on 500k pairs: 300k synthetic (Markdown → HTML → Word → PDF → image, 39 fonts, 29 augmentations) and 200k real scanned documents.",
+ r:"On Misraj-DocOCR (400 images) WER 0.25 vs 0.87–1.36 for untuned Qwen2.5-VL and GPT-4o-mini. Wins structure metrics on a KITAB-Bench subsample; loses text accuracy to Dots.ocr.",
+ b:"A synthetic rendering pipeline for printed lines; frozen-encoder full fine-tune as a reference recipe.",
+ d:"partial", o:"Benchmarked as a model through Baseer-Nakba. No synthetic data in our training so far.",
+ n:"later", x:"When we add a line-level printed set (X5), use a font-rendered set as the printed regression check.", id:"X5"},
+{g:"sys", key:"Ketaba-OCR", t:"Ketaba-OCR (NAKBA-NLP 2026, 2nd–3rd place)", v:"ACL Anthology 2026.nakbanlp-1.21",
+ m:"QLoRA (4-bit) with DoRA/rsLoRA on an already HTR-pretrained Arabic-English base, plus a “Linear+Boost” ensemble across adapters.",
+ r:"CER 0.082–0.094, close to Baseer-Nakba at a fraction of the compute.",
+ b:"Start from an HTR-pretrained base; cheap adapter variants; ensembling.",
+ d:"partial", o:"We checked the ensemble ceiling ourselves: picking the best model per line beats the best single model by only 0.8–3.6 CER points on line sets, so ensembling is demoted.",
+ n:"later", x:"DoRA/rsLoRA as a cheap arm only after E1 says whether the encoder or the decoder is the bottleneck.", id:"—"},
+{g:"sys", key:"Qari-OCR", t:"Qari-OCR: synthetic printed-Arabic pipeline", v:"arXiv 2506.02295, 2025",
+ m:"HTML rendering in 12 fonts with three degradation tiers (clean, moderate, heavy).",
+ r:"Fine-tuned Qwen2-VL models for printed Arabic, including diacritised text.",
+ b:"Tiered degradation as a ready design for single-factor render probes.",
+ d:"none", o:"Not used. Qari-0.2 is on the leaderboard as a model (11 % of lines tail-cut in R2.8).",
+ n:"later", x:"Reuse the three-tier design for the R9 causal renders (diacritics on/off, x-height sweep).", id:"R9"},
+{g:"sys", key:"heakl2025kitab", t:"KITAB-Bench: A Multi-Domain Benchmark for Arabic OCR and Document Understanding", v:"Heakl et al. · Findings of ACL 2025",
+ m:"Multi-domain Arabic OCR benchmark with results sliced by font, diacritics, elongation (kashida) and tilt.",
+ r:"Diacritics and kashida trigger hallucinations and broken words in VLMs.",
+ b:"Slicing results by script property; a hallucination measure.",
+ d:"partial", o:"Its subsets are in our benchmark. We found <span class='mono'>kitab_muharaf</span> is 86.5 % in Muharaf train (now masked for fine-tunes), and <span class='mono'>kitab_hindawi</span> / <span class='mono'>historicalbooks</span> are page-scale, not lines. Base Qwen3-VL-4B inserts 10.5 marks per 100 letters on <span class='mono'>kitab_patsocr</span> (diacritic tax up to 10 CER points).",
+ n:"cpu", x:"R2.5 fluency-hallucination rate (unaligned predicted words that are frequent MSA words), then slice it by GT diacritics and tatweel to test their claim on our predictions.", id:"R2.5"},
+{g:"sys", key:"hegghammer2021noisy", t:"OCR with Tesseract, Amazon Textract, and Google Document AI: A Benchmarking Experiment", v:"Hegghammer · J. Computational Social Science 5(1), 2021",
+ m:"Apply the same synthetic noise (blur, skew, salt-and-pepper, etc.) to English and Arabic pages and compare engines.",
+ r:"Arabic degrades far more than English under identical noise.",
+ b:"Controlled degradation as a causal probe; a check on whether binarise/deskew help each model family.",
+ d:"none", o:"Image features (blur, contrast, skew, ink) are measured per line (R6.0) but no noise has been applied yet.",
+ n:"gpu", x:"On a 200-line KHATT subset: downscale to Muharaf's 60 px, and add blur/JPEG at three levels; re-score 3–4 models (local or API, cache-backed). Pairs with the ISRI resolution probe.", id:"R9 · R8c"},
+// ---------- script
+{g:"script", key:"alshaibani2025dotless", t:"Dotless Arabic Text for Natural Language Processing", v:"Al-Shaibani, Ahmad · Computational Linguistics 51(2), 2025",
+ m:"Re-encode Arabic without dots (31 symbols → 19 rasm classes); compare entropy, Zipf and Heaps laws, and 7 NLP tasks against dotted text.",
+ r:"Character entropy 4.27 → 3.72–3.87 bits, so dots carry ~0.4–0.55 bits per character. Word entropy 12.2–13.2 bits (English 9.7–11.0); vocabulary 1.8–2.3× English. Tasks perform comparably on dotless text.",
+ b:"The rasm map (now our rasm-CER); the idea that context can restore dots.",
+ d:"applied", o:"R2.2 rasm-CER and dot tax are in <span class='mono'>characterize/errors.py</span>. About half of letters are dot-ambiguous in every dataset; dots carry 0.6–0.8 bits per letter in our data. Dot-only errors are a median 1.8 CER points.",
+ n:"cpu", x:"Dot-restoration ceiling: train a character n-gram (or small LM) on Muharaf train, and restore dots on predictions whose rasm is right but dots wrong. Report share fixed vs share broken, and rare words separately. The gain is capped at the dot tax (~1.8 points), so this decides cheaply whether post-OCR dot repair is worth building.", id:"new"},
+{g:"script", key:"shannon1951", t:"Prediction and Entropy of Printed English", v:"Shannon · Bell System Technical Journal 30(1), 1951",
+ m:"Human next-letter prediction to estimate entropy in context.",
+ r:"English ≈ 0.6–1.3 bits per character in context, vs ~4.1 unconditioned.",
+ b:"Conditional entropy as the right measure of how much context could repair.",
+ d:"none", o:"Only unconditioned entropies so far.",
+ n:"cpu", x:"Compute H(dots | rasm, context) with the same n-gram as the dot-restoration test. A low value says dots are recoverable from context; it also gives the Arabic counterpart to Shannon's figure.", id:"new"},
+{g:"script", key:"doctor2022graphemic", t:"Graphemic Normalization of the Perso-Arabic Script", v:"Doctor, Gutkin, Johny, Roark, Sproat · G21C 2022 · arXiv 2210.12273",
+ m:"Documented normalisation that folds visually identical but differently encoded letters across 8 Perso-Arabic languages.",
+ r:"Significant gains for language modelling and machine translation.",
+ b:"An explicit, justified normalisation ladder where each rung is lossless or a deliberate fold.",
+ d:"applied", o:"R2.1 normalisation ladder (raw → canonical → tatweel/digits → orthographic folds → no diacritics → rasm → no spaces) scored on 194 model × dataset pairs.",
+ n:"cpu", x:"R2.7: strip marks on undiacritised-policy sets and compare model rankings (rank correlation). R4.3: report words spelled several ways inside one dataset (hamza, ta-marbuta, ya) to justify which folds are policy.", id:"R2.7 · R4.3"},
+{g:"script", key:"lehal2013urdu", t:"Recognition of Nastalique Urdu Ligatures", v:"Lehal · MOCR 2013",
+ m:"Recognise ligatures (between character and word) split into a primary component (body) and secondary components (dots, diacritics).",
+ r:"About 2,300 units cover 99 % of text.", warn:"figures as summarised, not checked",
+ b:"The PAW as Arabic's ligature unit; the body/dots split.",
+ d:"partial", o:"PAWs counted per word (R1.1). As a difficulty predictor, PAWs per word dropped out once word length was controlled.",
+ n:"cpu", x:"PAW-inventory coverage curve: how many distinct PAWs (and distinct rasm-PAWs) cover 95 % / 99 % of each dataset. Text only, minutes on CPU. Tells us whether a PAW-level output unit is even plausible for Arabic.", id:"new"},
+{g:"script", key:"zhang2020ran", t:"Radical Analysis Network for Learning Hierarchies of Chinese Characters", v:"Zhang, Du, Dai · Pattern Recognition 103, 2020",
+ m:"Decompose characters into radicals and spatial structure so models recognise rare or unseen characters.",
+ r:"Handles the long tail of thousands of Chinese characters with ~500 radicals.",
+ b:"Arabic decomposition into rasm + i'jam + harakat, as a metric and possibly as an output head.",
+ d:"partial", o:"Used as a metric (rasm-CER, dot tax). Since dots are only ~8 % of VLM error, a separate rasm+dots output head has a weak case for VLMs.",
+ n:"later", x:"R2.6 answered it: dot pairs are 13 % of letter substitutions and 11–17 % of a fine-tuned VLM's substitutions. That is no case for a separate dots head. Style-specific dots (Maghrebi ق) are the exception worth a targeted fix (E6).", id:"—"},
+{g:"script", key:"alomari2026iconicity", t:"Character Iconicity vs. Arbitrariness: An Arabic NLP Perspective", v:"Alomari, Ahmad, Al-shaibani · arXiv 2608.02935, 2026",
+ m:"2,000 random remappings of letters onto the 19 undotted shapes, then train NLP models.",
+ r:"NLP models rely on distribution, not on glyph shape. The visual distinctions matter for OCR, not for downstream language modelling.",
+ b:"A reason to ask whether the OCR decoder's tokenizer keeps dot-pairs related.",
+ d:"none", o:"Tokenizer audit done for the char-CTC run: Qwen3 1.9 chars/token, Aranizer 2.7, character 1.0.",
+ n:"cpu", x:"E2: for the Qwen and PaliGemma tokenizers, check whether dot-pair words (e.g. <span class='ar'>ب/ت</span>, <span class='ar'>ف/ق</span> swaps) get unrelated token sequences, and join fertility to per-line CER.", id:"E2"},
+{g:"script", key:"lorigo2006survey", t:"Offline Arabic Handwriting Recognition: A Survey", v:"Lorigo, Govindaraju · IEEE TPAMI 28(5), 2006",
+ m:"Survey; the canonical list of Arabic HTR difficulties.",
+ r:"Positional forms, PAWs, dots, ligatures, vertical overlap, baseline variation.",
+ b:"A checklist: each difficulty becomes a measurement.",
+ d:"applied", o:"Positional forms, PAWs, dots, lam-alef and tatweel are measured. Medial forms are hardest in 9 of 10 blocks; tall strokes (<span class='ar'>ا ل</span>) easiest.",
+ n:"later", x:"Vertical overlap and baseline from images (R6 second pass).", id:"R6"},
+// ---------- eval
+{g:"eval", key:"rice1995isri", t:"The Fourth Annual Test of OCR Accuracy (ISRI/UNLV)", v:"Rice, Jenkins, Nartker · ISRI Annual Research Report, 1995",
+ m:"Many engines on thousands of pages; page quality groups by median accuracy across engines; resolution as a variable.",
+ r:"300 → 200 dpi gives about 50 % more errors.", warn:"details as reported in the test series",
+ b:"Cross-model consensus difficulty; resolution as a first-class variable.",
+ d:"applied", o:"R3.1: consensus difficulty quintiles over 10 complete blocks, split-half reliability 0.54–0.81 on line sets. Public Muharaf is stored at 60 px (≈12 px letter core) vs 146 px for KHATT; fewer ink pixels per character means harder lines within RASAM-1 and NAKBA-blind.",
+ n:"gpu", x:"R9 resolution probe: downscale KHATT lines to 60 px and re-score; X7 checks whether full-resolution Muharaf scans exist.", id:"R9 · X7"},
+{g:"eval", key:"nagy2000frontier", t:"Optical Character Recognition: An Illustrated Guide to the Frontier", v:"Nagy, Nartker, Rice · Proc. SPIE 3967, 2000",
+ m:"Taxonomy of OCR error causes: imaging defects, similar symbols, typography.",
+ r:"Error causes, not just counts, guide fixes.",
+ b:"An aligned error taxonomy.",
+ d:"applied", o:"R2.4 taxonomy over competent pairs: other letter errors 58 %, whole-line failures 10 %, space 9 %, diacritic 7 %, orthographic 6 %, dot 5 %, shape-similar 3 %, lam-alef 3 %.",
+ n:"none", x:"Done (R2.6, 2026-10-09): the 58 % “other” is letter substitutions outside the groups 25 %, letter deletions 17 %, letter insertions 12 %, non-letters 4 %.", id:"R2.6"},
+{g:"eval", key:"ye2013diqa", t:"Document Image Quality Assessment: A Brief Survey", v:"Ye, Doermann · ICDAR 2013", warn:"venue details unverified",
+ m:"Predict OCR accuracy from image features alone, without ground truth.",
+ r:"Feature- and learning-based quality predictors.",
+ b:"A no-ground-truth difficulty predictor that also works on unlabelled school scans.",
+ d:"partial", o:"R6.0: 11 image features raise explained line difficulty from 6–32 % (text) to 15–63 % (text + image). Most image coefficients are unstable; ink pixels per character is the stable one.",
+ n:"cpu", x:"Fit an image-only predictor and test it leave-one-dataset-out (gate V2). If it holds, it is a DIQA-style score we can run on any new data.", id:"R7"},
+{g:"eval", key:"baek2019wrong", t:"What Is Wrong With Scene Text Recognition Model Comparisons?", v:"Baek et al. · ICCV 2019",
+ m:"Audit of evaluation inconsistencies across scene-text papers.",
+ r:"Inconsistent evaluation subsets alone caused accuracy gaps above 15 %.",
+ b:"Benchmark hygiene before any comparison.",
+ d:"applied", o:"Found and fixed: <span class='mono'>kitab_muharaf</span> leakage (86.5 %), page-scale sets under a line prompt, output-token caps (Gemini 3.6 Flash truncated on 74 % of lines), diacritic-policy mismatch.",
+ n:"cpu", x:"R4.2 near-duplicate leakage (MinHash on normalised text plus a perceptual image hash), and the ~6 % of <span class='mono'>muharaf_lines</span> test lines also in train. X6 fixes the token caps.", id:"R4.2 · X6"},
+{g:"eval", key:"rodriguez2021irt", t:"Evaluation Examples are not Equally Informative", v:"Rodriguez et al. · ACL-IJCNLP 2021",
+ m:"Item response theory on leaderboards: models as test takers, items get difficulty and discrimination.",
+ r:"Finds informative items and annotation errors; ranks models more stably with fewer items.",
+ b:"Per-line difficulty and discrimination; smaller, sharper test sets.",
+ d:"none", o:"Consensus difficulty (median CER) exists; no IRT fit yet.",
+ n:"cpu", x:"R3.2: fit a 2PL model per block on the existing predictions. Low-discrimination lines are label-noise candidates for R4.1; high-discrimination lines form the challenge subsets (R3.3).", id:"R3.2"},
+{g:"eval", key:"swayamdipta2020cartography", t:"Dataset Cartography: Mapping and Diagnosing Datasets with Training Dynamics", v:"Swayamdipta et al. · EMNLP 2020",
+ m:"Track each training item's confidence and variability across epochs.",
+ r:"Items that stay hard throughout training are often mislabelled; ambiguous items help generalisation.",
+ b:"A training-side label-noise detector for Muharaf train.",
+ d:"none", o:"No per-sample training logs kept so far.",
+ n:"gpu", x:"Log per-sample loss during the E1.2 training run at no extra cost, then compare hard-to-learn lines with the 1,424 CER-HV train flags.", id:"E1.2 · new"},
+// ---------- data
+{g:"data", key:"mahmoud2014khatt", t:"KHATT: An Open Arabic Offline Handwritten Text Database", v:"Mahmoud et al. · Pattern Recognition 47(3), 2014",
+ m:"1,000 writers with per-writer metadata: age group, gender (677 M / 323 F), handedness (928 R / 72 L), country, qualification.",
+ r:"The main Arabic precedent for demographic metadata.",
+ b:"Minimum datasheet fields; writer IDs for per-writer variance.",
+ d:"partial", o:"<span class='mono'>kitab_khatt</span> is our most reliable block (split-half 0.80). Image features leave most Muharaf difficulty unexplained, which points to the writer.",
+ n:"cpu", x:"R0.4: recover writer and page IDs into the adapters (Muharaf, KHATT, NAKBA, RASAM) and measure how much line difficulty is between-writer.", id:"R0.4"},
+{g:"data", key:"marti2002iam", t:"The IAM-database: An English Sentence Database for Offline HTR", v:"Marti, Bunke · IJDAR 5, 2002", warn:"details unverified",
+ m:"657 writers; line-level English HTR with writer-disjoint splits.",
+ r:"The Latin reference dataset and split protocol.",
+ b:"Writer-disjoint splits; the Latin side of every comparison.",
+ d:"partial", o:"Writer-disjoint splits are a rule for our dataset.",
+ n:"later", x:"R10: run the Latin analogue of the profiler on IAM to reproduce the 30 % vs 15 % confusion gap (gate V4).", id:"R10"},
+{g:"data", key:"altwaijry2021hijja", t:"Arabic Handwriting Recognition System Using CNN (Hijja)", v:"Altwaijry, Al-Turaiki · Neural Computing and Applications, 2021", warn:"venue unverified",
+ m:"591 children aged 7–12 in Riyadh write isolated letters.",
+ r:"47,434 samples in 108 classes (letter × positional form); the only children's Arabic set.",
+ b:"The letter × position class set; a precedent for collecting from children.",
+ d:"none", o:"Not used. Its 108 classes match our positional-form analyser's units.",
+ n:"design", x:"S1: copy texts balanced over the same letter × position classes, but as full lines.", id:"S1"},
+{g:"data", key:"srihari2016children", t:"Development of Individuality in Children's Handwriting", v:"Srihari, Meng, Hanson · J. Forensic Sciences, 2016",
+ m:"Three-year longitudinal study of grades 2–6 in one district.",
+ r:"Children start close to the taught model; individuality emerges sharply between grades 3 and 4.",
+ b:"Stratify writers by grade across the 3–4 boundary.",
+ d:"none", o:"No study links writer age to HTR error; this is the gap our dataset targets.",
+ n:"design", x:"S2 sampling design.", id:"S2"},
+{g:"data", key:"srihari2002individuality", t:"Individuality of Handwriting", v:"Srihari, Cha, Arora, Lee · J. Forensic Sciences 47(4), 2002",
+ m:"1,500 US writers stratified by gender, age and ethnicity.",
+ r:"Handwriting is individual; the canonical representative writer sample.",
+ b:"Sampling design for a representative writer pool.",
+ d:"none", o:"—",
+ n:"design", x:"S2 sampling design.", id:"S2"},
+// ---------- read
+{g:"read", key:"mueller2012letter", t:"Alphabetic Letter Identification: Perceivability, Similarity, and Bias", v:"Mueller, Weidemann · Acta Psychologica 139, 2012",
+ m:"Review of 70+ letter-confusion studies; confusability modelled as perceivability × similarity × response bias.",
+ r:"Stable confusion clusters such as E–F–P and O–Q–C–G.",
+ b:"Split a model's confusion matrix into similarity and bias. Bias toward frequent letters would signal the language prior.",
+ d:"partial", o:"R2.6 replaced the hand-written list check with the real confusion matrix: 65 % of letter substitutions fall outside every dot, orthographic or shape group; loop and stroke pairs (ا/ل, ل/ن, ع/م) are frequent. Dotted letters fail 10–17 points more often than others in every handwriting block.",
+ n:"cpu", x:"Fit a similarity-choice model to the aligned substitutions per model family; compare clusters to the rasm groups and check whether bias tracks letter frequency.", id:"R2.6 · new"},
+{g:"read", key:"alluhaybi2020connect", t:"Letter Connectedness and Arabic Visual Word Recognition", v:"Alluhaybi, Witzel · Q. J. Experimental Psychology, 2020", warn:"details unverified",
+ m:"Lexical decision with connected vs disconnected letters.",
+ r:"Ligation affects word recognition.",
+ b:"PAW gaps as a cue models misread as word gaps.",
+ d:"partial", o:"60 % of wrongly inserted word-internal spaces fall at PAW gaps, against 35 % by chance.",
+ n:"cpu", x:"PAW-space repair: merge a predicted space after a non-joining letter when the joined form is in the Muharaf-train lexicon and the parts are not. Report WER and CER before and after.", id:"new"},
+{g:"read", key:"perea2010tl", t:"Transposed-Letter Priming in Arabic", v:"Perea, Abu Mallouh, Carreiras · Psychonomic Bulletin & Review 17(3), 2010",
+ m:"Masked priming with transposed letters.",
+ r:"Priming only when root letter order is kept: morphology shapes letter-position coding.",
+ b:"Whether model word errors keep the root.",
+ d:"none", o:"43–63 % of word substitutions are real Arabic words.",
+ n:"later", x:"With a morphological analyser (CAMeL Tools), test whether real-word substitutions share the root more often than chance.", id:"R5"},
+{g:"read", key:"zeghli2025bigram", t:"Open-Bigrams as Orthographic Processing Units in Arabic", v:"Zeghli et al. · Attention, Perception & Psychophysics 87(4), 2025",
+ m:"Flanking-letters lexical decision.",
+ r:"Latin-like open-bigram effects in Arabic: some orthographic coding is universal.",
+ b:"Context for which reading results port from Latin.",
+ d:"none", o:"—",
+ n:"none", x:"No test planned.", id:"—"},
+// ---------- attribution, grounding, localization (added 2026-10-10)
+{g:"xai", key:"wang2026locateanything", t:"LocateAnything: Fast and High-Quality Vision-Language Grounding with Parallel Box Decoding", v:"Wang et al. · NVIDIA · arXiv 2605.27365, 2026 · model nvidia/LocateAnything-3B", warn:"figures from the model card and secondary coverage; paper not read in full",
+ m:"MoonViT-SO-400M vision encoder, Qwen2.5-3B language model and an MLP projector. Predicts a whole box in one parallel step instead of token by token. Tasks: detection, phrase and text grounding, scene-text detection, GUI grounding, pointing, document layout and OCR localization. Coordinates are integers in [0, 1000].",
+ r:"Trained on about 12 M images and 785 M boxes. Secondary coverage reports 2.5× to about 10× the throughput of earlier approaches (the baseline varies) and +3.8 F1 on LVIS over Rex-Omni; neither is verified here.",
+ b:"A ready model for “where is this word or letter”, with an official full fine-tune script and a LoRA recipe in NVlabs/Eagle (Embodied): LLM LoRA r = 64, projector trainable, vision backbone frozen.",
+ d:"none", o:"Not installed yet. Found so far: the weights carry an NVIDIA non-commercial research licence plus the Qwen Research License (fine for the academic phase, and fine-tuned weights inherit it); the code is Apache 2.0; it pins transformers 4.57.1, peft 0.12.0 and trust_remote_code, so it needs its own environment next to our attribution one; the model card lists 4B parameters in BF16.",
+ n:"gpu", x:"X-C1: zero-shot probe on 30 lines with word, PAW, single-letter and “the dots under the letter” prompts, scored against CTC spans (X-B1). X-C2: LoRA fine-tune on word and PAW pseudo-labels only if the probe shows promise; letters last.", id:"X-C1 · X-C2"},
+{g:"xai", key:"qmask2026", t:"Q-Mask and the TABench text-anchoring benchmark", v:"Xiaomi · arXiv 2604.00161, 2026", warn:"abstract level only",
+ m:"Query-driven causal masks to ground a queried piece of text to its image region; TABench measures whether VLMs can anchor text to fine-grained regions.",
+ r:"Reports that VLMs struggle to establish precise text anchors (per the abstract).",
+ b:"A benchmark protocol and baseline for text-to-region grounding that could be ported to Arabic lines.",
+ d:"none", o:"—",
+ n:"later", x:"Read in full before designing the Arabic grounding evaluation, and check whether it works below word level.", id:"X-C1"},
+{g:"xai", key:"positionocr2026", t:"PositionOCR (positional awareness for multimodal LLMs)", v:"arXiv 2602.19188, 2026", warn:"title truncated in the search result; abstract level only",
+ m:"Pairs a text-spotting specialist, which is precise about position, with an LLM, which supplies semantics; 131 M trainable parameters.",
+ r:"Argues that multimodal LLMs with LLM decoders are imprecise about position while spotting models lack reasoning, and that the hybrid gets both.",
+ b:"A design pattern: let a spotter produce boxes and a VLM read.",
+ d:"none", o:"—",
+ n:"later", x:"Compare with using CTC alignment as the spotter in our setting.", id:"X-B1"},
+{g:"xai", key:"instructocr2025", t:"InstructOCR: Instruction Boosting Scene Text Spotting", v:"AAAI 2025 · arXiv 2412.15523", warn:"snippet only",
+ m:"Instruction-based scene text spotting, with instruction strategies in pre-training.",
+ r:"Gains on TextVQA and ST-VQA when instructions are used during pre-training.",
+ b:"Instruction-style prompts for “find this text” queries.",
+ d:"none", o:"—",
+ n:"none", x:"Background only.", id:"—"},
+{g:"xai", key:"greekvlm2026", t:"Are VLM OCR outputs visually grounded? A study on Ancient Greek", v:"arXiv 2605.27750, 2026", warn:"title paraphrased; abstract level only",
+ m:"Controlled image perturbations and token-level grounding measures that compare conditional decoding with image-free decoding.",
+ r:"Reliance on the prior is model-specific, and OCR-specialist models can produce fluent errors with little reliance on the image.",
+ b:"An image-reliance measure to run before interpreting any attribution map.",
+ d:"partial", o:"We read maps without checking how much the model depends on the image. Hiding the patches our maps point to does change the token (4 to 5 nats against 0.8 for random), so some reliance exists, but its size is unknown.",
+ n:"gpu", x:"X-A3: compare each token’s log-prob with and without the image, per model.", id:"X-A3"},
+{g:"xai", key:"bullinger2025ctcalign", t:"CTC Transcription Alignment of the Bullinger Letters: Automatic Improvement of Annotation Quality", v:"arXiv 2508.07904, 2025", warn:"abstract level only",
+ m:"Aligns transcripts to images with a CTC recogniser to improve annotation quality in a large handwritten archive.",
+ r:"Shows CTC alignment as a practical annotation tool on historical handwriting (per the title and snippet).",
+ b:"A recipe for turning a CTC recogniser into character and word spans without box labels.",
+ d:"none", o:"We have a char-CTC model from the charctc runs on the 3090 that could give spans for every line.",
+ n:"gpu", x:"X-B1: character spans for the panel lines, validated against VML-HD sub-word boxes. X-B2: score attribution maps against those spans.", id:"X-B1 · X-B2"},
+{g:"xai", key:"chinesesegfree2022", t:"Recognition of Handwritten Chinese Text by Segmentation: A Segment-annotation-free Approach", v:"arXiv 2207.14801, 2022", warn:"snippet only",
+ m:"Trains from transcripts alone: pretrain on synthetic data that has segmentation labels, then fine-tune on real transcribed lines.",
+ r:"Segmentation without segment annotation on real handwriting.",
+ b:"A route to character spans without hand-drawn boxes.",
+ d:"none", o:"—",
+ n:"later", x:"An option if CTC spans prove too coarse on cursive joins.", id:"X-B1"},
+{g:"xai", key:"vmlhd", t:"VML-HD: The Historical Arabic Documents Dataset for Recognition Systems", v:"Ben-Gurion University (El-Sana group) · TC11 dataset listing", warn:"page counts differ between the listing and the paper",
+ m:"Pages from five books dated 1088 to 1451, annotated with bounding boxes at sub-word (PAW) level plus the character sequence of each sub-word.",
+ r:"About 159 k sub-word instances over 668 to 680 pages.",
+ b:"The best-documented independent box reference we found for Arabic, for checking pseudo-label spans.",
+ d:"none", o:"Not downloaded.",
+ n:"later", x:"Validation set for X-B1. Check the licence and the download format first.", id:"X-B1"},
+{g:"xai", key:"niss2023charseg", t:"Ground-truth dataset for Arabic handwritten character segmentation (NISS 2023)", v:"NISS 2023", warn:"title and authors unverified; abstract level only",
+ m:"A character-level ground-truth dataset for Arabic handwriting segmentation.",
+ r:"States that character-level ground truth is scarce and that earlier work recorded only boundaries or segmentation points.",
+ b:"The only character-level Arabic reference we found. The scarcity it describes is the gap our plan works around.",
+ d:"none", o:"—",
+ n:"later", x:"Read the full text and check whether the data is public.", id:"X-B1"},
+{g:"xai", key:"chefer2021", t:"Transformer Interpretability Beyond Attention Visualization", v:"Chefer, Gur, Wolf · CVPR 2021", warn:"cited from memory and the search snippet, not re-checked",
+ m:"Relevance propagation through attention layers and skip connections, giving class-specific maps for transformers.",
+ r:"Better localisation than raw attention or rollout on vision transformers.",
+ b:"A stronger transformer-specific map than the rollout that failed for us.",
+ d:"none", o:"Attention rollout failed our checks (flat on deletion, mass on the scan border). Chefer’s method was not tried.",
+ n:"gpu", x:"X-A4: add it as a fourth map and test it on the same 43 lines if the three kept maps disagree on wrong tokens.", id:"X-A4"},
+{g:"xai", key:"attribution-eval", t:"Evaluating attribution maps: deletion, insertion and their limits", v:"EvalAttAI (arXiv 2303.08866) · Reliable evaluation of attribution maps in CNNs (arXiv 2411.14946) · SAM, sensitivity of attribution methods to hyperparameters (arXiv 2003.08754)", warn:"snippets only; which paper makes which claim is not checked",
+ m:"Perturbation-based evaluation of attribution maps (deletion, insertion, ablation) and how sensitive maps are to their own settings.",
+ r:"Deletion and insertion can contradict each other and depend on the fill, which shifts the input off the data distribution. The pointing game compares two model-independent objects.",
+ b:"Use deletion only with a fill that stays near the data, and never alone.",
+ d:"partial", o:"We used a median-paper fill, a random baseline, ink enrichment and right-to-left order together. No adversarial or ablation-corrected check yet, and no test of how the maps move with noise level or baseline.",
+ n:"gpu", x:"X-A5: sensitivity of each map to its settings before any method comparison goes into a paper.", id:"X-A5"}
+];
+
+const QUEUE = [
+ ["Label review of 458 candidates in the review tool", "Turns consensus flags into a label-error rate; checks agreement with CER-HV.", "alazzawi2026labelerr", "Label-error rate per dataset; κ with CER-HV on 218 lines.", "cpu", "R4.1"],
+ ["Lexical diversity and train/test shape tail", "Their two cheap text-side explanations of the gap.", "alazzawi2026crossling, alazzawi2026gap", "Duplication, Jaccard, TTR per dataset; share of test letters with rare training shapes.", "cpu", "R1.6 · R1.7"],
+ ["IRT 2PL difficulty and discrimination", "Feeds label-noise review and challenge subsets.", "rodriguez2021irt", "Per-line difficulty and discrimination for all 10 blocks; correlation with consensus difficulty.", "cpu", "R3.2"],
+ ["Dot-restoration ceiling and H(dots | rasm, context)", "Decides whether post-OCR dot repair is worth building.", "alshaibani2025dotless, shannon1951", "Share of dot-only errors fixed vs broken by an n-gram restorer, and the conditional entropy.", "cpu", "new"],
+ ["PAW-space repair post-processor", "Tests a D3 transformation on the 60 % PAW-gap finding.", "alluhaybi2020connect", "WER and CER before and after on every competent pair.", "cpu", "new"],
+ ["Diacritic scoring rule", "Base VLMs pay up to 10 CER points for correct marks.", "doctor2022graphemic, heakl2025kitab", "Rank correlation with and without marks on undiacritised sets, and a recommendation.", "cpu", "R2.7"],
+ ["Image-only difficulty predictor, leave-one-dataset-out", "A DIQA-style score for unlabelled data.", "ye2013diqa, rice1995isri", "Held-out R² per dataset from image features alone.", "cpu", "R7"],
+ ["Writer IDs and between-writer variance", "Most Muharaf difficulty is unexplained by text or image.", "mahmoud2014khatt", "Per-writer CER variance for the sets that have writer IDs.", "cpu", "R0.4"],
+ ["PAW-inventory coverage curve", "Is a PAW-level output unit plausible?", "lehal2013urdu", "Distinct PAWs and rasm-PAWs needed for 95 % / 99 % coverage per dataset.", "cpu", "new"],
+ ["Tokenizer dot-pair check and fertility join", "Does the decoder vocabulary separate dot-pairs?", "alomari2026iconicity", "Token-sequence distance for dot-pair swaps; fertility vs per-line CER.", "cpu", "E2"],
+ ["E1.1 held-out bench of the diff-LR arm", "Is the −7.6 point gain real outside Muharaf?", "Baseer-Nakba", "Arm (c) scores on KHATT, NAKBA, RASAM-1/2 next to arm (a).", "gpu", "E1.1"],
+ ["Resolution and noise probe on KHATT", "Is Muharaf's 60 px storage why it is hardest?", "rice1995isri, hegghammer2021noisy", "CER of 3–4 models on KHATT at native vs 60 px, and at three noise levels.", "gpu", "R9"],
+ ["Checkpoint weight averaging", "Baseer-Nakba's last 0.10 → 0.079 step.", "Baseer-Nakba", "AIN-7B NAKBA adapter averaged over early and late checkpoints vs the final one.", "gpu", "new"],
+ ["Maghrebi adaptation", "Base AIN-7B reads ق as ف on a quarter of RASAM qāfs.", "vidalgorene2024rasam2, farazi2026vlmocr", "ق→ف and RASAM CER for a prompt hint, RASAM train lines, and dot-convention augmentation.", "gpu", "E6"],
+ ["Multilingual pre-training with a freeze sweep", "Which part transfers across scripts: early CNN or sequence model?", "alazzawi2026seqmodel, aradillas2021boosting", "ΔCER against joint training at K = 100, 500, 1000 for four freeze settings.", "gpu", "E7"],
+ ["Larger letter-family sample (the خ lead)", "7 of 10 خ tokens were wrong in the letter panel; the sample is small.", "attribution spike", "At least 50 tokens per letter family, error rate with intervals.", "gpu", "X-A2b"],
+ ["Image-reliance check", "Maps only mean something if the model uses the image.", "greekvlm2026", "Per-token log-prob with and without the image, per model.", "gpu", "X-A3"],
+ ["CTC character spans, validated on VML-HD", "A location reference for each letter without box labels.", "bullinger2025ctcalign, vmlhd", "Span error against hand-checked boxes on 30 lines.", "gpu", "X-B1"],
+ ["Pointing game against the CTC spans", "Scores each map by whether it lands on its own token.", "attribution-eval", "Share of a token’s attribution inside its aligned span, per map.", "cpu", "X-B2"],
+ ["LocateAnything-3B zero-shot probe", "Can an off-the-shelf grounding model find a word, a PAW or a letter?", "wang2026locateanything", "IoU against X-B1 spans on 30 lines for word, PAW, letter and dot prompts.", "gpu", "X-C1"]
+];
+
+const $ = s=>document.querySelector(s);
+const esc = s=>s; // content is authored above
+
+// summary
+(function(){
+  const c = k=>P.filter(p=>p.d===k).length, n = k=>P.filter(p=>p.n===k).length;
+  const tiles = [[P.length,"papers in the ledger"],[c("applied"),"applied, with a result"],[c("partial"),"partly applied"],[n("cpu"),"have a CPU test ready now"],[n("gpu"),"have a GPU test ready now"],[n("design"),"feed the school-dataset design"]];
+  $("#summary").innerHTML = tiles.map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+})();
+
+// queue
+$("#queue tbody").innerHTML = QUEUE.map((q,i)=>`<tr><td>${i+1}</td><td><div class="what">${q[0]}</div><div class="why">${q[1]}</div></td><td class="src"><span class="mono">${q[2]}</span></td><td class="done">${q[3]}</td><td><span class="chip ${NEXT[q[4]][1]}">${q[4].toUpperCase()}</span> <span class="tag">${q[5]}</span></td></tr>`).join("");
+
+// filters
+const state = {done:"all", next:"all", q:""};
+function mkFilters(el, key, dict){
+  const opts = [["all","All"]].concat(Object.entries(dict).filter(([k])=>P.some(p=>p[key==="done"?"d":"n"]===k)).map(([k,v])=>[k,v[0]]));
+  opts.forEach(([k,label])=>{
+    const b=document.createElement("button"); b.className="fbtn"; b.type="button"; b.id=`f-${key}-${k}`;
+    const cnt = k==="all"?P.length:P.filter(p=>p[key==="done"?"d":"n"]===k).length;
+    b.textContent=`${label} (${cnt})`; b.setAttribute("aria-pressed", String(k==="all"));
+    b.onclick=()=>{state[key]=k; el.querySelectorAll(".fbtn").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); render();};
+    el.appendChild(b);
+  });
+}
+mkFilters($("#f-done"),"done",DONE);
+mkFilters($("#f-next"),"next",NEXT);
+$("#q").addEventListener("input",e=>{state.q=e.target.value.trim().toLowerCase(); render();});
+
+function card(p){
+  return `<article class="card" id="${p.key}">
+  <div class="chead">
+    <div class="ctitle"><span class="mono" style="color:var(--accent)">${p.key}</span><span class="t">${p.t}</span><span class="v">${p.v}${p.warn?` · <span class="warn">${p.warn}</span>`:""}</span></div>
+    <div class="chips"><span class="chip ${DONE[p.d][1]}">${DONE[p.d][0]}</span><span class="chip ${NEXT[p.n][1]}">${NEXT[p.n][0]}</span></div>
+  </div>
+  <div class="grid">
+    <div class="cell"><h4>Main method</h4><p>${p.m}</p></div>
+    <div class="cell"><h4>Key result</h4><p>${p.r}</p></div>
+    <div class="cell"><h4>What we borrow</h4><p>${p.b}</p></div>
+    <div class="cell ours"><h4>What we did, our result</h4><p>${p.o}</p></div>
+    <div class="cell full next"><h4>Next test ${p.id && p.id!=="—"?`<span class="tag">${p.id}</span>`:""}</h4><p>${p.x}</p></div>
+  </div></article>`;
+}
+function render(){
+  const q=state.q;
+  const vis = P.filter(p=>(state.done==="all"||p.d===state.done)&&(state.next==="all"||p.n===state.next)&&(!q||JSON.stringify(p).toLowerCase().includes(q)));
+  $("#count").textContent = `${vis.length} of ${P.length}`;
+  const html = GROUPS.map(g=>{
+    const ps = vis.filter(p=>p.g===g.id); if(!ps.length) return "";
+    return `<div class="group" id="grp-${g.id}"><h3>${g.name} <small>${g.note} · ${ps.length}</small></h3><div class="cards">${ps.map(card).join("")}</div></div>`;
+  }).join("");
+  $("#ledger").innerHTML = html || `<p class="empty">No paper matches these filters. Clear the search or pick “All”.</p>`;
+  if (window.__tocObserve) window.__tocObserve();
+}
+render();
+
+// ---------- dossier charts (data: htr-dossier-data.js → window.DOSSIER)
+(function(){
+const D = window.DOSSIER; if (!D) return;
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs={}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const txt = (parent, x, y, s, attrs={}) => { const t = el("text", {x, y, ...attrs}, parent); t.textContent = s; return t; };
+const f1 = v => v == null ? "–" : (+v).toFixed(1);
+const pct = v => v == null ? "–" : (100 * v).toFixed(1) + " %";
+const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; document.body.appendChild(tip);
+function showTip(ev, head, rows){
+  tip.replaceChildren();
+  const h = document.createElement("div"); h.className = "h"; h.textContent = head; tip.appendChild(h);
+  rows.forEach(([color, label, value, dash]) => {
+    const r = document.createElement("div"); r.className = "r";
+    const i = document.createElement("i"); i.style.borderTopColor = color; if (dash) i.style.borderTopStyle = "dashed";
+    const b = document.createElement("b"); b.textContent = value;
+    const s = document.createElement("span"); s.textContent = label;
+    r.append(i, b, s); tip.appendChild(r);
+  });
+  tip.hidden = false;
+  const x = Math.min(ev.clientX + 14, innerWidth - tip.offsetWidth - 8), y = Math.min(ev.clientY + 14, innerHeight - tip.offsetHeight - 8);
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+function legend(id, items){
+  const L = document.getElementById(id); if (!L) return;
+  L.replaceChildren(...items.map(([color, label, kind]) => {
+    const s = document.createElement("span"); const i = document.createElement("i");
+    if (kind === "dot") { i.className = "dot"; i.style.background = color; } else { i.style.borderTopColor = color; if (kind === "dash") i.className = "dash"; }
+    s.append(i, document.createTextNode(label)); return s;
+  }));
+}
+function table(id, head, rows){
+  const box = document.getElementById(id); if (!box) return;
+  const t = document.createElement("table"); t.className = "dt";
+  const tr = document.createElement("tr"); head.forEach(h => { const th = document.createElement("th"); th.textContent = h; tr.appendChild(th); });
+  const th = document.createElement("thead"); th.appendChild(tr); t.appendChild(th);
+  const tb = document.createElement("tbody");
+  rows.forEach(r => { const row = document.createElement("tr"); r.forEach((c, i) => { const td = document.createElement("td"); td.textContent = c; if (i && typeof c === "string" && /^[−+\-–\d.]/.test(c)) td.className = "n"; row.appendChild(td); }); tb.appendChild(row); });
+  t.appendChild(tb); box.replaceChildren(t);
+}
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// generic line chart: xs = positions (numbers), x scale log or categorical
+function lineChart(box, {series, xTicks, xLabels, xLog, xLabel, yLabel, yMax, height=300, endLabels=true, zero=false, title, yMin=0, margin, width=760}){
+  const W = width, H = height, m = margin || {l:46, r: endLabels ? 112 : 16, t: title ? 30 : 22, b:40};
+  const svg = el("svg", {viewBox:`0 0 ${W} ${H}`}, box);
+  const xs = xTicks.map(t => t[0]); const xmin = Math.min(...xs), xmax = Math.max(...xs);
+  const X = v => m.l + (xLog ? (Math.log(v) - Math.log(xmin)) / (Math.log(xmax) - Math.log(xmin)) : (v - xmin) / (xmax - xmin || 1)) * (W - m.l - m.r);
+  const ymax = yMax ?? Math.max(...series.flatMap(s => s.points.map(p => p[1])));
+  const Y = v => m.t + (1 - (v - yMin) / (ymax - yMin)) * (H - m.t - m.b);
+  if (title) txt(svg, m.l, 16, title, {class:"title"});
+  const step = (ymax - yMin) > 40 ? 20 : (ymax - yMin) > 16 ? 5 : (ymax - yMin) > 6 ? 2 : 1;
+  for (let v = Math.ceil(yMin / step) * step; v <= ymax + 1e-9; v += step) {
+    el("line", {x1:m.l, x2:W - m.r, y1:Y(v), y2:Y(v), stroke: v === 0 && zero ? css("--axis") : css("--grid"), "stroke-width":1}, svg);
+    txt(svg, m.l - 6, Y(v) + 4, (v > 0 && zero ? "+" : "") + v, {"text-anchor":"end"});
+  }
+  (xLabels || xTicks).forEach(([v, lab]) => txt(svg, X(v), H - m.b + 16, lab, {"text-anchor":"middle"}));
+  if (xLabel) txt(svg, (m.l + W - m.r) / 2, H - 6, xLabel, {"text-anchor":"middle"});
+  if (yLabel) txt(svg, m.l - 6, m.t - 10, yLabel, {"text-anchor":"end"});
+  const labels = [];
+  series.forEach(s => {
+    const pts = s.points.filter(p => p[1] != null);
+    el("path", {d: pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1)).join(""), fill:"none", stroke:s.color, "stroke-width":2, "stroke-dasharray": s.dash ? "5 4" : "none", "stroke-linejoin":"round"}, svg);
+    pts.forEach(p => el("circle", {cx:X(p[0]), cy:Y(p[1]), r:3.2, fill:s.color, stroke:css("--surface"), "stroke-width":1.5}, svg));
+    if (endLabels) { const p = pts[pts.length - 1]; labels.push({y:Y(p[1]), x:X(p[0]), s}); }
+  });
+  labels.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i-1].y < 13) labels[i].y = labels[i-1].y + 13;
+  labels.forEach(l => { txt(svg, W - m.r + 8, l.y + 4, l.s.name, {class:"lbl"}); el("line", {x1:l.x + 4, x2:W - m.r + 5, y1:Y(l.s.points.filter(p=>p[1]!=null).slice(-1)[0][1]), y2:l.y, stroke:css("--grid")}, svg); });
+  // crosshair: snap to nearest x tick
+  const hair = el("line", {y1:m.t, y2:H - m.b, stroke:css("--axis"), "stroke-width":1, visibility:"hidden"}, svg);
+  const hit = el("rect", {x:m.l, y:m.t, width:W - m.l - m.r, height:H - m.t - m.b, fill:"transparent", tabindex:0}, svg);
+  const near = ev => { const r = svg.getBoundingClientRect(); const px = (ev.clientX - r.left) * W / r.width; let best = xTicks[0], d = 1e9; xTicks.forEach(t => { const dd = Math.abs(X(t[0]) - px); if (dd < d) { d = dd; best = t; } }); return best; };
+  const move = ev => {
+    const t = near(ev); hair.setAttribute("x1", X(t[0])); hair.setAttribute("x2", X(t[0])); hair.setAttribute("visibility", "visible");
+    const rows = series.map(s => { const p = s.points.find(p => p[0] === t[0]); return p && p[1] != null ? [s.color, s.name, (zero && p[1] > 0 ? "+" : "") + f1(p[1]), s.dash] : null; }).filter(Boolean).sort((a, b) => parseFloat(b[2]) - parseFloat(a[2]));
+    showTip(ev, (xLabel ? xLabel + ": " : "") + t[1], rows.length ? rows : [["transparent", "no point at this size", ""]]);
+  };
+  hit.addEventListener("pointermove", move); hit.addEventListener("pointerleave", () => { hair.setAttribute("visibility", "hidden"); hideTip(); });
+  hit.addEventListener("focus", () => { const r = svg.getBoundingClientRect(); move({clientX: r.left + r.width / 2, clientY: r.top + 40}); });
+  hit.addEventListener("blur", () => { hair.setAttribute("visibility", "hidden"); hideTip(); });
+}
+
+// horizontal dot chart: rows [{label, group, v, ref, lo, hi, color}]
+function dotChart(box, {rows, xMax, xLabel, unit="", refLabel, height}){
+  const W = 760, rowH = 24, m = {l:250, r:24, t:10, b:34}; const H = height || m.t + m.b + rows.length * rowH;
+  const svg = el("svg", {viewBox:`0 0 ${W} ${H}`}, box);
+  const X = v => m.l + v / xMax * (W - m.l - m.r);
+  const step = xMax > 20 ? 10 : xMax > 8 ? 2 : xMax > 3 ? 1 : 0.5;
+  for (let v = 0; v <= xMax + 1e-9; v += step) { el("line", {x1:X(v), x2:X(v), y1:m.t, y2:H - m.b, stroke:css("--grid")}, svg); txt(svg, X(v), H - m.b + 15, +v.toFixed(1) + unit, {"text-anchor":"middle"}); }
+  txt(svg, (m.l + W - m.r) / 2, H - 4, xLabel, {"text-anchor":"middle"});
+  rows.forEach((r, i) => {
+    const y = m.t + i * rowH + rowH / 2;
+    if (r.sep) { el("line", {x1:8, x2:W - m.r, y1:y - rowH / 2, y2:y - rowH / 2, stroke:css("--line")}, svg); }
+    txt(svg, m.l - 10, y + 4, r.label, {"text-anchor":"end", class:"lbl"});
+    if (r.lo != null) el("line", {x1:X(r.lo), x2:X(r.hi), y1:y, y2:y, stroke:r.color, "stroke-width":2, "stroke-linecap":"round", opacity:.55}, svg);
+    if (r.ref != null) el("circle", {cx:X(r.ref), cy:y, r:4.5, fill:css("--surface"), stroke:css("--s1"), "stroke-width":1.8}, svg);
+    el("circle", {cx:X(r.v), cy:y, r:5, fill:r.color, stroke:css("--surface"), "stroke-width":1.5}, svg);
+    const hit = el("rect", {x:8, y:y - rowH / 2, width:W - 8 - m.r, height:rowH, fill:"transparent", tabindex:0}, svg);
+    const rowsTip = [[r.color, "this model", f1(r.v) + unit]];
+    if (r.lo != null) rowsTip.push([r.color, "95 % interval", f1(r.lo) + "–" + f1(r.hi) + unit]);
+    if (r.ref != null) rowsTip.push([css("--s1"), refLabel, f1(r.ref) + unit]);
+    if (r.extra) rowsTip.push(["transparent", r.extra, ""]);
+    const on = ev => showTip(ev, r.label, rowsTip);
+    hit.addEventListener("pointermove", on); hit.addEventListener("pointerleave", hideTip);
+    hit.addEventListener("focus", () => { const b = hit.getBoundingClientRect(); on({clientX:b.left + 260, clientY:b.top}); }); hit.addEventListener("blur", hideTip);
+  });
+}
+function barList(id, items, max){
+  const box = document.getElementById(id); if (!box) return;
+  box.replaceChildren(...items.map(([label, v, pill]) => {
+    const r = document.createElement("div"); r.className = "br";
+    const a = document.createElement("span"); const bd = document.createElement("bdi"); bd.textContent = label;
+    if (/[\u0600-\u06FF]/.test(label)) { bd.dir = "ltr"; bd.className = "ar"; bd.textContent = label.replace("↔", " ↔ "); } a.appendChild(bd);
+    if (pill) { const p = document.createElement("span"); p.className = "pill"; p.textContent = pill; p.style.marginLeft = "6px"; a.appendChild(p); }
+    const tr = document.createElement("span"); tr.className = "tr"; const s = document.createElement("span"); s.style.width = (100 * v / max).toFixed(1) + "%"; tr.appendChild(s);
+    const n = document.createElement("span"); n.className = "v"; n.textContent = (100 * v).toFixed(1) + " %";
+    r.append(a, tr, n); return r;
+  }));
+}
+
+function draw(){
+  document.querySelectorAll("#htr-dossier .chartbox, #ch-cross").forEach(b => b.replaceChildren());
+  const S1 = css("--s1"), S2 = css("--s2"), S3 = css("--s3");
+  const G = D.gap;
+
+  // 1. learning curves
+    const curves = Object.entries(G.t3).map(([name, [lang, script, ys, full]]) => ({
+    name, color: script === "Latin" ? S2 : S1, dash: script === "Latin",
+    points: G.k.map((k, i) => [k, ys[i]]).filter(p => p[1] != null && p[0] < full[0]).concat([[full[0], full[1]]]) }));
+  const allX = [...new Set(curves.flatMap(c => c.points.map(p => p[0])))].sort((a, b) => a - b);
+  lineChart(document.getElementById("ch-curves"), {series: curves, xTicks: allX.map(v => [v, v >= 1000 ? (v / 1000).toFixed(v % 1000 ? 1 : 0) + "k" : String(v)]), xLabels: [[100,"100"],[1000,"1k"],[2000,"2k"],[5000,"5k"],[10000,"10k"],[20000,"20k"]], xLog: true, xLabel: "training lines (log)", yLabel: "CER %", yMax: 80, height: 340});
+  legend("lg-curves", [[S1, "Arabic-script sets", "line"], [S2, "Latin-script sets", "dash"]]);
+  table("tb-curves", ["Dataset", "Language", ...G.k.map(String), "Full (K)"], Object.entries(G.t3).map(([n, [lang, sc, ys, full]]) => [n, lang, ...ys.map(f1), `${f1(full[1])} (${full[0]})`]));
+
+  // 2. cleaning
+  const t5 = G.t5, cx = t5.K.map((k, i) => [i, String(k)]);
+  lineChart(document.getElementById("ch-clean"), {series: [
+    {name: "Arabic-script, raw", color: S1, points: t5.as_orig.map((v, i) => [i, v])},
+    {name: "Arabic-script, cleaned", color: S3, points: t5.as_clean.map((v, i) => [i, v])},
+    {name: "Latin", color: S2, dash: true, points: t5.latin.map((v, i) => [i, v])}],
+    xTicks: cx, xLabel: "training lines", yLabel: "CER %", yMax: 55, height: 280});
+  legend("lg-clean", [[S1, "Arabic-script (Muharaf, Ajami, PHTI), raw", "line"], [S3, "same, after CER-HV cleaning", "line"], [S2, "Latin average", "dash"]]);
+  table("tb-clean", ["K", "AS raw", "AS cleaned", "Latin", "Gap raw", "Gap cleaned"], t5.K.map((k, i) => [String(k), f1(t5.as_orig[i]), f1(t5.as_clean[i]), f1(t5.latin[i]), "+" + f1(t5.as_orig[i] - t5.latin[i]), "+" + f1(t5.as_clean[i] - t5.latin[i])]));
+
+  // 3. similar substitutions
+  const P = D.ours.muharaf_profile;
+  const nice = m => m.replace("suite-v1-", "").replace("-bf16", " (800 lines)").replace("cerhv-crnn ", "CER-HV CRNN ");
+  const simRows = [
+    ...G.t6.map((r, i) => ({label: `Paper CRNN · ${r.dataset}`, v: r.sub * r.sim_share / 100, color: r.script === "Latin" ? S2 : S1, extra: `${r.sim_share} % of substitutions`, sep: i === 0 && false})),
+    ...P.filter(r => r.kind === "crnn").map((r, i) => ({label: nice(r.model), v: 100 * r.similar_rate, color: S1, extra: pct(r.similar_share) + " of substitutions", sep: i === 0})),
+    ...P.filter(r => r.kind !== "crnn").sort((a, b) => a.similar_rate - b.similar_rate).map((r, i) => ({label: nice(r.model), v: 100 * r.similar_rate, ref: 100 * r.crnn.similar_rate, color: S3, extra: `${pct(r.similar_share)} of its substitutions (CRNN on same lines: ${pct(r.crnn.similar_share)})`, sep: i === 0}))];
+  dotChart(document.getElementById("ch-sim"), {rows: simRows, xMax: 4, xLabel: "similar-letter substitutions per 100 GT characters", unit: "", refLabel: "CER-HV CRNN, same lines"});
+  legend("lg-sim", [[S1, "CRNN on Arabic-script data", "dot"], [S2, "CRNN on Latin data (paper)", "dot"], [S3, "our fine-tuned VLMs, Muharaf test", "dot"]]);
+  table("tb-sim", ["Model", "Lines", "CER", "Sub rate", "Similar / 100 chars", "Similar share of subs", "Dot share of subs", "CRNN same lines: similar / 100", "CRNN share"],
+    P.map(r => [nice(r.model), String(r.n), pct(r.cer), pct(r.sub_rate), f1(100 * r.similar_rate), pct(r.similar_share), pct(r.dot_share), r.crnn ? f1(100 * r.crnn.similar_rate) : "–", r.crnn ? pct(r.crnn.similar_share) : "–"]));
+
+  // other split + pairs
+  const o = D.ours.other_split, ts = o.taxonomy_share, op = o.other_parts_share;
+  const NAMES = {sub_letter:"other: letter substitution", del_letter:"other: letter deleted", ins_letter:"other: letter inserted", sub_nonletter:"other: non-letter substitution", del_nonletter:"other: non-letter deleted", ins_nonletter:"other: non-letter inserted",
+    whole_line:"whole-line failure", space:"space", diacritic:"diacritic", orthographic:"orthographic", dot:"dot", shape:"shape group", ligature:"lam-alef ligature"};
+  const items = [...Object.entries(op).map(([k, v]) => [NAMES[k], v]), ...Object.entries(ts).filter(([k]) => k !== "other").map(([k, v]) => [NAMES[k], v])].sort((a, b) => b[1] - a[1]);
+  barList("bl-other", items, items[0][1]);
+  const TAG = {dot:"dot", orthographic:"ortho", hand_shape:"shape group", none:"no group"};
+  barList("bl-pairs", D.ours.top_pairs.slice(0, 14).map(p => [p.pair, p.share, TAG[p.tag]]), D.ours.top_pairs[0].share);
+
+  // 4. cross-lingual small multiples
+  const cbox = document.getElementById("ch-cross");
+  const ck = D.cross_k.map((k, i) => [i, String(k)]);
+  const crossRows = [];
+  Object.entries(D.cross).forEach(([ds, c]) => {
+    const dC = c.crnn[1].map((v, i) => v - c.crnn[0][i]), dV = c.htrvt[1].map((v, i) => v - c.htrvt[0][i]);
+    const b = document.createElement("div"); b.className = "chartbox"; cbox.appendChild(b);
+    lineChart(b, {title: ds, series: [{name: "CRNN", color: S1, points: dC.map((v, i) => [i, v])}, {name: "HTR-VT", color: S2, points: dV.map((v, i) => [i, v])}, {name: "CNN-only", color: S3, dash: true, points: c.cnn_delta.map((v, i) => [i, v])}],
+      xTicks: ck, xLabel: "target lines K", yLabel: "ΔCER", yMin: -32, yMax: 2, zero: true, height: 300, width: 380, endLabels: false, margin: {l:40, r:14, t:30, b:40}});
+    D.cross_k.forEach((k, i) => crossRows.push([ds, String(k), f1(c.crnn[0][i]), f1(c.crnn[1][i]), f1(dC[i]), f1(c.htrvt[0][i]), f1(c.htrvt[1][i]), f1(dV[i]), f1(c.cnn_delta[i])]));
+  });
+  legend("lg-cross", [[S1, "CRNN", "line"], [S2, "HTR-VT (ViT-based)", "line"], [S3, "CNN-only, no BiLSTM", "dash"]]);
+  table("tb-cross", ["Target", "K", "CRNN J=0", "CRNN J=2", "Δ", "HTR-VT J=0", "HTR-VT J=2", "Δ", "CNN-only Δ"], crossRows);
+
+  // 5. Maghrebi
+  const KEEP = ["rasam1", "rasam2", "kitab_khatt", "nakba_lines", "muharaf_lines"];
+  const DSN = {rasam1:"RASAM-1", rasam2:"RASAM-2", kitab_khatt:"KHATT", nakba_lines:"NAKBA", muharaf_lines:"Muharaf"};
+  const mp = D.ours.maghrebi_paired.filter(r => KEEP.includes(r.dataset));
+  const models = [...new Set(mp.map(r => r.model))].sort((a, b) => (a.startsWith("ain-7b") ? -1 : 0) - (b.startsWith("ain-7b") ? -1 : 0) || a.localeCompare(b));
+  const magRows = [];
+  models.forEach((m, mi) => mp.filter(r => r.model === m).sort((a, b) => KEEP.indexOf(a.dataset) - KEEP.indexOf(b.dataset)).forEach((r, i) => magRows.push({
+    label: `${nice(m).replace(" (800 lines)", "")} · ${DSN[r.dataset]}`, v: 100 * r.qaf_to_fa, lo: 100 * r.ci[0], hi: 100 * r.ci[1],
+    color: r.dataset.startsWith("rasam") ? S1 : S2, extra: `${r.qaf_n} qāfs · ف→ق ${pct(r.fa_to_qaf)}`, sep: i === 0 && mi > 0})));
+  dotChart(document.getElementById("ch-mag"), {rows: magRows, xMax: 35, xLabel: "% of GT ق read as ف", unit: ""});
+  legend("lg-mag", [[S1, "Maghrebi (RASAM)", "dot"], [S2, "Mashriqi sets", "dot"]]);
+  table("tb-mag", ["Model", "Dataset", "Lines", "qāfs", "ق→ف", "95 % CI", "ف→ق"], D.ours.maghrebi_paired.map(r => [nice(r.model), r.dataset, String(r.n), String(r.qaf_n), pct(r.qaf_to_fa), pct(r.ci[0]) + "–" + pct(r.ci[1]), pct(r.fa_to_qaf)]));
+}
+draw();
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(draw, 200); });
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+new MutationObserver(draw).observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
+
+// ---------- augmentation catalogue and experiments (static content)
+const AUG = [
+ ["1","Affine: small rotation, shear (slant), scale","Writer slant, baseline tilt","yes","no","Borrowed: wigington2017augment, retsinas2022best; used in all four Luleå papers","Baseline for every arm"],
+ ["2","Elastic / random grid distortion","Stroke wobble, letter-shape variation","yes","no","Borrowed: wigington2017augment","Baseline"],
+ ["3","Morphological erosion / dilation","Pen width, ink spread","yes","no","Borrowed: alazzawi2026labelerr, retsinas2022best","Baseline; check dot loss at 60 px"],
+ ["4","Brightness, contrast, gamma, noise, blur","Scan and paper condition","yes","no","Borrowed: standard","Baseline"],
+ ["5","Learned warping (Learn to Augment)","Hard-but-plausible geometric variation","yes","no","Borrowed: luo2020learn","Later; costly"],
+ ["6","Span masking of visual features","Occlusion, missing strokes","no (masked letters stay in the label)","no","Borrowed: li2025htrvt (HTR-VT), which masks feature tokens inside the network, not pixels","Not a baseline arm; only the in-network version, if at all"],
+ ["7","Synthetic handwriting (GAN / diffusion)","More writers and words","yes","no","Borrowed: fogel2020scrabblegan, kang2020ganwriting","Later; Arabic generators are weak"],
+ ["8","Font-rendered synthetic lines","More text, any vocabulary","yes","partly","Borrowed: Ottoman (bilgintasdemir2023ottoman), KITAB-style renders","R9 already renders lines"],
+ ["9","Glyph concatenation with synthetic extension","Arabic joins and elongations","yes","yes","Borrowed: dinges2016synthesis (unverified)","Reference for item 13"],
+ ["10","Rare-character oversampling (adaptive augmentation)","Heavy shape tail","yes","yes","Borrowed: eltay2022adaptive (unverified)","Targets the gap paper’s tail"],
+ ["11","Cross-lingual / cross-dataset mixing","Data scarcity, low diversity","yes","yes","Borrowed: alazzawi2026crossling","E7, and Urdu/Persian lines in the VLM mix"],
+ ["12","Downscale to the target line height (e.g. 60 px)","Low-resolution storage (Muharaf)","yes","no","Ours, from R6.0 / X7","Pairs with the R9 resolution probe"],
+ ["13","Kashida stretching at join points","Calligraphic elongation (tatweel is not transcribed)","yes","yes","Ours (related: item 9)","Needs join localisation from connected components"],
+ ["14","PAW-gap jitter: widen or narrow gaps between parts of a word","Spaces inserted at PAW gaps (60 % of wrong spaces)","yes","yes","Ours, from R2.4","Primary outcome: PAW-gap space errors"],
+ ["15","Dot dropout / displacement of small components","Faint, omitted or shifted dots","dropout: no (label describes another word); small shift: yes","yes","Ours, from R2.2 and the dot tax","Not recommended: dropout is out. Small displacement only as optional jitter; the dot-cue goal moves to item 16"],
+ ["16","Dot-pair minimal-pair renders (ب/ت/ث/ن/ي swaps with new label)","Teaches dots as the only cue","no (new label)","yes","Ours","Carries the dot-cue goal (replaces item 15). Outcome: dot-pair error on rare words"],
+ ["17","Maghrebi dot-convention swap (qāf one dot above, fā one dot below)","Style-specific dot semantics","no (style-conditioned)","yes","Ours, from the RASAM finding","Outcome: ق→ف on RASAM"],
+ ["18","Harakat on/off on renders with matching label","Diacritic-policy mismatch","no (label follows)","yes","Ours, from R2.3","Outcome: diacritic tax"],
+ ["19","Coverage-balanced text for synthetic lines","Rare (letter × position) shapes","yes","yes","Ours, from the shape-coverage curve","E3 / R8(b)"],
+ ["20","Fragment crops (word or PAW-level slices of a line)","Short lines fail disproportionately","yes (cropped label)","partly","Ours, from R3 / X5","Outcome: fragment-subset CER"],
+ ["21","Style mixing across Maghrebi, Naskh and Ajami hands","Unseen script styles","yes","yes","Ours (style analogue of item 11)","E6"]
+];
+// verdicts from looking at the previews (scripts/build_aug_gallery.py → aug-gallery-data.js)
+const AUGNOTE = {
+ "1": ["safe", "Looks like natural writer variation at these sizes (rotation ≤ 2°, shear ≤ 0.35). The black wedges at the corners come from the rotation; fill them with the paper colour in training."],
+ "2": ["safe", "σ 1.5 px reads as ordinary pen wobble. At σ 3 px, thin strokes start to break and the dots drift off their letters on the 60 px Muharaf line, so keep σ low for small lines."],
+ "3": ["caution", "Dilation is fine. Erosion now runs behind a guardrail: none below 80 px of line height, and the strongest of 3×3 → 2×2 → 2×2 at 50 % that keeps ≥ 65 % of the ink pixels and ≥ 85 % of the dots. Rejected tries are shown with a dashed border. KHATT: 3×3 kept only 52 % of the ink and was rejected; 2×2 passed with 76 %. Muharaf (60 px): skipped, since 2×2 would keep only 40 %. RASAM: 3×3 passed (73 % ink, all dots). Dots are components above a size floor, so scan specks don't count."],
+ "4": ["safe", "Plausible scan conditions. Low contrast plus noise on Muharaf is close to unreadable: cap the strength by line height."],
+ "5": ["caution", "This is only an approximation: a random control-point warp, not the learned agent. A squeezed segment makes Muharaf words overlap (اكثر مما), so keep the ranges small."],
+ "6": ["risky", "Our pixel version blanks whole letters while the label keeps them, so image and label no longer match. HTR-VT's method is different: it masks feature tokens inside the network during training, closer to dropout than to editing the image. That one may be worth testing; this pixel preview is not that method."],
+ "7": ["none", "No preview: this needs a trained handwriting generator, and Arabic ones are weak."],
+ "8": ["caution", "Labels are exact and the renders are clean, but they look printed, not handwritten. The render also copies a KHATT label quirk, the extra space in «آ خر». Synthetic text should come from clean text, not from GT."],
+ "9": ["safe", "Elongated joins look natural, and the label stays the same because tatweel isn't transcribed."],
+ "10": ["none", "No image change: rare-shape lines are sampled more often. Nothing to see."],
+ "11": ["none", "No preview: no handwritten non-Arabic lines are cached locally (IAM, Urdu or Persian handwriting would be needed)."],
+ "12": ["safe", "180 → 60 px on KHATT softens strokes and shrinks dots, much like Muharaf. Muharaf itself is skipped because it is already 60 px."],
+ "13": ["promising", "Stretched joins on KHATT and Muharaf look like real kashida, and the label is unchanged. Few joins are detected per line; the orange ticks show the candidates."],
+ "14": ["risky", "As built, widened gaps inside words look like word spaces: قوافل becomes «قو ا فل» while the label has none. That teaches the model to ignore spaces, the opposite of the goal. The simple gap-size split also mislabels some word gaps as PAW gaps (blue). Needs alignment to tell PAW gaps from word gaps, or jitter of ±20 % at most."],
+ "15": ["risky", "Not recommended. Dropping a dot doesn't force context: the label then describes another word (قوافل now reads موافل, but the label keeps ق). That is label noise, and it rewards guessing from the language prior over reading, which fails on rare words and names. Dropout is out. Small displacement, where the dot stays over the same letter, is kept only as optional geometric jitter. The dot-cue goal moves to item 16, where the label follows the image."],
+ "16": ["safe", "Clean minimal pairs, each with its own label. Printed, so it teaches the dot cue but not handwriting."],
+ "17": ["promising", "Drawn here with a web font: the image uses Maghrebi ڢ and ڧ while the label keeps ف and ق. That is exactly the mapping the model must learn. It is still print, so real Maghrebi lines (RASAM train) remain the stronger fix."],
+ "18": ["safe", "The label follows the image, so the two are always consistent."],
+ "19": ["safe", "The pangram is the extreme case; the real method greedily picks corpus sentences to fill rare (letter × form) classes."],
+ "20": ["caution", "Cuts at the widest gaps give clean word groups, but the label for the crop is unknown without alignment (CTC forced alignment from a trained model)."],
+ "21": ["safe", "This is data mixing, not a transformation: the three hands side by side show how far apart the styles are."]
+};
+function augTable(){
+  const box = document.getElementById("tb-aug"); if (!box) return;
+  const G = (window.AUG_GALLERY || {}).items || {};
+  const head = ["#", "Technique", "Simulates / targets", "Label kept", "Arabic-specific", "Origin", "How we would test it", "Preview"];
+  const t = document.createElement("table"); t.className = "dt augt";
+  const thr = document.createElement("tr"); head.forEach(h => { const th = document.createElement("th"); th.textContent = h; thr.appendChild(th); });
+  const th = document.createElement("thead"); th.appendChild(thr); t.appendChild(th);
+  const tb = document.createElement("tbody");
+  AUG.forEach(r => {
+    const row = document.createElement("tr");
+    r.forEach(c => { const td = document.createElement("td"); td.textContent = c; row.appendChild(td); });
+    const note = AUGNOTE[r[0]] || ["none", ""];
+    const td = document.createElement("td");
+    const v = document.createElement("span"); v.className = "vd vd-" + note[0]; v.textContent = note[0];
+    const b = document.createElement("button"); b.className = "augbtn"; b.type = "button";
+    b.textContent = G[r[0]] ? "Examples ▸" : "Note ▸"; b.setAttribute("aria-expanded", "false");
+    td.append(v, b); row.appendChild(td); tb.appendChild(row);
+    const det = document.createElement("tr"); det.className = "augrow"; det.hidden = true;
+    const dc = document.createElement("td"); dc.colSpan = head.length; det.appendChild(dc); tb.appendChild(det);
+    b.addEventListener("click", () => {
+      const open = det.hidden; det.hidden = !open;
+      b.setAttribute("aria-expanded", String(open));
+      b.textContent = (G[r[0]] ? "Examples " : "Note ") + (open ? "▾" : "▸");
+      if (open && !dc.firstChild) dc.appendChild(augDetail(r, note, G[r[0]]));
+    });
+  });
+  t.appendChild(tb);
+  const wrap = document.createElement("div"); wrap.className = "qwrap"; wrap.appendChild(t);
+  box.replaceChildren(wrap);
+}
+function augDetail(r, note, item){
+  const d = document.createElement("div"); d.className = "augdet";
+  const p = document.createElement("p"); p.className = "augnote";
+  const v = document.createElement("span"); v.className = "vd vd-" + note[0]; v.textContent = note[0];
+  p.append(v, " " + note[1]); d.appendChild(p);
+  if (!item) return d;
+  const grid = document.createElement("div"); grid.className = "auggrid";
+  item.panels.forEach(pn => {
+    const f = document.createElement("figure"); f.className = "augfig" + (pn.orig ? " orig" : "") + (pn.rejected ? " rej" : "");
+    if (pn.kind === "img") { const im = document.createElement("img"); im.src = pn.src; im.alt = pn.caption; im.loading = "lazy"; f.appendChild(im); }
+    else { const tx = document.createElement("div"); tx.className = "augtext"; tx.dir = "rtl"; tx.lang = "ar"; tx.textContent = pn.text; f.appendChild(tx); }
+    const cap = document.createElement("figcaption");
+    const c1 = document.createElement("span"); c1.className = "augcap"; c1.textContent = pn.caption; cap.appendChild(c1);
+    if (pn.label != null) {
+      const l = document.createElement("div"); l.className = "auglab";
+      const k = document.createElement("span"); k.className = "pill" + (pn.changed ? " o" : ""); k.textContent = pn.orig ? "GT label" : pn.mismatch ? "label no longer matches image" : pn.changed ? "label changed" : "label kept";
+      if (pn.mismatch) k.className = "vd vd-risky";
+      const s = document.createElement("bdi"); s.dir = "rtl"; s.lang = "ar"; s.className = "ar"; s.textContent = pn.label;
+      if (pn.rejected) { const rj = document.createElement("span"); rj.className = "vd vd-risky"; rj.textContent = "rejected by guardrail"; l.append(rj); }
+      l.append(k, s); cap.appendChild(l);
+    }
+    f.appendChild(cap); grid.appendChild(f);
+  });
+  d.appendChild(grid); return d;
+}
+augTable();
+
+const EXP = [
+ ["R2.6","Split “other”; their metric on the same lines","CPU","Done 2026-10-09: VLMs make as many similar-letter errors per character; their share is lower"],
+ ["R2.9","Maghrebi dot-convention error rate per dataset (ق→ف, ف→ب)","CPU","Done 2026-10-09 for RASAM; add to the Atlas, check AraMS"],
+ ["R1.6","Lexical diversity per dataset and K-subset (their Table 3 definitions)","CPU","Table on the Atlas"],
+ ["R1.7","Train/test shape-tail mismatch (Fig. 6)","CPU","Share of test letters whose shape has fewer than 10 / 50 training examples"],
+ ["R4.1","Label review in the review tool; agreement with CER-HV verdicts","Human","Estimated label-error rate per dataset; κ against CER-HV on 218 lines"],
+ ["E3′","Data scaling on their K grid (100, 500, 1k, 2k, 4k, full), also in characters","GPU","Our LoRA learning curve next to their CRNN curve, Muharaf and KHATT"],
+ ["E5","CRNN reference: their architecture (Retsinas best practices) on our datasets","GPU (3090, small)","CRNN CER on every block; the CRNN↔VLM comparison beyond Muharaf"],
+ ["E6","Maghrebi adaptation: prompt hint, plus RASAM train lines, plus aug. 17","GPU","ق→ف and RASAM CER per arm"],
+ ["E7","Multilingual pre-training with a freeze sweep (none / CNN 1–3 / all CNN / BiLSTM only)","GPU","ΔCER against joint training at K = 100, 500, 1000"],
+ ["A1","Augmentation ablation: items 14, 15, 17 against the item 1–4 baseline","GPU","Each targeted error moves, total CER does not get worse"],
+ ["X-A1","Attribution maps validated on Qwen3-VL-4B + E1 adapter: attention, relative attention, gradient × (input − paper)","GPU","Done 2026-10-10: 43 lines, 482 tokens; all three beat random patches on deletion, gradient map 9× on ink"],
+ ["X-A2b","Larger letter-family sample, starting from the خ lead","GPU","At least 50 tokens per family, error rate with intervals"],
+ ["X-A3","Image-reliance check: log-prob with and without the image, per model","GPU","Share of each token’s log-prob that depends on the image"],
+ ["X-A4","Chefer relevance maps as a fourth method","GPU","Agreement with the three kept maps on wrong tokens"],
+ ["X-A5","Sensitivity of each map to noise level, baseline and aggregation","GPU","Map stability under setting changes"],
+ ["X-B1","CTC character spans for panel lines; validate on VML-HD sub-word boxes","GPU (3090)","Span error against hand-checked boxes"],
+ ["X-B2","Pointing game: share of each token’s attribution inside its CTC span","CPU","Score per method"],
+ ["X-C1","LocateAnything-3B zero-shot probe: word, PAW, letter, dots","GPU","IoU against X-B1 spans on 30 lines"],
+ ["X-C2","LoRA fine-tune LocateAnything on word and PAW pseudo-labels; letters if justified","GPU","IoU on held-out manuscripts"],
+ ["X-D1","Parameter-level attribution and a freeze sweep over similar letters (gated on X-A and X-B)","GPU","Whether letter-specific circuits exist, and ΔCER from protecting them"],
+ ["S1","Script-styles inventory: traits, datasets, visual samples with licences","Design","Design approved, then one record per style"]
+];
+table("tb-exp", ["ID", "Experiment", "Compute", "Done when / result"], EXP);
+})();
+
+
+// ---------- contents sidebar: highlight the section in view; start collapsed on narrow screens
+(function(){
+  const box = document.querySelector(".tocbox");
+  if (box && !matchMedia("(min-width:1180px)").matches) box.open = false;
+  const links = [...document.querySelectorAll(".toc a")];
+  const byId = new Map(links.map(a => [a.getAttribute("href").slice(1), a]));
+  let current = null;
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) current = e.target.id; });
+    if (!current) return;
+    links.forEach(a => a.classList.remove("on"));
+    const a = byId.get(current); if (a) a.classList.add("on");
+  }, {rootMargin: "-10% 0px -80% 0px"});
+  const observe = () => byId.forEach((a, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  window.__tocObserve = observe; observe();
+  links.forEach(a => a.addEventListener("click", () => { if (box && !matchMedia("(min-width:1180px)").matches) box.open = false; }));
+})();
+</script>
