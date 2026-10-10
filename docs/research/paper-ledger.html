@@ -245,6 +245,8 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
         <li><a href="#d-styles">Script styles: Maghrebi</a></li>
         <li><a href="#d-ideas">Ideas log</a></li>
         <li><a href="#d-geo">Geometry and normalization</a></li>
+        <li><a href="#d-pool">Our own idea pool</a></li>
+        <li><a href="#d-ctc">CTC aligner and pointing game</a></li>
         <li><a href="#d-xai">Attribution spike</a></li>
         <li><a href="#d-aug">Augmentation catalogue</a></li>
         <li><a href="#d-exp">Experiments</a></li>
@@ -288,7 +290,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
     <p>The four Luleå preprints are the closest prior work to ours. This section plots their results, shows what we re-measured on our own data, and lists the experiments and augmentation ideas they lead to. Paper numbers are transcribed from the papers; “ours” numbers come from <span class="mono">scripts/substitution_analysis.py</span> (R2.6). The attribution and localization spike of 2026-10-10 has its own part below, with a link to its explorer page.</p>
   </div>
   <nav class="dnav" aria-label="Dossier sections">
-    <a href="#d-programme">The research programme</a><a href="#d-gap">Gap paper</a><a href="#d-r26">R2.6 re-measured</a><a href="#d-labels">Label errors</a><a href="#d-cross">Cross-lingual transfer</a><a href="#d-styles">Script styles: Maghrebi</a><a href="#d-ideas">Ideas log</a><a href="#d-geo">Geometry and normalization</a><a href="#d-xai">Attribution spike</a><a href="#d-aug">Augmentation catalogue</a><a href="#d-exp">Experiments</a>
+    <a href="#d-programme">The research programme</a><a href="#d-gap">Gap paper</a><a href="#d-r26">R2.6 re-measured</a><a href="#d-labels">Label errors</a><a href="#d-cross">Cross-lingual transfer</a><a href="#d-styles">Script styles: Maghrebi</a><a href="#d-ideas">Ideas log</a><a href="#d-geo">Geometry and normalization</a><a href="#d-pool">Our own idea pool</a><a href="#d-ctc">CTC aligner and pointing game</a><a href="#d-xai">Attribution spike</a><a href="#d-aug">Augmentation catalogue</a><a href="#d-exp">Experiments</a>
   </nav>
   <div class="dossier">
 
@@ -446,9 +448,9 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
       <tbody>
         <tr><td>1</td><td>Pixel-attribution methods like Grad-CAM and Integrated Gradients, used for CNNs before: do they make sense for transformer and LLM-based OCR models, does it exist, and can we try a few?</td><td><span class="pill b">done</span></td><td>X-A1</td><td>Yes, it exists (attention maps, rollout, relevance propagation for transformers, gradient methods). Seven variants tried, three kept. The gradient map puts 9× more attribution on ink than chance, and all three beat random patches on a deletion test.</td></tr>
         <tr><td>2</td><td>Attribution that maps onto the K, Q and V matrices, the weights LoRA trains, and not only onto pixels.</td><td><span class="pill o">next, as a cheap probe</span></td><td>X-D0, then X-D1</td><td>Pixel maps say where the model looks, not which weights. The E1 adapter (rank 16) targets every linear layer: the vision <span class="mono">qkv</span> and <span class="mono">proj</span>, and <span class="mono">q, k, v, o, gate, up, down</span> in the language model. X-D0 measures gradient size per module and layer for tokens of different letter families, with no training.</td></tr>
-        <tr><td>3</td><td><b>Wild.</b> Guide LoRA training by the attribution results: train on groups of look-alike letters (for example <bdi class="ar">ا</bdi> and <bdi class="ar">ل</bdi>, or <bdi class="ar">ج ح خ</bdi>), find the weights that help most in detecting each letter, freeze those so they are kept, and see whether the model gets better in general.</td><td><span class="pill">gated</span></td><td>X-D1, after X-D0, X-A2b and X-B2</td><td>Candidate letter: <bdi class="ar">خ</bdi> tokens were wrong 7 of 10 times (small sample). Prior art in Latin HTR says freezing more than the first CNN layers hurts, and our own E1 gain came from unfreezing the vision encoder with a smaller learning rate (−7.6 points in-domain, one seed). Protecting weights in this way is close to Fisher-weighted regularisation, which I have not searched for. Expected gain is small; the main output is whether letter-specific circuits exist.</td></tr>
+        <tr><td>3</td><td><b>Wild.</b> Guide LoRA training by the attribution results: train on groups of look-alike letters (for example <bdi class="ar">ا</bdi> and <bdi class="ar">ل</bdi>, or <bdi class="ar">ج ح خ</bdi>), find the weights that help most in detecting each letter, freeze those so they are kept, and see whether the model gets better in general.</td><td><span class="pill">gated</span></td><td>X-D1, after X-D0, X-A2b and X-B2</td><td>Candidate letter: <bdi class="ar">خ</bdi> tokens were wrong 7 of 10 times (small sample). Prior art in Latin HTR says freezing more than the first CNN layers hurts, and our own E1 gain came from unfreezing the vision encoder with a smaller learning rate (−7.6 points in-domain, one seed). Protecting weights in this way is close to Fisher-weighted regularisation, which I have not searched for. Expected gain is small; the main output is whether letter-specific circuits exist. New: wrong tokens look in the right place as often as correct ones (74 to 85 % against 68 to 84 %), so errors are misreadings of the right region. That favours protecting or strengthening per-letter features over steering attention.</td></tr>
         <tr><td>4</td><td>Explore the cases where the models make the most mistakes, once the maps are shown to work, and look for patterns.</td><td><span class="pill">partly</span></td><td>X-A2 (done), X-A2b, X-B1</td><td>On the 15 worst Muharaf lines plus easy controls: wrong tokens have lower model confidence (−0.99 against −0.53) and equally sharp maps, and hiding their highlighted patches costs a little less. Per-letter confusion pairs next to their maps need the CTC spans.</td></tr>
-        <tr><td>5</td><td>Attribute tokens or single letters to the structure in the image that represents them: a localization task, like asking a model to locate an object.</td><td><span class="pill">partly</span></td><td>X-B1, X-B2</td><td>The CTC aligner reaches 8 % held-out CER on Muharaf and gives character spans; being validated. The pointing game then scores each map against those spans. Related work: Q-Mask, PositionOCR (Latin and scene text); nothing found for Arabic at letter level.</td></tr>
+        <tr><td>5</td><td>Attribute tokens or single letters to the structure in the image that represents them: a localization task, like asking a model to locate an object.</td><td><span class="pill b">done at token level</span></td><td>X-B1, X-B2 (done), X-C2 (gated)</td><td>A CRNN-CTC aligner (7.6 % held-out CER on Muharaf) gives character spans. The pointing game scores each map against them: about 3× chance, and the strongest peak lands in the token’s own region 71 to 84 % of the time. Letter-level span positions are plausible but not yet checked against independent boxes. Related work: Q-Mask, PositionOCR (Latin and scene text); nothing found for Arabic at letter level.</td></tr>
         <tr><td>6</td><td>Get NVIDIA’s LocateAnything-3B running locally and fine-tune it (LoRA or similar) for this use.</td><td><span class="pill">gated</span></td><td>X-C2, after X-B1</td><td>Zero-shot probe failed on 42 lines (whole-image or line-wide boxes). Fine-tuning needs word and PAW pseudo-labels from the CTC spans first, and must beat a baseline of no usable word box.</td></tr>
         <tr><td>7</td><td>An inventory of the known handwritten styles (diwani, thuluth, muhaqqaq, naskh, Maghrebi and others) with visual samples and written characteristics, because the styles need to be handled in a specific way.</td><td><span class="pill">parked, design pending</span></td><td>S1, with E6</td><td>Maghrebi is a script family and thuluth is one of the six classical pens, so the inventory needs that structure. Style already matters: base AIN-7B reads Maghrebi <bdi class="ar">ق</bdi> as <bdi class="ar">ف</bdi> on 23 to 27 % of RASAM qāfs (2 to 3 % elsewhere). “Handled in a specific way” could mean a per-style CER split, a style-aware error metric, prompt hints, style-specific augmentation (catalogue items 17 and 21), or style-conditioned training.</td></tr>
         <tr><td>8</td><td>Run the attribution on some of our other models, not only Qwen3-VL-4B.</td><td><span class="pill o">next</span></td><td>X-A7</td><td>Only Qwen3-VL-4B so far. The new CRNN-CTC model is attribution by construction (its posteriors are per image column), and a gradient map on it is cheap.</td></tr>
@@ -456,6 +458,9 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
         <tr><td>10</td><td>Added during the work: how much does each token depend on the image at all?</td><td><span class="pill o">next</span></td><td>X-A3</td><td>Hiding the highlighted patches changes the token, so some reliance exists; its size is unknown.</td></tr>
         <tr><td>11</td><td>Define curves and similar structures in the images (stroke and curve geometry) so they can be normalised later.</td><td><span class="pill o">next</span></td><td>X-G2, X-G4, X-G5, then X-G3</td><td>Arabic work exists for baseline and slant (Farooq 2005; Abu-Ain 2013; Mezghani 2013) and for contour and curvature features in writer identification (Bulacu, Schomaker and Brink 2007; Abdi and Khemakhem 2010). No study found that tests whether baseline, slant or size normalization helps a modern Arabic recogniser, and none that defines x-height, dot-size or stroke-width normalization for Arabic. Latin-side ideas to borrow: deslanting, hinge histograms, size normalization. See the Geometry and normalization section.</td></tr>
         <tr><td>12</td><td>Characteristic loci: has it been done for Arabic, and can we borrow it from other languages, with changes if needed?</td><td><span class="pill o">next</span></td><td>X-G1</td><td>Glucksman’s method (four rays from each background point, coded by how many strokes they cross) was used for Latin characters and digits. Nothing found for Arabic. It can be borrowed by counting relative to the baseline, keeping dots out of the stroke count, and computing it per PAW or letter span. In our own docs “locus” means a letter’s positional form, a different use of the word.</td></tr>
+        <tr><td>13</td><td>Measure the CRNN on other datasets, mainly NAKBA, to see how far it generalises.</td><td><span class="pill b">done</span></td><td>X-E1</td><td>Without training on NAKBA or KHATT: 13.8 % CER on NAKBA test, 13.7 % on NAKBA blind test, 26.4 % on KHATT (diacritics ignored). See the CTC aligner section for the comparison and its caveats.</td></tr>
+        <tr><td>14</td><td>Train an LLM-based model on features from a CNN layer, as a visual feature extractor.</td><td><span class="pill o">next, spike proposed</span></td><td>E8</td><td>CNN features into Transformer decoders are well established, and OCR VLMs use hybrid CNN encoders (DeepSeek-OCR). I found nothing that feeds a CTC-trained CNN-BiLSTM’s per-column features into an LLM, but the search was shallow. The new CRNN already reads NAKBA at 13.7 %, so its features carry the information. A side benefit: every feature column is an image position, so each output token can be localised exactly.</td></tr>
+        <tr><td>15</td><td>Ideas of our own that solve what the geometry literature leaves open, including out-of-the-box ones, and ways to evaluate them.</td><td><span class="pill o">next</span></td><td>X-G6 to X-G12, E8</td><td>Eleven candidates in the idea pool, ranked by cost and by how much they would tell us. Novelty is not verified for any of them.</td></tr>
       </tbody>
     </table></div>
     <h4>How the planned experiments feed these ideas</h4>
@@ -492,6 +497,70 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
       <li><b>Width handling matters for attention decoders.</b> Lines wider than the training maximum break Transformer line recognisers unless resized.</li>
       <li><b>Deslanting is still common</b> in recent pipelines (one 2026 model uses it alone), but I found no controlled ablation against augmentation-heavy training. That is the experiment X-G3 would run, on the CRNN aligner, which trains in about 60 minutes.</li>
       <li><b>For our own setting:</b> the public Muharaf copy is 60 px high, so dots are a few pixels wide; VLM image patches are coarse; dots and stroke width may be better scale references than a fixed pixel height. These are hypotheses to test, not findings.</li>
+    </ul>
+  </article>
+
+  <!-- 6d. idea pool -->
+  <article class="dpart" id="d-pool">
+    <h3>Our own idea pool</h3>
+    <p>Candidates built on what the geometry literature defines (baseline, slant, contour curvature, dots as components, the dot-unit canon) and on our own measurements. Each aims at something that work leaves open. I have not checked that none of them exists in the literature, so each needs a short search before we call it new. Ordered by what I would try first.</p>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>#</th><th>Idea</th><th>What it addresses</th><th>Cheapest test</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Geometry distance predicts transfer.</b> Measure slant, baseline, stroke width, dot size, hinge and loci histograms per dataset, and relate their distances to cross-dataset CER.</td><td>Why NAKBA (13.7 %) transfers better than KHATT (26.4 %); which datasets to mix.</td><td>X-G6, CPU, uses X-G1 to X-G5 and the new generalization table</td><td>Five datasets are too few for statistics; descriptive only.</td></tr>
+        <tr><td>2</td><td><b>Dot-preserving resize and a dot channel.</b> Shrink lines with the dots handled separately (max-pooling over dot components) and give the CNN a second input channel holding only the dots.</td><td>Dots are a few pixels at 60 px height and vanish in coarse patches; dot pairs are 13 % of letter substitutions.</td><td>X-G7: CRNN at 32 to 64 px with and without it; dot-error share</td><td>Dot detection errors; small gain if dots are not the bottleneck at 64 px.</td></tr>
+        <tr><td>3</td><td><b>Geometry test-time augmentation with confidence selection.</b> Run a model on several geometric variants of a line (slant, scale, straightened baseline) and keep the reading with the highest confidence, or vote.</td><td>Wrong tokens have lower confidence (−0.99 against −0.53), so confidence can choose.</td><td>X-G8: existing models and cached predictions; five variants per line</td><td>Per-line best-of ceilings were small across models (0.8 to 3.6 points); within one model it may be smaller or larger.</td></tr>
+        <tr><td>4</td><td><b>Factorised output: rasm plus dot pattern.</b> One CTC head for the dotless skeleton and one for the dot count and side (above or below).</td><td>Dot confusions are structural: the same body, different dots.</td><td>X-G9: CRNN with two heads against one</td><td>Dots are only about 8 % of VLM error; may matter more for small models.</td></tr>
+        <tr><td>5</td><td><b>Learned allograph library.</b> Cluster the letter crops that CTC spans give us, per letter and position, to count how many shapes really occur per writer and style.</td><td>The “82 to 110 shapes” are positional forms; the visual allographs are unmeasured.</td><td>X-G10: crops from the aligner on Muharaf and RASAM, k-means on CNN features</td><td>Span quality at letter level is unproven.</td></tr>
+        <tr><td>6</td><td><b>Allograph-stitching synthesis.</b> Build labelled lines by joining real letter crops along a baseline, using the library; fill rare shapes and swap style conventions (Maghrebi dots).</td><td>The heavy shape tail, and the qāf and fā dot convention.</td><td>X-G11: train the CRNN on real plus stitched lines; error on rare shapes</td><td>Joins can look unnatural; needs idea 5 first.</td></tr>
+        <tr><td>7</td><td><b>Geometry-matched augmentation.</b> Measure the target dataset’s geometry from unlabelled images and shift the training augmentation to match it.</td><td>Domain shift without target labels.</td><td>X-G6 first; then CRNN trained on Muharaf with matched geometry, tested on NAKBA and KHATT</td><td>May only approximate what random augmentation already covers.</td></tr>
+        <tr><td>8</td><td><b>Geometry-prediction pretext task.</b> Pretrain the CNN to predict known synthetic slant, baseline slope, stroke-width and dot-size changes on unlabelled scans.</td><td>Use of unlabelled manuscripts and school scans.</td><td>X-G12: pretrain on unlabelled Muharaf and NAKBA images, fine-tune with 500 lines</td><td>Pretext tasks often give small gains.</td></tr>
+        <tr><td>9</td><td><b>CTC-encoder-to-LLM.</b> Feed the per-column features of the trained CNN-BiLSTM through a small projector into a small LLM.</td><td>A strong, cheap visual front end that keeps dots, plus a language prior; exact token-to-position links.</td><td>E8, below</td><td>The LLM may hallucinate fluent text; the encoder dropped diacritics (it was trained without them).</td></tr>
+        <tr><td>10</td><td><b>Pointing-game as a training signal.</b> Add a loss that pushes a token’s attribution into its CTC span.</td><td>Making the model look at the right letters.</td><td>Not planned</td><td>Wrong tokens already look at the right place (74 to 85 %), so there is little to fix.</td></tr>
+        <tr><td>11</td><td><b>Pen-trajectory recovery.</b> Trace offline strokes into plausible online trajectories (Arabic stroke order is conventional) and describe them with sigma-lognormal primitives.</td><td>A principled stroke and curve vocabulary for normalization.</td><td>Not planned</td><td>Large research effort; payoff unclear. Kept as a long shot.</td></tr>
+      </tbody>
+    </table></div>
+    <h4>E8: CTC-encoder-to-LLM spike (proposed)</h4>
+    <ul>
+      <li><b>Question:</b> does a frozen CRNN-CTC encoder, read by a small LLM through a projector, beat the CRNN alone on unseen datasets, and does the language prior help or hurt?</li>
+      <li><b>Probe:</b> take the aligner’s CNN or BiLSTM output columns (roughly 100 to 400 per line, depending on width), pass them through a two-layer projector into a 0.5 to 1.7 B Qwen model. Stage 1 trains the projector only; stage 2 adds LoRA on the LLM. Train on the same 24 k lines. Compare CER on Muharaf, NAKBA and KHATT with the CRNN (7.6, 13.7, 26.4 %), and count hallucinated words that look fluent but are absent from the image.</li>
+      <li><b>Cost:</b> fits the 3090 easily; a day of building and a few hours of training.</li>
+      <li><b>What would count as success:</b> lower CER on NAKBA and KHATT than the CRNN, with no rise in fluent-but-wrong words. A tie would still be useful: it would show the encoder, not the decoder, is the bottleneck.</li>
+    </ul>
+  </article>
+
+  <!-- 6e. CTC aligner, generalisation, pointing game -->
+  <article class="dpart" id="d-ctc">
+    <h3>CTC aligner, generalization and the pointing game</h3>
+    <div class="verdict"><p><b>A small CRNN-CTC model trained on 24 k lines scores lower CER on unseen datasets than our fine-tuned VLM, and the VLM’s maps point at the right place even when its token is wrong.</b> Without training on NAKBA or KHATT, the CRNN gets 13.8 % and 13.7 % CER on NAKBA test and blind test and 26.4 % on KHATT, against 29 % and 30 % for the Qwen3-VL-4B LoRA that trained on 8 k Muharaf lines. The comparison is not like-for-like (see below). The earlier character-CTC model scored 69 to 89 %, so those results said little about character-level output; what changed is the encoder, the resolution and the training, not the idea.</p></div>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Model</th><th>Muharaf</th><th>RASAM-1</th><th>NAKBA test</th><th>NAKBA blind</th><th>KHATT</th></tr></thead>
+      <tbody>
+        <tr><td>Earlier char-CTC (32 px, small, CPU, 8 k Muharaf lines, 3 epochs)</td><td class="n">69.5</td><td class="n">88.7</td><td class="n">70.7</td><td class="n">–</td><td class="n">77.2</td></tr>
+        <tr><td>Qwen3-VL-4B LoRA (8 k Muharaf lines)</td><td class="n">36</td><td class="n">52</td><td class="n">29</td><td class="n">–</td><td class="n">30</td></tr>
+        <tr><td>New CRNN-CTC (64 px, 9.5 M parameters, 24 k lines plus RASAM, 30 epochs)</td><td class="n">7.6</td><td class="n">10.0</td><td class="n">13.8</td><td class="n">13.7</td><td class="n">26.4</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li><b>Not like-for-like:</b> the CRNN row ignores diacritics and collapses spaces, the other rows use CER-light; the CRNN trained on about three times as many lines; sample sizes differ (300 Muharaf, 100 RASAM-1, 600 NAKBA, 183 KHATT lines for the CRNN, 200 for the others).</li>
+      <li><b>RASAM-1 is not a generalization figure:</b> its held-out lines come from the same manuscripts as the training lines. Muharaf test also overlaps its train split by about 6 %.</li>
+      <li><b>NAKBA and KHATT are:</b> the CRNN never saw them. For scale, the NAKBA winner Baseer-Nakba reached 7.9 % corpus CER after training on NAKBA.</li>
+      <li><b>Why it matters:</b> it makes a CNN-encoder front end for an LLM (E8) worth a spike, and it makes the CRNN the natural reference model for the geometry and normalization experiments.</li>
+    </ul>
+    <h4>Pointing game: do the maps point at the token’s own letters?</h4>
+    <p>For each token, the target region is the union of the CTC spans of the ground-truth letters it covers (±1.5 % of the line width). A map’s score is the share of its attribution inside that region, against the same region shifted to random places. 296 of 482 tokens were scored (the rest cover fewer than two aligned letters).</p>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Map</th><th>Share of attribution inside (chance about 10 %)</th><th>Median enrichment over random shifts</th><th>Strongest peak inside the region</th><th>Peak inside, correct tokens</th><th>Peak inside, wrong tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Attention</td><td class="n">31.5 %</td><td class="n">3.2×</td><td class="n">71 %</td><td class="n">68 %</td><td class="n">74 %</td></tr>
+        <tr><td>Relative attention</td><td class="n">29.7 %</td><td class="n">3.0×</td><td class="n">84 %</td><td class="n">84 %</td><td class="n">85 %</td></tr>
+        <tr><td>Gradient × (input − paper)</td><td class="n">32.8 %</td><td class="n">3.2×</td><td class="n">77 %</td><td class="n">73 %</td><td class="n">83 %</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li><b>The maps point at the right place</b>, about three times chance. Relative attention is the best locator of the peak (84 %, and 90 % on the letter panel); the gradient map puts the most mass inside the region.</li>
+      <li><b>Wrong tokens look in the right place</b> as often as correct ones. Errors are misreadings of the right region, not misdirected looking. That favours the weight-protection idea over steering attention.</li>
+      <li><b>Limits:</b> the aligner trained on these lines, so span positions are in-sample; word-level positions look right in overlays and letter-level positions are plausible but unchecked against independent boxes (the VML-HD check is outstanding); independent checks so far: aligned spaces fall in low-ink columns 51 % of the time against 30 % for random shifts, and alef and lam spans hold strokes about 30 % taller than shifted spans.</li>
     </ul>
   </article>
 
@@ -901,8 +970,8 @@ const P = [
  m:"Aligns transcripts to images with a CTC recogniser to improve annotation quality in a large handwritten archive.",
  r:"Shows CTC alignment as a practical annotation tool on historical handwriting (per the title and snippet).",
  b:"A recipe for turning a CTC recogniser into character and word spans without box labels.",
- d:"none", o:"We have a char-CTC model from the charctc runs on the 3090 that could give spans for every line.",
- n:"gpu", x:"X-B1: character spans for the panel lines, validated against VML-HD sub-word boxes. X-B2: score attribution maps against those spans.", id:"X-B1 · X-B2"},
+ d:"applied", o:"Done (2026-10-11), with a new CRNN-CTC model because the old char-CTC (69 % CER) was too weak. 39 panel lines aligned, none failed; the pointing game scores the three maps at about 3× chance. The VML-HD check is outstanding.",
+ n:"later", x:"Validate letter-level spans against VML-HD boxes if the data is obtainable; otherwise hand-check 15 lines.", id:"X-B1"},
 {g:"xai", key:"chinesesegfree2022", t:"Recognition of Handwritten Chinese Text by Segmentation: A Segment-annotation-free Approach", v:"arXiv 2207.14801, 2022", warn:"snippet only",
  m:"Trains from transcripts alone: pretrain on synthetic data that has segmentation labels, then fine-tune on real transcribed lines.",
  r:"Segmentation without segment annotation on real handwriting.",
@@ -1050,11 +1119,13 @@ const QUEUE = [
  ["Multilingual pre-training with a freeze sweep", "Which part transfers across scripts: early CNN or sequence model?", "alazzawi2026seqmodel, aradillas2021boosting", "ΔCER against joint training at K = 100, 500, 1000 for four freeze settings.", "gpu", "E7"],
  ["Larger letter-family sample (the خ lead)", "7 of 10 خ tokens were wrong in the letter panel; the sample is small.", "attribution spike", "At least 50 tokens per letter family, error rate with intervals.", "gpu", "X-A2b"],
  ["Image-reliance check", "Maps only mean something if the model uses the image.", "greekvlm2026", "Per-token log-prob with and without the image, per model.", "gpu", "X-A3"],
- ["CTC character spans, validated on VML-HD", "A location reference for each letter without box labels.", "bullinger2025ctcalign, vmlhd", "Span error against hand-checked boxes on 30 lines.", "gpu", "X-B1"],
  ["Stroke width, dot size and baseline per line", "Defines the per-line numbers a normalization would use.", "ibnmuqla-proportion, arabic-secondary-components, farooq2005preprocess", "Distributions per dataset and style, validated on CTC spans.", "cpu", "X-G2 · X-G5"],
  ["Characteristic loci and hinge histograms", "Two borrowed descriptors for curve and stroke structure; nothing found for Arabic.", "glucksman1967loci, bulacu2007allographic", "Histograms per dataset and style, distance between datasets, correlation with CER.", "cpu", "X-G1 · X-G4"],
+ ["Geometry distance against transfer", "Why NAKBA transfers better than KHATT, and which datasets to mix.", "glucksman1967loci, bulacu2007allographic, ibnmuqla-proportion", "Distances between datasets on the X-G1 to X-G5 measures, next to the new generalization table.", "cpu", "X-G6"],
+ ["Dot-preserving resize and dot channel", "Dots shrink to a few pixels at low height; dot pairs are 13 % of letter substitutions.", "arabic-secondary-components", "CRNN CER and dot-error share at 32 to 64 px with and without it.", "gpu", "X-G7"],
+ ["Geometry test-time augmentation", "Confidence separates wrong from correct tokens, so it might pick the best variant.", "vinciarelli2001norm", "CER of the best-confidence variant against the single reading, on cached predictions.", "gpu", "X-G8"],
+ ["CTC-encoder-to-LLM spike", "A cheap front end that keeps dots, plus a language prior.", "retsinas2022best", "CER on Muharaf, NAKBA and KHATT against the CRNN (7.6, 13.7, 26.4 %).", "gpu", "E8"],
  ["Per-module gradient probe by letter family", "First direct test of the freeze-by-letter idea; needs no training.", "attribution spike", "Gradient size per LoRA module and layer for tokens of ا ل against ج ح خ, and whether the profiles differ.", "gpu", "X-D0"],
- ["Pointing game against the CTC spans", "Scores each map by whether it lands on its own token.", "attribution-eval", "Share of a token’s attribution inside its aligned span, per map.", "cpu", "X-B2"],
 ];
 
 const $ = s=>document.querySelector(s);
@@ -1436,8 +1507,8 @@ const EXP = [
  ["X-D0","Per-module and per-layer gradient size of the LoRA for tokens of ا ل and of ج ح خ (no training)","GPU","Whether letter families load different modules or layers"],
  ["X-A4","Chefer relevance maps as a fourth method","GPU","Agreement with the three kept maps on wrong tokens"],
  ["X-A5","Sensitivity of each map to noise level, baseline and aggregation","GPU","Map stability under setting changes"],
- ["X-B1","CTC character spans for panel lines; validate on VML-HD sub-word boxes","GPU (3090)","Span error against hand-checked boxes"],
- ["X-B2","Pointing game: share of each token’s attribution inside its CTC span","CPU","Score per method"],
+ ["X-B1","CTC character spans for panel lines (CRNN-CTC aligner, 7.6 % held-out CER on Muharaf); validate on VML-HD sub-word boxes","GPU (3090)","Done 2026-10-11 except the VML-HD check: 39 lines aligned; spaces in low-ink columns 51 % against 30 % for random shifts; alef and lam spans 30 % taller than shifted spans"],
+ ["X-B2","Pointing game: share of each token’s attribution inside its CTC span","CPU","Done 2026-10-11: about 3× chance for all three maps; strongest peak inside the region 71 to 84 %; wrong tokens as often as correct ones"],
  ["X-C1","LocateAnything-3B zero-shot probe: word, PAW, letter, dots","GPU","Done 2026-10-10: no-go. 42 lines; whole-image boxes for word queries at full size, line-wide boxes after padding"],
  ["X-C2","LoRA fine-tune LocateAnything on word and PAW pseudo-labels from X-B1; letters if justified","GPU (gated on X-B1)","IoU on held-out manuscripts, against the zero-shot baseline of no usable word box in 42 lines"],
  ["X-D1","Parameter-level attribution and a freeze sweep over similar letters (gated on X-A and X-B)","GPU","Whether letter-specific circuits exist, and ΔCER from protecting them"],
@@ -1446,7 +1517,16 @@ const EXP = [
  ["X-G2","Baseline, slope and slant per line with two estimators (projection and skeleton)","CPU","Distributions per dataset and style; correlation with CER"],
  ["X-G3","Normalization ablation on the CRNN aligner: height 32/48/64/96, median padding against resize, baseline straightening, deslant, stroke-width normalization, binarization","GPU","CER and dot-error share per setting on Muharaf and RASAM; second seed"],
  ["X-G4","Hinge and polygon-curvature histograms per line, dataset and style","CPU","Curvature descriptors; style separability; correlation with CER"],
- ["X-G5","Dot size, stroke width and alif height per line (nuqta-style units) from connected components, validated on CTC spans","CPU","Ratios and their spread by dataset and style"]
+ ["X-G5","Dot size, stroke width and alif height per line (nuqta-style units) from connected components, validated on CTC spans","CPU","Ratios and their spread by dataset and style"],
+ ["X-E1","CRNN-CTC generalization to NAKBA and KHATT","GPU (3090)","Done 2026-10-11: 13.8 % NAKBA test, 13.7 % blind test, 26.4 % KHATT, without training on them"],
+ ["X-G6","Geometry distance (X-G1 to X-G5) against cross-dataset CER","CPU","Which geometric distances track transfer failure; descriptive, five datasets"],
+ ["X-G7","Dot-preserving resize and a dot input channel for the CRNN, at 32 to 64 px","GPU","CER and dot-error share against plain resizing"],
+ ["X-G8","Geometry test-time augmentation with confidence selection on cached VLM and CRNN predictions","GPU","CER of best-confidence reading against the single reading"],
+ ["X-G9","Factorised output: rasm CTC plus a dot-pattern head","GPU","Dot-pair error and CER against one joint head"],
+ ["X-G10","Learned allograph library from CTC letter crops","GPU","Number of visual shapes per letter, position, writer and style"],
+ ["X-G11","Allograph-stitching synthesis for rare shapes and style swaps","GPU","Error on rare shapes with real plus stitched training lines"],
+ ["X-G12","Geometry-prediction pretext pretraining on unlabelled scans","GPU","CER with 500 labelled lines, with and without pretraining"],
+ ["E8","CTC-encoder-to-LLM spike: frozen CNN-BiLSTM columns through a projector into a small Qwen model","GPU","CER on Muharaf, NAKBA and KHATT against the CRNN; fluent-but-wrong word count"]
 ];
 table("tb-exp", ["ID", "Experiment", "Compute", "Done when / result"], EXP);
 })();
