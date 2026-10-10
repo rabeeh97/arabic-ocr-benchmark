@@ -8,10 +8,9 @@ For each line image: greedy-decode the transcription, then for a handful of the
 generated tokens (those containing the target letters first) compute a map over the
 image with four methods:
 
-  rollout   attention rollout through the LLM layers (generated token -> image tokens)
   attn      raw attention to image tokens, averaged over heads and layers
-  gxi       gradient x input w.r.t. the *pixel values* (true pixel attribution)
-  ig        integrated gradients w.r.t. the pixel values (zero = grey baseline)
+  attn_rel  the same divided by the mean over all generated tokens (removes sinks / borders)
+  gxi       gradient x (input - blank paper) w.r.t. the *pixel values* (true pixel attribution)
 
 and two sanity checks: a deletion test (mask the top-k % patches by each method vs
 random patches; the token's log-prob should drop more for a faithful map) and an RTL
@@ -43,8 +42,8 @@ PROMPT = (
 )
 TARGETS = {"alef": set("اآأإ"), "lam": set("ل"), "jim": set("ج"), "ha": set("ح"), "kha": set("خ")}
 ALL_TARGET = set().union(*TARGETS.values())
-METHODS = ["rollout", "attn", "rollout_rel", "attn_rel", "gxi", "sg", "ig"]
-PIXEL_METHODS = {"gxi", "sg", "ig"}
+METHODS = ["attn", "attn_rel", "gxi"]
+PIXEL_METHODS = {"gxi"}
 P, M = 16, 2  # vision patch size, spatial merge
 
 
@@ -99,7 +98,7 @@ def load(base: str, adapter: str | None):
     proc = AutoProcessor.from_pretrained(base)
     proc.image_processor.max_pixels = 1_003_520
     model = Qwen3VLForConditionalGeneration.from_pretrained(
-        base, torch_dtype=torch.bfloat16, attn_implementation="eager"
+        base, torch_dtype=torch.bfloat16, attn_implementation="sdpa"
     ).to("cuda")
     if adapter:
         model = PeftModel.from_pretrained(model, adapter).merge_and_unload()
@@ -149,70 +148,53 @@ class Ctx:
 
 
 def attention_maps(ctx: Ctx, positions: list[int]):
-    with torch.no_grad():
-        out = ctx.forward(ctx.px, attn=True)
-    A = [a[0].float().mean(0) for a in out.attentions]  # per layer: (S, S) head-mean
-    S = A[0].shape[0]
-    eye = torch.eye(S, device=A[0].device)
-    R = eye.clone()
-    for a in A:
-        R = (0.5 * a + 0.5 * eye) @ R
-    avg = torch.stack(A).mean(0)
-    maps = {k: {} for k in ("rollout", "attn", "rollout_rel", "attn_rel")}
+    """Raw and relative attention from each generated token to the image tokens.
+
+    Needs eager attention to return weights; everything else runs on sdpa, so the model is
+    switched for this one pass only. `_rel` divides by the mean over all generated tokens,
+    which removes sinks and border patches that every token attends to.
+    """
+    ctx.model.set_attn_implementation("eager")
+    try:
+        with torch.no_grad():
+            out = ctx.forward(ctx.px, attn=True)
+    finally:
+        ctx.model.set_attn_implementation("sdpa")
+    avg = torch.stack([a[0].float().mean(0) for a in out.attentions]).mean(0)  # (S, S), head+layer mean
+    del out
+    S = avg.shape[0]
     gen_rows = torch.arange(ctx.n_prompt - 1, S - 1)
-    for name, mat in (("rollout", R), ("attn", avg)):
-        # sinks / borders attract attention for *every* token: divide by the mean over all generated tokens
-        base = mat[gen_rows][:, ctx.img_mask].mean(0)
-        base = base + 0.05 * base.mean()
-        for p in positions:
-            v = mat[p - 1][ctx.img_mask]
-            for key, val in ((name, v), (name + "_rel", v / base)):
-                maps[key][p] = merged_to_patch(val.reshape(ctx.gh // M, ctx.gw // M).cpu().numpy())
+    base = avg[gen_rows][:, ctx.img_mask].mean(0)
+    base = base + 0.05 * base.mean()
+    maps = {"attn": {}, "attn_rel": {}}
+    for p in positions:
+        v = avg[p - 1][ctx.img_mask]
+        for key, val in (("attn", v), ("attn_rel", v / base)):
+            maps[key][p] = merged_to_patch(val.reshape(ctx.gh // M, ctx.gw // M).cpu().numpy())
     return maps
 
 
-def grad_maps(ctx: Ctx, positions: list[int], ig_steps: int, sg_steps: int = 8):
-    gxi, ig = {}, {p: torch.zeros_like(ctx.px) for p in positions}
-    # Baseline = blank paper (median patch), not zero. Normalised pixels are + for paper and - for ink,
-    # so with a zero baseline the positive part of grad*input kept the paper and dropped the ink.
+def grad_maps(ctx: Ctx, positions: list[int]):
+    """Gradient x (input - paper) per generated token, at pixel resolution.
+
+    Baseline = blank paper (median patch), not zero: normalised pixels are + for paper and - for ink,
+    so with a zero baseline the positive part of grad*input kept the paper and dropped the ink.
+    """
     base = ctx.px.median(0).values.expand_as(ctx.px)
     diff = ctx.px - base
-    # gradient x input at the real image
     x = ctx.px.clone().requires_grad_(True)
+    out = {}
     with torch.enable_grad():
         logits = ctx.forward(x).logits
         for p in positions:
             (g,) = torch.autograd.grad(ctx.logprob(logits, p), x, retain_graph=True)
-            gxi[p] = pixel_map(g * diff, ctx.gh, ctx.gw)
+            out[p] = pixel_map(g * diff, ctx.gh, ctx.gw)
     del logits
-    # integrated gradients (right Riemann sum along the straight path from grey)
-    for k in range(1, ig_steps + 1):
-        xa = (base + diff * (k / ig_steps)).clone().requires_grad_(True)
-        with torch.enable_grad():
-            logits = ctx.forward(xa).logits
-            for p in positions:
-                (g,) = torch.autograd.grad(ctx.logprob(logits, p), xa, retain_graph=True)
-                ig[p] += g / ig_steps
-        del logits
-    igm = {p: pixel_map(ig[p] * diff, ctx.gh, ctx.gw) for p in positions}
-    # SmoothGrad x input: average the gradient over noisy copies (tames the ViT's gradient speckle)
-    sg_acc = {p: torch.zeros_like(ctx.px) for p in positions}
-    torch.manual_seed(0)
-    sigma = 0.2 * ctx.px.std()
-    for _ in range(sg_steps):
-        xn = (ctx.px + sigma * torch.randn_like(ctx.px)).requires_grad_(True)
-        with torch.enable_grad():
-            logits = ctx.forward(xn).logits
-            for p in positions:
-                (g,) = torch.autograd.grad(ctx.logprob(logits, p), xn, retain_graph=True)
-                sg_acc[p] += g / sg_steps
-        del logits
-    sgm = {p: pixel_map(sg_acc[p] * diff, ctx.gh, ctx.gw) for p in positions}
-    return gxi, sgm, igm
+    return out
 
 
 # ---------------------------------------------------------------- sanity checks
-def deletion(ctx: Ctx, p: int, score_grid: np.ndarray, fracs=(0.1, 0.25)) -> dict:
+def deletion(ctx: Ctx, p: int, score_grid: np.ndarray, fracs=(0.1,)) -> dict:
     n = ctx.gh * ctx.gw
     base = ctx.logprob(ctx.forward(ctx.px).logits, p).item()
     order = np.argsort(-score_grid.ravel(), kind="stable")
@@ -301,7 +283,7 @@ def main() -> None:
     ap.add_argument("--base", default="Qwen/Qwen3-VL-4B-Instruct")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--ig-steps", type=int, default=12)
+    ap.add_argument("--max-width", type=int, default=1024, help="downscale wider lines first (patch count drives cost)")
     ap.add_argument("--max-tokens", type=int, default=12)
     ap.add_argument("--del-methods", default=",".join(METHODS), help="comma list; deletion test is the slow part")
     ap.add_argument("--select", choices=["targets", "errors"], default="targets")
@@ -319,6 +301,8 @@ def main() -> None:
     for li, item in enumerate(manifest):
         t0 = time.time()
         img = Image.open(a.lines / item["file"]).convert("RGB")
+        if img.width > a.max_width:
+            img = img.resize((a.max_width, max(32, round(img.height * a.max_width / img.width))), Image.BICUBIC)
         inputs = build_inputs(proc, img)
         n_prompt = inputs["input_ids"].shape[1]
         with torch.no_grad():
@@ -344,8 +328,12 @@ def main() -> None:
             pri = [i for i, s in cand if ALL_TARGET & set(s)] + [i for i, s in cand if not ALL_TARGET & set(s)]
             chosen = sorted(pri[: a.max_tokens])
         positions = [n_prompt + i for i in chosen]
+        t1 = time.time()
         maps = attention_maps(ctx, positions)
-        maps["gxi"], maps["sg"], maps["ig"] = grad_maps(ctx, positions, a.ig_steps)
+        t2 = time.time()
+        maps["gxi"] = grad_maps(ctx, positions)
+        t3 = time.time()
+        print(f"   grid {ctx.gh}x{ctx.gw}  decode {t1 - t0:.0f}s  attn {t2 - t1:.0f}s  grad {t3 - t2:.0f}s", flush=True)
         grids = {m: {p: (patch_scores(v, ctx.gh, ctx.gw) if m in PIXEL_METHODS else v) for p, v in maps[m].items()} for m in METHODS}
         d = a.out / f"{li:03d}"
         d.mkdir(exist_ok=True)
@@ -371,7 +359,7 @@ def main() -> None:
                 row.setdefault("cx", {})[m] = centroid_x(grid)
                 row["conc"][m] = conc(grid)
                 row["ink"][m] = ink_enrichment(pm, ink)
-            rnd = [deletion(ctx, p, rng.random((ctx.gh, ctx.gw))) for _ in range(3)]
+            rnd = [deletion(ctx, p, rng.random((ctx.gh, ctx.gw))) for _ in range(2)]
             row["deletion"]["random"] = {f: float(np.mean([r[f] for r in rnd])) for f in rnd[0]}
             toks.append(row)
         # RTL test: Spearman between token order and centroid x (expect negative)
