@@ -233,6 +233,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
         <li><a href="#grp-data">Datasets and writers</a></li>
         <li><a href="#grp-read">Reading and perception</a></li>
         <li><a href="#grp-xai">Attribution and localization</a></li>
+        <li><a href="#grp-geo">Stroke and curve geometry</a></li>
       </ol></li>
     <li><a href="#htr-dossier">2 · Results: HTR deep dive</a>
       <ol>
@@ -243,6 +244,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
         <li><a href="#d-cross">Cross-lingual transfer</a></li>
         <li><a href="#d-styles">Script styles: Maghrebi</a></li>
         <li><a href="#d-ideas">Ideas log</a></li>
+        <li><a href="#d-geo">Geometry and normalization</a></li>
         <li><a href="#d-xai">Attribution spike</a></li>
         <li><a href="#d-aug">Augmentation catalogue</a></li>
         <li><a href="#d-exp">Experiments</a></li>
@@ -286,7 +288,7 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
     <p>The four Luleå preprints are the closest prior work to ours. This section plots their results, shows what we re-measured on our own data, and lists the experiments and augmentation ideas they lead to. Paper numbers are transcribed from the papers; “ours” numbers come from <span class="mono">scripts/substitution_analysis.py</span> (R2.6). The attribution and localization spike of 2026-10-10 has its own part below, with a link to its explorer page.</p>
   </div>
   <nav class="dnav" aria-label="Dossier sections">
-    <a href="#d-programme">The research programme</a><a href="#d-gap">Gap paper</a><a href="#d-r26">R2.6 re-measured</a><a href="#d-labels">Label errors</a><a href="#d-cross">Cross-lingual transfer</a><a href="#d-styles">Script styles: Maghrebi</a><a href="#d-ideas">Ideas log</a><a href="#d-xai">Attribution spike</a><a href="#d-aug">Augmentation catalogue</a><a href="#d-exp">Experiments</a>
+    <a href="#d-programme">The research programme</a><a href="#d-gap">Gap paper</a><a href="#d-r26">R2.6 re-measured</a><a href="#d-labels">Label errors</a><a href="#d-cross">Cross-lingual transfer</a><a href="#d-styles">Script styles: Maghrebi</a><a href="#d-ideas">Ideas log</a><a href="#d-geo">Geometry and normalization</a><a href="#d-xai">Attribution spike</a><a href="#d-aug">Augmentation catalogue</a><a href="#d-exp">Experiments</a>
   </nav>
   <div class="dossier">
 
@@ -452,6 +454,8 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
         <tr><td>8</td><td>Run the attribution on some of our other models, not only Qwen3-VL-4B.</td><td><span class="pill o">next</span></td><td>X-A7</td><td>Only Qwen3-VL-4B so far. The new CRNN-CTC model is attribution by construction (its posteriors are per image column), and a gradient map on it is cheap.</td></tr>
         <tr><td>9</td><td>Added during the work: do the maps land on dots, the marks Arabic recognition depends on?</td><td><span class="pill o">next</span></td><td>X-A6</td><td>Not checked. The gradient map has pixel resolution, so its mass can be compared with the connected components that are dots.</td></tr>
         <tr><td>10</td><td>Added during the work: how much does each token depend on the image at all?</td><td><span class="pill o">next</span></td><td>X-A3</td><td>Hiding the highlighted patches changes the token, so some reliance exists; its size is unknown.</td></tr>
+        <tr><td>11</td><td>Define curves and similar structures in the images (stroke and curve geometry) so they can be normalised later.</td><td><span class="pill o">next</span></td><td>X-G2, X-G4, X-G5, then X-G3</td><td>Arabic work exists for baseline and slant (Farooq 2005; Abu-Ain 2013; Mezghani 2013) and for contour and curvature features in writer identification (Bulacu, Schomaker and Brink 2007; Abdi and Khemakhem 2010). No study found that tests whether baseline, slant or size normalization helps a modern Arabic recogniser, and none that defines x-height, dot-size or stroke-width normalization for Arabic. Latin-side ideas to borrow: deslanting, hinge histograms, size normalization. See the Geometry and normalization section.</td></tr>
+        <tr><td>12</td><td>Characteristic loci: has it been done for Arabic, and can we borrow it from other languages, with changes if needed?</td><td><span class="pill o">next</span></td><td>X-G1</td><td>Glucksman’s method (four rays from each background point, coded by how many strokes they cross) was used for Latin characters and digits. Nothing found for Arabic. It can be borrowed by counting relative to the baseline, keeping dots out of the stroke count, and computing it per PAW or letter span. In our own docs “locus” means a letter’s positional form, a different use of the word.</td></tr>
       </tbody>
     </table></div>
     <h4>How the planned experiments feed these ideas</h4>
@@ -461,6 +465,33 @@ section[id],.group[id],.dpart[id]{scroll-margin-top:16px}
       <li><b>Larger letter sample (X-A2b)</b> turns the <bdi class="ar">خ</bdi> lead into a result or drops it, which decides which letter groups idea 3 should start with.</li>
       <li><b>Per-module gradient probe (X-D0, new)</b> is the first direct test of ideas 2 and 3 and needs no training: for tokens of ا ل and of ج ح خ, which modules and layers of the LoRA carry the gradient, and do the families differ? If they do not, freezing by letter family has little to work with. If they do, X-D1 has a concrete target.</li>
       <li><b>Dot test (X-A6), image reliance (X-A3) and other models (X-A7)</b> cover ideas 9, 10 and 8. S1 and E6 cover idea 7.</li>
+      <li><b>Geometry measures (X-G1 to X-G5)</b> define the per-line numbers that a normalization would use (baseline slope, slant, stroke width, dot size, curvature and loci histograms) and show which datasets and styles differ on them (ideas 7, 11 and 12). X-G3 then tests whether normalizing any of them helps a model.</li>
+    </ul>
+  </article>
+
+  <!-- 6c. geometry and normalization -->
+  <article class="dpart" id="d-geo">
+    <h3>Geometry and normalization: what exists</h3>
+    <div class="verdict"><p><b>Pieces exist for Arabic, but not the study we need.</b> Arabic has baseline detection, slant and slope correction, contour and curvature features for writer identification, and methods for separating dots from letter bodies. The search found no study that asks whether baseline, slant, size or stroke-width normalization helps a modern Arabic recogniser, and none that defines x-height, dot-size or stroke-width normalization for Arabic. The Latin side has more, and most of it can be borrowed. “Characteristic loci”, an older feature from Latin and digit recognition, has no Arabic use that I could find, but is easy to compute here.</p></div>
+    <div class="qwrap"><table class="dt">
+      <thead><tr><th>Measure</th><th>Arabic</th><th>Latin or other</th><th>What we would do</th></tr></thead>
+      <tbody>
+        <tr><td>Baseline, slope</td><td>Farooq 2005, Abu-Ain 2013, Mezghani 2013 (projection profiles fail on Arabic; skeleton direction works better)</td><td>Local-extrema and projection methods, learned normalization</td><td>X-G2: two estimators, distributions per dataset and style</td></tr>
+        <tr><td>Slant</td><td>Near-vertical strokes, driven by the baseline (Farooq 2005)</td><td>Vinciarelli and Luettin 2001, parameter-free, +10.8 % relative; shear-and-histogram methods used with CNN-RNNs</td><td>X-G2 measures it; X-G3 tests deslanting</td></tr>
+        <tr><td>Size, x-height</td><td>Nothing found</td><td>Size normalization reduces empty space from ascenders and descenders; fixed height with median padding (Retsinas 2022)</td><td>X-G5 (alif height and stroke width); X-G3 height sweep</td></tr>
+        <tr><td>Stroke width, dot size</td><td>Dots found as small connected components by area and aspect ratio (patents, Toufik); Ibn Muqla’s canon uses the dot as the unit</td><td>Stroke-width transform in scene text (from memory, not searched)</td><td>X-G5: dot size, stroke width and alif height per line</td></tr>
+        <tr><td>Curve geometry</td><td>Contour polygons with length, direction, angle and curvature (Abdi 2010); CON3 and CPCA codebooks (2023); curvelets (weak)</td><td>Hinge histograms (Bulacu and Schomaker), Fourier descriptors for loops, sigma-lognormal strokes (online)</td><td>X-G4: hinge and polygon curvature histograms</td></tr>
+        <tr><td>Characteristic loci</td><td>Nothing found</td><td>Glucksman 1967; handwritten digits</td><td>X-G1 with baseline-relative rays and dots separate</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Training and model-choice insights found so far</h4>
+    <ul>
+      <li><b>Pad, do not resize.</b> Retsinas et al. fix the height (128 for lines, 64 for words) and pad with the median pixel value; padding beat resizing on IAM (line WER 15.89 % against 16.19 %).</li>
+      <li><b>Small architecture choices move results.</b> Column-wise max-pooling over concatenation (CER 4.93 % against 5.54 %) and an auxiliary CTC branch (4.93 % to 4.62 %) are the largest gains in that paper. Their pipeline uses no deslanting or binarization, only small random rotation and skew and noise.</li>
+      <li><b>Height and binarization interact.</b> Liebl and Burghardt report that with binarization a smaller line height may be best, so the two should be swept together.</li>
+      <li><b>Width handling matters for attention decoders.</b> Lines wider than the training maximum break Transformer line recognisers unless resized.</li>
+      <li><b>Deslanting is still common</b> in recent pipelines (one 2026 model uses it alone), but I found no controlled ablation against augmentation-heavy training. That is the experiment X-G3 would run, on the CRNN aligner, which trains in about 60 minutes.</li>
+      <li><b>For our own setting:</b> the public Muharaf copy is 60 px high, so dots are a few pixels wide; VLM image patches are coarse; dots and stroke width may be better scale references than a fixed pixel height. These are hypotheses to test, not findings.</li>
     </ul>
   </article>
 
@@ -608,7 +639,8 @@ const GROUPS = [
  {id:"eval", name:"Evaluation and dataset methodology", note:"The measurement lineage we copy"},
  {id:"data", name:"Datasets and writers", note:"Datasheet fields and the school-dataset design"},
  {id:"read", name:"Reading and perception", note:"The human-side analogue of each property"},
- {id:"xai", name:"Attribution, grounding and localization", note:"Where a model looks, and finding a letter or word in the image. Results: see the attribution spike below"}
+ {id:"xai", name:"Attribution, grounding and localization", note:"Where a model looks, and finding a letter or word in the image. Results: see the attribution spike below"},
+ {id:"geo", name:"Stroke and curve geometry, and normalization", note:"How handwriting looks: baseline, slant, curves, dots, strokes, and what can be normalised. Summary: see Geometry and normalization below"}
 ];
 
 const P = [
@@ -900,7 +932,104 @@ const P = [
  r:"Deletion and insertion can contradict each other and depend on the fill, which shifts the input off the data distribution. The pointing game compares two model-independent objects.",
  b:"Use deletion only with a fill that stays near the data, and never alone.",
  d:"partial", o:"We used a median-paper fill, a random baseline, ink enrichment and right-to-left order together. No adversarial or ablation-corrected check yet, and no test of how the maps move with noise level or baseline.",
- n:"gpu", x:"X-A5: sensitivity of each map to its settings before any method comparison goes into a paper.", id:"X-A5"}
+ n:"gpu", x:"X-A5: sensitivity of each map to its settings before any method comparison goes into a paper.", id:"X-A5"},
+// ---------- stroke and curve geometry, normalization (added 2026-10-11)
+{g:"geo", key:"glucksman1967loci", t:"Classification of mixed-font alphabetics by characteristic loci", v:"Glucksman · 1967", warn:"title and year as cited; the original was not found, described via a patent and a review",
+ m:"For each point in the background of a binarised character, extend four rays (up, down, left, right) and code how many strokes each ray crosses. The histogram of these codes over all points is the feature vector.",
+ r:"Tolerates deformed characters but gets harder when many classes must be told apart (per a patent that describes it). Reused for handwritten digits as an 81-component vector normalised by the number of black pixels (per a review).",
+ b:"A geometry descriptor that needs no skeleton and no segmentation, so it can be computed per line, per PAW or per letter span.",
+ d:"none", o:"Not computed. In our docs “locus” means a letter’s positional form (isolated, initial, medial, final); characteristic loci is a different and older feature. No Arabic-specific use found: one review lists it among statistical features without saying whether the study was on Arabic.",
+ n:"cpu", x:"X-G1: loci histograms on binarised lines and on CTC letter spans, with two Arabic changes: count rays relative to the baseline, and leave dots out of the stroke count or count them separately. Compare datasets and styles by histogram distance, after checking sensitivity to stroke width.", id:"X-G1"},
+{g:"geo", key:"farooq2005preprocess", t:"Pre-processing methods for handwritten Arabic documents", v:"Farooq, Govindaraju, Perrone · 2005 (as listed in the search record)", warn:"abstract only; venue unverified",
+ m:"Orientation-independent baseline detection for Arabic words, then slant normalization, slope correction and line and word separation driven by the baseline.",
+ r:"The baseline is the anchor for the other corrections (per the abstract).",
+ b:"Baseline first, then slope and slant; slant measured from near-vertical strokes.",
+ d:"none", o:"Not implemented. We know the baseline is a problem for VLMs only indirectly (R6 second pass is still pending).",
+ n:"cpu", x:"X-G2: estimate baseline, slope and slant on our lines; report their distributions per dataset and style and test whether they predict CER.", id:"X-G2"},
+{g:"geo", key:"abuain2013baseline", t:"Baseline detection, straightening and slant correction for Arabic handwriting (Abu-Ain et al.)", v:"Journal of ICT Research and Applications 7(2), 2013 · IFN/ENIT", warn:"title paraphrased; abstract level only",
+ m:"Segment connected components, thin them to skeletons, extract direction features, generate candidate baseline regions, choose one, and align each component’s baseline to the writing line.",
+ r:"No numbers seen. The most directly relevant Arabic normalization pipeline in the search.",
+ b:"A skeleton-based baseline estimator we can reuse and compare with a projection-based one.",
+ d:"none", o:"—",
+ n:"cpu", x:"X-G2: implement as the second baseline estimator and check against the AHTID/MW baseline ground truth if the data is available.", id:"X-G2"},
+{g:"geo", key:"mezghani2013baseline", t:"Baseline Estimation in Arabic Handwritten Text-Line: evaluation on AHTID/MW", v:"Mezghani et al. · SciTePress 2013", warn:"abstract level only",
+ m:"Argues that horizontal-projection baseline methods fail on Arabic handwriting (style variety, cursive joins, many dots) and extends AHTID/MW with baseline ground truth.",
+ r:"The only Arabic text-line baseline ground truth the search found.",
+ b:"A ground-truth set to validate our baseline estimator, and the reasons projection profiles fail.",
+ d:"none", o:"—",
+ n:"later", x:"Check whether AHTID/MW is obtainable and licensed before relying on it.", id:"X-G2"},
+{g:"geo", key:"vinciarelli2001norm", t:"A new normalization technique for cursive handwritten words", v:"Vinciarelli, Luettin · Pattern Recognition Letters 22(9), 2001",
+ m:"Two deslanting and deskewing methods that need no heuristics or tuned parameters.",
+ r:"+10.8 % relative recognition rate over traditional normalization (compared with Bozinovic and Srihari) inside a word recogniser on several databases.",
+ b:"A parameter-free deslant to test as an ablation; the classic slant, slope and size normalization recipe for Latin.",
+ d:"none", o:"Not tested. Modern pipelines often keep deslanting (a 2026 decoder-only HTR model does) while Retsinas et al. use only small random rotation and skew.",
+ n:"gpu", x:"X-G3: deslant on or off, and a baseline-based Arabic equivalent, on the CRNN aligner.", id:"X-G3"},
+{g:"geo", key:"retsinas2022best", t:"Best Practices for a Handwritten Text Recognition System", v:"Retsinas, Sfikas, Gatos, Nikou · DAS 2022 · arXiv 2404.11339",
+ m:"ResNet-style CNN, three BiLSTMs of 256, greedy CTC, plus an auxiliary CTC “shortcut” branch on the CNN output (loss weight 0.1, training only). Lines fixed at 128 × 1024, words at 64 × 256, padded with the median pixel value and resized only when larger.",
+ r:"Padding beat resizing (IAM line WER 15.89 % against 16.19 %). Column-wise max-pooling beat concatenation (CER 4.93 % against 5.54 %). The CTC shortcut cut CER from 4.93 % to 4.62 %. Final 4.62 % CER and 15.89 % WER on IAM lines. No deslanting or binarization in their pipeline, only small random rotation and skew and Gaussian noise.",
+ b:"Median-value padding, column-wise max-pooling, the auxiliary CTC loss, and the point that small preprocessing and architecture choices matter.",
+ d:"partial", o:"Our aligner is a VGG-style CNN with three BiLSTMs at 64 px, with small width scaling, brightness and noise augmentation: 8 % held-out CER on Muharaf. It has none of their three tricks and pads with white.",
+ n:"gpu", x:"E5 with their recipe as the CRNN reference, and X-G3 comparing median padding, the CTC shortcut and column max-pooling with our setup.", id:"E5 · X-G3"},
+{g:"geo", key:"liebl2020crnn", t:"On the Accuracy of CRNNs for Line-Based OCR: A Multi-Parameter Evaluation", v:"Liebl, Burghardt · arXiv 2008.02777, 2020", warn:"abstract level only",
+ m:"Grid searches over binarization, input line height, network width and depth, dropout and augmentation, on historical typefaces with the Calamari framework.",
+ r:"Line height and binarization may interact: with binarization, a smaller height might be best. A model trained on 10,000 lines reached 0.44 % CER and beat pretrained models trained on more than 20 times as much data.",
+ b:"A design for a height-by-binarization sweep.",
+ d:"none", o:"—",
+ n:"gpu", x:"X-G3: sweep input height (32, 48, 64, 96) with and without binarization on the CRNN aligner.", id:"X-G3"},
+{g:"geo", key:"rethinking2021", t:"Rethinking Text Line Recognition Models", v:"arXiv 2104.07787, 2021", warn:"search snippet only",
+ m:"Compares CTC and Transformer line recognisers, including fixed-height resizing and padding or shrinking to a maximum width.",
+ r:"For Transformer decoders, CER rises sharply on lines wider than the training maximum when they are not resized.",
+ b:"A warning that width handling matters for attention decoders.",
+ d:"partial", o:"We cap VLM inputs at 1024 px wide for attribution and saw one output change. The benchmark’s own image-size effects have not been separated.",
+ n:"gpu", x:"R9: resolution and width probe on the benchmark models.", id:"R9"},
+{g:"geo", key:"bulacu2007allographic", t:"Edge-hinge and allographic features for writer identification (Bulacu, Schomaker and co-authors)", v:"ICDAR 2003 (hinge) · ICDAR 2007 (IFN/ENIT, 350 writers) · TPAMI 2007", warn:"TPAMI details from memory; the ICDAR papers were found",
+ m:"The hinge feature is the joint distribution of the orientations of two contour fragments that start at a common pixel, capturing writing angle and curvature. Allographic features use a codebook of grapheme shapes.",
+ r:"The hinge distribution was the strongest single feature in ICDAR 2003. On 350 IFN/ENIT writers, combining textural (directional) and allographic features worked best.",
+ b:"A compact, interpretable curvature-and-angle histogram that can be computed per dataset, per style, per line or per letter span.",
+ d:"none", o:"Not computed.",
+ n:"cpu", x:"X-G4: hinge histograms per line; compare Muharaf, RASAM, KHATT and NAKBA, test them as style separators and as predictors of CER.", id:"X-G4"},
+{g:"geo", key:"abdi2010contour", t:"Off-line text-independent Arabic writer identification using contour-based features", v:"Abdi, Khemakhem · 2010 · IFN/ENIT, 82 writers", warn:"abstract level only",
+ m:"Minimum-perimeter polygon contours, with probability distributions of length, direction, angle and curvature measurements.",
+ r:"90.2 % top-1 and 97.5 % top-10 identification.",
+ b:"Arabic-specific definitions of contour length, direction, angle and curvature.",
+ d:"none", o:"—",
+ n:"cpu", x:"X-G4: use the polygon-based measures as a second descriptor next to hinge.", id:"X-G4"},
+{g:"geo", key:"ahmed2023codebooks", t:"CON3 and CPCA contour codebooks for Arabic writer identification", v:"Ahmed et al. · 2023, as cited in Abdi and Khemakhem, ICPRAM 2024", warn:"second-hand citation; original not read",
+ m:"Codebooks of contour concavity and convexity (CON3) and of contour-point curve angle (CPCA).",
+ r:"The citing paper says contour, junction and projection schemes capture writer individuality less consistently for Arabic and Chinese than for Latin.",
+ b:"Arabic-specific curve codebooks.",
+ d:"none", o:"—",
+ n:"later", x:"Read the original before X-G4 chooses its descriptors.", id:"X-G4"},
+{g:"geo", key:"parvez2013fatf", t:"Shape description of Arabic characters by fuzzy attributed turning functions (Parvez, Mahmoud)", v:"TU Dortmund repository record", warn:"title paraphrased; snippet only",
+ m:"Binarise and smooth the character, extract the contour, approximate it with polygons and compare shapes with a fuzzy turning-function dissimilarity.",
+ r:"A shape distance built from the sequence of turning angles along the contour.",
+ b:"Turning angle as a definition of curve geometry that is insensitive to position and scale.",
+ d:"none", o:"—",
+ n:"later", x:"A candidate for the curve definition in X-G4 if the hinge histogram proves too coarse.", id:"X-G4"},
+{g:"geo", key:"plamondon-kinematic", t:"Kinematic theory of rapid human movements and the sigma-lognormal model", v:"Plamondon et al. · including iDeLog, IEEE TPAMI 2020", warn:"snippets only",
+ m:"A stroke is the output of coupled neuromuscular systems whose velocity profile is close to a lognormal; curved strokes are sums of such primitives.",
+ r:"Used to assess signature stability and to extract strokes from handwriting signals. No Arabic-specific study found.",
+ b:"A principled definition of stroke and curve primitives, if we ever have online data or reverse-engineer offline strokes.",
+ d:"none", o:"—",
+ n:"later", x:"Out of scope for offline lines unless we obtain online Arabic data. Keep as the reference for what a stroke primitive is.", id:"—"},
+{g:"geo", key:"ibnmuqla-proportion", t:"Proportioned script (al-khaṭṭ al-mansūb): Ibn Muqla and the dot-unit canon", v:"Moustafa and Sperl, The Cosmic Script (2014) · review in Am. J. Islam and Society (2016) · PMC7255603", warn:"secondary descriptions; no computational study found",
+ m:"Letters are sized in units of the rhombic dot (nuqta) against the alif, and the alif height sets the circle that encloses the letters of a script.",
+ r:"The number of dots in the alif was never agreed, and the original treatises are lost.",
+ b:"An Arabic-native normalization idea: measure letter sizes in units of the writer’s own dot size or stroke width.",
+ d:"none", o:"—",
+ n:"cpu", x:"X-G5: per line, estimate dot size, stroke width and alif height; report the ratios and their spread by dataset and style; try dot size or stroke width as the per-line scale.", id:"X-G5"},
+{g:"geo", key:"arabic-secondary-components", t:"Arabic secondary components (dots and marks) as connected components", v:"Arabic handwriting synthesis patent family (US 10,140,262 and related) · Toufik, IAJIT 4(4) · diacritic segmentation (Univ. of Huddersfield)", warn:"patents and abstracts only",
+ m:"Over-segment the image into connected components, then classify those below an area threshold, away from the baseline range and with a distinctive aspect ratio as dots or marks.",
+ r:"Misclassification inflates the PAW count. Sixteen letters carry one to three dots, and no letter has dots both above and below (per one paper).",
+ b:"A recipe for separating dots from letter bodies, needed to measure dot size and body geometry.",
+ d:"partial", o:"We count dotted and dot-ambiguous letters from the text, never from the images.",
+ n:"cpu", x:"X-G5 uses it; validate on CTC spans (a dotted letter’s span should hold one small component).", id:"X-G5"},
+{g:"geo", key:"pix2pix-normalisation2024", t:"A Pix2Pix Architecture for Complete Offline Handwritten Text Normalization", v:"Sensors, 2024 · PMC11207351", warn:"abstract level only; English",
+ m:"A conditional GAN learns slope, slant and ascender and descender normalization and serves as the first stage of a recogniser that can be trained jointly.",
+ r:"Matches, and sometimes beats, a widely used heuristic normalization on two metrics (English).",
+ b:"A learned normaliser, if heuristics prove brittle on Arabic.",
+ d:"none", o:"—",
+ n:"later", x:"Only after X-G3 shows that normalization helps at all.", id:"X-G3"}
 ];
 
 const QUEUE = [
@@ -922,6 +1051,8 @@ const QUEUE = [
  ["Larger letter-family sample (the خ lead)", "7 of 10 خ tokens were wrong in the letter panel; the sample is small.", "attribution spike", "At least 50 tokens per letter family, error rate with intervals.", "gpu", "X-A2b"],
  ["Image-reliance check", "Maps only mean something if the model uses the image.", "greekvlm2026", "Per-token log-prob with and without the image, per model.", "gpu", "X-A3"],
  ["CTC character spans, validated on VML-HD", "A location reference for each letter without box labels.", "bullinger2025ctcalign, vmlhd", "Span error against hand-checked boxes on 30 lines.", "gpu", "X-B1"],
+ ["Stroke width, dot size and baseline per line", "Defines the per-line numbers a normalization would use.", "ibnmuqla-proportion, arabic-secondary-components, farooq2005preprocess", "Distributions per dataset and style, validated on CTC spans.", "cpu", "X-G2 · X-G5"],
+ ["Characteristic loci and hinge histograms", "Two borrowed descriptors for curve and stroke structure; nothing found for Arabic.", "glucksman1967loci, bulacu2007allographic", "Histograms per dataset and style, distance between datasets, correlation with CER.", "cpu", "X-G1 · X-G4"],
  ["Per-module gradient probe by letter family", "First direct test of the freeze-by-letter idea; needs no training.", "attribution spike", "Gradient size per LoRA module and layer for tokens of ا ل against ج ح خ, and whether the profiles differ.", "gpu", "X-D0"],
  ["Pointing game against the CTC spans", "Scores each map by whether it lands on its own token.", "attribution-eval", "Share of a token’s attribution inside its aligned span, per map.", "cpu", "X-B2"],
 ];
@@ -1310,7 +1441,12 @@ const EXP = [
  ["X-C1","LocateAnything-3B zero-shot probe: word, PAW, letter, dots","GPU","Done 2026-10-10: no-go. 42 lines; whole-image boxes for word queries at full size, line-wide boxes after padding"],
  ["X-C2","LoRA fine-tune LocateAnything on word and PAW pseudo-labels from X-B1; letters if justified","GPU (gated on X-B1)","IoU on held-out manuscripts, against the zero-shot baseline of no usable word box in 42 lines"],
  ["X-D1","Parameter-level attribution and a freeze sweep over similar letters (gated on X-A and X-B)","GPU","Whether letter-specific circuits exist, and ΔCER from protecting them"],
- ["S1","Script-styles inventory: traits, datasets, visual samples with licences","Design","Design approved, then one record per style"]
+ ["S1","Script-styles inventory: traits, datasets, visual samples with licences","Design","Design approved, then one record per style"],
+ ["X-G1","Characteristic loci histograms on binarised lines and CTC spans (baseline-relative rays, dots separate)","CPU","Histograms per dataset and style; distance between them; sensitivity to stroke width"],
+ ["X-G2","Baseline, slope and slant per line with two estimators (projection and skeleton)","CPU","Distributions per dataset and style; correlation with CER"],
+ ["X-G3","Normalization ablation on the CRNN aligner: height 32/48/64/96, median padding against resize, baseline straightening, deslant, stroke-width normalization, binarization","GPU","CER and dot-error share per setting on Muharaf and RASAM; second seed"],
+ ["X-G4","Hinge and polygon-curvature histograms per line, dataset and style","CPU","Curvature descriptors; style separability; correlation with CER"],
+ ["X-G5","Dot size, stroke width and alif height per line (nuqta-style units) from connected components, validated on CTC spans","CPU","Ratios and their spread by dataset and style"]
 ];
 table("tb-exp", ["ID", "Experiment", "Compute", "Done when / result"], EXP);
 })();
