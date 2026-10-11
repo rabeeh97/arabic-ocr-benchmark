@@ -32,16 +32,18 @@ def conv(cin: int, cout: int) -> list:
 class CRNN(nn.Module):
     """VGG-style CNN (height 64 -> 2, width / 4) + 3-layer BiLSTM + CTC head. T = W // 4."""
 
-    def __init__(self, n_classes: int, hidden: int = 256) -> None:
+    def __init__(self, n_classes: int, hidden: int = 256, width: float = 1.0) -> None:
         super().__init__()
+        c = lambda v: max(8, int(round(v * width)))  # noqa: E731  width < 1 gives the small laptop replica
+        hidden = c(hidden)
         self.cnn = nn.Sequential(
-            *conv(1, 64), nn.MaxPool2d(2, 2),
-            *conv(64, 128), nn.MaxPool2d(2, 2),
-            *conv(128, 256), *conv(256, 256), nn.MaxPool2d((2, 1), (2, 1)),
-            *conv(256, 384), *conv(384, 384), nn.MaxPool2d((2, 1), (2, 1)),
-            *conv(384, 512), nn.MaxPool2d((2, 1), (2, 1)),
+            *conv(1, c(64)), nn.MaxPool2d(2, 2),
+            *conv(c(64), c(128)), nn.MaxPool2d(2, 2),
+            *conv(c(128), c(256)), *conv(c(256), c(256)), nn.MaxPool2d((2, 1), (2, 1)),
+            *conv(c(256), c(384)), *conv(c(384), c(384)), nn.MaxPool2d((2, 1), (2, 1)),
+            *conv(c(384), c(512)), nn.MaxPool2d((2, 1), (2, 1)),
         )
-        self.proj = nn.Linear(512 * 2, hidden)
+        self.proj = nn.Linear(c(512) * 2, hidden)
         self.rnn = nn.LSTM(hidden, hidden, num_layers=3, dropout=0.25, bidirectional=True)
         self.fc = nn.Linear(hidden * 2, n_classes)
 
@@ -109,7 +111,7 @@ def evaluate(model, rows, stoi, dev) -> dict:
     for k in range(0, len(rows), 32):
         chunk = rows[k : k + 32]
         x, lens, tgt = make_batch(chunk, stoi, False, dev)
-        with torch.autocast("cuda", dtype=torch.float16):
+        with torch.autocast(dev, dtype=torch.float16, enabled=dev == "cuda"):
             logits = model(x)
         for r, hyp, ref in zip(chunk, greedy(logits.float(), lens), tgt):
             e = errs.setdefault(r["dataset"], [0, 0])
@@ -127,12 +129,19 @@ def main() -> None:
     ap.add_argument("--epochs", type=int, default=30)
     ap.add_argument("--bs", type=int, default=32)
     ap.add_argument("--lr", type=float, default=2e-3)
+    ap.add_argument("--device", default="cuda", help="cuda (the 3090), mps or cpu (laptop replica; set PYTORCH_ENABLE_MPS_FALLBACK=1 for mps)")
+    ap.add_argument("--eval-every", type=int, default=2)
+    ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
+    ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
-    dev = "cuda"
+    dev = a.device
     blob = pickle.load(open(a.data, "rb"))
     rows = blob["rows"]
     train = [r for r in rows if r["role"] in ("train", "panel")]
+    if a.max_train:
+        random.Random(0).shuffle(train)
+        train = train[: a.max_train]
     held = [r for r in rows if r["role"] == "heldout"]
     chars = sorted({ch for r in train for ch in r["label"]}, key=lambda c: (c == " ", c))
     stoi = {ch: i + 1 for i, ch in enumerate(chars)}
@@ -143,11 +152,12 @@ def main() -> None:
     for r in train:
         pool += [r] * (4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1)
     steps_per_epoch = math.ceil(len(pool) / a.bs)
-    model = CRNN(len(chars) + 1).to(dev)
+    (a.out / "config.json").write_text(json.dumps({"width": a.width}), encoding="utf-8")
+    model = CRNN(len(chars) + 1, width=a.width).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
-    scaler = torch.cuda.amp.GradScaler()
+    scaler = torch.amp.GradScaler(dev, enabled=dev == "cuda")
     ctc = nn.CTCLoss(blank=0, zero_infinity=True)
     start, best = 0, 9.0
     ck = a.out / "ckpt_last.pt"
@@ -166,7 +176,7 @@ def main() -> None:
             x, lens, tgt = make_batch([pool[i] for i in idx], stoi, True, dev)
             flat = torch.tensor([t for s in tgt for t in s], device=dev)
             tl = torch.tensor([len(s) for s in tgt], device=dev)
-            with torch.autocast("cuda", dtype=torch.float16):
+            with torch.autocast(dev, dtype=torch.float16, enabled=dev == "cuda"):
                 logits = model(x)
             lp = logits.float().log_softmax(-1)
             loss = ctc(lp, flat, torch.clamp(lens // 4, min=1), tl)
@@ -177,7 +187,7 @@ def main() -> None:
             scaler.step(opt); scaler.update(); sched.step()
             tot += float(loss)
         msg = f"epoch {ep + 1}/{a.epochs}  loss {tot / len(batches):.3f}  {time.time() - t0:.0f}s"
-        if (ep + 1) % 2 == 0 or ep + 1 == a.epochs:
+        if (ep + 1) % a.eval_every == 0 or ep + 1 == a.epochs:
             cer = evaluate(model, held, stoi, dev)
             msg += f"  heldout CER {cer}"
             mean = sum(cer.values()) / max(1, len(cer))

@@ -154,9 +154,22 @@ def pipeline(g64, P, seed=0):
     f = op_shear(f, P["shear"]); steps.append(f)
     f = op_stroke(f, P["tx"], P["ty"]); steps.append(f)
     f = op_blur(f, P["blur"], P["unsharp"]); steps.append(f)
-    f = op_tone(np.clip(f, 0, 255).astype(np.uint8), P["ink_level"], P["paper_level"]); steps.append(f)
-    f = op_paper(f, P["noise"], rng); steps.append(f)
+    if P.get("paper_on", True):  # tone and paper noise together; switched off for the single-step ablations
+        f = op_tone(np.clip(f, 0, 255).astype(np.uint8), P["ink_level"], P["paper_level"]); steps.append(f)
+        f = op_paper(f, P["noise"], rng); steps.append(f)
+    else:
+        steps += [f, f]
     return [np.clip(x, 0, 255).astype(np.uint8) for x in steps]
+
+
+def only(P, part):
+    """Copy of the knobs with everything but one group switched off: 'slant', 'stroke' (stroke width and blur) or 'paper' (tone and noise)."""
+    Q = dict(P)
+    Q.update(shear=P["shear"] if part == "slant" else 0.0,
+             tx=P["tx"] if part == "stroke" else 0.0, ty=P["ty"] if part == "stroke" else 0.0,
+             blur=P["blur"] if part == "stroke" else 0.0, unsharp=P["unsharp"] if part == "stroke" else 0.0,
+             paper_on=part == "paper")
+    return Q
 
 
 def apply(g64, P, seed=0):

@@ -33,24 +33,24 @@ venv as X-E1. No new downloads are needed.
 
 ```
 cd /Volumes/PortableSSD/repos/arabic_ocr/.claude/worktrees/xai-attribution-spike
-scp results/geometry/transfer_eval.pkl scripts/xai_geom_tta.py spring-win-server-3090:C:/Users/User/a-experiment/xai/
+scp results/geometry/transfer_eval.pkl scripts/xai_geom_tta.py scripts/geom_transfer_eval.py scripts/xai_train_aligner.py spring-win-server-3090:C:/Users/User/a-experiment/xai/
 ```
 
-`transfer_eval.pkl` (107 MB) is rebuilt on the Mac with
+`transfer_eval.pkl` (about 220 MB) is rebuilt on the Mac with
 `.geomvenv/bin/python scripts/geom_transfer_export.py results/geometry/transfer results/geometry/transfer_eval.pkl`.
-It holds 183 KHATT, 300 NAKBA and 300 Muharaf test lines, each untouched and in every transformed version, with the same ids.
+It holds 183 KHATT, 300 NAKBA and 300 Muharaf test lines, each untouched and in every transformed version, with the same ids, plus single-step ablations (`_only_slant`, `_only_stroke`, `_only_paper`) for KHATT→Muharaf, Muharaf→KHATT and NAKBA→Muharaf. `xai_train_aligner.py` is copied because it gained a `--width` option (default 1.0, the 3090 model unchanged) that the evaluation script imports.
 
 ### Step 1: X-T2, CER on original and transformed lines (a few minutes)
 
 ```
 cd <DIR>
-python xai_eval_aligner.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json
+python geom_transfer_eval.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json --device cuda
 ```
 
-It prints one line per dataset tag. Detached, with a live view:
+It prints one line per dataset tag and, for each transformed tag, the paired change against the untouched lines with a 95 % bootstrap interval. Detached, with a live view:
 
 ```
-powershell -NoProfile -Command "Start-Process -NoNewWindow python -ArgumentList 'xai_eval_aligner.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json' -RedirectStandardOutput transfer_cer.log"
+powershell -NoProfile -Command "Start-Process -NoNewWindow python -ArgumentList 'geom_transfer_eval.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json --device cuda' -RedirectStandardOutput transfer_cer.log"
 powershell -NoProfile -Command "Get-Content <DIR>\transfer_cer.log -Wait -Tail 20"
 ```
 
@@ -61,6 +61,7 @@ How to read it (all against the untouched line set with the same ids):
 | `kitab_khatt__as_muharaf` against `kitab_khatt` (26.4 %) | CER drops clearly (say 4 points or more) | CER stays near 26 %: the gap is in letter shapes, writers or text, not in slant, tone or stroke weight |
 | `muharaf_lines__as_khatt` against `muharaf_lines` (7.6 %) | CER rises | CER stays: the CRNN is already robust to these changes |
 | `nakba_lines__norules` against `nakba_lines` (13.8 %) | CER drops by the ruled-line share | no change: ruled lines are not costing anything |
+| the `_only_slant`, `_only_stroke` and `_only_paper` rows | whichever single step reproduces most of the full change is the one that carries the gap | |
 | `nakba_lines__as_muharaf` and `nakba_lines__as_khatt` | small change expected (NAKBA is already near Muharaf) | |
 | `muharaf_lines__as_nakba` | small rise | |
 
@@ -93,3 +94,13 @@ kept, and the oracle. Prediction: on KHATT the best fixed shear is around +10 to
 ```
 scp spring-win-server-3090:C:/Users/User/a-experiment/xai/transfer_cer.json spring-win-server-3090:C:/Users/User/a-experiment/xai/tta_out.json results/geometry/
 ```
+
+### Step 4: put the result in the ledger
+
+```
+.geomvenv/bin/python scripts/build_transfer_section.py results/geometry/transfer --cer results/geometry/transfer_cer.json --verdict results/geometry/transfer/verdict.html
+```
+
+Write the verdict paragraph first (HTML, in `verdict.html`), then republish `docs/research/paper-ledger.html` to the same artifact URL.
+
+Note: a half-width replica could not be trained on the 8 GB Mac (swap thrashing, no finished epoch in 19 minutes), so the CER test needs the 3090.

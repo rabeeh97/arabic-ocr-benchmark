@@ -105,6 +105,7 @@ def main() -> None:
             files[it["id"]] = d / it["file"]
     rng = np.random.default_rng(0)
     out, space_hits, space_rand, n_space, fails = [], 0, 0, 0, 0
+    tall = {k: [] for k in ("alef", "alef_shift", "lam", "lam_shift", "other", "other_shift")}
     for k, r in enumerate(rows):
         arr = r["img"]
         w = arr.shape[1]
@@ -138,6 +139,17 @@ def main() -> None:
         ink[: 6], ink[-6:] = 0, 0
         prof = np.convolve(ink.mean(0), np.ones(3) / 3, mode="same")
         thr = 0.5 * prof[prof > 0].mean() if (prof > 0).any() else 0
+        # second independent check: alef and lam are tall single strokes, so the tallest ink column inside their span
+        # should be taller than for other letters and than for the same span shifted to a random place
+        col_h = ink.sum(0) / ink.shape[0]
+        for c in logical:
+            if c["ch"] == " ":
+                continue
+            a0, a1 = int(c["x0"] * w), max(int(c["x0"] * w) + 1, int(c["x1"] * w))
+            kind = "alef" if c["ch"] in "اأإآ" else ("lam" if c["ch"] == "ل" else "other")
+            tall[kind].append(float(col_h[a0:a1].max()))
+            sh = int(rng.integers(0, w))
+            tall[kind + "_shift"].append(float(np.concatenate([col_h, col_h])[(a0 + sh) % w : (a0 + sh) % w + (a1 - a0)].max()))
         for c in logical[1:-1]:
             if c["ch"] != " ":
                 continue
@@ -165,7 +177,8 @@ def main() -> None:
             out[-1]["overlay"] = f"{k:03d}.png"
     (a.out / "spans.json").write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
     summ = {"lines": len(out), "failed": fails, "mean_conf": float(np.mean([o["mean_conf"] for o in out])) if out else None,
-            "spaces_checked": n_space, "spaces_in_low_ink": space_hits, "random_shift_in_low_ink": space_rand}
+            "spaces_checked": n_space, "spaces_in_low_ink": space_hits, "random_shift_in_low_ink": space_rand,
+            "tallest_column_height": {k: {"n": len(v), "mean": float(np.mean(v)) if v else None} for k, v in tall.items()}}
     (a.out / "summary.json").write_text(json.dumps(summ), encoding="utf-8")
     print(json.dumps(summ), flush=True)
 

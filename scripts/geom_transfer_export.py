@@ -24,12 +24,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from geom_data import load_lines  # noqa: E402
 from geom_measure import binarize, strip_rules, stroke_width  # noqa: E402
-from geom_transfer import apply, to64  # noqa: E402
+from geom_transfer import apply, only, to64  # noqa: E402
 import numpy as np  # noqa: E402
 from scipy import ndimage as ndi  # noqa: E402
 
 STRIP = re.compile("[ً-ْٰـ​-‏‪-‮⁦-⁩﻿؜]")
 TAG = {"muharaf": "muharaf_lines", "khatt": "kitab_khatt", "nakba": "nakba_lines"}
+ABLATE = {("khatt", "muharaf"), ("muharaf", "khatt"), ("nakba", "muharaf")}
 
 
 def clean(t: str) -> str:
@@ -74,6 +75,11 @@ def main() -> None:
                 if out.shape[1] // 4 < len(label) + 4:
                     continue
                 rows.append({"id": f"{TAG[src]}/{i:06d}", "dataset": f"{TAG[src]}__as_{t}", "role": "eval", "label": label, "img": out})
+                if (src, t) in ABLATE:  # one group of knobs at a time
+                    for part in ("slant", "stroke", "paper"):
+                        o2 = apply(img, only(params[(src, t)], part), seed=i)
+                        if o2.shape[1] // 4 >= len(label) + 4:
+                            rows.append({"id": f"{TAG[src]}/{i:06d}", "dataset": f"{TAG[src]}__as_{t}_only_{part}", "role": "eval", "label": label, "img": o2})
             if src == "nakba":
                 nr, changed = remove_rules(img)
                 changed_n = changed_n + int(changed) if "changed_n" in dir() else int(changed)
