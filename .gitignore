@@ -42,3 +42,5 @@ src/arabic_ocr_bench/assets/fonts/
 
 # notebooks
 .ipynb_checkpoints/
+
+.geomvenv/

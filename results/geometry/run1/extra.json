@@ -1,0 +1,160 @@
+{
+ "train_slant_p5_p95": [
+  -8.684581756591797,
+  30.403574466705322
+ ],
+ "train_slant_median": 11.184496879577637,
+ "slant": {
+  "muharaf_train": {
+   "p10_p50_p90": [
+    -0.10234975814819336,
+    11.184496879577637,
+    27.699149131774902
+   ],
+   "share_outside_train_p5_p95": 0.10362694300518134,
+   "share_further_than_10deg_from_train_median": 0.38341968911917096,
+   "train_density_within_4deg_median": 0.2033678756476684,
+   "share_lines_where_train_density_below_5pct": 0.07512953367875648
+  },
+  "muharaf": {
+   "p10_p50_p90": [
+    -2.550719308853149,
+    8.747135162353516,
+    25.498161697387694
+   ],
+   "share_outside_train_p5_p95": 0.06940874035989718,
+   "share_further_than_10deg_from_train_median": 0.3856041131105398,
+   "train_density_within_4deg_median": 0.20207253886010362,
+   "share_lines_where_train_density_below_5pct": 0.08740359897172237
+  },
+  "rasam1": {
+   "p10_p50_p90": [
+    -0.7541050434112547,
+    1.7379106283187866,
+    11.017300987243653
+   ],
+   "share_outside_train_p5_p95": 0.007633587786259542,
+   "share_further_than_10deg_from_train_median": 0.455470737913486,
+   "train_density_within_4deg_median": 0.19170984455958548,
+   "share_lines_where_train_density_below_5pct": 0.035623409669211195
+  },
+  "rasam2": {
+   "p10_p50_p90": [
+    -4.233674430847168,
+    2.8266615867614746,
+    13.5938533782959
+   ],
+   "share_outside_train_p5_p95": 0.034782608695652174,
+   "share_further_than_10deg_from_train_median": 0.4579710144927536,
+   "train_density_within_4deg_median": 0.19170984455958548,
+   "share_lines_where_train_density_below_5pct": 0.10144927536231885
+  },
+  "nakba": {
+   "p10_p50_p90": [
+    -0.8001564383506772,
+    3.869014620780945,
+    12.782067680358887
+   ],
+   "share_outside_train_p5_p95": 0.04081632653061224,
+   "share_further_than_10deg_from_train_median": 0.3137755102040816,
+   "train_density_within_4deg_median": 0.22279792746113988,
+   "share_lines_where_train_density_below_5pct": 0.06887755102040816
+  },
+  "nakba_blind": {
+   "p10_p50_p90": [
+    -0.037014950066804886,
+    5.541777610778809,
+    13.447030067443848
+   ],
+   "share_outside_train_p5_p95": 0.017676767676767676,
+   "share_further_than_10deg_from_train_median": 0.23232323232323232,
+   "train_density_within_4deg_median": 0.23575129533678757,
+   "share_lines_where_train_density_below_5pct": 0.05303030303030303
+  },
+  "khatt": {
+   "p10_p50_p90": [
+    -12.423855972290038,
+    -1.848574697971344,
+    8.604631233215331
+   ],
+   "share_outside_train_p5_p95": 0.245,
+   "share_further_than_10deg_from_train_median": 0.72,
+   "train_density_within_4deg_median": 0.12694300518134716,
+   "share_lines_where_train_density_below_5pct": 0.41
+  }
+ },
+ "rules": {
+  "muharaf_train": {
+   "lines_with_rule_ink": 0.0025252525252525255,
+   "mean_rule_share_of_ink": 0.0009921761983746487
+  },
+  "muharaf": {
+   "lines_with_rule_ink": 0.002512562814070352,
+   "mean_rule_share_of_ink": 0.00042924195870093414
+  },
+  "rasam1": {
+   "lines_with_rule_ink": 0.13784461152882205,
+   "mean_rule_share_of_ink": 0.03948771485795211
+  },
+  "rasam2": {
+   "lines_with_rule_ink": 0.2247191011235955,
+   "mean_rule_share_of_ink": 0.07573420156169502
+  },
+  "nakba": {
+   "lines_with_rule_ink": 0.22,
+   "mean_rule_share_of_ink": 0.026593476738729038
+  },
+  "nakba_blind": {
+   "lines_with_rule_ink": 0.1225,
+   "mean_rule_share_of_ink": 0.019137238598038515
+  },
+  "khatt": {
+   "lines_with_rule_ink": 0.0,
+   "mean_rule_share_of_ink": 0.0
+  }
+ },
+ "other": {
+  "muharaf_train": {
+   "pen_contrast_median": 1.0289875077103072,
+   "sw_cv_median": 0.32867404306374604,
+   "ink_density_median": 0.07432107249115824,
+   "slope_abs_p90_deg": 2.396073343183926
+  },
+  "muharaf": {
+   "pen_contrast_median": 1.0138817537088258,
+   "sw_cv_median": 0.32296872625031087,
+   "ink_density_median": 0.07782383585437834,
+   "slope_abs_p90_deg": 2.691851877077053
+  },
+  "rasam1": {
+   "pen_contrast_median": 0.4928501504481067,
+   "sw_cv_median": 0.5628133905970997,
+   "ink_density_median": 0.2467282730623364,
+   "slope_abs_p90_deg": 12.360828640489647
+  },
+  "rasam2": {
+   "pen_contrast_median": 0.6312680061523991,
+   "sw_cv_median": 0.4993861964294045,
+   "ink_density_median": 0.2624285005250203,
+   "slope_abs_p90_deg": 11.979254585437356
+  },
+  "nakba": {
+   "pen_contrast_median": 0.991973225983906,
+   "sw_cv_median": 0.33153927696971375,
+   "ink_density_median": 0.1285572438981183,
+   "slope_abs_p90_deg": 6.761828183226784
+  },
+  "nakba_blind": {
+   "pen_contrast_median": 0.9811077570626113,
+   "sw_cv_median": 0.33554040570662674,
+   "ink_density_median": 0.12412543023710026,
+   "slope_abs_p90_deg": 4.458575197940969
+  },
+  "khatt": {
+   "pen_contrast_median": 1.1223188703388924,
+   "sw_cv_median": 0.2525006635588103,
+   "ink_density_median": 0.06174773188029501,
+   "slope_abs_p90_deg": 2.8689924807627745
+  }
+ }
+}
