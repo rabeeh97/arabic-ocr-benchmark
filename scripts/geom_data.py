@@ -38,7 +38,7 @@ def _table(path: str) -> pa.Table:
         return pa.ipc.open_file(mm).read_all()
 
 
-def load_lines(tag: str, n: int = 300, seed: int = 0):
+def load_lines(tag: str, n: int = 300, seed: int = 0, with_index: bool = False):
     """Yield up to n (grey uint8 array, label) pairs, sampled with a fixed seed."""
     pat, col, _, _ = SOURCES[tag]
     path = sorted(glob.glob(str(HF / pat)))[0]
@@ -50,4 +50,5 @@ def load_lines(tag: str, n: int = 300, seed: int = 0):
     for i in idx[:n]:
         row = t.slice(i, 1).to_pylist()[0]
         img = Image.open(io.BytesIO(row["image"]["bytes"])).convert("L")
-        yield np.asarray(img, dtype=np.uint8), (row[col] or "")
+        arr = np.asarray(img, dtype=np.uint8)
+        yield (i, arr, row[col] or "") if with_index else (arr, row[col] or "")

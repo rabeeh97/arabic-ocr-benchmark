@@ -254,6 +254,7 @@ def measure(job):
         res["sw_native"] = sw0
         # rescale so the stroke is TARGET_SW wide, then measure everything on the normalized image
         s = float(np.clip(TARGET_SW / sw0, 0.2, 5.0))
+        res["norm_scale"] = s
         im = Image.fromarray(g).resize((max(16, round(g.shape[1] * s)), max(8, round(g.shape[0] * s))), Image.LANCZOS if s < 1 else Image.BICUBIC)
         g1 = np.asarray(im)
         ink, res["rule_share"] = strip_rules(binarize(g1), TARGET_SW)
