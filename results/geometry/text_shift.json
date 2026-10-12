@@ -1,0 +1,49 @@
+{
+ "train_lines": 23197,
+ "sets": {
+  "muharaf": {
+   "lines": 1334,
+   "char_oov": 0.0,
+   "word_oov": 0.1975267930750206,
+   "xent_bits": 2.923334643465086,
+   "rare_shape_10": 0.0,
+   "rare_shape_50": 9.535615523982073e-05,
+   "ttr_2000": 0.68,
+   "mean_word_len": 4.502720527617478,
+   "top_oov_chars": []
+  },
+  "nakba": {
+   "lines": 2095,
+   "char_oov": 0.0,
+   "word_oov": 0.3222724518805052,
+   "xent_bits": 3.367295259705847,
+   "rare_shape_10": 0.0,
+   "rare_shape_50": 0.0001327438146487905,
+   "ttr_2000": 0.715,
+   "mean_word_len": 4.690637088129748,
+   "top_oov_chars": []
+  },
+  "nakba_blind": {
+   "lines": 2671,
+   "char_oov": 0.0,
+   "word_oov": 0.3171194762684124,
+   "xent_bits": 3.3879065614806336,
+   "rare_shape_10": 0.0,
+   "rare_shape_50": 0.00021587703644004375,
+   "ttr_2000": 0.729,
+   "mean_word_len": 4.681211129296235,
+   "top_oov_chars": []
+  },
+  "khatt": {
+   "lines": 200,
+   "char_oov": 0.0,
+   "word_oov": 0.3378432152805412,
+   "xent_bits": 4.002906215676178,
+   "rare_shape_10": 0.0,
+   "rare_shape_50": 0.0015638031693077565,
+   "ttr_2000": 0.4315,
+   "mean_word_len": 3.9721448467966574,
+   "top_oov_chars": []
+  }
+ }
+}

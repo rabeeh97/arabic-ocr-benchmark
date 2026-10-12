@@ -1,0 +1,92 @@
+{
+ "train": {
+  "dotted": {
+   "paw_tokens": 456063,
+   "distinct": 20589,
+   "types_for_95pct": 4846,
+   "types_for_99pct": 16029,
+   "unseen_token_share": null,
+   "paws_per_word": 2.1711289262965465
+  },
+  "rasm": {
+   "paw_tokens": 456063,
+   "distinct": 12395,
+   "types_for_95pct": 1863,
+   "types_for_99pct": 7835,
+   "unseen_token_share": null,
+   "paws_per_word": 2.1711289262965465
+  }
+ },
+ "muharaf": {
+  "dotted": {
+   "paw_tokens": 26335,
+   "distinct": 3798,
+   "types_for_95pct": 2482,
+   "types_for_99pct": 3535,
+   "unseen_token_share": 0.02688437440668312,
+   "paws_per_word": 2.171063478977741
+  },
+  "rasm": {
+   "paw_tokens": 26335,
+   "distinct": 2579,
+   "types_for_95pct": 1263,
+   "types_for_99pct": 2316,
+   "unseen_token_share": 0.015758496297702675,
+   "paws_per_word": 2.171063478977741
+  }
+ },
+ "nakba": {
+  "dotted": {
+   "paw_tokens": 50525,
+   "distinct": 5378,
+   "types_for_95pct": 2852,
+   "types_for_99pct": 4873,
+   "unseen_token_share": 0.0358436417615042,
+   "paws_per_word": 2.3547094188376754
+  },
+  "rasm": {
+   "paw_tokens": 50525,
+   "distinct": 3548,
+   "types_for_95pct": 1332,
+   "types_for_99pct": 3043,
+   "unseen_token_share": 0.0212370113805047,
+   "paws_per_word": 2.3547094188376754
+  }
+ },
+ "nakba_blind": {
+  "dotted": {
+   "paw_tokens": 71535,
+   "distinct": 6851,
+   "types_for_95pct": 3275,
+   "types_for_99pct": 6136,
+   "unseen_token_share": 0.03895994967498427,
+   "paws_per_word": 2.3415711947626843
+  },
+  "rasm": {
+   "paw_tokens": 71535,
+   "distinct": 4417,
+   "types_for_95pct": 1463,
+   "types_for_99pct": 3702,
+   "unseen_token_share": 0.022618298734885023,
+   "paws_per_word": 2.3415711947626843
+  }
+ },
+ "khatt": {
+  "dotted": {
+   "paw_tokens": 4938,
+   "distinct": 936,
+   "types_for_95pct": 690,
+   "types_for_99pct": 887,
+   "unseen_token_share": 0.05933576346699068,
+   "paws_per_word": 1.9649820931157977
+  },
+  "rasm": {
+   "paw_tokens": 4938,
+   "distinct": 693,
+   "types_for_95pct": 447,
+   "types_for_99pct": 644,
+   "unseen_token_share": 0.037869582827055485,
+   "paws_per_word": 1.9649820931157977
+  }
+ }
+}

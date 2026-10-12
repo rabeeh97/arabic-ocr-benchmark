@@ -1,0 +1,224 @@
+{
+ "cer": {
+  "kitab_khatt": 0.26345067362016517,
+  "kitab_khatt__as_muharaf": 0.2525858322468492,
+  "kitab_khatt__as_muharaf_only_paper": 0.2648413733159496,
+  "kitab_khatt__as_muharaf_only_slant": 0.2525858322468492,
+  "kitab_khatt__as_muharaf_only_stroke": 0.26405910473707084,
+  "muharaf_lines": 0.06239582578447714,
+  "muharaf_lines__as_khatt": 0.08210739908689035,
+  "muharaf_lines__as_khatt_only_paper": 0.06362779911587796,
+  "muharaf_lines__as_khatt_only_slant": 0.08239727516486701,
+  "muharaf_lines__as_khatt_only_stroke": 0.06500471048626712,
+  "muharaf_lines__as_nakba": 0.07261395753315458,
+  "nakba_lines": 0.13601218369259607,
+  "nakba_lines__as_khatt": 0.12863167760074976,
+  "nakba_lines__as_muharaf": 0.12318416119962512,
+  "nakba_lines__as_muharaf_only_paper": 0.1340791940018744,
+  "nakba_lines__as_muharaf_only_slant": 0.13571930646672914,
+  "nakba_lines__as_muharaf_only_stroke": 0.12488284910965324,
+  "nakba_lines__norules": 0.13659793814432988
+ },
+ "lines": {
+  "kitab_khatt": 183,
+  "kitab_khatt__as_muharaf": 183,
+  "kitab_khatt__as_muharaf_only_paper": 183,
+  "kitab_khatt__as_muharaf_only_slant": 183,
+  "kitab_khatt__as_muharaf_only_stroke": 183,
+  "muharaf_lines": 300,
+  "muharaf_lines__as_khatt": 300,
+  "muharaf_lines__as_khatt_only_paper": 300,
+  "muharaf_lines__as_khatt_only_slant": 300,
+  "muharaf_lines__as_khatt_only_stroke": 300,
+  "muharaf_lines__as_nakba": 300,
+  "nakba_lines": 300,
+  "nakba_lines__as_khatt": 300,
+  "nakba_lines__as_muharaf": 300,
+  "nakba_lines__as_muharaf_only_paper": 300,
+  "nakba_lines__as_muharaf_only_slant": 300,
+  "nakba_lines__as_muharaf_only_stroke": 300,
+  "nakba_lines__norules": 300
+ },
+ "paired": {
+  "kitab_khatt__as_muharaf": {
+   "lines": 183,
+   "cer_original": 0.26345067362016517,
+   "cer_transformed": 0.2525858322468492,
+   "change": -0.01086484137331595,
+   "ci95": [
+    -0.017139094412433685,
+    -0.004129811079927386
+   ],
+   "share_lines_better": 0.4972677595628415,
+   "share_lines_worse": 0.30601092896174864
+  },
+  "kitab_khatt__as_muharaf_only_paper": {
+   "lines": 183,
+   "cer_original": 0.26345067362016517,
+   "cer_transformed": 0.2648413733159496,
+   "change": 0.0013906996957844416,
+   "ci95": [
+    -0.00087671249236473,
+    0.0036943247054554763
+   ],
+   "share_lines_better": 0.23497267759562843,
+   "share_lines_worse": 0.31693989071038253
+  },
+  "kitab_khatt__as_muharaf_only_slant": {
+   "lines": 183,
+   "cer_original": 0.26345067362016517,
+   "cer_transformed": 0.2525858322468492,
+   "change": -0.01086484137331595,
+   "ci95": [
+    -0.01682129386920447,
+    -0.004439926910132118
+   ],
+   "share_lines_better": 0.4644808743169399,
+   "share_lines_worse": 0.31693989071038253
+  },
+  "kitab_khatt__as_muharaf_only_stroke": {
+   "lines": 183,
+   "cer_original": 0.26345067362016517,
+   "cer_transformed": 0.26405910473707084,
+   "change": 0.0006084311169056931,
+   "ci95": [
+    -0.0007844128923249357,
+    0.0019494227709455371
+   ],
+   "share_lines_better": 0.11475409836065574,
+   "share_lines_worse": 0.15300546448087432
+  },
+  "muharaf_lines__as_khatt": {
+   "lines": 300,
+   "cer_original": 0.06239582578447714,
+   "cer_transformed": 0.08210739908689035,
+   "change": 0.01971157330241322,
+   "ci95": [
+    0.015443423582121798,
+    0.02425531761983811
+   ],
+   "share_lines_better": 0.12666666666666668,
+   "share_lines_worse": 0.49
+  },
+  "muharaf_lines__as_khatt_only_paper": {
+   "lines": 300,
+   "cer_original": 0.06239582578447714,
+   "cer_transformed": 0.06362779911587796,
+   "change": 0.0012319733314008262,
+   "ci95": [
+    -1.7145600438926396e-06,
+    0.0025502163882877853
+   ],
+   "share_lines_better": 0.06333333333333334,
+   "share_lines_worse": 0.1
+  },
+  "muharaf_lines__as_khatt_only_slant": {
+   "lines": 300,
+   "cer_original": 0.06239582578447714,
+   "cer_transformed": 0.08239727516486701,
+   "change": 0.020001449380389884,
+   "ci95": [
+    0.01599132919518116,
+    0.024558685842923117
+   ],
+   "share_lines_better": 0.12333333333333334,
+   "share_lines_worse": 0.5033333333333333
+  },
+  "muharaf_lines__as_khatt_only_stroke": {
+   "lines": 300,
+   "cer_original": 0.06239582578447714,
+   "cer_transformed": 0.06500471048626712,
+   "change": 0.0026088847017899847,
+   "ci95": [
+    0.0006329086701250608,
+    0.004741783327459928
+   ],
+   "share_lines_better": 0.12333333333333334,
+   "share_lines_worse": 0.20333333333333334
+  },
+  "muharaf_lines__as_nakba": {
+   "lines": 300,
+   "cer_original": 0.06239582578447714,
+   "cer_transformed": 0.07261395753315458,
+   "change": 0.01021813174867744,
+   "ci95": [
+    0.006679146234038916,
+    0.014046545212747938
+   ],
+   "share_lines_better": 0.17666666666666667,
+   "share_lines_worse": 0.35
+  },
+  "nakba_lines__as_khatt": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.12863167760074976,
+   "change": -0.007380506091846298,
+   "ci95": [
+    -0.013602861126372571,
+    -0.0009466675972662551
+   ],
+   "share_lines_better": 0.42,
+   "share_lines_worse": 0.38
+  },
+  "nakba_lines__as_muharaf": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.12318416119962512,
+   "change": -0.012828022492970947,
+   "ci95": [
+    -0.018237129857964864,
+    -0.007889449134051646
+   ],
+   "share_lines_better": 0.46,
+   "share_lines_worse": 0.27666666666666667
+  },
+  "nakba_lines__as_muharaf_only_paper": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.1340791940018744,
+   "change": -0.0019329896907216496,
+   "ci95": [
+    -0.003737486688774313,
+    -0.0001826208895593202
+   ],
+   "share_lines_better": 0.19333333333333333,
+   "share_lines_worse": 0.14666666666666667
+  },
+  "nakba_lines__as_muharaf_only_slant": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.13571930646672914,
+   "change": -0.00029287722586691657,
+   "ci95": [
+    -0.002434030483775944,
+    0.0019510361289601223
+   ],
+   "share_lines_better": 0.28,
+   "share_lines_worse": 0.23666666666666666
+  },
+  "nakba_lines__as_muharaf_only_stroke": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.12488284910965324,
+   "change": -0.01112933458294283,
+   "ci95": [
+    -0.01661784406592953,
+    -0.006066127978003003
+   ],
+   "share_lines_better": 0.42333333333333334,
+   "share_lines_worse": 0.28
+  },
+  "nakba_lines__norules": {
+   "lines": 300,
+   "cer_original": 0.13601218369259607,
+   "cer_transformed": 0.13659793814432988,
+   "change": 0.0005857544517338331,
+   "ci95": [
+    -0.00023449894798409566,
+    0.0014124713223867059
+   ],
+   "share_lines_better": 0.04,
+   "share_lines_worse": 0.06
+  }
+ }
+}
