@@ -1,0 +1,50 @@
+{
+ "hamza_share_of_alifs": {
+  "muharaf_train": 0.036489429676603756,
+  "rasam": 0.006459948320413436,
+  "nakba_lines": 0.15742614326183732,
+  "kitab_khatt": 0.14810045074050227,
+  "nakba_blind": 0.10975609756097561
+ },
+ "sets": {
+  "nakba_lines": {
+   "lines": 600,
+   "cer": 0.13759344962620149,
+   "cer_hamza_folded": 0.11617420196985878,
+   "gt_hamza_read_as": {
+    "ا": 634,
+    "other edit": 84,
+    "same": 52,
+    "أ": 4,
+    "د": 1,
+    "س": 1
+   }
+  },
+  "kitab_khatt": {
+   "lines": 183,
+   "cer": 0.26371142981312473,
+   "cer_hamza_folded": 0.25754019991308125,
+   "gt_hamza_read_as": {
+    "same": 148,
+    "other edit": 40,
+    "ا": 34,
+    "أ": 5,
+    "ء": 1,
+    "\"": 1
+   }
+  },
+  "nakba_blind": {
+   "lines": 118,
+   "cer": 0.1291950886766712,
+   "cer_hamza_folded": 0.1145975443383356,
+   "gt_hamza_read_as": {
+    "ا": 91,
+    "other edit": 14,
+    "same": 9,
+    "و": 1,
+    "أ": 1,
+    "ن": 1
+   }
+  }
+ }
+}

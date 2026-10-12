@@ -164,6 +164,7 @@ def main() -> None:
     ap.add_argument("--device", default="cuda", help="cuda (the 3090), mps or cpu (laptop replica; set PYTORCH_ENABLE_MPS_FALLBACK=1 for mps)")
     ap.add_argument("--eval-every", type=int, default=2)
     ap.add_argument("--geom-aug", action="store_true", help="add slant and stroke-width augmentation (geom_aug)")
+    ap.add_argument("--repeat-file", type=Path, help="JSON {\"extra\": {row_index: n}}: add n extra copies of these rows (indices into the pickle's rows)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
     a = ap.parse_args()
@@ -173,6 +174,9 @@ def main() -> None:
     GEOM_AUG = a.geom_aug
     blob = pickle.load(open(a.data, "rb"))
     rows = blob["rows"]
+    extra = {int(k): int(v) for k, v in json.loads(a.repeat_file.read_text())["extra"].items()} if a.repeat_file else {}
+    for j, r in enumerate(rows):
+        r["_extra"] = extra.get(j, 0)
     train = [r for r in rows if r["role"] in ("train", "panel")]
     if a.max_train:
         random.Random(0).shuffle(train)
@@ -185,9 +189,9 @@ def main() -> None:
     # the small Maghrebi set and the panel lines are repeated so the model fits them
     pool = []
     for r in train:
-        pool += [r] * (4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1)
+        pool += [r] * ((4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1) + r["_extra"])
     steps_per_epoch = math.ceil(len(pool) / a.bs)
-    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug}), encoding="utf-8")
+    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra)}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)

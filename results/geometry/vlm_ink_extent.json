@@ -1,0 +1,41 @@
+{
+ "lines": 200,
+ "share_extent_below_35": 0.175,
+ "models": {
+  "ain7b": {
+   "lines": 400,
+   "cer_loose": 0.06015299026425591,
+   "cer_tight": 0.06912590955144146,
+   "cer_all": 0.06807645384302562,
+   "loose_share_of_errors": 0.1033452807646356
+  },
+  "fanar2_oryx": {
+   "lines": 400,
+   "cer_loose": 0.27990264255910985,
+   "cer_tight": 0.27157594178870775,
+   "cer_all": 0.27254981699878,
+   "loose_share_of_errors": 0.1201133989853775
+  },
+  "paddleocr": {
+   "lines": 180,
+   "cer_loose": 0.9851632047477745,
+   "cer_tight": 0.8462721772125936,
+   "cer_all": 0.8631408234976125,
+   "loose_share_of_errors": 0.13862212943632568
+  },
+  "qwen3vl4b_suite": {
+   "lines": 360,
+   "cer_loose": 0.3223293768545994,
+   "cer_tight": 0.42436673161727,
+   "cer_all": 0.41197405171637086,
+   "loose_share_of_errors": 0.09502460360852925
+  },
+  "qwen3vl8b": {
+   "lines": 400,
+   "cer_loose": 0.28477051460361613,
+   "cer_tight": 0.26365478493138067,
+   "cer_all": 0.2661244408296055,
+   "loose_share_of_errors": 0.1251528117359413
+  }
+ }
+}
