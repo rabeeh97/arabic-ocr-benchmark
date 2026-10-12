@@ -60,6 +60,35 @@ def normalise(a: np.ndarray) -> np.ndarray:
     return np.clip((a.astype(np.float32) - lo) / (hi - lo + 1e-3), 0, 1) * 2 - 1
 
 
+GEOM_AUG = False  # set by --geom-aug
+
+
+def geom_aug(x: torch.Tensor, lens: torch.Tensor):
+    """Slant and stroke-width augmentation on the GPU (X-T2 follow-up). Shear -12..+20 degrees with p = 0.8 (positive leans the
+    strokes right; Muharaf leans about +11, KHATT about -2), then fractional thickening or thinning of vertical and horizontal
+    strokes separately (blend with a 3-wide min or max pool, up to half way), each with p = 0.5. Pads 12 px of paper on both
+    sides first so sheared ends are not cut; returns the new lengths."""
+    P = 12
+    x = F.pad(x, (P, P, 0, 0), value=1.0)
+    lens = lens + 2 * P
+    b, _, h, w = x.shape
+    dev = x.device
+    deg = torch.empty(b, device=dev).uniform_(-12, 20) * (torch.rand(b, device=dev) < 0.8)
+    theta = torch.zeros(b, 2, 3, device=dev)
+    theta[:, 0, 0] = 1
+    theta[:, 1, 1] = 1
+    theta[:, 0, 1] = torch.tan(torch.deg2rad(deg)) * h / w
+    grid = F.affine_grid(theta, list(x.shape), align_corners=False)
+    x = F.grid_sample(x - 1, grid, mode="bilinear", padding_mode="zeros", align_corners=False) + 1  # paper (+1) fills the gaps
+    for k in ((1, 3), (3, 1)):  # (1, 3) widens vertical strokes, (3, 1) thickens horizontal ones
+        pad = (k[0] // 2, k[1] // 2)
+        a = torch.empty(b, 1, 1, 1, device=dev).uniform_(-0.5, 0.5) * (torch.rand(b, 1, 1, 1, device=dev) < 0.5)
+        thick = -F.max_pool2d(-x, k, 1, pad)
+        thin = F.max_pool2d(x, k, 1, pad)
+        x = torch.where(a > 0, x + a * (thick - x), x - a * (thin - x))
+    return x, lens
+
+
 def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
     ws = [r["img"].shape[1] for r in rows]
     wmax = int(math.ceil(max(ws) / 4) * 4)
@@ -68,6 +97,9 @@ def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
         x[i, 0, :, : ws[i]] = normalise(r["img"])
     x = torch.from_numpy(x).to(dev)
     lens = torch.tensor(ws, device=dev)
+    if train and GEOM_AUG:
+        x, lens = geom_aug(x, lens)
+        wmax = x.shape[3]
     if train:
         s = random.uniform(0.9, 1.1)  # one width scale per batch
         nw = max(8, int(round(wmax * s / 4)) * 4)
@@ -131,11 +163,14 @@ def main() -> None:
     ap.add_argument("--lr", type=float, default=2e-3)
     ap.add_argument("--device", default="cuda", help="cuda (the 3090), mps or cpu (laptop replica; set PYTORCH_ENABLE_MPS_FALLBACK=1 for mps)")
     ap.add_argument("--eval-every", type=int, default=2)
+    ap.add_argument("--geom-aug", action="store_true", help="add slant and stroke-width augmentation (geom_aug)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     dev = a.device
+    global GEOM_AUG
+    GEOM_AUG = a.geom_aug
     blob = pickle.load(open(a.data, "rb"))
     rows = blob["rows"]
     train = [r for r in rows if r["role"] in ("train", "panel")]
@@ -152,7 +187,7 @@ def main() -> None:
     for r in train:
         pool += [r] * (4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1)
     steps_per_epoch = math.ceil(len(pool) / a.bs)
-    (a.out / "config.json").write_text(json.dumps({"width": a.width}), encoding="utf-8")
+    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)

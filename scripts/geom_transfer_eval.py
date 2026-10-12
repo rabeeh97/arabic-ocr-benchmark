@@ -35,6 +35,7 @@ def main() -> None:
     dev = a.device
     chars = json.loads((a.run / "charset.json").read_text(encoding="utf-8"))["chars"]
     stoi = {c: i + 1 for i, c in enumerate(chars)}
+    itos = {i: c for c, i in stoi.items()}
     cfg = json.loads((a.run / "config.json").read_text()) if (a.run / "config.json").exists() else {"width": 1.0}
     model = CRNN(len(chars) + 1, width=cfg["width"]).to(dev).eval()
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location=dev))
@@ -49,7 +50,7 @@ def main() -> None:
             with torch.no_grad():
                 logits = model(x).float()
             for r, hyp, ref in zip(chunk, greedy(logits, lens), tgt):
-                per[tag][r["id"]] = (edit_distance(hyp, ref), max(1, len(r["label"])))
+                per[tag][r["id"]] = (edit_distance(hyp, ref), max(1, len(r["label"])), "".join(itos.get(t, "?") for t in hyp)[::-1])
         e = sum(v[0] for v in per[tag].values())
         n = sum(v[1] for v in per[tag].values())
         print(f"{tag:32s} lines {len(rs):4d}  CER {100 * e / n:5.1f} %", flush=True)
@@ -73,7 +74,8 @@ def main() -> None:
                               "share_lines_better": float((et < eb).mean()), "share_lines_worse": float((et > eb).mean())}
         p = res["paired"][tag]
         print(f"{tag:32s} {100 * p['cer_original']:5.1f} -> {100 * p['cer_transformed']:5.1f}  change {100 * diff:+.1f} points  95% CI [{100 * p['ci95'][0]:+.1f}, {100 * p['ci95'][1]:+.1f}]  better/worse lines {p['share_lines_better']:.2f}/{p['share_lines_worse']:.2f}", flush=True)
-    a.out.write_text(json.dumps(res, indent=1), encoding="utf-8")
+    res["per_line"] = {t: {i: list(v) for i, v in d.items()} for t, d in per.items()}  # [errors, label length, reading]
+    a.out.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":
