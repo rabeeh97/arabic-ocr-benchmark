@@ -25,6 +25,8 @@
 
 ## 2. Runbook for the 3090
 
+> **Launching detached over SSH:** `Start-Process` does not survive the end of the SSH session on this box (Windows OpenSSH ends the session's processes). Use `Invoke-CimMethod -ClassName Win32_Process -MethodName Create`, which starts the process outside the session. Venv: `C:\Users\User\a-experiment\xai\.venv`; `<DIR>` = `C:\Users\User\a-experiment\xai\aligner`; `<RUN>` = `aligner_run`.
+
 Assumptions: the aligner run folder (it holds `charset.json` and `model_final.pt`, from X-B1) and the evaluation
 script `xai_eval_aligner.py` are where X-E1 left them. Replace `<RUN>` and `<DIR>` with those paths. Use the same
 venv as X-E1. No new downloads are needed.
@@ -50,7 +52,7 @@ python geom_transfer_eval.py --data transfer_eval.pkl --run <RUN> --ckpt model_f
 It prints one line per dataset tag and, for each transformed tag, the paired change against the untouched lines with a 95 % bootstrap interval. Detached, with a live view:
 
 ```
-powershell -NoProfile -Command "Start-Process -NoNewWindow python -ArgumentList 'geom_transfer_eval.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json --device cuda' -RedirectStandardOutput transfer_cer.log"
+powershell -NoProfile -Command "Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine='cmd /c cd /d <DIR> && ..\.venv\Scripts\python.exe -u geom_transfer_eval.py --data transfer_eval.pkl --run <RUN> --ckpt model_final.pt --out transfer_cer.json --device cuda > transfer_cer.log 2>&1'}"
 powershell -NoProfile -Command "Get-Content <DIR>\transfer_cer.log -Wait -Tail 20"
 ```
 
@@ -82,7 +84,7 @@ The model call in this script was copied from `xai_eval_aligner.py` and not run,
 at this stage. Then the full run:
 
 ```
-powershell -NoProfile -Command "Start-Process -NoNewWindow python -ArgumentList 'xai_geom_tta.py --data eval_data.pkl --run <RUN> --ckpt model_final.pt --out tta_out.json --n 300' -RedirectStandardOutput tta.log"
+powershell -NoProfile -Command "Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine='cmd /c cd /d <DIR> && ..\.venv\Scripts\python.exe -u xai_geom_tta.py --data eval_data.pkl --run <RUN> --ckpt model_final.pt --out tta_out.json --n 300 > tta.log 2>&1'}"
 powershell -NoProfile -Command "Get-Content <DIR>\tta.log -Wait -Tail 20"
 ```
 

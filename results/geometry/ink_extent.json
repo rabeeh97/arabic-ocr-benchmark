@@ -1,0 +1,92 @@
+{
+ "kitab_khatt": {
+  "lines": 183,
+  "median_extent": 0.703125,
+  "bands": [
+   {
+    "extent": "0.00-0.35",
+    "share_of_lines": 0.09836065573770492,
+    "mean_line_cer": 0.848620232487219,
+    "n": 18
+   },
+   {
+    "extent": "0.35-0.50",
+    "share_of_lines": 0.01639344262295082,
+    "mean_line_cer": 0.21428618270050495,
+    "n": 3
+   },
+   {
+    "extent": "0.50-0.70",
+    "share_of_lines": 0.3333333333333333,
+    "mean_line_cer": 0.2301664708433493,
+    "n": 61
+   },
+   {
+    "extent": "0.70-1.00",
+    "share_of_lines": 0.5519125683060109,
+    "mean_line_cer": 0.23482834531933724,
+    "n": 101
+   }
+  ]
+ },
+ "nakba_lines": {
+  "lines": 300,
+  "median_extent": 0.9375,
+  "bands": [
+   {
+    "extent": "0.00-0.35",
+    "share_of_lines": 0.01,
+    "mean_line_cer": 0.5773809523809524,
+    "n": 3
+   },
+   {
+    "extent": "0.35-0.50",
+    "share_of_lines": 0.02666666666666667,
+    "mean_line_cer": 0.5600694444444445,
+    "n": 8
+   },
+   {
+    "extent": "0.50-0.70",
+    "share_of_lines": 0.09333333333333334,
+    "mean_line_cer": 0.3450243226719819,
+    "n": 28
+   },
+   {
+    "extent": "0.70-1.00",
+    "share_of_lines": 0.87,
+    "mean_line_cer": 0.1793298900843929,
+    "n": 261
+   }
+  ]
+ },
+ "muharaf_lines": {
+  "lines": 300,
+  "median_extent": 0.796875,
+  "bands": [
+   {
+    "extent": "0.00-0.35",
+    "share_of_lines": 0.02,
+    "mean_line_cer": null,
+    "n": 0
+   },
+   {
+    "extent": "0.35-0.50",
+    "share_of_lines": 0.056666666666666664,
+    "mean_line_cer": null,
+    "n": 0
+   },
+   {
+    "extent": "0.50-0.70",
+    "share_of_lines": 0.25333333333333335,
+    "mean_line_cer": null,
+    "n": 0
+   },
+   {
+    "extent": "0.70-1.00",
+    "share_of_lines": 0.67,
+    "mean_line_cer": null,
+    "n": 0
+   }
+  ]
+ }
+}

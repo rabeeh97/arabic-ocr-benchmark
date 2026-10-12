@@ -51,7 +51,7 @@ else:
     for t in a.tags:
         items = []
         for i, (ea, n, ha) in A[t].items():
-            if i not in B[t]:
+            if i not in B[t] or (t, i) not in img:  # only lines whose image is in the local pickle
                 continue
             eb, _, hb = B[t][i]
             items.append({"id": i, "gt": gt[(t, i)], "img_a": img[(t, i)], "img_b": None, "hyp_a": ha, "hyp_b": hb, "err_a": ea, "err_b": eb, "n": n})
