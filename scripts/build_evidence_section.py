@@ -37,6 +37,17 @@ STYLE = """<style>
 </style>"""
 
 
+def full_b64(img) -> str:
+    """The whole line image (change_gallery.b64 keeps only the right-most 640 px, which hides the end of long lines)."""
+    import base64
+    import io
+
+    from PIL import Image
+    b = io.BytesIO()
+    Image.fromarray(img).save(b, "PNG", optimize=True)
+    return "data:image/png;base64," + base64.b64encode(b.getvalue()).decode()
+
+
 def table(head, rows):
     return '<div class="qwrap"><table class="dt"><thead><tr>' + "".join(f"<th>{h}</th>" for h in head) + "</tr></thead><tbody>" + "".join("<tr>" + "".join(r) + "</tr>" for r in rows) + "</tbody></table></div>"
 
@@ -118,7 +129,7 @@ def main() -> None:
             continue
         cell = MX["cells"][k]
         best = min(cell, key=cell.get)
-        cards.append(f'<div class="gcard worse"><img src="{b64(rows[k]["img"])}" alt="KHATT line {k}"><div class="gtxt">'
+        cards.append(f'<div class="gcard worse"><img src="{full_b64(rows[k]["img"])}" alt="KHATT line {k}"><div class="gtxt">'
                      f'<div class="r"><span class="k">truth</span><bdi>{html.escape(rows[k]["label_raw"])}</bdi></div>'
                      f'<div class="r"><span class="k">best of {len(cell)} systems</span><span class="e">{pc(cell[best])} %</span><span class="id">{html.escape(best)}</span></div>'
                      f'<div class="r"><span class="k">median CER</span><span class="e">{pc(MX["consensus_difficulty"][k])} %</span><span class="id">{html.escape(k)} · ink extent {rows[k]["ink_extent"]:.2f}</span></div></div></div>')

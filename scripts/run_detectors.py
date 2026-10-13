@@ -63,6 +63,10 @@ def d10_label_suspect(s, ctx):
     return s["sample_key"] in ctx["label_suspects"]
 
 
+def d10b_label_tail(s, ctx):
+    return s["sample_key"] in ctx["tail_suspects"]
+
+
 def dx_ctc_filtered(s, ctx):
     return not s["ctc_ok"]
 
@@ -138,6 +142,7 @@ def d22_reversed(s, r, ctx):
 
 SAMPLE_DETECTORS = {"D1 loose crop (ink < 35 % of height)": d1_loose_crop, "D7 fragment line": d7_fragment, "D8 letter-list drill": d8_letter_list,
                     "D9 mostly unseen words": d9_unseen_text, "D10 label suspect (strong models agree, GT differs)": d10_label_suspect,
+                    "D10b label runs past the image (systems agree the tail is missing)": d10b_label_tail,
                     "Dx dropped by the old CTC filter": dx_ctc_filtered}
 PRED_DETECTORS = {"D11 truncation (head or tail cut)": d11_truncation, "D12 repetition loop / runaway": d12_loop, "D13 whole-line failure (CER > 0.8)": d13_whole_line,
                   "D14 script mismatch": d14_script_mismatch, "D15 fluent rewrite": d15_fluent_rewrite, "D16 diacritic insertion": d16_diacritic_insertion,
@@ -168,6 +173,38 @@ def label_suspects(idx, S) -> set[str]:
     return out
 
 
+def tail_cut(gt: str, hyp: str) -> float:
+    """Share of the GT (letters view) deleted at its end, after the last matching block."""
+    g, h = _letters_view(gt), _letters_view(hyp)
+    if not g:
+        return 0.0
+    last = max((op.src_end for op in Levenshtein.opcodes(g, h) if op.tag == "equal"), default=0)
+    return (len(g) - last) / len(g)
+
+
+def tail_suspects(idx, S) -> set[str]:
+    """D10b (CORRECTIONS C8): ≥ 5 competent systems read the line, and ≥ 70 % of them leave the last ≥ 15 % of the GT
+    unmatched while matching earlier parts — the label most likely continues past what the image shows."""
+    by_key = defaultdict(list)
+    for (run, tr, pack, ds), m in idx.items():
+        if tr != "none" or any(x in run for x in ("ain", "paddle", "trocr")) or len(m) < 50:
+            continue
+        if not (run.startswith("vlm/") or run in ("crnn/base", "crnn/rep2")):
+            continue
+        if np.mean([lc(r) for r in m.values()]) > 0.35:
+            continue
+        for k, r in m.items():
+            by_key[k].append(r)
+    out = set()
+    for k, rs in by_key.items():
+        if len(rs) < 5 or d7_fragment(S[k], None):  # short, digit-only or Latin lines give spurious tails
+            continue
+        cut = [tail_cut(S[k]["gt_raw"], r["hyp"]) >= 0.15 and lc(r) < 0.9 for r in rs]
+        if sum(cut) >= 0.7 * len(rs):
+            out.add(k)
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--store", type=Path, default=W / "results/store")
@@ -183,6 +220,8 @@ def main() -> None:
         idx[(r["run_id"], r["transform"], r["pack"], r["dataset"])][r["sample_key"]] = r
     ctx = {"vocab": {w for r in pickle.load(open(a.vocab_pkl, "rb"))["rows"] if r["role"] == "train" for w in words_view(r["label"])}}
     ctx["label_suspects"] = label_suspects(idx, S)
+    ctx["tail_suspects"] = tail_suspects(idx, S)
+    print("D10b tail suspects:", len(ctx["tail_suspects"]), sorted(ctx["tail_suspects"])[:12])
     sflags = {name: {k for k, s in S.items() if f(s, ctx)} for name, f in SAMPLE_DETECTORS.items()}
     prevalence = {ds: {name: sum(S[k]["dataset"] == ds for k in v) / sum(s["dataset"] == ds for s in S.values()) for name, v in sflags.items()}
                   for ds in sorted({s["dataset"] for s in S.values()})}

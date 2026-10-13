@@ -6,6 +6,7 @@
    "D8 letter-list drill": 0.135,
    "D9 mostly unseen words": 0.205,
    "D10 label suspect (strong models agree, GT differs)": 0.0,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.085
   },
   "muharaf_lines": {
@@ -14,6 +15,7 @@
    "D8 letter-list drill": 0.005247376311844078,
    "D9 mostly unseen words": 0.14842578710644677,
    "D10 label suspect (strong models agree, GT differs)": 0.0,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.0074962518740629685
   },
   "nakba_blind": {
@@ -22,6 +24,7 @@
    "D8 letter-list drill": 0.002995132909022838,
    "D9 mostly unseen words": 0.20628977910894797,
    "D10 label suspect (strong models agree, GT differs)": 0.0,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.0
   },
   "nakba_lines": {
@@ -30,6 +33,7 @@
    "D8 letter-list drill": 0.001431980906921241,
    "D9 mostly unseen words": 0.24105011933174225,
    "D10 label suspect (strong models agree, GT differs)": 0.00047732696897374703,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.00047732696897374703
   },
   "rasam1": {
@@ -38,6 +42,7 @@
    "D8 letter-list drill": 0.006811989100817439,
    "D9 mostly unseen words": 0.12125340599455041,
    "D10 label suspect (strong models agree, GT differs)": 0.0,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.0027247956403269754
   },
   "rasam2": {
@@ -46,6 +51,7 @@
    "D8 letter-list drill": 0.051075268817204304,
    "D9 mostly unseen words": 0.13709677419354838,
    "D10 label suspect (strong models agree, GT differs)": 0.0,
+   "D10b label runs past the image (systems agree the tail is missing)": 0.0,
    "Dx dropped by the old CTC filter": 0.013440860215053764
   }
  },
@@ -114,6 +120,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -291,6 +300,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -452,6 +464,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -655,6 +670,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -847,6 +865,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -1020,6 +1041,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -1181,6 +1205,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -1358,6 +1385,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -1562,6 +1592,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -1745,6 +1778,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -1911,6 +1947,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -2081,6 +2120,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -2265,6 +2307,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -2429,6 +2474,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -2596,6 +2644,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -2778,6 +2829,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -2944,6 +2998,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -3142,6 +3199,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -3307,6 +3367,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -3497,6 +3560,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -3654,6 +3720,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -3844,6 +3913,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -4008,6 +4080,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -4190,6 +4265,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -4382,6 +4460,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -4517,6 +4598,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -4709,6 +4793,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -4910,6 +4997,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -5061,6 +5151,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -5252,6 +5345,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -5451,6 +5547,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -5610,6 +5709,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -5774,6 +5876,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -5966,6 +6071,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -6149,6 +6257,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -6295,6 +6406,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -6484,6 +6598,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -6638,6 +6755,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -6829,6 +6949,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -7027,6 +7150,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -7161,6 +7287,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -7350,6 +7479,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -7541,6 +7673,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -7674,6 +7809,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -7867,6 +8005,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -8057,6 +8198,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -8215,6 +8359,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -8406,6 +8553,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -8596,6 +8746,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -8760,6 +8913,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -8953,6 +9109,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -9127,6 +9286,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -9308,6 +9470,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -9491,6 +9656,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -9665,6 +9833,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -9845,6 +10016,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -10036,6 +10210,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -10196,6 +10373,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -10384,6 +10564,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -10540,6 +10723,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -10728,6 +10914,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -10896,6 +11085,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -11091,6 +11283,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -11249,6 +11444,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -11422,6 +11620,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -11624,6 +11825,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -11764,6 +11968,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -11957,6 +12164,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -12147,6 +12357,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -12312,6 +12525,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -12490,6 +12706,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -12683,6 +12902,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -12864,6 +13086,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -13061,6 +13286,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -13209,6 +13437,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -13406,6 +13637,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -13601,6 +13835,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -13766,6 +14003,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -13963,6 +14203,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -14158,6 +14401,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -14290,6 +14536,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -14481,6 +14730,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -14679,6 +14931,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -14844,6 +15099,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -15035,6 +15293,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -15233,6 +15494,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -15374,6 +15638,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -15558,6 +15825,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -15749,6 +16019,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -15906,6 +16179,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -16091,6 +16367,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -16267,6 +16546,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -16441,6 +16723,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -16624,6 +16909,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -16790,6 +17078,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -16966,6 +17257,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -17147,6 +17441,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -17313,6 +17610,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -17510,6 +17810,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -17671,6 +17974,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -17860,6 +18166,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -18021,6 +18330,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -18210,6 +18522,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -18368,6 +18683,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -18539,6 +18857,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -18721,6 +19042,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -18853,6 +19177,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -19045,6 +19372,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -19243,6 +19573,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -19401,6 +19734,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -19564,6 +19900,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -19757,6 +20096,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -19937,6 +20279,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -20127,6 +20472,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.043202033036848796,
@@ -20300,6 +20648,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -20494,6 +20845,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.005,
      "share_edits": 0.006593406593406593,
@@ -20662,6 +21016,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -20864,6 +21221,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.060109289617486336,
@@ -21033,6 +21393,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -21239,6 +21602,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -21407,6 +21773,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -21614,6 +21983,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -21766,6 +22138,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -21958,6 +22333,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -22109,6 +22487,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -22281,6 +22662,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -22470,6 +22854,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -22656,6 +23043,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.05711086226203808,
@@ -22818,6 +23208,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -23004,6 +23397,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -23173,6 +23569,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -23391,6 +23790,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.07481890964544415,
@@ -23592,6 +23994,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -23783,6 +24188,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -23971,6 +24379,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.004545454545454545,
      "share_edits": 0.005293766776021474,
@@ -24137,6 +24548,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -24317,6 +24731,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -24430,6 +24847,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -24605,6 +25025,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -24785,6 +25208,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -24936,6 +25362,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -25106,6 +25535,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -25310,6 +25742,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.08888888888888889,
      "share_edits": 0.06542056074766354,
@@ -25484,6 +25919,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0025,
@@ -25684,6 +26122,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -25853,6 +26294,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -26064,6 +26508,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.07562303065024348,
@@ -26237,6 +26684,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -26435,6 +26885,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -26639,6 +27092,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -26810,6 +27266,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -26997,6 +27456,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -27203,6 +27665,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -27425,6 +27890,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.0606092771467997,
@@ -27629,6 +28097,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -27810,6 +28281,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -28008,6 +28482,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -28213,6 +28690,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0875,
      "share_edits": 0.1408947466122146,
@@ -28413,6 +28893,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.08536585365853659,
      "share_edits": 0.046089385474860335,
@@ -28598,6 +29081,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -28803,6 +29289,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.08333333333333333,
      "share_edits": 0.04789864029666255,
@@ -28996,6 +29485,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -29221,6 +29713,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.08888888888888889,
      "share_edits": 0.03233190271816881,
@@ -29427,6 +29922,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.002506265664160401,
@@ -29637,6 +30135,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -29833,6 +30334,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -30056,6 +30560,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.06272066458982346,
@@ -30254,6 +30761,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -30457,6 +30967,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -30682,6 +31195,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.04574961360123648,
@@ -30892,6 +31408,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.00125,
      "share_edits": 0.0006498530094383413,
@@ -31089,6 +31608,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0012195121951219512,
@@ -31293,6 +31815,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0027247956403269754,
      "share_edits": 0.002055989863491836,
@@ -31479,6 +32004,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -31691,6 +32219,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.06863572433192687,
@@ -31895,6 +32426,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -32079,6 +32613,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.005,
      "share_edits": 0.009002361275088548,
@@ -32260,6 +32797,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -32468,6 +33008,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.05844155844155844,
@@ -32640,6 +33183,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -32816,6 +33362,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -32995,6 +33544,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -33194,6 +33746,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -33401,6 +33956,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.08041958041958042,
@@ -33583,6 +34141,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
@@ -33772,6 +34333,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.005,
      "share_edits": 0.010940919037199124,
@@ -33945,6 +34509,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -34149,6 +34716,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -34344,6 +34914,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.08888888888888889,
      "share_edits": 0.08053007135575943,
@@ -34526,6 +35099,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -34723,6 +35299,9 @@
      "example_ids": [
       "nakba_lines/test/000104"
      ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0012195121951219512,
@@ -34932,6 +35511,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0014005602240896359,
      "share_edits": 0.00047423332279481503,
@@ -35124,6 +35706,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -35339,6 +35924,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -35495,6 +36083,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -35697,6 +36288,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.085,
      "share_edits": 0.07558997050147492,
@@ -35891,6 +36485,9 @@
       "nakba_lines/test/000104"
      ]
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -36079,6 +36676,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.005,
      "share_edits": 0.010356381358513555,
@@ -36250,6 +36850,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
@@ -36444,6 +37047,9 @@
     "D10 label suspect (strong models agree, GT differs)": {
      "share_lines": 0.0
     },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
     "Dx dropped by the old CTC filter": {
      "share_lines": 0.0
     },
@@ -36633,6 +37239,9 @@
      ]
     },
     "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
      "share_lines": 0.0
     },
     "Dx dropped by the old CTC filter": {
