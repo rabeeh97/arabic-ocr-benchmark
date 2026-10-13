@@ -115,3 +115,23 @@ scp spring-win-server-3090:C:/Users/User/a-experiment/xai/transfer_cer.json spri
 Write the verdict paragraph first (HTML, in `verdict.html`), then republish `docs/research/paper-ledger.html` to the same artifact URL.
 
 Note: a half-width replica could not be trained on the 8 GB Mac (swap thrashing, no finished epoch in 19 minutes), so the CER test needs the 3090.
+
+## 3. The 2026-10-13 pipeline: panel, store, standard analyses (plan `PLAN-2026-10-13-analysis-and-next-steps.md`)
+
+**Laptop (CPU), in order:**
+1. `.geomvenv/bin/python scripts/xai_prepare_panel.py results/panel/panel.pkl` builds the standard evaluation panel: every line of six test sets, as stored and ink-cropped, canonical ids, no CTC filter (689 MB).
+2. `HF_HUB_OFFLINE=1 .venv/bin/python scripts/xai_prepare_aligner_data.py results/panel/aligner_data_standard.pkl --standard-split` builds the standard-split training pickle (Muharaf train → train, validation → held-out).
+3. After results come back: `.geomvenv/bin/python scripts/store_build.py`, then `analyze_lines.py`, `analyze_letters.py`, `run_detectors.py` and `build_evidence_section.py`. Publish the ledger.
+
+**Upload is slow (about 0.6 MB/s from the laptop).** Do not upload what the box can derive:
+- Standard split on the box: `python xai_derive_standard_split.py aligner_data.pkl aligner_data_standard.pkl`, then check that `python pickle_fingerprint.py` prints the same fingerprint on both machines (`450603de452a8195`).
+- Upload the panel gzipped (373 MB), unpack it on the box, and check the fingerprint (`ed1dd4212f13619b`).
+
+**Box queues** (`scripts/box/queue_p0.bat`, `queue_p1.bat`, launched with `Win32_Process Create`; `queue_p1` waits for "P0 ALL DONE"):
+- P0: panel scores of the 7 existing CRNNs; standard-split CRNN seeds 0 and 1; seeds for shape, random control and base; panel scores of the new runs.
+- P1: TTA with all shears stored (`--all-variants`); letter dumps (`xai_letter_shapes.py --dump-letters`); seeds for shape, random control and combo; panel scores.
+
+Live view: `ssh spring-win-server-3090 "powershell Get-Content C:\Users\User\a-experiment\xai\aligner\queue_p0.log -Wait"` (or `queue_p1.log`).
+Bring back: `scp "spring-win-server-3090:C:/Users/User/a-experiment/xai/aligner/panel_out/*.json" results/panel/out/`.
+
+**Backups:** `/Volumes/PortableSSD/aocr-box-backup/xai-2026-10-13/` holds the `xai` folder from 2026-10-13, without `.venv`: weights, data pickles and outputs. After new runs, copy their `aligner_run_*` folders the same way, then delete the large pickles on the box once the queues are done. All of them can be regenerated from the laptop.

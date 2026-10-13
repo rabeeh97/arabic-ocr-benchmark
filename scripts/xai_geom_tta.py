@@ -50,6 +50,7 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=300, help="lines per dataset")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--all-variants", action="store_true", help="also store every shear's reading and confidence per line")
+    ap.add_argument("--datasets", nargs="+", help="only these dataset tags of the pickle (default: all)")
     a = ap.parse_args()
     if a.selftest:
         im = np.full((64, 200), 255, np.uint8)
@@ -71,7 +72,7 @@ def main() -> None:
     rows = pickle.load(open(a.data, "rb"))["rows"]
     res = {}
     per_line = {}  # {ds: {id: [errors, chars, text]}} upright, and {ds}__tta for the confidence-selected shear
-    for ds in sorted({r["dataset"] for r in rows}):
+    for ds in sorted({r["dataset"] for r in rows if not a.datasets or r["dataset"] in a.datasets}):
         rs = [r for r in rows if r["dataset"] == ds][: a.n]
         per_variant = {d: [] for d in SHEARS}  # (errors, chars, confidence, text) per line
         for r in rs:
