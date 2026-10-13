@@ -1,0 +1,2240 @@
+{
+ "results/geometry/shape/base.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26371142981312473,
+  "native_cer": 0.26371142981312473,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2547588005215124
+ },
+ "results/geometry/shape/base.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1367615165530036,
+  "native_cer": 0.1367615165530036,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1161715136787646
+ },
+ "results/geometry/shape/base.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13759344962620149,
+  "native_cer": 0.13759344962620149,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11044855820576718
+ },
+ "results/geometry/base_evaldata.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26371142981312473,
+  "native_cer": 0.26371142981312473,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2547588005215124
+ },
+ "results/geometry/base_evaldata.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1367615165530036,
+  "native_cer": 0.1367615165530036,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1161715136787646
+ },
+ "results/geometry/base_evaldata.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13759344962620149,
+  "native_cer": 0.13759344962620149,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11044855820576718
+ },
+ "results/geometry/inkcrop_base.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26345067362016517,
+  "native_cer": 0.26345067362016517,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2545849630595393
+ },
+ "results/geometry/inkcrop_base.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2320730117340287,
+  "native_cer": 0.2320730117340287,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2226857887874837
+ },
+ "results/geometry/inkcrop_base.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13384671800513384,
+  "native_cer": 0.13384671800513384,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11307559327361308
+ },
+ "results/geometry/inkcrop_base.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13418722824663418,
+  "native_cer": 0.13418722824663418,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11341610351511341
+ },
+ "results/geometry/inkcrop_base.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13759344962620149,
+  "native_cer": 0.13759344962620149,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11044855820576718
+ },
+ "results/geometry/inkcrop_base.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1378307820102053,
+  "native_cer": 0.1378307820102053,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11062655749377003
+ },
+ "results/geometry/transfer_cer.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26345067362016517,
+  "native_cer": 0.26345067362016517,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2545849630595393
+ },
+ "results/geometry/transfer_cer.json::kitab_khatt__as_muharaf": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2525858322468492,
+  "native_cer": 0.2525858322468492,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24493698392003477
+ },
+ "results/geometry/transfer_cer.json::kitab_khatt__as_muharaf_only_paper": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2648413733159496,
+  "native_cer": 0.2648413733159496,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25554106910039115
+ },
+ "results/geometry/transfer_cer.json::kitab_khatt__as_muharaf_only_slant": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2525858322468492,
+  "native_cer": 0.2525858322468492,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24476314645806171
+ },
+ "results/geometry/transfer_cer.json::kitab_khatt__as_muharaf_only_stroke": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26405910473707084,
+  "native_cer": 0.26405910473707084,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2545849630595393
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06239582578447714,
+  "native_cer": 0.06239582578447714,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.059497065004710484
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08210739908689035,
+  "native_cer": 0.08210739908689035,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.0792086383071237
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines__as_khatt_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06362779911587796,
+  "native_cer": 0.06362779911587796,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06065656931661715
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines__as_khatt_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08239727516486701,
+  "native_cer": 0.08239727516486701,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07957098340459454
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines__as_khatt_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06500471048626712,
+  "native_cer": 0.06500471048626712,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06210594970650047
+ },
+ "results/geometry/transfer_cer.json::muharaf_lines__as_nakba": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.07261395753315458,
+  "native_cer": 0.07261395753315458,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06978766577288209
+ },
+ "results/geometry/transfer_cer.json::nakba_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13601218369259607,
+  "native_cer": 0.13601218369259607,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10842314901593252
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12863167760074976,
+  "native_cer": 0.12863167760074976,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10151124648547329
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__as_muharaf": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12318416119962512,
+  "native_cer": 0.12318416119962512,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.0961808809746954
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__as_muharaf_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1340791940018744,
+  "native_cer": 0.1340791940018744,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10678303655107779
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__as_muharaf_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13571930646672914,
+  "native_cer": 0.13571930646672914,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10813027179006561
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__as_muharaf_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12488284910965324,
+  "native_cer": 0.12488284910965324,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09735238987816307
+ },
+ "results/geometry/transfer_cer.json::nakba_lines__norules": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13659793814432988,
+  "native_cer": 0.13659793814432988,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10895032802249296
+ },
+ "results/geometry/night/rep2_eval.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.262929161234246,
+  "native_cer": 0.262929161234246,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2530204259017818
+ },
+ "results/geometry/night/rep2_eval.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13825089493350057,
+  "native_cer": 0.13825089493350057,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1178699276214366
+ },
+ "results/geometry/night/rep2_eval.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13605078913017682,
+  "native_cer": 0.13605078913017682,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10964756140975436
+ },
+ "results/geometry/night/rep2_inkcrop.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2627553237722729,
+  "native_cer": 0.2627553237722729,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2528465884398088
+ },
+ "results/geometry/night/rep2_inkcrop.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.23520208604954368,
+  "native_cer": 0.23520208604954368,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.22564102564102564
+ },
+ "results/geometry/night/rep2_inkcrop.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13568023469013568,
+  "native_cer": 0.13568023469013568,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11553774425061554
+ },
+ "results/geometry/night/rep2_inkcrop.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13547068992613548,
+  "native_cer": 0.13547068992613548,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11538058567761537
+ },
+ "results/geometry/night/rep2_inkcrop.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13605078913017682,
+  "native_cer": 0.13605078913017682,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10964756140975436
+ },
+ "results/geometry/night/rep2_inkcrop.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13667378663818677,
+  "native_cer": 0.13667378663818677,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11027055891776433
+ },
+ "results/geometry/shape/random_eval.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2624076488483268,
+  "native_cer": 0.2624076488483268,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2519774011299435
+ },
+ "results/geometry/shape/random_eval.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13631731598338168,
+  "native_cer": 0.13631731598338168,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11562279532805518
+ },
+ "results/geometry/shape/random_eval.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1373561172421977,
+  "native_cer": 0.1373561172421977,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11015189272576242
+ },
+ "results/geometry/night/randctl_inkcrop.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2623207301173403,
+  "native_cer": 0.2623207301173403,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2519774011299435
+ },
+ "results/geometry/night/randctl_inkcrop.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.23355063016079966,
+  "native_cer": 0.23355063016079966,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.22320730117340287
+ },
+ "results/geometry/night/randctl_inkcrop.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1315941117921316,
+  "native_cer": 0.1315941117921316,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11105872492011105
+ },
+ "results/geometry/night/randctl_inkcrop.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13146314631463146,
+  "native_cer": 0.13146314631463146,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11105872492011105
+ },
+ "results/geometry/night/randctl_inkcrop.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1373561172421977,
+  "native_cer": 0.1373561172421977,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11015189272576242
+ },
+ "results/geometry/night/randctl_inkcrop.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13732645069419722,
+  "native_cer": 0.13732645069419722,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1099442268897591
+ },
+ "results/geometry/shape/targeted_eval.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25336810082572797,
+  "native_cer": 0.25336810082572797,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2438070404172099
+ },
+ "results/geometry/shape/targeted_eval.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13498471427451594,
+  "native_cer": 0.13498471427451594,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11423793472864571
+ },
+ "results/geometry/shape/targeted_eval.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.135249792334164,
+  "native_cer": 0.135249792334164,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10840156639373442
+ },
+ "results/geometry/night/shape_inkcrop.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25328118209474143,
+  "native_cer": 0.25328118209474143,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24372012168622337
+ },
+ "results/geometry/night/shape_inkcrop.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2261625380269448,
+  "native_cer": 0.2261625380269448,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2166883963494133
+ },
+ "results/geometry/night/shape_inkcrop.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1320917806066321,
+  "native_cer": 0.1320917806066321,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11181832468961182
+ },
+ "results/geometry/night/shape_inkcrop.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13237990465713237,
+  "native_cer": 0.13237990465713237,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11213264183561213
+ },
+ "results/geometry/night/shape_inkcrop.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.135249792334164,
+  "native_cer": 0.135249792334164,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10840156639373442
+ },
+ "results/geometry/night/shape_inkcrop.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13530912543016493,
+  "native_cer": 0.13530912543016493,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10837189984573395
+ },
+ "results/geometry/night/shape_transfer.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25328118209474143,
+  "native_cer": 0.25328118209474143,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24372012168622337
+ },
+ "results/geometry/night/shape_transfer.json::kitab_khatt__as_muharaf": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.24493698392003477,
+  "native_cer": 0.24493698392003477,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.23667970447631465
+ },
+ "results/geometry/night/shape_transfer.json::kitab_khatt__as_muharaf_only_paper": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2559756627553238,
+  "native_cer": 0.2559756627553238,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24676227727075184
+ },
+ "results/geometry/night/shape_transfer.json::kitab_khatt__as_muharaf_only_slant": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.24415471534115601,
+  "native_cer": 0.24415471534115601,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.23581051716644938
+ },
+ "results/geometry/night/shape_transfer.json::kitab_khatt__as_muharaf_only_stroke": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2530204259017818,
+  "native_cer": 0.2530204259017818,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24372012168622337
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.05203275599681136,
+  "native_cer": 0.05203275599681136,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.049568809334009714
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.0736285238060729,
+  "native_cer": 0.0736285238060729,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07058482498731793
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines__as_khatt_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.05254003913327053,
+  "native_cer": 0.05254003913327053,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.050003623450974706
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines__as_khatt_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.07261395753315458,
+  "native_cer": 0.07261395753315458,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06971519675338793
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines__as_khatt_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.05456917167910718,
+  "native_cer": 0.05456917167910718,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.05203275599681136
+ },
+ "results/geometry/night/shape_transfer.json::muharaf_lines__as_nakba": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06275817088194796,
+  "native_cer": 0.06275817088194796,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06029422421914631
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1295688847235239,
+  "native_cer": 0.1295688847235239,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10233130271790065
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12857310215557638,
+  "native_cer": 0.12857310215557638,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10121836925960637
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__as_muharaf": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12048969072164949,
+  "native_cer": 0.12048969072164949,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09383786316776008
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__as_muharaf_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12939315838800375,
+  "native_cer": 0.12939315838800375,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10233130271790065
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__as_muharaf_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1292174320524836,
+  "native_cer": 0.1292174320524836,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10192127460168697
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__as_muharaf_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12084114339268978,
+  "native_cer": 0.12084114339268978,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09383786316776008
+ },
+ "results/geometry/night/shape_transfer.json::nakba_lines__norules": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1295688847235239,
+  "native_cer": 0.1295688847235239,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10221415182755389
+ },
+ "results/geometry/night/combo_inkcrop.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2524989135158627,
+  "native_cer": 0.2524989135158627,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24302477183833116
+ },
+ "results/geometry/night/combo_inkcrop.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.22259887005649717,
+  "native_cer": 0.22259887005649717,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.21329856584093873
+ },
+ "results/geometry/night/combo_inkcrop.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13052019487663052,
+  "native_cer": 0.13052019487663052,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10998480800460998
+ },
+ "results/geometry/night/combo_inkcrop.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13031065011263032,
+  "native_cer": 0.13031065011263032,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10972287704960973
+ },
+ "results/geometry/night/combo_inkcrop.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13151180728610418,
+  "native_cer": 0.13151180728610418,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10463391479767414
+ },
+ "results/geometry/night/combo_inkcrop.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13168980657410703,
+  "native_cer": 0.13168980657410703,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10481191408567699
+ },
+ "results/geometry/aug_evaldata.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2689265536723164,
+  "native_cer": 0.2689265536723164,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2595393307257714
+ },
+ "results/geometry/aug_evaldata.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14627263463196677,
+  "native_cer": 0.14627263463196677,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.12625747955370908
+ },
+ "results/geometry/aug_evaldata.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1435564257742969,
+  "native_cer": 0.1435564257742969,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11759819627388157
+ },
+ "results/geometry/inkcrop_aug.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26883963494132984,
+  "native_cer": 0.26883963494132984,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2595393307257714
+ },
+ "results/geometry/inkcrop_aug.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.236245110821382,
+  "native_cer": 0.236245110821382,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2264232942199044
+ },
+ "results/geometry/inkcrop_aug.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14259521190214258,
+  "native_cer": 0.14259521190214258,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.12253130074912254
+ },
+ "results/geometry/inkcrop_aug.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14275237047514275,
+  "native_cer": 0.14275237047514275,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.12266226622662266
+ },
+ "results/geometry/inkcrop_aug.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1435564257742969,
+  "native_cer": 0.1435564257742969,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11759819627388157
+ },
+ "results/geometry/inkcrop_aug.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1439124243503026,
+  "native_cer": 0.1439124243503026,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11780586210988489
+ },
+ "results/geometry/aug_transfer.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26883963494132984,
+  "native_cer": 0.26883963494132984,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2595393307257714
+ },
+ "results/geometry/aug_transfer.json::kitab_khatt__as_muharaf": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25415036940460667,
+  "native_cer": 0.25415036940460667,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24624076488483268
+ },
+ "results/geometry/aug_transfer.json::kitab_khatt__as_muharaf_only_paper": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2686657974793568,
+  "native_cer": 0.2686657974793568,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25893089960886573
+ },
+ "results/geometry/aug_transfer.json::kitab_khatt__as_muharaf_only_slant": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2560625814863103,
+  "native_cer": 0.2560625814863103,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24797913950456324
+ },
+ "results/geometry/aug_transfer.json::kitab_khatt__as_muharaf_only_stroke": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2685788787483703,
+  "native_cer": 0.2685788787483703,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2591916558018253
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08087542575548953,
+  "native_cer": 0.08087542575548953,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07775925791724038
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08783245162692949,
+  "native_cer": 0.08783245162692949,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.08442640771070367
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines__as_khatt_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08058554967751286,
+  "native_cer": 0.08058554967751286,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07746938183926372
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines__as_khatt_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08638307123704617,
+  "native_cer": 0.08638307123704617,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.08370171751576201
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines__as_khatt_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08203493006739619,
+  "native_cer": 0.08203493006739619,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07913616928762954
+ },
+ "results/geometry/aug_transfer.json::muharaf_lines__as_nakba": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.07739691281976954,
+  "native_cer": 0.07739691281976954,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.07529531125443872
+ },
+ "results/geometry/aug_transfer.json::nakba_lines": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13917525773195877,
+  "native_cer": 0.13917525773195877,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11322633552014995
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__as_khatt": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12927600749765697,
+  "native_cer": 0.12927600749765697,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10227272727272728
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__as_muharaf": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12201265229615745,
+  "native_cer": 0.12201265229615745,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09436504217432053
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__as_muharaf_only_paper": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13566073102155576,
+  "native_cer": 0.13566073102155576,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1095360824742268
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__as_muharaf_only_slant": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13361059044048734,
+  "native_cer": 0.13361059044048734,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10748594189315838
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__as_muharaf_only_stroke": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12687441424554827,
+  "native_cer": 0.12687441424554827,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09940253045923149
+ },
+ "results/geometry/aug_transfer.json::nakba_lines__norules": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1383552014995314,
+  "native_cer": 0.1383552014995314,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11252343017806936
+ },
+ "results/geometry/inkcrop_trained.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26684050412863974,
+  "native_cer": 0.26684050412863974,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25927857453281183
+ },
+ "results/geometry/inkcrop_trained.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.23511516731855714,
+  "native_cer": 0.23511516731855714,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.22624945675793134
+ },
+ "results/geometry/inkcrop_trained.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13405626276913404,
+  "native_cer": 0.13405626276913404,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11365184137461365
+ },
+ "results/geometry/inkcrop_trained.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13376813871863377,
+  "native_cer": 0.13376813871863377,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11341610351511341
+ },
+ "results/geometry/inkcrop_trained.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13729678414619675,
+  "native_cer": 0.13729678414619675,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11059689094576955
+ },
+ "results/geometry/inkcrop_trained.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1371484514061944,
+  "native_cer": 0.1371484514061944,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11056722439776907
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2633637548891786,
+  "native_cer": 0.2633637548891786,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2549326379834854
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::kitab_khatt__tta": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2544111255975663,
+  "native_cer": 0.2544111255975663,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2475445458496306
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2327683615819209,
+  "native_cer": 0.2327683615819209,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.22364189482833552
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::kitab_khatt__inkcrop__tta": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.22442416340721424,
+  "native_cer": 0.22442416340721424,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.21599304650152107
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13392529729163394,
+  "native_cer": 0.13392529729163394,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11320655875111321
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_blind__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13646602755513645,
+  "native_cer": 0.13646602755513645,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11561632353711562
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13416103515113417,
+  "native_cer": 0.13416103515113417,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11346848970611347
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_blind__inkcrop__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1367017654146367,
+  "native_cer": 0.1367017654146367,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11593064068311593
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13676278628218821,
+  "native_cer": 0.13676278628218821,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10967722795775484
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_lines__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14130176812626083,
+  "native_cer": 0.14130176812626083,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11445354218583126
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13702978521419248,
+  "native_cer": 0.13702978521419248,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1099442268897591
+ },
+ "results/geometry/night/tta_inkcrop_pl.json::nakba_lines__inkcrop__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14159843360626556,
+  "native_cer": 0.14159843360626556,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11469087456983505
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::kitab_khatt": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25362885701868754,
+  "native_cer": 0.25362885701868754,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2444154715341156
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::kitab_khatt__tta": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.24545849630595393,
+  "native_cer": 0.24545849630595393,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.23667970447631465
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::kitab_khatt__inkcrop": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.22355497609734898,
+  "native_cer": 0.22355497609734898,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.214167753150804
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::kitab_khatt__inkcrop__tta": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.21529769665362886,
+  "native_cer": 0.21529769665362886,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.20617122990004347
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_blind": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13065116035413066,
+  "native_cer": 0.13065116035413066,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11006338729111007
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_blind__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13544449683063545,
+  "native_cer": 0.13544449683063545,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11496149614961496
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_blind__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13052019487663052,
+  "native_cer": 0.13052019487663052,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10993242181360993
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_blind__inkcrop__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13557546230813558,
+  "native_cer": 0.13557546230813558,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11514484781811514
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_lines": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13148214073810371,
+  "native_cer": 0.13148214073810371,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10439658241367035
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_lines__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13649578735018394,
+  "native_cer": 0.13649578735018394,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1099442268897591
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_lines__inkcrop": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13154147383410467,
+  "native_cer": 0.13154147383410467,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10448558205767176
+ },
+ "results/geometry/night/tta_inkcrop_combo.json::nakba_lines__inkcrop__tta": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.136436454254183,
+  "native_cer": 0.136436454254183,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10988489379375815
+ },
+ "results/geometry/e8/per_line.json::kitab_khatt::crnn": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.25467188179052586
+ },
+ "results/geometry/e8/per_line.json::kitab_khatt::e8": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3860930030421556
+ },
+ "results/geometry/e8/per_line.json::muharaf_lines::crnn": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07213660974593919
+ },
+ "results/geometry/e8/per_line.json::muharaf_lines::e8": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.1119533527696793
+ },
+ "results/geometry/e8/per_line.json::nakba_blind::crnn": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.11635441979566774
+ },
+ "results/geometry/e8/per_line.json::nakba_blind::e8": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.19137205717122627
+ },
+ "results/geometry/e8/per_line.json::nakba_lines::crnn": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.11047822475376765
+ },
+ "results/geometry/e8/per_line.json::nakba_lines::e8": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.1813812744749021
+ },
+ "results/geometry/e8/per_line.json::rasam1::crnn": {
+  "lines": 100,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.09821428571428571
+ },
+ "results/geometry/e8/per_line.json::rasam1::e8": {
+  "lines": 100,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.1644585253456221
+ },
+ "results/geometry/e8_1p7b/per_line.json::kitab_khatt::e8": {
+  "lines": 183,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.38600608431116906
+ },
+ "results/geometry/e8_1p7b/per_line.json::muharaf_lines::e8": {
+  "lines": 300,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.11253644314868805
+ },
+ "results/geometry/e8_1p7b/per_line.json::nakba_blind::e8": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.18606777978103525
+ },
+ "results/geometry/e8_1p7b/per_line.json::nakba_lines::e8": {
+  "lines": 600,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.17138364779874213
+ },
+ "results/geometry/e8_1p7b/per_line.json::rasam1::e8": {
+  "lines": 100,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.1690668202764977
+ },
+ "vlm::ain-7b-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.0640097600650671
+ },
+ "vlm::ain-7b-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.11916182782125725
+ },
+ "vlm::ain-7b-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.37594832118981447
+ },
+ "vlm::ain-7b-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3551096974145665
+ },
+ "vlm::ain7b-nakba-ckpt-1200::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07442049613664091
+ },
+ "vlm::ain7b-nakba-ckpt-1200::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.08541166832465329
+ },
+ "vlm::ain7b-nakba-ckpt-1200::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.06690229739964655
+ },
+ "vlm::ain7b-nakba-ckpt-1600::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.0819064895546843
+ },
+ "vlm::ain7b-nakba-ckpt-1600::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.05890768324497181
+ },
+ "vlm::ain7b-nakba-ckpt-1936::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.08218737199368015
+ },
+ "vlm::ain7b-nakba-ckpt-1936::nakba_lines": {
+  "lines": 79,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.05812876331635016
+ },
+ "vlm::ain7b-nakba-ckpt-400::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07254981699877999
+ },
+ "vlm::ain7b-nakba-ckpt-400::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.13331424754270446
+ },
+ "vlm::ain7b-nakba-ckpt-400::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07641168055204915
+ },
+ "vlm::ain7b-nakba-ckpt-800::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07263115087433916
+ },
+ "vlm::ain7b-nakba-ckpt-800::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.13092852371409486
+ },
+ "vlm::ain7b-nakba-ckpt-800::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.07026845072793066
+ },
+ "vlm::ain7b-nakba-visft-ckpt-400::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.11963836385979285
+ },
+ "vlm::arabic-paddleocr-v5::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 65,
+  "no_diacritics_cer": 0.8533550223668158
+ },
+ "vlm::arabic-paddleocr-v5::muharaf_lines": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 25,
+  "no_diacritics_cer": 0.8814073941775317
+ },
+ "vlm::arabic-paddleocr-v5::nakba_lines": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 15,
+  "no_diacritics_cer": 0.8880742181654946
+ },
+ "vlm::arabic-paddleocr-v5::rasam1": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 12,
+  "no_diacritics_cer": 0.9046270066100094
+ },
+ "vlm::arabic-paddleocr-v5::rasam2": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 14,
+  "no_diacritics_cer": 0.9095454884692887
+ },
+ "vlm::baseer-nakba-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.010069648401443317
+ },
+ "vlm::baseer-nakba-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5015398482686096
+ },
+ "vlm::baseer-nakba-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4947394176657695
+ },
+ "vlm::claude-fable-5-1-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.29347826086956524
+ },
+ "vlm::claude-fable-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.21557971014492755
+ },
+ "vlm::claude-haiku-paid::kitab_khatt": {
+  "lines": 30,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5020011435105775
+ },
+ "vlm::claude-opus-paid::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.20652173913043478
+ },
+ "vlm::claude-sonnet-paid::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.23494983277591974
+ },
+ "vlm::deepseek-vl-flash::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.0
+ },
+ "vlm::exp3090-baseer-nakba-ft-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.03298830261718421
+ },
+ "vlm::exp3090-baseer-nakba-ft-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.43934500112671826
+ },
+ "vlm::exp3090-baseer-nakba-ft-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4826686240926515
+ },
+ "vlm::exp3090-paligemma2-3b-ft-bf16::kitab_khatt": {
+  "lines": 180,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.36633930984773405
+ },
+ "vlm::exp3090-paligemma2-3b-ft-bf16::nakba_lines": {
+  "lines": 400,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.2959660297239915
+ },
+ "vlm::exp3090-paligemma2-3b-ft-bf16::rasam1": {
+  "lines": 399,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4945997928687676
+ },
+ "vlm::exp3090-paligemma2-3b-ft-bf16::rasam2": {
+  "lines": 352,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5316000945402978
+ },
+ "vlm::exp3090-qwen3vl4b-ft-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.2839365595770639
+ },
+ "vlm::exp3090-qwen3vl4b-ft-bf16::nakba_lines": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.29054106057107676
+ },
+ "vlm::exp3090-qwen3vl4b-ft-bf16::rasam1": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4996282527881041
+ },
+ "vlm::exp3090-qwen3vl4b-ft-bf16::rasam2": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.47285464098073554
+ },
+ "vlm::fanar-oryx-7b-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3098820658804392
+ },
+ "vlm::fanar-oryx-7b-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.41412101321215183
+ },
+ "vlm::fanar-oryx-7b-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5182903928490948
+ },
+ "vlm::fanar-oryx-7b-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.48805154555093383
+ },
+ "vlm::gemini-flash::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7662464416429443
+ },
+ "vlm::gemini-flash::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8992932862190812
+ },
+ "vlm::gemini-flash-lite::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.26636844245628305
+ },
+ "vlm::gemini-flash-lite::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.46466431095406363
+ },
+ "vlm::gemini-pro::kitab_khatt": {
+  "lines": 25,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.0
+ },
+ "vlm::glm-5.3-flash-paid::kitab_khatt": {
+  "lines": 25,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7644628099173554
+ },
+ "vlm::gpt-4.1-paid::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3695652173913043
+ },
+ "vlm::gpt-4o-mini-paid::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6070234113712375
+ },
+ "vlm::gpt-4o-paid::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3988294314381271
+ },
+ "vlm::gpt-5-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4329710144927536
+ },
+ "vlm::gpt-5.6-luna-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4692028985507246
+ },
+ "vlm::gpt-5.6-sol-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.46557971014492755
+ },
+ "vlm::gpt-5.6-terra-paid::kitab_khatt": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5054347826086957
+ },
+ "vlm::mistral-medium::kitab_khatt": {
+  "lines": 12,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.0
+ },
+ "vlm::mistral-medium::muharaf_lines": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6543307086614173
+ },
+ "vlm::mistral-small::kitab_khatt": {
+  "lines": 34,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7973986993496749
+ },
+ "vlm::mistral-small::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7968197879858657
+ },
+ "vlm::nakba-baseline-qwen3vl::muharaf_lines": {
+  "lines": 500,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4843344904864437
+ },
+ "vlm::nakba-misraj-baseer::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.0690795248405407
+ },
+ "vlm::nakba-misraj-baseer-contest::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.06933114869214115
+ },
+ "vlm::nvidia-llama-3.2-11b-vl::kitab_khatt": {
+  "lines": 80,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.1014107544469434
+ },
+ "vlm::nvidia-llama-3.2-11b-vl::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.4257950530035335
+ },
+ "vlm::nvidia-llama-3.2-90b-vl::kitab_khatt": {
+  "lines": 40,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6793570219966159
+ },
+ "vlm::nvidia-llama-3.2-90b-vl::muharaf_lines": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.8858267716535433
+ },
+ "vlm::openrouter-dots3-note-free::kitab_khatt": {
+  "lines": 40,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.0
+ },
+ "vlm::openrouter-gemma-4-26b-free::kitab_khatt": {
+  "lines": 25,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8691460055096418
+ },
+ "vlm::openrouter-gemma-4-31b-free::kitab_khatt": {
+  "lines": 13,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.9379217273954116
+ },
+ "vlm::openrouter-llama-4-maverick::kitab_khatt": {
+  "lines": 82,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7144282578327679
+ },
+ "vlm::openrouter-llama-4-maverick::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6872791519434629
+ },
+ "vlm::openrouter-minimax-m3-free::kitab_khatt": {
+  "lines": 132,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6283945939118353
+ },
+ "vlm::openrouter-qwen2.5-vl-72b::kitab_khatt": {
+  "lines": 84,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.629817049435578
+ },
+ "vlm::openrouter-qwen2.5-vl-72b::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6466431095406361
+ },
+ "vlm::openrouter-qwen3-vl-235b::kitab_khatt": {
+  "lines": 102,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 1.065419039869813
+ },
+ "vlm::openrouter-qwen3-vl-235b::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6395759717314488
+ },
+ "vlm::paligemma2-3b-bf16::kitab_khatt": {
+  "lines": 180,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6297864672493018
+ },
+ "vlm::paligemma2-3b-bf16::nakba_lines": {
+  "lines": 399,
+  "unmapped_ids": 0,
+  "reversed_suspect": 1,
+  "no_diacritics_cer": 0.8670813274826397
+ },
+ "vlm::paligemma2-3b-bf16::rasam1": {
+  "lines": 400,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7393023427684576
+ },
+ "vlm::paligemma2-3b-bf16::rasam2": {
+  "lines": 352,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7454029780193807
+ },
+ "vlm::pixtral-12b::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7832452216348109
+ },
+ "vlm::pixtral-12b::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7685512367491166
+ },
+ "vlm::qari-ocr-0.2::kitab_khatt": {
+  "lines": 80,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4806787977918626
+ },
+ "vlm::qari-ocr-0.2::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.714021463295319
+ },
+ "vlm::qari-ocr-0.3::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.387123745819398
+ },
+ "vlm::qari-ocr-0.3::muharaf_lines": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.6125984251968504
+ },
+ "vlm::qwen2-vl-2b::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5585284280936454
+ },
+ "vlm::qwen2-vl-2b::muharaf_lines": {
+  "lines": 22,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.9831748354059985
+ },
+ "vlm::qwen2.5-vl-3b::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4280936454849498
+ },
+ "vlm::qwen2.5-vl-3b::muharaf_lines": {
+  "lines": 10,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7137809187279152
+ },
+ "vlm::qwen3-vl-4b-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5262301748678324
+ },
+ "vlm::qwen3-vl-4b-bf16::muharaf_lines": {
+  "lines": 800,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8409232851046112
+ },
+ "vlm::qwen3-vl-4b-bf16::nakba_lines": {
+  "lines": 820,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5958346826424871
+ },
+ "vlm::qwen3-vl-4b-bf16::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8331142447418738
+ },
+ "vlm::qwen3-vl-4b-bf16::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7975960891599767
+ },
+ "vlm::qwen3-vl-8b-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.28914192761285074
+ },
+ "vlm::qwen3-vl-8b-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.39628040057224606
+ },
+ "vlm::qwen3-vl-8b-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.5089761886877489
+ },
+ "vlm::qwen3-vl-8b-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.4908245656961096
+ },
+ "vlm::suite-v1-ain7b-ft::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.12625250501002003
+ },
+ "vlm::suite-v1-ain7b-ft-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.0626270841805612
+ },
+ "vlm::suite-v1-ain7b-ft-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.10199444584700833
+ },
+ "vlm::suite-v1-ain7b-ft-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.17261323518365507
+ },
+ "vlm::suite-v1-ain7b-ft-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.23366772693907512
+ },
+ "vlm::suite-v1-fanar2-oryx-ft::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.17644813436396603
+ },
+ "vlm::suite-v1-fanar2-oryx-ft-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.20935339568930458
+ },
+ "vlm::suite-v1-fanar2-oryx-ft-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.14575443911470168
+ },
+ "vlm::suite-v1-fanar2-oryx-ft-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.1029820476226245
+ },
+ "vlm::suite-v1-fanar2-oryx-ft-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.16034581192398661
+ },
+ "vlm::suite-v1-qwen3vl4b-ft::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.34516652352323696
+ },
+ "vlm::suite-v1-qwen3vl4b-ft-bf16::kitab_khatt": {
+  "lines": 180,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.2651590233354356
+ },
+ "vlm::suite-v1-qwen3vl4b-ft-bf16::muharaf_lines": {
+  "lines": 800,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3315030706776309
+ },
+ "vlm::suite-v1-qwen3vl4b-ft-bf16::nakba_lines": {
+  "lines": 820,
+  "unmapped_ids": 0,
+  "reversed_suspect": 1,
+  "no_diacritics_cer": 0.3101117227979275
+ },
+ "vlm::suite-v1-qwen3vl4b-ft-bf16::rasam1": {
+  "lines": 714,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.25892802324867487
+ },
+ "vlm::suite-v1-qwen3vl4b-ft-bf16::rasam2": {
+  "lines": 352,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.320633419995273
+ },
+ "vlm::suite-v1-qwen3vl4b-visft-difflr-ft::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.26634220822597576
+ },
+ "vlm::suite-v1-qwen3vl8b-ft::muharaf_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3487928237427235
+ },
+ "vlm::suite-v1-qwen3vl8b-ft-bf16::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.22057747051647011
+ },
+ "vlm::suite-v1-qwen3vl8b-ft-bf16::nakba_lines": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.2772027265841959
+ },
+ "vlm::suite-v1-qwen3vl8b-ft-bf16::rasam1": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.24660106662660558
+ },
+ "vlm::suite-v1-qwen3vl8b-ft-bf16::rasam2": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.3118832069162385
+ },
+ "vlm::trocr-large-arabic::kitab_khatt": {
+  "lines": 20,
+  "unmapped_ids": 0,
+  "reversed_suspect": 9,
+  "no_diacritics_cer": 0.7876254180602007
+ },
+ "vlm::trocr-large-arabic::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8055920750909591
+ }
+}

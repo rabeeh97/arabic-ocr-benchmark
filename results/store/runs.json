@@ -1,0 +1,511 @@
+{
+ "crnn/base": {
+  "family": "crnn",
+  "model": "base",
+  "sources": [
+   "results/geometry/base_evaldata.json",
+   "results/geometry/e8/per_line.json",
+   "results/geometry/inkcrop_base.json",
+   "results/geometry/night/tta_inkcrop_pl.json",
+   "results/geometry/shape/base.json",
+   "results/geometry/transfer_cer.json"
+  ]
+ },
+ "crnn/rep2": {
+  "family": "crnn",
+  "model": "rep2",
+  "sources": [
+   "results/geometry/night/rep2_eval.json",
+   "results/geometry/night/rep2_inkcrop.json"
+  ]
+ },
+ "crnn/randctl": {
+  "family": "crnn",
+  "model": "randctl",
+  "sources": [
+   "results/geometry/night/randctl_inkcrop.json",
+   "results/geometry/shape/random_eval.json"
+  ]
+ },
+ "crnn/shape": {
+  "family": "crnn",
+  "model": "shape",
+  "sources": [
+   "results/geometry/night/shape_inkcrop.json",
+   "results/geometry/night/shape_transfer.json",
+   "results/geometry/shape/targeted_eval.json"
+  ]
+ },
+ "crnn/combo": {
+  "family": "crnn",
+  "model": "combo",
+  "sources": [
+   "results/geometry/night/combo_inkcrop.json",
+   "results/geometry/night/tta_inkcrop_combo.json"
+  ]
+ },
+ "crnn/geomaug": {
+  "family": "crnn",
+  "model": "geomaug",
+  "sources": [
+   "results/geometry/aug_evaldata.json",
+   "results/geometry/aug_transfer.json",
+   "results/geometry/inkcrop_aug.json"
+  ]
+ },
+ "crnn/inkcrop": {
+  "family": "crnn",
+  "model": "inkcrop",
+  "sources": [
+   "results/geometry/inkcrop_trained.json"
+  ]
+ },
+ "crnn+llm/e8-qwen3-0.6b": {
+  "family": "crnn+llm",
+  "model": "e8-qwen3-0.6b",
+  "sources": [
+   "results/geometry/e8/per_line.json"
+  ]
+ },
+ "crnn+llm/e8-qwen3-1.7b": {
+  "family": "crnn+llm",
+  "model": "e8-qwen3-1.7b",
+  "sources": [
+   "results/geometry/e8_1p7b/per_line.json"
+  ]
+ },
+ "vlm/ain-7b-bf16": {
+  "family": "vlm-base",
+  "model": "ain-7b-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-ckpt-1200": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-ckpt-1200",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-ckpt-1600": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-ckpt-1600",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-ckpt-1936": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-ckpt-1936",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-ckpt-400": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-ckpt-400",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-ckpt-800": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-ckpt-800",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/ain7b-nakba-visft-ckpt-400": {
+  "family": "vlm-ft",
+  "model": "ain7b-nakba-visft-ckpt-400",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/arabic-paddleocr-v5": {
+  "family": "ocr-engine",
+  "model": "arabic-paddleocr-v5",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/baseer-nakba-bf16": {
+  "family": "vlm-ft",
+  "model": "baseer-nakba-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/claude-fable-5-1-paid": {
+  "family": "api",
+  "model": "claude-fable-5-1-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/claude-fable-paid": {
+  "family": "api",
+  "model": "claude-fable-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/claude-haiku-paid": {
+  "family": "api",
+  "model": "claude-haiku-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/claude-opus-paid": {
+  "family": "api",
+  "model": "claude-opus-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/claude-sonnet-paid": {
+  "family": "api",
+  "model": "claude-sonnet-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/deepseek-vl-flash": {
+  "family": "api",
+  "model": "deepseek-vl-flash",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/exp3090-baseer-nakba-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "exp3090-baseer-nakba-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/exp3090-paligemma2-3b-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "exp3090-paligemma2-3b-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/exp3090-qwen3vl4b-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "exp3090-qwen3vl4b-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/fanar-oryx-7b-bf16": {
+  "family": "vlm-base",
+  "model": "fanar-oryx-7b-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gemini-flash": {
+  "family": "api",
+  "model": "gemini-flash",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gemini-flash-lite": {
+  "family": "api",
+  "model": "gemini-flash-lite",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gemini-pro": {
+  "family": "api",
+  "model": "gemini-pro",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/glm-5.3-flash-paid": {
+  "family": "api",
+  "model": "glm-5.3-flash-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-4.1-paid": {
+  "family": "api",
+  "model": "gpt-4.1-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-4o-mini-paid": {
+  "family": "api",
+  "model": "gpt-4o-mini-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-4o-paid": {
+  "family": "api",
+  "model": "gpt-4o-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-5-paid": {
+  "family": "api",
+  "model": "gpt-5-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-5.6-luna-paid": {
+  "family": "api",
+  "model": "gpt-5.6-luna-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-5.6-sol-paid": {
+  "family": "api",
+  "model": "gpt-5.6-sol-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/gpt-5.6-terra-paid": {
+  "family": "api",
+  "model": "gpt-5.6-terra-paid",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/mistral-medium": {
+  "family": "api",
+  "model": "mistral-medium",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/mistral-small": {
+  "family": "api",
+  "model": "mistral-small",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/nakba-baseline-qwen3vl": {
+  "family": "vlm-ft",
+  "model": "nakba-baseline-qwen3vl",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/nakba-misraj-baseer": {
+  "family": "vlm-ft",
+  "model": "nakba-misraj-baseer",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/nakba-misraj-baseer-contest": {
+  "family": "vlm-ft",
+  "model": "nakba-misraj-baseer-contest",
+  "sources": [
+   "vlm:nakba-contest"
+  ]
+ },
+ "vlm/nvidia-llama-3.2-11b-vl": {
+  "family": "api",
+  "model": "nvidia-llama-3.2-11b-vl",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/nvidia-llama-3.2-90b-vl": {
+  "family": "api",
+  "model": "nvidia-llama-3.2-90b-vl",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-dots3-note-free": {
+  "family": "api",
+  "model": "openrouter-dots3-note-free",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-gemma-4-26b-free": {
+  "family": "api",
+  "model": "openrouter-gemma-4-26b-free",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-gemma-4-31b-free": {
+  "family": "api",
+  "model": "openrouter-gemma-4-31b-free",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-llama-4-maverick": {
+  "family": "api",
+  "model": "openrouter-llama-4-maverick",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-minimax-m3-free": {
+  "family": "api",
+  "model": "openrouter-minimax-m3-free",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-qwen2.5-vl-72b": {
+  "family": "api",
+  "model": "openrouter-qwen2.5-vl-72b",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/openrouter-qwen3-vl-235b": {
+  "family": "api",
+  "model": "openrouter-qwen3-vl-235b",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/paligemma2-3b-bf16": {
+  "family": "vlm-base",
+  "model": "paligemma2-3b-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/pixtral-12b": {
+  "family": "api",
+  "model": "pixtral-12b",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qari-ocr-0.2": {
+  "family": "ocr-engine",
+  "model": "qari-ocr-0.2",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qari-ocr-0.3": {
+  "family": "ocr-engine",
+  "model": "qari-ocr-0.3",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qwen2-vl-2b": {
+  "family": "vlm-base",
+  "model": "qwen2-vl-2b",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qwen2.5-vl-3b": {
+  "family": "vlm-base",
+  "model": "qwen2.5-vl-3b",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qwen3-vl-4b-bf16": {
+  "family": "vlm-base",
+  "model": "qwen3-vl-4b-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/qwen3-vl-8b-bf16": {
+  "family": "vlm-base",
+  "model": "qwen3-vl-8b-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-ain7b-ft": {
+  "family": "vlm-ft",
+  "model": "suite-v1-ain7b-ft",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-ain7b-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "suite-v1-ain7b-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-fanar2-oryx-ft": {
+  "family": "vlm-ft",
+  "model": "suite-v1-fanar2-oryx-ft",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-fanar2-oryx-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "suite-v1-fanar2-oryx-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-qwen3vl4b-ft": {
+  "family": "vlm-ft",
+  "model": "suite-v1-qwen3vl4b-ft",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-qwen3vl4b-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "suite-v1-qwen3vl4b-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-qwen3vl4b-visft-difflr-ft": {
+  "family": "vlm-ft",
+  "model": "suite-v1-qwen3vl4b-visft-difflr-ft",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-qwen3vl8b-ft": {
+  "family": "vlm-ft",
+  "model": "suite-v1-qwen3vl8b-ft",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/suite-v1-qwen3vl8b-ft-bf16": {
+  "family": "vlm-ft",
+  "model": "suite-v1-qwen3vl8b-ft-bf16",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ },
+ "vlm/trocr-large-arabic": {
+  "family": "ocr-engine",
+  "model": "trocr-large-arabic",
+  "sources": [
+   "vlm:line-v2"
+  ]
+ }
+}

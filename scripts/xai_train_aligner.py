@@ -167,9 +167,15 @@ def main() -> None:
     ap.add_argument("--repeat-file", type=Path, help="JSON {\"extra\": {row_index: n}}: add n extra copies of these rows (indices into the pickle's rows)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
+    ap.add_argument("--seed", type=int, help="seed python, numpy and torch (unset = unseeded, as the runs before 2026-10-13)")
+    ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     dev = a.device
+    if a.seed is not None:
+        random.seed(a.seed)
+        np.random.seed(a.seed)
+        torch.manual_seed(a.seed)
     global GEOM_AUG
     GEOM_AUG = a.geom_aug
     blob = pickle.load(open(a.data, "rb"))
@@ -191,7 +197,9 @@ def main() -> None:
     for r in train:
         pool += [r] * ((4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1) + r["_extra"])
     steps_per_epoch = math.ceil(len(pool) / a.bs)
-    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra)}), encoding="utf-8")
+    split = blob.get("split", "aligner")
+    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
+                                                   "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
@@ -199,19 +207,36 @@ def main() -> None:
     scaler = torch.amp.GradScaler(dev, enabled=dev == "cuda")
     ctc = nn.CTCLoss(blank=0, zero_infinity=True)
     start, best = 0, 9.0
+    resume_batches, resume_bi, resume_tot = None, 0, 0.0
     ck = a.out / "ckpt_last.pt"
-    if ck.exists():  # resume
-        st = torch.load(ck, map_location=dev)
+    if ck.exists():  # resume: at an epoch boundary, or inside an epoch with the same batch order
+        st = torch.load(ck, map_location=dev, weights_only=False)
         model.load_state_dict(st["model"]); opt.load_state_dict(st["opt"]); sched.load_state_dict(st["sched"])
+        if "scaler" in st:
+            scaler.load_state_dict(st["scaler"])
         start, best = st["epoch"], st.get("best", 9.0)
-        print("resumed at epoch", start, flush=True)
+        if st.get("batches") is not None:
+            resume_batches, resume_bi, resume_tot = st["batches"], st["bi"], st.get("tot", 0.0)
+        print("resumed at epoch", start, "step", resume_bi, flush=True)
+
+    def save_ckpt(epoch, batches=None, bi=0, tot=0.0):
+        tmp = ck.with_suffix(".tmp")
+        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "scaler": scaler.state_dict(),
+                    "epoch": epoch, "best": best, "batches": batches, "bi": bi, "tot": tot}, tmp)
+        tmp.replace(ck)  # atomic, so a crash during the save keeps the previous checkpoint
+
     for ep in range(start, a.epochs):
         t0 = time.time()
-        order = sorted(range(len(pool)), key=lambda i: pool[i]["img"].shape[1] * random.uniform(0.9, 1.1))
-        batches = [order[k : k + a.bs] for k in range(0, len(order), a.bs)]
-        random.shuffle(batches)
-        tot = 0.0
-        for bi, idx in enumerate(batches):
+        if resume_batches is not None:
+            batches, first, tot = resume_batches, resume_bi, resume_tot
+            resume_batches = None
+        else:
+            order = sorted(range(len(pool)), key=lambda i: pool[i]["img"].shape[1] * random.uniform(0.9, 1.1))
+            batches = [order[k : k + a.bs] for k in range(0, len(order), a.bs)]
+            random.shuffle(batches)
+            first, tot = 0, 0.0
+        for bi in range(first, len(batches)):
+            idx = batches[bi]
             x, lens, tgt = make_batch([pool[i] for i in idx], stoi, True, dev)
             flat = torch.tensor([t for s in tgt for t in s], device=dev)
             tl = torch.tensor([len(s) for s in tgt], device=dev)
@@ -225,6 +250,8 @@ def main() -> None:
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             scaler.step(opt); scaler.update(); sched.step()
             tot += float(loss)
+            if a.ckpt_every and (bi + 1) % a.ckpt_every == 0 and bi + 1 < len(batches):
+                save_ckpt(ep, batches, bi + 1, tot)
         msg = f"epoch {ep + 1}/{a.epochs}  loss {tot / len(batches):.3f}  {time.time() - t0:.0f}s"
         if (ep + 1) % a.eval_every == 0 or ep + 1 == a.epochs:
             cer = evaluate(model, held, stoi, dev)
@@ -234,7 +261,7 @@ def main() -> None:
                 best = mean
                 torch.save(model.state_dict(), a.out / "model_best.pt")
         print(msg, flush=True)
-        torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "epoch": ep + 1, "best": best}, ck)
+        save_ckpt(ep + 1)
     torch.save(model.state_dict(), a.out / "model_final.pt")
     (a.out / "heldout_cer.json").write_text(json.dumps(evaluate(model, held, stoi, dev)), encoding="utf-8")
     print("done", flush=True)

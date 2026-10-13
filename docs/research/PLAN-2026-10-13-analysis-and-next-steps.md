@@ -5,6 +5,18 @@
 > Every number marked *(recomputed)* was recomputed today on the laptop from the per-line files named next to it. Unmarked
 > numbers are quoted from the ledger (`W/docs/research/paper-ledger.html`, v19), `M/docs/experiments/findings-and-notes.md`
 > or the result JSONs.
+>
+> **User decisions (2026-10-13):**
+> 1. Paper target is open. None of the current findings is seen as main-conference grade yet.
+> 2. Retraining the CRNN on the standard split: yes.
+> 3. Downloads to the SSD are allowed. Keep copies of all model weights on the SSD, and keep the 3090 footprint minimal.
+> 4. About 25–30 GPU hours this week: yes.
+> 5. AIN-7B (V15): not verifiable online. The AIN paper (arXiv 2502.00094) names no training datasets and says nothing
+>    about decontamination. Keep V15 recorded as **unverified**. Do not treat AIN as contaminated, leave it out of
+>    cross-model claims, and set it aside; AIN is not a model of main interest.
+>
+> The other open questions (6–10) are still open. Question 6 is assumed: merge `research-characterization` if it merges
+> cleanly.
 
 ## 0. Summary
 

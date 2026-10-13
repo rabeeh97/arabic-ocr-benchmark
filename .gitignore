@@ -44,3 +44,7 @@ src/arabic_ocr_bench/assets/fonts/
 .ipynb_checkpoints/
 
 .geomvenv/
+
+# regenerable analysis data (plan 2026-10-13)
+results/panel/*.pkl
+results/store/*.parquet

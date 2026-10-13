@@ -1,6 +1,10 @@
 """Pack line images + labels into one pickle for the CTC aligner (X-B1).
 
     HF_HUB_OFFLINE=1 .venv/bin/python scripts/xai_prepare_aligner_data.py OUT.pkl PANEL_MANIFEST [PANEL_MANIFEST ...]
+    HF_HUB_OFFLINE=1 .venv/bin/python scripts/xai_prepare_aligner_data.py OUT.pkl --standard-split
+
+Note (2026-10-13): the default mode trains on every Muharaf and RASAM-1 *test* line except its held-out quota. It is kept
+for the existing runs; use --standard-split for anything compared with published numbers.
 
 Reads the cached Arrow files (offline), turns every line into a height-64 grey uint8 array, strips
 harakat / tatweel / bidi marks from the label, and tags each line:
@@ -45,7 +49,35 @@ def prep(img: Image.Image) -> np.ndarray:
     return np.asarray(g.resize((nw, H), Image.LANCZOS), dtype=np.uint8)
 
 
+def standard_split(out: Path) -> None:
+    """--standard-split: Muharaf train shards -> train, Muharaf validation -> heldout (model selection). No test lines and no
+    RASAM (only its test split is published), so every test set stays unseen; score them with xai_prepare_panel.py."""
+    rows = []
+    for path in sorted(glob.glob(str(HF / "aamijar___muharaf-public" / "*" / "*" / "*" / "muharaf-public-*.arrow"))):
+        name = Path(path).name
+        if "test" in name:
+            continue
+        role = "heldout" if "valid" in name else "train"
+        shard = "validation" if role == "heldout" else "train" + name.split("-train-")[1][:5]
+        ds = Dataset.from_file(path)
+        for i in range(len(ds)):
+            row = ds[i]
+            label = clean(row["text"] or "")
+            if not 2 <= len(label) <= 120:
+                continue
+            arr = prep(row["image"])
+            if arr.shape[1] // 4 < len(label) + 4:  # CTC needs room for every character
+                continue
+            rows.append({"id": f"muharaf_lines/{shard}/{i:06d}", "dataset": "muharaf_lines", "role": role, "label": label, "img": arr})
+        print(name, len(ds), "->", len(rows), flush=True)
+    pickle.dump({"H": H, "split": "standard", "rows": rows}, open(out, "wb"), protocol=4)
+    roles = {k: sum(1 for r in rows if r["role"] == k) for k in ("train", "heldout")}
+    print(roles, "->", out, f"{out.stat().st_size / 1e6:.0f} MB")
+
+
 def main() -> None:
+    if "--standard-split" in sys.argv:
+        return standard_split(Path(sys.argv[1]))
     out = Path(sys.argv[1])
     panel = set()
     for m in sys.argv[2:]:
