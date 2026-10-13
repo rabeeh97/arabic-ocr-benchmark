@@ -1,0 +1,162 @@
+{
+ "R1.6": {
+  "muharaf_train": {
+   "lines": 21260,
+   "unique_lines": 20265,
+   "dup_line_share": 0.06495766698024459,
+   "words": 184357,
+   "unique_words": 51954,
+   "ttr_5k": 0.5466,
+   "mean_max_jaccard": 0.2604359821382243
+  },
+  "nakba_train": {
+   "lines": 15250,
+   "unique_lines": 12958,
+   "dup_line_share": 0.17540983606557378,
+   "words": 154676,
+   "unique_words": 44530,
+   "ttr_5k": 0.6592,
+   "mean_max_jaccard": 0.3108373599726014
+  },
+  "kitab_khatt": {
+   "lines": 200,
+   "unique_lines": 194,
+   "dup_line_share": 0.055,
+   "words": 2513,
+   "unique_words": 1037,
+   "ttr_5k": 0.4126541981695185,
+   "mean_max_jaccard": 0.3902929822713686
+  },
+  "nakba_lines": {
+   "lines": 2095,
+   "unique_lines": 1916,
+   "dup_line_share": 0.11742243436754177,
+   "words": 21457,
+   "unique_words": 10659,
+   "ttr_5k": 0.6352,
+   "mean_max_jaccard": 0.2445102908559263
+  },
+  "nakba_blind": {
+   "lines": 2671,
+   "unique_lines": 2487,
+   "dup_line_share": 0.09247472856608012,
+   "words": 30550,
+   "unique_words": 14359,
+   "ttr_5k": 0.6474,
+   "mean_max_jaccard": 0.21412210589833885
+  },
+  "muharaf_lines": {
+   "lines": 1334,
+   "unique_lines": 1313,
+   "dup_line_share": 0.026986506746626688,
+   "words": 12130,
+   "unique_words": 6486,
+   "ttr_5k": 0.644,
+   "mean_max_jaccard": 0.16988132261568117
+  },
+  "rasam1": {
+   "lines": 734,
+   "unique_lines": 731,
+   "dup_line_share": 0.005449591280653951,
+   "words": 9980,
+   "unique_words": 4531,
+   "ttr_5k": 0.5234,
+   "mean_max_jaccard": 0.14614249511233848
+  },
+  "rasam2": {
+   "lines": 372,
+   "unique_lines": 371,
+   "dup_line_share": 0.005376344086021506,
+   "words": 4601,
+   "unique_words": 2351,
+   "ttr_5k": 0.510975874809824,
+   "mean_max_jaccard": 0.1320169216774033
+  }
+ },
+ "R1.7": {
+  "kitab_khatt": {
+   "muharaf_train": {
+    "letters": 9592,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 0.0015638031693077565,
+    "unseen_word_share": 0.34978113808197375
+   },
+   "nakba_train": {
+    "letters": 9592,
+    "share_form_lt10": 0.0005212677231025855,
+    "share_form_lt50": 0.002085070892410342,
+    "unseen_word_share": 0.37604456824512533
+   }
+  },
+  "nakba_lines": {
+   "muharaf_train": {
+    "letters": 97933,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 0.0001327438146487905,
+    "unseen_word_share": 0.3312205806962763
+   },
+   "nakba_train": {
+    "letters": 97933,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 6.126637599174946e-05,
+    "unseen_word_share": 0.18674558419163909
+   }
+  },
+  "nakba_blind": {
+   "muharaf_train": {
+    "letters": 138968,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 0.00021587703644004375,
+    "unseen_word_share": 0.32779050736497545
+   },
+   "nakba_train": {
+    "letters": 138968,
+    "share_form_lt10": 2.1587703644004376e-05,
+    "share_form_lt50": 0.0001439180242933625,
+    "unseen_word_share": 0.21525368248772503
+   }
+  },
+  "muharaf_lines": {
+   "muharaf_train": {
+    "letters": 52436,
+    "share_form_lt10": 1.9070867343046762e-05,
+    "share_form_lt50": 0.00011442520405828057,
+    "unseen_word_share": 0.21319043693322343
+   },
+   "nakba_train": {
+    "letters": 52436,
+    "share_form_lt10": 0.00038141734686093526,
+    "share_form_lt50": 0.0004386299488900755,
+    "unseen_word_share": 0.3987633965375103
+   }
+  },
+  "rasam1": {
+   "muharaf_train": {
+    "letters": 40945,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 0.0,
+    "unseen_word_share": 0.27304609218436876
+   },
+   "nakba_train": {
+    "letters": 40945,
+    "share_form_lt10": 2.4423006472096716e-05,
+    "share_form_lt50": 2.4423006472096716e-05,
+    "unseen_word_share": 0.3191382765531062
+   }
+  },
+  "rasam2": {
+   "muharaf_train": {
+    "letters": 18057,
+    "share_form_lt10": 0.0,
+    "share_form_lt50": 0.0001661405549094534,
+    "unseen_word_share": 0.26668115627037603
+   },
+   "nakba_train": {
+    "letters": 18057,
+    "share_form_lt10": 0.0001107603699396356,
+    "share_form_lt50": 0.0001661405549094534,
+    "unseen_word_share": 0.3062377743968702
+   }
+  }
+ }
+}

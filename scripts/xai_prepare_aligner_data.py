@@ -75,7 +75,35 @@ def standard_split(out: Path) -> None:
     print(roles, "->", out, f"{out.stat().st_size / 1e6:.0f} MB")
 
 
+def nakba_train(out: Path) -> None:
+    """--nakba-train: the in-domain control (plan P2, open question 10). NAKBA train (HF parquet) -> 97 % train,
+    3 % held-out for model selection (fixed seed); NAKBA test and blind stay unseen. Read with pyarrow, no `datasets`."""
+    import io
+    import random
+
+    import pyarrow.parquet as pq
+    (path,) = glob.glob(str(Path("/Volumes/PortableSSD/huggingface/hub/datasets--U4RASD--omar-al-saleh-manuscripts-segments/snapshots/*/data/train-00000-of-00001.parquet")))
+    t = pq.read_table(path)
+    rng = random.Random(0)
+    rows = []
+    for i in range(t.num_rows):
+        row = t.slice(i, 1).to_pylist()[0]
+        label = clean(row["text"] or "")
+        if not 2 <= len(label) <= 120:
+            continue
+        arr = prep(Image.open(io.BytesIO(row["image"]["bytes"])))
+        if arr.shape[1] // 4 < len(label) + 4:
+            continue
+        rows.append({"id": f"nakba_train/train/{i:06d}", "dataset": "nakba_train", "role": "heldout" if rng.random() < 0.03 else "train", "label": label, "img": arr,
+                     "filename": row.get("filename")})
+    pickle.dump({"H": H, "split": "nakba-train", "rows": rows}, open(out, "wb"), protocol=4)
+    roles = {k: sum(1 for r in rows if r["role"] == k) for k in ("train", "heldout")}
+    print(t.num_rows, "rows ->", roles, "->", out, f"{out.stat().st_size / 1e6:.0f} MB")
+
+
 def main() -> None:
+    if "--nakba-train" in sys.argv:
+        return nakba_train(Path(sys.argv[1]))
     if "--standard-split" in sys.argv:
         return standard_split(Path(sys.argv[1]))
     out = Path(sys.argv[1])
