@@ -1,0 +1,1078 @@
+{
+ "summary": {
+  "pairs": 89,
+  "above_chance": 87,
+  "share_above": 0.9775280898876404,
+  "v5_holds": true
+ },
+ "pairs": {
+  "crnn+llm/e8-qwen3-0.6b|kitab_khatt": {
+   "lines": 171,
+   "spaces_inserted": 72,
+   "at_paw_gap": 0.625,
+   "ci95": [
+    0.5081841109709963,
+    0.7402597402597403
+   ],
+   "chance": 0.32954717552627594,
+   "above_chance": true,
+   "ratio": 1.8965418198529411
+  },
+  "crnn+llm/e8-qwen3-0.6b|muharaf_lines": {
+   "lines": 298,
+   "spaces_inserted": 57,
+   "at_paw_gap": 0.7543859649122807,
+   "ci95": [
+    0.603448275862069,
+    0.8871415770609317
+   ],
+   "chance": 0.32520964360587,
+   "above_chance": true,
+   "ratio": 2.3196912506891727
+  },
+  "crnn+llm/e8-qwen3-0.6b|nakba_blind": {
+   "lines": 563,
+   "spaces_inserted": 178,
+   "at_paw_gap": 0.7078651685393258,
+   "ci95": [
+    0.6285675253708041,
+    0.7864615091463415
+   ],
+   "chance": 0.3738593116994721,
+   "above_chance": true,
+   "ratio": 1.8933998602884745
+  },
+  "crnn+llm/e8-qwen3-0.6b|nakba_lines": {
+   "lines": 555,
+   "spaces_inserted": 148,
+   "at_paw_gap": 0.6824324324324325,
+   "ci95": [
+    0.6013061553735418,
+    0.762511574074074
+   ],
+   "chance": 0.370347915306408,
+   "above_chance": true,
+   "ratio": 1.8426792867669333
+  },
+  "crnn+llm/e8-qwen3-1.7b|kitab_khatt": {
+   "lines": 170,
+   "spaces_inserted": 68,
+   "at_paw_gap": 0.6617647058823529,
+   "ci95": [
+    0.552621759622938,
+    0.7702758085954807
+   ],
+   "chance": 0.3298035604665439,
+   "above_chance": true,
+   "ratio": 2.006542030492979
+  },
+  "crnn+llm/e8-qwen3-1.7b|muharaf_lines": {
+   "lines": 299,
+   "spaces_inserted": 53,
+   "at_paw_gap": 0.7924528301886793,
+   "ci95": [
+    0.6792452830188679,
+    0.8979678312002767
+   ],
+   "chance": 0.32520964360587,
+   "above_chance": true,
+   "ratio": 2.4367445608380343
+  },
+  "crnn+llm/e8-qwen3-1.7b|nakba_blind": {
+   "lines": 559,
+   "spaces_inserted": 191,
+   "at_paw_gap": 0.6492146596858639,
+   "ci95": [
+    0.5736803405572756,
+    0.7267089773219703
+   ],
+   "chance": 0.37378301770529515,
+   "above_chance": true,
+   "ratio": 1.7368757512620052
+  },
+  "crnn+llm/e8-qwen3-1.7b|nakba_lines": {
+   "lines": 559,
+   "spaces_inserted": 156,
+   "at_paw_gap": 0.6858974358974359,
+   "ci95": [
+    0.6089324751032305,
+    0.7530158609120025
+   ],
+   "chance": 0.37061311764979316,
+   "above_chance": true,
+   "ratio": 1.8507100888575867
+  },
+  "crnn/base|kitab_khatt": {
+   "lines": 340,
+   "spaces_inserted": 95,
+   "at_paw_gap": 0.6631578947368421,
+   "ci95": [
+    0.5662650602409639,
+    0.75
+   ],
+   "chance": 0.3289713937918442,
+   "above_chance": true,
+   "ratio": 2.015852767904961
+  },
+  "crnn/base|muharaf_lines": {
+   "lines": 652,
+   "spaces_inserted": 105,
+   "at_paw_gap": 0.819047619047619,
+   "ci95": [
+    0.7446479005836942,
+    0.8857205513784461
+   ],
+   "chance": 0.329690438672292,
+   "above_chance": true,
+   "ratio": 2.4842929092697825
+  },
+  "crnn/base|nakba_blind": {
+   "lines": 3094,
+   "spaces_inserted": 844,
+   "at_paw_gap": 0.7725118483412322,
+   "ci95": [
+    0.7416899756186174,
+    0.8033470413609813
+   ],
+   "chance": 0.3713845140427571,
+   "above_chance": true,
+   "ratio": 2.0800863232878197
+  },
+  "crnn/base|nakba_lines": {
+   "lines": 2554,
+   "spaces_inserted": 620,
+   "at_paw_gap": 0.8129032258064516,
+   "ci95": [
+    0.7822577268060733,
+    0.84202419555999
+   ],
+   "chance": 0.3724142133216886,
+   "above_chance": true,
+   "ratio": 2.182793235939875
+  },
+  "crnn/base|rasam1": {
+   "lines": 202,
+   "spaces_inserted": 45,
+   "at_paw_gap": 0.8888888888888888,
+   "ci95": [
+    0.8048647932131495,
+    0.9729907539118064
+   ],
+   "chance": 0.33153928955866524,
+   "above_chance": true,
+   "ratio": 2.681096681096681
+  },
+  "crnn/combo|kitab_khatt": {
+   "lines": 174,
+   "spaces_inserted": 55,
+   "at_paw_gap": 0.7272727272727273,
+   "ci95": [
+    0.6086956521739131,
+    0.8421052631578947
+   ],
+   "chance": 0.3290591918890711,
+   "above_chance": true,
+   "ratio": 2.2101577624912467
+  },
+  "crnn/combo|muharaf_lines": {
+   "lines": 355,
+   "spaces_inserted": 47,
+   "at_paw_gap": 0.7872340425531915,
+   "ci95": [
+    0.6481209150326798,
+    0.9069767441860465
+   ],
+   "chance": 0.3327802206919439,
+   "above_chance": true,
+   "ratio": 2.365627503089907
+  },
+  "crnn/combo|nakba_blind": {
+   "lines": 2530,
+   "spaces_inserted": 709,
+   "at_paw_gap": 0.770098730606488,
+   "ci95": [
+    0.7364805302481607,
+    0.8036211699164345
+   ],
+   "chance": 0.37083348612078765,
+   "above_chance": true,
+   "ratio": 2.0766698786086755
+  },
+  "crnn/combo|nakba_lines": {
+   "lines": 1973,
+   "spaces_inserted": 428,
+   "at_paw_gap": 0.8200934579439252,
+   "ci95": [
+    0.7844586287994869,
+    0.8551417727407282
+   ],
+   "chance": 0.37285777442592255,
+   "above_chance": true,
+   "ratio": 2.1994806443464867
+  },
+  "crnn/geomaug|kitab_khatt": {
+   "lines": 169,
+   "spaces_inserted": 64,
+   "at_paw_gap": 0.65625,
+   "ci95": [
+    0.5384328358208955,
+    0.7733548387096773
+   ],
+   "chance": 0.3297888500683579,
+   "above_chance": true,
+   "ratio": 1.9899096038691846
+  },
+  "crnn/geomaug|muharaf_lines": {
+   "lines": 351,
+   "spaces_inserted": 51,
+   "at_paw_gap": 0.7450980392156863,
+   "ci95": [
+    0.6190126050420168,
+    0.8666666666666667
+   ],
+   "chance": 0.3324733688415446,
+   "above_chance": true,
+   "ratio": 2.2410758546221996
+  },
+  "crnn/geomaug|nakba_blind": {
+   "lines": 2539,
+   "spaces_inserted": 578,
+   "at_paw_gap": 0.8183391003460208,
+   "ci95": [
+    0.7847594966208343,
+    0.852794322899535
+   ],
+   "chance": 0.37081102881865513,
+   "above_chance": true,
+   "ratio": 2.2068898623461086
+  },
+  "crnn/geomaug|nakba_lines": {
+   "lines": 1980,
+   "spaces_inserted": 376,
+   "at_paw_gap": 0.8723404255319149,
+   "ci95": [
+    0.8382704402515723,
+    0.9047681869581605
+   ],
+   "chance": 0.3728416587511223,
+   "above_chance": true,
+   "ratio": 2.3397075006422927
+  },
+  "crnn/geomaug|rasam1": {
+   "lines": 103,
+   "spaces_inserted": 31,
+   "at_paw_gap": 0.967741935483871,
+   "ci95": [
+    0.8928571428571429,
+    1.0
+   ],
+   "chance": 0.3307567127746135,
+   "above_chance": true,
+   "ratio": 2.9258421616474233
+  },
+  "crnn/inkcrop|kitab_khatt": {
+   "lines": 170,
+   "spaces_inserted": 67,
+   "at_paw_gap": 0.6716417910447762,
+   "ci95": [
+    0.5555555555555556,
+    0.7796694915254238
+   ],
+   "chance": 0.3291369634460792,
+   "above_chance": true,
+   "ratio": 2.0406148978609258
+  },
+  "crnn/inkcrop|muharaf_lines": {
+   "lines": 351,
+   "spaces_inserted": 42,
+   "at_paw_gap": 0.7857142857142857,
+   "ci95": [
+    0.65625,
+    0.9019727403156385
+   ],
+   "chance": 0.3322456492637216,
+   "above_chance": true,
+   "ratio": 2.3648595172140876
+  },
+  "crnn/inkcrop|nakba_blind": {
+   "lines": 2533,
+   "spaces_inserted": 641,
+   "at_paw_gap": 0.7628705148205929,
+   "ci95": [
+    0.72713490398023,
+    0.7972375794181005
+   ],
+   "chance": 0.37083069816042014,
+   "above_chance": true,
+   "ratio": 2.0571935349607373
+  },
+  "crnn/inkcrop|nakba_lines": {
+   "lines": 1967,
+   "spaces_inserted": 385,
+   "at_paw_gap": 0.8545454545454545,
+   "ci95": [
+    0.8176895107238605,
+    0.8886436939148459
+   ],
+   "chance": 0.37286415158179664,
+   "above_chance": true,
+   "ratio": 2.2918412803167794
+  },
+  "crnn/randctl|kitab_khatt": {
+   "lines": 172,
+   "spaces_inserted": 52,
+   "at_paw_gap": 0.5961538461538461,
+   "ci95": [
+    0.46292735042735045,
+    0.7368421052631579
+   ],
+   "chance": 0.32926277702397105,
+   "above_chance": true,
+   "ratio": 1.810571639898563
+  },
+  "crnn/randctl|muharaf_lines": {
+   "lines": 353,
+   "spaces_inserted": 58,
+   "at_paw_gap": 0.8275862068965517,
+   "ci95": [
+    0.7021276595744681,
+    0.9423076923076923
+   ],
+   "chance": 0.33244769179674527,
+   "above_chance": true,
+   "ratio": 2.489372696269248
+  },
+  "crnn/randctl|nakba_blind": {
+   "lines": 2539,
+   "spaces_inserted": 682,
+   "at_paw_gap": 0.7785923753665689,
+   "ci95": [
+    0.7464518846756937,
+    0.8101499250374813
+   ],
+   "chance": 0.3708205015398152,
+   "above_chance": true,
+   "ratio": 2.0996475980521563
+  },
+  "crnn/randctl|nakba_lines": {
+   "lines": 1965,
+   "spaces_inserted": 409,
+   "at_paw_gap": 0.8019559902200489,
+   "ci95": [
+    0.7611489727577156,
+    0.8419755873254745
+   ],
+   "chance": 0.37287341969720617,
+   "above_chance": true,
+   "ratio": 2.150745931075703
+  },
+  "crnn/randctl|rasam1": {
+   "lines": 104,
+   "spaces_inserted": 32,
+   "at_paw_gap": 0.9375,
+   "ci95": [
+    0.8333333333333334,
+    1.0
+   ],
+   "chance": 0.33022312373225154,
+   "above_chance": true,
+   "ratio": 2.8389895577395574
+  },
+  "crnn/rep2|kitab_khatt": {
+   "lines": 173,
+   "spaces_inserted": 55,
+   "at_paw_gap": 0.7454545454545455,
+   "ci95": [
+    0.6379310344827587,
+    0.8571428571428571
+   ],
+   "chance": 0.3290341931613677,
+   "above_chance": true,
+   "ratio": 2.2655838236512804
+  },
+  "crnn/rep2|muharaf_lines": {
+   "lines": 355,
+   "spaces_inserted": 51,
+   "at_paw_gap": 0.8235294117647058,
+   "ci95": [
+    0.6956219806763285,
+    0.943422431865828
+   ],
+   "chance": 0.3325587185658561,
+   "above_chance": true,
+   "ratio": 2.476342870564747
+  },
+  "crnn/rep2|nakba_blind": {
+   "lines": 2542,
+   "spaces_inserted": 680,
+   "at_paw_gap": 0.7926470588235294,
+   "ci95": [
+    0.7603537874339401,
+    0.8236919972666675
+   ],
+   "chance": 0.37081102881865513,
+   "above_chance": true,
+   "ratio": 2.137603785272452
+  },
+  "crnn/rep2|nakba_lines": {
+   "lines": 1985,
+   "spaces_inserted": 472,
+   "at_paw_gap": 0.8241525423728814,
+   "ci95": [
+    0.7886130178667056,
+    0.8606091739310917
+   ],
+   "chance": 0.3728767265822126,
+   "above_chance": true,
+   "ratio": 2.2102547132052517
+  },
+  "crnn/shape|kitab_khatt": {
+   "lines": 173,
+   "spaces_inserted": 66,
+   "at_paw_gap": 0.7424242424242424,
+   "ci95": [
+    0.6295940170940171,
+    0.8507542076849793
+   ],
+   "chance": 0.3292865707434053,
+   "above_chance": true,
+   "ratio": 2.254644763520503
+  },
+  "crnn/shape|muharaf_lines": {
+   "lines": 353,
+   "spaces_inserted": 46,
+   "at_paw_gap": 0.8695652173913043,
+   "ci95": [
+    0.75,
+    0.972972972972973
+   ],
+   "chance": 0.3323035818652417,
+   "above_chance": true,
+   "ratio": 2.6167795499235305
+  },
+  "crnn/shape|nakba_blind": {
+   "lines": 2538,
+   "spaces_inserted": 701,
+   "at_paw_gap": 0.7432239657631954,
+   "ci95": [
+    0.7096302388514513,
+    0.7766324424163407
+   ],
+   "chance": 0.3708243188735287,
+   "above_chance": true,
+   "ratio": 2.004248178816652
+  },
+  "crnn/shape|nakba_lines": {
+   "lines": 1963,
+   "spaces_inserted": 461,
+   "at_paw_gap": 0.7678958785249458,
+   "ci95": [
+    0.7268804129967085,
+    0.8065210454854039
+   ],
+   "chance": 0.3728668054110302,
+   "above_chance": true,
+   "ratio": 2.059437491836944
+  },
+  "vlm/baseer-nakba-bf16|rasam1": {
+   "lines": 191,
+   "spaces_inserted": 180,
+   "at_paw_gap": 0.6722222222222223,
+   "ci95": [
+    0.6023344651952462,
+    0.7409691708008505
+   ],
+   "chance": 0.33691093017517887,
+   "above_chance": true,
+   "ratio": 1.9952520444281707
+  },
+  "vlm/baseer-nakba-bf16|rasam2": {
+   "lines": 182,
+   "spaces_inserted": 170,
+   "at_paw_gap": 0.48823529411764705,
+   "ci95": [
+    0.4133923931401845,
+    0.5668789808917197
+   ],
+   "chance": 0.32837741243745533,
+   "above_chance": true,
+   "ratio": 1.486811442034367
+  },
+  "vlm/exp3090-baseer-nakba-ft-bf16|rasam1": {
+   "lines": 191,
+   "spaces_inserted": 172,
+   "at_paw_gap": 0.5581395348837209,
+   "ci95": [
+    0.47903556523317004,
+    0.6363636363636364
+   ],
+   "chance": 0.3365823565700185,
+   "above_chance": true,
+   "ratio": 1.6582554729591488
+  },
+  "vlm/exp3090-baseer-nakba-ft-bf16|rasam2": {
+   "lines": 181,
+   "spaces_inserted": 133,
+   "at_paw_gap": 0.5639097744360902,
+   "ci95": [
+    0.4713188460097415,
+    0.656255963740458
+   ],
+   "chance": 0.327662616154396,
+   "above_chance": true,
+   "ratio": 1.7210073613352754
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|kitab_khatt": {
+   "lines": 179,
+   "spaces_inserted": 57,
+   "at_paw_gap": 0.47368421052631576,
+   "ci95": [
+    0.339614218328841,
+    0.6
+   ],
+   "chance": 0.328628413623811,
+   "above_chance": true,
+   "ratio": 1.4413976116762492
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|nakba_lines": {
+   "lines": 383,
+   "spaces_inserted": 118,
+   "at_paw_gap": 0.7203389830508474,
+   "ci95": [
+    0.6269660894660894,
+    0.803575600801068
+   ],
+   "chance": 0.37450279781568124,
+   "above_chance": true,
+   "ratio": 1.9234542098277625
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|rasam1": {
+   "lines": 390,
+   "spaces_inserted": 284,
+   "at_paw_gap": 0.6654929577464789,
+   "ci95": [
+    0.6060524600847181,
+    0.7248062015503876
+   ],
+   "chance": 0.3334946757018393,
+   "above_chance": true,
+   "ratio": 1.995512990862446
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|rasam2": {
+   "lines": 325,
+   "spaces_inserted": 203,
+   "at_paw_gap": 0.6502463054187192,
+   "ci95": [
+    0.5845314966279237,
+    0.7184732417712525
+   ],
+   "chance": 0.3306444974895053,
+   "above_chance": true,
+   "ratio": 1.9666025303788945
+  },
+  "vlm/exp3090-qwen3vl4b-ft-bf16|kitab_khatt": {
+   "lines": 199,
+   "spaces_inserted": 60,
+   "at_paw_gap": 0.7833333333333333,
+   "ci95": [
+    0.6607142857142857,
+    0.8813808574277167
+   ],
+   "chance": 0.32915230875258444,
+   "above_chance": true,
+   "ratio": 2.3798506420993855
+  },
+  "vlm/exp3090-qwen3vl4b-ft-bf16|nakba_lines": {
+   "lines": 209,
+   "spaces_inserted": 68,
+   "at_paw_gap": 0.5294117647058824,
+   "ci95": [
+    0.4126750700280112,
+    0.6410377358490565
+   ],
+   "chance": 0.37405694816256996,
+   "above_chance": true,
+   "ratio": 1.415323969535765
+  },
+  "vlm/fanar-oryx-7b-bf16|kitab_khatt": {
+   "lines": 198,
+   "spaces_inserted": 60,
+   "at_paw_gap": 0.7333333333333333,
+   "ci95": [
+    0.5897321428571429,
+    0.8553101503759396
+   ],
+   "chance": 0.3292666019686677,
+   "above_chance": true,
+   "ratio": 2.227171929824561
+  },
+  "vlm/fanar-oryx-7b-bf16|nakba_lines": {
+   "lines": 177,
+   "spaces_inserted": 35,
+   "at_paw_gap": 0.5428571428571428,
+   "ci95": [
+    0.3793103448275862,
+    0.7037581699346402
+   ],
+   "chance": 0.37162434502216846,
+   "above_chance": true,
+   "ratio": 1.4607685156492098
+  },
+  "vlm/fanar-oryx-7b-bf16|rasam1": {
+   "lines": 188,
+   "spaces_inserted": 76,
+   "at_paw_gap": 0.7763157894736842,
+   "ci95": [
+    0.68,
+    0.8620925838450636
+   ],
+   "chance": 0.3374117053481332,
+   "above_chance": true,
+   "ratio": 2.3007968519429416
+  },
+  "vlm/fanar-oryx-7b-bf16|rasam2": {
+   "lines": 183,
+   "spaces_inserted": 73,
+   "at_paw_gap": 0.6712328767123288,
+   "ci95": [
+    0.5616378274453256,
+    0.774663712612755
+   ],
+   "chance": 0.32964224872231684,
+   "above_chance": true,
+   "ratio": 2.0362465045485116
+  },
+  "vlm/gemini-flash-lite|kitab_khatt": {
+   "lines": 193,
+   "spaces_inserted": 106,
+   "at_paw_gap": 0.4056603773584906,
+   "ci95": [
+    0.31,
+    0.5104469476744184
+   ],
+   "chance": 0.32831541218637994,
+   "above_chance": false,
+   "ratio": 1.235581280382302
+  },
+  "vlm/nakba-baseline-qwen3vl|muharaf_lines": {
+   "lines": 458,
+   "spaces_inserted": 114,
+   "at_paw_gap": 0.6052631578947368,
+   "ci95": [
+    0.5125998333217584,
+    0.7058823529411765
+   ],
+   "chance": 0.3375304049220203,
+   "above_chance": true,
+   "ratio": 1.793210771736463
+  },
+  "vlm/nakba-misraj-baseer|nakba_blind": {
+   "lines": 2659,
+   "spaces_inserted": 350,
+   "at_paw_gap": 0.6714285714285714,
+   "ci95": [
+    0.6151377384908652,
+    0.7260378065536911
+   ],
+   "chance": 0.3707900160293107,
+   "above_chance": true,
+   "ratio": 1.8108054219439806
+  },
+  "vlm/nakba-misraj-baseer-contest|nakba_blind": {
+   "lines": 2656,
+   "spaces_inserted": 342,
+   "at_paw_gap": 0.6929824561403509,
+   "ci95": [
+    0.635055267611593,
+    0.7507896915643962
+   ],
+   "chance": 0.370720026422988,
+   "above_chance": true,
+   "ratio": 1.8692878904514982
+  },
+  "vlm/openrouter-llama-4-maverick|kitab_khatt": {
+   "lines": 40,
+   "spaces_inserted": 31,
+   "at_paw_gap": 0.7096774193548387,
+   "ci95": [
+    0.46417857142857144,
+    0.9629629629629629
+   ],
+   "chance": 0.35825105782792666,
+   "above_chance": true,
+   "ratio": 1.980949961899924
+  },
+  "vlm/openrouter-minimax-m3-free|kitab_khatt": {
+   "lines": 110,
+   "spaces_inserted": 62,
+   "at_paw_gap": 0.7096774193548387,
+   "ci95": [
+    0.6,
+    0.8245614035087719
+   ],
+   "chance": 0.3302516692347201,
+   "above_chance": true,
+   "ratio": 2.1488988110169065
+  },
+  "vlm/paligemma2-3b-bf16|kitab_khatt": {
+   "lines": 148,
+   "spaces_inserted": 38,
+   "at_paw_gap": 0.39473684210526316,
+   "ci95": [
+    0.25,
+    0.5455086580086577
+   ],
+   "chance": 0.32977727868238815,
+   "above_chance": false,
+   "ratio": 1.196980106338491
+  },
+  "vlm/paligemma2-3b-bf16|rasam1": {
+   "lines": 267,
+   "spaces_inserted": 76,
+   "at_paw_gap": 0.7105263157894737,
+   "ci95": [
+    0.6029361402095085,
+    0.8125208333333332
+   ],
+   "chance": 0.3274668775954123,
+   "above_chance": true,
+   "ratio": 2.169765446224256
+  },
+  "vlm/paligemma2-3b-bf16|rasam2": {
+   "lines": 242,
+   "spaces_inserted": 47,
+   "at_paw_gap": 0.7872340425531915,
+   "ci95": [
+    0.6665178571428572,
+    0.8958333333333334
+   ],
+   "chance": 0.33204787234042554,
+   "above_chance": true,
+   "ratio": 2.3708450140168202
+  },
+  "vlm/qari-ocr-0.2|muharaf_lines": {
+   "lines": 979,
+   "spaces_inserted": 129,
+   "at_paw_gap": 0.5736434108527132,
+   "ci95": [
+    0.4793388429752066,
+    0.6764761167624945
+   ],
+   "chance": 0.3422509225092251,
+   "above_chance": true,
+   "ratio": 1.6760901815750433
+  },
+  "vlm/qwen3-vl-4b-bf16|kitab_khatt": {
+   "lines": 193,
+   "spaces_inserted": 94,
+   "at_paw_gap": 0.6808510638297872,
+   "ci95": [
+    0.5841584158415841,
+    0.7778023598820057
+   ],
+   "chance": 0.3311901700242892,
+   "above_chance": true,
+   "ratio": 2.0557707488113377
+  },
+  "vlm/qwen3-vl-4b-bf16|muharaf_lines": {
+   "lines": 684,
+   "spaces_inserted": 169,
+   "at_paw_gap": 0.48520710059171596,
+   "ci95": [
+    0.4117647058823529,
+    0.5576923076923077
+   ],
+   "chance": 0.3412487777622573,
+   "above_chance": true,
+   "ratio": 1.4218574020205053
+  },
+  "vlm/qwen3-vl-4b-bf16|nakba_lines": {
+   "lines": 757,
+   "spaces_inserted": 214,
+   "at_paw_gap": 0.5887850467289719,
+   "ci95": [
+    0.5258155912217491,
+    0.6538594470046082
+   ],
+   "chance": 0.3698698201331611,
+   "above_chance": true,
+   "ratio": 1.5918710169891575
+  },
+  "vlm/qwen3-vl-4b-bf16|rasam1": {
+   "lines": 650,
+   "spaces_inserted": 324,
+   "at_paw_gap": 0.5771604938271605,
+   "ci95": [
+    0.5206316659155776,
+    0.6338461538461538
+   ],
+   "chance": 0.33630683664993316,
+   "above_chance": true,
+   "ratio": 1.7161723489669511
+  },
+  "vlm/qwen3-vl-4b-bf16|rasam2": {
+   "lines": 330,
+   "spaces_inserted": 163,
+   "at_paw_gap": 0.5950920245398773,
+   "ci95": [
+    0.5123382418563142,
+    0.6785824514991181
+   ],
+   "chance": 0.3305819576454894,
+   "above_chance": true,
+   "ratio": 1.800134613450514
+  },
+  "vlm/qwen3-vl-8b-bf16|kitab_khatt": {
+   "lines": 197,
+   "spaces_inserted": 107,
+   "at_paw_gap": 0.6261682242990654,
+   "ci95": [
+    0.5363636363636364,
+    0.7157234105763516
+   ],
+   "chance": 0.329073482428115,
+   "above_chance": true,
+   "ratio": 1.9028218854913346
+  },
+  "vlm/qwen3-vl-8b-bf16|nakba_lines": {
+   "lines": 185,
+   "spaces_inserted": 61,
+   "at_paw_gap": 0.6229508196721312,
+   "ci95": [
+    0.5,
+    0.7346938775510204
+   ],
+   "chance": 0.37192085072015074,
+   "above_chance": true,
+   "ratio": 1.6749553526399792
+  },
+  "vlm/qwen3-vl-8b-bf16|rasam1": {
+   "lines": 190,
+   "spaces_inserted": 133,
+   "at_paw_gap": 0.6691729323308271,
+   "ci95": [
+    0.5923477707006369,
+    0.746159420289855
+   ],
+   "chance": 0.337447020693094,
+   "above_chance": true,
+   "ratio": 1.983045904380456
+  },
+  "vlm/qwen3-vl-8b-bf16|rasam2": {
+   "lines": 190,
+   "spaces_inserted": 97,
+   "at_paw_gap": 0.6907216494845361,
+   "ci95": [
+    0.6019395001797914,
+    0.7763227883538634
+   ],
+   "chance": 0.32838353839626644,
+   "above_chance": true,
+   "ratio": 2.103399131569834
+  },
+  "vlm/suite-v1-fanar2-oryx-ft|muharaf_lines": {
+   "lines": 198,
+   "spaces_inserted": 48,
+   "at_paw_gap": 0.6875,
+   "ci95": [
+    0.5689459247648904,
+    0.8181818181818182
+   ],
+   "chance": 0.3518319791506975,
+   "above_chance": true,
+   "ratio": 1.9540577342047931
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|kitab_khatt": {
+   "lines": 200,
+   "spaces_inserted": 59,
+   "at_paw_gap": 0.7966101694915254,
+   "ci95": [
+    0.6849134823359769,
+    0.8979591836734694
+   ],
+   "chance": 0.32910869265739084,
+   "above_chance": true,
+   "ratio": 2.4205078360565015
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|nakba_lines": {
+   "lines": 191,
+   "spaces_inserted": 67,
+   "at_paw_gap": 0.5223880597014925,
+   "ci95": [
+    0.41427339901477833,
+    0.6346153846153846
+   ],
+   "chance": 0.37090713902308103,
+   "above_chance": true,
+   "ratio": 1.4084065922197981
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|rasam1": {
+   "lines": 199,
+   "spaces_inserted": 76,
+   "at_paw_gap": 0.8289473684210527,
+   "ci95": [
+    0.7283670033670033,
+    0.9156626506024096
+   ],
+   "chance": 0.33646226990125566,
+   "above_chance": true,
+   "ratio": 2.463715675057208
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|rasam2": {
+   "lines": 193,
+   "spaces_inserted": 91,
+   "at_paw_gap": 0.8681318681318682,
+   "ci95": [
+    0.7972628240485383,
+    0.9322129118263187
+   ],
+   "chance": 0.3282136432821364,
+   "above_chance": true,
+   "ratio": 2.645020662305654
+  },
+  "vlm/suite-v1-qwen3vl4b-ft|muharaf_lines": {
+   "lines": 192,
+   "spaces_inserted": 52,
+   "at_paw_gap": 0.6538461538461539,
+   "ci95": [
+    0.5249897540983607,
+    0.7916666666666666
+   ],
+   "chance": 0.35232919254658385,
+   "above_chance": true,
+   "ratio": 1.855781943926501
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|kitab_khatt": {
+   "lines": 180,
+   "spaces_inserted": 66,
+   "at_paw_gap": 0.696969696969697,
+   "ci95": [
+    0.5644941348973608,
+    0.8166666666666667
+   ],
+   "chance": 0.32834681727980464,
+   "above_chance": true,
+   "ratio": 2.122663172872378
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|muharaf_lines": {
+   "lines": 775,
+   "spaces_inserted": 247,
+   "at_paw_gap": 0.6153846153846154,
+   "ci95": [
+    0.5524193548387096,
+    0.6793893129770993
+   ],
+   "chance": 0.34146955208857577,
+   "above_chance": true,
+   "ratio": 1.8021654101241427
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|nakba_lines": {
+   "lines": 799,
+   "spaces_inserted": 283,
+   "at_paw_gap": 0.6678445229681979,
+   "ci95": [
+    0.6119389938419789,
+    0.7225854359629511
+   ],
+   "chance": 0.3698595146871009,
+   "above_chance": true,
+   "ratio": 1.8056707924174686
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|rasam1": {
+   "lines": 704,
+   "spaces_inserted": 509,
+   "at_paw_gap": 0.768172888015717,
+   "ci95": [
+    0.7285575518550979,
+    0.8059080085223712
+   ],
+   "chance": 0.33515349270826394,
+   "above_chance": true,
+   "ratio": 2.292003230544809
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|rasam2": {
+   "lines": 335,
+   "spaces_inserted": 215,
+   "at_paw_gap": 0.7209302325581395,
+   "ci95": [
+    0.6562313098086124,
+    0.7841427080918154
+   ],
+   "chance": 0.33102336825141015,
+   "above_chance": true,
+   "ratio": 2.177883200108693
+  },
+  "vlm/suite-v1-qwen3vl4b-visft-difflr-ft|muharaf_lines": {
+   "lines": 195,
+   "spaces_inserted": 45,
+   "at_paw_gap": 0.8222222222222222,
+   "ci95": [
+    0.7021276595744681,
+    0.9210655314757481
+   ],
+   "chance": 0.35190300798035606,
+   "above_chance": true,
+   "ratio": 2.336502398604448
+  },
+  "vlm/suite-v1-qwen3vl8b-ft|muharaf_lines": {
+   "lines": 193,
+   "spaces_inserted": 49,
+   "at_paw_gap": 0.7346938775510204,
+   "ci95": [
+    0.6268190298507463,
+    0.8536585365853658
+   ],
+   "chance": 0.3523971018960999,
+   "above_chance": true,
+   "ratio": 2.0848465370400127
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|kitab_khatt": {
+   "lines": 199,
+   "spaces_inserted": 67,
+   "at_paw_gap": 0.6567164179104478,
+   "ci95": [
+    0.5185019841269841,
+    0.7714411027568921
+   ],
+   "chance": 0.32933222958057395,
+   "above_chance": true,
+   "ratio": 1.9940848751633538
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|nakba_lines": {
+   "lines": 191,
+   "spaces_inserted": 42,
+   "at_paw_gap": 0.6190476190476191,
+   "ci95": [
+    0.47368421052631576,
+    0.7741935483870968
+   ],
+   "chance": 0.371058257616248,
+   "above_chance": true,
+   "ratio": 1.6683299895399284
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|rasam1": {
+   "lines": 197,
+   "spaces_inserted": 117,
+   "at_paw_gap": 0.7008547008547008,
+   "ci95": [
+    0.6145730807086615,
+    0.7857295482295481
+   ],
+   "chance": 0.3365454989021713,
+   "above_chance": true,
+   "ratio": 2.082496135413859
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|rasam2": {
+   "lines": 194,
+   "spaces_inserted": 134,
+   "at_paw_gap": 0.6940298507462687,
+   "ci95": [
+    0.5999606299212599,
+    0.7813020833333331
+   ],
+   "chance": 0.32855567805953695,
+   "above_chance": true,
+   "ratio": 2.1123660222378042
+  }
+ }
+}

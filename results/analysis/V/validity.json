@@ -1,0 +1,473 @@
+{
+ "features": [
+  "loose crop (1 − ink extent)",
+  "slant distance from training (°)",
+  "stroke width at 64 px",
+  "pen contrast distance (|log|)",
+  "ruled-line ink share",
+  "pixels per character (log)",
+  "dot diameter at 64 px",
+  "line length (log chars)",
+  "unseen-word share",
+  "letter-list line",
+  "PAWs per word",
+  "rare letter forms share",
+  "letters per word"
+ ],
+ "targets": {
+  "crnn/base": {
+   "lines": 5068,
+   "datasets": {
+    "kitab_khatt": 200,
+    "nakba_lines": 1911,
+    "nakba_blind": 2490,
+    "muharaf_lines": 347,
+    "rasam1": 105,
+    "rasam2": 15
+   },
+   "spearman_in_sample": 0.2771005217558722,
+   "coef": {
+    "loose crop (1 − ink extent)": [
+     0.03429667550780294,
+     0.028935066586894757,
+     0.03966076217648864
+    ],
+    "slant distance from training (°)": [
+     0.022690194064089505,
+     0.01703616053557905,
+     0.027850441243226224
+    ],
+    "stroke width at 64 px": [
+     -0.005859534230872802,
+     -0.022733519971092978,
+     0.01613987141039885
+    ],
+    "pen contrast distance (|log|)": [
+     0.0027077621772188002,
+     -0.005438365209576606,
+     0.011068266982935318
+    ],
+    "ruled-line ink share": [
+     -0.0021153110326317345,
+     -0.006958816292674842,
+     0.003043196946179786
+    ],
+    "pixels per character (log)": [
+     -0.04555281755348471,
+     -0.057956308470860037,
+     -0.0310887568343594
+    ],
+    "dot diameter at 64 px": [
+     0.004692161846766854,
+     -0.010212102351647753,
+     0.01694858702152445
+    ],
+    "line length (log chars)": [
+     -0.06806321077719975,
+     -0.07701179037833457,
+     -0.05890831674396887
+    ],
+    "unseen-word share": [
+     0.018074745155117287,
+     0.011368238240051728,
+     0.024254024615563308
+    ],
+    "letter-list line": [
+     0.015396442155159607,
+     0.009361659200715706,
+     0.02142016839748212
+    ],
+    "PAWs per word": [
+     -0.004557962657498594,
+     -0.01569738750165505,
+     0.005865666039704712
+    ],
+    "rare letter forms share": [
+     -0.0008700435269872622,
+     -0.003802768641057445,
+     0.0028084350804171154
+    ],
+    "letters per word": [
+     -0.016991334008954834,
+     -0.02897124591313385,
+     -0.003060187255839786
+    ]
+   },
+   "lodo_spearman": {
+    "kitab_khatt": -0.13086630903742957,
+    "nakba_lines": 0.2391764775648316,
+    "nakba_blind": 0.30110634272349496,
+    "muharaf_lines": -0.0825302187844864,
+    "rasam1": 0.32998489540649345
+   }
+  },
+  "crnn/combo": {
+   "lines": 5068,
+   "datasets": {
+    "kitab_khatt": 200,
+    "nakba_lines": 1911,
+    "nakba_blind": 2490,
+    "muharaf_lines": 347,
+    "rasam1": 105,
+    "rasam2": 15
+   },
+   "spearman_in_sample": 0.2994921305571096,
+   "coef": {
+    "loose crop (1 − ink extent)": [
+     0.03165824695432274,
+     0.025769874835239084,
+     0.037542043878415025
+    ],
+    "slant distance from training (°)": [
+     0.02424574396926374,
+     0.018269443735771555,
+     0.02888326652313462
+    ],
+    "stroke width at 64 px": [
+     -0.001857454429628118,
+     -0.018125726444125384,
+     0.016325467664310082
+    ],
+    "pen contrast distance (|log|)": [
+     0.0025572289753061296,
+     -0.004736035131577293,
+     0.010148258693410404
+    ],
+    "ruled-line ink share": [
+     -0.00253887295045378,
+     -0.00710876778859148,
+     0.0035011535930607814
+    ],
+    "pixels per character (log)": [
+     -0.04839048727421592,
+     -0.061133698138870644,
+     -0.033166447504228036
+    ],
+    "dot diameter at 64 px": [
+     -0.0007816234511083584,
+     -0.013787219010056912,
+     0.010608563242408957
+    ],
+    "line length (log chars)": [
+     -0.06832176209105968,
+     -0.07650276282595406,
+     -0.058231637697064985
+    ],
+    "unseen-word share": [
+     0.017467126568669705,
+     0.010899419444903382,
+     0.022992329771622296
+    ],
+    "letter-list line": [
+     0.01558145439622362,
+     0.010293489521907591,
+     0.021404363365462316
+    ],
+    "PAWs per word": [
+     -0.0027104141246305415,
+     -0.01459347332383518,
+     0.00675039426698744
+    ],
+    "rare letter forms share": [
+     0.00128949528248463,
+     -0.0021481686191546752,
+     0.00450300094648464
+    ],
+    "letters per word": [
+     -0.01870748562379688,
+     -0.03055573077646196,
+     -0.0061734449947860644
+    ]
+   },
+   "lodo_spearman": {
+    "kitab_khatt": -0.09296398798298901,
+    "nakba_lines": 0.2834593277915463,
+    "nakba_blind": 0.30972388151848984,
+    "muharaf_lines": -0.038674342611205705,
+    "rasam1": 0.31211505548683666
+   }
+  },
+  "median vlm-ft": {
+   "lines": 4291,
+   "datasets": {
+    "kitab_khatt": 200,
+    "nakba_lines": 362,
+    "nakba_blind": 2490,
+    "muharaf_lines": 465,
+    "rasam1": 418,
+    "rasam2": 356
+   },
+   "spearman_in_sample": 0.4437937844916096,
+   "coef": {
+    "loose crop (1 − ink extent)": [
+     0.0007789191905638652,
+     -0.004676950704121534,
+     0.006026163208531174
+    ],
+    "slant distance from training (°)": [
+     0.0055374128125423505,
+     -0.000426497390090406,
+     0.01141576804993093
+    ],
+    "stroke width at 64 px": [
+     -0.008004931143647602,
+     -0.027561747532801894,
+     0.012122636308393515
+    ],
+    "pen contrast distance (|log|)": [
+     0.05223289634060102,
+     0.04458273968818052,
+     0.059192377633058776
+    ],
+    "ruled-line ink share": [
+     0.007524985613207241,
+     0.0016838474029226105,
+     0.013260435160380488
+    ],
+    "pixels per character (log)": [
+     -0.008432940838357387,
+     -0.021071300910296378,
+     0.003700825778071962
+    ],
+    "dot diameter at 64 px": [
+     -0.01693805798629877,
+     -0.03257251534234816,
+     -0.0018462715779594824
+    ],
+    "line length (log chars)": [
+     -0.040579153823522715,
+     -0.050936790665383376,
+     -0.028622737596412973
+    ],
+    "unseen-word share": [
+     0.0251930174555094,
+     0.01795743817063896,
+     0.03326812835308608
+    ],
+    "letter-list line": [
+     0.006286570921649619,
+     0.00222173525333906,
+     0.010050857604648362
+    ],
+    "PAWs per word": [
+     -0.032486638903055295,
+     -0.04335142975160682,
+     -0.022141629965263792
+    ],
+    "rare letter forms share": [
+     0.0009181646407718691,
+     -0.0033212764363612698,
+     0.004744642482637035
+    ],
+    "letters per word": [
+     -0.015315980116421702,
+     -0.02804533209554732,
+     -0.0029351259803614624
+    ]
+   },
+   "lodo_spearman": {
+    "kitab_khatt": 0.27443155060113567,
+    "nakba_lines": 0.060055345166335705,
+    "nakba_blind": 0.14841943407808367,
+    "muharaf_lines": 0.08330534971400609,
+    "rasam1": 0.04553406658965598,
+    "rasam2": 0.11724501773935281
+   },
+   "crnn_model_spearman": 0.33926700495036805
+  },
+  "median vlm-base": {
+   "lines": 1348,
+   "datasets": {
+    "kitab_khatt": 200,
+    "nakba_lines": 361,
+    "nakba_blind": 0,
+    "muharaf_lines": 12,
+    "rasam1": 419,
+    "rasam2": 356
+   },
+   "spearman_in_sample": 0.3755772830407592,
+   "coef": {
+    "loose crop (1 − ink extent)": [
+     -0.027393238524434264,
+     -0.034097030925391,
+     -0.021745978924967733
+    ],
+    "slant distance from training (°)": [
+     -0.030914465258820613,
+     -0.039259094326838405,
+     -0.023661829803112166
+    ],
+    "stroke width at 64 px": [
+     0.02052662976148837,
+     0.006324912587897662,
+     0.033317112935825136
+    ],
+    "pen contrast distance (|log|)": [
+     -0.00517434796635672,
+     -0.01663164459930022,
+     0.0030820064924110637
+    ],
+    "ruled-line ink share": [
+     -0.0022078056249455573,
+     -0.010774865770187495,
+     0.005082589530253382
+    ],
+    "pixels per character (log)": [
+     -0.04477969932057889,
+     -0.06408972938863992,
+     -0.03058060784383132
+    ],
+    "dot diameter at 64 px": [
+     -0.007800467884822554,
+     -0.019318812630252747,
+     0.004315445833943536
+    ],
+    "line length (log chars)": [
+     -0.017966575246438334,
+     -0.033324712122851485,
+     -0.003438296855242434
+    ],
+    "unseen-word share": [
+     0.026004610380010413,
+     0.014246650952324953,
+     0.03860464032871411
+    ],
+    "letter-list line": [
+     -0.003441335206898284,
+     -0.008560633138224706,
+     0.001494727049920406
+    ],
+    "PAWs per word": [
+     -0.019943735456057283,
+     -0.04377746273384285,
+     0.001618955730477348
+    ],
+    "rare letter forms share": [
+     -0.004042434520651428,
+     -0.009822665899244363,
+     0.004714798769274383
+    ],
+    "letters per word": [
+     -0.032550852614341645,
+     -0.057079702452207524,
+     -0.005765204209635809
+    ]
+   },
+   "lodo_spearman": {
+    "kitab_khatt": 0.07610006570791061,
+    "nakba_lines": 0.08480067299473433,
+    "rasam1": 0.03795064326837762,
+    "rasam2": 0.13213350058238513
+   },
+   "crnn_model_spearman": -0.024295457174051762
+  }
+ },
+ "survival": {
+  "loose crop (1 − ink extent)": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-base"
+   ],
+   "same_sign": false,
+   "survives": false
+  },
+  "slant distance from training (°)": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-base"
+   ],
+   "same_sign": false,
+   "survives": false
+  },
+  "stroke width at 64 px": {
+   "significant_in": [
+    "vlm-base"
+   ],
+   "same_sign": true,
+   "survives": false
+  },
+  "pen contrast distance (|log|)": {
+   "significant_in": [
+    "vlm-ft"
+   ],
+   "same_sign": true,
+   "survives": false
+  },
+  "ruled-line ink share": {
+   "significant_in": [
+    "vlm-ft"
+   ],
+   "same_sign": true,
+   "survives": false
+  },
+  "pixels per character (log)": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-base"
+   ],
+   "same_sign": true,
+   "survives": true
+  },
+  "dot diameter at 64 px": {
+   "significant_in": [
+    "vlm-ft"
+   ],
+   "same_sign": true,
+   "survives": false
+  },
+  "line length (log chars)": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-ft",
+    "vlm-base"
+   ],
+   "same_sign": true,
+   "survives": true
+  },
+  "unseen-word share": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-ft",
+    "vlm-base"
+   ],
+   "same_sign": true,
+   "survives": true
+  },
+  "letter-list line": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-ft"
+   ],
+   "same_sign": true,
+   "survives": true
+  },
+  "PAWs per word": {
+   "significant_in": [
+    "vlm-ft"
+   ],
+   "same_sign": true,
+   "survives": false
+  },
+  "rare letter forms share": {
+   "significant_in": [],
+   "same_sign": true,
+   "survives": false
+  },
+  "letters per word": {
+   "significant_in": [
+    "crnn",
+    "crnn",
+    "vlm-ft",
+    "vlm-base"
+   ],
+   "same_sign": true,
+   "survives": true
+  }
+ }
+}

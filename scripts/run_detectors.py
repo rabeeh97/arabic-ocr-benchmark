@@ -140,7 +140,30 @@ def d22_reversed(s, r, ctx):
     return bool(r["reversed_suspect"])
 
 
-SAMPLE_DETECTORS = {"D1 loose crop (ink < 35 % of height)": d1_loose_crop, "D7 fragment line": d7_fragment, "D8 letter-list drill": d8_letter_list,
+def _feat(s, k):
+    f = s.get("feat") or {}
+    return bool(f.get("ok")) and bool(f.get(k))
+
+
+def d2_slant_outlier(s, ctx):
+    return _feat(s, "slant_outlier")
+
+
+def d3_ruled(s, ctx):
+    return _feat(s, "ruled")
+
+
+def d5_low_res(s, ctx):
+    return _feat(s, "low_res")
+
+
+def d6_stroke_pen_outlier(s, ctx):
+    return _feat(s, "stroke_outlier") or _feat(s, "pen_outlier")
+
+
+SAMPLE_DETECTORS = {"D1 loose crop (ink < 35 % of height)": d1_loose_crop, "D2 slant outside training p2.5–97.5": d2_slant_outlier,
+                    "D3 ruled lines (> 2 % of ink)": d3_ruled, "D5 low resolution (px per char < train p5, or dots < 2 px)": d5_low_res,
+                    "D6 stroke width or pen contrast outside training": d6_stroke_pen_outlier, "D7 fragment line": d7_fragment, "D8 letter-list drill": d8_letter_list,
                     "D9 mostly unseen words": d9_unseen_text, "D10 label suspect (strong models agree, GT differs)": d10_label_suspect,
                     "D10b label runs past the image (systems agree the tail is missing)": d10b_label_tail,
                     "Dx dropped by the old CTC filter": dx_ctc_filtered}
@@ -215,6 +238,10 @@ def main() -> None:
     a.out.mkdir(parents=True, exist_ok=True)
     packs = json.loads(a.pairs.read_text(encoding="utf-8"))["pack_pref"]
     S = {s["sample_key"]: s for s in pq.read_table(a.store / "samples.parquet").to_pylist()}
+    if (a.store / "features.parquet").exists():  # image measurements from store_features.py
+        for f in pq.read_table(a.store / "features.parquet").to_pylist():
+            if f["sample_key"] in S:
+                S[f["sample_key"]]["feat"] = f
     idx = defaultdict(dict)
     for r in pq.read_table(a.store / "lines.parquet").to_pylist():
         if r.get("in_train") == "yes":  # never score lines a run trained on (CORRECTIONS C4)

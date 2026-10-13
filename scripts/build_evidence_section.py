@@ -14,6 +14,7 @@ import json
 import pickle
 import re
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
@@ -101,6 +102,97 @@ def patch_key_findings(h: str, A1: dict, A2: dict) -> str:
                 f"blind {sg(augb['delta'])} [{sg(augb['ci95'][0])}, {sg(augb['ci95'][1])}], KHATT {sg(augk['delta'])} points</td>")
         h = re.sub(r"<td>None on the unseen sets \(KHATT 26\.4 → 26\.9 %, NAKBA 13\.8 → 14\.4 %\)</td>|<td><b>Hurts on unseen sets</b>.*?</td>", lambda _: cell, h, count=1, flags=re.S)
     return h
+
+
+def extra_sections(a) -> str:
+    """Sections 7–11: image characteristics per set, joint validity model, TTA gate, PAW-gap intervals, sound vs look."""
+    import numpy as np
+    import pyarrow.parquet as pq
+    out = []
+    fp = W / "results/store/features.parquet"
+    if fp.exists():
+        F = [f for f in pq.read_table(fp).to_pylist() if f["ok"]]
+        rows = []
+        for ds, name in (("muharaf_train", "Muharaf train (reference)"), ("kitab_khatt", "KHATT"), ("nakba_lines", "NAKBA test"), ("nakba_blind", "NAKBA blind"),
+                         ("muharaf_lines", "Muharaf test"), ("rasam1", "RASAM-1"), ("rasam2", "RASAM-2")):
+            rs = [f for f in F if f["dataset"] == ds]
+            if not rs:
+                continue
+            med = lambda k: np.nanmedian([f[k] if f[k] is not None else np.nan for f in rs])  # noqa: E731
+            share = lambda k: 100 * np.mean([bool(f[k]) for f in rs])  # noqa: E731
+            rows.append([f"<td>{name}</td>", f'<td class="n">{len(rs)}</td>', f'<td class="n">{med("slant_deg"):+.1f}°</td>', f'<td class="n">{med("stroke_px64"):.2f}</td>',
+                         f'<td class="n">{med("pen_contrast"):.2f}</td>', f'<td class="n">{med("ink_px_per_char"):.1f}</td>',
+                         f'<td class="n">{share("slant_outlier"):.0f} %</td>', f'<td class="n">{share("stroke_outlier"):.0f} %</td>', f'<td class="n">{share("pen_outlier"):.0f} %</td>',
+                         f'<td class="n">{share("ruled"):.0f} %</td>', f'<td class="n">{share("low_res"):.0f} %</td>'])
+        out.append("<h4>7 · Image characteristics of every line, against the CRNN's training lines</h4><p>Measured on the native image of all 7,406 panel lines "
+                   "and 3,000 Muharaf training lines (<span class=\"mono\">store_features.py</span>, the X-G1–X-G5 measures). Outlier = outside the training "
+                   "lines' 2.5–97.5 percentile band (5 % by construction for a set like the training data). KHATT stands out in slant and stroke width at the "
+                   "64 px input, the Maghrebi RASAM sets in pen contrast and pixels per character, NAKBA in ruled lines.</p>"
+                   + table(["Set", "Lines", "Median slant", "Stroke px at 64", "Pen contrast", "Px per char", "Slant outlier", "Stroke outlier", "Pen outlier", "Ruled", "Low res"], rows))
+    vp = W / "results/analysis/V/validity.json"
+    if vp.exists():
+        V = json.loads(vp.read_text(encoding="utf-8"))
+        tg = list(V["targets"])
+        rows = []
+        for f in V["features"]:
+            cells = []
+            for t in tg:
+                b, lo, hi = V["targets"][t]["coef"][f]
+                sig = lo > 0 or hi < 0
+                cells.append(f'<td class="n">{"<b>" if sig else ""}{sg(b)}{"</b>" if sig else ""} <span class="pill">[{sg(lo)}, {sg(hi)}]</span></td>')
+            rows.append([f"<td>{html.escape(f)}</td>"] + cells + [f"<td>{'<b>yes</b>' if V['survival'][f]['survives'] else ''}</td>"])
+        fit = "; ".join(f"{t}: in-sample ρ {v['spearman_in_sample']:.2f}, leave-one-set-out ρ {min(v['lodo_spearman'].values()):.2f} to {max(v['lodo_spearman'].values()):.2f}" for t, v in V["targets"].items())
+        out.append("<h4>8 · Which characteristics predict a line's error, jointly and across families</h4><p>Ridge regression of line CER (no-diacritics rung, "
+                   "capped at 1) on standardised characteristics; cells are points of line CER per standard deviation, with a line-bootstrap 95 % interval; bold = "
+                   "interval excludes 0. “Survives” = significant with the same sign in at least two system families (<span class=\"mono\">analyze_validity.py</span>). "
+                   "Loose crops and slant hurt the CRNN but not the fine-tuned VLMs; pen contrast hurts only the fine-tuned VLMs (the Maghrebi sets). What hurts "
+                   "every family: few pixels per character, short lines, unseen words; long words help everyone. PAWs per word looked strong until letters per word "
+                   f"was added as a control. The model explains little line-to-line variance and transfers poorly across sets ({html.escape(fit)}): most of a line's "
+                   "difficulty is not in these characteristics.</p>"
+                   + table(["Characteristic"] + [html.escape(t) for t in tg] + ["Survives"], rows))
+    gp = W / "results/analysis/V/tta_gate.json"
+    if gp.exists():
+        G = json.loads(gp.read_text())
+        rows = []
+        for run, v in G.items():
+            for ds, name in (("kitab_khatt", "KHATT"), ("nakba_lines", "NAKBA test"), ("nakba_blind", "NAKBA blind")):
+                x = v[ds]
+                rows.append([f"<td>{run}</td>", f"<td>{name}</td>", f'<td class="n">{x["lines"]}</td>', f'<td class="n">{pc(x["upright"])} %</td>',
+                             f'<td class="n">{pc(x["tta_all"])} %</td>', f'<td class="n"><b>{pc(x["gated"])} %</b></td>', f'<td class="n">{pc(x["share_gated_on"])} %</td>'])
+            rows.append([f"<td colspan=7>{run}: threshold {v['threshold_deg']:.0f}° from the training median; KHATT gain kept {pc(v['khatt_gain_kept'])} %, worst NAKBA change {sg(v['nakba_cost'])} points → <b>{'keep' if v['keep_gate'] else 'reject'}</b></td>"])
+        out.append("<h4>9 · Slant TTA only where the slant is unusual</h4><p>Offline from the stored readings: the confidence-selected shear is used only on lines whose "
+                   "measured slant is at least T degrees from the training median; T chosen on one half (KHATT half A, even NAKBA ids), reported on the other. "
+                   "The gate removes the NAKBA cost; whether it keeps enough of the KHATT gain depends on the model. Held-out KHATT is 91 lines of the old pack; "
+                   "the full-panel TTA with every shear stored is queued on the 3090.</p>"
+                   + table(["Model", "Set (held-out half)", "Lines", "Upright", "TTA everywhere", "Gated", "Lines given TTA"], rows))
+    pp = W / "results/analysis/B/paw_gaps.json"
+    if pp.exists():
+        P = json.loads(pp.read_text(encoding="utf-8"))
+        s = P["summary"]
+        top = sorted(P["pairs"].items(), key=lambda t: -t[1]["ratio"])
+        pick = top[:6] + top[-4:]
+        rows = [[f"<td>{html.escape(k.split('|')[0])}</td>", f"<td>{k.split('|')[1]}</td>", f'<td class="n">{v["spaces_inserted"]}</td>',
+                 f'<td class="n"><b>{pc(v["at_paw_gap"])} %</b> [{pc(v["ci95"][0])}, {pc(v["ci95"][1])}]</td>', f'<td class="n">{pc(v["chance"])} %</td>', f'<td class="n">×{v["ratio"]:.2f}</td>'] for k, v in pick]
+        out.append(f"<h4>10 · Word splits at PAW gaps, with intervals</h4><p>Above chance with the interval clear of it in <b>{s['above_chance']} of {s['pairs']}</b> system × set "
+                   "pairs (lines a system trained on and whole-line failures excluded): every family splits words where the pen lifts, 1.2 to 2.9 times as often as "
+                   "chance. The six strongest and four weakest pairs are shown (<span class=\"mono\">analyze_paw_gaps.py</span>).</p>"
+                   + table(["System", "Set", "Spaces inserted in words", "At a PAW gap [95 %]", "Chance", "Ratio"], rows))
+    hp = W / "results/analysis/B/phonetic.json"
+    if hp.exists():
+        H = json.loads(hp.read_text(encoding="utf-8"))
+        fam = defaultdict(list)
+        for k, v in H["runs"].items():
+            run = k.split("|")[0]
+            f_ = "CRNN" if run.startswith("crnn/") else "CRNN → LLM (E8)" if run.startswith("crnn+llm") else "VLM fine-tuned" if ("-ft" in run or "baseer" in run) else "VLM / OCR base"
+            fam[f_].append(v)
+        rows = [[f"<td>{f_}</td>", f'<td class="n">{len(vs)}</td>'] + [f'<td class="n">{pc(np.median([v[c] for v in vs]))} %</td>' for c in ("look-only", "sound-only", "both", "other")] for f_, vs in fam.items()]
+        rows.append(["<td>chance (no preference)</td>", "<td></td>"] + [f'<td class="n">{pc(H["chance"][c])} %</td>' for c in ("look-only", "sound-only", "both", "other")])
+        out.append("<h4>11 · Do systems confuse letters that sound alike, or that look alike?</h4><p>Every letter substitution classed as look-only (same dotless "
+                   "skeleton in that position), sound-only (same place of articulation, makhraj, or a dialect merger such as ث/س, ذ/ز, ظ/ض, ق/ء, with a different "
+                   "skeleton), both, or other; median share per family (<span class=\"mono\">analyze_phonetic_confusions.py</span>). Look-alike confusions run at "
+                   "4–15× chance in every family; sound-alike ones at chance, even for the LLM decoder. Recognition errors are visual; articulation explains none of them.</p>"
+                   + table(["Family", "Runs", "Look-only", "Sound-only", "Both", "Other"], rows))
+    return "".join(out)
 
 
 def main() -> None:
@@ -192,7 +284,7 @@ def main() -> None:
             continue
         if not (spec.startswith("vlm/") or spec in ("crnn/base@none", "crnn/base@inkcrop")):
             continue
-        paw_rows.append([f"<td>{html.escape(spec.split('@')[0])}</td>", f"<td>{ds}</td>", f'<td class="n">{v["space_in_word_per_100_gaps"]:.2f}</td>',
+        paw_rows.append([f"<td>{html.escape(spec.replace('@none', '').replace('@inkcrop', ', ink-cropped'))}</td>", f"<td>{ds}</td>", f'<td class="n">{v["space_in_word_per_100_gaps"]:.2f}</td>',
                          f'<td class="n"><b>{pc(v["space_at_paw_gap_share"])} %</b></td>', f'<td class="n">{pc(v["paw_gap_chance"])} %</td>'])
     above = sum(1 for r in paw_rows if float(re.sub(r"<.*?>", "", r[3]).replace("%", "").replace("−", "-")) > float(re.sub(r"<.*?>", "", r[4]).replace("%", "").replace("−", "-")))
     paw = ("<h4>5 · Spaces inserted inside words fall at PAW gaps</h4><p>When a system splits a word with a space, does it do so at a gap "
@@ -212,6 +304,7 @@ def main() -> None:
                "interval that excludes zero. The replicate row is the noise yardstick: one or two cells move by chance.</p>"
                + table(["Comparison", "Cells better / worse", "Largest moves with intervals clear of zero (points)"], lrows))
 
+    extra = extra_sections(a)
     ARTICLE = f"""
   <!-- 6l. evidence -->
   <article class="dpart" id="d-evidence">
@@ -226,6 +319,7 @@ def main() -> None:
     {detectors}
     {paw}
     {letters}
+    {extra}
   </article>
 """
     h = LEDGER.read_text(encoding="utf-8")
