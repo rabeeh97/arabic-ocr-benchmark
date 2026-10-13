@@ -1,0 +1,212 @@
+{
+ "labels": {
+  "kitab_khatt": 0.1404460518384569,
+  "nakba_lines": 0.16769031385586297,
+  "nakba_blind": 0.10644078631932236,
+  "muharaf_lines": 0.027504472271914132,
+  "rasam1": 0.0015907447577729573,
+  "rasam2": 0.017159199237368923
+ },
+ "runs": {
+  "crnn/base|nakba_blind": {
+   "hamza_share": 0.01457690921468904,
+   "alifs": 24971,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/base|nakba_lines": {
+   "hamza_share": 0.015912707433507617,
+   "alifs": 17596,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/combo|nakba_blind": {
+   "hamza_share": 0.0152653452685422,
+   "alifs": 25024,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/combo|nakba_lines": {
+   "hamza_share": 0.01697024550288494,
+   "alifs": 17678,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/geomaug|nakba_blind": {
+   "hamza_share": 0.014238555462753053,
+   "alifs": 25143,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/geomaug|nakba_lines": {
+   "hamza_share": 0.016090014064697608,
+   "alifs": 17775,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/inkcrop|nakba_blind": {
+   "hamza_share": 0.014533952594490711,
+   "alifs": 24976,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/inkcrop|nakba_lines": {
+   "hamza_share": 0.016317016317016316,
+   "alifs": 17589,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/randctl|nakba_blind": {
+   "hamza_share": 0.014521583449373383,
+   "alifs": 25135,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/randctl|nakba_lines": {
+   "hamza_share": 0.015467118261360428,
+   "alifs": 17715,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/rep2|nakba_blind": {
+   "hamza_share": 0.01433477080338604,
+   "alifs": 25044,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/rep2|nakba_lines": {
+   "hamza_share": 0.01519102142614216,
+   "alifs": 17642,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/shape|nakba_blind": {
+   "hamza_share": 0.016428914890206765,
+   "alifs": 24956,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "crnn/shape|nakba_lines": {
+   "hamza_share": 0.017170057233524112,
+   "alifs": 17647,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/ain-7b-bf16|nakba_lines": {
+   "hamza_share": 0.02929350947731189,
+   "alifs": 1741,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/ain7b-nakba-ckpt-1200|nakba_blind": {
+   "hamza_share": 0.17541337167505391,
+   "alifs": 25038,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-1200|nakba_lines": {
+   "hamza_share": 0.17263279445727484,
+   "alifs": 1732,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-1600|nakba_blind": {
+   "hamza_share": 0.1720654265554843,
+   "alifs": 24944,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-1600|nakba_lines": {
+   "hamza_share": 0.17439165701042875,
+   "alifs": 1726,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-1936|nakba_blind": {
+   "hamza_share": 0.17273856759248127,
+   "alifs": 24951,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-1936|nakba_lines": {
+   "hamza_share": 0.1722488038277512,
+   "alifs": 627,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-400|nakba_lines": {
+   "hamza_share": 0.16627906976744186,
+   "alifs": 1720,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-ckpt-800|nakba_lines": {
+   "hamza_share": 0.17599538372763993,
+   "alifs": 1733,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/ain7b-nakba-visft-ckpt-400|nakba_blind": {
+   "hamza_share": 0.03311789972301393,
+   "alifs": 24911,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/arabic-paddleocr-v5|nakba_lines": {
+   "hamza_share": 0.012152777777777778,
+   "alifs": 576,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/baseer-nakba-bf16|nakba_lines": {
+   "hamza_share": 0.1958041958041958,
+   "alifs": 1716,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/exp3090-baseer-nakba-ft-bf16|nakba_lines": {
+   "hamza_share": 0.05366416618580496,
+   "alifs": 1733,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|nakba_lines": {
+   "hamza_share": 0.01589242053789731,
+   "alifs": 3272,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/exp3090-qwen3vl4b-ft-bf16|nakba_lines": {
+   "hamza_share": 0.02041912950026867,
+   "alifs": 1861,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/fanar-oryx-7b-bf16|nakba_lines": {
+   "hamza_share": 0.10894941634241245,
+   "alifs": 1542,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/nakba-misraj-baseer|nakba_blind": {
+   "hamza_share": 0.17902495693626566,
+   "alifs": 24963,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/nakba-misraj-baseer-contest|nakba_blind": {
+   "hamza_share": 0.1790541895631944,
+   "alifs": 24931,
+   "trained_on": "NAKBA train (labels with hamza)"
+  },
+  "vlm/paligemma2-3b-bf16|nakba_lines": {
+   "hamza_share": 0.1154299175500589,
+   "alifs": 849,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/qwen3-vl-4b-bf16|nakba_lines": {
+   "hamza_share": 0.1464104855525767,
+   "alifs": 6714,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/qwen3-vl-8b-bf16|nakba_lines": {
+   "hamza_share": 0.07876049063912201,
+   "alifs": 1549,
+   "trained_on": "not fine-tuned on either"
+  },
+  "vlm/suite-v1-ain7b-ft-bf16|nakba_lines": {
+   "hamza_share": 0.04566473988439306,
+   "alifs": 1730,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|nakba_lines": {
+   "hamza_share": 0.02524955960070464,
+   "alifs": 1703,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|nakba_lines": {
+   "hamza_share": 0.024080749819754867,
+   "alifs": 6935,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|nakba_lines": {
+   "hamza_share": 0.018107476635514017,
+   "alifs": 1712,
+   "trained_on": "Muharaf train (labels mostly without)"
+  },
+  "vlm/arabic-paddleocr-v5-unreversed|nakba_lines": {
+   "hamza_share": 0.012152777777777778,
+   "alifs": 576,
+   "trained_on": "not fine-tuned on either"
+  }
+ }
+}

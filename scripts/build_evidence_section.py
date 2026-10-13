@@ -192,6 +192,20 @@ def extra_sections(a) -> str:
                    "skeleton), both, or other; median share per family (<span class=\"mono\">analyze_phonetic_confusions.py</span>). Look-alike confusions run at "
                    "4–15× chance in every family; sound-alike ones at chance, even for the LLM decoder. Recognition errors are visual; articulation explains none of them.</p>"
                    + table(["Family", "Runs", "Look-only", "Sound-only", "Both", "Other"], rows))
+    zp = W / "results/analysis/B/hamza_emission.json"
+    if zp.exists():
+        Z = json.loads(zp.read_text(encoding="utf-8"))
+        grp = defaultdict(list)
+        for k, v in Z["runs"].items():
+            grp[v["trained_on"]].append(v["hamza_share"])
+        rows = [[f"<td>{html.escape(g)}</td>", f'<td class="n">{len(v)}</td>', f'<td class="n"><b>{pc(min(v))}–{pc(max(v))} %</b></td>'] for g, v in sorted(grp.items(), key=lambda t: -max(t[1]))]
+        lab = Z["labels"]
+        out.append("<h4>12 · The alif-hamza follows the training labels, not the image</h4><p>Share of alifs written with a hamza in each system's readings of NAKBA "
+                   f"test and blind, grouped by what the system was fine-tuned on. Labels: NAKBA test {pc(lab['nakba_lines'])} %, NAKBA blind {pc(lab['nakba_blind'])} %, "
+                   f"Muharaf {pc(lab['muharaf_lines'])} %, KHATT {pc(lab['kitab_khatt'])} %. Systems reading the same images write the hamza at their training labels' "
+                   "rate, so it is learned as a convention (finding T11, now across families). The two NAKBA splits are labelled at different rates "
+                   "(<span class=\"mono\">analyze_hamza_emission.py</span>).</p>"
+                   + table(["Fine-tuned on", "System × set rows", "Hamza on alifs"], rows))
     return "".join(out)
 
 
