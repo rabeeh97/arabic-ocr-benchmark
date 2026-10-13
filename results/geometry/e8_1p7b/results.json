@@ -1,0 +1,47 @@
+{
+ "kitab_khatt": {
+  "lines": 183,
+  "cer_crnn": 0.2636245110821382,
+  "wrong_words_crnn": 1305,
+  "fluent_wrong_share_crnn": 0.23601532567049807,
+  "cer_e8": 0.4009561060408518,
+  "wrong_words_e8": 1541,
+  "fluent_wrong_share_e8": 0.43932511356262166
+ },
+ "muharaf_lines": {
+  "lines": 300,
+  "cer_crnn": 0.07546855476884631,
+  "wrong_words_crnn": 608,
+  "fluent_wrong_share_crnn": 0.2598684210526316,
+  "cer_e8": 0.1180341524364848,
+  "wrong_words_e8": 811,
+  "fluent_wrong_share_e8": 0.39827373612823674
+ },
+ "nakba_blind": {
+  "lines": 600,
+  "cer_crnn": 0.13694442266990672,
+  "wrong_words_crnn": 3104,
+  "fluent_wrong_share_crnn": 0.34213917525773196,
+  "cer_e8": 0.207128112670168,
+  "wrong_words_e8": 3681,
+  "fluent_wrong_share_e8": 0.46943765281173594
+ },
+ "nakba_lines": {
+  "lines": 600,
+  "cer_crnn": 0.13762311617420198,
+  "wrong_words_crnn": 2874,
+  "fluent_wrong_share_crnn": 0.3771746694502436,
+  "cer_e8": 0.19897353743918358,
+  "wrong_words_e8": 3297,
+  "fluent_wrong_share_e8": 0.4971185926599939
+ },
+ "rasam1": {
+  "lines": 100,
+  "cer_crnn": 0.09936635944700462,
+  "wrong_words_crnn": 254,
+  "fluent_wrong_share_crnn": 0.3543307086614173,
+  "cer_e8": 0.1742511520737327,
+  "wrong_words_e8": 326,
+  "fluent_wrong_share_e8": 0.44785276073619634
+ }
+}

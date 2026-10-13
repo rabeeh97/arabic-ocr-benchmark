@@ -1,0 +1,1254 @@
+{
+ "bank_letters": 75182,
+ "bank_lines": 2000,
+ "band_edges": [
+  0.6457893909007643,
+  0.8336754450183921,
+  1.0435317771970238,
+  1.385105967264419,
+  2.1103569024177453
+ ],
+ "datasets": {
+  "kitab_khatt": {
+   "letters": 9019,
+   "median_novelty": 1.3546280647827,
+   "share_above_p95_of_muharaf": 0.22397161547843442,
+   "letter_error_rate": 0.23583545847654952,
+   "error_rate_by_band": [
+    0.054817275747508276,
+    0.04735682819383258,
+    0.08326463314097277,
+    0.12969634585692225,
+    0.2704672096013716,
+    0.5282178217821782
+   ],
+   "share_by_band": [
+    0.06674797649406808,
+    0.10067634992792993,
+    0.1344938463244262,
+    0.21543408360128619,
+    0.2586761281738552,
+    0.22397161547843442
+   ],
+   "pixel": {
+    "median_novelty": 17.706697288925145,
+    "share_above_p95_of_muharaf": 0.4320878146135935,
+    "error_rate_by_band": [
+     null,
+     null,
+     null,
+     null,
+     0.16233639382691933,
+     0.33230690274570185
+    ]
+   }
+  },
+  "muharaf_lines": {
+   "letters": 9840,
+   "median_novelty": 0.9309925821558862,
+   "share_above_p95_of_muharaf": 0.05,
+   "letter_error_rate": 0.06077235772357725,
+   "error_rate_by_band": [
+    0.012195121951219523,
+    0.02083333333333337,
+    0.03404471544715448,
+    0.06148373983739841,
+    0.12804878048780488,
+    0.31707317073170727
+   ],
+   "share_by_band": [
+    0.2,
+    0.2,
+    0.2,
+    0.2,
+    0.15,
+    0.05
+   ],
+   "pixel": {
+    "median_novelty": 8.940696716308594e-06,
+    "share_above_p95_of_muharaf": 0.05,
+    "error_rate_by_band": [
+     0.048327137546468446,
+     0.05907335907335909,
+     0.04566666666666663,
+     0.05961251862891204,
+     0.07520325203252032,
+     0.13008130081300817
+    ]
+   }
+  },
+  "nakba_blind": {
+   "letters": 31180,
+   "median_novelty": 1.1246137496987445,
+   "share_above_p95_of_muharaf": 0.11648492623476588,
+   "letter_error_rate": 0.11590763309813978,
+   "error_rate_by_band": [
+    0.02354079329248626,
+    0.03223157462533366,
+    0.05220742817098811,
+    0.0945402298850575,
+    0.16256514186450488,
+    0.35930616740088106
+   ],
+   "share_by_band": [
+    0.09945477870429763,
+    0.1562219371391918,
+    0.18306606799230277,
+    0.22322001282873638,
+    0.22155227710070557,
+    0.11648492623476588
+   ],
+   "pixel": {
+    "median_novelty": 14.462168514728546,
+    "share_above_p95_of_muharaf": 0.17062219371391918,
+    "error_rate_by_band": [
+     null,
+     null,
+     null,
+     null,
+     0.10426576942414045,
+     0.17255639097744357
+    ]
+   }
+  },
+  "nakba_lines": {
+   "letters": 27457,
+   "median_novelty": 1.0549891355160175,
+   "share_above_p95_of_muharaf": 0.09655097060858797,
+   "letter_error_rate": 0.11792985395345446,
+   "error_rate_by_band": [
+    0.01909877648463143,
+    0.03617463617463612,
+    0.06279464454082595,
+    0.10279146141215112,
+    0.1987814166031988,
+    0.3760844964164466
+   ],
+   "share_by_band": [
+    0.12204538004880358,
+    0.17518301343919584,
+    0.19313836180209054,
+    0.2218013621298758,
+    0.19128091197144625,
+    0.09655097060858797
+   ],
+   "pixel": {
+    "median_novelty": 14.162737131118774,
+    "share_above_p95_of_muharaf": 0.1579924973595076,
+    "error_rate_by_band": [
+     null,
+     null,
+     null,
+     null,
+     0.10381969978803474,
+     0.1929460580912863
+    ]
+   }
+  }
+ },
+ "per_letter": {
+  "ع": {
+   "bank": 2579,
+   "kitab_khatt": {
+    "n": 294,
+    "median_novelty": 1.431034699541547,
+    "error_rate": 0.22789115646258506
+   },
+   "muharaf_lines": {
+    "n": 346,
+    "median_novelty": 0.9032953566644573,
+    "error_rate": 0.046242774566473965
+   },
+   "nakba_blind": {
+    "n": 1049,
+    "median_novelty": 1.2153921554766987,
+    "error_rate": 0.11058150619637752
+   },
+   "nakba_lines": {
+    "n": 905,
+    "median_novelty": 1.0450062908379447,
+    "error_rate": 0.08066298342541434
+   }
+  },
+  "ا": {
+   "bank": 12487,
+   "kitab_khatt": {
+    "n": 1323,
+    "median_novelty": 1.1559143639353517,
+    "error_rate": 0.08919123204837487
+   },
+   "muharaf_lines": {
+    "n": 1634,
+    "median_novelty": 0.9707608766445226,
+    "error_rate": 0.0238678090575275
+   },
+   "nakba_blind": {
+    "n": 5054,
+    "median_novelty": 1.1305463497359747,
+    "error_rate": 0.03798971111990501
+   },
+   "nakba_lines": {
+    "n": 4164,
+    "median_novelty": 0.9965080198266546,
+    "error_rate": 0.032660902977905915
+   }
+  },
+  "م": {
+   "bank": 4849,
+   "kitab_khatt": {
+    "n": 518,
+    "median_novelty": 1.504289980802382,
+    "error_rate": 0.2625482625482626
+   },
+   "muharaf_lines": {
+    "n": 573,
+    "median_novelty": 0.9469716576546219,
+    "error_rate": 0.048865619546247796
+   },
+   "nakba_blind": {
+    "n": 1784,
+    "median_novelty": 1.121360364198193,
+    "error_rate": 0.09136771300448432
+   },
+   "nakba_lines": {
+    "n": 1565,
+    "median_novelty": 1.0795409475171236,
+    "error_rate": 0.08945686900958472
+   }
+  },
+  "ت": {
+   "bank": 2840,
+   "kitab_khatt": {
+    "n": 373,
+    "median_novelty": 1.3006978245080039,
+    "error_rate": 0.2654155495978552
+   },
+   "muharaf_lines": {
+    "n": 442,
+    "median_novelty": 0.9020501764490578,
+    "error_rate": 0.07466063348416285
+   },
+   "nakba_blind": {
+    "n": 1329,
+    "median_novelty": 1.0574479739643499,
+    "error_rate": 0.1392024078254327
+   },
+   "nakba_lines": {
+    "n": 1254,
+    "median_novelty": 0.9983020387921818,
+    "error_rate": 0.14673046251993616
+   }
+  },
+  "ح": {
+   "bank": 1442,
+   "kitab_khatt": {
+    "n": 224,
+    "median_novelty": 1.7096174144173568,
+    "error_rate": 0.5357142857142857
+   },
+   "muharaf_lines": {
+    "n": 237,
+    "median_novelty": 0.9727098893502147,
+    "error_rate": 0.12658227848101267
+   },
+   "nakba_blind": {
+    "n": 595,
+    "median_novelty": 1.0361488687225886,
+    "error_rate": 0.19999999999999996
+   },
+   "nakba_lines": {
+    "n": 510,
+    "median_novelty": 0.9917031124250925,
+    "error_rate": 0.17450980392156867
+   }
+  },
+  "د": {
+   "bank": 2291,
+   "kitab_khatt": {
+    "n": 184,
+    "median_novelty": 1.4824041482029369,
+    "error_rate": 0.18478260869565222
+   },
+   "muharaf_lines": {
+    "n": 304,
+    "median_novelty": 1.04017237657122,
+    "error_rate": 0.10197368421052633
+   },
+   "nakba_blind": {
+    "n": 919,
+    "median_novelty": 1.1453235858048865,
+    "error_rate": 0.14689880304679004
+   },
+   "nakba_lines": {
+    "n": 792,
+    "median_novelty": 1.0225788776278624,
+    "error_rate": 0.14141414141414144
+   }
+  },
+  "ل": {
+   "bank": 8124,
+   "kitab_khatt": {
+    "n": 1041,
+    "median_novelty": 1.1807533334400373,
+    "error_rate": 0.11719500480307399
+   },
+   "muharaf_lines": {
+    "n": 1058,
+    "median_novelty": 0.9126428705859757,
+    "error_rate": 0.026465028355387554
+   },
+   "nakba_blind": {
+    "n": 3348,
+    "median_novelty": 1.1332062452707623,
+    "error_rate": 0.038829151732377554
+   },
+   "nakba_lines": {
+    "n": 3012,
+    "median_novelty": 1.051587545367121,
+    "error_rate": 0.031872509960159334
+   }
+  },
+  "ك": {
+   "bank": 2064,
+   "kitab_khatt": {
+    "n": 200,
+    "median_novelty": 1.4454875387803885,
+    "error_rate": 0.25
+   },
+   "muharaf_lines": {
+    "n": 323,
+    "median_novelty": 0.9198878102577369,
+    "error_rate": 0.034055727554179516
+   },
+   "nakba_blind": {
+    "n": 577,
+    "median_novelty": 1.1328485639169208,
+    "error_rate": 0.10225303292894283
+   },
+   "nakba_lines": {
+    "n": 558,
+    "median_novelty": 1.0757973188749856,
+    "error_rate": 0.08243727598566308
+   }
+  },
+  "ب": {
+   "bank": 2904,
+   "kitab_khatt": {
+    "n": 374,
+    "median_novelty": 1.3295388744587968,
+    "error_rate": 0.213903743315508
+   },
+   "muharaf_lines": {
+    "n": 456,
+    "median_novelty": 0.9325842435813887,
+    "error_rate": 0.09210526315789469
+   },
+   "nakba_blind": {
+    "n": 1042,
+    "median_novelty": 1.1114224881286265,
+    "error_rate": 0.10844529750479848
+   },
+   "nakba_lines": {
+    "n": 888,
+    "median_novelty": 1.0464065197496275,
+    "error_rate": 0.11261261261261257
+   }
+  },
+  "ن": {
+   "bank": 4703,
+   "kitab_khatt": {
+    "n": 452,
+    "median_novelty": 1.2797926679187657,
+    "error_rate": 0.19469026548672563
+   },
+   "muharaf_lines": {
+    "n": 581,
+    "median_novelty": 0.9554335531960442,
+    "error_rate": 0.058519793459552494
+   },
+   "nakba_blind": {
+    "n": 1734,
+    "median_novelty": 1.2801626596294031,
+    "error_rate": 0.15801614763552485
+   },
+   "nakba_lines": {
+    "n": 1419,
+    "median_novelty": 1.2241102980780598,
+    "error_rate": 0.14587737843551796
+   }
+  },
+  "ي": {
+   "bank": 5492,
+   "kitab_khatt": {
+    "n": 574,
+    "median_novelty": 1.3335376076836116,
+    "error_rate": 0.22125435540069682
+   },
+   "muharaf_lines": {
+    "n": 751,
+    "median_novelty": 0.8869745521576892,
+    "error_rate": 0.08521970705725701
+   },
+   "nakba_blind": {
+    "n": 2085,
+    "median_novelty": 1.1245285652615606,
+    "error_rate": 0.1299760191846523
+   },
+   "nakba_lines": {
+    "n": 1864,
+    "median_novelty": 1.0719565470793104,
+    "error_rate": 0.11695278969957079
+   }
+  },
+  "و": {
+   "bank": 4499,
+   "kitab_khatt": {
+    "n": 426,
+    "median_novelty": 1.2588068313796967,
+    "error_rate": 0.11737089201877937
+   },
+   "muharaf_lines": {
+    "n": 611,
+    "median_novelty": 0.9238355509362413,
+    "error_rate": 0.026186579378068786
+   },
+   "nakba_blind": {
+    "n": 2307,
+    "median_novelty": 1.1261891874840197,
+    "error_rate": 0.07282184655396617
+   },
+   "nakba_lines": {
+    "n": 1947,
+    "median_novelty": 1.0452610152382027,
+    "error_rate": 0.06676938880328709
+   }
+  },
+  "ه": {
+   "bank": 2511,
+   "kitab_khatt": {
+    "n": 324,
+    "median_novelty": 1.518428012044608,
+    "error_rate": 0.2993827160493827
+   },
+   "muharaf_lines": {
+    "n": 266,
+    "median_novelty": 0.882388387599661,
+    "error_rate": 0.06390977443609025
+   },
+   "nakba_blind": {
+    "n": 1020,
+    "median_novelty": 1.2002268633637931,
+    "error_rate": 0.13137254901960782
+   },
+   "nakba_lines": {
+    "n": 927,
+    "median_novelty": 1.0861394943700662,
+    "error_rate": 0.11650485436893199
+   }
+  },
+  "خ": {
+   "bank": 652,
+   "kitab_khatt": {
+    "n": 124,
+    "median_novelty": 1.9543633003258285,
+    "error_rate": 0.4032258064516129
+   },
+   "muharaf_lines": {
+    "n": 79,
+    "median_novelty": 0.968372142096343,
+    "error_rate": 0.03797468354430378
+   },
+   "nakba_blind": {
+    "n": 269,
+    "median_novelty": 1.048009934418103,
+    "error_rate": 0.09293680297397766
+   },
+   "nakba_lines": {
+    "n": 243,
+    "median_novelty": 1.0292577606840634,
+    "error_rate": 0.13991769547325106
+   }
+  },
+  "ذ": {
+   "bank": 613,
+   "kitab_khatt": {
+    "n": 60,
+    "median_novelty": 1.3174485080266387,
+    "error_rate": 0.23333333333333328
+   },
+   "muharaf_lines": {
+    "n": 64,
+    "median_novelty": 0.9626811522710679,
+    "error_rate": 0.109375
+   },
+   "nakba_blind": {
+    "n": 238,
+    "median_novelty": 1.0733558857556678,
+    "error_rate": 0.09243697478991597
+   },
+   "nakba_lines": {
+    "n": 251,
+    "median_novelty": 1.044057103487428,
+    "error_rate": 0.0916334661354582
+   }
+  },
+  "ج": {
+   "bank": 1052,
+   "kitab_khatt": {
+    "n": 180,
+    "median_novelty": 1.5801415770379272,
+    "error_rate": 0.3666666666666667
+   },
+   "muharaf_lines": {
+    "n": 147,
+    "median_novelty": 0.9396593355324008,
+    "error_rate": 0.11564625850340138
+   },
+   "nakba_blind": {
+    "n": 485,
+    "median_novelty": 1.0103999074629062,
+    "error_rate": 0.06597938144329896
+   },
+   "nakba_lines": {
+    "n": 383,
+    "median_novelty": 1.0296455198376395,
+    "error_rate": 0.1044386422976501
+   }
+  },
+  "ث": {
+   "bank": 331,
+   "kitab_khatt": {
+    "n": 93,
+    "median_novelty": 1.25517723941555,
+    "error_rate": 0.6559139784946236
+   },
+   "muharaf_lines": {
+    "n": 25,
+    "median_novelty": 1.0901134817415081,
+    "error_rate": 0.36
+   },
+   "nakba_blind": {
+    "n": 189,
+    "median_novelty": 1.092844337341901,
+    "error_rate": 0.5185185185185186
+   },
+   "nakba_lines": {
+    "n": 150,
+    "median_novelty": 1.092280365428798,
+    "error_rate": 0.4066666666666666
+   }
+  },
+  "ة": {
+   "bank": 1580,
+   "kitab_khatt": {
+    "n": 202,
+    "median_novelty": 1.4761156169740994,
+    "error_rate": 0.22277227722772275
+   },
+   "muharaf_lines": {
+    "n": 120,
+    "median_novelty": 0.8613259358242831,
+    "error_rate": 0.033333333333333326
+   },
+   "nakba_blind": {
+    "n": 736,
+    "median_novelty": 1.0117280522518022,
+    "error_rate": 0.09375
+   },
+   "nakba_lines": {
+    "n": 762,
+    "median_novelty": 1.0038733607441488,
+    "error_rate": 0.1076115485564304
+   }
+  },
+  "س": {
+   "bank": 1845,
+   "kitab_khatt": {
+    "n": 172,
+    "median_novelty": 1.4943067678339315,
+    "error_rate": 0.25
+   },
+   "muharaf_lines": {
+    "n": 200,
+    "median_novelty": 0.9771412160268983,
+    "error_rate": 0.13
+   },
+   "nakba_blind": {
+    "n": 737,
+    "median_novelty": 1.1568705758902804,
+    "error_rate": 0.1424694708276798
+   },
+   "nakba_lines": {
+    "n": 631,
+    "median_novelty": 1.0748296687528818,
+    "error_rate": 0.14580031695721074
+   }
+  },
+  "ر": {
+   "bank": 3567,
+   "kitab_khatt": {
+    "n": 402,
+    "median_novelty": 1.32979642064352,
+    "error_rate": 0.2213930348258707
+   },
+   "muharaf_lines": {
+    "n": 424,
+    "median_novelty": 0.9014064480064667,
+    "error_rate": 0.04952830188679247
+   },
+   "nakba_blind": {
+    "n": 1504,
+    "median_novelty": 1.080970852470748,
+    "error_rate": 0.07579787234042556
+   },
+   "nakba_lines": {
+    "n": 1301,
+    "median_novelty": 1.0505552483654275,
+    "error_rate": 0.05380476556495006
+   }
+  },
+  "ط": {
+   "bank": 602,
+   "kitab_khatt": {
+    "n": 98,
+    "median_novelty": 1.5769529124462263,
+    "error_rate": 0.2857142857142857
+   },
+   "muharaf_lines": {
+    "n": 92,
+    "median_novelty": 0.947195210442856,
+    "error_rate": 0.021739130434782594
+   },
+   "nakba_blind": {
+    "n": 277,
+    "median_novelty": 1.0250651411733143,
+    "error_rate": 0.12635379061371843
+   },
+   "nakba_lines": {
+    "n": 256,
+    "median_novelty": 0.9531389040263507,
+    "error_rate": 0.09765625
+   }
+  },
+  "ف": {
+   "bank": 1945,
+   "kitab_khatt": {
+    "n": 295,
+    "median_novelty": 1.4410239513468344,
+    "error_rate": 0.33220338983050846
+   },
+   "muharaf_lines": {
+    "n": 275,
+    "median_novelty": 0.8801159862363261,
+    "error_rate": 0.07272727272727275
+   },
+   "nakba_blind": {
+    "n": 857,
+    "median_novelty": 1.0273609941565236,
+    "error_rate": 0.12368728121353556
+   },
+   "nakba_lines": {
+    "n": 711,
+    "median_novelty": 1.000256214747376,
+    "error_rate": 0.12658227848101267
+   }
+  },
+  "ش": {
+   "bank": 739,
+   "kitab_khatt": {
+    "n": 96,
+    "median_novelty": 1.750081960251074,
+    "error_rate": 0.47916666666666663
+   },
+   "muharaf_lines": {
+    "n": 122,
+    "median_novelty": 1.0424808878312666,
+    "error_rate": 0.07377049180327866
+   },
+   "nakba_blind": {
+    "n": 292,
+    "median_novelty": 1.098793317851728,
+    "error_rate": 0.14726027397260277
+   },
+   "nakba_lines": {
+    "n": 247,
+    "median_novelty": 1.0009182348424697,
+    "error_rate": 0.10121457489878538
+   }
+  },
+  "غ": {
+   "bank": 302,
+   "kitab_khatt": {
+    "n": 98,
+    "median_novelty": 1.6763254266133811,
+    "error_rate": 0.3877551020408163
+   },
+   "muharaf_lines": {
+    "n": 74,
+    "median_novelty": 0.963376195262069,
+    "error_rate": 0.18918918918918914
+   },
+   "nakba_blind": {
+    "n": 168,
+    "median_novelty": 1.1165037510092313,
+    "error_rate": 0.29166666666666663
+   },
+   "nakba_lines": {
+    "n": 127,
+    "median_novelty": 1.1075748211332863,
+    "error_rate": 0.2992125984251969
+   }
+  },
+  "ظ": {
+   "bank": 144,
+   "kitab_khatt": {
+    "n": 59,
+    "median_novelty": 1.8920041396253058,
+    "error_rate": 0.4576271186440678
+   },
+   "muharaf_lines": {
+    "n": 21,
+    "median_novelty": 1.2105893060319772,
+    "error_rate": 0.09523809523809523
+   },
+   "nakba_blind": {
+    "n": 56,
+    "median_novelty": 1.1174750864839944,
+    "error_rate": 0.1607142857142857
+   },
+   "nakba_lines": {
+    "n": 76,
+    "median_novelty": 1.0215230804689197,
+    "error_rate": 0.22368421052631582
+   }
+  },
+  "ق": {
+   "bank": 1545,
+   "kitab_khatt": {
+    "n": 168,
+    "median_novelty": 1.404729359246964,
+    "error_rate": 0.38095238095238093
+   },
+   "muharaf_lines": {
+    "n": 238,
+    "median_novelty": 0.8729580787069259,
+    "error_rate": 0.08823529411764708
+   },
+   "nakba_blind": {
+    "n": 585,
+    "median_novelty": 1.078802802032805,
+    "error_rate": 0.1264957264957265
+   },
+   "nakba_lines": {
+    "n": 595,
+    "median_novelty": 1.0398021524926608,
+    "error_rate": 0.10588235294117643
+   }
+  },
+  "ص": {
+   "bank": 680,
+   "kitab_khatt": {
+    "n": 111,
+    "median_novelty": 1.4225625089849179,
+    "error_rate": 0.3513513513513513
+   },
+   "muharaf_lines": {
+    "n": 84,
+    "median_novelty": 0.8291764467654649,
+    "error_rate": 0.059523809523809534
+   },
+   "nakba_blind": {
+    "n": 279,
+    "median_novelty": 1.0343242222330402,
+    "error_rate": 0.16487455197132617
+   },
+   "nakba_lines": {
+    "n": 231,
+    "median_novelty": 1.011378348417168,
+    "error_rate": 0.1471861471861472
+   }
+  },
+  "ى": {
+   "bank": 846,
+   "kitab_khatt": {
+    "n": 45,
+    "median_novelty": 1.8882197796356042,
+    "error_rate": 0.3555555555555555
+   },
+   "muharaf_lines": {
+    "n": 102,
+    "median_novelty": 0.879525352281199,
+    "error_rate": 0.16666666666666663
+   },
+   "nakba_blind": {
+    "n": 366,
+    "median_novelty": 1.4221048974219737,
+    "error_rate": 0.1693989071038251
+   },
+   "nakba_lines": {
+    "n": 264,
+    "median_novelty": 1.375048780936778,
+    "error_rate": 0.21590909090909094
+   }
+  },
+  "أ": {
+   "bank": 413,
+   "kitab_khatt": {
+    "n": 161,
+    "median_novelty": 1.3680074518540095,
+    "error_rate": 0.3788819875776398
+   },
+   "muharaf_lines": {
+    "n": 23,
+    "median_novelty": 0.9461223688798205,
+    "error_rate": 0.34782608695652173
+   },
+   "nakba_blind": {
+    "n": 395,
+    "median_novelty": 1.1504530028516453,
+    "error_rate": 0.9113924050632911
+   },
+   "nakba_lines": {
+    "n": 537,
+    "median_novelty": 1.112618211722238,
+    "error_rate": 0.931098696461825
+   }
+  },
+  "ض": {
+   "bank": 472,
+   "kitab_khatt": {
+    "n": 109,
+    "median_novelty": 1.4362281416471512,
+    "error_rate": 0.5229357798165137
+   },
+   "muharaf_lines": {
+    "n": 47,
+    "median_novelty": 0.8243597789558827,
+    "error_rate": 0.08510638297872342
+   },
+   "nakba_blind": {
+    "n": 204,
+    "median_novelty": 1.0731098890201265,
+    "error_rate": 0.18627450980392157
+   },
+   "nakba_lines": {
+    "n": 193,
+    "median_novelty": 1.0250255911077921,
+    "error_rate": 0.23316062176165808
+   }
+  },
+  "ز": {
+   "bank": 481,
+   "kitab_khatt": {
+    "n": 62,
+    "median_novelty": 1.280198294853053,
+    "error_rate": 0.29032258064516125
+   },
+   "muharaf_lines": {
+    "n": 68,
+    "median_novelty": 0.9234134309106403,
+    "error_rate": 0.17647058823529416
+   },
+   "nakba_blind": {
+    "n": 238,
+    "median_novelty": 1.0478149920301099,
+    "error_rate": 0.13025210084033612
+   },
+   "nakba_lines": {
+    "n": 190,
+    "median_novelty": 1.140710021102156,
+    "error_rate": 0.09473684210526312
+   }
+  },
+  "ء": {
+   "bank": 222,
+   "kitab_khatt": {
+    "n": 29,
+    "median_novelty": 1.3206303319381578,
+    "error_rate": 0.3448275862068966
+   },
+   "nakba_blind": {
+    "n": 129,
+    "median_novelty": 1.1246583568037276,
+    "error_rate": 0.20155038759689925
+   },
+   "nakba_lines": {
+    "n": 124,
+    "median_novelty": 1.0939049735381992,
+    "error_rate": 0.16129032258064513
+   }
+  },
+  "ئ": {
+   "bank": 217,
+   "kitab_khatt": {
+    "n": 46,
+    "median_novelty": 1.2850145613084862,
+    "error_rate": 0.4782608695652174
+   },
+   "muharaf_lines": {
+    "n": 15,
+    "median_novelty": 0.9024972761720811,
+    "error_rate": 0.2666666666666667
+   },
+   "nakba_blind": {
+    "n": 119,
+    "median_novelty": 1.0821637616718973,
+    "error_rate": 0.31092436974789917
+   },
+   "nakba_lines": {
+    "n": 108,
+    "median_novelty": 1.0462799950520294,
+    "error_rate": 0.3055555555555556
+   }
+  },
+  "آ": {
+   "bank": 53,
+   "kitab_khatt": {
+    "n": 18,
+    "median_novelty": 1.4458203418885138,
+    "error_rate": 0.5555555555555556
+   },
+   "nakba_blind": {
+    "n": 22,
+    "median_novelty": 1.0434429059760406,
+    "error_rate": 0.36363636363636365
+   },
+   "nakba_lines": {
+    "n": 28,
+    "median_novelty": 1.1150648325400656,
+    "error_rate": 0.5357142857142857
+   }
+  }
+ },
+ "spearman_cnn_vs_pixel_novelty": 0.3081265424486967,
+ "allograph_sizes": {
+  "ه|iso": [
+   77,
+   62,
+   60,
+   39,
+   29,
+   9
+  ],
+  "ه|ini": [
+   199,
+   127,
+   118,
+   88,
+   78,
+   9
+  ],
+  "ه|med": [
+   203,
+   175,
+   171,
+   145,
+   122,
+   41
+  ],
+  "ه|fin": [
+   171,
+   166,
+   161,
+   128,
+   84,
+   49
+  ],
+  "ك|ini": [
+   327,
+   202,
+   116,
+   89,
+   74,
+   48
+  ],
+  "ك|med": [
+   190,
+   139,
+   123,
+   115,
+   112,
+   92
+  ],
+  "ك|fin": [
+   74,
+   60,
+   56,
+   52,
+   52,
+   24
+  ],
+  "ي|iso": [
+   90,
+   60,
+   48,
+   44,
+   9,
+   4
+  ],
+  "ي|ini": [
+   455,
+   356,
+   254,
+   226,
+   225,
+   164
+  ],
+  "ي|med": [
+   464,
+   445,
+   430,
+   373,
+   350,
+   319
+  ],
+  "ي|fin": [
+   357,
+   249,
+   232,
+   203,
+   95,
+   40
+  ],
+  "ع|ini": [
+   397,
+   296,
+   240,
+   148,
+   133,
+   48
+  ],
+  "ع|med": [
+   216,
+   213,
+   156,
+   153,
+   137,
+   126
+  ],
+  "ع|fin": [
+   76,
+   57,
+   47,
+   26,
+   23,
+   14
+  ],
+  "ح|ini": [
+   140,
+   119,
+   105,
+   103,
+   81,
+   53
+  ],
+  "ح|med": [
+   160,
+   139,
+   115,
+   108,
+   104,
+   64
+  ],
+  "س|iso": [
+   51,
+   31,
+   24,
+   18,
+   4,
+   4
+  ],
+  "س|ini": [
+   206,
+   202,
+   144,
+   133,
+   110,
+   82
+  ],
+  "س|med": [
+   236,
+   145,
+   102,
+   87,
+   67,
+   52
+  ],
+  "س|fin": [
+   47,
+   40,
+   27,
+   20,
+   10,
+   3
+  ],
+  "م|iso": [
+   85,
+   80,
+   57,
+   33,
+   32,
+   16
+  ],
+  "م|ini": [
+   483,
+   483,
+   452,
+   253,
+   236,
+   103
+  ],
+  "م|med": [
+   447,
+   324,
+   295,
+   222,
+   206,
+   157
+  ],
+  "م|fin": [
+   234,
+   199,
+   198,
+   124,
+   75,
+   55
+  ],
+  "ل|iso": [
+   96,
+   81,
+   73,
+   68,
+   14,
+   7
+  ],
+  "ل|ini": [
+   1213,
+   1157,
+   792,
+   787,
+   765,
+   592
+  ],
+  "ل|med": [
+   469,
+   366,
+   354,
+   321,
+   286,
+   99
+  ],
+  "ل|fin": [
+   135,
+   125,
+   110,
+   104,
+   60,
+   50
+  ],
+  "ف|ini": [
+   335,
+   284,
+   249,
+   222,
+   119,
+   29
+  ],
+  "ف|med": [
+   99,
+   92,
+   88,
+   76,
+   49,
+   28
+  ],
+  "ف|fin": [
+   51,
+   47,
+   24,
+   21,
+   13,
+   13
+  ],
+  "ر|iso": [
+   424,
+   258,
+   234,
+   154,
+   127,
+   30
+  ],
+  "ر|fin": [
+   633,
+   620,
+   417,
+   296,
+   282,
+   92
+  ],
+  "ن|iso": [
+   286,
+   222,
+   171,
+   128,
+   99,
+   63
+  ],
+  "ن|ini": [
+   339,
+   317,
+   173,
+   155,
+   130,
+   111
+  ],
+  "ن|med": [
+   359,
+   277,
+   273,
+   269,
+   184,
+   123
+  ],
+  "ن|fin": [
+   293,
+   220,
+   199,
+   171,
+   84,
+   57
+  ],
+  "ب|iso": [
+   65,
+   41,
+   34,
+   23,
+   14,
+   4
+  ],
+  "ب|ini": [
+   364,
+   350,
+   262,
+   239,
+   165,
+   123
+  ],
+  "ب|med": [
+   258,
+   239,
+   160,
+   159,
+   121,
+   4
+  ],
+  "ب|fin": [
+   74,
+   71,
+   50,
+   41,
+   27,
+   16
+  ]
+ }
+}

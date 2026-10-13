@@ -69,9 +69,10 @@ def main() -> None:
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location="cuda"))
     rows = pickle.load(open(a.data, "rb"))["rows"]
     res = {}
+    per_line = {}  # {ds: {id: [errors, chars, text]}} upright, and {ds}__tta for the confidence-selected shear
     for ds in sorted({r["dataset"] for r in rows}):
         rs = [r for r in rows if r["dataset"] == ds][: a.n]
-        per_variant = {d: [] for d in SHEARS}  # (errors, chars, confidence) per line
+        per_variant = {d: [] for d in SHEARS}  # (errors, chars, confidence, text) per line
         for r in rs:
             for d in SHEARS:
                 row = {**r, "img": shear(r["img"], d)}
@@ -82,7 +83,10 @@ def main() -> None:
                 p = logits.softmax(-1)[:, 0]  # T, C
                 best, arg = p.max(-1)
                 conf = float(best[arg != 0].mean()) if (arg != 0).any() else 0.0
-                per_variant[d].append((edit_distance(hyp, tgt[0]), max(1, len(tgt[0])), conf))
+                per_variant[d].append((edit_distance(hyp, tgt[0]), max(1, len(tgt[0])), conf, "".join(chars[k - 1] for k in hyp)))
+        sel = [max(SHEARS, key=lambda d: per_variant[d][i][2]) for i in range(len(rs))]
+        per_line[ds] = {r["id"]: list(per_variant[0][i][:2]) + [per_variant[0][i][3]] for i, r in enumerate(rs)}
+        per_line[ds + "__tta"] = {r["id"]: list(per_variant[sel[i]][i][:2]) + [per_variant[sel[i]][i][3]] for i, r in enumerate(rs)}
         tot = lambda f: sum(f(i) for i in range(len(rs)))  # noqa: E731
         n_chars = tot(lambda i: per_variant[0][i][1])
         out = {"lines": len(rs), "variant_cer": {d: tot(lambda i: per_variant[d][i][0]) / n_chars for d in SHEARS}}
@@ -90,6 +94,7 @@ def main() -> None:
         out["oracle_cer"] = tot(lambda i: min(per_variant[d][i][0] for d in SHEARS)) / n_chars
         res[ds] = out
         print(ds, json.dumps(out), flush=True)
+    res["per_line"] = per_line
     a.out.write_text(json.dumps(res, indent=1), encoding="utf-8")
 
 

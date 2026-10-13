@@ -17,11 +17,20 @@
 - [x] (2026-10-11) **X-G1, X-G2, X-G4, X-G5, X-G6 Geometry measurements** (`scripts/geom_measure.py`, `geom_analyze.py`; `results/geometry/run1`). KHATT is far from the Muharaf training lines in slant (+11° against −2°) and pen proportions, not in contour histograms.
 - [x] (2026-10-11) **X-G7 CPU proxy** (`scripts/geom_dots.py`): dots survive a plain resize at 64 px and are lost at 32 px.
 - [x] (2026-10-11) **X-T1 Geometry transfer** (`scripts/geom_transfer.py`; page `results/geometry/transfer/index.html`): lines of one dataset transformed to the measured look of another (slant, stroke width, blur, tone, paper noise); mean gap to target over twelve measures falls from about 0.75 to 0.25 SD.
-- [ ] **X-T2 Does the transformed geometry carry the transfer gap? (3090)** Run the CRNN on the original and transformed lines (section 2, step 1). *Done when:* CER for `kitab_khatt` against `kitab_khatt__as_muharaf`, `muharaf_lines` against `muharaf_lines__as_khatt`, and `nakba_lines` against `nakba_lines__norules`, with paired per-line differences.
+- [x] (2026-10-12) **X-T2 Transformed geometry on the CRNN.** KHATT as Muharaf 26.3 → 25.3 % (all from slant); Muharaf made upright 6.2 → 8.2 %; NAKBA stroke thinning 13.6 → 12.3 %; tone, noise and ruled lines no effect.
+- [x] (2026-10-12) **X-G8 Slant sweep and confidence-selected TTA.** KHATT 26.3 → 25.4 %; on ink-cropped lines 23.3 → 22.4 % (the gains stack). NAKBA gets about 0.5 points worse, so gate TTA on measured slant.
+- [x] (2026-10-12) **X-S1 Ink-band crop before resizing** (`geom_ink_extent.py`, `geom_inkcrop_export.py`). KHATT 26.3 → 23.2 % with no retraining; NAKBA unchanged; training on cropped lines adds nothing; VLMs are not affected by loose crops.
+- [x] (2026-10-12) **X-T3 Slant and stroke augmentation in training.** Slant-robust, no gain on unseen sets (KHATT 26.9 %, NAKBA 14.4 %).
+- [x] (2026-10-12) **X-G10 Letter-shape novelty** (`xai_letter_shapes.py`). Letter error rises from 1–5 % (typical) to 30–53 % (most novel); KHATT has 21 % unusual letters against 10 % for NAKBA; independent check passed.
+- [x] (2026-10-12) **Hamza convention** (`geom_hamza.py`). About 2 points of NAKBA CER are annotators adding hamza (13.8 → 11.6 % folded).
+- [x] (2026-10-13) **X-G11 lite Shape-targeted training repeats** (`xai_shape_select.py`, `shape_analyze.py`). Held-out KHATT half B: −0.8 points against a random control [−1.6, +0.1]; replicate drift +0.4. Error in the two most novel bands about 2 points lower.
+- [x] (2026-10-13) **X-S2 Stacked fixes.** Ink-cropped training + shape repeats: KHATT 22.3 % cropped (original CRNN cropped 23.2 %), NAKBA unchanged. Combo + slant TTA: KHATT 21.5 % (NAKBA +0.5, so gate TTA).
+- [x] (2026-10-12/13) **E8 and E8b CRNN features → Qwen3 LLM decoder.** No-go at 0.6B (KHATT 40.0 %) and at 1.7B (40.1 %); more fluent-but-wrong words. Closed in this form.
+- [ ] **X-G11 second seed (3090).** Retrain targeted and random-control with another seed; settles whether the −0.8 on half B is real.
+- [ ] **X-S2 second seed and TTA gate (3090/CPU).** Second seed of the combo model; apply slant TTA only to lines whose measured slant is far from training.
 - [ ] **X-G3 Normalization ablation on the CRNN (3090).** Height 32/48/64/96, median padding against resize, deslant, binarization; two seeds.
-- [ ] **X-G8 Slant sweep and confidence-selected TTA (3090).** `scripts/xai_geom_tta.py` (section 2, step 2).
 - [ ] **X-G7 Dot-preserving resize at 32 and 48 px (3090).** Not at 64 px; the proxy shows no loss there.
-- [ ] **X-A2b, X-A3, X-A6, X-A7, X-D0, X-D1, X-C2, E8** as listed in the ledger; all need the 3090 or a VLM run.
+- [ ] **X-A2b, X-A3, X-A6, X-A7, X-D0, X-D1, X-C2** as listed in the ledger; all need the 3090 or a VLM run.
 
 ## 2. Runbook for the 3090
 
