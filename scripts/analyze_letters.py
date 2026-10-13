@@ -177,6 +177,8 @@ def main() -> None:
     S = {s["sample_key"]: s for s in pq.read_table(a.store / "samples.parquet").to_pylist()}
     idx = defaultdict(dict)
     for r in pq.read_table(a.store / "lines.parquet").to_pylist():
+        if r.get("in_train") == "yes":  # never score lines a run trained on (CORRECTIONS C4)
+            continue
         idx[(r["run_id"], r["transform"], r["pack"], r["dataset"])][r["sample_key"]] = r
 
     chosen = {}  # (run@tr, ds) -> rows, preferred pack only

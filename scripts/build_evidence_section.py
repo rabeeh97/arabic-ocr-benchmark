@@ -76,6 +76,33 @@ def bucket_chart(A1: dict, specs: list[tuple[str, str]]) -> str:
             + '<details class="tbl"><summary>Show the table (all eight buckets, % of lines)</summary>' + table(head, trows) + "</details>")
 
 
+def patch_key_findings(h: str, A1: dict, A2: dict) -> str:
+    """Rewrite the impact cells of the key-findings rows that the full panel changes (all 200 KHATT lines, full NAKBA)."""
+    def pr(name, ds):
+        v = A2.get(f"{name}|{ds}")
+        return (v["crnn_native"], v["lines"]) if v and v.get("pack") == "panel-2026-10-13" else (None, None)
+
+    crop, n = pr("ink crop (test time)", "kitab_khatt")
+    if crop:
+        runs = [k for k in A1 if k.startswith("crnn/") and k.endswith("|panel-2026-10-13|kitab_khatt") and "@inkcrop|" in k and "std" not in k]
+        lo = min(A1[k]["crnn_native"]["micro"] for k in runs)
+        hi = max(A1[k]["crnn_native"]["micro"] for k in runs)
+        bn = crop["beyond_noise"]
+        cell = (f"<td><b>Largest gain found (fixed-height models only; VLMs unaffected):</b> KHATT, all {n} lines, {pc(crop['cer_A'])} → {pc(crop['cer_B'])} % "
+                f"({sg(crop['delta'])} points [{sg(crop['ci95'][0])}, {sg(crop['ci95'][1])}]; {bn['better']} lines better and {bn['worse']} worse beyond seed noise) "
+                f"with no retraining; every one of {len(runs)} CRNNs lands at {pc(lo)}–{pc(hi)} % cropped; NAKBA unchanged. "
+                "(Earlier 26.3 → 23.2 % was on 183 lines that excluded the 17 worst crops, CORRECTIONS C3.)</td>")
+        h = re.sub(r"<td><b>Largest gain found \(fixed-height models only; VLMs unaffected\):</b>.*?</td>", lambda _: cell, h, count=1, flags=re.S)
+    aug, _ = pr("slant/stroke augmentation", "nakba_lines")
+    augb, _ = pr("slant/stroke augmentation", "nakba_blind")
+    augk, _ = pr("slant/stroke augmentation", "kitab_khatt")
+    if aug and augb and augk:
+        cell = (f"<td><b>Hurts on unseen sets</b> (full panel): NAKBA test {sg(aug['delta'])} [{sg(aug['ci95'][0])}, {sg(aug['ci95'][1])}], "
+                f"blind {sg(augb['delta'])} [{sg(augb['ci95'][0])}, {sg(augb['ci95'][1])}], KHATT {sg(augk['delta'])} points</td>")
+        h = re.sub(r"<td>None on the unseen sets \(KHATT 26\.4 → 26\.9 %, NAKBA 13\.8 → 14\.4 %\)</td>|<td><b>Hurts on unseen sets</b>.*?</td>", lambda _: cell, h, count=1, flags=re.S)
+    return h
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--a", type=Path, default=W / "results/analysis/A")
@@ -190,7 +217,7 @@ def main() -> None:
   <article class="dpart" id="d-evidence">
     <h3>Per-line and per-letter evidence; corrections (2026-10-13)</h3>
     {STYLE}
-    <div class="verdict"><p><b>A new standard analysis for every experiment.</b> Every reading of every line by every system (CRNN runs, TTA, E8 and 128 VLM model × set pairs, {sum(1 for _ in A1)} run × set summaries) now sits in one per-line store, keyed by the dataset row, with every stored CRNN edit reproduced exactly. Each result gets a line-level view (buckets, shifts beyond seed noise, the line × system matrix), a letter-level view and pattern detectors. Eight problems in earlier numbers are listed first.</p></div>
+    <div class="verdict"><p><b>A new standard analysis for every experiment.</b> Every reading of every line by every system (CRNN runs, TTA, E8 and 128 VLM model × set pairs, {sum(1 for _ in A1)} run × set summaries) now sits in one per-line store, keyed by the dataset row, with every stored CRNN edit reproduced exactly. Each result gets a line-level view (buckets, shifts beyond seed noise, the line × system matrix), a letter-level view and pattern detectors. The problems found in earlier numbers are listed first.</p></div>
     <h4>Corrections</h4>
     {corr}
     {buckets}
@@ -202,6 +229,7 @@ def main() -> None:
   </article>
 """
     h = LEDGER.read_text(encoding="utf-8")
+    h = patch_key_findings(h, A1, A2)
     h = re.sub(r"\n  <!-- 6l\. evidence -->.*?</article>\n(?=\n  <!-- 6b)", "\n", h, flags=re.S)
     h = h.replace("\n  <!-- 6b. attribution spike -->", ARTICLE + "\n  <!-- 6b. attribution spike -->", 1)
     if 'href="#d-evidence"' not in h:

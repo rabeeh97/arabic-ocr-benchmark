@@ -8,7 +8,8 @@
    "results/geometry/inkcrop_base.json",
    "results/geometry/night/tta_inkcrop_pl.json",
    "results/geometry/shape/base.json",
-   "results/geometry/transfer_cer.json"
+   "results/geometry/transfer_cer.json",
+   "results/panel/out/aligner_run.json"
   ]
  },
  "crnn/rep2": {
@@ -16,7 +17,8 @@
   "model": "rep2",
   "sources": [
    "results/geometry/night/rep2_eval.json",
-   "results/geometry/night/rep2_inkcrop.json"
+   "results/geometry/night/rep2_inkcrop.json",
+   "results/panel/out/aligner_run_rep2.json"
   ]
  },
  "crnn/randctl": {
@@ -24,7 +26,8 @@
   "model": "randctl",
   "sources": [
    "results/geometry/night/randctl_inkcrop.json",
-   "results/geometry/shape/random_eval.json"
+   "results/geometry/shape/random_eval.json",
+   "results/panel/out/aligner_run_randctl.json"
   ]
  },
  "crnn/shape": {
@@ -33,7 +36,8 @@
   "sources": [
    "results/geometry/night/shape_inkcrop.json",
    "results/geometry/night/shape_transfer.json",
-   "results/geometry/shape/targeted_eval.json"
+   "results/geometry/shape/targeted_eval.json",
+   "results/panel/out/aligner_run_shape.json"
   ]
  },
  "crnn/combo": {
@@ -41,7 +45,8 @@
   "model": "combo",
   "sources": [
    "results/geometry/night/combo_inkcrop.json",
-   "results/geometry/night/tta_inkcrop_combo.json"
+   "results/geometry/night/tta_inkcrop_combo.json",
+   "results/panel/out/aligner_run_combo.json"
   ]
  },
  "crnn/geomaug": {
@@ -50,14 +55,16 @@
   "sources": [
    "results/geometry/aug_evaldata.json",
    "results/geometry/aug_transfer.json",
-   "results/geometry/inkcrop_aug.json"
+   "results/geometry/inkcrop_aug.json",
+   "results/panel/out/aligner_run_geomaug.json"
   ]
  },
  "crnn/inkcrop": {
   "family": "crnn",
   "model": "inkcrop",
   "sources": [
-   "results/geometry/inkcrop_trained.json"
+   "results/geometry/inkcrop_trained.json",
+   "results/panel/out/aligner_run_inkcrop.json"
   ]
  },
  "crnn+llm/e8-qwen3-0.6b": {

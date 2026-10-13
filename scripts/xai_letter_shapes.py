@@ -96,7 +96,7 @@ def letters_of(model, rows, stoi, itos, tag_of, feat_model=None):
             s1 = max(s1, s0 + 1)
             feats.append(cols[s0:s1].mean(0).half().cpu())
             crops.append(crop(arr, s0 * 4, s1 * 4))
-            meta.append({"tag": tag_of(r), "id": r["id"], "ch": ch, "form": form_of(lab, i), "ok": bool(ok[i])})
+            meta.append({"tag": tag_of(r), "id": r["id"], "ch": ch, "form": form_of(lab, i), "ok": bool(ok[i]), "i": i, "span": [s0 * 4, s1 * 4]})
     return torch.stack(feats), np.stack(crops), meta
 
 
@@ -110,6 +110,8 @@ def main() -> None:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--n-train", type=int, default=2000)
     ap.add_argument("--feat-run", type=Path, help="take the letter features from this run (model_final.pt) instead; alignment and errors stay with --run")
+    ap.add_argument("--dump-letters", action="store_true", help="also write letters.json: one record per evaluated letter "
+                    "[id, tag, index in the cleaned label, ch, form, span x0, x1 (px at 64 px height), ok, novelty, pixel novelty] for the store (plan B7)")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     chars = json.loads((a.run / "charset.json").read_text(encoding="utf-8"))["chars"]
@@ -170,6 +172,13 @@ def main() -> None:
 
     nov, scale = novelty(Fb, Fe)
     nov_pix, _ = novelty(Pb, Pe)
+    if a.dump_letters:
+        rec = [[m["id"], m["tag"], m["i"], m["ch"], m["form"], m["span"][0], m["span"][1], m["ok"],
+                None if not np.isfinite(nov[k]) else round(float(nov[k]), 4), None if not np.isfinite(nov_pix[k]) else round(float(nov_pix[k]), 4)]
+               for k, m in enumerate(Me)]
+        (a.out / "letters.json").write_text(json.dumps({"fields": ["id", "tag", "i", "ch", "form", "x0", "x1", "ok", "novelty", "novelty_pix"], "rows": rec},
+                                                       ensure_ascii=False), encoding="utf-8")
+        print("dumped", len(rec), "letters", flush=True)
     tags = sorted({m["tag"] for m in Me})
     ok = np.array([m["ok"] for m in Me])
     tg = np.array([m["tag"] for m in Me])

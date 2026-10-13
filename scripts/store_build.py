@@ -65,6 +65,17 @@ class Store:
         self.runs: dict[str, dict] = {}
         self.rec: dict[str, dict] = {}
 
+    aligner_train: set[str] = set()
+
+    def in_train(self, run: str, key: str) -> str:
+        """yes / no for CRNN runs (the aligner recipe trained on most Muharaf and RASAM test lines, CORRECTIONS C4; the
+        standard split on none), unknown for everything else."""
+        if run.startswith("crnn/std") :
+            return "no"
+        if run.startswith(("crnn/", "crnn+llm/")):
+            return "yes" if key in self.aligner_train else "no"
+        return "unknown"
+
     def key(self, ds: str, sid: str) -> str | None:
         if sid in self.samples:
             return sid
@@ -79,7 +90,7 @@ class Store:
         row = {"run_id": run, "family": family, "model": model, "transform": transform, "sample_key": key, "dataset": s["dataset"],
                "pack": pack, "numerics": numerics, "source": source, "hyp": hyp, "conf": conf,
                "stored_edits": None if stored is None else int(stored[0]), "stored_ref_len": None if stored is None else int(stored[1]),
-               "reversed_suspect": reversed_suspect(gtc, hyp, native)}
+               "reversed_suspect": reversed_suspect(gtc, hyp, native), "in_train": self.in_train(run, key)}
         for name, (e, n) in zip(errors.RUNGS, lad):
             row[f"e_{name}"], row[f"n_{name}"] = e, n
         row["e_crnn_native"], row["n_crnn_native"] = native, len(gtc)
@@ -132,6 +143,7 @@ def main() -> None:
     a.out.mkdir(parents=True, exist_ok=True)
     samples, legacy = load_samples(W / S["panel"])
     st = Store(samples, legacy)
+    st.aligner_train = set(json.loads((W / S["crnn_aligner_train_ids"]).read_text()))
     print("samples", len(samples), Counter(s["dataset"] for s in samples.values()), flush=True)
 
     def ingest_pl(src, run, pack, numerics, per_line, conf=None):

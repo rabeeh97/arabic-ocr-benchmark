@@ -64,6 +64,8 @@ class Store:
     def __init__(self, path: Path):
         self.idx: dict[tuple, dict[str, dict]] = defaultdict(dict)  # (run, transform, pack, dataset) -> {key: row}
         for r in pq.read_table(path / "lines.parquet").to_pylist():
+            if r.get("in_train") == "yes":  # never score lines a run trained on (CORRECTIONS C4)
+                continue
             self.idx[(r["run_id"], r["transform"], r["pack"], r["dataset"])][r["sample_key"]] = r
         self.samples = {s["sample_key"]: s for s in pq.read_table(path / "samples.parquet").to_pylist()}
 

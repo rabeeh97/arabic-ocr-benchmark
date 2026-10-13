@@ -49,6 +49,7 @@ def main() -> None:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--n", type=int, default=300, help="lines per dataset")
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--all-variants", action="store_true", help="also store every shear's reading and confidence per line")
     a = ap.parse_args()
     if a.selftest:
         im = np.full((64, 200), 255, np.uint8)
@@ -87,6 +88,9 @@ def main() -> None:
         sel = [max(SHEARS, key=lambda d: per_variant[d][i][2]) for i in range(len(rs))]
         per_line[ds] = {r["id"]: list(per_variant[0][i][:2]) + [per_variant[0][i][3]] for i, r in enumerate(rs)}
         per_line[ds + "__tta"] = {r["id"]: list(per_variant[sel[i]][i][:2]) + [per_variant[sel[i]][i][3]] for i, r in enumerate(rs)}
+        if a.all_variants:  # every shear with its confidence, for offline gate and selector studies (plan P0.5 / P1.3)
+            for d in SHEARS:
+                per_line[f"{ds}__shear{d:+d}"] = {r["id"]: list(per_variant[d][i][:2]) + [per_variant[d][i][3], round(per_variant[d][i][2], 4)] for i, r in enumerate(rs)}
         tot = lambda f: sum(f(i) for i in range(len(rs)))  # noqa: E731
         n_chars = tot(lambda i: per_variant[0][i][1])
         out = {"lines": len(rs), "variant_cer": {d: tot(lambda i: per_variant[d][i][0]) / n_chars for d in SHEARS}}

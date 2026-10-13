@@ -130,5 +130,6 @@
   ],
   "crnn_panel_glob": "results/panel/out*/*.json",
   "vlm_root": "/Volumes/PortableSSD/repos/arabic_ocr",
-  "panel": "results/panel/panel.pkl"
+  "panel": "results/panel/panel.pkl",
+  "crnn_aligner_train_ids": "configs/analysis/crnn_aligner_train_test_ids.json"
 }
