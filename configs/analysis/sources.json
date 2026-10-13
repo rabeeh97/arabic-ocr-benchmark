@@ -1,32 +1,134 @@
 {
   "_doc": "Registry for scripts/store_build.py: which per-line result file belongs to which run (plan 2026-10-13, §3.2). Paths are relative to the worktree. pack = the evaluation pickle the file was scored on; numerics = how it was scored (fp32-bs32 = geom_transfer_eval.py batches of 32; fp16-bs1 = xai_geom_tta.py one line at a time; fp32-bs1 = crnn_eval_panel.py).",
   "crnn_per_line": [
-    {"file": "results/geometry/shape/base.json", "run": "crnn/base", "pack": "eval_data", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/base_evaldata.json", "run": "crnn/base", "pack": "eval_data#2", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/inkcrop_base.json", "run": "crnn/base", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/transfer_cer.json", "run": "crnn/base", "pack": "transfer_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/rep2_eval.json", "run": "crnn/rep2", "pack": "eval_data", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/rep2_inkcrop.json", "run": "crnn/rep2", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/shape/random_eval.json", "run": "crnn/randctl", "pack": "eval_data", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/randctl_inkcrop.json", "run": "crnn/randctl", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/shape/targeted_eval.json", "run": "crnn/shape", "pack": "eval_data", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/shape_inkcrop.json", "run": "crnn/shape", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/shape_transfer.json", "run": "crnn/shape", "pack": "transfer_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/night/combo_inkcrop.json", "run": "crnn/combo", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/aug_evaldata.json", "run": "crnn/geomaug", "pack": "eval_data", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/inkcrop_aug.json", "run": "crnn/geomaug", "pack": "inkcrop_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/aug_transfer.json", "run": "crnn/geomaug", "pack": "transfer_eval", "numerics": "fp32-bs32"},
-    {"file": "results/geometry/inkcrop_trained.json", "run": "crnn/inkcrop", "pack": "inkcrop_eval", "numerics": "fp32-bs32"}
+    {
+      "file": "results/geometry/shape/base.json",
+      "run": "crnn/base",
+      "pack": "eval_data",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/base_evaldata.json",
+      "run": "crnn/base",
+      "pack": "eval_data#2",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/inkcrop_base.json",
+      "run": "crnn/base",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/transfer_cer.json",
+      "run": "crnn/base",
+      "pack": "transfer_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/rep2_eval.json",
+      "run": "crnn/rep2",
+      "pack": "eval_data",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/rep2_inkcrop.json",
+      "run": "crnn/rep2",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/shape/random_eval.json",
+      "run": "crnn/randctl",
+      "pack": "eval_data",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/randctl_inkcrop.json",
+      "run": "crnn/randctl",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/shape/targeted_eval.json",
+      "run": "crnn/shape",
+      "pack": "eval_data",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/shape_inkcrop.json",
+      "run": "crnn/shape",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/shape_transfer.json",
+      "run": "crnn/shape",
+      "pack": "transfer_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/night/combo_inkcrop.json",
+      "run": "crnn/combo",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/aug_evaldata.json",
+      "run": "crnn/geomaug",
+      "pack": "eval_data",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/inkcrop_aug.json",
+      "run": "crnn/geomaug",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/aug_transfer.json",
+      "run": "crnn/geomaug",
+      "pack": "transfer_eval",
+      "numerics": "fp32-bs32"
+    },
+    {
+      "file": "results/geometry/inkcrop_trained.json",
+      "run": "crnn/inkcrop",
+      "pack": "inkcrop_eval",
+      "numerics": "fp32-bs32"
+    }
   ],
   "crnn_tta": [
-    {"file": "results/geometry/night/tta_inkcrop_pl.json", "run": "crnn/base", "pack": "inkcrop_eval", "numerics": "fp16-bs1"},
-    {"file": "results/geometry/night/tta_inkcrop_combo.json", "run": "crnn/combo", "pack": "inkcrop_eval", "numerics": "fp16-bs1"}
+    {
+      "file": "results/geometry/night/tta_inkcrop_pl.json",
+      "run": "crnn/base",
+      "pack": "inkcrop_eval/fp16-bs1",
+      "numerics": "fp16-bs1"
+    },
+    {
+      "file": "results/geometry/night/tta_inkcrop_combo.json",
+      "run": "crnn/combo",
+      "pack": "inkcrop_eval/fp16-bs1",
+      "numerics": "fp16-bs1"
+    }
   ],
   "e8": [
-    {"file": "results/geometry/e8/per_line.json", "crnn_run": "crnn/base", "llm_run": "crnn+llm/e8-qwen3-0.6b", "pack": "eval_data+heldout", "numerics": "fp16-bs?"},
-    {"file": "results/geometry/e8_1p7b/per_line.json", "crnn_run": null, "llm_run": "crnn+llm/e8-qwen3-1.7b", "pack": "eval_data+heldout", "numerics": "fp16-bs?"}
+    {
+      "file": "results/geometry/e8/per_line.json",
+      "crnn_run": "crnn/base",
+      "llm_run": "crnn+llm/e8-qwen3-0.6b",
+      "pack": "eval_data+heldout",
+      "numerics": "fp16-bs?"
+    },
+    {
+      "file": "results/geometry/e8_1p7b/per_line.json",
+      "crnn_run": null,
+      "llm_run": "crnn+llm/e8-qwen3-1.7b",
+      "pack": "eval_data+heldout",
+      "numerics": "fp16-bs?"
+    }
   ],
-  "crnn_panel_glob": "results/panel/out/*.json",
+  "crnn_panel_glob": "results/panel/out*/*.json",
   "vlm_root": "/Volumes/PortableSSD/repos/arabic_ocr",
   "panel": "results/panel/panel.pkl"
 }

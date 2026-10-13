@@ -153,8 +153,8 @@ def main() -> None:
         print("ingested", s["file"], flush=True)
     for f in sorted(glob.glob(str(W / S["crnn_panel_glob"]))):
         d = json.loads(Path(f).read_text(encoding="utf-8"))
-        run = "crnn/" + d["run"].replace("aligner_run_", "").replace("aligner_run", "base")
-        ingest_pl(str(Path(f).relative_to(W)), run, d.get("panel", "panel"), d["numerics"] + ("" if d["ckpt"] == "model_final.pt" else f"@{d['ckpt']}"), d["per_line"], d.get("conf"))
+        run = "crnn/" + d["run"].replace("aligner_run_", "").replace("aligner_run", "base") + ("" if d["ckpt"] == "model_final.pt" else "-best")
+        ingest_pl(str(Path(f).relative_to(W)), run, d.get("panel", "panel"), d["numerics"], d["per_line"], d.get("conf"))
         print("ingested", f, flush=True)
     for s in S["e8"]:
         d = json.loads((W / s["file"]).read_text(encoding="utf-8"))

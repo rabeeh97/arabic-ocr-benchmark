@@ -1,0 +1,94 @@
+{
+  "_doc": "Comparisons for scripts/analyze_lines.py. Each pair: A and B are run@transform; both are read from the same evaluation pack (the first pack in pack_pref that has both on the dataset). noise names the pair whose line-level differences are the seed-noise yardstick.",
+  "pack_pref": [
+    "panel-2026-10-13",
+    "inkcrop_eval",
+    "eval_data",
+    "transfer_eval",
+    "inkcrop_eval/fp16-bs1",
+    "eval_data+heldout",
+    "bench"
+  ],
+  "noise": {
+    "A": "crnn/base@none",
+    "B": "crnn/rep2@none"
+  },
+  "noise_cropped": {
+    "A": "crnn/base@inkcrop",
+    "B": "crnn/rep2@inkcrop"
+  },
+  "pairs": [
+    {
+      "name": "ink crop (test time)",
+      "A": "crnn/base@none",
+      "B": "crnn/base@inkcrop",
+      "noise": "noise"
+    },
+    {
+      "name": "replicate (noise yardstick)",
+      "A": "crnn/base@none",
+      "B": "crnn/rep2@none",
+      "noise": "noise"
+    },
+    {
+      "name": "shape-targeted vs random control",
+      "A": "crnn/randctl@none",
+      "B": "crnn/shape@none",
+      "noise": "noise"
+    },
+    {
+      "name": "random control vs base",
+      "A": "crnn/base@none",
+      "B": "crnn/randctl@none",
+      "noise": "noise"
+    },
+    {
+      "name": "combo vs base (both cropped)",
+      "A": "crnn/base@inkcrop",
+      "B": "crnn/combo@inkcrop",
+      "noise": "noise_cropped"
+    },
+    {
+      "name": "crop-trained vs base (both cropped)",
+      "A": "crnn/base@inkcrop",
+      "B": "crnn/inkcrop@inkcrop",
+      "noise": "noise_cropped"
+    },
+    {
+      "name": "slant/stroke augmentation",
+      "A": "crnn/base@none",
+      "B": "crnn/geomaug@none",
+      "noise": "noise"
+    },
+    {
+      "name": "slant TTA on cropped lines",
+      "A": "crnn/base@inkcrop",
+      "B": "crnn/base@inkcrop+tta_conf",
+      "noise": "noise_cropped"
+    },
+    {
+      "name": "combo + slant TTA vs combo",
+      "A": "crnn/combo@inkcrop",
+      "B": "crnn/combo@inkcrop+tta_conf",
+      "noise": "noise_cropped"
+    },
+    {
+      "name": "KHATT as Muharaf (slant only)",
+      "A": "crnn/base@none",
+      "B": "crnn/base@as_muharaf_only_slant",
+      "noise": "noise"
+    },
+    {
+      "name": "E8 0.6B vs CRNN",
+      "A": "crnn/base@none",
+      "B": "crnn+llm/e8-qwen3-0.6b@none",
+      "noise": "noise"
+    },
+    {
+      "name": "E8 1.7B vs 0.6B",
+      "A": "crnn+llm/e8-qwen3-0.6b@none",
+      "B": "crnn+llm/e8-qwen3-1.7b@none",
+      "noise": "noise"
+    }
+  ]
+}
