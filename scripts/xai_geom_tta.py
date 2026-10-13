@@ -83,7 +83,7 @@ def main() -> None:
                 p = logits.softmax(-1)[:, 0]  # T, C
                 best, arg = p.max(-1)
                 conf = float(best[arg != 0].mean()) if (arg != 0).any() else 0.0
-                per_variant[d].append((edit_distance(hyp, tgt[0]), max(1, len(tgt[0])), conf, "".join(chars[k - 1] for k in hyp)))
+                per_variant[d].append((edit_distance(hyp, tgt[0]), max(1, len(tgt[0])), conf, "".join(chars[k - 1] for k in hyp)[::-1]))  # model reads right to left, as in geom_transfer_eval.py
         sel = [max(SHEARS, key=lambda d: per_variant[d][i][2]) for i in range(len(rs))]
         per_line[ds] = {r["id"]: list(per_variant[0][i][:2]) + [per_variant[0][i][3]] for i, r in enumerate(rs)}
         per_line[ds + "__tta"] = {r["id"]: list(per_variant[sel[i]][i][:2]) + [per_variant[sel[i]][i][3]] for i, r in enumerate(rs)}
