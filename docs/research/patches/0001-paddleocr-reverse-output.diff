@@ -1,0 +1,23 @@
+# For the main checkout (branch research-characterization). Apply from the repo root:
+#   git apply .claude/worktrees/xai-attribution-spike/docs/research/patches/0001-paddleocr-reverse-output.diff
+# Why (CORRECTIONS C5, 2026-10-13): the stored arabic-paddleocr-v5 runs (2026-09-18) were made with reverse_output: true.
+# Their text matches the ground truth much better reversed (KHATT CER, no-diacritics rung, 85.3 -> 63.0 %; Muharaf
+# 88.1 -> 78.0 %; NAKBA test 88.8 -> 82.3 %), so on real line images the model already returns logical order and the
+# flag scrambles it. The 2026-09-17 synthetic test that motivated the flag should be re-checked before re-enabling it.
+--- a/configs/models.yaml
++++ b/configs/models.yaml
+@@ -1000,9 +1000,11 @@ arabic-paddleocr-v5:
+   client: paddleocr
+   model_name: arabic_PP-OCRv5_mobile_rec
+-  # Confirmed on hardware 2026-09-17: this model emits RTL text in raw LTR
+-  # pixel order — reverse_output undoes that. See paddleocr_client.py's
+-  # docstring before changing this for a different model/version.
+-  reverse_output: true
++  # 2026-10-13: turned OFF. The 2026-09-18 bench runs made with reverse_output
++  # read far better when un-reversed (KHATT 85.3 -> 63.0 % CER), i.e. on real
++  # line images the model already returns logical order. The 2026-09-17
++  # synthetic-line test that motivated the flag needs re-checking.
++  # See worktree xai-attribution-spike, docs/research/CORRECTIONS.md (C5).
++  reverse_output: false
+   # Leave `device` unset so the launcher can pin CPU via PADDLEOCR_DEVICE
+   # (needed while a VLM training run owns the GPU).

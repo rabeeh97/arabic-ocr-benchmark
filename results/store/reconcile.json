@@ -3076,5 +3076,35 @@
   "unmapped_ids": 0,
   "reversed_suspect": 0,
   "no_diacritics_cer": 0.8055920750909591
+ },
+ "vlm-derived::arabic-paddleocr-v5-unreversed::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.630093533956893
+ },
+ "vlm-derived::arabic-paddleocr-v5-unreversed::muharaf_lines": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.7798714056081443
+ },
+ "vlm-derived::arabic-paddleocr-v5-unreversed::nakba_lines": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8225347897650755
+ },
+ "vlm-derived::arabic-paddleocr-v5-unreversed::rasam1": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.8800080938891137
+ },
+ "vlm-derived::arabic-paddleocr-v5-unreversed::rasam2": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "no_diacritics_cer": 0.856257929696246
  }
 }

@@ -28170,6 +28170,944 @@
    "residual_lines": 110,
    "residual_share_of_top20": 0.20522388059701493
   },
+  "vlm/arabic-paddleocr-v5-unreversed@none|kitab_khatt": {
+   "pack": "bench",
+   "lines": 200,
+   "cer": 0.630093533956893,
+   "detectors": {
+    "D1 loose crop (ink < 35 % of height)": {
+     "share_lines": 0.145,
+     "share_edits": 0.15244610817090487,
+     "cer_flagged": 0.9916036943744753,
+     "cer_unflagged": 0.5913184438040345,
+     "excess_edits_explained": 0.06153862571697365,
+     "example_ids": [
+      "kitab_khatt/train/000002",
+      "kitab_khatt/train/000008",
+      "kitab_khatt/train/000018",
+      "kitab_khatt/train/000024",
+      "kitab_khatt/train/000028",
+      "kitab_khatt/train/000038"
+     ]
+    },
+    "D7 fragment line": {
+     "share_lines": 0.03,
+     "share_edits": 0.011230153607848199,
+     "cer_flagged": 0.9775280898876404,
+     "cer_unflagged": 0.6275602162870719,
+     "excess_edits_explained": 0.004020542242216419,
+     "example_ids": [
+      "kitab_khatt/train/000028",
+      "kitab_khatt/train/000065",
+      "kitab_khatt/train/000087",
+      "kitab_khatt/train/000117",
+      "kitab_khatt/train/000122",
+      "kitab_khatt/train/000143"
+     ]
+    },
+    "D8 letter-list drill": {
+     "share_lines": 0.135,
+     "share_edits": 0.13979605008390344,
+     "cer_flagged": 0.7083060824068018,
+     "cer_unflagged": 0.6189856957087126,
+     "excess_edits_explained": 0.017628871984171728,
+     "example_ids": [
+      "kitab_khatt/train/000002",
+      "kitab_khatt/train/000005",
+      "kitab_khatt/train/000008",
+      "kitab_khatt/train/000012",
+      "kitab_khatt/train/000026",
+      "kitab_khatt/train/000029"
+     ]
+    },
+    "D9 mostly unseen words": {
+     "share_lines": 0.205,
+     "share_edits": 0.1874273912482251,
+     "cer_flagged": 0.6621067031463749,
+     "cer_unflagged": 0.6231439318946743,
+     "excess_edits_explained": 0.011029476875562052,
+     "example_ids": [
+      "kitab_khatt/train/000004",
+      "kitab_khatt/train/000011",
+      "kitab_khatt/train/000014",
+      "kitab_khatt/train/000018",
+      "kitab_khatt/train/000022",
+      "kitab_khatt/train/000023"
+     ]
+    },
+    "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
+    "Dx dropped by the old CTC filter": {
+     "share_lines": 0.085,
+     "share_edits": 0.10132954692138893,
+     "cer_flagged": 0.9936708860759493,
+     "cer_unflagged": 0.6051282051282051,
+     "excess_edits_explained": 0.03962162358961121,
+     "example_ids": [
+      "kitab_khatt/train/000008",
+      "kitab_khatt/train/000024",
+      "kitab_khatt/train/000038",
+      "kitab_khatt/train/000041",
+      "kitab_khatt/train/000056",
+      "kitab_khatt/train/000065"
+     ]
+    },
+    "D11 truncation (head or tail cut)": {
+     "share_lines": 0.39,
+     "share_edits": 0.5461468955724796,
+     "cer_flagged": 0.9356479433878815,
+     "cer_unflagged": 0.45233500578927055,
+     "excess_edits_explained": 0.28211450933534515,
+     "example_ids": [
+      "kitab_khatt/train/000000",
+      "kitab_khatt/train/000001",
+      "kitab_khatt/train/000002",
+      "kitab_khatt/train/000005",
+      "kitab_khatt/train/000006",
+      "kitab_khatt/train/000008"
+     ]
+    },
+    "D12 repetition loop / runaway": {
+     "share_lines": 0.0
+    },
+    "D13 whole-line failure (CER > 0.8)": {
+     "share_lines": 0.465,
+     "share_edits": 0.6936878791790371,
+     "cer_flagged": 0.949134581419993,
+     "cer_unflagged": 0.357756671189507,
+     "excess_edits_explained": 0.4322165648283221,
+     "example_ids": [
+      "kitab_khatt/train/000000",
+      "kitab_khatt/train/000001",
+      "kitab_khatt/train/000002",
+      "kitab_khatt/train/000005",
+      "kitab_khatt/train/000006",
+      "kitab_khatt/train/000008"
+     ]
+    },
+    "D14 script mismatch": {
+     "share_lines": 0.075,
+     "share_edits": 0.08274170646701949,
+     "cer_flagged": 0.9861538461538462,
+     "cer_unflagged": 0.6102189781021898,
+     "excess_edits_explained": 0.03154223108733401,
+     "example_ids": [
+      "kitab_khatt/train/000018",
+      "kitab_khatt/train/000024",
+      "kitab_khatt/train/000038",
+      "kitab_khatt/train/000049",
+      "kitab_khatt/train/000056",
+      "kitab_khatt/train/000102"
+     ]
+    },
+    "D15 fluent rewrite": {
+     "share_lines": 0.255,
+     "share_edits": 0.36427004001548985,
+     "cer_flagged": 0.8092916547175222,
+     "cer_unflagged": 0.5591507720254314,
+     "excess_edits_explained": 0.11259084264196731,
+     "example_ids": [
+      "kitab_khatt/train/000005",
+      "kitab_khatt/train/000007",
+      "kitab_khatt/train/000011",
+      "kitab_khatt/train/000016",
+      "kitab_khatt/train/000023",
+      "kitab_khatt/train/000025"
+     ]
+    },
+    "D16 diacritic insertion": {
+     "share_lines": 0.005,
+     "share_edits": 0.0015489867045307862,
+     "cer_flagged": 0.375,
+     "cer_unflagged": 0.6307591943243904,
+     "excess_edits_explained": -0.0010564469108532972,
+     "example_ids": [
+      "kitab_khatt/train/000003"
+     ]
+    },
+    "D17 orthographic only": {
+     "share_lines": 0.0
+    },
+    "D18 dot only": {
+     "share_lines": 0.005,
+     "share_edits": 0.001807151155285917,
+     "cer_flagged": 0.2916666666666667,
+     "cer_unflagged": 0.6314199395770392,
+     "excess_edits_explained": -0.0021050932102359473,
+     "example_ids": [
+      "kitab_khatt/train/000037"
+     ]
+    },
+    "D19 Maghrebi dot swap (ق→ف, ف→ب)": {
+     "share_lines": 0.045,
+     "share_edits": 0.022460307215696397,
+     "cer_flagged": 0.3107142857142857,
+     "cer_unflagged": 0.6453344695355774,
+     "excess_edits_explained": -0.024188370070985326,
+     "example_ids": [
+      "kitab_khatt/train/000022",
+      "kitab_khatt/train/000061",
+      "kitab_khatt/train/000081",
+      "kitab_khatt/train/000089",
+      "kitab_khatt/train/000090",
+      "kitab_khatt/train/000109"
+     ]
+    },
+    "D20 space at a PAW gap": {
+     "share_lines": 0.035,
+     "share_edits": 0.016522524848328383,
+     "cer_flagged": 0.3121951219512195,
+     "cer_unflagged": 0.6410601598653766,
+     "excess_edits_explained": -0.017404758686563108,
+     "example_ids": [
+      "kitab_khatt/train/000009",
+      "kitab_khatt/train/000055",
+      "kitab_khatt/train/000074",
+      "kitab_khatt/train/000101",
+      "kitab_khatt/train/000146",
+      "kitab_khatt/train/000148"
+     ]
+    },
+    "D22 reversed reading": {
+     "share_lines": 0.0
+    }
+   },
+   "residual_lines": 0,
+   "residual_share_of_top20": 0.0
+  },
+  "vlm/arabic-paddleocr-v5-unreversed@none|muharaf_lines": {
+   "pack": "bench",
+   "lines": 220,
+   "cer": 0.7798714056081443,
+   "detectors": {
+    "D1 loose crop (ink < 35 % of height)": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.00022901637467078896,
+     "cer_flagged": 0.6666666666666666,
+     "cer_unflagged": 0.7799017418490397,
+     "excess_edits_explained": -3.889902960576195e-05,
+     "example_ids": [
+      "muharaf_lines/test/000187"
+     ]
+    },
+    "D7 fragment line": {
+     "share_lines": 0.1409090909090909,
+     "share_edits": 0.011908851482881027,
+     "cer_flagged": 0.5279187817258884,
+     "cer_unflagged": 0.7843832378874648,
+     "excess_edits_explained": -0.005785354158230914,
+     "example_ids": [
+      "muharaf_lines/test/000004",
+      "muharaf_lines/test/000008",
+      "muharaf_lines/test/000017",
+      "muharaf_lines/test/000024",
+      "muharaf_lines/test/000034",
+      "muharaf_lines/test/000039"
+     ]
+    },
+    "D8 letter-list drill": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.0018321309973663117,
+     "cer_flagged": 0.42105263157894735,
+     "cer_unflagged": 0.7810931899641577,
+     "excess_edits_explained": -0.0015666484849007206,
+     "example_ids": [
+      "muharaf_lines/test/000151"
+     ]
+    },
+    "D9 mostly unseen words": {
+     "share_lines": 0.14545454545454545,
+     "share_edits": 0.09114851711897401,
+     "cer_flagged": 0.7139013452914799,
+     "cer_unflagged": 0.7871665179014182,
+     "excess_edits_explained": -0.009354250253072405,
+     "example_ids": [
+      "muharaf_lines/test/000008",
+      "muharaf_lines/test/000032",
+      "muharaf_lines/test/000034",
+      "muharaf_lines/test/000037",
+      "muharaf_lines/test/000038",
+      "muharaf_lines/test/000041"
+     ]
+    },
+    "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
+    "Dx dropped by the old CTC filter": {
+     "share_lines": 0.0
+    },
+    "D11 truncation (head or tail cut)": {
+     "share_lines": 0.41818181818181815,
+     "share_edits": 0.6642619947326234,
+     "cer_flagged": 0.9167193426042983,
+     "cer_unflagged": 0.602053388090349,
+     "excess_edits_explained": 0.2280094080114819,
+     "example_ids": [
+      "muharaf_lines/test/000000",
+      "muharaf_lines/test/000001",
+      "muharaf_lines/test/000002",
+      "muharaf_lines/test/000003",
+      "muharaf_lines/test/000004",
+      "muharaf_lines/test/000005"
+     ]
+    },
+    "D12 repetition loop / runaway": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.00664147486545288,
+     "cer_flagged": 0.8656716417910447,
+     "cer_unflagged": 0.7793549546312102,
+     "excess_edits_explained": 0.0006622258146924219,
+     "example_ids": [
+      "muharaf_lines/test/000127"
+     ]
+    },
+    "D13 whole-line failure (CER > 0.8)": {
+     "share_lines": 0.5045454545454545,
+     "share_edits": 0.7951448528569792,
+     "cer_flagged": 0.9342122965155388,
+     "cer_unflagged": 0.4751660026560425,
+     "excess_edits_explained": 0.39071236714275004,
+     "example_ids": [
+      "muharaf_lines/test/000000",
+      "muharaf_lines/test/000001",
+      "muharaf_lines/test/000002",
+      "muharaf_lines/test/000003",
+      "muharaf_lines/test/000004",
+      "muharaf_lines/test/000005"
+     ]
+    },
+    "D14 script mismatch": {
+     "share_lines": 0.022727272727272728,
+     "share_edits": 0.0017176228100309172,
+     "cer_flagged": 0.8333333333333334,
+     "cer_unflagged": 0.7797853309481216,
+     "excess_edits_explained": 0.00011037032439411547,
+     "example_ids": [
+      "muharaf_lines/test/000097",
+      "muharaf_lines/test/000098",
+      "muharaf_lines/test/000107",
+      "muharaf_lines/test/000144",
+      "muharaf_lines/test/000187"
+     ]
+    },
+    "D15 fluent rewrite": {
+     "share_lines": 0.39545454545454545,
+     "share_edits": 0.5309744646742242,
+     "cer_flagged": 0.8466313675369728,
+     "cer_unflagged": 0.7159587484705471,
+     "excess_edits_explained": 0.08195281514105275,
+     "example_ids": [
+      "muharaf_lines/test/000002",
+      "muharaf_lines/test/000003",
+      "muharaf_lines/test/000005",
+      "muharaf_lines/test/000007",
+      "muharaf_lines/test/000011",
+      "muharaf_lines/test/000012"
+     ]
+    },
+    "D16 diacritic insertion": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.0005725409366769724,
+     "cer_flagged": 0.8333333333333334,
+     "cer_unflagged": 0.779842744817727,
+     "excess_edits_explained": 3.675066198255332e-05,
+     "example_ids": [
+      "muharaf_lines/test/000062"
+     ]
+    },
+    "D17 orthographic only": {
+     "share_lines": 0.0
+    },
+    "D18 dot only": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.00022901637467078896,
+     "cer_flagged": 0.6666666666666666,
+     "cer_unflagged": 0.7799017418490397,
+     "excess_edits_explained": -3.889902960576195e-05,
+     "example_ids": [
+      "muharaf_lines/test/000039"
+     ]
+    },
+    "D19 Maghrebi dot swap (ق→ف, ف→ب)": {
+     "share_lines": 0.03636363636363636,
+     "share_edits": 0.018893850910340088,
+     "cer_flagged": 0.48104956268221577,
+     "cer_unflagged": 0.7893136803316444,
+     "excess_edits_explained": -0.012107476509075232,
+     "example_ids": [
+      "muharaf_lines/test/000021",
+      "muharaf_lines/test/000089",
+      "muharaf_lines/test/000115",
+      "muharaf_lines/test/000124",
+      "muharaf_lines/test/000178",
+      "muharaf_lines/test/000196"
+     ]
+    },
+    "D20 space at a PAW gap": {
+     "share_lines": 0.00909090909090909,
+     "share_edits": 0.004236802931409596,
+     "cer_flagged": 0.33636363636363636,
+     "cer_unflagged": 0.7842712842712842,
+     "excess_edits_explained": -0.005641800214112134,
+     "example_ids": [
+      "muharaf_lines/test/000026",
+      "muharaf_lines/test/000128"
+     ]
+    },
+    "D22 reversed reading": {
+     "share_lines": 0.0
+    }
+   },
+   "residual_lines": 0,
+   "residual_share_of_top20": 0.0
+  },
+  "vlm/arabic-paddleocr-v5-unreversed@none|nakba_lines": {
+   "pack": "bench",
+   "lines": 220,
+   "cer": 0.8225347897650755,
+   "detectors": {
+    "D1 loose crop (ink < 35 % of height)": {
+     "share_lines": 0.0
+    },
+    "D7 fragment line": {
+     "share_lines": 0.24545454545454545,
+     "share_edits": 0.024104056758231764,
+     "cer_flagged": 0.5125725338491296,
+     "cer_unflagged": 0.8350066153008017,
+     "excess_edits_explained": -0.015162672376797753,
+     "example_ids": [
+      "nakba_lines/test/000000",
+      "nakba_lines/test/000001",
+      "nakba_lines/test/000004",
+      "nakba_lines/test/000005",
+      "nakba_lines/test/000012",
+      "nakba_lines/test/000013"
+     ]
+    },
+    "D8 letter-list drill": {
+     "share_lines": 0.00909090909090909,
+     "share_edits": 0.011551755503001637,
+     "cer_flagged": 0.7215909090909091,
+     "cer_unflagged": 0.8238817285822593,
+     "excess_edits_explained": -0.0016375463189446647,
+     "example_ids": [
+      "nakba_lines/test/000133",
+      "nakba_lines/test/000184"
+     ]
+    },
+    "D9 mostly unseen words": {
+     "share_lines": 0.2909090909090909,
+     "share_edits": 0.16954702565035473,
+     "cer_flagged": 0.7255741533670689,
+     "cer_unflagged": 0.8456052607205705,
+     "excess_edits_explained": -0.028048018445619945,
+     "example_ids": [
+      "nakba_lines/test/000002",
+      "nakba_lines/test/000005",
+      "nakba_lines/test/000007",
+      "nakba_lines/test/000011",
+      "nakba_lines/test/000013",
+      "nakba_lines/test/000014"
+     ]
+    },
+    "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.0,
+     "cer_flagged": 0.0,
+     "cer_unflagged": 0.8226578868602215,
+     "excess_edits_explained": -0.00014965579167913797,
+     "example_ids": [
+      "nakba_lines/test/000104"
+     ]
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
+    "Dx dropped by the old CTC filter": {
+     "share_lines": 0.0
+    },
+    "D11 truncation (head or tail cut)": {
+     "share_lines": 0.4590909090909091,
+     "share_edits": 0.6468073494633436,
+     "cer_flagged": 0.9277234181343771,
+     "cer_unflagged": 0.6811085774425539,
+     "excess_edits_explained": 0.1719394900766622,
+     "example_ids": [
+      "nakba_lines/test/000009",
+      "nakba_lines/test/000010",
+      "nakba_lines/test/000015",
+      "nakba_lines/test/000017",
+      "nakba_lines/test/000021",
+      "nakba_lines/test/000025"
+     ]
+    },
+    "D12 repetition loop / runaway": {
+     "share_lines": 0.022727272727272728,
+     "share_edits": 0.03429143169001273,
+     "cer_flagged": 0.8666666666666667,
+     "cer_unflagged": 0.8210501894671719,
+     "excess_edits_explained": 0.0018049088213371138,
+     "example_ids": [
+      "nakba_lines/test/000027",
+      "nakba_lines/test/000088",
+      "nakba_lines/test/000132",
+      "nakba_lines/test/000135",
+      "nakba_lines/test/000215"
+     ]
+    },
+    "D13 whole-line failure (CER > 0.8)": {
+     "share_lines": 0.5545454545454546,
+     "share_edits": 0.8189012188466436,
+     "cer_flagged": 0.9269020899824977,
+     "cer_unflagged": 0.5450314809745415,
+     "excess_edits_explained": 0.33737577090179,
+     "example_ids": [
+      "nakba_lines/test/000006",
+      "nakba_lines/test/000007",
+      "nakba_lines/test/000009",
+      "nakba_lines/test/000010",
+      "nakba_lines/test/000015",
+      "nakba_lines/test/000016"
+     ]
+    },
+    "D14 script mismatch": {
+     "share_lines": 0.013636363636363636,
+     "share_edits": 0.0020010915044569766,
+     "cer_flagged": 0.8461538461538461,
+     "cer_unflagged": 0.8224887556221889,
+     "excess_edits_explained": 5.596619554512363e-05,
+     "example_ids": [
+      "nakba_lines/test/000166",
+      "nakba_lines/test/000191",
+      "nakba_lines/test/000200"
+     ]
+    },
+    "D15 fluent rewrite": {
+     "share_lines": 0.42272727272727273,
+     "share_edits": 0.5821357103874841,
+     "cer_flagged": 0.8670911800569029,
+     "cer_unflagged": 0.7675856307435255,
+     "excess_edits_explained": 0.06680466249609228,
+     "example_ids": [
+      "nakba_lines/test/000006",
+      "nakba_lines/test/000007",
+      "nakba_lines/test/000010",
+      "nakba_lines/test/000011",
+      "nakba_lines/test/000017",
+      "nakba_lines/test/000019"
+     ]
+    },
+    "D16 diacritic insertion": {
+     "share_lines": 0.013636363636363636,
+     "share_edits": 0.0014553392759687103,
+     "cer_flagged": 0.6666666666666666,
+     "cer_unflagged": 0.8228151701394094,
+     "excess_edits_explained": -0.00034087357498142857,
+     "example_ids": [
+      "nakba_lines/test/000070",
+      "nakba_lines/test/000137",
+      "nakba_lines/test/000208"
+     ]
+    },
+    "D17 orthographic only": {
+     "share_lines": 0.0
+    },
+    "D18 dot only": {
+     "share_lines": 0.0
+    },
+    "D19 Maghrebi dot swap (ق→ف, ف→ب)": {
+     "share_lines": 0.022727272727272728,
+     "share_edits": 0.016645442968892123,
+     "cer_flagged": 0.5579268292682927,
+     "cer_unflagged": 0.8291915938027304,
+     "excess_edits_explained": -0.008093036453274112,
+     "example_ids": [
+      "nakba_lines/test/000003",
+      "nakba_lines/test/000024",
+      "nakba_lines/test/000038",
+      "nakba_lines/test/000143",
+      "nakba_lines/test/000146"
+     ]
+    },
+    "D20 space at a PAW gap": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.0004547935237402219,
+     "cer_flagged": 0.29411764705882354,
+     "cer_unflagged": 0.8232077309161735,
+     "excess_edits_explained": -0.0008181309282858786,
+     "example_ids": [
+      "nakba_lines/test/000018"
+     ]
+    },
+    "D22 reversed reading": {
+     "share_lines": 0.0
+    }
+   },
+   "residual_lines": 0,
+   "residual_share_of_top20": 0.0
+  },
+  "vlm/arabic-paddleocr-v5-unreversed@none|rasam1": {
+   "pack": "bench",
+   "lines": 220,
+   "cer": 0.8800080938891137,
+   "detectors": {
+    "D1 loose crop (ink < 35 % of height)": {
+     "share_lines": 0.0
+    },
+    "D7 fragment line": {
+     "share_lines": 0.06818181818181818,
+     "share_edits": 0.005288572085536905,
+     "cer_flagged": 0.6106194690265486,
+     "cer_unflagged": 0.8820770746958472,
+     "excess_edits_explained": -0.002351092928690943,
+     "example_ids": [
+      "rasam1/test/000000",
+      "rasam1/test/000067",
+      "rasam1/test/000082",
+      "rasam1/test/000091",
+      "rasam1/test/000123",
+      "rasam1/test/000134"
+     ]
+    },
+    "D8 letter-list drill": {
+     "share_lines": 0.01818181818181818,
+     "share_edits": 0.022840499731739097,
+     "cer_flagged": 0.9197530864197531,
+     "cer_unflagged": 0.8791201213625707,
+     "excess_edits_explained": 0.0010090504084101406,
+     "example_ids": [
+      "rasam1/test/000093",
+      "rasam1/test/000099",
+      "rasam1/test/000157",
+      "rasam1/test/000196"
+     ]
+    },
+    "D9 mostly unseen words": {
+     "share_lines": 0.1,
+     "share_edits": 0.06913466697325056,
+     "cer_flagged": 0.8148148148148148,
+     "cer_unflagged": 0.8852686055834973,
+     "excess_edits_explained": -0.005977799216749559,
+     "example_ids": [
+      "rasam1/test/000002",
+      "rasam1/test/000008",
+      "rasam1/test/000016",
+      "rasam1/test/000018",
+      "rasam1/test/000028",
+      "rasam1/test/000037"
+     ]
+    },
+    "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
+    "Dx dropped by the old CTC filter": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 0.005441864030045221,
+     "cer_flagged": 0.9102564102564102,
+     "cer_unflagged": 0.8798481149986439,
+     "excess_edits_explained": 0.00018179252166059394,
+     "example_ids": [
+      "rasam1/test/000014"
+     ]
+    },
+    "D11 truncation (head or tail cut)": {
+     "share_lines": 0.5727272727272728,
+     "share_edits": 0.6757875373649115,
+     "cer_flagged": 0.9142472003318125,
+     "cer_unflagged": 0.8162871478193747,
+     "excess_edits_explained": 0.07240949999463095,
+     "example_ids": [
+      "rasam1/test/000001",
+      "rasam1/test/000003",
+      "rasam1/test/000006",
+      "rasam1/test/000007",
+      "rasam1/test/000009",
+      "rasam1/test/000011"
+     ]
+    },
+    "D12 repetition loop / runaway": {
+     "share_lines": 0.0
+    },
+    "D13 whole-line failure (CER > 0.8)": {
+     "share_lines": 0.7818181818181819,
+     "share_edits": 0.9531693109527094,
+     "cer_flagged": 0.9125999853232553,
+     "cer_unflagged": 0.5095913261050876,
+     "excess_edits_explained": 0.4209242737154879,
+     "example_ids": [
+      "rasam1/test/000000",
+      "rasam1/test/000001",
+      "rasam1/test/000002",
+      "rasam1/test/000003",
+      "rasam1/test/000006",
+      "rasam1/test/000007"
+     ]
+    },
+    "D14 script mismatch": {
+     "share_lines": 0.0
+    },
+    "D15 fluent rewrite": {
+     "share_lines": 0.22272727272727272,
+     "share_edits": 0.213382386755576,
+     "cer_flagged": 0.8762983947119924,
+     "cer_unflagged": 0.8810198300283286,
+     "excess_edits_explained": -0.0011496895838123732,
+     "example_ids": [
+      "rasam1/test/000004",
+      "rasam1/test/000010",
+      "rasam1/test/000014",
+      "rasam1/test/000020",
+      "rasam1/test/000021",
+      "rasam1/test/000027"
+     ]
+    },
+    "D16 diacritic insertion": {
+     "share_lines": 0.013636363636363636,
+     "share_edits": 0.002222733195370583,
+     "cer_flagged": 0.3918918918918919,
+     "cer_unflagged": 0.8824566160520607,
+     "excess_edits_explained": -0.0027823859575268257,
+     "example_ids": [
+      "rasam1/test/000010",
+      "rasam1/test/000128",
+      "rasam1/test/000142"
+     ]
+    },
+    "D17 orthographic only": {
+     "share_lines": 0.0
+    },
+    "D18 dot only": {
+     "share_lines": 0.0
+    },
+    "D19 Maghrebi dot swap (ق→ف, ف→ب)": {
+     "share_lines": 0.031818181818181815,
+     "share_edits": 0.0062849697248409594,
+     "cer_flagged": 0.4581005586592179,
+     "cer_unflagged": 0.885164197446576,
+     "excess_edits_explained": -0.005859154697856757,
+     "example_ids": [
+      "rasam1/test/000050",
+      "rasam1/test/000094",
+      "rasam1/test/000096",
+      "rasam1/test/000134",
+      "rasam1/test/000169",
+      "rasam1/test/000211"
+     ]
+    },
+    "D20 space at a PAW gap": {
+     "share_lines": 0.0
+    },
+    "D22 reversed reading": {
+     "share_lines": 0.0
+    }
+   },
+   "residual_lines": 0,
+   "residual_share_of_top20": 0.0
+  },
+  "vlm/arabic-paddleocr-v5-unreversed@none|rasam2": {
+   "pack": "bench",
+   "lines": 220,
+   "cer": 0.856257929696246,
+   "detectors": {
+    "D1 loose crop (ink < 35 % of height)": {
+     "share_lines": 0.0
+    },
+    "D7 fragment line": {
+     "share_lines": 0.06818181818181818,
+     "share_edits": 0.005142508498213196,
+     "cer_flagged": 0.41843971631205673,
+     "cer_unflagged": 0.8609141650324332,
+     "excess_edits_explained": -0.0054378887186937236,
+     "example_ids": [
+      "rasam2/test/000002",
+      "rasam2/test/000009",
+      "rasam2/test/000010",
+      "rasam2/test/000034",
+      "rasam2/test/000044",
+      "rasam2/test/000047"
+     ]
+    },
+    "D8 letter-list drill": {
+     "share_lines": 0.05454545454545454,
+     "share_edits": 0.0814085243615445,
+     "cer_flagged": 0.9067961165048544,
+     "cer_unflagged": 0.8520494785350473,
+     "excess_edits_explained": 0.004914933941331932,
+     "example_ids": [
+      "rasam2/test/000055",
+      "rasam2/test/000066",
+      "rasam2/test/000089",
+      "rasam2/test/000108",
+      "rasam2/test/000111",
+      "rasam2/test/000113"
+     ]
+    },
+    "D9 mostly unseen words": {
+     "share_lines": 0.11818181818181818,
+     "share_edits": 0.06737557744269154,
+     "cer_flagged": 0.773,
+     "cer_unflagged": 0.862972820388741,
+     "excess_edits_explained": -0.007842135482327291,
+     "example_ids": [
+      "rasam2/test/000009",
+      "rasam2/test/000013",
+      "rasam2/test/000019",
+      "rasam2/test/000028",
+      "rasam2/test/000034",
+      "rasam2/test/000038"
+     ]
+    },
+    "D10 label suspect (strong models agree, GT differs)": {
+     "share_lines": 0.0
+    },
+    "D10b label runs past the image (systems agree the tail is missing)": {
+     "share_lines": 0.0
+    },
+    "Dx dropped by the old CTC filter": {
+     "share_lines": 0.013636363636363636,
+     "share_edits": 0.013161335308986315,
+     "cer_flagged": 0.9805194805194806,
+     "cer_unflagged": 0.8548131370328426,
+     "excess_edits_explained": 0.0016873334696193014,
+     "example_ids": [
+      "rasam2/test/000102",
+      "rasam2/test/000205",
+      "rasam2/test/000213"
+     ]
+    },
+    "D11 truncation (head or tail cut)": {
+     "share_lines": 0.5409090909090909,
+     "share_edits": 0.7161160986664342,
+     "cer_flagged": 0.945563355967315,
+     "cer_unflagged": 0.6915074309978768,
+     "excess_edits_explained": 0.19240755966699627,
+     "example_ids": [
+      "rasam2/test/000000",
+      "rasam2/test/000001",
+      "rasam2/test/000004",
+      "rasam2/test/000006",
+      "rasam2/test/000007",
+      "rasam2/test/000008"
+     ]
+    },
+    "D12 repetition loop / runaway": {
+     "share_lines": 0.0
+    },
+    "D13 whole-line failure (CER > 0.8)": {
+     "share_lines": 0.6636363636363637,
+     "share_edits": 0.8715244487056567,
+     "cer_flagged": 0.9396673244995771,
+     "cer_unflagged": 0.5344452501812907,
+     "excess_edits_explained": 0.3758361451077211,
+     "example_ids": [
+      "rasam2/test/000000",
+      "rasam2/test/000001",
+      "rasam2/test/000004",
+      "rasam2/test/000006",
+      "rasam2/test/000007",
+      "rasam2/test/000008"
+     ]
+    },
+    "D14 script mismatch": {
+     "share_lines": 0.0
+    },
+    "D15 fluent rewrite": {
+     "share_lines": 0.2818181818181818,
+     "share_edits": 0.3109038612394317,
+     "cer_flagged": 0.8751226692836114,
+     "cer_unflagged": 0.8480102971146627,
+     "excess_edits_explained": 0.009632182424878838,
+     "example_ids": [
+      "rasam2/test/000000",
+      "rasam2/test/000004",
+      "rasam2/test/000006",
+      "rasam2/test/000014",
+      "rasam2/test/000017",
+      "rasam2/test/000024"
+     ]
+    },
+    "D16 diacritic insertion": {
+     "share_lines": 0.05454545454545454,
+     "share_edits": 0.010807983962346378,
+     "cer_flagged": 0.4732824427480916,
+     "cer_unflagged": 0.8638958666362183,
+     "excess_edits_explained": -0.008920135715043073,
+     "example_ids": [
+      "rasam2/test/000028",
+      "rasam2/test/000044",
+      "rasam2/test/000050",
+      "rasam2/test/000062",
+      "rasam2/test/000090",
+      "rasam2/test/000106"
+     ]
+    },
+    "D17 orthographic only": {
+     "share_lines": 0.004545454545454545,
+     "share_edits": 8.716116098666435e-05,
+     "cer_flagged": 0.125,
+     "cer_unflagged": 0.856694795011575,
+     "excess_edits_explained": -0.000510202942568866,
+     "example_ids": [
+      "rasam2/test/000063"
+     ]
+    },
+    "D18 dot only": {
+     "share_lines": 0.00909090909090909,
+     "share_edits": 0.0005229669659199861,
+     "cer_flagged": 0.2857142857142857,
+     "cer_unflagged": 0.8571535356555539,
+     "excess_edits_explained": -0.0010459534776228216,
+     "example_ids": [
+      "rasam2/test/000010",
+      "rasam2/test/000044"
+     ]
+    },
+    "D19 Maghrebi dot swap (ق→ف, ف→ب)": {
+     "share_lines": 0.05,
+     "share_edits": 0.0176065545193062,
+     "cer_flagged": 0.42616033755274263,
+     "cer_unflagged": 0.8720309477756286,
+     "excess_edits_explained": -0.018420872417471278,
+     "example_ids": [
+      "rasam2/test/000026",
+      "rasam2/test/000049",
+      "rasam2/test/000051",
+      "rasam2/test/000079",
+      "rasam2/test/000083",
+      "rasam2/test/000091"
+     ]
+    },
+    "D20 space at a PAW gap": {
+     "share_lines": 0.022727272727272728,
+     "share_edits": 0.005578314303146518,
+     "cer_flagged": 0.32989690721649484,
+     "cer_unflagged": 0.8639909125331314,
+     "excess_edits_explained": -0.009031137194406649,
+     "example_ids": [
+      "rasam2/test/000057",
+      "rasam2/test/000083",
+      "rasam2/test/000096",
+      "rasam2/test/000121",
+      "rasam2/test/000123"
+     ]
+    },
+    "D22 reversed reading": {
+     "share_lines": 0.0
+    }
+   },
+   "residual_lines": 0,
+   "residual_share_of_top20": 0.0
+  },
   "vlm/arabic-paddleocr-v5@none|kitab_khatt": {
    "pack": "bench",
    "lines": 200,

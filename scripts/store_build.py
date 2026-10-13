@@ -198,6 +198,19 @@ def main() -> None:
                 rows.append(st.add(run, fam, model, "none", k, "" if rd.error else rd.pred, "bench", "vlm", "vlm:" + c["prompt_version"]))
             st.reconcile("vlm", f"{model}::{ds}", rows, unm)
         print("ingested VLM pairs", sum(1 for (m, d) in canon if d in LINE_SETS), flush=True)
+        for spec in S.get("vlm_derived", []):  # e.g. undo a wrong post-processing step without re-running the model
+            for (model, ds), c in sorted(canon.items()):
+                if model != spec["model"] or ds not in LINE_SETS:
+                    continue
+                run, rows, unm = f"vlm/{spec['as']}", [], 0
+                for sid, rd in c["readings"].items():
+                    k = st.key(ds, sid)
+                    if k is None:
+                        unm += 1
+                        continue
+                    hyp = "" if rd.error else (rd.pred[::-1] if spec["op"] == "reverse" else rd.pred)
+                    rows.append(st.add(run, vlm_family(model), spec["as"], "none", k, hyp, "bench", "vlm-derived", f"derived:{spec['op']}"))
+                st.reconcile("vlm-derived", f"{spec['as']}::{ds}", rows, unm)
 
     pq.write_table(pa.Table.from_pylist(list(samples.values())), a.out / "samples.parquet")
     pq.write_table(pa.Table.from_pylist(st.rows), a.out / "lines.parquet")

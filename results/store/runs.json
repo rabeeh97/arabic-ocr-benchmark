@@ -514,5 +514,12 @@
   "sources": [
    "vlm:line-v2"
   ]
+ },
+ "vlm/arabic-paddleocr-v5-unreversed": {
+  "family": "ocr-engine",
+  "model": "arabic-paddleocr-v5-unreversed",
+  "sources": [
+   "derived:reverse"
+  ]
  }
 }
