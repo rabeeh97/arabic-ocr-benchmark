@@ -1,0 +1,2155 @@
+{
+ "_doc": "Source of truth for the ledger's Research map and docs/research/RESEARCH-MAP.md (built by scripts/build_research_map.py). One entry per item; an item lists every theme it belongs to, so a cross-cutting experiment shows up under each. kind: finding | experiment | idea | fix | check | design | literature. status: done | running | next (proposed for the next round) | planned | gated | parked | dropped | untouched (never started). grade (findings): A strong and replicated | B solid, one gap | C suggestive | D weak or explanation-level | N settled negative. ev: ledger anchors. src: where the item comes from (paper key, 'ours', a doc, or the chat). Updated 2026-10-14.",
+ "updated": "2026-10-14",
+ "themes": [
+  {
+   "id": "T0",
+   "title": "Are the numbers right? Benchmark and measurement validity",
+   "question": "Which measured differences are pipeline, labelling or scoring artefacts rather than properties of the script or the model?",
+   "summary": "The strongest results so far are here. Loose KHATT crops cost fixed-height models 7.5 CER points, and an old length filter hid the worst of them. NAKBA's hamza is an annotation convention. A PaddleOCR post-processing flag scrambled its output. kitab_muharaf is mostly Muharaf train. A per-line store with exact reconciliation and a corrections log now guards every number. Open: label-noise rate (needs human review), near-duplicates, spelling inconsistency, the diacritic scoring rule."
+  },
+  {
+   "id": "T1",
+   "title": "Connectivity, PAWs and word spacing",
+   "question": "Does Arabic's split of words into parts (PAWs) make word boundaries ambiguous to recognisers, and is that visual?",
+   "summary": "Every family inserts word-internal spaces at PAW gaps far more than chance (87 of 89 system × set pairs). PAWs per word as a difficulty predictor was word length. Open: are the PAW gaps that get split as wide as real word gaps (pixel measurement), and does PAW-aware decoding fix them?"
+  },
+  {
+   "id": "T2",
+   "title": "Dots: skeleton (rasm) against dots (i'jam)",
+   "question": "How much of the error is dots, at what resolution do dots get lost, and can context restore them?",
+   "summary": "Dot-only errors are a modest share (dot tax about 1.8 points, dot pairs 13 % of letter substitutions). Dots survive at 64 px. Confusions are visual (same skeleton), not phonetic. Open: dot-preserving resize below 48 px, the restoration ceiling, a factorised dot head, whether attribution lands on dots."
+  },
+  {
+   "id": "T3",
+   "title": "Letter shapes, positional forms and allographs",
+   "question": "Which letter shapes are hard, why, and does adding the missing shapes help?",
+   "summary": "Letter-shape novelty passes the confound battery: about 16× the odds of misreading within a line for CRNNs and about 4.4× for fine-tuned VLMs. Pixel-level novelty is weak. Training repeats targeted at KHATT's novel shapes beat random repeats on KHATT, including held-out lines, but not on other sets. The positional-form tail is fully covered at 20k lines. Open: what the novel shapes are (allograph clusters), whether targeting works for a second dataset, synthesis, letter-family probes, the curriculum track."
+  },
+  {
+   "id": "T4",
+   "title": "Script styles and transcription conventions",
+   "question": "How do style conventions (Maghrebi dots, hamza writing) change what models must learn, and how fast can they learn them?",
+   "summary": "Maghrebi qāf/fāʾ dot convention: base AIN reads ق as ف on 23–27 % of RASAM qāfs. A CRNN trained without Maghrebi lines reads RASAM at about 47 % CER against about 12 % with them. Hamza use follows each system's training labels. Open: few-shot adaptation curve, prompt hint, dot-swap augmentation, the style inventory."
+  },
+  {
+   "id": "T5",
+   "title": "Writing geometry and image conditions",
+   "question": "Which geometric and image properties (crop, slant, stroke, resolution, rules, tone) change recognition, and for which model families?",
+   "summary": "Ink crop: −7.5 points on KHATT for every CRNN. Slant is causal but small, and slant TTA gated on measured slant is nearly free. Slant/stroke augmentation hurts on unseen sets. Tone, noise and ruled lines: no effect. Jointly, pixels per character and line length predict errors in every family; loose crops and slant only for CRNNs. Open: normalisation ablation (height, padding, deslant), resolution probe, a VLM check on crop and slant."
+  },
+  {
+   "id": "T6",
+   "title": "Language and text: what the decoder knows",
+   "question": "How much of the gap is text distance (unseen words, register), and can a language prior help without hallucinating?",
+   "summary": "Unseen words hurt every family. KHATT text is the farthest from training (4.0 bits per character). An unconstrained LLM decoder (E8, 0.6B and 1.7B) hurts, with more fluent-but-wrong words. Errors are visual, not phonetic. Long words help everyone. Open: CTC decoding with character language models (constrained), dot and space restoration, tokenizer view, root-sharing of real-word errors."
+  },
+  {
+   "id": "T7",
+   "title": "Writers and hands",
+   "question": "How much of line difficulty is the writer, and do the effects hold within writers?",
+   "summary": "Mostly open. No writer IDs in the KITAB copy of KHATT. NAKBA file names and RASAM manuscript names can give page or manuscript clusters for honest intervals. KHATT's fixed-text paragraphs (the same text by several writers) are a natural experiment."
+  },
+  {
+   "id": "T8",
+   "title": "Models, training data and transfer",
+   "question": "What transfers across datasets and model families, and what is a fair reference?",
+   "summary": "CRNN and VLM line difficulty correlate weakly (ρ ≈ 0.35). Most hard lines are hard for one family, not both. The standard-split CRNN (no test lines in training) is the comparable reference. Repetition itself helps NAKBA slightly. Open: in-domain NAKBA control, E1 frozen vs unfrozen ViT, multilingual freeze sweep, data scaling in characters, cross-script check, checkpoint averaging."
+  },
+  {
+   "id": "T9",
+   "title": "Attribution and localisation: where models look",
+   "question": "Do models look at the right letters, and can attribution guide training?",
+   "summary": "Attribution maps are valid (9× on ink) and point at the token's own letters about 3× chance. Wrong tokens look in the right place as often as correct ones, so errors are misreadings, not misdirected looking. LocateAnything zero-shot failed. Open, and parked behind the characterisation work: image reliance, dots, per-module gradients, freeze-by-letter."
+  },
+  {
+   "id": "T10",
+   "title": "Our own dataset (design)",
+   "question": "What would a dataset that answers these questions look like?",
+   "summary": "A living design guide exists (dataset-design.md). Findings feed it: size in characters per letter × form, writer metadata, a tight crop policy, a documented hamza and diacritic convention, shared copy-texts across writers."
+  },
+  {
+   "id": "T11",
+   "title": "Infrastructure, standards and literature",
+   "question": "How do we make every result traceable and every characteristic reusable?",
+   "summary": "Built: per-line store, panel, seeds, analyses A and B, 18 detectors, corrections log, backups on the SSD. Open: validation gates V3–V6, the release, literature tasks L1–L7, outward contacts (ask first)."
+  }
+ ],
+ "items": [
+  {
+   "id": "X-S1",
+   "kind": "finding",
+   "title": "Ink-band crop before resizing",
+   "status": "done",
+   "grade": "A",
+   "result": "KHATT 31.0 → 23.3 % on all 200 lines (−7.5 [−10.6, −4.9], 3 seeds); −7.3 on the standard-split CRNN; 35–36 lines better, none worse; NAKBA and Muharaf unchanged; VLMs not affected",
+   "src": "ours (from the E8 gallery)",
+   "ev": [
+    "key-findings",
+    "ev-1",
+    "ev-2",
+    "ev-13",
+    "d-day2"
+   ],
+   "themes": [
+    "T0",
+    "T5"
+   ]
+  },
+  {
+   "id": "C3",
+   "kind": "fix",
+   "title": "The old evaluation silently dropped 17 KHATT lines (CTC length filter applied before the crop)",
+   "status": "done",
+   "result": "Every earlier KHATT CRNN number was on an easier 183-line subset; the panel scores all lines",
+   "src": "planning agent",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ]
+  },
+  {
+   "id": "C4",
+   "kind": "fix",
+   "title": "The aligner CRNN trained on most Muharaf and RASAM test lines",
+   "status": "done",
+   "result": "In-train lines flagged and excluded everywhere; standard-split CRNN trained (2 seeds)",
+   "src": "planning agent",
+   "ev": [
+    "d-evidence",
+    "ev-13"
+   ],
+   "themes": [
+    "T0",
+    "T8"
+   ]
+  },
+  {
+   "id": "C5",
+   "kind": "fix",
+   "title": "PaddleOCR output scrambled by our reverse_output flag",
+   "status": "done",
+   "result": "Un-reversed: KHATT 85.3 → 63.0 % CER; patch for the main checkout written (not applied there yet); TrOCR not reversed",
+   "src": "store reversal detector",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "C2",
+   "kind": "fix",
+   "title": "Two different NAKBA blind samples in earlier results",
+   "status": "done",
+   "result": "The panel scores all 2,671 lines",
+   "src": "planning agent",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "C7",
+   "kind": "fix",
+   "title": "CRNN readings depended on batch padding and numerics",
+   "status": "done",
+   "result": "Panel evaluator scores one line at a time in fp32",
+   "src": "planning agent",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ]
+  },
+  {
+   "id": "C6",
+   "kind": "check",
+   "title": "AIN-7B suspiciously strong on KITAB-KHATT (6.4 % vs ≥ 20.7 %), copies GT whitespace quirks",
+   "status": "parked",
+   "result": "Unverified (AIN's paper names no training sets); AIN left out of cross-model claims",
+   "src": "planning agent; user decision 2026-10-13",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "T11-hamza",
+   "kind": "finding",
+   "title": "NAKBA's alif-hamza is an annotation convention",
+   "status": "done",
+   "grade": "A",
+   "result": "About 2 points of NAKBA CER (13.8 → 11.6 % folded); systems write hamza at their training labels' rate (NAKBA-trained 17–20 %, Muharaf-trained 2–5 %); NAKBA test and blind labelled at different rates (16.8 vs 10.6 %)",
+   "src": "ours",
+   "ev": [
+    "ev-12",
+    "d-day3",
+    "key-findings"
+   ],
+   "themes": [
+    "T0",
+    "T4"
+   ]
+  },
+  {
+   "id": "X1",
+   "kind": "finding",
+   "title": "kitab_muharaf is 86.5 % inside Muharaf train",
+   "status": "done",
+   "grade": "A",
+   "result": "Tagged in-train; fine-tune scores on it never quoted",
+   "src": "NEXT_STEPS X1, R0.2",
+   "ev": [],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "R2.8",
+   "kind": "finding",
+   "title": "End-of-line excess is a pipeline artefact (early stop, token caps)",
+   "status": "done",
+   "grade": "A",
+   "result": "Gemini-flash truncated on 74 % of lines; fix X6",
+   "src": "NEXT_STEPS",
+   "ev": [
+    "ev-4"
+   ],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "X6",
+   "kind": "fix",
+   "title": "Output-token caps for API and VLM runs",
+   "status": "untouched",
+   "result": "Needed before scoring the truncated runs",
+   "src": "NEXT_STEPS X6",
+   "ev": [],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "R2.1",
+   "kind": "finding",
+   "title": "Normalisation ladder: error owed to encoding, orthography, diacritics, dots and spacing",
+   "status": "done",
+   "grade": "A",
+   "result": "Every reading in the store is scored at all seven rungs",
+   "src": "characteristics-framework §4",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ]
+  },
+  {
+   "id": "R2.7",
+   "kind": "experiment",
+   "title": "Diacritic scoring rule: rank correlation with and without marks",
+   "status": "planned",
+   "result": "Base VLMs pay up to 10 CER points for correct marks",
+   "src": "doctor2022graphemic, heakl2025kitab",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "R4.1",
+   "kind": "experiment",
+   "title": "Label review in the review tool (458 candidates) and the 20 KHATT hard-core lines",
+   "status": "next",
+   "result": "Needs about 2 h of human review; gives a label-error rate per set and κ with CER-HV",
+   "src": "alazzawi2026labelerr",
+   "ev": [
+    "ev-3",
+    "d-labels"
+   ],
+   "themes": [
+    "T0",
+    "T10"
+   ]
+  },
+  {
+   "id": "R4.2",
+   "kind": "experiment",
+   "title": "Near-duplicate leakage (MinHash text plus perceptual image hash)",
+   "status": "untouched",
+   "src": "baek2019wrong",
+   "ev": [],
+   "themes": [
+    "T0"
+   ]
+  },
+  {
+   "id": "R4.3",
+   "kind": "experiment",
+   "title": "Spelling-inconsistency report (same word spelled several ways in one set)",
+   "status": "untouched",
+   "src": "doctor2022graphemic",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T4"
+   ]
+  },
+  {
+   "id": "R4.4",
+   "kind": "experiment",
+   "title": "Per-dataset conventions table from the dataset papers",
+   "status": "untouched",
+   "src": "NEXT_STEPS",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T4"
+   ]
+  },
+  {
+   "id": "X5-len",
+   "kind": "fix",
+   "title": "Length-stratified reporting: fragments vs full lines on the leaderboard",
+   "status": "untouched",
+   "result": "Short lines fail disproportionately (also a cross-family predictor)",
+   "src": "NEXT_STEPS X5",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ]
+  },
+  {
+   "id": "R3.2",
+   "kind": "experiment",
+   "title": "IRT 2PL difficulty and discrimination per line",
+   "status": "untouched",
+   "src": "rodriguez2021irt",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T0",
+    "T8"
+   ]
+  },
+  {
+   "id": "R3.3",
+   "kind": "experiment",
+   "title": "Challenge subsets (hard core, dot-dense, OOV-heavy, fragments) as dataset filters",
+   "status": "planned",
+   "result": "Hard core (20 KHATT lines), family-split lines and detector flags now exist",
+   "src": "NEXT_STEPS",
+   "ev": [
+    "ev-3",
+    "ev-4"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ]
+  },
+  {
+   "id": "X2-clean",
+   "kind": "finding",
+   "title": "Cleaned Muharaf (CER-HV flags): removing flagged test lines moves CER < 1 point, no rank change",
+   "status": "done",
+   "grade": "B",
+   "src": "alazzawi2026labelerr",
+   "ev": [
+    "d-labels"
+   ],
+   "themes": [
+    "T0"
+   ],
+   "covers": [
+    "X2"
+   ]
+  },
+  {
+   "id": "X3-retrain",
+   "kind": "experiment",
+   "title": "Retrain without the 1,424 CER-HV-flagged Muharaf train lines",
+   "status": "untouched",
+   "src": "NEXT_STEPS X3",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T8"
+   ]
+  },
+  {
+   "id": "X7",
+   "kind": "check",
+   "title": "Do full-resolution Muharaf scans exist (public copy stored at 60 px)?",
+   "status": "untouched",
+   "src": "NEXT_STEPS X7, rice1995isri",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T5"
+   ]
+  },
+  {
+   "id": "detector-residual",
+   "kind": "experiment",
+   "title": "Review the residual: worst lines no detector explains, and write new detectors",
+   "status": "planned",
+   "result": "1–17 % of each run's worst fifth unexplained",
+   "src": "plan §3.5",
+   "ev": [
+    "ev-4"
+   ],
+   "themes": [
+    "T0",
+    "T11"
+   ],
+   "covers": [
+    "ideas #4",
+    "X-A2"
+   ]
+  },
+  {
+   "id": "V5-paw",
+   "kind": "finding",
+   "title": "Word-internal spaces fall at PAW gaps",
+   "status": "done",
+   "grade": "A",
+   "result": "Above chance with the interval clear of it in 87 of 89 system × set pairs; 1.2–2.9× chance; every family",
+   "src": "ours (R2.4)",
+   "ev": [
+    "ev-10",
+    "ev-5"
+   ],
+   "themes": [
+    "T1"
+   ]
+  },
+  {
+   "id": "paw-per-word",
+   "kind": "finding",
+   "title": "PAWs per word as a difficulty predictor",
+   "status": "done",
+   "grade": "N",
+   "result": "It was word length: not significant for CRNNs once letters per word is controlled",
+   "src": "ours",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T1",
+    "T6"
+   ]
+  },
+  {
+   "id": "PAW-gap-width",
+   "kind": "experiment",
+   "title": "Are the PAW gaps that get split as wide as real word gaps? (pixel gaps from the letter dumps)",
+   "status": "next",
+   "result": "CPU, from existing letter spans",
+   "src": "chat 2026-10-14",
+   "ev": [],
+   "themes": [
+    "T1",
+    "T5"
+   ]
+  },
+  {
+   "id": "P-L2",
+   "kind": "experiment",
+   "title": "PAW-space repair: PAW-aware decoding or lexicon merge of a space after a non-joining letter",
+   "status": "next",
+   "result": "Needs CTC posteriors for the decoding version (minutes on the GPU)",
+   "src": "alluhaybi2020connect",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T1",
+    "T6"
+   ]
+  },
+  {
+   "id": "P-L3",
+   "kind": "experiment",
+   "title": "PAW-inventory coverage curve: distinct PAWs for 95 / 99 % coverage",
+   "status": "untouched",
+   "src": "lehal2013urdu",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T1",
+    "T3"
+   ]
+  },
+  {
+   "id": "aug-14",
+   "kind": "idea",
+   "title": "Augmentation 14: PAW-gap jitter (widen or narrow gaps between word parts)",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T1"
+   ]
+  },
+  {
+   "id": "D21",
+   "kind": "check",
+   "title": "Lam-alef ligature errors (detector planned)",
+   "status": "untouched",
+   "src": "plan §3.5",
+   "ev": [],
+   "themes": [
+    "T1"
+   ]
+  },
+  {
+   "id": "R2.2",
+   "kind": "finding",
+   "title": "Dot tax and rasm-CER",
+   "status": "done",
+   "grade": "B",
+   "result": "Dot-only error about 1.8 points; dot pairs 13 % of letter substitutions",
+   "src": "ours",
+   "ev": [
+    "d-r26"
+   ],
+   "themes": [
+    "T2"
+   ]
+  },
+  {
+   "id": "R2.6",
+   "kind": "finding",
+   "title": "VLMs make as many similar-letter errors per character as the CRNN; their share is lower",
+   "status": "done",
+   "grade": "B",
+   "src": "alazzawi2026gap",
+   "ev": [
+    "d-r26"
+   ],
+   "themes": [
+    "T2",
+    "T8"
+   ],
+   "covers": [
+    "nagy2000frontier"
+   ]
+  },
+  {
+   "id": "makharij",
+   "kind": "finding",
+   "title": "Do systems confuse letters that sound alike or look alike? (makhārij question)",
+   "status": "done",
+   "grade": "A",
+   "result": "Look-alike 4–15× chance in every family; sound-alike at chance, even for the LLM decoder; no historical support for articulatory letter design",
+   "src": "chat 2026-10-13",
+   "ev": [
+    "ev-11"
+   ],
+   "themes": [
+    "T2",
+    "T6"
+   ]
+  },
+  {
+   "id": "X-G7",
+   "kind": "experiment",
+   "title": "Dot-preserving resize and a dot input channel at 32–48 px",
+   "status": "planned",
+   "result": "CPU proxy: dots survive at 64 px, lost at 32 px; model test open",
+   "src": "ours (pool #2)",
+   "ev": [
+    "d-geom",
+    "d-pool"
+   ],
+   "themes": [
+    "T2",
+    "T5"
+   ]
+  },
+  {
+   "id": "X-G9",
+   "kind": "experiment",
+   "title": "Factorised output: rasm CTC plus a dot-pattern head (also C3)",
+   "status": "untouched",
+   "src": "ours (pool #4), ahmad2019subcore",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T2",
+    "T3"
+   ]
+  },
+  {
+   "id": "P-L1",
+   "kind": "experiment",
+   "title": "Dot-restoration ceiling and H(dots | rasm, context)",
+   "status": "planned",
+   "result": "Gain capped at the dot tax (~1.8 points)",
+   "src": "alshaibani2025dotless, shannon1951",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T2",
+    "T6"
+   ]
+  },
+  {
+   "id": "X-A6",
+   "kind": "experiment",
+   "title": "Do attribution maps land on dots?",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-ideas"
+   ],
+   "themes": [
+    "T2",
+    "T9"
+   ],
+   "covers": [
+    "ideas #9"
+   ]
+  },
+  {
+   "id": "E2",
+   "kind": "experiment",
+   "title": "Tokenizer view: do dot-pair swaps get unrelated token sequences; fertility vs CER",
+   "status": "untouched",
+   "src": "alomari2026iconicity",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T2",
+    "T6"
+   ]
+  },
+  {
+   "id": "aug-15",
+   "kind": "idea",
+   "title": "Augmentation 15: dot dropout",
+   "status": "dropped",
+   "result": "Breaks image–label agreement; small displacement only",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T2"
+   ]
+  },
+  {
+   "id": "aug-16",
+   "kind": "idea",
+   "title": "Augmentation 16: dot minimal-pair renders with new label",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T2"
+   ]
+  },
+  {
+   "id": "zhang2020ran",
+   "kind": "literature",
+   "title": "Separate dots head (radical analysis)",
+   "status": "parked",
+   "result": "R2.6 says no case except style-specific dots (E6)",
+   "src": "zhang2020ran",
+   "ev": [],
+   "themes": [
+    "T2"
+   ]
+  },
+  {
+   "id": "X-G10",
+   "kind": "finding",
+   "title": "Letter-shape novelty predicts letter errors",
+   "status": "done",
+   "grade": "B",
+   "result": "Within-line OR ≈ 16 (CRNN), 4.4 (fine-tuned VLMs); holds within letter × form, on cropped lines, without letter lists, from a model that never saw the lines; pixel novelty weak",
+   "src": "ours (pool #5)",
+   "ev": [
+    "ev-14",
+    "key-findings",
+    "d-day2"
+   ],
+   "themes": [
+    "T3"
+   ]
+  },
+  {
+   "id": "X-G11L",
+   "kind": "finding",
+   "title": "Shape-targeted training repeats (no target labels)",
+   "status": "done",
+   "grade": "B",
+   "result": "KHATT −0.83 [−1.31, −0.33] vs random repeats (3 seeds, every targeted seed better); held-out half B −0.93; no effect on NAKBA, Muharaf, RASAM",
+   "src": "ours",
+   "ev": [
+    "ev-13",
+    "d-day4"
+   ],
+   "themes": [
+    "T3",
+    "T8"
+   ]
+  },
+  {
+   "id": "X-S2",
+   "kind": "finding",
+   "title": "Combined recipe (cropped training + shape repeats)",
+   "status": "done",
+   "grade": "N",
+   "result": "Equals shape repeats + test-time crop; training on cropped lines adds nothing; its NAKBA gain is a repetition effect",
+   "src": "ours",
+   "ev": [
+    "ev-13",
+    "d-day4"
+   ],
+   "themes": [
+    "T3",
+    "T5",
+    "T8"
+   ]
+  },
+  {
+   "id": "R1.7",
+   "kind": "finding",
+   "title": "Positional-form tail (train vs test)",
+   "status": "done",
+   "grade": "A",
+   "result": "At most 0.2 % of test letters have a letter × form seen < 50 times; the tail is not the gap at full data",
+   "src": "alazzawi2026gap",
+   "ev": [
+    "key-findings"
+   ],
+   "themes": [
+    "T3",
+    "T0"
+   ]
+  },
+  {
+   "id": "novel-clusters",
+   "kind": "experiment",
+   "title": "What are the novel shapes? Allograph clusters of novel KHATT/NAKBA letters against training",
+   "status": "next",
+   "result": "CPU, from the letter dumps",
+   "src": "chat 2026-10-14",
+   "ev": [
+    "ev-14"
+   ],
+   "themes": [
+    "T3"
+   ]
+  },
+  {
+   "id": "shape-nakba",
+   "kind": "experiment",
+   "title": "Shape targeting for a second dataset: select on NAKBA blind half A, test on half B (2 seeds vs random)",
+   "status": "next",
+   "result": "About 4 GPU hours",
+   "src": "plan P2.1",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T3",
+    "T8"
+   ]
+  },
+  {
+   "id": "hard-example-control",
+   "kind": "experiment",
+   "title": "Hard-example control: repeat the highest-loss training lines instead of shape-matched ones",
+   "status": "planned",
+   "src": "plan P2.1",
+   "ev": [],
+   "themes": [
+    "T3",
+    "T8"
+   ]
+  },
+  {
+   "id": "X-G11",
+   "kind": "experiment",
+   "title": "Allograph-stitching synthesis for rare shapes and style swaps",
+   "status": "gated",
+   "result": "Gated on the clusters; joins may look unnatural",
+   "src": "ours (pool #6), dinges2016synthesis",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T3",
+    "T4"
+   ]
+  },
+  {
+   "id": "X-A2b",
+   "kind": "experiment",
+   "title": "Larger letter-family sample (the خ lead)",
+   "status": "untouched",
+   "src": "attribution spike",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T3",
+    "T9"
+   ]
+  },
+  {
+   "id": "X-D0",
+   "kind": "experiment",
+   "title": "Per-module gradient probe by letter family (no training)",
+   "status": "untouched",
+   "src": "ours (ideas #2)",
+   "ev": [
+    "d-ideas"
+   ],
+   "themes": [
+    "T3",
+    "T9"
+   ]
+  },
+  {
+   "id": "X-D1",
+   "kind": "experiment",
+   "title": "Freeze-by-letter: protect weights that detect each letter group (wild)",
+   "status": "gated",
+   "src": "ours (ideas #3)",
+   "ev": [
+    "d-ideas"
+   ],
+   "themes": [
+    "T3",
+    "T9"
+   ]
+  },
+  {
+   "id": "C-track",
+   "kind": "experiment",
+   "title": "Curriculum: letters first, then words (C0 data, C1 vs controls, C2 letter-incremental, C3 factorised head, C4 averaging)",
+   "status": "parked",
+   "src": "NEXT_STEPS C-track",
+   "ev": [],
+   "themes": [
+    "T3",
+    "T8"
+   ]
+  },
+  {
+   "id": "aug-10",
+   "kind": "idea",
+   "title": "Augmentation 10: rare-character oversampling",
+   "status": "untouched",
+   "src": "eltay2022adaptive (unverified)",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T3"
+   ]
+  },
+  {
+   "id": "aug-19",
+   "kind": "idea",
+   "title": "Augmentation 19: coverage-balanced text for synthetic lines",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T3",
+    "T10"
+   ]
+  },
+  {
+   "id": "P-L4",
+   "kind": "experiment",
+   "title": "Similarity-choice model of confusions (Müller-style); human vs model confusability",
+   "status": "planned",
+   "result": "Same-definition part done 2026-10-09",
+   "src": "mueller2012letter",
+   "ev": [],
+   "themes": [
+    "T3",
+    "T2"
+   ]
+  },
+  {
+   "id": "pos-labels",
+   "kind": "literature",
+   "title": "Explicit positional-form labels did not help (gap paper)",
+   "status": "done",
+   "src": "alazzawi2026gap",
+   "ev": [
+    "d-gap"
+   ],
+   "themes": [
+    "T3"
+   ]
+  },
+  {
+   "id": "R2.9",
+   "kind": "finding",
+   "title": "Maghrebi dot convention: base AIN reads ق as ف on 23–27 % of RASAM qāfs (2–3 % elsewhere)",
+   "status": "done",
+   "grade": "B",
+   "result": "Fine-tuning on Muharaf cuts it to 4–10 %",
+   "src": "ours; vidalgorene2024rasam2",
+   "ev": [
+    "d-styles"
+   ],
+   "themes": [
+    "T4",
+    "T2"
+   ]
+  },
+  {
+   "id": "maghrebi-gap",
+   "kind": "finding",
+   "title": "Without Maghrebi training lines a CRNN reads RASAM at ~47 % CER (vs ~12 % with them)",
+   "status": "done",
+   "grade": "B",
+   "result": "Standard-split CRNN, 2 seeds",
+   "src": "ours",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T4",
+    "T8"
+   ]
+  },
+  {
+   "id": "E6",
+   "kind": "experiment",
+   "title": "Maghrebi adaptation: few-shot curve (16 / 100 / 300 lines), prompt hint, dot-swap augmentation",
+   "status": "next",
+   "result": "About 1.5 GPU hours for the CRNN curve",
+   "src": "vidalgorene2024rasam2, kohut2023finetuning, farazi2026vlmocr",
+   "ev": [
+    "run-next",
+    "d-styles"
+   ],
+   "themes": [
+    "T4",
+    "T8"
+   ]
+  },
+  {
+   "id": "aug-17",
+   "kind": "idea",
+   "title": "Augmentation 17: Maghrebi dot-convention swap",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T4",
+    "T2"
+   ]
+  },
+  {
+   "id": "aug-21",
+   "kind": "idea",
+   "title": "Augmentation 21: style mixing across Maghrebi, Naskh, Ajami",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T4"
+   ]
+  },
+  {
+   "id": "pen-contrast-aug",
+   "kind": "idea",
+   "title": "Pen-contrast augmentation (imitate a cut nib)",
+   "status": "untouched",
+   "result": "RASAM pen contrast is an outlier for 50–68 % of lines",
+   "src": "ours (pool #12)",
+   "ev": [
+    "d-pool",
+    "ev-7"
+   ],
+   "themes": [
+    "T4",
+    "T5"
+   ]
+  },
+  {
+   "id": "S1-styles",
+   "kind": "design",
+   "title": "Script-styles inventory (traits, datasets, samples, licences)",
+   "status": "parked",
+   "src": "ideas #7",
+   "ev": [
+    "d-ideas"
+   ],
+   "themes": [
+    "T4",
+    "T10"
+   ]
+  },
+  {
+   "id": "X-T2",
+   "kind": "finding",
+   "title": "Geometry transfer: slant is causal but small; stroke thinning helps NAKBA; tone, noise and rules no effect",
+   "status": "done",
+   "grade": "B",
+   "result": "KHATT as Muharaf (slant only) −1.1; Muharaf upright +2.0",
+   "src": "ours (pool #14)",
+   "ev": [
+    "d-xfer",
+    "ev-2"
+   ],
+   "themes": [
+    "T5"
+   ],
+   "covers": [
+    "X-T1",
+    "pool #14"
+   ]
+  },
+  {
+   "id": "X-G1-6",
+   "kind": "finding",
+   "title": "Geometry measures per line (loci, slant, baseline, hinge, stroke, dots) and per-dataset profiles",
+   "status": "done",
+   "grade": "B",
+   "result": "KHATT off the training distribution in slant (34 %) and stroke (46 %); RASAM in pen contrast (50–68 %); NAKBA ruled lines (16–24 %); contour histograms identify the dataset but not the gap",
+   "src": "glucksman1967loci, bulacu2007allographic, farooq2005preprocess, ibnmuqla-proportion",
+   "ev": [
+    "ev-7",
+    "d-geom"
+   ],
+   "themes": [
+    "T5"
+   ],
+   "covers": [
+    "X-G1",
+    "X-G2",
+    "X-G4",
+    "X-G5",
+    "X-G6",
+    "pool #1",
+    "ideas #11",
+    "ideas #12",
+    "ideas #15"
+   ]
+  },
+  {
+   "id": "validity",
+   "kind": "finding",
+   "title": "Which characteristics predict errors jointly (gate V2)",
+   "status": "done",
+   "grade": "B",
+   "result": "Every family: few pixels per character, short lines, unseen words; long words help. Loose crop and slant only for CRNNs; pen contrast only for fine-tuned VLMs. Low explained variance, poor leave-one-set-out transfer",
+   "src": "plan P1.7, ye2013diqa",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T5",
+    "T6",
+    "T11"
+   ],
+   "covers": [
+    "R7"
+   ]
+  },
+  {
+   "id": "X-T3",
+   "kind": "finding",
+   "title": "Slant and stroke augmentation in training",
+   "status": "done",
+   "grade": "N",
+   "result": "Hurts on unseen sets (NAKBA +0.8 [+0.7, +1.0]); slant-robust in-domain",
+   "src": "ours",
+   "ev": [
+    "key-findings",
+    "ev-2"
+   ],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "X-G8",
+   "kind": "finding",
+   "title": "Slant TTA with confidence selection, gated on measured slant",
+   "status": "done",
+   "grade": "C",
+   "result": "KHATT −0.85; ungated costs NAKBA +0.4; gated: +0.01 cost, keeps 61–69 % of the gain (rule needs 70 %)",
+   "src": "ours (pool #3)",
+   "ev": [
+    "ev-9"
+   ],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "X-G3",
+   "kind": "experiment",
+   "title": "Normalisation ablation: height 48/64/96 × pad vs resize, deslant, binarisation (2 seeds)",
+   "status": "planned",
+   "src": "retsinas2022best, liebl2020crnn, vinciarelli2001norm",
+   "ev": [
+    "d-geo"
+   ],
+   "themes": [
+    "T5"
+   ],
+   "covers": [
+    "ideas #11"
+   ]
+  },
+  {
+   "id": "R9",
+   "kind": "experiment",
+   "title": "Resolution and noise probe: KHATT at 60 px and three noise levels, CRNN and 3 VLMs",
+   "status": "planned",
+   "src": "rice1995isri, hegghammer2021noisy, rethinking2021",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T5",
+    "T2"
+   ]
+  },
+  {
+   "id": "vlm-geometry",
+   "kind": "experiment",
+   "title": "VLM check: fine-tuned Qwen3-VL-8B on cropped and slant-sheared KHATT",
+   "status": "planned",
+   "result": "4–6 GPU hours, more setup; decides whether crop and slant effects are CRNN-only",
+   "src": "plan P2.3",
+   "ev": [],
+   "themes": [
+    "T5",
+    "T8"
+   ]
+  },
+  {
+   "id": "X-G12",
+   "kind": "experiment",
+   "title": "Geometry-prediction pretext pretraining on unlabelled scans",
+   "status": "untouched",
+   "src": "ours (pool #8)",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T5",
+    "T8"
+   ]
+  },
+  {
+   "id": "geom-matched-aug",
+   "kind": "idea",
+   "title": "Geometry-matched augmentation from unlabelled target images",
+   "status": "untouched",
+   "result": "Slant augmentation already hurt; low priority",
+   "src": "ours (pool #7)",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "slant-density",
+   "kind": "idea",
+   "title": "Slant-density score for data selection",
+   "status": "untouched",
+   "src": "ours (pool #13)",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T5",
+    "T3"
+   ]
+  },
+  {
+   "id": "pen-trajectory",
+   "kind": "idea",
+   "title": "Pen-trajectory recovery with sigma-lognormal primitives (long shot)",
+   "status": "parked",
+   "src": "ours (pool #11), plamondon-kinematic",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "R7-DIQA",
+   "kind": "experiment",
+   "title": "Image-only difficulty predictor, leave-one-dataset-out",
+   "status": "done",
+   "grade": "C",
+   "result": "Part of the validity model: image features alone transfer poorly across sets",
+   "src": "ye2013diqa",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T5",
+    "T11"
+   ],
+   "covers": [
+    "R7"
+   ]
+  },
+  {
+   "id": "aug-1-4",
+   "kind": "idea",
+   "title": "Augmentations 1–4: affine, elastic, morphology, photometric (baseline)",
+   "status": "done",
+   "src": "wigington2017augment, retsinas2022best",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T5"
+   ],
+   "covers": [
+    "aug-1",
+    "aug-2",
+    "aug-3",
+    "aug-4"
+   ]
+  },
+  {
+   "id": "aug-5-7-8-9-12-13",
+   "kind": "idea",
+   "title": "Augmentations 5 learned warping, 7 GAN/diffusion, 8 font renders, 9 glyph concatenation, 12 downscale to 60 px, 13 kashida stretching",
+   "status": "untouched",
+   "src": "luo2020learn, fogel2020scrabblegan, bilgintasdemir2023ottoman, dinges2016synthesis, ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T5",
+    "T3"
+   ],
+   "covers": [
+    "aug-5",
+    "aug-7",
+    "aug-8",
+    "aug-9",
+    "aug-12",
+    "aug-13"
+   ]
+  },
+  {
+   "id": "aug-6",
+   "kind": "idea",
+   "title": "Augmentation 6: pixel span masking",
+   "status": "dropped",
+   "src": "li2025htrvt",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "aug-20",
+   "kind": "idea",
+   "title": "Augmentation 20: fragment crops for short lines",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T5",
+    "T0"
+   ]
+  },
+  {
+   "id": "A1",
+   "kind": "experiment",
+   "title": "Augmentation ablation (items 13, 14, 16, 17 against the 1–4 baseline)",
+   "status": "planned",
+   "src": "NEXT_STEPS A1",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T5",
+    "T1",
+    "T2",
+    "T4"
+   ]
+  },
+  {
+   "id": "pix2pix",
+   "kind": "literature",
+   "title": "Learned image normalisation (pix2pix)",
+   "status": "gated",
+   "result": "Only after X-G3 shows normalisation helps",
+   "src": "pix2pix-normalisation2024",
+   "ev": [],
+   "themes": [
+    "T5"
+   ]
+  },
+  {
+   "id": "text-distance",
+   "kind": "finding",
+   "title": "Unseen words hurt every family; KHATT text is the farthest from training",
+   "status": "done",
+   "grade": "B",
+   "result": "Unseen words 33–35 % vs Muharaf train; KHATT 4.0 bits per character; significant in every family's joint model",
+   "src": "ours, garridomunoz2025",
+   "ev": [
+    "ev-8",
+    "key-findings"
+   ],
+   "themes": [
+    "T6"
+   ]
+  },
+  {
+   "id": "E8",
+   "kind": "finding",
+   "title": "LLM decoder on CRNN features (E8, E8b)",
+   "status": "done",
+   "grade": "N",
+   "result": "No-go at 0.6B and 1.7B: KHATT 40 %, more fluent-but-wrong words",
+   "src": "ours (ideas #14)",
+   "ev": [
+    "d-day4",
+    "ev-2"
+   ],
+   "themes": [
+    "T6",
+    "T8"
+   ],
+   "covers": [
+    "pool #9",
+    "E8b",
+    "ideas #14"
+   ]
+  },
+  {
+   "id": "lm-decoding",
+   "kind": "experiment",
+   "title": "CTC decoding with character language models (Muharaf text, NAKBA text, modern Arabic sample)",
+   "status": "next",
+   "result": "15 GPU minutes to dump posteriors, then CPU; tests whether text distance is fixable",
+   "src": "plan P2.8, garridomunoz2025",
+   "ev": [],
+   "themes": [
+    "T6",
+    "T1",
+    "T2"
+   ]
+  },
+  {
+   "id": "R2.5",
+   "kind": "experiment",
+   "title": "Fluency-hallucination rate (frequent MSA words with no aligned counterpart)",
+   "status": "done",
+   "grade": "B",
+   "result": "Covered by detector D15 and the fluent-but-wrong share in analysis B",
+   "src": "heakl2025kitab",
+   "ev": [
+    "ev-4"
+   ],
+   "themes": [
+    "T6"
+   ]
+  },
+  {
+   "id": "perea-root",
+   "kind": "experiment",
+   "title": "Do real-word substitutions share the root more often than chance? (CAMeL Tools)",
+   "status": "untouched",
+   "src": "perea2010tl",
+   "ev": [],
+   "themes": [
+    "T6"
+   ]
+  },
+  {
+   "id": "R5",
+   "kind": "experiment",
+   "title": "Language layer: register, dialect, entropy, numbers and names",
+   "status": "parked",
+   "result": "OOV share already measured and strongest",
+   "src": "NEXT_STEPS R5",
+   "ev": [],
+   "themes": [
+    "T6"
+   ]
+  },
+  {
+   "id": "X-A3",
+   "kind": "experiment",
+   "title": "Image-reliance check: log-prob with and without the image",
+   "status": "untouched",
+   "src": "greekvlm2026",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T6",
+    "T9"
+   ],
+   "covers": [
+    "ideas #10"
+   ]
+  },
+  {
+   "id": "R0.4",
+   "kind": "experiment",
+   "title": "Writer, page and document IDs; between-writer variance",
+   "status": "planned",
+   "result": "NAKBA file names and RASAM manuscript names are now in the panel",
+   "src": "mahmoud2014khatt",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T7"
+   ]
+  },
+  {
+   "id": "cluster-ci",
+   "kind": "experiment",
+   "title": "Cluster bootstrap over NAKBA pages and RASAM manuscripts for every comparison",
+   "status": "next",
+   "result": "CPU",
+   "src": "plan §3.3",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T11"
+   ]
+  },
+  {
+   "id": "P1.8",
+   "kind": "experiment",
+   "title": "KHATT fixed-text natural experiment (same text, several writers)",
+   "status": "planned",
+   "src": "characteristics-framework V3",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T3"
+   ]
+  },
+  {
+   "id": "srihari",
+   "kind": "literature",
+   "title": "Writer individuality and children's handwriting (feeds S2)",
+   "status": "untouched",
+   "src": "srihari2002individuality, srihari2016children",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T10"
+   ]
+  },
+  {
+   "id": "family-matrix",
+   "kind": "finding",
+   "title": "Line × system matrix: CRNN and VLM difficulty correlate weakly",
+   "status": "done",
+   "grade": "B",
+   "result": "KHATT ρ ≈ 0.35; 20 hard-core lines; most hard lines are hard for one family",
+   "src": "ours",
+   "ev": [
+    "ev-3"
+   ],
+   "themes": [
+    "T8",
+    "T0"
+   ]
+  },
+  {
+   "id": "std-split",
+   "kind": "finding",
+   "title": "Standard-split CRNN (no test lines in training)",
+   "status": "done",
+   "grade": "B",
+   "result": "Muharaf validation 11.8 %; KHATT 33.4–33.9 %, cropped 26.0–26.7 %; the comparable reference",
+   "src": "plan P2.2",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T8",
+    "T0"
+   ],
+   "covers": [
+    "E5"
+   ]
+  },
+  {
+   "id": "repetition",
+   "kind": "finding",
+   "title": "Repeating training lines (any) helps NAKBA slightly",
+   "status": "done",
+   "grade": "C",
+   "result": "Random repeats vs base: NAKBA test −0.21 [−0.34, −0.07], blind −0.19",
+   "src": "ours",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "nakba-indomain",
+   "kind": "experiment",
+   "title": "In-domain control: CRNN trained on NAKBA train (data on the box, verified)",
+   "status": "next",
+   "result": "1–2 seeds, 1–2.5 GPU hours; score with and without train/test text overlaps",
+   "src": "plan open question 10",
+   "ev": [],
+   "themes": [
+    "T8",
+    "T0"
+   ]
+  },
+  {
+   "id": "E5-retsinas",
+   "kind": "experiment",
+   "title": "Retsinas-recipe CRNN (column max-pool, CTC shortcut, median padding)",
+   "status": "planned",
+   "src": "retsinas2022best",
+   "ev": [],
+   "themes": [
+    "T8",
+    "T5"
+   ],
+   "covers": [
+    "E5"
+   ]
+  },
+  {
+   "id": "E1",
+   "kind": "experiment",
+   "title": "E1 frozen vs unfrozen ViT; E1.1 bench of the diff-LR arm; E1.2 train arm (b); E1.3 compare",
+   "status": "planned",
+   "result": "Preliminary in-domain −7.6 points (one seed)",
+   "src": "NEXT_STEPS E1, Baseer-Nakba",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "E7",
+   "kind": "experiment",
+   "title": "Multilingual pre-training with a freeze sweep",
+   "status": "untouched",
+   "src": "aradillas2021boosting, alazzawi2026seqmodel, alazzawi2026crossling",
+   "ev": [
+    "d-cross",
+    "run-next"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "E3",
+   "kind": "experiment",
+   "title": "Data scaling on the K grid, in characters per letter × form (E3, E3′)",
+   "status": "untouched",
+   "src": "alazzawi2026gap",
+   "ev": [
+    "d-gap"
+   ],
+   "themes": [
+    "T8",
+    "T10",
+    "T3"
+   ]
+  },
+  {
+   "id": "R10",
+   "kind": "experiment",
+   "title": "Cross-script check (gate V4): Persian PHTD, Urdu NUST-UHWR, Pashto, IAM",
+   "status": "untouched",
+   "src": "marti2002iam, characteristics-framework",
+   "ev": [],
+   "themes": [
+    "T8",
+    "T11"
+   ]
+  },
+  {
+   "id": "P-L5",
+   "kind": "experiment",
+   "title": "Checkpoint weight averaging (AIN-7B NAKBA adapters)",
+   "status": "untouched",
+   "src": "Baseer-Nakba, izmailov2018swa",
+   "ev": [
+    "run-next"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "P-L6",
+   "kind": "experiment",
+   "title": "Per-sample loss logging (dataset cartography)",
+   "status": "untouched",
+   "src": "swayamdipta2020cartography",
+   "ev": [],
+   "themes": [
+    "T8",
+    "T0"
+   ]
+  },
+  {
+   "id": "E4",
+   "kind": "experiment",
+   "title": "Baseer replay (lower rank, fewer steps, NAKBA-domain lines)",
+   "status": "untouched",
+   "src": "NEXT_STEPS E4",
+   "ev": [],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "ketaba-dora",
+   "kind": "literature",
+   "title": "DoRA / rsLoRA arm",
+   "status": "gated",
+   "result": "After E1 says whether encoder or decoder is the bottleneck",
+   "src": "Ketaba-OCR",
+   "ev": [],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "aug-11",
+   "kind": "idea",
+   "title": "Augmentation 11: cross-lingual / cross-dataset mixing",
+   "status": "untouched",
+   "src": "alazzawi2026crossling",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "X-A1",
+   "kind": "finding",
+   "title": "Attribution maps validated (attention, relative attention, gradient × input)",
+   "status": "done",
+   "grade": "B",
+   "result": "9× chance on ink; all beat random patches on deletion",
+   "src": "ideas #1",
+   "ev": [
+    "d-xai"
+   ],
+   "themes": [
+    "T9"
+   ]
+  },
+  {
+   "id": "X-B2",
+   "kind": "finding",
+   "title": "Pointing game against CTC spans",
+   "status": "done",
+   "grade": "B",
+   "result": "About 3× chance; wrong tokens look in the right place as often as correct ones",
+   "src": "ours",
+   "ev": [
+    "d-ctc",
+    "d-xai"
+   ],
+   "themes": [
+    "T9"
+   ],
+   "covers": [
+    "ideas #5"
+   ]
+  },
+  {
+   "id": "X-B1",
+   "kind": "finding",
+   "title": "CTC character spans from the CRNN aligner",
+   "status": "done",
+   "grade": "B",
+   "result": "Basis of the letter dumps; VML-HD validation open",
+   "src": "bullinger2025ctcalign",
+   "ev": [
+    "d-ctc"
+   ],
+   "themes": [
+    "T9",
+    "T3",
+    "T11"
+   ]
+  },
+  {
+   "id": "X-C1",
+   "kind": "finding",
+   "title": "LocateAnything-3B zero-shot",
+   "status": "done",
+   "grade": "N",
+   "result": "No-go on 42 lines",
+   "src": "wang2026locateanything",
+   "ev": [
+    "d-xai"
+   ],
+   "themes": [
+    "T9"
+   ]
+  },
+  {
+   "id": "X-C2",
+   "kind": "experiment",
+   "title": "Fine-tune LocateAnything on word / PAW pseudo-labels",
+   "status": "gated",
+   "src": "wang2026locateanything",
+   "ev": [],
+   "themes": [
+    "T9"
+   ],
+   "covers": [
+    "ideas #6"
+   ]
+  },
+  {
+   "id": "X-A4-A5-A7",
+   "kind": "experiment",
+   "title": "Chefer relevance maps (X-A4), map sensitivity (X-A5), attribution on other models incl. the CRNN (X-A7)",
+   "status": "untouched",
+   "src": "chefer2021, attribution-eval",
+   "ev": [
+    "d-ideas"
+   ],
+   "themes": [
+    "T9"
+   ],
+   "covers": [
+    "ideas #8",
+    "X-A4",
+    "X-A5",
+    "X-A7"
+   ]
+  },
+  {
+   "id": "pointing-loss",
+   "kind": "idea",
+   "title": "Pointing game as a training signal",
+   "status": "dropped",
+   "result": "Wrong tokens already look at the right place",
+   "src": "ours (pool #10)",
+   "ev": [
+    "d-pool"
+   ],
+   "themes": [
+    "T9"
+   ]
+  },
+  {
+   "id": "grounding-lit",
+   "kind": "literature",
+   "title": "Q-Mask, PositionOCR, InstructOCR, Chinese segmentation-free spotting, VML-HD, character segmentation (niss2023)",
+   "status": "untouched",
+   "src": "qmask2026, positionocr2026, instructocr2025, chinesesegfree2022, vmlhd, niss2023charseg",
+   "ev": [],
+   "themes": [
+    "T9"
+   ]
+  },
+  {
+   "id": "S-track",
+   "kind": "design",
+   "title": "Own dataset: S0 partner and ethics, S1 content design, S2 sampling, S3 annotation protocol, S4 pilot",
+   "status": "parked",
+   "src": "dataset-design.md, altwaijry2021hijja, srihari2016children",
+   "ev": [],
+   "themes": [
+    "T10"
+   ]
+  },
+  {
+   "id": "R8",
+   "kind": "experiment",
+   "title": "Decision experiments (gate V5): coverage-balanced selection vs random; transformation choice",
+   "status": "planned",
+   "result": "Shape targeting is a first instance of (a)",
+   "src": "characteristics-framework §7",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T10",
+    "T3",
+    "T11"
+   ]
+  },
+  {
+   "id": "X5-print",
+   "kind": "experiment",
+   "title": "Add a line-level printed Arabic set and a page track",
+   "status": "untouched",
+   "src": "NEXT_STEPS X5, Baseer",
+   "ev": [],
+   "themes": [
+    "T10",
+    "T8"
+   ]
+  },
+  {
+   "id": "store",
+   "kind": "finding",
+   "title": "Per-line store, standard panel, seeded trainer, analyses A/B, 18 detectors, corrections log",
+   "status": "done",
+   "result": "Every stored CRNN edit reproduced exactly",
+   "src": "plan §3",
+   "ev": [
+    "d-evidence"
+   ],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "gates",
+   "kind": "design",
+   "title": "Validation gates V1 reliable, V2 predictive, V3 causal, V4 generalises, V5 useful, V6 adoptable",
+   "status": "planned",
+   "result": "V1–V2 partly met for several characteristics; V3–V6 open",
+   "src": "characteristics-framework §7",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "R1.3-R1.4",
+   "kind": "experiment",
+   "title": "Profiler: diacritic-policy share per set (R1.3); datasheet cards on the Atlas (R1.4)",
+   "status": "untouched",
+   "src": "NEXT_STEPS",
+   "ev": [],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "R6-R11",
+   "kind": "experiment",
+   "title": "Image layer second pass (R6), causal synthetic probes (R9, gate V3), release (R11, gate V6)",
+   "status": "planned",
+   "src": "NEXT_STEPS, characterization-plan",
+   "ev": [],
+   "themes": [
+    "T11",
+    "T5"
+   ],
+   "covers": [
+    "Qari-OCR",
+    "lorigo2006survey"
+   ]
+  },
+  {
+   "id": "L-track",
+   "kind": "literature",
+   "title": "Literature tasks L1 diacritics, L2 annotation schema, L3 script types, L4 architectures, L5 dataset taxonomy, L6 other languages, L7 verify unverified references",
+   "status": "untouched",
+   "src": "NEXT_STEPS L-track",
+   "ev": [],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "X9",
+   "kind": "check",
+   "title": "Contact the Luleå authors (licence, code, our VLM numbers)",
+   "status": "parked",
+   "result": "Outward-facing: ask the user first",
+   "src": "NEXT_STEPS X9",
+   "ev": [],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "X4-names",
+   "kind": "fix",
+   "title": "Model-name hygiene (runs launched under another BASES entry)",
+   "status": "done",
+   "result": "Handled by MODEL_RENAMES in characterize/runs.py",
+   "src": "NEXT_STEPS X4",
+   "ev": [],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "box-cleanup",
+   "kind": "fix",
+   "title": "Trim the 3090 footprint (8.3 GB of pickles and runs) once the next queue is done",
+   "status": "planned",
+   "result": "All weights backed up to the SSD",
+   "src": "user instruction 2026-10-13",
+   "ev": [],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "R1.6",
+   "kind": "finding",
+   "title": "Lexical diversity per set (unique lines, duplication, Jaccard, TTR)",
+   "status": "done",
+   "grade": "B",
+   "result": "KHATT most repetitive (mean max Jaccard 0.39, fixed-text paragraphs); NAKBA train duplicates 17.5 % of lines",
+   "src": "alazzawi2026crossling",
+   "ev": [
+    "ev-8"
+   ],
+   "themes": [
+    "T6",
+    "T0"
+   ]
+  },
+  {
+   "id": "X-E1",
+   "kind": "finding",
+   "title": "CRNN generalisation to unseen sets (aligner recipe)",
+   "status": "done",
+   "grade": "A",
+   "result": "Full panel: NAKBA 13.6–13.7 %, KHATT 31.0 % (23.3 % cropped); earlier 26.4 % was the 183-line subset",
+   "src": "ideas #13",
+   "ev": [
+    "ev-1",
+    "d-ctc"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "aug-18",
+   "kind": "idea",
+   "title": "Augmentation 18: harakat on/off renders with matching label",
+   "status": "untouched",
+   "src": "ours",
+   "ev": [
+    "d-aug"
+   ],
+   "themes": [
+    "T0",
+    "T6"
+   ]
+  },
+  {
+   "id": "foundations",
+   "kind": "finding",
+   "title": "Characterisation foundations: GT recovery (R0.1), canonical runs (R0.3), positional-form analyser and profiler (R1.1, R1.2), diacritic-mismatch tax (R2.3), error taxonomy (R2.4), consensus quality groups (R3.1), exact leakage (R4.0), image layer first pass (R6.0), Wave-0 literature (L0)",
+   "status": "done",
+   "grade": "B",
+   "covers": [
+    "R0.1",
+    "R0.2",
+    "R0.3",
+    "R1.1",
+    "R1.2",
+    "R2.3",
+    "R2.4",
+    "R3.1",
+    "R4.0",
+    "R6.0",
+    "L0",
+    "H1"
+   ],
+   "src": "NEXT_STEPS, progress.json P0–P3",
+   "ev": [
+    "htr-dossier"
+   ],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "detectors-done",
+   "kind": "finding",
+   "title": "Pattern detectors implemented: D1 loose crop, D2 slant, D3 ruled, D5 low resolution, D6 stroke/pen, D7 fragment, D8 letter list, D9 unseen words, D10 label suspect, D10b label tail, D11 truncation, D12 loop, D13 whole-line, D14 script mismatch, D15 fluent rewrite, D16 diacritic insertion, D17 orthographic only, D18 dot only, D19 Maghrebi dots, D20 PAW-gap space, D22 reversed reading",
+   "status": "done",
+   "covers": [
+    "D1",
+    "D2",
+    "D3",
+    "D5",
+    "D6",
+    "D7",
+    "D8",
+    "D9",
+    "D10",
+    "D10b",
+    "D11",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D16",
+    "D17",
+    "D18",
+    "D19",
+    "D20",
+    "D22"
+   ],
+   "src": "plan §3.5",
+   "ev": [
+    "ev-4"
+   ],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "detectors-open",
+   "kind": "experiment",
+   "title": "Detectors still to write: D4 neighbour-line intrusion, D23 memorisation / contamination signature, D24 numeric instability (CRNN), D21 lam-alef ligature",
+   "status": "planned",
+   "covers": [
+    "D4",
+    "D23",
+    "D24"
+   ],
+   "src": "plan §3.5",
+   "ev": [
+    "ev-4"
+   ],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "geometry-lit",
+   "kind": "literature",
+   "title": "Untouched geometry follow-ups: second baseline estimator (Abu-Ain), AHTID/MW baseline ground truth (Mezghani), polygon-curvature descriptor (Abdi), contour codebooks (Ahmed), FATF curve features (Parvez), dots validated on CTC spans",
+   "status": "untouched",
+   "covers": [
+    "abuain2013baseline",
+    "mezghani2013baseline",
+    "abdi2010contour",
+    "ahmed2023codebooks",
+    "parvez2013fatf",
+    "arabic-secondary-components"
+   ],
+   "src": "paper ledger, geometry group",
+   "ev": [
+    "d-geo"
+   ],
+   "themes": [
+    "T5",
+    "T2"
+   ]
+  },
+  {
+   "id": "zeghli",
+   "kind": "literature",
+   "title": "Bigram study (no test planned)",
+   "status": "parked",
+   "covers": [
+    "zeghli2025bigram"
+   ],
+   "src": "zeghli2025bigram",
+   "ev": [],
+   "themes": [
+    "T6"
+   ]
+  },
+  {
+   "id": "paper-groupings",
+   "kind": "design",
+   "title": "Write-up groupings: P1 benchmark audit, P2 characterisation across families (the main direction), P3 methods (geometry transfer, targeted data)",
+   "status": "planned",
+   "result": "User view 2026-10-13: nothing is main-conference grade yet; P2 becomes possible once the cross-family evidence is in",
+   "src": "PLAN-2026-10-13 §2.3",
+   "ev": [
+    "key-findings"
+   ],
+   "themes": [
+    "T11",
+    "T0"
+   ]
+  },
+  {
+   "id": "vlm-logprobs",
+   "kind": "experiment",
+   "title": "Save token log-probabilities in the VLM runner for calibration and selective reading",
+   "status": "untouched",
+   "result": "Plan open question 9; changes cache keys only for new runs",
+   "src": "PLAN-2026-10-13 §3.3 A4",
+   "ev": [],
+   "themes": [
+    "T8",
+    "T11"
+   ]
+  }
+ ]
+}

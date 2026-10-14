@@ -380,6 +380,7 @@ def main() -> None:
     {extra}
   </article>
 """
+    ARTICLE = re.sub(r"<h4>(\d+) · ", lambda m: f'<h4 id="ev-{m.group(1)}">{m.group(1)} · ', ARTICLE)  # anchors for the research map
     h = LEDGER.read_text(encoding="utf-8")
     h = patch_key_findings(h, A1, A2)
     h = re.sub(r"\n  <!-- 6l\. evidence -->.*?</article>\n(?=\n  <!-- 6b)", "\n", h, flags=re.S)
