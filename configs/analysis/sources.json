@@ -110,6 +110,18 @@
       "run": "crnn/combo",
       "pack": "inkcrop_eval/fp16-bs1",
       "numerics": "fp16-bs1"
+    },
+    {
+      "file": "results/panel/tta/tta_base_allvar.json",
+      "run": "crnn/base",
+      "pack": "panel/fp16-bs1",
+      "numerics": "fp16-bs1"
+    },
+    {
+      "file": "results/panel/tta/tta_combo_allvar.json",
+      "run": "crnn/combo",
+      "pack": "panel/fp16-bs1",
+      "numerics": "fp16-bs1"
     }
   ],
   "e8": [
@@ -131,8 +143,12 @@
   "crnn_panel_glob": "results/panel/out*/*.json",
   "vlm_root": "/Volumes/PortableSSD/repos/arabic_ocr",
   "vlm_derived": [
-    {"model": "arabic-paddleocr-v5", "op": "reverse", "as": "arabic-paddleocr-v5-unreversed",
-     "why": "the run applied reverse_output: true (configs/models.yaml), but on real lines the model already returns logical order; undoing the reversal recovers the model's own output (CORRECTIONS C5)"}
+    {
+      "model": "arabic-paddleocr-v5",
+      "op": "reverse",
+      "as": "arabic-paddleocr-v5-unreversed",
+      "why": "the run applied reverse_output: true (configs/models.yaml), but on real lines the model already returns logical order; undoing the reversal recovers the model's own output (CORRECTIONS C5)"
+    }
   ],
   "panel": "results/panel/panel.pkl",
   "crnn_aligner_train_ids": "configs/analysis/crnn_aligner_train_test_ids.json"

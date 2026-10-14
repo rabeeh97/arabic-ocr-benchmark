@@ -1,0 +1,1516 @@
+{
+ "shape-targeted vs random control (3 seeds each)|kitab_khatt": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.30980073200488,
+   0.30915006100040665,
+   0.30793005286701913
+  ],
+  "cer_B_by_seed": [
+   0.30199267995119966,
+   0.3005286701911346,
+   0.29947132980886537
+  ],
+  "delta": -0.008296055307035343,
+  "ci95": [
+   -0.013077277234431027,
+   -0.003298158877994343
+  ],
+  "lines_better_all_seeds": 12,
+  "lines_worse_all_seeds": 5,
+  "sign_test_p": 0.143463134765625,
+  "arms_disjoint": true
+ },
+ "shape-targeted vs random control (3 seeds each)|muharaf_lines": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12681311751103636,
+   0.12576203489594281,
+   0.12455328988858524
+  ],
+  "cer_B_by_seed": [
+   0.12413285684254782,
+   0.12350220727349169,
+   0.11919276855160815
+  ],
+  "delta": -0.003433536542638926,
+  "ci95": [
+   -0.007863964191299434,
+   0.0007794068181057456
+  ],
+  "lines_better_all_seeds": 13,
+  "lines_worse_all_seeds": 11,
+  "sign_test_p": 0.8388197422027588,
+  "arms_disjoint": true
+ },
+ "shape-targeted vs random control (3 seeds each)|nakba_blind": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13600561764877991,
+   0.13371174439698053,
+   0.135865176429282
+  ],
+  "cer_B_by_seed": [
+   0.13554918368541166,
+   0.1356545146000351,
+   0.1320381531979636
+  ],
+  "delta": -0.0007802289972106743,
+  "ci95": [
+   -0.0033536408899415013,
+   0.001580155132175383
+  ],
+  "lines_better_all_seeds": 66,
+  "lines_worse_all_seeds": 66,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "shape-targeted vs random control (3 seeds each)|nakba_lines": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13573981951353647,
+   0.13572315409677607,
+   0.1354565074286095
+  ],
+  "cer_B_by_seed": [
+   0.13582314659733855,
+   0.13597313534818223,
+   0.13170678865751737
+  ],
+  "delta": -0.0011388034786279867,
+  "ci95": [
+   -0.003779762826741289,
+   0.0012045041723087806
+  ],
+  "lines_better_all_seeds": 61,
+  "lines_worse_all_seeds": 47,
+  "sign_test_p": 0.21076579397878198,
+  "arms_disjoint": false
+ },
+ "shape-targeted vs random control (3 seeds each)|rasam1": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12972835745112973,
+   0.11703478040111703,
+   0.12338156892612338
+  ],
+  "cer_B_by_seed": [
+   0.1243970550901244,
+   0.12566641279512566,
+   0.11805026656511805
+  ],
+  "delta": -0.0006769907760006674,
+  "ci95": [
+   -0.011315477603326369,
+   0.009687711598175558
+  ],
+  "lines_better_all_seeds": 3,
+  "lines_worse_all_seeds": 1,
+  "sign_test_p": 0.625,
+  "arms_disjoint": false
+ },
+ "shape-targeted vs random, both cropped (3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/randctl@inkcrop",
+   "crnn/randctl_s2@inkcrop",
+   "crnn/randctl_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.23586823912159413,
+   0.23416022773485157,
+   0.23342822285481904
+  ],
+  "cer_B_by_seed": [
+   0.22895485969906465,
+   0.22700284668564458,
+   0.22407482716551444
+  ],
+  "delta": -0.007808052053680358,
+  "ci95": [
+   -0.012863080817999797,
+   -0.0024221123275935275
+  ],
+  "lines_better_all_seeds": 12,
+  "lines_worse_all_seeds": 7,
+  "sign_test_p": 0.359283447265625,
+  "arms_disjoint": true
+ },
+ "shape-targeted vs random, both cropped (3 seeds)|muharaf_lines": {
+  "A": [
+   "crnn/randctl@inkcrop",
+   "crnn/randctl_s2@inkcrop",
+   "crnn/randctl_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12549926424216942,
+   0.1253941559806601,
+   0.12381753205801976
+  ],
+  "cer_B_by_seed": [
+   0.12344965314273702,
+   0.12292411183519025,
+   0.11829934832877864
+  ],
+  "delta": -0.003345946324714448,
+  "ci95": [
+   -0.007864292195263082,
+   0.000979505052215138
+  ],
+  "lines_better_all_seeds": 16,
+  "lines_worse_all_seeds": 10,
+  "sign_test_p": 0.32693958282470703,
+  "arms_disjoint": true
+ },
+ "shape-targeted vs random, both cropped (3 seeds)|nakba_blind": {
+  "A": [
+   "crnn/randctl@inkcrop",
+   "crnn/randctl_s2@inkcrop",
+   "crnn/randctl_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13597050734390542,
+   0.13376440985429222,
+   0.1358300661244075
+  ],
+  "cer_B_by_seed": [
+   0.13549651822809994,
+   0.13573643864474222,
+   0.1321610392650243
+  ],
+  "delta": -0.000723662394912914,
+  "ci95": [
+   -0.0032461002611540598,
+   0.0015847992070030716
+  ],
+  "lines_better_all_seeds": 62,
+  "lines_worse_all_seeds": 69,
+  "sign_test_p": 0.6002946177102675,
+  "arms_disjoint": false
+ },
+ "shape-targeted vs random, both cropped (3 seeds)|nakba_lines": {
+  "A": [
+   "crnn/randctl@inkcrop",
+   "crnn/randctl_s2@inkcrop",
+   "crnn/randctl_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13588147555599997,
+   0.13583981201409895,
+   0.13567315784649484
+  ],
+  "cer_B_by_seed": [
+   0.1359064736811406,
+   0.13615645493254672,
+   0.1319484372005433
+  ],
+  "delta": -0.0011276932007877238,
+  "ci95": [
+   -0.003716889477443769,
+   0.0011845091570808453
+  ],
+  "lines_better_all_seeds": 61,
+  "lines_worse_all_seeds": 47,
+  "sign_test_p": 0.21076579397878198,
+  "arms_disjoint": false
+ },
+ "shape-targeted vs random, both cropped (3 seeds)|rasam1": {
+  "A": [
+   "crnn/randctl@inkcrop",
+   "crnn/randctl_s2@inkcrop",
+   "crnn/randctl_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.1292206143691292,
+   0.1172886519421173,
+   0.12312769738512312
+  ],
+  "cer_B_by_seed": [
+   0.12414318354912414,
+   0.12668189895912668,
+   0.11754252348311754
+  ],
+  "delta": -0.00042311923500042793,
+  "ci95": [
+   -0.011136109579009483,
+   0.009897139031244832
+  ],
+  "lines_better_all_seeds": 4,
+  "lines_worse_all_seeds": 1,
+  "sign_test_p": 0.375,
+  "arms_disjoint": false
+ },
+ "random control vs base recipe (3 seeds each)|kitab_khatt": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.3103700691337942,
+   0.31004473363155755,
+   0.3115900772671818
+  ],
+  "cer_B_by_seed": [
+   0.30980073200488,
+   0.30915006100040665,
+   0.30793005286701913
+  ],
+  "delta": -0.0017080113867425782,
+  "ci95": [
+   -0.006984455272248416,
+   0.00362965963943883
+  ],
+  "lines_better_all_seeds": 9,
+  "lines_worse_all_seeds": 9,
+  "sign_test_p": 1.0,
+  "arms_disjoint": true
+ },
+ "random control vs base recipe (3 seeds each)|muharaf_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12838974143367668,
+   0.1248686146731133,
+   0.12702333403405508
+  ],
+  "cer_B_by_seed": [
+   0.12681311751103636,
+   0.12576203489594281,
+   0.12455328988858524
+  ],
+  "delta": -0.0010510826150935463,
+  "ci95": [
+   -0.00485782838384093,
+   0.002605947519312378
+  ],
+  "lines_better_all_seeds": 11,
+  "lines_worse_all_seeds": 12,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "random control vs base recipe (3 seeds each)|nakba_blind": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13717010942711685,
+   0.13770261571771314,
+   0.1365381239393762
+  ],
+  "cer_B_by_seed": [
+   0.13600561764877991,
+   0.13371174439698053,
+   0.135865176429282
+  ],
+  "delta": -0.0019427702030545965,
+  "ci95": [
+   -0.003672071234684492,
+   -0.0002678042484889516
+  ],
+  "lines_better_all_seeds": 69,
+  "lines_worse_all_seeds": 56,
+  "sign_test_p": 0.2830852395827476,
+  "arms_disjoint": true
+ },
+ "random control vs base recipe (3 seeds each)|nakba_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13747302285661908,
+   0.13822296661083752,
+   0.13738969577281704
+  ],
+  "cer_B_by_seed": [
+   0.13573981951353647,
+   0.13572315409677607,
+   0.1354565074286095
+  ],
+  "delta": -0.0020554014004505318,
+  "ci95": [
+   -0.003435156959897469,
+   -0.0007110275355128276
+  ],
+  "lines_better_all_seeds": 68,
+  "lines_worse_all_seeds": 30,
+  "sign_test_p": 0.00015615831700632916,
+  "arms_disjoint": true
+ },
+ "random control vs base recipe (3 seeds each)|rasam1": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12845899974612845,
+   0.11906575272911907,
+   0.1243970550901244
+  ],
+  "cer_B_by_seed": [
+   0.12972835745112973,
+   0.11703478040111703,
+   0.12338156892612338
+  ],
+  "delta": -0.0005923669290005876,
+  "ci95": [
+   -0.011052487540803721,
+   0.009975392013503259
+  ],
+  "lines_better_all_seeds": 2,
+  "lines_worse_all_seeds": 5,
+  "sign_test_p": 0.453125,
+  "arms_disjoint": false
+ },
+ "combo vs base, both cropped (3 seeds each)|kitab_khatt": {
+  "A": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.23310288735258236,
+   0.23700691337942253,
+   0.23627490849939
+  ],
+  "cer_B_by_seed": [
+   0.22431882879219195,
+   0.22529483529890199,
+   0.22716551443676292
+  ],
+  "delta": -0.009868510234512688,
+  "ci95": [
+   -0.01537390174187585,
+   -0.0045572084516350975
+  ],
+  "lines_better_all_seeds": 16,
+  "lines_worse_all_seeds": 4,
+  "sign_test_p": 0.01181793212890625,
+  "arms_disjoint": true
+ },
+ "combo vs base, both cropped (3 seeds each)|muharaf_lines": {
+  "A": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12786420012612992,
+   0.12402774858103847,
+   0.12665545511877233
+  ],
+  "cer_B_by_seed": [
+   0.12166281269707799,
+   0.12387008618877443,
+   0.12297666596594492
+  ],
+  "delta": -0.003345946324714424,
+  "ci95": [
+   -0.007015541136966402,
+   0.0005144135654534012
+  ],
+  "lines_better_all_seeds": 10,
+  "lines_worse_all_seeds": 5,
+  "sign_test_p": 0.3017578125,
+  "arms_disjoint": true
+ },
+ "combo vs base, both cropped (3 seeds each)|nakba_blind": {
+  "A": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.1372169231669495,
+   0.13776698460998302,
+   0.13660249283164608
+  ],
+  "cer_B_by_seed": [
+   0.13388729592135293,
+   0.1343905436245538,
+   0.13606413482357071
+  ],
+  "delta": -0.002414808746367087,
+  "ci95": [
+   -0.004008372772894101,
+   -0.0007498175817347957
+  ],
+  "lines_better_all_seeds": 86,
+  "lines_worse_all_seeds": 65,
+  "sign_test_p": 0.10330013644772956,
+  "arms_disjoint": true
+ },
+ "combo vs base, both cropped (3 seeds each)|nakba_lines": {
+  "A": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13773966952478564,
+   0.1385396095292853,
+   0.1375146863985201
+  ],
+  "cer_B_by_seed": [
+   0.13207342782624637,
+   0.13445658242298494,
+   0.13546484013698973
+  ],
+  "delta": -0.003933038355456674,
+  "ci95": [
+   -0.00620598962916247,
+   -0.0018495202091188604
+  ],
+  "lines_better_all_seeds": 65,
+  "lines_worse_all_seeds": 35,
+  "sign_test_p": 0.0035176417229701583,
+  "arms_disjoint": true
+ },
+ "combo vs base, both cropped (3 seeds each)|rasam1": {
+  "A": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12896674282812898,
+   0.11906575272911907,
+   0.12414318354912414
+  ],
+  "cer_B_by_seed": [
+   0.12135059659812135,
+   0.12211221122112212,
+   0.1205889819751206
+  ],
+  "delta": -0.0027079631040026982,
+  "ci95": [
+   -0.01117173453015176,
+   0.005202247623669864
+  ],
+  "lines_better_all_seeds": 1,
+  "lines_worse_all_seeds": 2,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "combo vs shape-targeted, both cropped (3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.22895485969906465,
+   0.22700284668564458,
+   0.22407482716551444
+  ],
+  "cer_B_by_seed": [
+   0.22431882879219195,
+   0.22529483529890199,
+   0.22716551443676292
+  ],
+  "delta": -0.0010844516741222842,
+  "ci95": [
+   -0.006320620977553277,
+   0.0039302463658425
+  ],
+  "lines_better_all_seeds": 4,
+  "lines_worse_all_seeds": 5,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "combo vs shape-targeted, both cropped (3 seeds)|muharaf_lines": {
+  "A": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12344965314273702,
+   0.12292411183519025,
+   0.11829934832877864
+  ],
+  "cer_B_by_seed": [
+   0.12166281269707799,
+   0.12387008618877443,
+   0.12297666596594492
+  ],
+  "delta": 0.001278817181697156,
+  "ci95": [
+   -0.002800949286463727,
+   0.005503153612649329
+  ],
+  "lines_better_all_seeds": 7,
+  "lines_worse_all_seeds": 9,
+  "sign_test_p": 0.803619384765625,
+  "arms_disjoint": false
+ },
+ "combo vs shape-targeted, both cropped (3 seeds)|nakba_blind": {
+  "A": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13549651822809994,
+   0.13573643864474222,
+   0.1321610392650243
+  ],
+  "cer_B_by_seed": [
+   0.13388729592135293,
+   0.1343905436245538,
+   0.13606413482357071
+  ],
+  "delta": 0.0003159927438703047,
+  "ci95": [
+   -0.0019060724136589766,
+   0.0027835112142407317
+  ],
+  "lines_better_all_seeds": 70,
+  "lines_worse_all_seeds": 63,
+  "sign_test_p": 0.6030463891288803,
+  "arms_disjoint": false
+ },
+ "combo vs shape-targeted, both cropped (3 seeds)|nakba_lines": {
+  "A": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.1359064736811406,
+   0.13615645493254672,
+   0.1319484372005433
+  ],
+  "cer_B_by_seed": [
+   0.13207342782624637,
+   0.13445658242298494,
+   0.13546484013698973
+  ],
+  "delta": -0.0006721718093365169,
+  "ci95": [
+   -0.0035613325904021286,
+   0.0024118619546385565
+  ],
+  "lines_better_all_seeds": 47,
+  "lines_worse_all_seeds": 52,
+  "sign_test_p": 0.6878853435796911,
+  "arms_disjoint": false
+ },
+ "combo vs shape-targeted, both cropped (3 seeds)|rasam1": {
+  "A": [
+   "crnn/shape@inkcrop",
+   "crnn/shape_s2@inkcrop",
+   "crnn/shape_s3@inkcrop"
+  ],
+  "B": [
+   "crnn/combo@inkcrop",
+   "crnn/combo_s2@inkcrop",
+   "crnn/combo_s3@inkcrop"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12414318354912414,
+   0.12668189895912668,
+   0.11754252348311754
+  ],
+  "cer_B_by_seed": [
+   0.12135059659812135,
+   0.12211221122112212,
+   0.1205889819751206
+  ],
+  "delta": -0.001438605399001429,
+  "ci95": [
+   -0.009342123867202888,
+   0.0064787128568696215
+  ],
+  "lines_better_all_seeds": 1,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "ink crop, base recipe (3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.3103700691337942,
+   0.31004473363155755,
+   0.3115900772671818
+  ],
+  "cer_B_by_seed": [
+   0.23310288735258236,
+   0.23700691337942253,
+   0.23627490849939
+  ],
+  "delta": -0.07520672360037954,
+  "ci95": [
+   -0.10608485190861151,
+   -0.04873421229574134
+  ],
+  "lines_better_all_seeds": 35,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 5.820766091346741e-11,
+  "arms_disjoint": true
+ },
+ "ink crop, base recipe (3 seeds)|muharaf_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12838974143367668,
+   0.1248686146731133,
+   0.12702333403405508
+  ],
+  "cer_B_by_seed": [
+   0.12786420012612992,
+   0.12402774858103847,
+   0.12665545511877233
+  ],
+  "delta": -0.0005780954383014744,
+  "ci95": [
+   -0.004113019423905991,
+   0.0030942369772711652
+  ],
+  "lines_better_all_seeds": 1,
+  "lines_worse_all_seeds": 2,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "ink crop, base recipe (3 seeds)|nakba_blind": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13717010942711685,
+   0.13770261571771314,
+   0.1365381239393762
+  ],
+  "cer_B_by_seed": [
+   0.1372169231669495,
+   0.13776698460998302,
+   0.13660249283164608
+  ],
+  "delta": 5.851717479082239e-05,
+  "ci95": [
+   -0.0010219406052004428,
+   0.001121726287977963
+  ],
+  "lines_better_all_seeds": 2,
+  "lines_worse_all_seeds": 2,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "ink crop, base recipe (3 seeds)|nakba_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.13747302285661908,
+   0.13822296661083752,
+   0.13738969577281704
+  ],
+  "cer_B_by_seed": [
+   0.13773966952478564,
+   0.1385396095292853,
+   0.1375146863985201
+  ],
+  "delta": 0.00023609340410579306,
+  "ci95": [
+   -0.0008842723296909376,
+   0.001378677568039484
+  ],
+  "lines_better_all_seeds": 0,
+  "lines_worse_all_seeds": 1,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "ink crop, base recipe (3 seeds)|rasam1": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/base@inkcrop",
+   "crnn/rep2@inkcrop",
+   "crnn/base_s3@inkcrop"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.12845899974612845,
+   0.11906575272911907,
+   0.1243970550901244
+  ],
+  "cer_B_by_seed": [
+   0.12896674282812898,
+   0.11906575272911907,
+   0.12414318354912414
+  ],
+  "delta": 8.462384700007981e-05,
+  "ci95": [
+   -0.008343736995422379,
+   0.00867378015551385
+  ],
+  "lines_better_all_seeds": 0,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "ink crop, standard split (2 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.334119560797072,
+   0.3394875965839772
+  ],
+  "cer_B_by_seed": [
+   0.25994306628710856,
+   0.2672631150874339
+  ],
+  "delta": -0.07320048800325335,
+  "ci95": [
+   -0.1037182753929515,
+   -0.04782920953798149
+  ],
+  "lines_better_all_seeds": 36,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 2.9103830456733704e-11,
+  "arms_disjoint": true
+ },
+ "ink crop, standard split (2 seeds)|muharaf_lines": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 1334,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.12787782431895314,
+   0.12452991714311921
+  ],
+  "cer_B_by_seed": [
+   0.1284893142140826,
+   0.1246063533800104
+  ],
+  "delta": 0.00034396306601033416,
+  "ci95": [
+   -0.003618367738589072,
+   0.004544055684330864
+  ],
+  "lines_better_all_seeds": 17,
+  "lines_worse_all_seeds": 33,
+  "sign_test_p": 0.032839137564268484,
+  "arms_disjoint": false
+ },
+ "ink crop, standard split (2 seeds)|nakba_blind": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.14130727368482648,
+   0.13741002984375913
+  ],
+  "cer_B_by_seed": [
+   0.14127216337995202,
+   0.13755047106325707
+  ],
+  "delta": 5.266545731172099e-05,
+  "ci95": [
+   -0.003889277327936251,
+   0.00412318531422097
+  ],
+  "lines_better_all_seeds": 6,
+  "lines_worse_all_seeds": 9,
+  "sign_test_p": 0.60723876953125,
+  "arms_disjoint": false
+ },
+ "ink crop, standard split (2 seeds)|nakba_lines": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.14011449141314403,
+   0.1360814605571249
+  ],
+  "cer_B_by_seed": [
+   0.14023114933046688,
+   0.13616478764092693
+  ],
+  "delta": 9.999250056245782e-05,
+  "ci95": [
+   -0.004263077384818365,
+   0.004459171220245965
+  ],
+  "lines_better_all_seeds": 4,
+  "lines_worse_all_seeds": 8,
+  "sign_test_p": 0.3876953125,
+  "arms_disjoint": false
+ },
+ "ink crop, standard split (2 seeds)|rasam1": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 734,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.4342535054174633,
+   0.4362253027405991
+  ],
+  "cer_B_by_seed": [
+   0.43385516252390055,
+   0.43578712555768007
+  ],
+  "delta": -0.0004182600382409178,
+  "ci95": [
+   -0.0036283103507756573,
+   0.002796031740744856
+  ],
+  "lines_better_all_seeds": 2,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 0.5,
+  "arms_disjoint": false
+ },
+ "ink crop, standard split (2 seeds)|rasam2": {
+  "A": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "B": [
+   "crnn/std_s0@inkcrop",
+   "crnn/std_s1@inkcrop"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 2,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.4667892541597524,
+   0.46589227250302734
+  ],
+  "cer_B_by_seed": [
+   0.46607166883437234,
+   0.46584742342019103
+  ],
+  "delta": -0.000381217204108176,
+  "ci95": [
+   -0.003671012707628208,
+   0.0028624396936226403
+  ],
+  "lines_better_all_seeds": 1,
+  "lines_worse_all_seeds": 0,
+  "sign_test_p": 1.0,
+  "arms_disjoint": false
+ },
+ "standard split vs aligner recipe (2 vs 3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "lines": 200,
+  "seeds": {
+   "A": 3,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.3103700691337942,
+   0.31004473363155755,
+   0.3115900772671818
+  ],
+  "cer_B_by_seed": [
+   0.334119560797072,
+   0.3394875965839772
+  ],
+  "delta": 0.026135285346346765,
+  "ci95": [
+   0.018618554234541257,
+   0.033809375299161386
+  ],
+  "lines_better_all_seeds": 4,
+  "lines_worse_all_seeds": 51,
+  "sign_test_p": 2.0474233419776056e-11,
+  "arms_disjoint": true
+ },
+ "standard split vs aligner recipe (2 vs 3 seeds)|muharaf_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "lines": 372,
+  "seeds": {
+   "A": 3,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.12838974143367668,
+   0.1248686146731133,
+   0.12702333403405508
+  ],
+  "cer_B_by_seed": [
+   0.1375867143157452,
+   0.1341706958166912
+  ],
+  "delta": 0.009118141685936514,
+  "ci95": [
+   0.004438495066321919,
+   0.014155414796693607
+  ],
+  "lines_better_all_seeds": 16,
+  "lines_worse_all_seeds": 35,
+  "sign_test_p": 0.010973562899720513,
+  "arms_disjoint": true
+ },
+ "standard split vs aligner recipe (2 vs 3 seeds)|nakba_blind": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "lines": 2671,
+  "seeds": {
+   "A": 3,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.13717010942711685,
+   0.13770261571771314,
+   0.1365381239393762
+  ],
+  "cer_B_by_seed": [
+   0.14130727368482648,
+   0.13741002984375913
+  ],
+  "delta": 0.002221702069557422,
+  "ci95": [
+   -0.000735250045197252,
+   0.005112799053029578
+  ],
+  "lines_better_all_seeds": 143,
+  "lines_worse_all_seeds": 237,
+  "sign_test_p": 1.6342793886618723e-06,
+  "arms_disjoint": false
+ },
+ "standard split vs aligner recipe (2 vs 3 seeds)|nakba_lines": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "lines": 2095,
+  "seeds": {
+   "A": 3,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.13747302285661908,
+   0.13822296661083752,
+   0.13738969577281704
+  ],
+  "cer_B_by_seed": [
+   0.14011449141314403,
+   0.1360814605571249
+  ],
+  "delta": 0.00040274757170988946,
+  "ci95": [
+   -0.0026869710059844202,
+   0.0033768077981148515
+  ],
+  "lines_better_all_seeds": 131,
+  "lines_worse_all_seeds": 158,
+  "sign_test_p": 0.1260161609754943,
+  "arms_disjoint": false
+ },
+ "standard split vs aligner recipe (2 vs 3 seeds)|rasam1": {
+  "A": [
+   "crnn/base@none",
+   "crnn/rep2@none",
+   "crnn/base_s3@none"
+  ],
+  "B": [
+   "crnn/std_s0@none",
+   "crnn/std_s1@none"
+  ],
+  "lines": 105,
+  "seeds": {
+   "A": 3,
+   "B": 2
+  },
+  "cer_A_by_seed": [
+   0.12845899974612845,
+   0.11906575272911907,
+   0.1243970550901244
+  ],
+  "cer_B_by_seed": [
+   0.47347042396547345,
+   0.4775323686214775
+  ],
+  "delta": 0.35152746043835154,
+  "ci95": [
+   0.3241147233651346,
+   0.37743107992087577
+  ],
+  "lines_better_all_seeds": 0,
+  "lines_worse_all_seeds": 101,
+  "sign_test_p": 7.888609052210118e-31,
+  "arms_disjoint": true
+ },
+ "shape vs random, KHATT half B only (3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 91,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.25846859562455893,
+   0.25670430486944246,
+   0.2565278757939308
+  ],
+  "cer_B_by_seed": [
+   0.2535285815102329,
+   0.24453069865913904,
+   0.24576570218772054
+  ],
+  "delta": -0.009291931310279947,
+  "ci95": [
+   -0.0174245717567245,
+   -0.0015809809167907018
+  ],
+  "lines_better_all_seeds": 4,
+  "lines_worse_all_seeds": 3,
+  "sign_test_p": 1.0,
+  "arms_disjoint": true
+ },
+ "shape vs random, KHATT half A only (3 seeds)|kitab_khatt": {
+  "A": [
+   "crnn/randctl@none",
+   "crnn/randctl_s2@none",
+   "crnn/randctl_s3@none"
+  ],
+  "B": [
+   "crnn/shape@none",
+   "crnn/shape_s2@none",
+   "crnn/shape_s3@none"
+  ],
+  "lines": 92,
+  "seeds": {
+   "A": 3,
+   "B": 3
+  },
+  "cer_A_by_seed": [
+   0.2667466164125407,
+   0.26691793729655644,
+   0.2648620866883673
+  ],
+  "cer_B_by_seed": [
+   0.2552681171834847,
+   0.2626349151961624,
+   0.25766660955970533
+  ],
+  "delta": -0.007652332819370694,
+  "ci95": [
+   -0.016089450718024787,
+   0.00022492127755284372
+  ],
+  "lines_better_all_seeds": 8,
+  "lines_worse_all_seeds": 2,
+  "sign_test_p": 0.109375,
+  "arms_disjoint": true
+ }
+}

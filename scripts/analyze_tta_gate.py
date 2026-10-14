@@ -25,6 +25,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--store", type=Path, default=W / "results/store")
     ap.add_argument("--out", type=Path, default=W / "results/analysis/V/tta_gate.json")
+    ap.add_argument("--pack", default="panel/fp16-bs1", help="evaluation pack of the TTA readings (inkcrop_eval/fp16-bs1 = the old 183 / 600-line packs)")
     a = ap.parse_args()
     F = {f["sample_key"]: f for f in pq.read_table(a.store / "features.parquet").to_pylist()}
     med = json.loads((a.store / "features_reference.json").read_text())["slant_deg"]["p50"]
@@ -32,11 +33,14 @@ def main() -> None:
     half_a = {k.replace("kitab_khatt/", "kitab_khatt/train/") for k in halves["half_a"]}
     R = defaultdict(dict)
     for r in pq.read_table(a.store / "lines.parquet").to_pylist():
-        if r["pack"] == "inkcrop_eval/fp16-bs1":
+        if r["pack"] == a.pack:
             R[(r["run_id"], r["transform"])][r["sample_key"]] = (r["e_crnn_native"], max(1, r["n_crnn_native"]))
     out = {}
     for run in ("crnn/base", "crnn/combo"):
-        up, tta = R[(run, "inkcrop")], R[(run, "inkcrop+tta_conf")]
+        # cropped pair where the pack has it, else the as-stored pair (the panel TTA ran NAKBA blind as stored only)
+        up = {**R[(run, "none")], **R[(run, "inkcrop")]}
+        tta = {**R[(run, "tta_conf")], **R[(run, "inkcrop+tta_conf")]}
+        up = {k: v for k, v in up.items() if k in tta and (k in R[(run, "inkcrop")]) == (k in R[(run, "inkcrop+tta_conf")])}
         keys = [k for k in up if k in tta and F.get(k, {}).get("ok") and F[k]["slant_deg"] is not None]
         dist = {k: abs(F[k]["slant_deg"] - med) for k in keys}
         sel = {k for k in keys if (k in half_a) if k.startswith("kitab")} | {k for k in keys if not k.startswith("kitab") and int(k[-6:]) % 2 == 0}

@@ -192,6 +192,50 @@ def extra_sections(a) -> str:
                    "skeleton), both, or other; median share per family (<span class=\"mono\">analyze_phonetic_confusions.py</span>). Look-alike confusions run at "
                    "4–15× chance in every family; sound-alike ones at chance, even for the LLM decoder. Recognition errors are visual; articulation explains none of them.</p>"
                    + table(["Family", "Runs", "Look-only", "Sound-only", "Both", "Other"], rows))
+    sp = W / "results/analysis/A/seed_pairs.json"
+    if sp.exists():
+        SP = json.loads(sp.read_text(encoding="utf-8"))
+        rows = []
+        for k, v in SP.items():
+            name, ds = k.split("|")
+            if ds not in ("kitab_khatt", "nakba_lines", "nakba_blind", "rasam1"):
+                continue
+            sig = v["ci95"][0] > 0 or v["ci95"][1] < 0
+            rows.append([f"<td>{html.escape(name)}</td>", f"<td>{ds}</td>", f'<td class="n">{v["lines"]}</td>',
+                         f'<td class="n">{" / ".join(pc(x) for x in v["cer_A_by_seed"])}</td>', f'<td class="n">{" / ".join(pc(x) for x in v["cer_B_by_seed"])}</td>',
+                         f'<td class="n">{"<b>" if sig else ""}{sg(v["delta"])}{"</b>" if sig else ""} [{sg(v["ci95"][0])}, {sg(v["ci95"][1])}]</td>',
+                         f'<td class="n">{v["lines_better_all_seeds"]} / {v["lines_worse_all_seeds"]}</td>', f"<td>{'yes' if v['arms_disjoint'] else ''}</td>"])
+        out.append("<h4>13 · Seeds settle it: what replicates and what does not</h4><p>Three seeds per arm (two for the standard split), all on the full panel. "
+                   "ΔCER is the difference of the seed-averaged line CERs with a hierarchical bootstrap (seeds, then lines); a line counts as better or worse only "
+                   "when the two arms' seed ranges do not overlap on it. <b>Replicates:</b> the ink crop (−7.5 points on KHATT, also on the standard-split CRNN, "
+                   "no line worse); shape-targeted repeats against random repeats on KHATT, including half B that played no part in the selection (every "
+                   "targeted seed beats every random seed). <b>Does not:</b> shape targeting on NAKBA or RASAM; training on cropped lines (combo = shape + "
+                   "test-time crop). The combined recipe's NAKBA gain is a repetition effect: random repeats give the same. Without RASAM in training the "
+                   "standard-split CRNN reads RASAM at about 47 % CER instead of 12 %.</p>"
+                   + table(["Comparison", "Set", "Lines", "A by seed (%)", "B by seed (%)", "ΔCER [95 %]", "Lines better / worse in every seed", "Seed ranges disjoint"], rows))
+    npth = W / "results/analysis/V/novelty.json"
+    if npth.exists():
+        N = json.loads(npth.read_text(encoding="utf-8"))
+        NP = json.loads((W / "results/analysis/V/novelty_pix_withinset.json").read_text(encoding="utf-8")) if (W / "results/analysis/V/novelty_pix_withinset.json").exists() else {"results": {}}
+        rows = []
+        for k in ("aligner_run|kitab_khatt", "aligner_run|kitab_khatt__inkcrop", "aligner_run_std_s0|kitab_khatt", "aligner_run_std_s0|nakba_lines", "aligner_run_std_s0|rasam1"):
+            v = N["results"].get(k)
+            if not v:
+                continue
+            f = lambda x: "—" if not x or x[0] != x[0] else (f"{x[0]:.1f}" + (f" [{x[1]:.1f}, {x[2]:.1f}]" if x[1] is not None else ""))  # noqa: E731
+            vlm = v.get("errors_of median fine-tuned VLM")
+            pix = NP["results"].get(k, {}).get("by_line")
+            rows.append([f"<td>{k.split('|')[0].replace('aligner_run_std_s0', 'standard-split CRNN').replace('aligner_run', 'CRNN')}</td>", f"<td>{k.split('|')[1]}</td>",
+                         f'<td class="n">{f(v["crude"])}</td>', f'<td class="n"><b>{f(v["by_line"])}</b></td>', f'<td class="n">{f(v["by_letter_form"])}</td>',
+                         f'<td class="n">{f(v["by_line_no_letter_lists"])}</td>', f'<td class="n">{f(vlm)}</td>', f'<td class="n">{f(pix)}</td>'])
+        out.append("<h4>14 · Letter-shape novelty survives the confound battery</h4><p>Mantel–Haenszel odds ratio of misreading a letter whose shape is novel "
+                   "(above the 95th percentile of in-domain letters) against a typical one (below the 60th), on 220k letters from five CRNNs' alignments "
+                   "(<span class=\"mono\">xai_letter_shapes.py --dump-letters</span>, <span class=\"mono\">analyze_novelty.py</span>). Stratifying by line removes "
+                   "everything line-level (crop, writer, scan, text); by letter × form removes letter identity. Novelty from the standard-split CRNN, which never "
+                   f"saw these lines, predicts other models' errors as well; and fine-tuned VLMs misread the same letters (pass rule met: CRNN OR {N['verdict']['crnn_within_line_or'][0]:.1f}, "
+                   f"VLM OR {N['verdict']['vlm_within_line_or'][0]:.1f}). The model-independent pixel novelty is much weaker (last column, thresholds inside each set): "
+                   "the effect is letters a CNN finds unusual being hard for every system, not rare pixel shapes as such.</p>"
+                   + table(["Novelty from", "Set", "Crude OR", "Within line [95 %]", "Within letter × form", "Without letter lists", "Errors of median fine-tuned VLM", "Pixel novelty, within line"], rows))
     zp = W / "results/analysis/B/hamza_emission.json"
     if zp.exists():
         Z = json.loads(zp.read_text(encoding="utf-8"))

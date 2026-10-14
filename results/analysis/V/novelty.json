@@ -1,0 +1,1092 @@
+{
+ "verdict": {
+  "crnn_within_line_or": [
+   15.896700763041942,
+   12.49346756923362,
+   20.639956542108518
+  ],
+  "vlm_within_line_or": [
+   4.427318281054216,
+   3.464843194781417,
+   5.770019863874731
+  ],
+  "pass": true
+ },
+ "results": {
+  "aligner_run|kitab_khatt": {
+   "letters": 4717,
+   "lines": 188,
+   "novel_share": 0.2993428026287895,
+   "crude": [
+    17.72045900961439,
+    null,
+    null
+   ],
+   "by_line": [
+    15.896700763041942,
+    12.49346756923362,
+    20.639956542108518
+   ],
+   "by_letter_form": [
+    19.820245324398744,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    15.882355827887507,
+    12.095106195122446,
+    21.423837760602982
+   ],
+   "errors_of crnn/combo": [
+    15.02941343843865,
+    11.580968473217466,
+    20.234851753877713
+   ],
+   "errors_of crnn/std_s0": [
+    14.229434081833872,
+    11.02804326716848,
+    18.71272095888621
+   ],
+   "errors_of median fine-tuned VLM": [
+    4.427318281054216,
+    3.464843194781417,
+    5.770019863874731
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run|kitab_khatt__inkcrop": {
+   "letters": 4817,
+   "lines": 200,
+   "novel_share": 0.21797799460244965,
+   "crude": [
+    16.68760834893558,
+    null,
+    null
+   ],
+   "by_line": [
+    16.17157026012441,
+    13.301966553831495,
+    20.974958716324476
+   ],
+   "by_letter_form": [
+    19.771470936061704,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    16.270109570163577,
+    12.851133565910182,
+    21.249325691004476
+   ]
+  },
+  "aligner_run|nakba_lines": {
+   "letters": 61437,
+   "lines": 1895,
+   "novel_share": 0.09556130670442893,
+   "crude": [
+    16.460648112333093,
+    null,
+    null
+   ],
+   "by_line": [
+    14.26275473244579,
+    13.123344344228046,
+    15.731973218857883
+   ],
+   "by_letter_form": [
+    36.844079802764774,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    14.254267347688224,
+    13.053478199055741,
+    15.713845665580301
+   ],
+   "errors_of crnn/combo": [
+    12.77447019693196,
+    11.60688531430149,
+    14.15648124165895
+   ],
+   "errors_of crnn/std_s0": [
+    13.675023217867581,
+    12.365900813397039,
+    15.256121865284468
+   ]
+  },
+  "aligner_run|rasam1": {
+   "letters": 13637,
+   "lines": 730,
+   "novel_share": 0.8302412554080809,
+   "crude": [
+    15.886046072507552,
+    null,
+    null
+   ],
+   "by_line": [
+    11.847407730019912,
+    5.844603753414445,
+    34.38569440741817
+   ],
+   "by_letter_form": [
+    35.80485817861788,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    11.19834360831593,
+    6.179587966206388,
+    29.24139076188509
+   ],
+   "errors_of crnn/combo": [
+    4.758295322826098,
+    2.3548104509704917,
+    17.30063847378058
+   ],
+   "errors_of crnn/std_s0": [
+    5.366725255941369,
+    4.791718646327223,
+    6.012481459937838
+   ],
+   "errors_of median fine-tuned VLM": [
+    2.7540446260423805,
+    2.3458839771166393,
+    3.2132995455094213
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ]
+  },
+  "aligner_run|rasam2": {
+   "letters": 6425,
+   "lines": 367,
+   "novel_share": 0.8583657587548638,
+   "crude": [
+    12.450107599954697,
+    null,
+    null
+   ],
+   "by_line": [
+    8.05811526962024,
+    3.6139126925658362,
+    35.00060897899724
+   ],
+   "by_letter_form": [
+    18.445439923659524,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    7.218115862634532,
+    3.3048288675269584,
+    34.7946214662378
+   ],
+   "errors_of crnn/combo": [
+    5.53425747733135,
+    0.6191367072271386,
+    40.40907224958942
+   ],
+   "errors_of crnn/std_s0": [
+    7.608038617778853,
+    6.157181098962014,
+    9.593273700232738
+   ],
+   "errors_of median fine-tuned VLM": [
+    3.967848028596734,
+    3.1655930832201182,
+    4.972105761599237
+   ],
+   "vlm_runs": [
+    "vlm/baseer-nakba-bf16",
+    "vlm/exp3090-baseer-nakba-ft-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_combo|kitab_khatt": {
+   "letters": 4810,
+   "lines": 188,
+   "novel_share": 0.2914760914760915,
+   "crude": [
+    22.84584500151827,
+    null,
+    null
+   ],
+   "by_line": [
+    16.26920081973237,
+    12.587314771919417,
+    21.104527788215773
+   ],
+   "by_letter_form": [
+    28.419438210984172,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    16.993745272285878,
+    12.86680559510138,
+    22.643918497050546
+   ],
+   "errors_of crnn/base": [
+    19.323256733537356,
+    14.80909725560364,
+    26.137269263813515
+   ],
+   "errors_of crnn/combo": [
+    19.347818284119658,
+    15.025478935213158,
+    25.734717894052572
+   ],
+   "errors_of crnn/std_s0": [
+    17.41339108313999,
+    13.26181172938468,
+    23.849149626202784
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.2518444948853045,
+    4.218081890825135,
+    6.631656345980435
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_combo|kitab_khatt__inkcrop": {
+   "letters": 4878,
+   "lines": 200,
+   "novel_share": 0.2031570315703157,
+   "crude": [
+    18.491308689371685,
+    null,
+    null
+   ],
+   "by_line": [
+    16.076579143807873,
+    12.472810218657944,
+    21.038617283647802
+   ],
+   "by_letter_form": [
+    25.062694403189976,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    16.76033424382003,
+    12.426815878502001,
+    23.51894761087641
+   ]
+  },
+  "aligner_run_combo|nakba_lines": {
+   "letters": 62338,
+   "lines": 1896,
+   "novel_share": 0.08649619814559338,
+   "crude": [
+    15.285985753295819,
+    null,
+    null
+   ],
+   "by_line": [
+    12.36838607976142,
+    11.118063907646023,
+    13.662329374375828
+   ],
+   "by_letter_form": [
+    42.20402229438141,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    12.356195787198452,
+    11.349676814600032,
+    13.633304164315087
+   ],
+   "errors_of crnn/base": [
+    12.499944718695883,
+    11.328451213178578,
+    13.970241087760995
+   ],
+   "errors_of crnn/combo": [
+    12.961602496091302,
+    11.888181869963654,
+    14.346172550652337
+   ],
+   "errors_of crnn/std_s0": [
+    12.609615142898773,
+    11.471680352456795,
+    14.000810603206041
+   ]
+  },
+  "aligner_run_combo|rasam1": {
+   "letters": 12626,
+   "lines": 728,
+   "novel_share": 0.7904324409947727,
+   "crude": [
+    15.015576490739747,
+    null,
+    null
+   ],
+   "by_line": [
+    7.528983050124018,
+    4.597209812686372,
+    17.799332296390947
+   ],
+   "by_letter_form": [
+    48.166222365210636,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    7.197122880560574,
+    4.279205118493488,
+    15.986838493825976
+   ],
+   "errors_of crnn/base": [
+    6.362083147616782,
+    2.9954273268988736,
+    17.49890472016966
+   ],
+   "errors_of crnn/combo": [
+    17.853265385408243,
+    5.3038426939415455,
+    51.44657782693495
+   ],
+   "errors_of crnn/std_s0": [
+    7.214013355643463,
+    6.327482807386003,
+    8.158795461932254
+   ],
+   "errors_of median fine-tuned VLM": [
+    3.2786828451856906,
+    2.836609376138289,
+    3.761896421529335
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ]
+  },
+  "aligner_run_combo|rasam2": {
+   "letters": 6142,
+   "lines": 366,
+   "novel_share": 0.8039726473461413,
+   "crude": [
+    31.416765918460836,
+    null,
+    null
+   ],
+   "by_line": [
+    6.3003401138421555,
+    3.1523437521107307,
+    18.371575595289052
+   ],
+   "by_letter_form": [
+    53.424231756416596,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    5.761787615502431,
+    2.9306837055897534,
+    18.631645934734884
+   ],
+   "errors_of crnn/base": [
+    15.27292663476874,
+    5.475925308244386,
+    23.785535517114468
+   ],
+   "errors_of crnn/combo": [
+    11.726285866910867,
+    1.6411910246871184,
+    20.84627976190477
+   ],
+   "errors_of crnn/std_s0": [
+    7.627087258864347,
+    6.339364901470455,
+    9.5402834861112
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.349790527013499,
+    4.517097652040335,
+    6.7235538080384725
+   ],
+   "vlm_runs": [
+    "vlm/baseer-nakba-bf16",
+    "vlm/exp3090-baseer-nakba-ft-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_randctl|kitab_khatt": {
+   "letters": 4822,
+   "lines": 188,
+   "novel_share": 0.30671920364993777,
+   "crude": [
+    18.404109543524346,
+    null,
+    null
+   ],
+   "by_line": [
+    16.55862244873887,
+    13.121147975623925,
+    21.557407155841673
+   ],
+   "by_letter_form": [
+    20.848840065377843,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    16.479073642504268,
+    12.336146277916507,
+    22.4249892460739
+   ],
+   "errors_of crnn/base": [
+    16.59221056103057,
+    12.771062332777573,
+    22.77852264991978
+   ],
+   "errors_of crnn/combo": [
+    15.120347890442092,
+    11.718085561017134,
+    19.853726216802727
+   ],
+   "errors_of crnn/std_s0": [
+    14.546705227754611,
+    11.673267192823724,
+    18.559129817739485
+   ],
+   "errors_of median fine-tuned VLM": [
+    4.850372330859303,
+    3.8189224799379327,
+    5.950344882392539
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_randctl|kitab_khatt__inkcrop": {
+   "letters": 4890,
+   "lines": 200,
+   "novel_share": 0.22024539877300614,
+   "crude": [
+    16.546719681908552,
+    null,
+    null
+   ],
+   "by_line": [
+    16.83941890746208,
+    13.306755704266527,
+    21.01719108912559
+   ],
+   "by_letter_form": [
+    19.63326757550972,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    16.655187561300373,
+    12.789194217104516,
+    21.645288760046984
+   ]
+  },
+  "aligner_run_randctl|nakba_lines": {
+   "letters": 61982,
+   "lines": 1897,
+   "novel_share": 0.09265593236746152,
+   "crude": [
+    14.318789662327863,
+    null,
+    null
+   ],
+   "by_line": [
+    11.87183989219004,
+    10.65952717232817,
+    13.065392742375359
+   ],
+   "by_letter_form": [
+    38.42217310902509,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    11.869157190642019,
+    10.682577761158255,
+    13.141008988021344
+   ],
+   "errors_of crnn/base": [
+    12.41118012998832,
+    11.330044398863127,
+    13.609015261324762
+   ],
+   "errors_of crnn/combo": [
+    11.768710977355758,
+    10.676814721549482,
+    13.002490263278942
+   ],
+   "errors_of crnn/std_s0": [
+    12.663000788160684,
+    11.583546187231335,
+    13.816324185551544
+   ]
+  },
+  "aligner_run_randctl|rasam1": {
+   "letters": 13252,
+   "lines": 732,
+   "novel_share": 0.8001811047389074,
+   "crude": [
+    10.897626446876549,
+    null,
+    null
+   ],
+   "by_line": [
+    7.750380737501985,
+    4.828997789418736,
+    13.500860720756759
+   ],
+   "by_letter_form": [
+    22.759635609054357,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    7.448813573934843,
+    4.339380175601972,
+    14.747357281911153
+   ],
+   "errors_of crnn/base": [
+    4.803762036311115,
+    2.3183727529346667,
+    11.933684352853621
+   ],
+   "errors_of crnn/combo": [
+    5.702376171240615,
+    2.856663835747372,
+    17.942706804340347
+   ],
+   "errors_of crnn/std_s0": [
+    6.027540143880532,
+    5.2350626209265405,
+    6.8490239050765105
+   ],
+   "errors_of median fine-tuned VLM": [
+    3.2316919768751213,
+    2.7866828758748183,
+    3.716702665646745
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ]
+  },
+  "aligner_run_randctl|rasam2": {
+   "letters": 6561,
+   "lines": 367,
+   "novel_share": 0.8139003200731596,
+   "crude": [
+    10.657476139978792,
+    null,
+    null
+   ],
+   "by_line": [
+    9.138474868305385,
+    4.531284177706956,
+    25.421622188553393
+   ],
+   "by_letter_form": [
+    13.68045325790672,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    8.040589096521382,
+    4.034473460681167,
+    23.69261753337241
+   ],
+   "errors_of crnn/base": [
+    3.413383869715522,
+    0.6627615130190256,
+    16.0569449359343
+   ],
+   "errors_of crnn/combo": [
+    4.225085420845055,
+    0.6681596355618497,
+    15.336723173614716
+   ],
+   "errors_of crnn/std_s0": [
+    6.552649781509714,
+    5.615208089692921,
+    8.125519365338798
+   ],
+   "errors_of median fine-tuned VLM": [
+    4.34589695858925,
+    3.5910630651363316,
+    5.308329516773466
+   ],
+   "vlm_runs": [
+    "vlm/baseer-nakba-bf16",
+    "vlm/exp3090-baseer-nakba-ft-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_shape|kitab_khatt": {
+   "letters": 4676,
+   "lines": 188,
+   "novel_share": 0.3023952095808383,
+   "crude": [
+    17.353540499235862,
+    null,
+    null
+   ],
+   "by_line": [
+    14.714068813996683,
+    11.96432026508018,
+    18.658486263560448
+   ],
+   "by_letter_form": [
+    18.52478740010984,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    14.285164547797457,
+    11.180414120024976,
+    19.390267154377117
+   ],
+   "errors_of crnn/base": [
+    16.516541611407288,
+    12.236837980318185,
+    21.59907540815362
+   ],
+   "errors_of crnn/combo": [
+    16.746091547789703,
+    12.80267775601747,
+    22.55327919991503
+   ],
+   "errors_of crnn/std_s0": [
+    14.741210192005171,
+    11.155703245262245,
+    19.568171569736972
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.094291275083041,
+    4.12132871560029,
+    6.356082049187802
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_shape|kitab_khatt__inkcrop": {
+   "letters": 4755,
+   "lines": 200,
+   "novel_share": 0.22481598317560464,
+   "crude": [
+    18.122732043784676,
+    null,
+    null
+   ],
+   "by_line": [
+    14.881439282325829,
+    11.446383034356286,
+    19.270432574064174
+   ],
+   "by_letter_form": [
+    20.153760555196477,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    14.49309325629053,
+    11.174466826537904,
+    19.06920348328214
+   ]
+  },
+  "aligner_run_shape|nakba_lines": {
+   "letters": 60738,
+   "lines": 1895,
+   "novel_share": 0.10107346307089467,
+   "crude": [
+    16.054886691297558,
+    null,
+    null
+   ],
+   "by_line": [
+    13.757113072653858,
+    12.646572425567296,
+    15.129657877241725
+   ],
+   "by_letter_form": [
+    42.499768897088174,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    13.73355239379461,
+    12.558791326107047,
+    14.994583577518194
+   ],
+   "errors_of crnn/base": [
+    12.721456924179899,
+    11.577639117732925,
+    14.030567071478908
+   ],
+   "errors_of crnn/combo": [
+    12.865194886649357,
+    11.659839982132057,
+    14.338356826340421
+   ],
+   "errors_of crnn/std_s0": [
+    13.46808653053089,
+    12.239843358634928,
+    14.895044017834037
+   ]
+  },
+  "aligner_run_shape|rasam1": {
+   "letters": 13504,
+   "lines": 731,
+   "novel_share": 0.8624111374407583,
+   "crude": [
+    13.914997724169321,
+    null,
+    null
+   ],
+   "by_line": [
+    10.728359581109222,
+    5.314027180363957,
+    36.60132067879673
+   ],
+   "by_letter_form": [
+    25.612922707864193,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    10.189132000794872,
+    5.583157534812974,
+    33.610732728273206
+   ],
+   "errors_of crnn/base": [
+    6.550795924613144,
+    3.1557485414646855,
+    30.645228324105542
+   ],
+   "errors_of crnn/combo": [
+    6.196279189131093,
+    2.6334860896345287,
+    32.144979345845975
+   ],
+   "errors_of crnn/std_s0": [
+    9.610619032055185,
+    8.264238272901276,
+    11.455862191573313
+   ],
+   "errors_of median fine-tuned VLM": [
+    4.0231412921752145,
+    3.355321296644579,
+    4.81162046924633
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ]
+  },
+  "aligner_run_shape|rasam2": {
+   "letters": 6499,
+   "lines": 364,
+   "novel_share": 0.8633635943991383,
+   "crude": [
+    0.853783116299955,
+    null,
+    null
+   ],
+   "by_line": [
+    5.552623063252354,
+    2.3583864224188344,
+    29.364759315640327
+   ],
+   "by_letter_form": [
+    1.1562579014942593,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    5.385572633482399,
+    2.069025023287144,
+    29.261083042228734
+   ],
+   "errors_of crnn/base": [
+    4.5596899224806196,
+    4.117647058823529,
+    5.463002114164905
+   ],
+   "errors_of crnn/combo": [
+    14.775612822124451,
+    4.7272727272727275,
+    34.013942060453694
+   ],
+   "errors_of crnn/std_s0": [
+    10.151633722104515,
+    8.000332510449402,
+    13.029085939214006
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.540745940513022,
+    4.4349880803242065,
+    7.0980448886644005
+   ],
+   "vlm_runs": [
+    "vlm/baseer-nakba-bf16",
+    "vlm/exp3090-baseer-nakba-ft-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_std_s0|kitab_khatt": {
+   "letters": 4948,
+   "lines": 188,
+   "novel_share": 0.28294260307194824,
+   "crude": [
+    22.967334884553427,
+    null,
+    null
+   ],
+   "by_line": [
+    15.116901240156993,
+    11.789025658982863,
+    18.94699514672723
+   ],
+   "by_letter_form": [
+    27.24291534182317,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    15.416341314154796,
+    12.087222033503386,
+    20.65365293398046
+   ],
+   "errors_of crnn/base": [
+    15.115819330529986,
+    12.376462085710596,
+    19.105593356275406
+   ],
+   "errors_of crnn/combo": [
+    15.638706932988608,
+    12.51040064631538,
+    20.337910353424792
+   ],
+   "errors_of crnn/std_s0": [
+    16.89406882288245,
+    13.9649921484974,
+    21.173454188765366
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.632555465997308,
+    4.5744986272119945,
+    7.079144664638868
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  },
+  "aligner_run_std_s0|kitab_khatt__inkcrop": {
+   "letters": 5046,
+   "lines": 200,
+   "novel_share": 0.19441141498216408,
+   "crude": [
+    16.62461229915347,
+    null,
+    null
+   ],
+   "by_line": [
+    13.992948692432469,
+    10.888176417485843,
+    17.59921556508077
+   ],
+   "by_letter_form": [
+    18.688069575703253,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    14.036436831276815,
+    10.857318376214574,
+    18.228260704218847
+   ]
+  },
+  "aligner_run_std_s0|nakba_lines": {
+   "letters": 65086,
+   "lines": 1901,
+   "novel_share": 0.07271917155763144,
+   "crude": [
+    16.93818390782333,
+    null,
+    null
+   ],
+   "by_line": [
+    13.631423138182365,
+    12.583083084367694,
+    14.836525845000894
+   ],
+   "by_letter_form": [
+    40.90853731866673,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    13.628956114710537,
+    12.28005133546529,
+    14.981791593837983
+   ],
+   "errors_of crnn/base": [
+    12.114560528256826,
+    11.016331221969057,
+    13.332532285273404
+   ],
+   "errors_of crnn/combo": [
+    11.701073921229376,
+    10.5269148530626,
+    12.923488603727698
+   ],
+   "errors_of crnn/std_s0": [
+    14.376041875105402,
+    13.05522790477475,
+    16.04034453657582
+   ]
+  },
+  "aligner_run_std_s0|rasam1": {
+   "letters": 15468,
+   "lines": 731,
+   "novel_share": 0.7074605637445048,
+   "crude": [
+    9.419955695337453,
+    null,
+    null
+   ],
+   "by_line": [
+    8.795047953762873,
+    7.853821998268889,
+    9.848285585800983
+   ],
+   "by_letter_form": [
+    13.475396883880778,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    8.886006728127581,
+    7.920644820408702,
+    10.016849869369837
+   ],
+   "errors_of crnn/base": [
+    7.062034742104417,
+    2.9180296964800734,
+    81.72636600002063
+   ],
+   "errors_of crnn/combo": [
+    4.0713438104267,
+    1.8872784845157318,
+    14.032390858489912
+   ],
+   "errors_of crnn/std_s0": [
+    13.12846631604933,
+    11.71606811095473,
+    14.837391331010586
+   ],
+   "errors_of median fine-tuned VLM": [
+    3.781741712086765,
+    3.3481791254544717,
+    4.33045534396231
+   ],
+   "vlm_runs": [
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ]
+  },
+  "aligner_run_std_s0|rasam2": {
+   "letters": 7318,
+   "lines": 367,
+   "novel_share": 0.7395463241322766,
+   "crude": [
+    9.95548914400875,
+    null,
+    null
+   ],
+   "by_line": [
+    8.18695278710347,
+    7.072865574446004,
+    9.402924620799478
+   ],
+   "by_letter_form": [
+    13.19162061951985,
+    null,
+    null
+   ],
+   "by_line_no_letter_lists": [
+    7.928371990212628,
+    6.733884719683427,
+    9.320083462146584
+   ],
+   "errors_of crnn/base": [
+    21.740079466258706,
+    9.23450864779874,
+    32.25606040255214
+   ],
+   "errors_of crnn/combo": [
+    8.673066906504513,
+    2.7863888997735375,
+    29.361288070674885
+   ],
+   "errors_of crnn/std_s0": [
+    11.421290703879498,
+    9.557774566490322,
+    13.622586142624488
+   ],
+   "errors_of median fine-tuned VLM": [
+    5.422763768342921,
+    4.533681647437632,
+    6.481491598511596
+   ],
+   "vlm_runs": [
+    "vlm/baseer-nakba-bf16",
+    "vlm/exp3090-baseer-nakba-ft-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "vlm/suite-v1-fanar2-oryx-ft-bf16",
+    "vlm/suite-v1-qwen3vl4b-ft-bf16",
+    "vlm/suite-v1-qwen3vl8b-ft-bf16"
+   ]
+  }
+ }
+}

@@ -5,6 +5,7 @@
     "inkcrop_eval",
     "eval_data",
     "transfer_eval",
+    "panel/fp16-bs1",
     "inkcrop_eval/fp16-bs1",
     "eval_data+heldout",
     "bench"
@@ -89,6 +90,137 @@
       "A": "crnn+llm/e8-qwen3-0.6b@none",
       "B": "crnn+llm/e8-qwen3-1.7b@none",
       "noise": "noise"
+    }
+  ],
+  "seed_pairs": [
+    {
+      "name": "shape-targeted vs random control (3 seeds each)",
+      "A": [
+        "crnn/randctl@none",
+        "crnn/randctl_s2@none",
+        "crnn/randctl_s3@none"
+      ],
+      "B": [
+        "crnn/shape@none",
+        "crnn/shape_s2@none",
+        "crnn/shape_s3@none"
+      ]
+    },
+    {
+      "name": "shape-targeted vs random, both cropped (3 seeds)",
+      "A": [
+        "crnn/randctl@inkcrop",
+        "crnn/randctl_s2@inkcrop",
+        "crnn/randctl_s3@inkcrop"
+      ],
+      "B": [
+        "crnn/shape@inkcrop",
+        "crnn/shape_s2@inkcrop",
+        "crnn/shape_s3@inkcrop"
+      ]
+    },
+    {
+      "name": "random control vs base recipe (3 seeds each)",
+      "A": [
+        "crnn/base@none",
+        "crnn/rep2@none",
+        "crnn/base_s3@none"
+      ],
+      "B": [
+        "crnn/randctl@none",
+        "crnn/randctl_s2@none",
+        "crnn/randctl_s3@none"
+      ]
+    },
+    {
+      "name": "combo vs base, both cropped (3 seeds each)",
+      "A": [
+        "crnn/base@inkcrop",
+        "crnn/rep2@inkcrop",
+        "crnn/base_s3@inkcrop"
+      ],
+      "B": [
+        "crnn/combo@inkcrop",
+        "crnn/combo_s2@inkcrop",
+        "crnn/combo_s3@inkcrop"
+      ]
+    },
+    {
+      "name": "combo vs shape-targeted, both cropped (3 seeds)",
+      "A": [
+        "crnn/shape@inkcrop",
+        "crnn/shape_s2@inkcrop",
+        "crnn/shape_s3@inkcrop"
+      ],
+      "B": [
+        "crnn/combo@inkcrop",
+        "crnn/combo_s2@inkcrop",
+        "crnn/combo_s3@inkcrop"
+      ]
+    },
+    {
+      "name": "ink crop, base recipe (3 seeds)",
+      "A": [
+        "crnn/base@none",
+        "crnn/rep2@none",
+        "crnn/base_s3@none"
+      ],
+      "B": [
+        "crnn/base@inkcrop",
+        "crnn/rep2@inkcrop",
+        "crnn/base_s3@inkcrop"
+      ]
+    },
+    {
+      "name": "ink crop, standard split (2 seeds)",
+      "A": [
+        "crnn/std_s0@none",
+        "crnn/std_s1@none"
+      ],
+      "B": [
+        "crnn/std_s0@inkcrop",
+        "crnn/std_s1@inkcrop"
+      ]
+    },
+    {
+      "name": "standard split vs aligner recipe (2 vs 3 seeds)",
+      "A": [
+        "crnn/base@none",
+        "crnn/rep2@none",
+        "crnn/base_s3@none"
+      ],
+      "B": [
+        "crnn/std_s0@none",
+        "crnn/std_s1@none"
+      ]
+    },
+    {
+      "name": "shape vs random, KHATT half B only (3 seeds)",
+      "A": [
+        "crnn/randctl@none",
+        "crnn/randctl_s2@none",
+        "crnn/randctl_s3@none"
+      ],
+      "B": [
+        "crnn/shape@none",
+        "crnn/shape_s2@none",
+        "crnn/shape_s3@none"
+      ],
+      "keep": "results/geometry/shape/halves.json:half_b"
+    },
+    {
+      "name": "shape vs random, KHATT half A only (3 seeds)",
+      "A": [
+        "crnn/randctl@none",
+        "crnn/randctl_s2@none",
+        "crnn/randctl_s3@none"
+      ],
+      "B": [
+        "crnn/shape@none",
+        "crnn/shape_s2@none",
+        "crnn/shape_s3@none"
+      ],
+      "keep": "results/geometry/shape/halves.json:half_a"
     }
   ]
 }

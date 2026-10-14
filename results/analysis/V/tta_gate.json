@@ -1,58 +1,58 @@
 {
  "crnn/base": {
-  "threshold_deg": 14.0,
+  "threshold_deg": 12.0,
   "training_median_slant": 11.756359100341797,
   "kitab_khatt": {
-   "lines": 91,
-   "upright": 0.22971065631616092,
-   "tta_all": 0.2221242060691602,
-   "gated": 0.22635850388143966,
-   "share_gated_on": 0.46153846153846156
+   "lines": 108,
+   "upright": 0.2310312790337566,
+   "tta_all": 0.2231340972437287,
+   "gated": 0.22623103127903377,
+   "share_gated_on": 0.5370370370370371
   },
   "nakba_lines": {
-   "lines": 305,
-   "upright": 0.13566480824463592,
-   "tta_all": 0.14067691614574535,
-   "gated": 0.1352705975108408,
-   "share_gated_on": 0.08524590163934426
+   "lines": 1026,
+   "upright": 0.13906307635558834,
+   "tta_all": 0.1431206196975286,
+   "gated": 0.13913014318768652,
+   "share_gated_on": 0.11988304093567251
   },
   "nakba_blind": {
-   "lines": 270,
-   "upright": 0.13607362655976513,
-   "tta_all": 0.13844503415956186,
-   "gated": 0.13624301281689347,
-   "share_gated_on": 0.04814814814814815
+   "lines": 1315,
+   "upright": 0.13652415481683775,
+   "tta_all": 0.13953762124493832,
+   "gated": 0.1366183256427159,
+   "share_gated_on": 0.0752851711026616
   },
   "keep_gate": false,
-  "khatt_gain_kept": 0.4418604651162801,
-  "nakba_cost": 0.00016938625712834
+  "khatt_gain_kept": 0.6078431372549008,
+  "nakba_cost": 9.417082587814818e-05
  },
  "crnn/combo": {
   "threshold_deg": 20.0,
   "training_median_slant": 11.756359100341797,
   "kitab_khatt": {
-   "lines": 91,
-   "upright": 0.21841919548341568,
-   "tta_all": 0.21083274523641496,
-   "gated": 0.2129498941425547,
-   "share_gated_on": 0.24175824175824176
+   "lines": 108,
+   "upright": 0.2205017033137194,
+   "tta_all": 0.21198513471663052,
+   "gated": 0.21461752864663983,
+   "share_gated_on": 0.24074074074074073
   },
   "nakba_lines": {
-   "lines": 305,
-   "upright": 0.13177901672579828,
-   "tta_all": 0.13656586135045334,
-   "gated": 0.13194796418313903,
-   "share_gated_on": 0.04590163934426229
+   "lines": 1026,
+   "upright": 0.13458636531303445,
+   "tta_all": 0.13924751014385836,
+   "gated": 0.1347540323932799,
+   "share_gated_on": 0.043859649122807015
   },
   "nakba_blind": {
-   "lines": 270,
-   "upright": 0.1310485009316244,
-   "tta_all": 0.1377674891310485,
-   "gated": 0.1312743492744622,
-   "share_gated_on": 0.011111111111111112
+   "lines": 1315,
+   "upright": 0.13367548733402393,
+   "tta_all": 0.13770129014031454,
+   "gated": 0.13371080139372823,
+   "share_gated_on": 0.01596958174904943
   },
-  "keep_gate": true,
-  "khatt_gain_kept": 0.72093023255814,
-  "nakba_cost": 0.00022584834283778665
+  "keep_gate": false,
+  "khatt_gain_kept": 0.6909090909090895,
+  "nakba_cost": 0.0001676670802454594
  }
 }

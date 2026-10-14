@@ -136,6 +136,42 @@ def compare(st: Store, pr: dict, ds: str, packs: list[str], noise: dict | None, 
     return out
 
 
+def compare_seeds(st: Store, sp: dict, ds: str, pack: str = "panel-2026-10-13", reps: int = 4000) -> dict | None:
+    """Seed-pooled A vs B: per line, the mean CER over each arm's seeds; ΔCER with a hierarchical bootstrap (seeds
+    resampled within each arm, then lines); lines better / worse when the two arms' seed ranges do not overlap."""
+    arms = {}
+    for side in ("A", "B"):
+        ms = [st.get(s, ds, [pack], pack)[1] for s in sp[side]]
+        if any(m is None for m in ms):
+            return None
+        arms[side] = ms
+    keys = sorted(set.intersection(*[set(m) for m in arms["A"] + arms["B"]]))
+    if sp.get("keep"):  # e.g. only the half that played no part in a selection: "FILE.json:KEY" (legacy ids are mapped)
+        f, kk = sp["keep"].rsplit(":", 1)
+        legacy = set(json.loads((W / f).read_text())[kk])
+        keys = [k for k in keys if k in legacy or st.samples.get(k, {}).get("legacy_id") in legacy]
+    if len(keys) < 20:
+        return None
+    n = np.array([max(1, arms["A"][0][k][f"n_{RUNG_A}"]) for k in keys], float)
+    E = {s: np.array([[m[k][f"e_{RUNG_A}"] for k in keys] for m in arms[s]], float) for s in ("A", "B")}  # seeds × lines
+    ca, cb = E["A"] / n, E["B"] / n
+    delta = (E["B"].mean(0).sum() - E["A"].mean(0).sum()) / n.sum()
+    rng = np.random.default_rng(0)
+    boots = []
+    for _ in range(reps):
+        ia = rng.integers(0, len(E["A"]), len(E["A"]))
+        ib = rng.integers(0, len(E["B"]), len(E["B"]))
+        s = rng.integers(0, len(keys), len(keys))
+        boots.append((E["B"][ib][:, s].mean(0).sum() - E["A"][ia][:, s].mean(0).sum()) / n[s].sum())
+    better = int((cb.max(0) < ca.min(0)).sum())
+    worse = int((cb.min(0) > ca.max(0)).sum())
+    per_seed = {"A": [float(e.sum() / n.sum()) for e in E["A"]], "B": [float(e.sum() / n.sum()) for e in E["B"]]}
+    return {"lines": len(keys), "seeds": {"A": len(E["A"]), "B": len(E["B"])}, "cer_A_by_seed": per_seed["A"], "cer_B_by_seed": per_seed["B"],
+            "delta": float(delta), "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])],
+            "lines_better_all_seeds": better, "lines_worse_all_seeds": worse, "sign_test_p": binom_two_sided(min(better, worse), better + worse),
+            "arms_disjoint": bool(max(per_seed["B"]) < min(per_seed["A"]) or min(per_seed["B"]) > max(per_seed["A"]))}
+
+
 def matrix(st: Store, ds: str, packs: list[str]) -> dict:
     cols = {}
     for (run, tr, pack, d), m in st.idx.items():
@@ -204,6 +240,20 @@ def main() -> None:
             if r:
                 A2[f"{pr['name']}|{ds}"] = {"A": pr["A"], "B": pr["B"], "noise_band": bands.get(pr["noise"]), **r}
     (a.out / "pairs.json").write_text(json.dumps(A2, indent=1, ensure_ascii=False), encoding="utf-8")
+
+    A2s = {}
+    for sp in cfg.get("seed_pairs", []):
+        for ds in datasets:
+            r = compare_seeds(st, sp, ds)
+            if r:
+                A2s[f"{sp['name']}|{ds}"] = {"A": sp["A"], "B": sp["B"], **r}
+    (a.out / "seed_pairs.json").write_text(json.dumps(A2s, indent=1, ensure_ascii=False), encoding="utf-8")
+    print(f"\n{'seed-pooled pair':44s} {'dataset':13s} {'lines':>5s} {'A by seed':>18s} {'B by seed':>18s} {'Δ':>6s} {'95% CI':>15s} {'lines b/w (all seeds)':>22s}")
+    for k, v in A2s.items():
+        name, ds = k.split("|")
+        print(f"{name[:44]:44s} {ds:13s} {v['lines']:5d} {'/'.join(f'{100 * x:.1f}' for x in v['cer_A_by_seed']):>18s} {'/'.join(f'{100 * x:.1f}' for x in v['cer_B_by_seed']):>18s} "
+              f"{100 * v['delta']:+6.2f} [{100 * v['ci95'][0]:+.2f},{100 * v['ci95'][1]:+.2f}] {v['lines_better_all_seeds']:>10d}/{v['lines_worse_all_seeds']}"
+              f"{'  arms disjoint' if v['arms_disjoint'] else ''}")
 
     for ds in ("kitab_khatt", "nakba_lines", "nakba_blind", "muharaf_lines", "rasam1", "rasam2"):
         mx = matrix(st, ds, packs)
