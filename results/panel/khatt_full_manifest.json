@@ -1,0 +1,61 @@
+{
+ "item": "MASTER-CHECKLIST 1.6 (khatt-full)",
+ "source": {
+  "train": "/Volumes/PortableSSD/huggingface/hub/datasets--Teklia--KHATT_v1.0/snapshots/7da941f6705364c085107c75af4f75e5d421fa4e/data/train-00000-of-00001.parquet",
+  "validation": "/Volumes/PortableSSD/huggingface/hub/datasets--Teklia--KHATT_v1.0/snapshots/7da941f6705364c085107c75af4f75e5d421fa4e/data/validation-00000-of-00001.parquet",
+  "test": "/Volumes/PortableSSD/huggingface/hub/datasets--Teklia--KHATT_v1.0/snapshots/7da941f6705364c085107c75af4f75e5d421fa4e/data/test-00000-of-00001.parquet"
+ },
+ "kitab_source": "/Users/rabeehjouni/.cache/huggingface/datasets/ahmedheakl___arocrbench_khatt/default/0.0.0/0535f85e967ee715f1ac01f2af802130d26567ac/arocrbench_khatt-train.arrow",
+ "tags": [
+  "kitab_khatt_full",
+  "kitab_khatt_full__inkcrop"
+ ],
+ "id_format": "kitab_khatt_full/{split}/{index:06d}",
+ "counts": {
+  "train": {
+   "lines": 4672,
+   "text_repeat": 3002,
+   "fixed_text": 4616,
+   "text_in_train": 2890,
+   "kitab_text": 878,
+   "kitab_image_id": 64,
+   "unique_text": 56
+  },
+  "validation": {
+   "lines": 963,
+   "text_repeat": 660,
+   "fixed_text": 959,
+   "text_in_train": 620,
+   "kitab_text": 205,
+   "kitab_image_id": 13,
+   "unique_text": 4
+  },
+  "test": {
+   "lines": 1038,
+   "text_repeat": 752,
+   "fixed_text": 1035,
+   "text_in_train": 713,
+   "kitab_text": 194,
+   "kitab_image_id": 12,
+   "unique_text": 3
+  }
+ },
+ "kitab_texts_found_in_v1": 89,
+ "kitab_images_found_in_v1": 89,
+ "panel_rows": 2076,
+ "train_rows": 5635,
+ "files": {
+  "khatt_full_panel.pkl": {
+   "bytes": 112414245,
+   "sha256": "48dbb54cbefc0006184919d5595ce3d8b37b8c9d521922d5b48bc7b4e9187484"
+  },
+  "khatt_full_train.pkl": {
+   "bytes": 301561518,
+   "sha256": "d7fdddd001adc362c6ffc5b18b0a43b6752e8e6c824e4aa5daf63c71744ae0f2"
+  },
+  "khatt_full_flags.parquet": {
+   "bytes": 388835,
+   "sha256": "5beb51001cc46801d2472742196ae55c8a406784fbca6bd1f0b1ef24fab58462"
+  }
+ }
+}
