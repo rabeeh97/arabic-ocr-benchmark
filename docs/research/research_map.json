@@ -2574,6 +2574,33 @@
    "themes": [
     "T11"
    ]
+  },
+  {
+   "id": "fix-vlm-ink-extent",
+   "kind": "fix",
+   "title": "Fix vlm_ink_extent.py (group by the model field), re-run it with the un-reversed PaddleOCR, and escape newlines in galleries",
+   "status": "planned",
+   "result": "The ledger's 'PaddleOCR is hurt by loose crops' claim is unreliable until then (C5)",
+   "src": "PLAN-2026-10-13 P0.2",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T5"
+   ]
+  },
+  {
+   "id": "tta-selector",
+   "kind": "experiment",
+   "title": "Better TTA selector (agreement across shears instead of confidence) on the stored all-shear readings; then decide whether gated TTA joins the pipeline",
+   "status": "planned",
+   "result": "Gated TTA kept 61–69 % of the KHATT gain (rule: 70 %); the oracle shear is about 3 points better than confidence selection",
+   "src": "PLAN-2026-10-13 §5.1 (IAM TTA, arXiv 2307.00664 / 2308.15037)",
+   "ev": [
+    "ev-9"
+   ],
+   "themes": [
+    "T5"
+   ]
   }
  ]
 }

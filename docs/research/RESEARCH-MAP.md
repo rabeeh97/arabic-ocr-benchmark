@@ -8,10 +8,10 @@ Built from `docs/research/research_map.json` by `scripts/build_research_map.py`;
 - 23 graded B
 - 5 settled negatives
 - 15 proposed next
-- 39 planned or gated
+- 41 planned or gated
 - 45 not started
 - 3 dropped
-- 166 items in the map
+- 168 items in the map
 
 ## Strongest results
 
@@ -84,6 +84,7 @@ The strongest results are here. Loose KHATT crops cost fixed-height models 7.5 C
 - `detectors-open` (experiment) Detectors still to write: D4 neighbour-line intrusion, D23 memorisation / contamination signature, D24 numeric instability (CRNN), D21 lam-alef ligature — source: plan §3.5 — also in T11
 - `paper-groupings` (design) Write-up groupings: P1 benchmark audit, P2 characterisation across families (the main direction), P3 methods (geometry transfer, targeted data): User view 2026-10-13: nothing is main-conference grade yet; P2 becomes possible once the cross-family evidence is in — source: PLAN-2026-10-13 §2.3 — also in T11
 - `seed-instability` (experiment) Lines that flip between identical trainings (3 seeds): characterise them and add a detector — source: ours (review 2026-10-14) — also in T8
+- `fix-vlm-ink-extent` (fix) Fix vlm_ink_extent.py (group by the model field), re-run it with the un-reversed PaddleOCR, and escape newlines in galleries: The ledger's 'PaddleOCR is hurt by loose crops' claim is unreliable until then (C5) — source: PLAN-2026-10-13 P0.2 — also in T5
 
 **Parked**
 
@@ -327,6 +328,8 @@ Ink crop: −7.5 points on KHATT for every CRNN. Slant is causal but small, and 
 - `dot-styles` (experiment) Dot-writing styles: two dots as a dash, three as a caret, displaced (delayed) dots, dots touching the body; prevalence per set and effect on dot errors — source: ours (review 2026-10-14) — also in T2
 - `vertical-stacking` (experiment) Vertical stacking of letters in handwriting (as in محمد, لمح) and reading-order errors; detector from overlapping spans — source: ours (review 2026-10-14) — also in T3
 - `synthesis-v1` (experiment) Synthesis from the library: join glyphs at their connection points, re-dot, measured PAW and word gaps, geometry and background variation; text from any source; sampling random / novelty-targeted / one coherent style: Realism checks (real-vs-synthetic classifier, geometry match, no seam shortcut), then CRNN training against real repeats, a StackMix-style naive cut and font renders; readouts: novelty bands and unseen words — source: user idea 2026-10-14; elarian2015, stackmix2021, dinges2016synthesis — also in T3, T6, T10
+- `fix-vlm-ink-extent` (fix) Fix vlm_ink_extent.py (group by the model field), re-run it with the un-reversed PaddleOCR, and escape newlines in galleries: The ledger's 'PaddleOCR is hurt by loose crops' claim is unreliable until then (C5) — source: PLAN-2026-10-13 P0.2 — also in T0
+- `tta-selector` (experiment) Better TTA selector (agreement across shears instead of confidence) on the stored all-shear readings; then decide whether gated TTA joins the pipeline: Gated TTA kept 61–69 % of the KHATT gain (rule: 70 %); the oracle shear is about 3 points better than confidence selection — source: PLAN-2026-10-13 §5.1 (IAM TTA, arXiv 2307.00664 / 2308.15037)
 
 **Gated on something else**
 
