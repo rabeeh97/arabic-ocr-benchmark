@@ -1,0 +1,966 @@
+# For the main checkout (branch research-characterization, made against c5a00fe9). Checklist 0.2b, map items X6 and vlm-logprobs.
+# Apply from the repo root:  git apply <this file>   then:  uv run pytest tests/test_token_cap_and_logprobs.py
+# What it changes (code only; no model config changes, see 0003):
+#  - Prediction gains finish_reason, token_logprobs, logprob_kind.
+#  - LiteLLMClient records choices[0].finish_reason ("length" = stopped at max_tokens); with logprobs=True it sends
+#    logprobs=True and parses choices[0].logprobs.content.
+#  - HFLocalClient: generate() with return_dict_in_generate; records the generated-token count (output_tokens was 0
+#    for local models), finish_reason ("length" = no EOS within max_new_tokens) and, with logprobs=True, the per-token
+#    log-probability from the raw logits (output_logits, transformers >= 4.38; falls back to processed scores).
+#    minicpmv (model.chat) reports neither.
+#  - registry: passes `logprobs` from the model entry; new output_token_cap(cfg).
+#  - runner: rows gain token_cap, finish_reason, hit_token_cap and (when asked) token_logprobs, mean_logprob,
+#    logprob_kind. run_cfg `logprobs: true` turns logprobs on for every hf_local/litellm model in the run.
+#    The cache key gets a per-model suffix ONLY when a model entry sets `cache_tag` or logprobs are on, so every
+#    existing cached reading keeps its key (no global CACHE_REV bump, no re-spend).
+#  - characterize/token_cap.py + scripts/token_cap_report.py: CPU-only report of stored readings at the cap
+#    (truncated = text lost vs runaway = a loop hit the cap); X6 "done when" = no model over 5 %.
+--- a/src/arabic_ocr_bench/models/base.py
++++ b/src/arabic_ocr_bench/models/base.py
+@@ -18,6 +18,12 @@
+     input_tokens / output_tokens: as reported by the provider (0 if unknown)
+     cost_usd:     computed by the runner from configs/models.yaml pricing (0 if free)
+     error:        None on success; otherwise a short tag ("refusal", "timeout", "http_500", ...)
++    finish_reason: why generation stopped, when the client knows: "stop" (end of sequence)
++                  or "length" (hit the output-token cap, i.e. the reading may be truncated)
++    token_logprobs: per generated token log-probability (natural log), only when the client
++                  was asked for them (run_cfg / model cfg ``logprobs: true``); else None
++    logprob_kind: where token_logprobs came from: "raw_logits" (model distribution),
++                  "processed_scores" (after repetition penalties etc.) or "api"
+     """
+ 
+     raw_text: str = ""
+@@ -27,6 +33,9 @@
+     output_tokens: int = 0
+     cost_usd: float = 0.0
+     error: str | None = None
++    finish_reason: str | None = None
++    token_logprobs: list[float] | None = None
++    logprob_kind: str | None = None
+ 
+ 
+ @runtime_checkable
+--- a/src/arabic_ocr_bench/models/litellm_client.py
++++ b/src/arabic_ocr_bench/models/litellm_client.py
+@@ -61,6 +61,26 @@
+     "rate limit", "ratelimit", "rate_limit", "429", "too many requests",
+     "resource_exhausted", "resourceexhausted", "quota", "insufficient_quota",
+ )
++
++
++def _api_token_logprobs(choice) -> list[float] | None:
++    """Per-token log-probabilities from an OpenAI-style ``choices[0].logprobs``
++    (``.content`` = [{token, logprob, ...}], objects or dicts); None if absent."""
++    lp = getattr(choice, "logprobs", None)
++    if lp is None and isinstance(choice, dict):
++        lp = choice.get("logprobs")
++    if lp is None:
++        return None
++    content = lp.get("content") if isinstance(lp, dict) else getattr(lp, "content", None)
++    if not content:
++        return None
++    out = []
++    for t in content:
++        v = t.get("logprob") if isinstance(t, dict) else getattr(t, "logprob", None)
++        if v is None:
++            return None
++        out.append(float(v))
++    return out
+ 
+ 
+ def _is_rate_limit(err: str | None) -> bool:
+@@ -175,7 +195,7 @@
+                  api_base: str | None = None, max_tokens: int = 256,
+                  api_key: str | None = None,
+                  api_keys: list[tuple[str, str]] | None = None,
+-                 per_key_rpm: float = 0):
++                 per_key_rpm: float = 0, logprobs: bool = False):
+         self.name = name
+         self.litellm_id = litellm_id
+         self.params = params or {}
+@@ -186,6 +206,10 @@
+         # a line is <=181 chars; cap output so a model that rambles doesn't run
+         # up cost / CER. Mirrors hf_local_client's 160-token cap.
+         self.max_tokens = max_tokens
++        # Ask the provider for per-token log-probabilities (vlm-logprobs). Off by
++        # default: not every provider supports it (litellm drops it where it
++        # can't be sent) and it is part of the runner's cache key when on.
++        self.logprobs = bool(logprobs)
+         # Optional multi-key pool (e.g. three Gemini free-tier keys). Each
+         # (label, value) pair gets its own per-minute window; requests rotate
+         # across keys and route around any that is 429-ing / daily-capped.
+@@ -235,6 +259,8 @@
+         }]
+         kwargs = dict(model=self.litellm_id, messages=messages,
+                       max_tokens=self.max_tokens, **self.params)
++        if self.logprobs:
++            kwargs["logprobs"] = True
+         if self.api_base:
+             kwargs["api_base"] = self.api_base
+         if api_key:
+@@ -262,7 +288,12 @@
+                                   latency_ms=(time.perf_counter() - t0) * 1000)
+         latency_ms = (time.perf_counter() - t0) * 1000
+ 
+-        raw = (resp.choices[0].message.content or "").strip()
++        choice = resp.choices[0]
++        raw = (choice.message.content or "").strip()
++        # "length" = stopped at max_tokens (X6: the reading may be truncated;
++        # on reasoning models the hidden thinking counts against the same cap)
++        finish = getattr(choice, "finish_reason", None)
++        token_lps = _api_token_logprobs(choice) if self.logprobs else None
+         usage = getattr(resp, "usage", None)
+         in_tok = getattr(usage, "prompt_tokens", 0) or 0
+         out_tok = getattr(usage, "completion_tokens", 0) or 0
+@@ -274,4 +305,7 @@
+             input_tokens=in_tok,
+             output_tokens=out_tok,
+             error=err,
++            finish_reason=str(finish) if finish else None,
++            token_logprobs=token_lps,
++            logprob_kind="api" if token_lps is not None else None,
+         )
+--- a/src/arabic_ocr_bench/models/hf_local_client.py
++++ b/src/arabic_ocr_bench/models/hf_local_client.py
+@@ -8,6 +8,7 @@
+ from __future__ import annotations
+ 
+ import time
++from dataclasses import dataclass
+ 
+ from PIL import Image
+ 
+@@ -25,8 +26,53 @@
+ # import from training/).
+ _PALIGEMMA_IMAGE_TOKENS = 1024
+ _DEFAULT_PALIGEMMA_PROMPT = "ocr\n"  # matches the paligemma-arabic-hw adapter's training
++
++
++@dataclass
++class GenOut:
++    """One generate() call: the decoded text plus what X6 / vlm-logprobs need."""
++
++    text: str
++    n_tokens: int | None = None          # generated tokens (incl. EOS), None if unknown
++    finish_reason: str | None = None     # "stop" | "length" | None (unknown)
++    token_logprobs: list[float] | None = None
++    logprob_kind: str | None = None
++
++
++def token_logprobs(step_logits, token_ids) -> list[float]:
++    """log p(chosen token) at each generation step. ``step_logits`` is the
++    per-step tuple generate() returns (``out.logits`` / ``out.scores``), each
++    [batch=1, vocab]; ``token_ids`` the generated ids, one per step."""
++    import torch
++
++    out = []
++    for logits, tid in zip(step_logits, token_ids):
++        row = logits[0] if logits.dim() > 1 else logits
++        out.append(float(torch.log_softmax(row.float(), dim=-1)[int(tid)]))
++    return out
++
++
++def _as_id_set(v) -> set[int]:
++    """eos_token_id may be None, an int, a list, or a tensor."""
++    if v is None:
++        return set()
++    if hasattr(v, "tolist"):
++        v = v.tolist()
++    if isinstance(v, (list, tuple, set)):
++        return {int(x) for x in v if x is not None}
++    return {int(v)}
++
+ 
++def finish_reason(gen_ids: list[int], max_new_tokens: int, eos_ids: set[int]) -> str | None:
++    """"stop" if an end-of-sequence token was generated, "length" if generation
++    ran to max_new_tokens without one (X6: the reading may be cut off)."""
++    if any(t in eos_ids for t in gen_ids):
++        return "stop"
++    if len(gen_ids) >= max_new_tokens:
++        return "length"
++    return "stop" if eos_ids else None
+ 
++
+ def _cuda_free_total_gb():
+     """(free, total) GPU memory in GB for the current CUDA device, or None when
+     there is no usable CUDA GPU (CPU / MPS / no torch)."""
+@@ -154,7 +200,7 @@
+                  dtype: str = "auto", adapter_id: str | None = None,
+                  max_new_tokens: int = 160, load_in_4bit: bool = False,
+                  min_ram_gb: float = 0.0, subfolder: str | None = None,
+-                 paligemma_prompt: str | None = None):
++                 paligemma_prompt: str | None = None, logprobs: bool = False):
+         self.name = name
+         self.hf_id = hf_id
+         self.arch = arch
+@@ -164,6 +210,9 @@
+         # ships `final_model/` alongside training checkpoints)
+         self.subfolder = subfolder or None
+         self.max_new_tokens = max_new_tokens
++        # vlm-logprobs: also return per-token log-probabilities (needs
++        # return_dict_in_generate; costs one vocab-sized row per step).
++        self.logprobs = bool(logprobs)
+         # PaliGemma has no chat template - the eval prefix must match whatever
+         # prefix the checkpoint was fine-tuned with (`prompt:` in the model's
+         # models.yaml entry), or eval scores it on a prefix it never saw.
+@@ -457,7 +506,8 @@
+         t0 = time.perf_counter()
+         try:
+             self._ensure_loaded()
+-            text = self._generate(image.convert("RGB"), prompt)
++            g = self._generate_full(image.convert("RGB"), prompt)
++            text = g.text
+         except Exception as e:  # noqa: BLE001
+             # An OOM *during generate* (vs. during load) is usually one
+             # pathological image, not the whole model — reclaim and let the next
+@@ -468,13 +518,55 @@
+             return Prediction(error=f"{type(e).__name__}: {e}",
+                               latency_ms=(time.perf_counter() - t0) * 1000)
+         latency_ms = (time.perf_counter() - t0) * 1000
++        extra = {"output_tokens": g.n_tokens or 0, "finish_reason": g.finish_reason,
++                 "token_logprobs": g.token_logprobs, "logprob_kind": g.logprob_kind}
+         if looks_like_refusal(text):
+             return Prediction(raw_text=text, cleaned_text="", error="refusal",
+-                              latency_ms=latency_ms)
++                              latency_ms=latency_ms, **extra)
+         return Prediction(raw_text=text, cleaned_text=clean_output(text),
+-                          latency_ms=latency_ms)
++                          latency_ms=latency_ms, **extra)
++
++    # -- generate() plumbing shared by every generate()-based arch ---------- #
++    def _gen_kwargs(self) -> dict:
++        kw = {"max_new_tokens": self.max_new_tokens, **_GEN_KW, "return_dict_in_generate": True}
++        if self.logprobs:
++            # raw logits = the model's own distribution (preferred for
++            # calibration); scores = after repetition penalty / n-gram bans,
++            # the fallback on transformers builds without output_logits
++            kw["output_logits"] = True
++            kw["output_scores"] = True
++        return kw
+ 
++    def _eos_ids(self) -> set[int]:
++        ids: set[int] = set()
++        for owner in (getattr(self._model, "generation_config", None),
++                      getattr(self._model, "config", None)):
++            ids |= _as_id_set(getattr(owner, "eos_token_id", None))
++        return ids
++
++    def _gen_out(self, out, prefix_len: int, text: str) -> GenOut:
++        """GenOut from generate()'s output (a GenerateOutput with ``.sequences``,
++        or a bare tensor from an older/remote-code model)."""
++        seqs = getattr(out, "sequences", out)
++        gen = [int(t) for t in seqs[0][prefix_len:]]
++        steps = getattr(out, "logits", None)
++        kind = "raw_logits"
++        if not steps:
++            steps, kind = getattr(out, "scores", None), "processed_scores"
++        lps = None
++        if self.logprobs and steps:
++            gen_steps = gen[-len(steps):] if len(gen) >= len(steps) else gen
++            lps = token_logprobs(steps, gen_steps)
++        return GenOut(
++            text=text, n_tokens=len(gen),
++            finish_reason=finish_reason(gen, self.max_new_tokens, self._eos_ids()),
++            token_logprobs=lps, logprob_kind=kind if lps is not None else None,
++        )
++
+     def _generate(self, image: Image.Image, prompt: str) -> str:
++        return self._generate_full(image, prompt).text
++
++    def _generate_full(self, image: Image.Image, prompt: str) -> GenOut:
+         import torch
+ 
+         image = cap_image(image, 1024)  # bound vision tokens / activation memory
+@@ -496,33 +588,33 @@
+             self._device
+         )
+         with torch.no_grad():
+-            out = self._model.generate(
+-                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+-            )
+-        gen = out[0][inputs["input_ids"].shape[1]:]
+-        return self._processor.decode(gen, skip_special_tokens=True).strip()
++            out = self._model.generate(**inputs, **self._gen_kwargs())
++        in_len = inputs["input_ids"].shape[1]
++        gen = getattr(out, "sequences", out)[0][in_len:]
++        return self._gen_out(out, in_len, self._processor.decode(gen, skip_special_tokens=True).strip())
+ 
+-    def _generate_minicpmv(self, image: Image.Image, prompt: str) -> str:
++    def _generate_minicpmv(self, image: Image.Image, prompt: str) -> GenOut:
++        # model.chat() hides generate(): no token counts or log-probabilities
+         msgs = [{"role": "user", "content": [image, prompt]}]
+         out = self._model.chat(
+             image=None, msgs=msgs, tokenizer=self._tokenizer,
+             sampling=False, max_new_tokens=self.max_new_tokens,
+         )
+-        return (out if isinstance(out, str) else str(out)).strip()
++        return GenOut(text=(out if isinstance(out, str) else str(out)).strip())
+ 
+-    def _generate_trocr(self, image: Image.Image) -> str:
++    def _generate_trocr(self, image: Image.Image) -> GenOut:
+         import torch
+ 
+         pixel_values = self._processor(
+             images=image, return_tensors="pt"
+         ).pixel_values.to(self._device)
+         with torch.no_grad():
+-            ids = self._model.generate(
+-                pixel_values, max_new_tokens=self.max_new_tokens, **_GEN_KW
+-            )
+-        return self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
++            out = self._model.generate(pixel_values, **self._gen_kwargs())
++        ids = getattr(out, "sequences", out)
++        text = self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
++        return self._gen_out(out, 1, text)  # position 0 is the decoder start token
+ 
+-    def _generate_paligemma(self, image: Image.Image, prompt: str) -> str:
++    def _generate_paligemma(self, image: Image.Image, prompt: str) -> GenOut:
+         import torch
+ 
+         # PaliGemma uses a task-prefix, not a chat template (see self.paligemma_prompt).
+@@ -535,7 +627,7 @@
+         )
+         in_len = inputs["input_ids"].shape[-1]
+         with torch.no_grad():
+-            out = self._model.generate(
+-                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+-            )
+-        return self._processor.decode(out[0][in_len:], skip_special_tokens=True).strip()
++            out = self._model.generate(**inputs, **self._gen_kwargs())
++        seqs = getattr(out, "sequences", out)
++        text = self._processor.decode(seqs[0][in_len:], skip_special_tokens=True).strip()
++        return self._gen_out(out, in_len, text)
+--- a/src/arabic_ocr_bench/models/registry.py
++++ b/src/arabic_ocr_bench/models/registry.py
+@@ -75,6 +75,7 @@
+             api_key=api_key,
+             api_keys=api_keys,
+             per_key_rpm=float(cfg.get("per_key_rpm", 0) or 0),
++            logprobs=bool(cfg.get("logprobs", False)),
+         )
+     if client == "hf_local":
+         from .hf_local_client import HFLocalClient
+@@ -90,6 +91,7 @@
+             min_ram_gb=float(cfg.get("min_ram_gb", 0) or 0),
+             subfolder=cfg.get("subfolder"),
+             paligemma_prompt=cfg.get("prompt"),
++            logprobs=bool(cfg.get("logprobs", False)),
+         )
+     if client == "paddleocr":
+         from .paddleocr_client import PaddleOCRClient
+@@ -104,5 +106,16 @@
+     raise ValueError(f"model {name!r}: unknown client {client!r}")
+ 
+ 
++def output_token_cap(cfg: dict[str, Any]) -> int | None:
++    """The output-token cap a client built from ``cfg`` runs with (the same
++    defaults as build_model), or None for clients without one (mock, PaddleOCR)."""
++    client = cfg.get("client")
++    if client == "litellm":
++        return int(cfg.get("max_tokens", 256))
++    if client == "hf_local":
++        return int(cfg.get("max_new_tokens", 160))
++    return None
++
++
+ def is_mock(cfg: dict[str, Any]) -> bool:
+     return cfg.get("client") == "mock"
+--- a/src/arabic_ocr_bench/runner.py
++++ b/src/arabic_ocr_bench/runner.py
+@@ -21,7 +21,7 @@
+ 
+ from .datasets.registry import build_dataset, load_dataset_configs
+ from .models.mock_client import build_mock_prompt
+-from .models.registry import build_model, is_mock, load_model_configs
++from .models.registry import build_model, is_mock, load_model_configs, output_token_cap
+ from .prompting import get_prompt
+ 
+ _TRANSIENT = ("429", "rate", "timeout", "500", "502", "503", "504", "overloaded")
+@@ -64,12 +64,57 @@
+ CACHE_REV = "3"
+ 
+ 
+-def _cache_key(sample_id: str, model: str, prompt_version: str) -> str:
++def _cache_key(sample_id: str, model: str, prompt_version: str, variant: str = "") -> str:
++    """``variant`` is empty for every pre-existing configuration, so their keys
++    (and cached readings) are unchanged; see _key_variant."""
++    tail = f"|{variant}" if variant else ""
+     return hashlib.sha1(
+-        f"{sample_id}|{model}|{prompt_version}|r{CACHE_REV}".encode()
++        f"{sample_id}|{model}|{prompt_version}|r{CACHE_REV}{tail}".encode()
+     ).hexdigest()
+ 
+ 
++def _key_variant(cfg: dict) -> str:
++    """Per-model cache-key suffix, so a generation change for ONE model misses
++    its old cache without a global CACHE_REV bump (which would re-spend every
++    model's calls):
++    - ``cache_tag`` in the model's configs/models.yaml entry (e.g. "x6" when its
++      output-token cap or thinking budget is raised);
++    - "lp" when token log-probabilities are requested (vlm-logprobs), so a
++      cached reading without them is never served to a run that wants them."""
++    parts = [str(cfg["cache_tag"])] if cfg.get("cache_tag") else []
++    if cfg.get("logprobs"):
++        parts.append("lp")
++    return "|".join(parts)
++
++
++def _cap_fields(cfg: dict, pred) -> dict:
++    """X6 row fields: the output-token cap the call ran under, the client's
++    finish reason, and whether the reading hit the cap (so a truncated reading
++    can be flagged or excluded at scoring time)."""
++    out: dict = {}
++    cap = output_token_cap(cfg)
++    if cap is not None:
++        out["token_cap"] = cap
++    if pred.finish_reason is not None:
++        out["finish_reason"] = pred.finish_reason
++        out["hit_token_cap"] = pred.finish_reason == "length"
++    elif cap is not None and pred.output_tokens:
++        out["hit_token_cap"] = pred.output_tokens >= cap
++    return out
++
++
++def _logprob_fields(pred) -> dict:
++    """vlm-logprobs row fields (only when the client returned them)."""
++    lps = pred.token_logprobs
++    if lps is None:
++        return {}
++    return {
++        "token_logprobs": [round(x, 4) for x in lps],
++        "mean_logprob": round(sum(lps) / len(lps), 5) if lps else None,
++        "logprob_kind": pred.logprob_kind,
++    }
++
++
+ def _cost_usd(cfg: dict, in_tok: int, out_tok: int) -> float:
+     pricing = cfg.get("pricing") or {}
+     return (
+@@ -190,11 +235,21 @@
+                    if name in run_cfg["models"] else cfg)
+             for name, cfg in models_cfg.items()
+         }
++    # vlm-logprobs: ask every generate()/API client in this run for per-token
++    # log-probabilities. Part of the cache key (see _key_variant), so it only
++    # affects new calls; a model entry can also set `logprobs: true` itself.
++    if run_cfg.get("logprobs"):
++        models_cfg = {
++            name: ({**cfg, "logprobs": True}
++                   if name in run_cfg["models"] and cfg.get("client") in ("hf_local", "litellm")
++                   else cfg)
++            for name, cfg in models_cfg.items()
++        }
+     clients = {name: build_model(name, models_cfg[name]) for name in run_cfg["models"]}
+ 
+     def _one(model_name: str, ds_name: str, sample) -> dict:
+         cfg = models_cfg[model_name]
+-        key = _cache_key(sample.id, model_name, prompt_version)
++        key = _cache_key(sample.id, model_name, prompt_version, _key_variant(cfg))
+         cache_file = cache_dir / f"{key}.json"
+         if use_cache and cache_file.exists():
+             row = json.loads(cache_file.read_text(encoding="utf-8"))
+@@ -238,6 +293,8 @@
+             "error": pred.error,
+             "attempts": attempts,
+             "cached": False,
++            **_cap_fields(cfg, pred),
++            **_logprob_fields(pred),
+         }
+         if runner_id:
+             row["runner"] = runner_id
+--- /dev/null
++++ b/src/arabic_ocr_bench/characterize/token_cap.py
+@@ -0,0 +1,124 @@
++"""Which stored readings stopped at the output-token cap (NEXT_STEPS X6).
++
++A reading that ends at the cap was cut by the pipeline, not by the model, so
++its end-of-line deletions are an artefact (R2.8). Rows written after the X6
++runner change carry ``hit_token_cap`` / ``finish_reason`` themselves; for older
++rows the cap is inferred from ``output_tokens`` against the cap the run used
++(the model's configs/models.yaml entry, or the run's ``max_tokens_override``).
++Providers count a few tokens differently (gemini-flash stops at 252 of 256), so
++an older row counts as at-cap within ``slack`` tokens of it.
++
++At-cap rows are split by what the cut did:
++- ``truncated``: the cleaned reading is shorter than 90 % of the GT (text lost);
++- ``runaway``: it is not (a loop or a preamble ran into the cap; raising the
++  cap would not help, the reading is wrong anyway).
++
++Older ``hf_local`` rows store ``output_tokens = 0`` and are counted as unknown.
++CPU only; reads predictions files, never calls a model.
++"""
++
++from __future__ import annotations
++
++import glob
++import json
++import os
++from collections import defaultdict
++from pathlib import Path
++
++import yaml
++
++from ..models.registry import output_token_cap
++from .runs import PRED_GLOBS
++
++SLACK = 8
++DONE_SHARE = 0.05  # X6 "done when": no model has more than 5 % of lines at its cap
++
++
++def _override(pred_file: str) -> int | None:
++    snap = Path(pred_file).parent / "run_config.snapshot.yaml"
++    if not snap.exists():
++        return None
++    try:
++        cfg = yaml.safe_load(snap.read_text(encoding="utf-8")) or {}
++    except (OSError, yaml.YAMLError):
++        return None
++    v = cfg.get("max_tokens_override")
++    return int(v) if v is not None else None
++
++
++def row_at_cap(row: dict, cap: int | None, slack: int = SLACK) -> bool | None:
++    """True / False, or None when it cannot be told (no cap, no token count)."""
++    if "hit_token_cap" in row:
++        return bool(row["hit_token_cap"])
++    cap = row.get("token_cap") or cap
++    out = int(row.get("output_tokens") or 0)
++    if not cap or out <= 0:
++        return None
++    return out >= int(cap) - slack
++
++
++def cut_kind(row: dict) -> str:
++    gt = (row.get("ground_truth") or "").strip()
++    hyp = (row.get("cleaned_text") or "").strip()
++    return "truncated" if len(hyp) < 0.9 * len(gt) else "runaway"
++
++
++def scan(root: str | Path, model_cfgs: dict[str, dict], globs=PRED_GLOBS,
++         slack: int = SLACK) -> dict[tuple[str, str], dict]:
++    """{(model, dataset): {n, at_cap, truncated, runaway, unknown, cap}} over
++    every non-errored, non-cached reading (cached rows repeat earlier ones)."""
++    root = Path(root)
++    acc: dict[tuple[str, str], dict] = defaultdict(
++        lambda: {"n": 0, "at_cap": 0, "truncated": 0, "runaway": 0, "unknown": 0, "caps": set()})
++    files = sorted({f for g in globs for f in glob.glob(str(root / g), recursive=True)})
++    for f in files:
++        if "smoke" in Path(os.path.relpath(f, root)).parts:
++            continue
++        override = _override(f)
++        with open(f, encoding="utf-8") as fh:
++            for line in fh:
++                try:
++                    r = json.loads(line)
++                except json.JSONDecodeError:
++                    continue
++                if r.get("error") or r.get("cached"):
++                    continue
++                model = r.get("model") or ""
++                cfg = model_cfgs.get(model) or {}
++                cap = output_token_cap(cfg)
++                if cap is not None and override is not None:
++                    cap = override
++                ds = r.get("dataset") or str(r.get("sample_id", "")).split("/")[0]
++                a = acc[(model, ds)]
++                a["n"] += 1
++                hit = row_at_cap(r, cap, slack)
++                if hit is None:
++                    a["unknown"] += 1
++                    continue
++                if cap:
++                    a["caps"].add(int(r.get("token_cap") or cap))
++                if hit:
++                    a["at_cap"] += 1
++                    a[cut_kind(r)] += 1
++    return {k: {**v, "caps": sorted(v["caps"])} for k, v in acc.items()}
++
++
++def by_model(pairs: dict[tuple[str, str], dict]) -> dict[str, dict]:
++    out: dict[str, dict] = defaultdict(
++        lambda: {"n": 0, "at_cap": 0, "truncated": 0, "runaway": 0, "unknown": 0, "caps": set()})
++    for (model, _), v in pairs.items():
++        o = out[model]
++        for k in ("n", "at_cap", "truncated", "runaway", "unknown"):
++            o[k] += v[k]
++        o["caps"] |= set(v["caps"])
++    for o in out.values():
++        known = o["n"] - o["unknown"]
++        o["share_at_cap"] = o["at_cap"] / known if known else None
++        o["caps"] = sorted(o["caps"])
++    return dict(out)
++
++
++def flagged(models: dict[str, dict], share: float = DONE_SHARE) -> list[str]:
++    """Models with more than ``share`` of their known readings at the cap."""
++    return sorted(m for m, v in models.items()
++                  if v["share_at_cap"] is not None and v["share_at_cap"] > share)
+--- /dev/null
++++ b/scripts/token_cap_report.py
+@@ -0,0 +1,45 @@
++"""X6: which models' stored readings stop at their output-token cap.
++
++    uv run python scripts/token_cap_report.py [--root .] [--json results/characterize/token_cap.json]
++
++CPU only, reads predictions files, makes no API calls. Prints one row per model
++(share of readings at the cap, split into truncated = text lost vs runaway =
++loop/preamble hit the cap) and the models over the X6 threshold (> 5 %).
++"""
++
++from __future__ import annotations
++
++import argparse
++import json
++from pathlib import Path
++
++from arabic_ocr_bench.characterize import token_cap
++from arabic_ocr_bench.models.registry import load_model_configs
++
++
++def main() -> None:
++    ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
++    ap.add_argument("--root", default=".")
++    ap.add_argument("--models", default="configs/models.yaml")
++    ap.add_argument("--json", type=Path, default=None, help="also write per-pair rows here")
++    ap.add_argument("--share", type=float, default=token_cap.DONE_SHARE)
++    a = ap.parse_args()
++
++    pairs = token_cap.scan(a.root, load_model_configs(a.models))
++    models = token_cap.by_model(pairs)
++    print(f"{'model':42s} {'caps':>12s} {'n':>6s} {'at cap':>7s} {'trunc':>6s} {'runaway':>7s} {'unknown':>7s}")
++    for m, v in sorted(models.items(), key=lambda kv: -(kv[1]["share_at_cap"] or 0)):
++        share = "-" if v["share_at_cap"] is None else f"{100 * v['share_at_cap']:.1f}%"
++        caps = ",".join(map(str, v["caps"])) or "-"
++        print(f"{m:42s} {caps:>12s} {v['n']:6d} {share:>7s} {v['truncated']:6d} {v['runaway']:7d} {v['unknown']:7d}")
++    bad = token_cap.flagged(models, a.share)
++    print(f"\nover {100 * a.share:.0f} % at the cap ({len(bad)}): {', '.join(bad) or 'none'}")
++    if a.json:
++        a.json.parent.mkdir(parents=True, exist_ok=True)
++        rows = [{"model": m, "dataset": d, **v} for (m, d), v in sorted(pairs.items())]
++        a.json.write_text(json.dumps({"pairs": rows, "flagged": bad}, indent=1, ensure_ascii=False),
++                          encoding="utf-8")
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ b/tests/test_token_cap_and_logprobs.py
+@@ -0,0 +1,318 @@
++"""X6 (output-token caps) and vlm-logprobs in the benchmark runner. No network,
++no model weights: LiteLLM and HF generate() are faked."""
++
++from __future__ import annotations
++
++import hashlib
++import json
++from types import SimpleNamespace
++
++import pytest
++from PIL import Image
++
++from arabic_ocr_bench import runner as runner_mod
++from arabic_ocr_bench.characterize import token_cap
++from arabic_ocr_bench.datasets.base import Sample
++from arabic_ocr_bench.models.base import Prediction
++from arabic_ocr_bench.models.hf_local_client import HFLocalClient, finish_reason
++from arabic_ocr_bench.models.litellm_client import LiteLLMClient
++from arabic_ocr_bench.models.registry import build_model, output_token_cap
++from arabic_ocr_bench.runner import _cache_key, _key_variant, run
++
++
++def _img():
++    return Image.new("RGB", (20, 10), "white")
++
++
++# --------------------------------------------------------------------------- #
++# LiteLLM client
++# --------------------------------------------------------------------------- #
++def _resp(content, finish="stop", logprobs=None, out_tok=5):
++    choice = SimpleNamespace(message=SimpleNamespace(content=content),
++                             finish_reason=finish, logprobs=logprobs)
++    return SimpleNamespace(choices=[choice],
++                           usage=SimpleNamespace(prompt_tokens=10, completion_tokens=out_tok))
++
++
++def test_litellm_reports_finish_reason_length(monkeypatch):
++    import litellm
++
++    monkeypatch.setattr(litellm, "completion", lambda **kw: _resp("نص مقطوع", "length", out_tok=256))
++    pred = LiteLLMClient("m", "openai/m", max_tokens=256).transcribe(_img(), "p")
++    assert pred.error is None
++    assert pred.finish_reason == "length"
++    assert pred.token_logprobs is None
++
++
++def test_litellm_logprobs_only_requested_when_enabled(monkeypatch):
++    import litellm
++
++    calls = []
++    lp = SimpleNamespace(content=[SimpleNamespace(token="a", logprob=-0.1),
++                                  {"token": "b", "logprob": -2.0}])
++
++    def fake(**kw):
++        calls.append(kw)
++        return _resp("ab", "stop", logprobs=lp)
++
++    monkeypatch.setattr(litellm, "completion", fake)
++    off = LiteLLMClient("m", "openai/m").transcribe(_img(), "p")
++    on = LiteLLMClient("m", "openai/m", logprobs=True).transcribe(_img(), "p")
++    assert "logprobs" not in calls[0] and calls[1]["logprobs"] is True
++    assert off.token_logprobs is None
++    assert on.token_logprobs == [-0.1, -2.0] and on.logprob_kind == "api"
++
++
++def test_litellm_missing_logprobs_in_response_is_none(monkeypatch):
++    import litellm
++
++    monkeypatch.setattr(litellm, "completion", lambda **kw: _resp("ab"))
++    pred = LiteLLMClient("m", "openai/m", logprobs=True).transcribe(_img(), "p")
++    assert pred.token_logprobs is None and pred.logprob_kind is None
++
++
++# --------------------------------------------------------------------------- #
++# registry
++# --------------------------------------------------------------------------- #
++def test_output_token_cap_matches_build_model_defaults():
++    assert output_token_cap({"client": "litellm"}) == 256
++    assert output_token_cap({"client": "litellm", "max_tokens": 1024}) == 1024
++    assert output_token_cap({"client": "hf_local", "hf_id": "x"}) == 160
++    assert output_token_cap({"client": "paddleocr"}) is None
++    assert output_token_cap({"client": "mock"}) is None
++
++
++def test_registry_passes_logprobs_through():
++    c = build_model("m", {"client": "litellm", "litellm_id": "openai/m", "logprobs": True})
++    h = build_model("h", {"client": "hf_local", "hf_id": "x", "logprobs": True})
++    assert c.logprobs is True and h.logprobs is True
++    assert build_model("h", {"client": "hf_local", "hf_id": "x"}).logprobs is False
++
++
++# --------------------------------------------------------------------------- #
++# HF local: finish reason and log-probabilities from generate()
++# --------------------------------------------------------------------------- #
++def test_finish_reason_rules():
++    assert finish_reason([5, 6, 2], 160, {2}) == "stop"
++    assert finish_reason([5] * 160, 160, {2}) == "length"
++    assert finish_reason([5, 6], 160, {2}) == "stop"      # another stopping criterion
++    assert finish_reason([5, 6], 160, set()) is None       # EOS unknown, under the cap
++
++
++def test_gen_out_without_logprobs_needs_no_torch():
++    c = HFLocalClient(name="h", hf_id="x", max_new_tokens=3)
++    c._model = SimpleNamespace(generation_config=SimpleNamespace(eos_token_id=[2, 9]))
++    out = SimpleNamespace(sequences=[[1, 1, 7, 8, 4]], logits=None, scores=None)
++    g = c._gen_out(out, 2, "txt")
++    assert (g.n_tokens, g.finish_reason, g.token_logprobs) == (3, "length", None)
++    g = c._gen_out(SimpleNamespace(sequences=[[1, 1, 7, 9]]), 2, "txt")
++    assert (g.n_tokens, g.finish_reason) == (2, "stop")
++
++
++class _FakeInputs(dict):
++    def to(self, _device):
++        return self
++
++
++class _FakeProcessor:
++    def apply_chat_template(self, messages, add_generation_prompt, tokenize):
++        return "chat"
++
++    def __call__(self, text, images, return_tensors):
++        import torch
++
++        return _FakeInputs(input_ids=torch.tensor([[11, 12, 13]]))
++
++    def decode(self, ids, skip_special_tokens=True):
++        return " ".join(str(int(i)) for i in ids if int(i) != 2)
++
++
++class _FakeModel:
++    """generate() emits tokens 4, 5, EOS(2); step logits put 0.9 / 0.5 / 0.8
++    on them (after softmax) so the expected log-probabilities are known."""
++
++    generation_config = SimpleNamespace(eos_token_id=2)
++
++    def __init__(self):
++        self.kwargs = None
++
++    def generate(self, **kw):
++        import torch
++
++        self.kwargs = kw
++        toks = [4, 5, 2]
++        logits = []
++        for t, p in zip(toks, (0.9, 0.5, 0.8)):
++            probs = torch.full((1, 8), (1 - p) / 7)
++            probs[0, t] = p
++            logits.append(torch.log(probs))
++        seq = torch.tensor([[11, 12, 13, *toks]])
++        return SimpleNamespace(sequences=seq,
++                               logits=tuple(logits) if kw.get("output_logits") else None,
++                               scores=None)
++
++
++def _hf_client(logprobs):
++    pytest.importorskip("torch")
++    c = HFLocalClient(name="h", hf_id="x", logprobs=logprobs)
++    c._model, c._processor, c._device = _FakeModel(), _FakeProcessor(), "cpu"
++    return c
++
++
++def test_hf_transcribe_records_tokens_finish_and_logprobs():
++    import math
++
++    c = _hf_client(logprobs=True)
++    pred = c.transcribe(_img(), "p")
++    assert pred.error is None and pred.cleaned_text == "4 5"
++    assert pred.output_tokens == 3 and pred.finish_reason == "stop"
++    assert pred.logprob_kind == "raw_logits"
++    assert pred.token_logprobs == pytest.approx([math.log(0.9), math.log(0.5), math.log(0.8)], abs=1e-5)
++    assert c._model.kwargs["output_logits"] is True
++    assert c._model.kwargs["return_dict_in_generate"] is True
++
++
++def test_hf_transcribe_without_logprobs_does_not_ask_for_logits():
++    c = _hf_client(logprobs=False)
++    pred = c.transcribe(_img(), "p")
++    assert pred.token_logprobs is None and pred.output_tokens == 3
++    assert "output_logits" not in c._model.kwargs
++
++
++# --------------------------------------------------------------------------- #
++# runner: cache keys and row fields
++# --------------------------------------------------------------------------- #
++def test_cache_key_unchanged_for_existing_configs():
++    old = hashlib.sha1(f"s|m|line-v2|r{runner_mod.CACHE_REV}".encode()).hexdigest()
++    assert _key_variant({"client": "litellm", "max_tokens": 256}) == ""
++    assert _cache_key("s", "m", "line-v2", "") == old
++    assert _cache_key("s", "m", "line-v2") == old
++
++
++def test_cache_key_changes_with_cache_tag_or_logprobs():
++    base = _cache_key("s", "m", "line-v2", _key_variant({}))
++    tagged = _cache_key("s", "m", "line-v2", _key_variant({"cache_tag": "x6"}))
++    lp = _cache_key("s", "m", "line-v2", _key_variant({"logprobs": True}))
++    both = _cache_key("s", "m", "line-v2", _key_variant({"cache_tag": "x6", "logprobs": True}))
++    assert len({base, tagged, lp, both}) == 4
++
++
++class _Dataset:
++    name = "fake"
++    track = "line"
++
++    def __iter__(self):
++        img = Image.new("RGB", (8, 8))
++        yield Sample(id="fake/000", image=img, ground_truth="مرحبا بكم", track="line")
++
++
++class _CappedClient:
++    """Stands in for any API/VLM client: records whether logprobs were asked for."""
++
++    def __init__(self, name, cfg):
++        self.name = name
++        self.logprobs = bool(cfg.get("logprobs"))
++        self.calls = 0
++
++    def transcribe(self, image, prompt):
++        self.calls += 1
++        return Prediction(raw_text="مرحبا", cleaned_text="مرحبا", output_tokens=256,
++                          finish_reason="length",
++                          token_logprobs=[-0.5, -1.5] if self.logprobs else None,
++                          logprob_kind="api" if self.logprobs else None)
++
++
++@pytest.fixture
++def wired(monkeypatch, tmp_path):
++    built = {}
++
++    def _build(name, cfg):
++        built[name] = _CappedClient(name, cfg)
++        return built[name]
++
++    monkeypatch.setattr(runner_mod, "load_dataset_configs", lambda *a, **k: {"fake": {}})
++    monkeypatch.setattr(runner_mod, "build_dataset", lambda *a, **k: _Dataset())
++    monkeypatch.setattr(runner_mod, "build_model", _build)
++    monkeypatch.setattr(runner_mod, "load_model_configs", lambda *a, **k: {
++        "api": {"client": "litellm", "litellm_id": "x", "max_tokens": 256},
++        "mock_empty": {"client": "mock", "mode": "empty"},
++    })
++    return tmp_path, built
++
++
++def _rows(run_dir):
++    return [json.loads(x) for x in (run_dir / "predictions.jsonl").read_text().splitlines()]
++
++
++def test_row_flags_token_cap(wired):
++    root, _ = wired
++    (row,) = _rows(run({"models": ["api"], "datasets": ["fake"], "prompt_version": "line-v2",
++                        "progress": False}, results_root=root))
++    assert row["token_cap"] == 256
++    assert row["finish_reason"] == "length" and row["hit_token_cap"] is True
++    assert "token_logprobs" not in row
++
++
++def test_logprobs_run_flag_reaches_client_rows_and_cache_key(wired):
++    root, built = wired
++    cfg = {"models": ["api"], "datasets": ["fake"], "prompt_version": "line-v2", "progress": False}
++    run(cfg, results_root=root)                       # plain run fills the cache
++    assert built["api"].calls == 1
++    (row,) = _rows(run({**cfg, "logprobs": True}, results_root=root))
++    # a cached reading without log-probabilities must not be served to this run
++    assert built["api"].calls == 1 and built["api"].logprobs is True
++    assert row["cached"] is False
++    assert row["token_logprobs"] == [-0.5, -1.5]
++    assert row["mean_logprob"] == -1.0 and row["logprob_kind"] == "api"
++    (again,) = _rows(run({**cfg, "logprobs": True}, results_root=root))
++    assert again["cached"] is True and again["token_logprobs"] == [-0.5, -1.5]
++
++
++def test_mock_rows_have_no_cap_fields(wired, monkeypatch):
++    root, _ = wired
++    monkeypatch.setattr(runner_mod, "build_model", build_model)  # the real registry
++    (row,) = _rows(run({"models": ["mock_empty"], "datasets": ["fake"],
++                        "prompt_version": "line-v1", "progress": False}, results_root=root))
++    assert not {"token_cap", "finish_reason", "hit_token_cap", "token_logprobs"} & set(row)
++
++
++# --------------------------------------------------------------------------- #
++# stored-row report (scripts/token_cap_report.py)
++# --------------------------------------------------------------------------- #
++def _write_run(d, rows, override=None):
++    d.mkdir(parents=True)
++    (d / "predictions.jsonl").write_text(
++        "\n".join(json.dumps(r, ensure_ascii=False) for r in rows), encoding="utf-8")
++    if override is not None:
++        (d / "run_config.snapshot.yaml").write_text(f"max_tokens_override: {override}\n")
++
++
++def test_token_cap_scan(tmp_path):
++    gt = "كلمة " * 20
++    cfgs = {"g": {"client": "litellm", "max_tokens": 256},
++            "h": {"client": "hf_local", "hf_id": "x"}}
++    _write_run(tmp_path / "results" / "r1", [
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": gt[:20], "output_tokens": 252},
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": gt * 3, "output_tokens": 256},
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": gt, "output_tokens": 40},
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": "", "error": "429"},
++        {"model": "h", "dataset": "d", "ground_truth": gt, "cleaned_text": gt, "output_tokens": 0},
++        {"model": "h", "dataset": "d", "ground_truth": gt, "cleaned_text": gt[:5],
++         "output_tokens": 160, "hit_token_cap": True, "token_cap": 160},
++    ])
++    # a max_tokens_override run: 300 output tokens under a 640 cap is not at the cap
++    _write_run(tmp_path / "results" / "r2", [
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": gt, "output_tokens": 300},
++    ], override=640)
++    _write_run(tmp_path / "results" / "smoke" / "r3", [
++        {"model": "g", "dataset": "d", "ground_truth": gt, "cleaned_text": "", "output_tokens": 256},
++    ])
++    pairs = token_cap.scan(tmp_path, cfgs)
++    g = pairs[("g", "d")]
++    assert (g["n"], g["at_cap"], g["truncated"], g["runaway"]) == (4, 2, 1, 1)
++    assert g["caps"] == [256, 640]
++    h = pairs[("h", "d")]
++    assert (h["n"], h["unknown"], h["at_cap"], h["truncated"]) == (2, 1, 1, 1)
++    models = token_cap.by_model(pairs)
++    assert models["g"]["share_at_cap"] == 0.5
++    assert token_cap.flagged(models) == ["g", "h"]
