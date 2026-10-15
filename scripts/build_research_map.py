@@ -26,6 +26,10 @@ LABEL = {"key-findings": "key findings", "htr-dossier": "deep dive", "run-next":
          "d-pool": "idea pool", "d-ideas": "ideas log", "d-geo": "geometry lit.", "d-geom": "geometry", "d-xfer": "transfer", "d-day2": "10-12 (1)",
          "d-day3": "10-12 (2)", "d-day4": "10-13", "d-xai": "attribution", "d-ctc": "CTC aligner", "d-r26": "R2.6", "d-labels": "labels",
          "d-cross": "cross-lingual", "d-styles": "styles", "d-gap": "gap paper", "d-exp": "experiments"}
+KEY_GRADES = {"Writing size inside the line image": "A", "Hamza spelling convention": "A", "Letter-shape novelty": "B", "Slant": "B",
+              "Text distance": "B", "Stroke width and pen contrast": "C", "Dots at low resolution": "C", "Where models look": "B",
+              "Slant and stroke augmentation in training": "N", "LLM decoder on CRNN features (E8)": "N", "Run-to-run noise (yardstick)": "A",
+              "Measured clearly, little effect": "N"}
 STYLE = """<style>
 .rm{display:flex;flex-direction:column;gap:14px}
 .rm-glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
@@ -145,6 +149,15 @@ def main() -> None:
 """
     h = LEDGER.read_text(encoding="utf-8")
     h = re.sub(r"\n<!-- research map -->\n<section id=\"research-map\">.*?</section>\n", "\n", h, flags=re.S)
+    # grade chips in the key-findings table, same scale as the map
+    h = re.sub(r'<span class="g g-[a-z]+ kfg">[^<]*</span> ', "", h)
+    i = h.index('<section id="key-findings">')
+    j = h.index("</section>", i)
+    kf = h[i:j]
+    for title, g in KEY_GRADES.items():
+        kf = kf.replace(f"<tr><td><b>{title}</b></td>", f'<tr><td><span class="g g-{GRADE[g][1]} kfg">{g if g != "N" else "neg."}</span> <b>{title}</b></td>', 1)
+        kf = kf.replace(f"<tr><td>{title}</td>", f'<tr><td><span class="g g-{GRADE[g][1]} kfg">{g if g != "N" else "neg."}</span> {title}</td>', 1)
+    h = h[:i] + kf + h[j:]
     h = h.replace('<div class="summary" id="summary"></div>\n', '<div class="summary" id="summary"></div>\n' + SECTION, 1)
     if 'href="#research-map"' not in h:
         h = h.replace('<li><a href="#key-findings">Key findings</a></li>', '<li><a href="#research-map">Research map</a></li>\n    <li><a href="#key-findings">Key findings</a></li>', 1)

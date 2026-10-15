@@ -96,6 +96,45 @@ def noise_band(st: Store, spec: dict, ds: str, packs: list[str]) -> dict | None:
     return None
 
 
+def page_of(sample: dict) -> str | None:
+    """Page or manuscript cluster for a cluster bootstrap: NAKBA test doc-page, NAKBA blind year-page, RASAM manuscript-page."""
+    try:
+        m = json.loads(sample.get("meta") or "{}")
+    except ValueError:
+        return None
+    if "filename" in m:
+        f = m["filename"]
+        return f.rsplit("-", 1)[0] if f.count("-") >= 2 else f.rsplit("_", 1)[0]
+    if "manuscript_name" in m:
+        return f"{m['manuscript_name']}/{m.get('image_name')}"
+    return None
+
+
+def cluster_ci(st, keys, ea, eb, n, reps=2000):
+    """95 % interval of Δ micro CER resampling whole pages (None when the set has no page ids)."""
+    pages = [page_of(st.samples.get(k, {})) for k in keys]
+    if any(p is None for p in pages):
+        return None
+    idx = defaultdict(list)
+    for i, p in enumerate(pages):
+        idx[p].append(i)
+    groups = [np.array(v) for v in idx.values()]
+    if len(groups) < 10:
+        return None
+    rng = np.random.default_rng(1)
+    EA, EB = np.atleast_2d(ea), np.atleast_2d(eb)  # seeds × lines (one row when there are no seeds)
+    PA = np.array([[e[g].sum() for g in groups] for e in EA])  # seeds × pages
+    PB = np.array([[e[g].sum() for g in groups] for e in EB])
+    w = np.array([n[g].sum() for g in groups])
+    bs = []
+    for _ in range(reps):
+        s = rng.integers(0, len(groups), len(groups))
+        ia = rng.integers(0, len(PA), len(PA))
+        ib = rng.integers(0, len(PB), len(PB))
+        bs.append((PB[ib][:, s].mean(0).sum() - PA[ia][:, s].mean(0).sum()) / w[s].sum())
+    return {"pages": len(groups), "ci95": [float(x) for x in np.percentile(bs, [2.5, 97.5])]}
+
+
 def compare(st: Store, pr: dict, ds: str, packs: list[str], noise: dict | None, reps: int = 4000) -> dict | None:
     for p in packs:
         _, A = st.get(pr["A"], ds, packs, p)
@@ -123,7 +162,7 @@ def compare(st: Store, pr: dict, ds: str, packs: list[str], noise: dict | None, 
         net = (eb - ea).sum()
         by_start = {BUCKETS[i][0]: float((eb - ea)[np.array(ba) == i].sum() / net) if net else 0.0 for i in range(len(BUCKETS)) if (np.array(ba) == i).any()}
         r = {"cer_A": float(ea.sum() / n.sum()), "cer_B": float(eb.sum() / n.sum()), "delta": float(net / n.sum()),
-             "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])], "transition": trans.tolist(),
+             "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])], "ci95_pages": cluster_ci(st, keys, ea, eb, n), "transition": trans.tolist(),
              "lines_better": int((cb < ca).sum()), "lines_worse": int((cb > ca).sum()), "net_change_by_start_bucket": by_start}
         if noise and rung == RUNG_A:
             t1, t2 = noise["tercile_edges"]
@@ -168,6 +207,7 @@ def compare_seeds(st: Store, sp: dict, ds: str, pack: str = "panel-2026-10-13", 
     per_seed = {"A": [float(e.sum() / n.sum()) for e in E["A"]], "B": [float(e.sum() / n.sum()) for e in E["B"]]}
     return {"lines": len(keys), "seeds": {"A": len(E["A"]), "B": len(E["B"])}, "cer_A_by_seed": per_seed["A"], "cer_B_by_seed": per_seed["B"],
             "delta": float(delta), "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])],
+            "ci95_pages": cluster_ci(st, keys, E["A"], E["B"], n),
             "lines_better_all_seeds": better, "lines_worse_all_seeds": worse, "sign_test_p": binom_two_sided(min(better, worse), better + worse),
             "arms_disjoint": bool(max(per_seed["B"]) < min(per_seed["A"]) or min(per_seed["B"]) > max(per_seed["A"]))}
 

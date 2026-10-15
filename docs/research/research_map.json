@@ -1,36 +1,36 @@
 {
  "_doc": "Source of truth for the ledger's Research map and docs/research/RESEARCH-MAP.md (built by scripts/build_research_map.py). One entry per item; an item lists every theme it belongs to, so a cross-cutting experiment shows up under each. kind: finding | experiment | idea | fix | check | design | literature. status: done | running | next (proposed for the next round) | planned | gated | parked | dropped | untouched (never started). grade (findings): A strong and replicated | B solid, one gap | C suggestive | D weak or explanation-level | N settled negative. ev: ledger anchors. src: where the item comes from (paper key, 'ours', a doc, or the chat). Updated 2026-10-14.",
- "updated": "2026-10-14",
+ "updated": "2026-10-15",
  "themes": [
   {
    "id": "T0",
    "title": "Are the numbers right? Benchmark and measurement validity",
    "question": "Which measured differences are pipeline, labelling or scoring artefacts rather than properties of the script or the model?",
-   "summary": "The strongest results so far are here. Loose KHATT crops cost fixed-height models 7.5 CER points, and an old length filter hid the worst of them. NAKBA's hamza is an annotation convention. A PaddleOCR post-processing flag scrambled its output. kitab_muharaf is mostly Muharaf train. A per-line store with exact reconciliation and a corrections log now guards every number. Open: label-noise rate (needs human review), near-duplicates, spelling inconsistency, the diacritic scoring rule."
+   "summary": "The strongest results are here. Loose KHATT crops cost fixed-height models 7.5 CER points, and an old length filter hid the worst of them. Hamza and digit conventions differ between label sets, and even between NAKBA's two test splits. KHATT labels carry spacing quirks. 11 % of NAKBA blind lines repeat training text and are memorised by NAKBA-trained systems, though corpus scores barely move. A PaddleOCR flag scrambled its output; kitab_muharaf is mostly Muharaf train. The per-line store, page-cluster intervals and the corrections log now guard every number. Open: label-noise rate and human readability (needs review), near-duplicates, the diacritic scoring rule."
   },
   {
    "id": "T1",
    "title": "Connectivity, PAWs and word spacing",
    "question": "Does Arabic's split of words into parts (PAWs) make word boundaries ambiguous to recognisers, and is that visual?",
-   "summary": "Every family inserts word-internal spaces at PAW gaps far more than chance (87 of 89 system × set pairs). PAWs per word as a difficulty predictor was word length. Open: are the PAW gaps that get split as wide as real word gaps (pixel measurement), and does PAW-aware decoding fix them?"
+   "summary": "Every family inserts word-internal spaces at PAW gaps far more than chance (87 of 89 pairs). Spaces cost more than dots: the space tax is 2–11 CER points against 1–4. PAWs per word was word length. Open: are split PAW gaps as wide as word gaps (pixel measurement); PAW-aware decoding; PAW tokens for a shape vocabulary."
   },
   {
    "id": "T2",
    "title": "Dots: skeleton (rasm) against dots (i'jam)",
    "question": "How much of the error is dots, at what resolution do dots get lost, and can context restore them?",
-   "summary": "Dot-only errors are a modest share (dot tax about 1.8 points, dot pairs 13 % of letter substitutions). Dots survive at 64 px. Confusions are visual (same skeleton), not phonetic. Open: dot-preserving resize below 48 px, the restoration ceiling, a factorised dot head, whether attribution lands on dots."
+   "summary": "Without dots, about nine tenths of every family's error remains: models misread skeletons, not dots, and lines that are right except for their dots are rare (0.1–4 %). Three-dot letters are the most dot-error-prone. A quarter to a third of words share their dotless form with another word, yet the most frequent word restores 95 % of known words. The dots matter for the fifth of words that are unseen, which echoes why iʿjām was invented. Confusions are visual, not phonetic. Open: a two-stage reader (skeleton recogniser plus constrained dot restorer), dot-writing styles (dash, caret, displaced), and a dot-preserving resize below 48 px."
   },
   {
    "id": "T3",
    "title": "Letter shapes, positional forms and allographs",
    "question": "Which letter shapes are hard, why, and does adding the missing shapes help?",
-   "summary": "Letter-shape novelty passes the confound battery: about 16× the odds of misreading within a line for CRNNs and about 4.4× for fine-tuned VLMs. Pixel-level novelty is weak. Training repeats targeted at KHATT's novel shapes beat random repeats on KHATT, including held-out lines, but not on other sets. The positional-form tail is fully covered at 20k lines. Open: what the novel shapes are (allograph clusters), whether targeting works for a second dataset, synthesis, letter-family probes, the curriculum track."
+   "summary": "Letter-shape novelty passes the confound battery (within-line OR ≈ 16 for CRNNs, 4.4 for fine-tuned VLMs); pixel novelty is weak. Shape-targeted repeats beat random on KHATT, including held-out lines, but nowhere else. The positional-form tail is covered. Since most error is skeleton misreading, the next questions are which skeleton features fail (loops, teeth, tails, vertical stacking) and the shape programme: an allograph library with joins and dots kept separate, synthesis from it, and shape-token recognition with a constrained decoder. Feasibility: CTC spans are anchors, not cut lines, and handwritten PAWs often touch, so extraction needs alignment and ink together."
   },
   {
    "id": "T4",
    "title": "Script styles and transcription conventions",
    "question": "How do style conventions (Maghrebi dots, hamza writing) change what models must learn, and how fast can they learn them?",
-   "summary": "Maghrebi qāf/fāʾ dot convention: base AIN reads ق as ف on 23–27 % of RASAM qāfs. A CRNN trained without Maghrebi lines reads RASAM at about 47 % CER against about 12 % with them. Hamza use follows each system's training labels. Open: few-shot adaptation curve, prompt hint, dot-swap augmentation, the style inventory."
+   "summary": "Maghrebi qāf/fāʾ convention (base AIN 23–27 % ق→ف). Without Maghrebi training a CRNN reads RASAM at ~47 % CER instead of ~12 %. Hamza use follows the training labels. Writers spell as they speak (Levantine متل for مثل in Muharaf labels). Open: a few-shot Maghrebi curve, dot-swap augmentation, the style inventory."
   },
   {
    "id": "T5",
@@ -42,19 +42,19 @@
    "id": "T6",
    "title": "Language and text: what the decoder knows",
    "question": "How much of the gap is text distance (unseen words, register), and can a language prior help without hallucinating?",
-   "summary": "Unseen words hurt every family. KHATT text is the farthest from training (4.0 bits per character). An unconstrained LLM decoder (E8, 0.6B and 1.7B) hurts, with more fluent-but-wrong words. Errors are visual, not phonetic. Long words help everyone. Open: CTC decoding with character language models (constrained), dot and space restoration, tokenizer view, root-sharing of real-word errors."
+   "summary": "Unseen words hurt every family. KHATT text is the farthest from training. An unconstrained LLM decoder hurts (E8). Errors are visual. Without dots, context restores 95 % of known words but not unseen ones, so a language prior helps only under the image's constraint. Open: constrained decoding with character language models and a comprehensive lexicon (words, names, places), and synthesis from any text."
   },
   {
    "id": "T7",
    "title": "Writers and hands",
    "question": "How much of line difficulty is the writer, and do the effects hold within writers?",
-   "summary": "Mostly open. No writer IDs in the KITAB copy of KHATT. NAKBA file names and RASAM manuscript names can give page or manuscript clusters for honest intervals. KHATT's fixed-text paragraphs (the same text by several writers) are a natural experiment."
+   "summary": "Writers can now be studied. RASAM-2 has 15 manuscripts of 24–31 lines, RASAM-1 three large ones, and NAKBA is one writer. Page-cluster intervals were added; they match line intervals because seed noise dominates. The full KHATT v1.0 (1,038 test lines) is downloaded, but has no writer IDs. Next: writer adaptation, both for the CRNN (few lines chosen to cover the letters) and for VLMs in context (a labelled reference line in the same prompt), and a calibration sentence covering every letter form."
   },
   {
    "id": "T8",
    "title": "Models, training data and transfer",
    "question": "What transfers across datasets and model families, and what is a fair reference?",
-   "summary": "CRNN and VLM line difficulty correlate weakly (ρ ≈ 0.35). Most hard lines are hard for one family, not both. The standard-split CRNN (no test lines in training) is the comparable reference. Repetition itself helps NAKBA slightly. Open: in-domain NAKBA control, E1 frozen vs unfrozen ViT, multilingual freeze sweep, data scaling in characters, cross-script check, checkpoint averaging."
+   "summary": "CRNN and VLM difficulty correlate weakly, and the per-line better of the two is far below either: KHATT 14.3 % against 17.4 / 18.1 %, NAKBA test 4.1 % against 10.2 / 18.7 %. So a cross-family combination is a strong candidate. The standard-split CRNN is the comparable reference. Repetition helps NAKBA slightly. Open: in-domain NAKBA and KHATT controls, the combination, E1, the multilingual freeze sweep, data scaling, the cross-script check."
   },
   {
    "id": "T9",
@@ -72,7 +72,7 @@
    "id": "T11",
    "title": "Infrastructure, standards and literature",
    "question": "How do we make every result traceable and every characteristic reusable?",
-   "summary": "Built: per-line store, panel, seeds, analyses A and B, 18 detectors, corrections log, backups on the SSD. Open: validation gates V3–V6, the release, literature tasks L1–L7, outward contacts (ask first)."
+   "summary": "Built: store, panel, seeds, analyses A and B, 18 detectors, page-cluster intervals, corrections log, research map with coverage check, SSD backups. Open: correction for multiple comparisons; reporting in WER and lines fixed; decision rules, dependencies and a claims register per item; gates V3–V6; items that need the main checkout (PaddleOCR patch, NEXT_STEPS, Atlas tracker)."
   }
  ],
  "items": [
@@ -277,7 +277,7 @@
    "kind": "experiment",
    "title": "Label review in the review tool (458 candidates) and the 20 KHATT hard-core lines",
    "status": "next",
-   "result": "Needs about 2 h of human review; gives a label-error rate per set and κ with CER-HV",
+   "result": "Needs about 2 h of human review: a label-error rate per set, κ with CER-HV, and a 'can a human read it?' field for the hard-core lines (a human ceiling)",
    "src": "alazzawi2026labelerr",
    "ev": [
     "ev-3",
@@ -486,7 +486,8 @@
    "themes": [
     "T1",
     "T6"
-   ]
+   ],
+   "covers": []
   },
   {
    "id": "P-L3",
@@ -531,10 +532,11 @@
    "kind": "finding",
    "title": "Dot tax and rasm-CER",
    "status": "done",
-   "grade": "B",
-   "result": "Dot-only error about 1.8 points; dot pairs 13 % of letter substitutions",
+   "grade": "A",
+   "result": "Measured on every system and the full panel: dot tax 1–4 points, 6–11 % of CER (see no-dots CER)",
    "src": "ours",
    "ev": [
+    "ev-15",
     "d-r26"
    ],
    "themes": [
@@ -609,8 +611,8 @@
    "id": "P-L1",
    "kind": "experiment",
    "title": "Dot-restoration ceiling and H(dots | rasm, context)",
-   "status": "planned",
-   "result": "Gain capped at the dot tax (~1.8 points)",
+   "status": "next",
+   "result": "First evidence (§16): the most frequent word restores 95 % of known words; folded into the two-stage reader experiment",
    "src": "alshaibani2025dotless, shannon1951",
    "ev": [
     "run-next"
@@ -804,7 +806,7 @@
    "kind": "experiment",
    "title": "Allograph-stitching synthesis for rare shapes and style swaps",
    "status": "gated",
-   "result": "Gated on the clusters; joins may look unnatural",
+   "result": "Now part of the shape programme: gated on the allograph library (synthesis-v1)",
    "src": "ours (pool #6), dinges2016synthesis",
    "ev": [
     "d-pool"
@@ -1462,10 +1464,12 @@
    "id": "cluster-ci",
    "kind": "experiment",
    "title": "Cluster bootstrap over NAKBA pages and RASAM manuscripts for every comparison",
-   "status": "next",
-   "result": "CPU",
+   "status": "done",
+   "result": "Page clusters for NAKBA (845 / 323 pages) and RASAM; with seed noise included the page intervals match the line intervals, so no conclusion changes",
    "src": "plan §3.3",
-   "ev": [],
+   "ev": [
+    "ev-13"
+   ],
    "themes": [
     "T7",
     "T11"
@@ -2148,6 +2152,426 @@
    "ev": [],
    "themes": [
     "T8",
+    "T11"
+   ]
+  },
+  {
+   "id": "no-dots-cer",
+   "kind": "finding",
+   "title": "No-dots CER: how much of the error is the dots?",
+   "status": "done",
+   "grade": "A",
+   "result": "About 90 % of every family's error survives without dots; dot tax 1–4 points; lines right except dots 0.1–4 %; three-dot letters the most error-prone (10–20 per 100)",
+   "src": "user idea 2026-10-14; characteristics-framework rasm rung",
+   "ev": [
+    "ev-15"
+   ],
+   "themes": [
+    "T2",
+    "T0",
+    "T3"
+   ]
+  },
+  {
+   "id": "space-tax",
+   "kind": "finding",
+   "title": "Spaces cost more than dots",
+   "status": "done",
+   "grade": "B",
+   "result": "Space tax 2–11 CER points against a dot tax of 1–4; largest for base VLMs",
+   "src": "ours",
+   "ev": [
+    "ev-15"
+   ],
+   "themes": [
+    "T1",
+    "T2"
+   ]
+  },
+  {
+   "id": "ijam-ambiguity",
+   "kind": "finding",
+   "title": "How ambiguous is Arabic without dots? (why iʿjām was invented)",
+   "status": "done",
+   "grade": "B",
+   "result": "25–30 % of tokens share their dotless form with another word; the most frequent word restores 95 % of known words, one word of context about +1; 19 % of held-out tokens unseen, where dots carry what context cannot",
+   "src": "user idea; shannon1951, alshaibani2025dotless",
+   "ev": [
+    "ev-16"
+   ],
+   "themes": [
+    "T2",
+    "T6"
+   ]
+  },
+  {
+   "id": "two-stage-reader",
+   "kind": "experiment",
+   "title": "Two-stage reader: skeleton-only CRNN, then a dot restorer constrained to the read skeleton (n-gram first, then a small LLM)",
+   "status": "next",
+   "result": "Does a dotless recogniser read skeletons better, and does constrained restoration beat the model's own dots? Known vs unseen words separately; about 1 GPU hour + CPU",
+   "src": "user idea 2026-10-14; ahmad2019subcore, alshaibani2025dotless",
+   "ev": [
+    "ev-15",
+    "ev-16"
+   ],
+   "themes": [
+    "T2",
+    "T6",
+    "T8"
+   ],
+   "covers": [
+    "P-L1"
+   ]
+  },
+  {
+   "id": "dot-styles",
+   "kind": "experiment",
+   "title": "Dot-writing styles: two dots as a dash, three as a caret, displaced (delayed) dots, dots touching the body; prevalence per set and effect on dot errors",
+   "status": "planned",
+   "src": "ours (review 2026-10-14)",
+   "ev": [
+    "ev-15"
+   ],
+   "themes": [
+    "T2",
+    "T5"
+   ]
+  },
+  {
+   "id": "loops-teeth",
+   "kind": "experiment",
+   "title": "Skeleton features that fail: loops (ف ق و م ه ع), teeth (ب ت ث ن ي, س ش), tails; tooth-count errors against run length (like minims in Latin)",
+   "status": "planned",
+   "result": "Top confusions are loop and tooth pairs (ح→ع, ف→م, و→م, ن→ل)",
+   "src": "ours (review 2026-10-14)",
+   "ev": [
+    "ev-6",
+    "ev-11"
+   ],
+   "themes": [
+    "T3",
+    "T2"
+   ]
+  },
+  {
+   "id": "vertical-stacking",
+   "kind": "experiment",
+   "title": "Vertical stacking of letters in handwriting (as in محمد, لمح) and reading-order errors; detector from overlapping spans",
+   "status": "planned",
+   "src": "ours (review 2026-10-14)",
+   "ev": [],
+   "themes": [
+    "T3",
+    "T5"
+   ]
+  },
+  {
+   "id": "shape-feasibility",
+   "kind": "finding",
+   "title": "Can real letter shapes be cut out? (feasibility of the shape programme)",
+   "status": "done",
+   "grade": "B",
+   "result": "CTC spans are narrow anchors (median 12 px at 64 px; 9 % one column) that often miss parts of a letter; large ink components match label PAWs exactly on only 6–9 % of lines (PAWs touch)",
+   "src": "ours 2026-10-14",
+   "ev": [
+    "ev-18"
+   ],
+   "themes": [
+    "T3",
+    "T11"
+   ]
+  },
+  {
+   "id": "shape-library",
+   "kind": "experiment",
+   "title": "Allograph library (shape atlas): letter glyphs with skeleton, separate dots and entry/exit join points; alignment + ink skeleton extraction; cycle-consistency quality gate",
+   "status": "next",
+   "result": "Foundation of synthesis, shape tokens and personalised adaptation; also a characterisation result (shapes per letter × form per dataset); CPU, a few days",
+   "src": "user idea 2026-10-14; elarian2015 (KFUPM), dinges2016synthesis, bulacu2007allographic",
+   "ev": [
+    "ev-18",
+    "ev-14"
+   ],
+   "themes": [
+    "T3",
+    "T10",
+    "T11"
+   ]
+  },
+  {
+   "id": "synthesis-v1",
+   "kind": "experiment",
+   "title": "Synthesis from the library: join glyphs at their connection points, re-dot, measured PAW and word gaps, geometry and background variation; text from any source; sampling random / novelty-targeted / one coherent style",
+   "status": "planned",
+   "result": "Realism checks (real-vs-synthetic classifier, geometry match, no seam shortcut), then CRNN training against real repeats, a StackMix-style naive cut and font renders; readouts: novelty bands and unseen words",
+   "src": "user idea 2026-10-14; elarian2015, stackmix2021, dinges2016synthesis",
+   "ev": [
+    "ev-14",
+    "ev-13"
+   ],
+   "themes": [
+    "T3",
+    "T6",
+    "T5",
+    "T10"
+   ],
+   "covers": [
+    "X-G11"
+   ]
+  },
+  {
+   "id": "render-refine",
+   "kind": "experiment",
+   "title": "Render, then refine: a small image model trained on our pairs turns a stitched skeleton into realistic ink (ControlNet-like), label kept exact",
+   "status": "gated",
+   "result": "Only if seams in synthesis-v1 are visible or exploited",
+   "src": "ours",
+   "ev": [],
+   "themes": [
+    "T3",
+    "T5"
+   ]
+  },
+  {
+   "id": "shape-tokens",
+   "kind": "experiment",
+   "title": "Shape-token recognition: the reader emits shapes (dotless class × form, discovered clusters, or a shape BPE of PAW-sized tokens); a decoder picks letters under Arabic's joining grammar (lexicon / n-gram, then transducer, then a constrained small LLM; top-k beams, speculative decoding)",
+   "status": "planned",
+   "result": "Hypothesis: separating 'what the ink looks like' from 'which letter' generalises better to new writers; readout: KHATT novelty bands",
+   "src": "user idea 2026-10-14; ahmad2019subcore, alazzawi2026gap (positional labels did not help)",
+   "ev": [
+    "ev-14"
+   ],
+   "themes": [
+    "T3",
+    "T6",
+    "T8",
+    "T2"
+   ]
+  },
+  {
+   "id": "writer-adapt-crnn",
+   "kind": "experiment",
+   "title": "Writer adaptation for the CRNN: RASAM-2 manuscripts and NAKBA; K = 4, 8, 16 lines chosen at random, to cover the most letter forms (set cover), or richest in the writer's novel shapes; fine-tune, adapter, or a no-training prototype memory",
+   "status": "next",
+   "result": "Short GPU runs; tests 'show a few samples that capture most letters'",
+   "src": "user idea 2026-10-14; MetaHTR, kohut2023finetuning",
+   "ev": [
+    "ev-18"
+   ],
+   "themes": [
+    "T7",
+    "T8",
+    "T4"
+   ]
+  },
+  {
+   "id": "vlm-incontext-writer",
+   "kind": "experiment",
+   "title": "Writer calibration for VLMs in context: one prompt with a labelled reference line from the same writer (image + label), then the test line; vs the test line alone",
+   "status": "next",
+   "result": "Qwen3-VL-8B base and fine-tuned; RASAM-2 manuscripts, NAKBA, Muharaf pages; reference chosen at random vs covering most letters; needs a VLM on the 3090",
+   "src": "user idea 2026-10-15; in-context writer adaptation (arXiv 2603.29450), MetaWriter",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T8",
+    "T10"
+   ]
+  },
+  {
+   "id": "calibration-sentence",
+   "kind": "design",
+   "title": "A calibration sentence: the shortest natural Arabic text covering every letter and positional form (for a user to write once)",
+   "status": "planned",
+   "result": "Set cover over letter × form on real text; feeds writer adaptation and the own-dataset copy-texts",
+   "src": "user idea 2026-10-15; altwaijry2021hijja",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T10"
+   ]
+  },
+  {
+   "id": "personalised-synthesis",
+   "kind": "experiment",
+   "title": "Personalised synthesis: generate many lines in one writer's own allographs from their K samples, then fine-tune",
+   "status": "gated",
+   "result": "Joins all three shape ideas; gated on the library and synthesis-v1",
+   "src": "user idea 2026-10-14",
+   "ev": [],
+   "themes": [
+    "T7",
+    "T3"
+   ]
+  },
+  {
+   "id": "khatt-full",
+   "kind": "experiment",
+   "title": "Full KHATT v1.0 (Teklia copy): add its 1,038 test lines to the panel; an in-domain KHATT control from its 4,672 train lines",
+   "status": "next",
+   "result": "Downloaded to the SSD. Shared fixed paragraphs: 767 unique texts in 1,038 test lines, and texts recur across splits, so score fixed-text and unique-text lines separately; no writer IDs",
+   "src": "Teklia/KHATT_v1.0, mahmoud2014khatt",
+   "ev": [],
+   "themes": [
+    "T0",
+    "T7",
+    "T8"
+   ]
+  },
+  {
+   "id": "nakba-leak",
+   "kind": "finding",
+   "title": "NAKBA's official split repeats training text",
+   "status": "done",
+   "grade": "B",
+   "result": "11 % of blind lines (2.9 % of characters) repeat NAKBA-train text; Baseer reads them at 0.9–1.5 % CER against 7.1 % on clean lines, unseen-data CRNNs at ~50 % (short fragments); corpus CER moves 6.91 → 7.08 %",
+   "src": "ours 2026-10-15; baek2019wrong",
+   "ev": [
+    "ev-17"
+   ],
+   "themes": [
+    "T0",
+    "T8"
+   ]
+  },
+  {
+   "id": "conventions",
+   "kind": "finding",
+   "title": "Label convention fingerprint per set",
+   "status": "done",
+   "grade": "B",
+   "result": "NAKBA test vs blind labelled differently (hamza 16.8 vs 10.6 %, Arabic-Indic digits 84 vs 38 %); KHATT double spaces on 34 % of lines and a space before 51 % of punctuation",
+   "src": "ours; doctor2022graphemic",
+   "ev": [
+    "ev-17"
+   ],
+   "themes": [
+    "T0",
+    "T4"
+   ]
+  },
+  {
+   "id": "dialect-spelling",
+   "kind": "finding",
+   "title": "Writers spell as they speak: dialect mergers in the labels",
+   "status": "done",
+   "grade": "C",
+   "result": "Muharaf train labels hold Levantine spellings (متل for مثل 52×, كتير for كثير 16×, ضهر for ظهر 15×); articulation shows in the writers' spelling, not the models' errors; automatic pairing is noisy",
+   "src": "user's makhārij idea, refined",
+   "ev": [
+    "ev-17"
+   ],
+   "themes": [
+    "T4",
+    "T6",
+    "T0"
+   ]
+  },
+  {
+   "id": "cross-family-oracle",
+   "kind": "finding",
+   "title": "CRNN and VLM fail on different lines",
+   "status": "done",
+   "grade": "B",
+   "result": "Line-wise better of best CRNN and best fine-tuned VLM: KHATT 14.3 % (17.4 / 18.1), NAKBA test 4.1 % (10.2 / 18.7), blind 4.8 % (11.1 / 6.4), RASAM-1 20.0 % (36.7 / 22.4)",
+   "src": "ours 2026-10-15",
+   "ev": [
+    "ev-15"
+   ],
+   "themes": [
+    "T8"
+   ]
+  },
+  {
+   "id": "cross-family-ensemble",
+   "kind": "experiment",
+   "title": "Cross-family combination: pick per line by confidence, a VLM correcting the CRNN under the skeleton constraint, or ROVER across families",
+   "status": "planned",
+   "result": "Reopens the dropped ensemble idea in cross-family form; needs VLM log-probabilities",
+   "src": "ours; NEXT_STEPS (ensembles dropped among VLMs)",
+   "ev": [
+    "ev-15"
+   ],
+   "themes": [
+    "T8",
+    "T6"
+   ]
+  },
+  {
+   "id": "seed-instability",
+   "kind": "experiment",
+   "title": "Lines that flip between identical trainings (3 seeds): characterise them and add a detector",
+   "status": "planned",
+   "src": "ours (review 2026-10-14)",
+   "ev": [
+    "ev-13"
+   ],
+   "themes": [
+    "T8",
+    "T0"
+   ]
+  },
+  {
+   "id": "lexicon",
+   "kind": "idea",
+   "title": "A comprehensive Arabic lexicon with proper names (اسم علم): words, person names, cities, countries, places",
+   "status": "planned",
+   "result": "Sources: Ayaspell (~300k forms, GPL/LGPL/MPL), aspell-ar (~900k, Buckwalter-based), Pecina et al. LREC 2012 (9M forms; location and licence to check), Alotaibi & Lee fine-grained NE corpora, ANETAC (79,924 names), Wikidata / GeoNames filtered by Arabic label, Arabic Wikipedia. Uses: synthesis text, lexicon-constrained decoding, dot restoration, OOV analysis",
+   "src": "user idea 2026-10-15",
+   "ev": [],
+   "themes": [
+    "T6",
+    "T3",
+    "T10"
+   ]
+  },
+  {
+   "id": "fdr",
+   "kind": "design",
+   "title": "Correct for multiple comparisons (false-discovery rate) wherever many cells are scanned (letter × form moves, detector tables)",
+   "status": "planned",
+   "src": "review 2026-10-14",
+   "ev": [
+    "ev-6"
+   ],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "wer-lines",
+   "kind": "design",
+   "title": "Report WER and 'lines fixed' alongside CER for every comparison",
+   "status": "planned",
+   "src": "review 2026-10-14",
+   "ev": [],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "decision-rules",
+   "kind": "design",
+   "title": "Decision rule and dependencies for every open item; a claims register per write-up (claim, evidence, what is missing)",
+   "status": "next",
+   "result": "Done in PLAN-2026-10-15 for the proposed items",
+   "src": "review 2026-10-14",
+   "ev": [],
+   "themes": [
+    "T11"
+   ]
+  },
+  {
+   "id": "main-checkout-sync",
+   "kind": "fix",
+   "title": "Items that need the main checkout: apply the PaddleOCR patch, update NEXT_STEPS.md from the map, update the Atlas tracker (progress.json) and republish",
+   "status": "planned",
+   "result": "This session cannot write there; ask the user",
+   "src": "memory: research-atlas-live-page; first handoff",
+   "ev": [],
+   "themes": [
     "T11"
    ]
   }

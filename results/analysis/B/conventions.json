@@ -1,0 +1,1254 @@
+{
+ "fingerprint": {
+  "kitab_khatt": {
+   "lines": 200,
+   "hamza_on_alif": 0.1404460518384569,
+   "ta_marbuta_share": 0.6868686868686869,
+   "alif_maqsura_share": 0.1895734597156398,
+   "digits": {
+    "western": 1.0
+   },
+   "harakat_per_100_letters": 0.2494802494802495,
+   "tatweel_lines": 0.13,
+   "double_space_lines": 0.335,
+   "space_before_punct": 0.5124223602484472
+  },
+  "nakba_lines": {
+   "lines": 2095,
+   "hamza_on_alif": 0.16769031385586297,
+   "ta_marbuta_share": 0.698196866686373,
+   "alif_maqsura_share": 0.3878562577447336,
+   "digits": {
+    "western": 0.15692007797270954,
+    "arabic-indic": 0.8430799220272904
+   },
+   "harakat_per_100_letters": 0.05513861234492265,
+   "tatweel_lines": 0.0009546539379474941,
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.012391573729863693
+  },
+  "nakba_blind": {
+   "lines": 2671,
+   "hamza_on_alif": 0.10644078631932236,
+   "ta_marbuta_share": 0.684747233673248,
+   "alif_maqsura_share": 0.45864661654135336,
+   "digits": {
+    "arabic-indic": 0.3832752613240418,
+    "western": 0.6167247386759582
+   },
+   "harakat_per_100_letters": 0.11512862025544163,
+   "tatweel_lines": 0.0011231748408835642,
+   "double_space_lines": 0.02208910520404343,
+   "space_before_punct": 0.03710094909404659
+  },
+  "muharaf_lines": {
+   "lines": 1334,
+   "hamza_on_alif": 0.027504472271914132,
+   "ta_marbuta_share": 0.6199430199430199,
+   "alif_maqsura_share": 0.39663629992992294,
+   "digits": {
+    "western": 0.2542372881355932,
+    "arabic-indic": 0.7397094430992736,
+    "persian": 0.006053268765133172
+   },
+   "harakat_per_100_letters": 1.8475442342892008,
+   "tatweel_lines": 0.005247376311844078,
+   "double_space_lines": 0.11019490254872563,
+   "space_before_punct": 0.18356643356643357
+  },
+  "rasam1": {
+   "lines": 734,
+   "hamza_on_alif": 0.0015907447577729573,
+   "ta_marbuta_share": 0.38113207547169814,
+   "alif_maqsura_share": 0.6067019400352733,
+   "digits": {
+    "western": 1.0
+   },
+   "harakat_per_100_letters": 0.27842227378190254,
+   "tatweel_lines": 0.0,
+   "double_space_lines": 0.03678474114441417,
+   "space_before_punct": 0.0
+  },
+  "rasam2": {
+   "lines": 372,
+   "hamza_on_alif": 0.017159199237368923,
+   "ta_marbuta_share": 0.3960843373493976,
+   "alif_maqsura_share": 0.40755467196819084,
+   "digits": {},
+   "harakat_per_100_letters": 0.01107603699396356,
+   "tatweel_lines": 0.0,
+   "double_space_lines": 0.056451612903225805,
+   "space_before_punct": 0.0
+  },
+  "muharaf_train": {
+   "lines": 21260,
+   "hamza_on_alif": 0.03823054241438517,
+   "ta_marbuta_share": 0.5804489277326454,
+   "alif_maqsura_share": 0.34840730609723813,
+   "digits": {
+    "arabic-indic": 0.7814624098867148,
+    "western": 0.21400617919670442,
+    "persian": 0.004531410916580845
+   },
+   "harakat_per_100_letters": 0.0,
+   "tatweel_lines": 0.0,
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.21476007857076046
+  },
+  "nakba_train": {
+   "lines": 15250,
+   "hamza_on_alif": 0.16185494417060659,
+   "ta_marbuta_share": 0.7202094966021729,
+   "alif_maqsura_share": 0.38331474197146714,
+   "digits": {
+    "arabic-indic": 0.8241448692152917,
+    "western": 0.17585513078470824
+   },
+   "harakat_per_100_letters": 0.0,
+   "tatweel_lines": 0.0,
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.012762237762237762
+  }
+ },
+ "merged_spellings": {
+  "kitab_khatt": {
+   "tokens": 2513,
+   "merged_spelling_tokens": 3,
+   "per_1000_tokens": 1.193792280143255,
+   "top_pairs": [
+    [
+     "ت←ث",
+     1
+    ],
+    [
+     "بدات←بذات",
+     1
+    ],
+    [
+     "بدلك←بذلك",
+     1
+    ]
+   ]
+  },
+  "nakba_lines": {
+   "tokens": 21457,
+   "merged_spelling_tokens": 29,
+   "per_1000_tokens": 1.3515402898820899,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     10
+    ],
+    [
+     "نفدت←نفذت",
+     2
+    ],
+    [
+     "اتني←اثني",
+     1
+    ],
+    [
+     "ت←ث",
+     1
+    ],
+    [
+     "تعتر←تعثر",
+     1
+    ],
+    [
+     "وهد←وهذ",
+     1
+    ],
+    [
+     "مد←مذ",
+     1
+    ],
+    [
+     "الزرية←الذرية",
+     1
+    ]
+   ]
+  },
+  "nakba_blind": {
+   "tokens": 30550,
+   "merged_spelling_tokens": 38,
+   "per_1000_tokens": 1.2438625204582652,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     9
+    ],
+    [
+     "السوء←السوق",
+     4
+    ],
+    [
+     "تم←ثم",
+     3
+    ],
+    [
+     "مند←منذ",
+     2
+    ],
+    [
+     "وحت←وحث",
+     1
+    ],
+    [
+     "دوي←ذوي",
+     1
+    ],
+    [
+     "دي←ذي",
+     1
+    ],
+    [
+     "ادار←اذار",
+     1
+    ]
+   ]
+  },
+  "muharaf_lines": {
+   "tokens": 12130,
+   "merged_spelling_tokens": 27,
+   "per_1000_tokens": 2.225886232481451,
+   "top_pairs": [
+    [
+     "اكتر←اكثر",
+     4
+    ],
+    [
+     "كتير←كثير",
+     3
+    ],
+    [
+     "الحدت←الحدث",
+     2
+    ],
+    [
+     "زهر←ظهر",
+     2
+    ],
+    [
+     "تابت←ثابت",
+     1
+    ],
+    [
+     "متل←مثل",
+     1
+    ],
+    [
+     "تمنا←ثمنا",
+     1
+    ],
+    [
+     "التاني←الثاني",
+     1
+    ]
+   ]
+  },
+  "rasam1": {
+   "tokens": 9980,
+   "merged_spelling_tokens": 24,
+   "per_1000_tokens": 2.404809619238477,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     3
+    ],
+    [
+     "يزل←يظل",
+     3
+    ],
+    [
+     "واد←واذ",
+     2
+    ],
+    [
+     "تزل←تظل",
+     2
+    ],
+    [
+     "بعت←بعث",
+     1
+    ],
+    [
+     "تمرا←ثمرا",
+     1
+    ],
+    [
+     "تبعت←تبعث",
+     1
+    ],
+    [
+     "تم←ثم",
+     1
+    ]
+   ]
+  },
+  "rasam2": {
+   "tokens": 4601,
+   "merged_spelling_tokens": 18,
+   "per_1000_tokens": 3.9121930015214086,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     3
+    ],
+    [
+     "ءال←قال",
+     3
+    ],
+    [
+     "ينفد←ينفذ",
+     2
+    ],
+    [
+     "تزل←تظل",
+     2
+    ],
+    [
+     "ءاس←قاس",
+     2
+    ],
+    [
+     "بت←بث",
+     1
+    ],
+    [
+     "التمر←الثمر",
+     1
+    ],
+    [
+     "اد←اذ",
+     1
+    ]
+   ]
+  },
+  "muharaf_train": {
+   "tokens": 184357,
+   "merged_spelling_tokens": 508,
+   "per_1000_tokens": 2.7555232510834955,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     58
+    ],
+    [
+     "متل←مثل",
+     52
+    ],
+    [
+     "تم←ثم",
+     31
+    ],
+    [
+     "كتير←كثير",
+     16
+    ],
+    [
+     "ضهر←ظهر",
+     15
+    ],
+    [
+     "الضهر←الظهر",
+     10
+    ],
+    [
+     "تزل←تظل",
+     10
+    ],
+    [
+     "يزل←يظل",
+     10
+    ]
+   ]
+  },
+  "nakba_train": {
+   "tokens": 154676,
+   "merged_spelling_tokens": 166,
+   "per_1000_tokens": 1.0732110993302129,
+   "top_pairs": [
+    [
+     "الدين←الذين",
+     61
+    ],
+    [
+     "تم←ثم",
+     11
+    ],
+    [
+     "فايز←فايظ",
+     6
+    ],
+    [
+     "سيء←سيق",
+     5
+    ],
+    [
+     "يلد←يلذ",
+     3
+    ],
+    [
+     "درعا←ذرعا",
+     3
+    ],
+    [
+     "ضل←ظل",
+     3
+    ],
+    [
+     "السوء←السوق",
+     3
+    ]
+   ]
+  }
+ },
+ "nakba_leak_lines": {
+  "leaked, short": 518,
+  "clean": 4139,
+  "leaked, ≥ 20 chars": 109
+ },
+ "nakba_leak_by_run": {
+  "crnn/base|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11250813311805673
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.0913946587537092
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5228459530026109
+   }
+  },
+  "crnn/base|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.42967359050445103
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10463695246076224
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09877854487519915
+   }
+  },
+  "crnn/base_s3|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.1125985010964648
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08724035608308606
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.512402088772846
+   }
+  },
+  "crnn/base_s3|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4308605341246291
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10587649924055936
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09585767392458842
+   }
+  },
+  "crnn/combo|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.1094115237246066
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08516320474777449
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5137075718015666
+   }
+  },
+  "crnn/combo|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.42255192878338277
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.09944307686935876
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09028146574614976
+   }
+  },
+  "crnn/combo_s2|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11024290912596091
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08931750741839763
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.4993472584856397
+   }
+  },
+  "crnn/combo_s2|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4338278931750742
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10197454564500079
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09585767392458842
+   }
+  },
+  "crnn/combo_s3|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11208039135359182
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08753709198813056
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5234986945169713
+   }
+  },
+  "crnn/combo_s3|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.44154302670623147
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10293475793920984
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10329261816250664
+   }
+  },
+  "crnn/geomaug|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.12072559462129792
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.10712166172106825
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5195822454308094
+   }
+  },
+  "crnn/geomaug|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4605341246290801
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.11343598875678695
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.11178969729155602
+   }
+  },
+  "crnn/inkcrop|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11369496590114948
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.0913946587537092
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5143603133159269
+   }
+  },
+  "crnn/inkcrop|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.44510385756676557
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10471551528483389
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09718534253850239
+   }
+  },
+  "crnn/randctl|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11106826999542135
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.09762611275964392
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5169712793733682
+   }
+  },
+  "crnn/randctl|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4397626112759644
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10291729953386057
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09957514604354753
+   }
+  },
+  "crnn/randctl_s2|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.10929705761862303
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.09376854599406528
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5110966057441253
+   }
+  },
+  "crnn/randctl_s2|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.45044510385756675
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10334503046491733
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09877854487519915
+   }
+  },
+  "crnn/randctl_s3|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11183941007783695
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.09020771513353115
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5058746736292428
+   }
+  },
+  "crnn/randctl_s3|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4094955489614243
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10358944813980692
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10116834838024429
+   }
+  },
+  "crnn/rep2|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11329734679615394
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.09228486646884274
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5189295039164491
+   }
+  },
+  "crnn/rep2|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4391691394658754
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10614710452347283
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09665427509293681
+   }
+  },
+  "crnn/shape|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11068269995421355
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08724035608308606
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.529373368146214
+   }
+  },
+  "crnn/shape|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.44866468842729973
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10268161106164563
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10382368560807223
+   }
+  },
+  "crnn/shape_s2|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11148998722799239
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.09080118694362017
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.4941253263707572
+   }
+  },
+  "crnn/shape_s2|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4362017804154303
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10360690654515617
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10382368560807223
+   }
+  },
+  "crnn/shape_s3|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.10760416415644504
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.07804154302670623
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5339425587467362
+   }
+  },
+  "crnn/shape_s3|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.43026706231454004
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.09955655650412891
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09718534253850239
+   }
+  },
+  "crnn/std_s0|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11694821312384028
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.08813056379821958
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.529373368146214
+   }
+  },
+  "crnn/std_s0|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.44807121661721067
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10746521412734161
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10169941582580988
+   }
+  },
+  "crnn/std_s1|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11354435260380269
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.0857566765578635
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5313315926892951
+   }
+  },
+  "crnn/std_s1|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4617210682492582
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10367674016655319
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10169941582580988
+   }
+  },
+  "crnn/std_s0-best|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11470106272742608
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.0857566765578635
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5267624020887729
+   }
+  },
+  "crnn/std_s0-best|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.44866468842729973
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10510832940519213
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.09585767392458842
+   }
+  },
+  "crnn/std_s1-best|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11354435260380269
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.0857566765578635
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.5313315926892951
+   }
+  },
+  "crnn/std_s1-best|nakba_lines": {
+   "leaked, short": {
+    "lines": 264,
+    "cer": 0.4617210682492582
+   },
+   "clean": {
+    "lines": 1773,
+    "cer": 0.10367674016655319
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 58,
+    "cer": 0.10169941582580988
+   }
+  },
+  "vlm/ain-7b-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.32450331125827814
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.11657543619568936
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.1
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1200|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.08581945682820445
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.07448071216617211
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.06527415143603134
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1200|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.07947019867549669
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.06696886760177899
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1600|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.0825119888184688
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.07210682492581602
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.037859007832898174
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1600|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.046357615894039736
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.059271296613068764
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1936|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.08280719088126852
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.06913946587537093
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.043733681462140996
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-1936|nakba_lines": {
+   "leaked, short": {
+    "lines": 15,
+    "cer": 0.05128205128205128
+   },
+   "clean": {
+    "lines": 62,
+    "cer": 0.05880952380952381
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-400|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.13245033112582782
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.0759493670886076
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/ain7b-nakba-ckpt-800|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.11258278145695365
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.06996236743072186
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/ain7b-nakba-visft-ckpt-400|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.11777357399330073
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.10682492581602374
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.34986945169712796
+   }
+  },
+  "vlm/baseer-nakba-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 24,
+    "cer": 0.0
+   },
+   "clean": {
+    "lines": 172,
+    "cer": 0.009904371584699454
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 4,
+    "cer": 0.05
+   }
+  },
+  "vlm/exp3090-baseer-nakba-ft-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.046357615894039736
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.032928498118371535
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/exp3090-paligemma2-3b-ft-bf16|nakba_lines": {
+   "clean": {
+    "lines": 341,
+    "cer": 0.29987442082016197
+   },
+   "leaked, short": {
+    "lines": 52,
+    "cer": 0.1180327868852459
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 7,
+    "cer": 0.05921052631578947
+   }
+  },
+  "vlm/exp3090-qwen3vl4b-ft-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 30,
+    "cer": 0.10344827586206896
+   },
+   "clean": {
+    "lines": 188,
+    "cer": 0.2939197120275452
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.025
+   }
+  },
+  "vlm/fanar-oryx-7b-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.4304635761589404
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.4153267191241875
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/nakba-misraj-baseer|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.07080632334867581
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.008605341246290801
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.015013054830287207
+   }
+  },
+  "vlm/nakba-misraj-baseer-contest|nakba_blind": {
+   "clean": {
+    "lines": 2366,
+    "cer": 0.0710232064968552
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 51,
+    "cer": 0.010682492581602374
+   },
+   "leaked, short": {
+    "lines": 254,
+    "cer": 0.015013054830287207
+   }
+  },
+  "vlm/paligemma2-3b-bf16|nakba_lines": {
+   "clean": {
+    "lines": 340,
+    "cer": 0.8811696211331248
+   },
+   "leaked, short": {
+    "lines": 52,
+    "cer": 0.16393442622950818
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 7,
+    "cer": 0.14473684210526316
+   }
+  },
+  "vlm/qwen3-vl-4b-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 87,
+    "cer": 0.22709923664122136
+   },
+   "clean": {
+    "lines": 725,
+    "cer": 0.6014329118081787
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 8,
+    "cer": 0.13372093023255813
+   }
+  },
+  "vlm/qwen3-vl-8b-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.3443708609271523
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.39830653438248376
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/suite-v1-ain7b-ft-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.36423841059602646
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.0987854943551146
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.05
+   }
+  },
+  "vlm/suite-v1-fanar2-oryx-ft-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.19205298013245034
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.1456551488197058
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  },
+  "vlm/suite-v1-qwen3vl4b-ft-bf16|nakba_lines": {
+   "clean": {
+    "lines": 725,
+    "cer": 0.31269502381343406
+   },
+   "leaked, short": {
+    "lines": 87,
+    "cer": 0.16030534351145037
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 8,
+    "cer": 0.03488372093023256
+   }
+  },
+  "vlm/suite-v1-qwen3vl8b-ft-bf16|nakba_lines": {
+   "leaked, short": {
+    "lines": 27,
+    "cer": 0.19205298013245034
+   },
+   "clean": {
+    "lines": 171,
+    "cer": 0.2792507697570989
+   },
+   "leaked, ≥ 20 chars": {
+    "lines": 2,
+    "cer": 0.0
+   }
+  }
+ }
+}

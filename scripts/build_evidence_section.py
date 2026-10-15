@@ -14,7 +14,7 @@ import json
 import pickle
 import re
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
@@ -102,6 +102,95 @@ def patch_key_findings(h: str, A1: dict, A2: dict) -> str:
                 f"blind {sg(augb['delta'])} [{sg(augb['ci95'][0])}, {sg(augb['ci95'][1])}], KHATT {sg(augk['delta'])} points</td>")
         h = re.sub(r"<td>None on the unseen sets \(KHATT 26\.4 → 26\.9 %, NAKBA 13\.8 → 14\.4 %\)</td>|<td><b>Hurts on unseen sets</b>.*?</td>", lambda _: cell, h, count=1, flags=re.S)
     return h
+
+
+def new_sections_1015() -> list[str]:
+    """§15–§18 (2026-10-15): dots and skeletons with the cross-family oracle, the iʿjām ambiguity, conventions and the
+    NAKBA leak, and the feasibility of an allograph library."""
+    import base64
+    out = []
+    dp = W / "results/analysis/B/dots.json"
+    if dp.exists():
+        D = json.loads(dp.read_text(encoding="utf-8"))
+        rows = []
+        for k, v in sorted(D["families"].items()):
+            f, ds = k.split("|")
+            if ds not in ("kitab_khatt", "nakba_lines", "nakba_blind", "rasam1") or f in ("API", "OCR engine"):
+                continue
+            rows.append([f"<td>{html.escape(f)}</td>", f"<td>{ds}</td>", f'<td class="n">{v["lines"]}</td>', f'<td class="n">{pc(v["cer"])} %</td>',
+                         f'<td class="n"><b>{pc(v["no_dots_cer"])} %</b></td>', f'<td class="n">{pc(v["dot_tax"])}</td>', f'<td class="n">{pc(v["dots_share"])} %</td>',
+                         f'<td class="n">{pc(v["space_tax"])}</td>', f'<td class="n">{pc(v["right_but_dots"])} %</td>'])
+        orow = [[f"<td>{ds}</td>", f'<td class="n">{v["lines"]}</td>', f'<td class="n">{pc(v["best_crnn_mean_line_cer"])} %</td>', f'<td class="n">{pc(v["best_vlm_ft_mean_line_cer"])} %</td>',
+                 f'<td class="n"><b>{pc(v["per_line_min"])} %</b></td>', f'<td class="n">{v["crnn_better_lines"]} / {v["vlm_better_lines"]}</td>'] for ds, v in D["cross_family_oracle"].items()]
+        types = Counter()
+        tn = Counter()
+        for k, v in D["dot_types"].items():
+            for t, x in v.items():
+                types[t] += x["dot_errors_per_100"] * x["letters"]
+                tn[t] += x["letters"]
+        trow = [[f"<td>{t}</td>", f'<td class="n">{tn[t]}</td>', f'<td class="n">{types[t] / tn[t]:.1f}</td>'] for t in sorted(tn)]
+        out.append("<h4>15 · Without dots: how much of the error is the dots?</h4><p>The no-dots CER maps both sides to their dotless skeletons (rasm) and scores "
+                   "again; the difference is the dot tax. In every family about nine tenths of the error survives without dots, so models mostly misread "
+                   "the skeleton, not the dots, and lines that are right except for their dots are rare. Spaces cost more than dots (space tax: the drop when "
+                   "spaces are also ignored). Three-dot letters (ث ش) are the most dot-error-prone pattern (handwriting often writes three dots as a caret). "
+                   "The two families fail on different lines: the line-wise better of the best CRNN and the best fine-tuned VLM is far below either "
+                   "(<span class=\"mono\">analyze_dots.py</span>).</p>"
+                   + table(["Family", "Set", "Readings", "CER", "No-dots CER", "Dot tax", "Dots' share", "Space tax", "Right except dots"], rows)
+                   + table(["Dot pattern (GT letter)", "Letters, all families", "Dot errors per 100"], trow)
+                   + table(["Set", "Lines", "Best CRNN", "Best fine-tuned VLM", "Line-wise better of the two", "CRNN / VLM better lines"], orow))
+    ip = W / "results/analysis/B/ijam.json"
+    if ip.exists():
+        I = json.loads(ip.read_text(encoding="utf-8"))
+        rows = [[f"<td>{k}</td>", f'<td class="n">{pc(v["ambiguous_token_share"])} %</td>', f'<td class="n">{v["H_word_given_skeleton"]:.3f}</td>',
+                 f'<td class="n">{pc(v["restore_most_frequent"])} %</td>', f'<td class="n">{pc(v["restore_with_prev"])} %</td>', f'<td class="n">{pc(v["heldout_unseen_share"])} %</td>',
+                 "<td>" + " · ".join("/".join(f'<bdi class="ar">{w}</bdi>' for w in ex[:3]) for ex in v["examples"][:4]) + "</td>"] for k, v in I.items()]
+        out.append("<h4>16 · Why the dots were invented: how ambiguous is Arabic without them?</h4><p>After folding spelling variants (hamza, yāʾ / alif maqṣūra, "
+                   "tāʾ marbūṭa), a quarter to a third of word tokens share their dotless form with another word. Choosing the most frequent word restores "
+                   "the dots for 95 % of known words; one word of context adds about a point (a real language model would add more). The hard part is the "
+                   "fifth of tokens whose word or skeleton never occurred in training: there the dots carry information context cannot supply, which fits "
+                   "the historical motive for iʿjām, reading unfamiliar text. Held-out estimate: counts from 90 % of lines, tested on the other 10 % "
+                   "(<span class=\"mono\">analyze_ijam.py</span>). This sets up the two-stage test: read skeletons, then restore dots under the skeleton constraint.</p>"
+                   + table(["Training text", "Tokens ambiguous without dots", "H(word | skeleton), bits", "Dots restored: most frequent", "With previous word", "Unseen word or skeleton", "Most frequent clashes"], rows))
+    cp = W / "results/analysis/B/conventions.json"
+    if cp.exists():
+        C = json.loads(cp.read_text(encoding="utf-8"))
+        rows = []
+        for k, v in C["fingerprint"].items():
+            dg = ", ".join(f"{d} {pc(x)} %" for d, x in v["digits"].items() if x > 0.01) or "—"
+            rows.append([f"<td>{k}</td>", f'<td class="n">{pc(v["hamza_on_alif"])} %</td>', f'<td class="n">{pc(v["alif_maqsura_share"])} %</td>', f"<td>{dg}</td>",
+                         f'<td class="n">{pc(v["double_space_lines"])} %</td>', f'<td class="n">{pc(v["space_before_punct"])} %</td>', f'<td class="n">{v["harakat_per_100_letters"]:.2f}</td>'])
+        lk = C["nakba_leak_by_run"]
+        lrows = []
+        for run in ("vlm/nakba-misraj-baseer", "vlm/ain7b-nakba-ckpt-1936", "crnn/base", "crnn/std_s0"):
+            v = lk.get(f"{run}|nakba_blind")
+            if v:
+                lrows.append([f"<td>{run}</td>"] + [f'<td class="n">{pc(v[c]["cer"])} % ({v[c]["lines"]})</td>' if c in v else "<td>—</td>" for c in ("clean", "leaked, short", "leaked, ≥ 20 chars")])
+        mt = C["merged_spellings"]["muharaf_train"]["top_pairs"]
+        out.append("<h4>17 · Label conventions, writers' spellings, and NAKBA's train/test overlap</h4><p>Each label set has its own conventions, and a system is "
+                   "scored against them. NAKBA's two test splits are labelled differently (hamza 16.8 against 10.6 % of alifs; Arabic-Indic digits 84 against "
+                   "38 %), so they were probably annotated under different rules. KHATT's labels carry formatting quirks (double spaces on a third of lines, a "
+                   "space before half of the punctuation) that inflate space errors for any clean output. Writers also spell as they speak: Muharaf's training "
+                   "labels hold Levantine spellings such as <bdi class=\"ar\">متل</bdi> for <bdi class=\"ar\">مثل</bdi> (a ث→ت merger), so articulation shows up in the "
+                   f"writers' spelling, not in the models' errors (§11). Clear examples in Muharaf train: {html.escape(', '.join(p for p, _ in mt[1:5]))} (the automatic pairing "
+                   "also catches genuine word pairs, so it is not a rate). NAKBA: 11 % of blind lines (2.9 % of characters) repeat text from NAKBA train; "
+                   "NAKBA-trained systems read those lines almost perfectly while unseen-data CRNNs find them hard (they are mostly short fragments), a "
+                   "memorisation signature; the effect on corpus CER is small (Baseer 6.91 → 7.08 % without them) (<span class=\"mono\">analyze_conventions.py</span>).</p>"
+                   + table(["Label set", "Hamza on alif", "Alif maqṣūra share", "Digits", "Double-space lines", "Space before punctuation", "Harakat / 100 letters"], rows)
+                   + table(["System (NAKBA blind)", "Clean lines", "Leaked, short", "Leaked, ≥ 20 chars"], lrows))
+    sp = W / "results/analysis/S/span_sheet.png"
+    if sp.exists():
+        img = "data:image/png;base64," + base64.b64encode(sp.read_bytes()).decode()
+        out.append("<h4>18 · Can we build a library of real letter shapes? (feasibility for synthesis and shape tokens)</h4><p>Two checks before the shape programme. "
+                   "The CRNN's letter spans (grey boxes) are narrow (median 12 px at 64 px height, 9 % a single 4 px column) and often cover only part of a "
+                   "letter, because Arabic letters overlap sideways: spans say which letter is where, not where its ink is. Handwritten PAWs often touch: the "
+                   "large ink components of a line match its label's PAWs exactly on only 6–9 % of lines (Muharaf, KHATT, NAKBA), with typically 2–6 fewer "
+                   "components than PAWs. A library therefore needs alignment and ink together (cut at thin baseline joins, attach dots, keep only pieces that "
+                   "re-read correctly). Writer-adaptation testbeds exist: RASAM-2 has 15 manuscripts of 24–31 lines, RASAM-1 three large ones, and NAKBA is one "
+                   "writer (<span class=\"mono\">analyze_shape_feasibility.py</span>).</p>"
+                   f'<figure class="fig"><img src="{img}" alt="Contact sheet of CTC-span letter crops" style="max-width:100%;border:1px solid var(--line);border-radius:4px">'
+                   "<figcaption>Rows: ع initial, ه final, س medial, ك medial, ح initial, ي final, from KHATT and NAKBA; the box is the CTC span, the crop adds 12 px on each "
+                   "side; ok / err is the CRNN's reading of that letter.</figcaption></figure>")
+    return out
 
 
 def extra_sections(a) -> str:
@@ -236,6 +325,7 @@ def extra_sections(a) -> str:
                    f"VLM OR {N['verdict']['vlm_within_line_or'][0]:.1f}). The model-independent pixel novelty is much weaker (last column, thresholds inside each set): "
                    "the effect is letters a CNN finds unusual being hard for every system, not rare pixel shapes as such.</p>"
                    + table(["Novelty from", "Set", "Crude OR", "Within line [95 %]", "Within letter × form", "Without letter lists", "Errors of median fine-tuned VLM", "Pixel novelty, within line"], rows))
+    out += new_sections_1015()
     zp = W / "results/analysis/B/hamza_emission.json"
     if zp.exists():
         Z = json.loads(zp.read_text(encoding="utf-8"))

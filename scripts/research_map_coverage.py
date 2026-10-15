@@ -16,7 +16,10 @@ from pathlib import Path
 W = Path(__file__).resolve().parent.parent
 M = Path("/Volumes/PortableSSD/repos/arabic_ocr")
 CHAT = ["makharij", "PAW-gap-width", "novel-clusters", "shape-nakba", "E6", "lm-decoding", "nakba-indomain", "vlm-geometry", "R9", "cluster-ci",
-        "R4.1", "X-G8", "D10b", "C5", "std-split", "hard-example-control", "box-cleanup"]
+        "R4.1", "X-G8", "D10b", "C5", "std-split", "hard-example-control", "box-cleanup",
+        "no-dots-cer", "two-stage-reader", "ijam-ambiguity", "dot-styles", "loops-teeth", "vertical-stacking", "shape-library", "synthesis-v1", "render-refine",
+        "shape-tokens", "writer-adapt-crnn", "vlm-incontext-writer", "calibration-sentence", "personalised-synthesis", "khatt-full", "nakba-leak",
+        "conventions", "dialect-spelling", "cross-family-oracle", "cross-family-ensemble", "seed-instability", "lexicon", "fdr", "wer-lines", "decision-rules", "main-checkout-sync"]
 
 
 def sources() -> dict[str, list[str]]:
