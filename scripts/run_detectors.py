@@ -7,6 +7,9 @@ run with ≥ 50 lines on a dataset (preferred pack), the output gives per detect
 of the run's edits on flagged lines, mean line CER flagged vs not, and the **excess edits explained** = Σ over flagged
 lines of (edits − n_chars × CER of the unflagged lines) / total edits. Lines above the run's 80th percentile of line
 CER that no detector flags form the **residual**, the feed for new detectors (D/residual_<dataset>.json).
+Each detector row also gets a two-sided Mann–Whitney p-value (line CER flagged vs unflagged); the detectors of one run ×
+dataset are one false-discovery family, Benjamini–Hochberg at q = 0.1 (eval_stats.bh), and `fdr_survives` marks the rows
+that pass (evaluation-standards item 5).
 Rung: no_diacritics. Detectors needing image measurements beyond ink extent (slant, rules, stroke) come with
 store_features.py; D2–D6 are listed but not run yet.
 """
@@ -29,6 +32,8 @@ sys.path.insert(0, str(W / "scripts"))
 sys.path.insert(0, "/Volumes/PortableSSD/repos/arabic_ocr/src")
 from analyze_letters import outcomes, words_view  # noqa: E402
 from arabic_ocr_bench.characterize.samples import _letters_view  # noqa: E402
+from eval_stats import Q_FDR, bh  # noqa: E402
+from scipy.stats import mannwhitneyu  # noqa: E402
 
 RUNG = "no_diacritics"
 HARAKAT = re.compile("[ً-ْٰ]")
@@ -272,6 +277,7 @@ def main() -> None:
         for name, f in PRED_DETECTORS.items():
             flags[name] = np.array([bool(f(S[k], m[k], ctx)) for k in keys])
         rows = {}
+        cer = e / n
         for name, fl in flags.items():
             if not fl.any():
                 rows[name] = {"share_lines": 0.0}
@@ -281,14 +287,20 @@ def main() -> None:
                           "cer_flagged": float(e[fl].sum() / n[fl].sum()), "cer_unflagged": float(base),
                           "excess_edits_explained": float((e[fl] - n[fl] * base).sum() / max(1, e.sum())),
                           "example_ids": [k for k, f_ in zip(keys, fl) if f_][:6]}
+            if (~fl).any():
+                rows[name]["p"] = float(mannwhitneyu(cer[fl], cer[~fl], alternative="two-sided").pvalue)
+        tested = [d for d, x in rows.items() if "p" in x]
+        rej, adj = bh([rows[d]["p"] for d in tested], Q_FDR)
+        for d, r_, q_ in zip(tested, rej, adj):
+            rows[d]["q_bh"], rows[d]["fdr_survives"] = float(q_), bool(r_)
         any_flag = np.zeros(len(keys), bool)
         for fl in flags.values():
             any_flag |= fl
-        cer = e / n
         hi = cer >= np.percentile(cer, 80)
         res = [k for k, h, f_ in zip(keys, hi, any_flag) if h and not f_]
         residual[ds][spec] = res
         report[f"{spec}|{ds}"] = {"pack": pack, "lines": len(keys), "cer": float(e.sum() / n.sum()), "detectors": rows,
+                                  "fdr_q": Q_FDR, "n_detectors_tested": len(tested), "n_detectors_fdr": int(rej.sum()),
                                   "residual_lines": len(res), "residual_share_of_top20": len(res) / max(1, int(hi.sum()))}
     (a.out / "detectors.json").write_text(json.dumps({"prevalence": prevalence, "runs": report, "label_suspects": sorted(ctx["label_suspects"])},
                                                      ensure_ascii=False, indent=1), encoding="utf-8")
@@ -308,7 +320,8 @@ def main() -> None:
         print(f"\n{k} lines {v['lines']} CER {100 * v['cer']:.1f}%  residual {v['residual_lines']} ({100 * v['residual_share_of_top20']:.0f}% of the worst fifth unexplained)")
         for d, x in top:
             dd = v["detectors"][d]
-            print(f"   {d:48s} lines {100 * dd['share_lines']:5.1f}%  edits {100 * dd.get('share_edits', 0):5.1f}%  excess explained {100 * x:5.1f}%")
+            print(f"   {d:48s} lines {100 * dd['share_lines']:5.1f}%  edits {100 * dd.get('share_edits', 0):5.1f}%  excess explained {100 * x:5.1f}%"
+                  f"  q {dd.get('q_bh', float('nan')):.3g}{' *' if dd.get('fdr_survives') else ''}")
 
 
 if __name__ == "__main__":

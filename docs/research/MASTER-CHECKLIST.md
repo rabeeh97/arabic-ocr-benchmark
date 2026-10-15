@@ -36,8 +36,9 @@ are batched so the 3090 runs unattended.
 - [ ] **0.5 Native-speaker check** of the calibration-sentence candidates (after 2.7). *you*
 
 ## Phase 1 — Standards and tooling first (CPU; before any new number)
-- [ ] **1.1 FDR control** in `analyze_letters.py` and `run_detectors.py` tables (Benjamini–Hochberg q = 0.1). *done when:* the ledger tables mark surviving cells. → [evaluation-standards](designs/evaluation-standards.md) · map: `fdr`
-- [ ] **1.2 WER and lines fixed or broken** in every pair and seed comparison. → [evaluation-standards](designs/evaluation-standards.md) · map: `wer-lines`
+- [x] **1.1 FDR control** in `analyze_letters.py` and `run_detectors.py` tables (Benjamini–Hochberg q = 0.1). *done when:* the ledger tables mark surviving cells. → [evaluation-standards](designs/evaluation-standards.md) · map: `fdr`
+- [x] **1.2 WER and lines fixed or broken** in every pair and seed comparison. → [evaluation-standards](designs/evaluation-standards.md) · map: `wer-lines`
+  - *2026-10-15:* `scripts/eval_stats.py` (BH, bootstrap p, WER, lines fixed/broken, ΔWER CI); A/B/D outputs and ledger tables regenerated. **Grade-relevant:** the KHATT replicate's surviving letter cells go 2/2 → 0/0 after FDR; ink crop on KHATT keeps 41/0. B/D outputs were stale (pre-Oct-14 store), so some ledger counts moved for non-FDR reasons. Ledger prose not yet reconciled (→ 2.20). Letter-cell p-values use a normal approx. to the bootstrap SE (e.g. 67 vs 64 cells for E8 vs CRNN on NAKBA blind).
 - [ ] **1.3 Decision rules and claims register** kept current. Every item below states its rule (in its design document); update the register in `PLAN-2026-10-15-experiments.md` whenever a grade changes. · map: `decision-rules`, `paper-groupings`
 - [ ] **1.4 Seed-instability tool:** characterise lines that flip between identical trainings (3 seeds); add detector D24 (numeric and seed instability). → [evaluation-standards](designs/evaluation-standards.md) · map: `seed-instability`
 - [ ] **1.5 Remaining detectors:** D4 neighbour-line intrusion, D21 lam-alef ligature, D23 memorisation signature (also the C6 AIN check, kept unverified). *done when:* they appear in the detector table. → [data-and-label-audit §9](designs/data-and-label-audit.md) · map: `detectors-open`, `D21`, `C6`

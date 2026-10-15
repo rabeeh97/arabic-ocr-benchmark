@@ -8,7 +8,9 @@ A1  per (run, transform, pack, dataset): micro / macro / median line CER and the
 A2  per pair in pairs.json, on the lines both runs read in the same pack: micro ΔCER with a paired line bootstrap
     interval, the bucket transition matrix, lines better / worse beyond the seed-noise band (90th percentile of the
     replicate pair's |Δ line CER| within the same length tercile), a sign test on those, and where the net change comes
-    from (share of the net edit change by the line's starting bucket).
+    from (share of the net edit change by the line's starting bucket). Every pair and seed pair also gets WER (letters
+    view) with ΔWER and its interval, and lines fixed (A wrong, B exact) / broken (A exact, B wrong) at each rung and at
+    the word level; with seeds, on every seed (eval_stats, evaluation-standards item 6).
 A3  per dataset, a line × run matrix at no_diacritics with labels solved_by_all, hard_core, crnn_only_failure,
     vlm_only_failure, and the Spearman correlation of CRNN line CER with the median VLM line CER. API rows with few lines,
     AIN-7B rows (contamination unverified, CORRECTIONS C6) and reversed-output engines (C5) are left out of the matrix.
@@ -19,6 +21,7 @@ import argparse
 import json
 import math
 import statistics
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -26,6 +29,11 @@ import numpy as np
 import pyarrow.parquet as pq
 
 W = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(W / "scripts"))
+sys.path.insert(0, "/Volumes/PortableSSD/repos/arabic_ocr/src")
+from arabic_ocr_bench.characterize.samples import _letters_view  # noqa: E402
+from eval_stats import fixed_broken, wer_compare, wer_compare_seeds, word_edits  # noqa: E402
+
 BUCKETS = [("exact", 0.0), ("≤2%", 0.02), ("≤5%", 0.05), ("≤10%", 0.10), ("≤25%", 0.25), ("≤50%", 0.50), ("≤100%", 1.0), (">100%", math.inf)]
 RUNG_A, RUNG_X = "crnn_native", "no_diacritics"
 EXCLUDE_MATRIX = ("ain", "paddleocr", "trocr")
@@ -96,6 +104,14 @@ def noise_band(st: Store, spec: dict, ds: str, packs: list[str]) -> dict | None:
     return None
 
 
+def word_arrays(st: Store, keys: list[str], ms: list[dict]) -> tuple[np.ndarray, np.ndarray]:
+    """Per-line word edits (readings × lines, letters view) and GT word counts."""
+    gts = [st.samples[k]["gt_raw"] for k in keys]
+    WE = np.array([[word_edits(g, m[k]["hyp"], _letters_view)[0] for g, k in zip(gts, keys)] for m in ms], float)
+    nw = np.array([word_edits(g, "", _letters_view)[1] for g in gts], float)
+    return WE, nw
+
+
 def page_of(sample: dict) -> str | None:
     """Page or manuscript cluster for a cluster bootstrap: NAKBA test doc-page, NAKBA blind year-page, RASAM manuscript-page."""
     try:
@@ -164,6 +180,8 @@ def compare(st: Store, pr: dict, ds: str, packs: list[str], noise: dict | None, 
         r = {"cer_A": float(ea.sum() / n.sum()), "cer_B": float(eb.sum() / n.sum()), "delta": float(net / n.sum()),
              "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])], "ci95_pages": cluster_ci(st, keys, ea, eb, n), "transition": trans.tolist(),
              "lines_better": int((cb < ca).sum()), "lines_worse": int((cb > ca).sum()), "net_change_by_start_bucket": by_start}
+        fb = fixed_broken(ea, eb)
+        r["lines_fixed"], r["lines_broken"] = fb["fixed"], fb["broken"]
         if noise and rung == RUNG_A:
             t1, t2 = noise["tercile_edges"]
             thr = np.array([noise["p90"]["short" if x <= t1 else "mid" if x <= t2 else "long"] for x in n])
@@ -172,6 +190,8 @@ def compare(st: Store, pr: dict, ds: str, packs: list[str], noise: dict | None, 
             r["beyond_noise_ids"] = {"better": [k for k, a_, b_, t in zip(keys, ca, cb, thr) if a_ - b_ > t],
                                      "worse": [k for k, a_, b_, t in zip(keys, ca, cb, thr) if b_ - a_ > t]}
         out[rung] = r
+    WE, nw = word_arrays(st, keys, [A, B])
+    out["wer"] = wer_compare(WE[0], WE[1], nw)
     return out
 
 
@@ -205,7 +225,10 @@ def compare_seeds(st: Store, sp: dict, ds: str, pack: str = "panel-2026-10-13", 
     better = int((cb.max(0) < ca.min(0)).sum())
     worse = int((cb.min(0) > ca.max(0)).sum())
     per_seed = {"A": [float(e.sum() / n.sum()) for e in E["A"]], "B": [float(e.sum() / n.sum()) for e in E["B"]]}
-    return {"lines": len(keys), "seeds": {"A": len(E["A"]), "B": len(E["B"])}, "cer_A_by_seed": per_seed["A"], "cer_B_by_seed": per_seed["B"],
+    fb = fixed_broken(E["A"], E["B"])
+    WA, nw = word_arrays(st, keys, arms["A"])
+    WB, _ = word_arrays(st, keys, arms["B"])
+    return {"lines_fixed_all_seeds": fb["fixed"], "lines_broken_all_seeds": fb["broken"], "wer": wer_compare_seeds(WA, WB, nw),"lines": len(keys), "seeds": {"A": len(E["A"]), "B": len(E["B"])}, "cer_A_by_seed": per_seed["A"], "cer_B_by_seed": per_seed["B"],
             "delta": float(delta), "ci95": [float(x) for x in np.percentile(boots, [2.5, 97.5])],
             "ci95_pages": cluster_ci(st, keys, E["A"], E["B"], n),
             "lines_better_all_seeds": better, "lines_worse_all_seeds": worse, "sign_test_p": binom_two_sided(min(better, worse), better + worse),
@@ -288,11 +311,12 @@ def main() -> None:
             if r:
                 A2s[f"{sp['name']}|{ds}"] = {"A": sp["A"], "B": sp["B"], **r}
     (a.out / "seed_pairs.json").write_text(json.dumps(A2s, indent=1, ensure_ascii=False), encoding="utf-8")
-    print(f"\n{'seed-pooled pair':44s} {'dataset':13s} {'lines':>5s} {'A by seed':>18s} {'B by seed':>18s} {'Δ':>6s} {'95% CI':>15s} {'lines b/w (all seeds)':>22s}")
+    print(f"\n{'seed-pooled pair':44s} {'dataset':13s} {'lines':>5s} {'A by seed':>18s} {'B by seed':>18s} {'Δ':>6s} {'95% CI':>15s} {'lines b/w (all seeds)':>22s} {'fixed/broken':>12s} {'ΔWER':>6s}")
     for k, v in A2s.items():
         name, ds = k.split("|")
         print(f"{name[:44]:44s} {ds:13s} {v['lines']:5d} {'/'.join(f'{100 * x:.1f}' for x in v['cer_A_by_seed']):>18s} {'/'.join(f'{100 * x:.1f}' for x in v['cer_B_by_seed']):>18s} "
               f"{100 * v['delta']:+6.2f} [{100 * v['ci95'][0]:+.2f},{100 * v['ci95'][1]:+.2f}] {v['lines_better_all_seeds']:>10d}/{v['lines_worse_all_seeds']}"
+              f" {v['lines_fixed_all_seeds']:>8d}/{v['lines_broken_all_seeds']} {100 * v['wer']['delta']:+6.2f}"
               f"{'  arms disjoint' if v['arms_disjoint'] else ''}")
 
     for ds in ("kitab_khatt", "nakba_lines", "nakba_blind", "muharaf_lines", "rasam1", "rasam2"):
@@ -301,13 +325,14 @@ def main() -> None:
             (a.out / f"matrix_{ds}.json").write_text(json.dumps(mx, ensure_ascii=False), encoding="utf-8")
             print(f"matrix {ds:14s} lines {mx['lines']:5d}  cols {len(mx['columns']):3d}  {mx['label_counts']}  rho {mx['spearman_crnn_vs_median_vlm']}")
 
-    print(f"\n{'pair':42s} {'dataset':13s} {'lines':>5s} {'A':>6s} {'B':>6s} {'Δ':>6s} {'95% CI':>15s} {'beyond noise b/w':>17s}")
+    print(f"\n{'pair':42s} {'dataset':13s} {'lines':>5s} {'A':>6s} {'B':>6s} {'Δ':>6s} {'95% CI':>15s} {'beyond noise b/w':>17s} {'fixed/broken':>12s} {'WER A':>6s} {'WER B':>6s} {'ΔWER':>6s}")
     for k, v in A2.items():
         name, ds = k.split("|")
         r = v[RUNG_A]
         bn = r.get("beyond_noise", {})
         print(f"{name[:42]:42s} {ds:13s} {v['lines']:5d} {100 * r['cer_A']:6.1f} {100 * r['cer_B']:6.1f} {100 * r['delta']:+6.2f} "
-              f"[{100 * r['ci95'][0]:+.2f},{100 * r['ci95'][1]:+.2f}] {bn.get('better', '-'):>8}/{bn.get('worse', '-')}")
+              f"[{100 * r['ci95'][0]:+.2f},{100 * r['ci95'][1]:+.2f}] {bn.get('better', '-'):>8}/{bn.get('worse', '-')}"
+              f" {r['lines_fixed']:>8d}/{r['lines_broken']} {100 * v['wer']['wer_A']:6.1f} {100 * v['wer']['wer_B']:6.1f} {100 * v['wer']['delta']:+6.2f}")
 
 
 if __name__ == "__main__":

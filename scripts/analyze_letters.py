@@ -11,7 +11,9 @@ rasm-ambiguous flags, PAW and word index. Per run and dataset:
   B5 PAW exact-read rate by PAW length; spaces inserted inside words and the share at PAW gaps against the chance rate;
   B6 word error rate, error on words seen / unseen in the Muharaf training vocabulary, and fluent-but-wrong words
      (a wrong word that is itself a training-vocabulary word).
-Per pair in pairs.json: Δ error per letter × form with a line-bootstrap interval, and the cells that move most.
+Per pair in pairs.json: Δ error per letter × form with a line-bootstrap interval, and the cells that move most. The cells
+of one pair × dataset are one false-discovery family: a bootstrap p-value per cell, Benjamini–Hochberg at q = 0.1
+(eval_stats.bh), and `fdr_survives` marks the cells that pass (evaluation-standards item 5).
 Runs: every CRNN run / transform in its preferred pack, E8, and VLM rows with ≥ 50 lines (AIN, PaddleOCR and TrOCR
 flagged, not dropped, see CORRECTIONS C5, C6).
 """
@@ -34,6 +36,9 @@ sys.path.insert(0, "/Volumes/PortableSSD/repos/arabic_ocr/src")
 from arabic_ocr_bench.characterize.errors import _ORTHO_CLASSES, is_paw_gap_space, paw_gap_base_rate  # noqa: E402
 from arabic_ocr_bench.characterize.samples import _letters_view  # noqa: E402
 from arabic_ocr_bench.characterize.text import DOTTED, analyze_letters, rasm_of  # noqa: E402
+
+sys.path.insert(0, str(W / "scripts"))
+from eval_stats import Q_FDR, bh, boot_p  # noqa: E402
 
 FLAGGED = ("ain", "paddleocr", "trocr")
 
@@ -228,11 +233,17 @@ def main() -> None:
                 bs = (eb[boot].sum(1) - ea[boot].sum(1)) / np.maximum(1, n[boot].sum(1))
                 lo, hi = np.percentile(bs, [2.5, 97.5])
                 moves.append({"cell": f"{ch}|{f}", "n": int(n.sum()), "err_A": float(ea.sum() / n.sum()), "err_B": float(eb.sum() / n.sum()), "delta": float(d),
-                              "ci95": [float(lo), float(hi)], "excludes_0": bool(lo > 0 or hi < 0)})
+                              "ci95": [float(lo), float(hi)], "excludes_0": bool(lo > 0 or hi < 0), "p": boot_p(float(d), bs)})
+            rej, adj = bh([m["p"] for m in moves], Q_FDR)
+            for m, r_, q_ in zip(moves, rej, adj):
+                m["q_bh"], m["fdr_survives"] = float(q_), bool(r_)
             moves.sort(key=lambda x: x["delta"])
             pairs[f"{pr['name']}|{ds}"] = {"A": pr["A"], "B": pr["B"], "pack": p, "lines": len(keys), "cells": moves,
                                            "n_cells_better_ci": sum(m["excludes_0"] and m["delta"] < 0 for m in moves),
-                                           "n_cells_worse_ci": sum(m["excludes_0"] and m["delta"] > 0 for m in moves)}
+                                           "n_cells_worse_ci": sum(m["excludes_0"] and m["delta"] > 0 for m in moves),
+                                           "fdr_q": Q_FDR, "n_cells_tested": len(moves),
+                                           "n_cells_better_fdr": sum(m["fdr_survives"] and m["delta"] < 0 for m in moves),
+                                           "n_cells_worse_fdr": sum(m["fdr_survives"] and m["delta"] > 0 for m in moves)}
     (a.out / "pairs_letters.json").write_text(json.dumps(pairs, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print(f"\n{'run|dataset':60s} {'lines':>5s} {'letErr':>6s} {'dot/100':>7s} {'WER':>5s} {'unseenW':>7s} {'fluent':>6s} {'PAWsp':>5s} {'chance':>6s}")
@@ -241,10 +252,11 @@ def main() -> None:
             continue
         print(f"{k[:60]:60s} {v['lines']:5d} {100 * v['letter_error']:6.1f} {v['dot_only_per_100_dotted']:7.2f} {100 * v['wer']:5.1f} "
               f"{100 * v['err_unseen_words']:7.1f} {100 * v['fluent_wrong_share']:6.1f} {100 * v['space_at_paw_gap_share']:5.1f} {100 * v['paw_gap_chance']:6.1f}")
-    print("\npairs: letter × form cells whose interval excludes 0 (better / worse)")
+    print(f"\npairs: letter × form cells better / worse, interval clear of 0 (CI) and surviving BH at q = {Q_FDR} (FDR, * on a cell)")
     for k, v in pairs.items():
-        top = ", ".join(f"{m['cell']} {100 * m['delta']:+.1f}" for m in v["cells"][:3])
-        print(f"  {k[:58]:58s} {v['n_cells_better_ci']:3d} / {v['n_cells_worse_ci']:3d}   most improved: {top}")
+        top = ", ".join(f"{m['cell']} {100 * m['delta']:+.1f}{'*' if m['fdr_survives'] else ''}" for m in v["cells"][:3])
+        print(f"  {k[:58]:58s} CI {v['n_cells_better_ci']:3d} / {v['n_cells_worse_ci']:3d}  FDR {v['n_cells_better_fdr']:3d} / {v['n_cells_worse_fdr']:3d}"
+              f" of {v['n_cells_tested']:3d}   most improved: {top}")
 
 
 if __name__ == "__main__":

@@ -49,6 +49,21 @@ def full_b64(img) -> str:
     return "data:image/png;base64," + base64.b64encode(b.getvalue()).decode()
 
 
+WER_NOTE = ('<p class="xcap">Fixed = wrong in A, read exactly in B; broken = the reverse (CRNN-native rung; with seeds, on every seed). '
+            "WER on the letters view (harakat and tatweel stripped); bold when the interval excludes zero.</p>")
+FDR_MARK = '<sup title="survives Benjamini–Hochberg at q = 0.1">✓</sup>'
+
+
+def wer_cells(v: dict, kf: str, kb: str) -> list[str]:
+    """Lines fixed / broken and ΔWER cells for a pair or seed-pair row (eval_stats, evaluation-standards item 6)."""
+    w = v.get("wer")
+    if not w:
+        return ['<td class="n">—</td>', '<td class="n">—</td>']
+    sig = w["ci95"][0] > 0 or w["ci95"][1] < 0
+    return [f'<td class="n">{v[kf]} / {v[kb]}</td>',
+            f'<td class="n">{"<b>" if sig else ""}{sg(w["delta"])}{"</b>" if sig else ""} [{sg(w["ci95"][0])}, {sg(w["ci95"][1])}]</td>']
+
+
 def table(head, rows):
     return '<div class="qwrap"><table class="dt"><thead><tr>' + "".join(f"<th>{h}</th>" for h in head) + "</tr></thead><tbody>" + "".join("<tr>" + "".join(r) + "</tr>" for r in rows) + "</tbody></table></div>"
 
@@ -293,7 +308,8 @@ def extra_sections(a) -> str:
             rows.append([f"<td>{html.escape(name)}</td>", f"<td>{ds}</td>", f'<td class="n">{v["lines"]}</td>',
                          f'<td class="n">{" / ".join(pc(x) for x in v["cer_A_by_seed"])}</td>', f'<td class="n">{" / ".join(pc(x) for x in v["cer_B_by_seed"])}</td>',
                          f'<td class="n">{"<b>" if sig else ""}{sg(v["delta"])}{"</b>" if sig else ""} [{sg(v["ci95"][0])}, {sg(v["ci95"][1])}]</td>',
-                         f'<td class="n">{v["lines_better_all_seeds"]} / {v["lines_worse_all_seeds"]}</td>', f"<td>{'yes' if v['arms_disjoint'] else ''}</td>"])
+                         f'<td class="n">{v["lines_better_all_seeds"]} / {v["lines_worse_all_seeds"]}</td>', f"<td>{'yes' if v['arms_disjoint'] else ''}</td>"]
+                        + wer_cells(v, "lines_fixed_all_seeds", "lines_broken_all_seeds"))
         out.append("<h4>13 · Seeds settle it: what replicates and what does not</h4><p>Three seeds per arm (two for the standard split), all on the full panel. "
                    "ΔCER is the difference of the seed-averaged line CERs with a hierarchical bootstrap (seeds, then lines); a line counts as better or worse only "
                    "when the two arms' seed ranges do not overlap on it. <b>Replicates:</b> the ink crop (−7.5 points on KHATT, also on the standard-split CRNN, "
@@ -301,7 +317,8 @@ def extra_sections(a) -> str:
                    "targeted seed beats every random seed). <b>Does not:</b> shape targeting on NAKBA or RASAM; training on cropped lines (combo = shape + "
                    "test-time crop). The combined recipe's NAKBA gain is a repetition effect: random repeats give the same. Without RASAM in training the "
                    "standard-split CRNN reads RASAM at about 47 % CER instead of 12 %.</p>"
-                   + table(["Comparison", "Set", "Lines", "A by seed (%)", "B by seed (%)", "ΔCER [95 %]", "Lines better / worse in every seed", "Seed ranges disjoint"], rows))
+                   + table(["Comparison", "Set", "Lines", "A by seed (%)", "B by seed (%)", "ΔCER [95 %]", "Lines better / worse in every seed", "Seed ranges disjoint",
+                            "Lines fixed / broken in every seed", "ΔWER [95 %]"], rows) + WER_NOTE)
     npth = W / "results/analysis/V/novelty.json"
     if npth.exists():
         N = json.loads(npth.read_text(encoding="utf-8"))
@@ -380,12 +397,14 @@ def main() -> None:
         src = max(r["net_change_by_start_bucket"].items(), key=lambda t: abs(t[1]))[0] if r["net_change_by_start_bucket"] else "—"
         prow.append([f"<td>{html.escape(name)}</td>", f"<td>{'KHATT' if ds == 'kitab_khatt' else 'NAKBA test'}</td>", f'<td class="n">{v["lines"]}</td>',
                      f'<td class="n"><b>{sg(r["delta"])}</b> [{sg(r["ci95"][0])}, {sg(r["ci95"][1])}]</td>',
-                     f'<td class="n">{bn.get("better", "—")} / {bn.get("worse", "—")}</td>', f"<td>{html.escape(src)}</td>"])
+                     f'<td class="n">{bn.get("better", "—")} / {bn.get("worse", "—")}</td>', f"<td>{html.escape(src)}</td>"]
+                    + wer_cells({**v, **{k_: r.get(k_, "—") for k_ in ("lines_fixed", "lines_broken")}}, "lines_fixed", "lines_broken"))
     pairs = ("<h4>2 · Every comparison against the seed-noise yardstick</h4><p>“Beyond noise” = the line's CER moved by more than the 90th "
              "percentile of the moves between two identical trainings (base vs replicate), within the same line-length tercile. "
              "By construction the replicate itself shows about 10 % of lines on each side; an intervention is believable when its "
              "better / worse counts are lopsided, not when its mean moves.</p>"
-             + table(["Comparison", "Set", "Lines", "ΔCER, points [95 %]", "Lines better / worse beyond noise", "Net change comes mostly from lines starting at"], prow))
+             + table(["Comparison", "Set", "Lines", "ΔCER, points [95 %]", "Lines better / worse beyond noise", "Net change comes mostly from lines starting at",
+                      "Lines fixed / broken", "ΔWER, points [95 %]"], prow) + WER_NOTE)
 
     lab = MX["label_counts"]
     hard = MX["labels"].get("hard_core", [])
@@ -416,14 +435,17 @@ def main() -> None:
                 continue
             top = sorted(((d, x.get("excess_edits_explained", 0), x.get("share_lines", 0)) for d, x in v["detectors"].items()), key=lambda t: -t[1])[:3]
             det_rows.append([f"<td>{name}</td>", f"<td>{'KHATT' if ds == 'kitab_khatt' else 'NAKBA test'}</td>", f'<td class="n">{pc(v["cer"])} %</td>',
-                             "<td>" + "<br>".join(f"{html.escape(d)}: {pc(sh)} % of lines, {pc(x)} % of edits in excess" for d, x, sh in top) + "</td>",
+                             "<td>" + "<br>".join(f"{html.escape(d)}{FDR_MARK if v['detectors'][d].get('fdr_survives') else ''}: {pc(sh)} % of lines, "
+                                                  f"{pc(x)} % of edits in excess" for d, x, sh in top) + "</td>",
                              f'<td class="n">{v["residual_lines"]} ({pc(v["residual_share_of_top20"])} %)</td>'])
     detectors = ("<h4>4 · Pattern detectors: what the errors are made of</h4><p>Each detector is a documented rule on the image, the text or the "
                  "reading (<span class=\"mono\">run_detectors.py</span>, 17 so far). “Edits in excess” is how much of a run's error sits on the flagged lines "
                  "beyond what those lines would cost at the run's normal error rate. The residual is the worst fifth of lines that no detector "
                  "explains, the feed for new detectors. The CRNN's KHATT errors are dominated by loose crops, truncation and whole-line failures; "
                  "the VLMs' by diacritics they add and fluent rewrites.</p>"
-                 + table(["System", "Set", "CER", "Top detectors", "Unexplained worst-fifth lines"], det_rows))
+                 + table(["System", "Set", "CER", "Top detectors", "Unexplained worst-fifth lines"], det_rows)
+                 + f'<p class="xcap">{FDR_MARK} = flagged and unflagged lines differ in CER (Mann–Whitney) and the difference survives '
+                   "Benjamini–Hochberg at q = 0.1 across the run's detectors.</p>")
 
     paw_rows = []
     for k, v in sorted(B.items()):
@@ -447,10 +469,13 @@ def main() -> None:
             continue
         top = [m for m in v["cells"] if m["excludes_0"]][:4]
         lrows.append([f"<td>{html.escape(name)}</td>", f'<td class="n">{v["n_cells_better_ci"]} / {v["n_cells_worse_ci"]}</td>',
-                      "<td>" + ", ".join(f'<bdi class="ar">{m["cell"].split("|")[0]}</bdi> {m["cell"].split("|")[1]} {sg(m["delta"])}' for m in top) + "</td>"])
+                      f'<td class="n">{v.get("n_cells_better_fdr", "—")} / {v.get("n_cells_worse_fdr", "—")}</td>',
+                      "<td>" + ", ".join(f'<bdi class="ar">{m["cell"].split("|")[0]}</bdi> {m["cell"].split("|")[1]} {sg(m["delta"])}'
+                                         f'{FDR_MARK if m.get("fdr_survives") else ""}' for m in top) + "</td>"])
     letters = ("<h4>6 · Which letters move (KHATT)</h4><p>Letter × positional-form cells (≥ 30 occurrences) whose error changes with a line-bootstrap "
                "interval that excludes zero. The replicate row is the noise yardstick: one or two cells move by chance.</p>"
-               + table(["Comparison", "Cells better / worse", "Largest moves with intervals clear of zero (points)"], lrows))
+               + table(["Comparison", "Cells better / worse", "Surviving FDR (BH, q = 0.1)", "Largest moves with intervals clear of zero (points)"], lrows)
+               + f'<p class="xcap">{FDR_MARK} = the cell survives Benjamini–Hochberg at q = 0.1 across that comparison\'s letter × form cells.</p>')
 
     extra = extra_sections(a)
     ARTICLE = f"""
