@@ -19,7 +19,7 @@ from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(W / "scripts"))
-from change_gallery import b64, marked  # noqa: E402
+from change_gallery import b64, esc, marked  # noqa: E402
 
 LEDGER = W / "docs/research/paper-ledger.html"
 GROUPS = [("exact", ["exact"]), ("≤ 5 % (≥ 95 % right)", ["≤2%", "≤5%"]), ("≤ 25 %", ["≤10%", "≤25%"]), ("≤ 50 %", ["≤50%"]), ("> 50 % (failing)", ["≤100%", ">100%"])]
@@ -397,7 +397,7 @@ def main() -> None:
         cell = MX["cells"][k]
         best = min(cell, key=cell.get)
         cards.append(f'<div class="gcard worse"><img src="{full_b64(rows[k]["img"])}" alt="KHATT line {k}"><div class="gtxt">'
-                     f'<div class="r"><span class="k">truth</span><bdi>{html.escape(rows[k]["label_raw"])}</bdi></div>'
+                     f'<div class="r"><span class="k">truth</span><bdi>{esc(rows[k]["label_raw"])}</bdi></div>'
                      f'<div class="r"><span class="k">best of {len(cell)} systems</span><span class="e">{pc(cell[best])} %</span><span class="id">{html.escape(best)}</span></div>'
                      f'<div class="r"><span class="k">median CER</span><span class="e">{pc(MX["consensus_difficulty"][k])} %</span><span class="id">{html.escape(k)} · ink extent {rows[k]["ink_extent"]:.2f}</span></div></div></div>')
     matrix = (f"<h4>3 · Which lines nobody reads: the line × system matrix (KHATT)</h4><p>{MX['lines']} lines read by at least 80 % of "

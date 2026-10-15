@@ -27,11 +27,20 @@ def b64(img: np.ndarray) -> str:
     return "data:image/png;base64," + base64.b64encode(b.getvalue()).decode()
 
 
+NL = '<span class="nl" title="line break in the reading">⏎</span>'
+
+
+def esc(t: str) -> str:
+    """HTML-escape a label or reading and show line breaks as a visible ⏎ (a raw newline collapses to a space in HTML)."""
+    t = t.replace("\r\n", "\n").replace("\r", "\n")
+    return html.escape(t).replace("\n", NL)
+
+
 def marked(gt: str, hyp: str) -> str:
     """The reading, with characters that differ from the ground truth highlighted and deletions marked."""
     out = []
     for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, gt, hyp, autojunk=False).get_opcodes():
-        seg = html.escape(hyp[j1:j2])
+        seg = esc(hyp[j1:j2])
         if op == "equal":
             out.append(seg)
         elif op in ("replace", "insert"):
@@ -58,7 +67,7 @@ def card(it, labels):
     dlt = it["err_b"] - it["err_a"]
     tag = "better" if dlt < 0 else ("worse" if dlt > 0 else "same")
     return (f'<div class="gcard {tag}">{imgs}<div class="gtxt">'
-            f'<div class="r"><span class="k">truth</span><bdi dir="rtl" lang="ar">{html.escape(it["gt"])}</bdi></div>'
+            f'<div class="r"><span class="k">truth</span><bdi dir="rtl" lang="ar">{esc(it["gt"])}</bdi></div>'
             f'<div class="r"><span class="k">{la}</span><span class="e">{it["err_a"]} err</span><bdi dir="rtl" lang="ar">{marked(it["gt"], it["hyp_a"])}</bdi></div>'
             f'<div class="r"><span class="k">{lb}</span><span class="e">{it["err_b"]} err</span><bdi dir="rtl" lang="ar">{marked(it["gt"], it["hyp_b"])}</bdi></div>'
             f'<div class="r id"><span class="k">line</span>{html.escape(it["id"])} · {it["n"]} characters · change {dlt:+d} errors</div></div></div>')
@@ -87,6 +96,7 @@ CSS = """
 .gtxt .e{font-size:11.5px;color:var(--muted);min-width:48px}
 .gtxt bdi{font-family:"Noto Naskh Arabic","Geeza Pro",serif;font-size:17px;line-height:1.7}
 .gtxt .id{font-size:11.5px;color:var(--muted)}
+.gtxt .nl{color:var(--muted);font-size:12px;padding-inline:2px}
 mark.bad{background:var(--bad-soft);color:inherit;border-radius:2px}mark.miss{background:none;color:var(--bad);font-size:11px}
 .gsum .better{color:var(--good)}.gsum .worse{color:var(--bad)}
 @media (max-width:760px){.gcard .pair{grid-template-columns:1fr}}

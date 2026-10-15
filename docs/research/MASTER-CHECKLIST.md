@@ -45,6 +45,7 @@ are batched so the 3090 runs unattended.
 - [ ] **1.7 Lexicon assembly** on the SSD: Ayaspell, aspell-ar, the Pecina list if obtainable, Wikidata and GeoNames names, an Arabic Wikipedia vocabulary, ANETAC. Licences recorded; coverage report. → [lexicon](designs/lexicon.md) · map: `lexicon`
 - [ ] **1.8 Modern Arabic text sample** for language models (an Arabic Wikipedia subset) on the SSD. → [decoding-and-restoration §1](designs/decoding-and-restoration.md) · map: `lm-decoding`
 - [ ] **1.9 Fix `vlm_ink_extent.py`** (group by model; re-run with the un-reversed PaddleOCR) and escape newlines in gallery readings. → [data-and-label-audit](designs/data-and-label-audit.md) · map: `fix-vlm-ink-extent`
+  - *2026-10-15:* grouping by model, `--paddle-order stored|unreverse` and the ⏎ newline escapes are done and re-run. Still to do: the PaddleOCR re-run after 0.2a.
 
 ## Phase 2 — Characterisation on existing data (CPU)
 - [ ] **2.1 PAW gap widths:** split vs unsplit PAW gaps against word gaps. → [dots-and-skeleton §1](designs/dots-and-skeleton-studies.md) · map: `PAW-gap-width`
