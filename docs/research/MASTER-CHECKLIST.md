@@ -90,6 +90,7 @@ are batched so the 3090 runs unattended.
 - [ ] **4.6 Full KHATT:** all existing CRNNs on the KHATT v1.0 test, plus an in-domain KHATT CRNN on its train (about 1.5 h). *after:* 1.6 → [training-and-transfer](designs/training-and-transfer.md) · map: `khatt-full`
 - [ ] **4.7 Hard-example control** (repeat the highest-loss lines; 2 seeds). → [shape-programme, related](designs/shape-programme.md) · map: `hard-example-control`
 - [ ] **4.8 Shape targeting for NAKBA:** selection on blind half A; targeted and random, 2 seeds each. → [shape-programme, related](designs/shape-programme.md) · map: `shape-nakba`
+  - *2026-10-17:* **moved to night 2.** Night 1 part B (`queue_n1b.bat`, ~8.2 h) runs 4.1, 4.2, 4.5, 4.3, 4.4 and 4.7, and would have run to ~13 h with 4.8 in it.
 - [ ] **4.9 Back up the new weights to the SSD; trim regenerable files on the 3090.** → [evaluation-standards](designs/evaluation-standards.md) · map: `box-cleanup`
 
 ## Phase 5 — Analysis of night 1 (CPU)
