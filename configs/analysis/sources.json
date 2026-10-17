@@ -151,5 +151,12 @@
     }
   ],
   "panel": "results/panel/panel.pkl",
-  "crnn_aligner_train_ids": "configs/analysis/crnn_aligner_train_test_ids.json"
+  "crnn_aligner_train_ids": "configs/analysis/crnn_aligner_train_test_ids.json",
+  "panel_extra": [
+    "results/panel/khatt_full_panel.pkl"
+  ],
+  "khatt_full_flags": "results/panel/khatt_full_flags.parquet",
+  "crnn_panel_glob_extra": [
+    "results/panel/khatt_full_out/*.json"
+  ]
 }

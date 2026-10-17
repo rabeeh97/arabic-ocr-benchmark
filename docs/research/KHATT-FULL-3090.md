@@ -40,11 +40,11 @@ Bring back `khatt_full_out/*.json` to `results/panel/khatt_full_out/` and back u
 | `text_repeat` | 752 | exact (letters-only) text occurs more than once in KHATT v1.0 |
 | `text_in_train` | 713 | the exact text occurs in the v1.0 train split |
 | `kitab_text` | 194 | the exact text equals a KITAB-KHATT text |
-| `kitab_image_id` set | 12 | the line *is* a KITAB-KHATT image: `in_train` for every aligner-recipe CRNN (they trained on the KITAB lines) |
+| `kitab_image_id` set | 12 | the line *is* a KITAB-KHATT image. *Not* in-train for the aligner-recipe CRNNs (they train on Muharaf + RASAM only; `xai_prepare_aligner_data.SOURCES`); `store_build` marks a full-KHATT line in-train only when its KITAB twin is (0 today) |
 
 The Teklia copy is almost entirely KHATT's fixed-text portion (vocabulary of 1,061 words over 6,673 lines; all lines with a
 shared 3-gram fall in one connected component). The design's "score fixed-text and unique-text lines separately" therefore has
-only 3 unique test lines; split instead by `text_in_train` (memorisation for the in-domain model) and exclude the 12
-`kitab_image_id` lines for the aligner-recipe CRNNs. Only 89 of the 200 KITAB-KHATT texts occur in v1.0 (the design said 127;
+only 3 unique test lines; split instead by `text_in_train` (memorisation for the in-domain model); the 12
+`kitab_image_id` test lines are simply the KITAB images (not in-train for the aligner CRNNs; corrected 2026-10-17). Only 89 of the 200 KITAB-KHATT texts occur in v1.0 (the design said 127;
 the other 111 are unique-text lines absent from this copy), and all 89 are the identical images (64 train, 13 validation,
 12 test).

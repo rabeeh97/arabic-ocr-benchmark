@@ -9,11 +9,13 @@ Readings come from:
   crnn_per_line   geom_transfer_eval.py files: {per_line: {tag: {id: [edits, label_len, reading]}}}, tag = dataset[__transform]
   crnn_tta        xai_geom_tta.py files: tags ds, ds__tta, ds__inkcrop, ds__inkcrop__tta
   e8              xai_e8_spike.py per_line.json: {ds: {id: {gt, crnn, e8}}}
-  crnn_panel      crnn_eval_panel.py files (fp32, one line at a time, with confidence)
+  crnn_panel      crnn_eval_panel.py files (fp32, one line at a time, with confidence): crnn_panel_glob, plus every glob in
+                  crnn_panel_glob_extra (e.g. the full KHATT v1.0 test, results/panel/khatt_full_out/*.json)
   vlm             every predictions*.jsonl under the main checkout, via characterize/runs.py (standard prompt, latest
                   success per sample, smoke runs skipped, renames applied), one run per model name
 Ids are mapped to the store key "{dataset}/{split}/{index:06d}" through the panel's legacy ids; GT always comes from the
-panel (the HF row), never from the result file. Edits: errors.ladder_edits at the seven ladder rungs against the raw
+panel (the HF row), never from the result file. Samples come from `panel` plus every pickle in `panel_extra` (same
+format; the full KHATT v1.0 test from khatt_full_panel.py is dataset kitab_khatt_full). Edits: errors.ladder_edits at the seven ladder rungs against the raw
 GT, plus crnn_native = Levenshtein against the GT cleaned as for CRNN training (harakat, tatweel, bidi marks stripped).
 """
 from __future__ import annotations
@@ -38,7 +40,7 @@ from arabic_ocr_bench.characterize import runs as vruns  # noqa: E402
 from geom_inkcrop_export import clean  # noqa: E402
 
 RUNGS = list(errors.RUNGS) + ["crnn_native"]
-LINE_SETS = {"kitab_khatt", "nakba_lines", "nakba_blind", "muharaf_lines", "rasam1", "rasam2"}
+LINE_SETS = {"kitab_khatt", "kitab_khatt_full", "nakba_lines", "nakba_blind", "muharaf_lines", "rasam1", "rasam2"}
 API = ("gemini", "gpt-", "claude", "pixtral", "mistral", "glm", "deepseek", "openrouter", "nvidia-")
 
 
@@ -66,14 +68,23 @@ class Store:
         self.rec: dict[str, dict] = {}
 
     aligner_train: set[str] = set()
+    kitab_image_of: dict[str, str] = {}  # kitab_khatt_full test key -> the KITAB-KHATT line that is the same image
+    khatt_train_kitab: set[str] = set()  # KITAB-KHATT keys whose image is in the KHATT v1.0 train split
 
     def in_train(self, run: str, key: str) -> str:
-        """yes / no for CRNN runs (the aligner recipe trained on most Muharaf and RASAM test lines, CORRECTIONS C4; the
-        standard split on none), unknown for everything else."""
-        if run.startswith("crnn/std") :
+        """yes / no for CRNN runs, unknown for everything else.
+        aligner recipe (crnn/*, crnn+llm/*): most Muharaf and RASAM test lines (CORRECTIONS C4, aligner_train). A full
+            KHATT v1.0 test line that is the same image as a KITAB-KHATT line (kitab_image_of, 12 lines) inherits its twin's
+            status. The recipe's sources are Muharaf and RASAM only (xai_prepare_aligner_data.SOURCES), so the twins are
+            "no" today, although KHATT-FULL-3090.md says the aligner CRNNs trained on the KITAB lines;
+        standard split (crnn/std*): none of the panel;
+        in-domain KHATT (crnn/khatt*, checklist 4.6): the KHATT v1.0 train split, which holds 64 KITAB-KHATT images."""
+        if run.startswith("crnn/std"):
             return "no"
+        if run.startswith("crnn/khatt"):
+            return "yes" if key in self.khatt_train_kitab else "no"
         if run.startswith(("crnn/", "crnn+llm/")):
-            return "yes" if key in self.aligner_train else "no"
+            return "yes" if key in self.aligner_train or self.kitab_image_of.get(key, "") in self.aligner_train else "no"
         return "unknown"
 
     def key(self, ds: str, sid: str) -> str | None:
@@ -128,6 +139,8 @@ def load_samples(panel: Path):
                             "gt_raw": r["label_raw"], "gt_clean": clean(r["label_raw"]), "ink_extent": r["ink_extent"], "ctc_ok": bool(r["ctc_ok"]),
                             "meta": json.dumps(r["meta"], ensure_ascii=False), "img_w": int(r["img"].shape[1])}
         legacy[r["legacy_id"]] = r["id"]
+        if r["meta"].get("kitab_image_id"):
+            samples[r["id"]]["kitab_image_id"] = r["meta"]["kitab_image_id"]
         if ds == "muharaf_lines":  # the transfer pack wrote muharaf_lines/NNNNNN for test rows
             legacy[f"{ds}/{idx}"] = r["id"]
     return samples, legacy
@@ -142,8 +155,19 @@ def main() -> None:
     S = json.loads(a.sources.read_text(encoding="utf-8"))
     a.out.mkdir(parents=True, exist_ok=True)
     samples, legacy = load_samples(W / S["panel"])
+    for extra in S.get("panel_extra", []):
+        if (W / extra).exists():
+            s2, l2 = load_samples(W / extra)
+            samples.update(s2)
+            legacy.update(l2)
+        else:
+            print("panel_extra missing, skipped:", extra, flush=True)
     st = Store(samples, legacy)
     st.aligner_train = set(json.loads((W / S["crnn_aligner_train_ids"]).read_text()))
+    st.kitab_image_of = {k: s.pop("kitab_image_id") for k, s in samples.items() if s.get("kitab_image_id")}
+    if S.get("khatt_full_flags") and (W / S["khatt_full_flags"]).exists():
+        fl = pq.read_table(W / S["khatt_full_flags"], columns=["split", "kitab_image_id"]).to_pylist()
+        st.khatt_train_kitab = {r["kitab_image_id"] for r in fl if r["split"] == "train" and r["kitab_image_id"]}
     print("samples", len(samples), Counter(s["dataset"] for s in samples.values()), flush=True)
 
     def ingest_pl(src, run, pack, numerics, per_line, conf=None):
@@ -163,7 +187,8 @@ def main() -> None:
         d = json.loads((W / s["file"]).read_text(encoding="utf-8"))
         ingest_pl(s["file"], s["run"], s["pack"], s["numerics"], d["per_line"])
         print("ingested", s["file"], flush=True)
-    for f in sorted(glob.glob(str(W / S["crnn_panel_glob"]))):
+    panel_files = sorted({f for g in [S["crnn_panel_glob"], *S.get("crnn_panel_glob_extra", [])] for f in glob.glob(str(W / g))})
+    for f in panel_files:
         d = json.loads(Path(f).read_text(encoding="utf-8"))
         run = "crnn/" + d["run"].replace("aligner_run_", "").replace("aligner_run", "base") + ("" if d["ckpt"] == "model_final.pt" else "-best")
         ingest_pl(str(Path(f).relative_to(W)), run, d.get("panel", "panel"), d["numerics"], d["per_line"], d.get("conf"))
