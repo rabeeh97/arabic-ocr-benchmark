@@ -28,9 +28,9 @@ are batched so the 3090 runs unattended.
 ## Phase 0 — From you (decisions and permissions; nothing else is blocked by these except where noted)
 - [ ] **0.1 Go-ahead for phases 1–5** (laptop work and the first CRNN night) or changes to them. *you*
 - [ ] **0.2 Permission for main-checkout changes.** This session cannot write there. *you* → [data-and-label-audit §7](designs/data-and-label-audit.md) · map: `main-checkout-sync`
-  - [ ] 0.2a Apply `patches/0001-paddleocr-reverse-output.diff` and re-score PaddleOCR.
-  - [ ] 0.2b Add the output-token-cap fix (X6) and token log-probabilities (`vlm-logprobs`) to the benchmark runner. Needed before phase 7.
-  - *2026-10-15:* 0.2a/0.2b **prepared as patches, waiting for the user to apply them** (`patches/0001` rebuilt; it had a bad hunk header; `0002` runner token cap + logprobs + `token_cap_report.py`; `0003` X6 caps with `cache_tag: x6`; glm-5.3 paid → cost review before any run). PaddleOCR CER from the stored readings, un-reversed: KHATT 85.8→62.9, Muharaf 87.9→77.1, NAKBA 89.3→83.4, RASAM-1 90.6→88.2, RASAM-2 91.2→85.7, hindawi 100→100.
+  - [x] 0.2a Apply `patches/0001-paddleocr-reverse-output.diff` and re-score PaddleOCR.
+  - [x] 0.2b Add the output-token-cap fix (X6) and token log-probabilities (`vlm-logprobs`) to the benchmark runner. Needed before phase 7.
+  - *2026-10-15:* 0.2a/0.2b **applied to the main checkout on 2026-10-17 (uncommitted there; `patch --fuzz=0`, 28 tests pass / 2 skipped)** (`patches/0001` rebuilt; it had a bad hunk header; `0002` runner token cap + logprobs + `token_cap_report.py`; `0003` X6 caps with `cache_tag: x6`; glm-5.3 paid → cost review before any run). PaddleOCR CER from the stored readings, un-reversed: KHATT 85.8→62.9, Muharaf 87.9→77.1, NAKBA 89.3→83.4, RASAM-1 90.6→88.2, RASAM-2 91.2→85.7, hindawi 100→100.
   - [ ] 0.2c Refresh `docs/research/NEXT_STEPS.md` from this checklist; update the Atlas tracker (`progress.json`) and republish the Atlas.
 - [ ] **0.3 Label review, about 2 h**, in the review tool, including "can a human read it?" for the 20 KHATT hard-core lines. Can happen any time before phase 14. *human* → [data-and-label-audit §1](designs/data-and-label-audit.md) · map: `R4.1`
 - [ ] **0.4 Outward contacts, only if you want them:** the Luleå authors (CER-HV licence, code, our numbers); the KHATT authors for writer IDs (low priority). *you* · map: `X9`
