@@ -1,7 +1,7 @@
 {
  "lines": 200,
  "share_extent_below_35": 0.175,
- "paddle_order": "stored",
+ "paddle_order": "unreverse",
  "grouping": "model field; latest run per model",
  "models": {
   "ain-7b-bf16": {
@@ -11,12 +11,12 @@
    "cer_all": 0.06905246034973567,
    "loose_share_of_errors": 0.09305064782096584
   },
-  "arabic-paddleocr-v5": {
+  "arabic-paddleocr-v5-unreversed": {
    "lines": 180,
-   "cer_loose": 0.9851632047477745,
-   "cer_tight": 0.8462721772125936,
-   "cer_all": 0.8631408234976125,
-   "loose_share_of_errors": 0.13862212943632568
+   "cer_loose": 0.9821958456973294,
+   "cer_tight": 0.5832222336170649,
+   "cer_all": 0.631678529597261,
+   "loose_share_of_errors": 0.18884609898730567
   },
   "fanar-oryx-7b-bf16": {
    "lines": 200,
