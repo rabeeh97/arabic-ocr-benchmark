@@ -1,0 +1,1069 @@
+{
+ "normalisation": "key = NFC + bidi/ZW + presentation forms + lookalikes, tatweel and harakat stripped; variant = repo diac_insensitive profile (alif, yā', tā' marbūṭa, hamza folded)",
+ "false_accept_controls": {
+  "n_shuffled": 3000,
+  "n_dot_swapped": 3000,
+  "ayaspell": {
+   "shuffled": 0.1267,
+   "dot_swapped": 0.2307
+  },
+  "aspell": {
+   "shuffled": 0.1247,
+   "dot_swapped": 0.227
+  },
+  "pecina": {
+   "shuffled": 0.1173,
+   "dot_swapped": 0.2027
+  },
+  "arwiki": {
+   "shuffled": 0.0677,
+   "dot_swapped": 0.1267
+  },
+  "wikidata": {
+   "shuffled": 0.0483,
+   "dot_swapped": 0.083
+  },
+  "geonames": {
+   "shuffled": 0.0313,
+   "dot_swapped": 0.049
+  },
+  "anetac": {
+   "shuffled": 0.01,
+   "dot_swapped": 0.0067
+  },
+  "ayaspell_names": {
+   "shuffled": 0.024,
+   "dot_swapped": 0.0253
+  }
+ },
+ "sets": {
+  "kitab_khatt": {
+   "tokens": 2333,
+   "types": 994,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.9473,
+     "variant": 0.0287
+    },
+    "aspell": {
+     "known": 0.9451,
+     "variant": 0.0219
+    },
+    "pecina": {
+     "known": 0.946,
+     "variant": 0.0313
+    },
+    "arwiki": {
+     "known": 0.9464,
+     "variant": 0.0103
+    },
+    "wikidata": {
+     "known": 0.7141,
+     "variant": 0.0287
+    },
+    "geonames": {
+     "known": 0.5118,
+     "variant": 0.0587
+    },
+    "anetac": {
+     "known": 0.0171,
+     "variant": 0.0077
+    },
+    "ayaspell_names": {
+     "known": 0.333,
+     "variant": 0.0274
+    }
+   },
+   "common": {
+    "known": 0.9794,
+    "variant": 0.0107,
+    "unseen": 0.0099
+   },
+   "any_source_incl_names": 0.991,
+   "unseen_tokens": 23,
+   "unseen_name_share": 0.087,
+   "top_unseen": [
+    [
+     "معطمها",
+     1,
+     false
+    ],
+    [
+     "المتعدم",
+     1,
+     false
+    ],
+    [
+     "غيرمرئية",
+     1,
+     false
+    ],
+    [
+     "الامتخدام",
+     1,
+     false
+    ],
+    [
+     "افهها",
+     1,
+     false
+    ],
+    [
+     "اليىئة",
+     1,
+     false
+    ],
+    [
+     "مراتز",
+     1,
+     false
+    ],
+    [
+     "وتتسح",
+     1,
+     false
+    ],
+    [
+     "التدحيد",
+     1,
+     false
+    ],
+    [
+     "السعبي",
+     1,
+     false
+    ],
+    [
+     "فعشتاروت",
+     1,
+     false
+    ],
+    [
+     "الجىول",
+     1,
+     false
+    ],
+    [
+     "مظفى",
+     1,
+     false
+    ],
+    [
+     "شنح",
+     1,
+     false
+    ],
+    [
+     "الحضراء",
+     1,
+     true
+    ],
+    [
+     "نميظ",
+     1,
+     false
+    ],
+    [
+     "ضرعام",
+     1,
+     false
+    ],
+    [
+     "الحجح",
+     1,
+     false
+    ],
+    [
+     "تىضمنه",
+     1,
+     false
+    ],
+    [
+     "النهارفي",
+     1,
+     false
+    ],
+    [
+     "الاال",
+     1,
+     true
+    ],
+    [
+     "المبحوثين",
+     1,
+     false
+    ],
+    [
+     "صغارالنعام",
+     1,
+     false
+    ]
+   ]
+  },
+  "muharaf_lines": {
+   "tokens": 11541,
+   "types": 6008,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.8199,
+     "variant": 0.1219
+    },
+    "aspell": {
+     "known": 0.9241,
+     "variant": 0.0157
+    },
+    "pecina": {
+     "known": 0.8009,
+     "variant": 0.1469
+    },
+    "arwiki": {
+     "known": 0.8719,
+     "variant": 0.0282
+    },
+    "wikidata": {
+     "known": 0.633,
+     "variant": 0.0334
+    },
+    "geonames": {
+     "known": 0.4772,
+     "variant": 0.0419
+    },
+    "anetac": {
+     "known": 0.0412,
+     "variant": 0.0037
+    },
+    "ayaspell_names": {
+     "known": 0.2606,
+     "variant": 0.0742
+    }
+   },
+   "common": {
+    "known": 0.9576,
+    "variant": 0.017,
+    "unseen": 0.0254
+   },
+   "any_source_incl_names": 0.9805,
+   "unseen_tokens": 293,
+   "unseen_name_share": 0.2321,
+   "top_unseen": [
+    [
+     "وانطانيوس",
+     4,
+     true
+    ],
+    [
+     "افتيموس",
+     4,
+     true
+    ],
+    [
+     "اجبع",
+     4,
+     true
+    ],
+    [
+     "انشالله",
+     3,
+     false
+    ],
+    [
+     "بقورقاشا",
+     3,
+     false
+    ],
+    [
+     "كفرصغاب",
+     3,
+     true
+    ],
+    [
+     "طرابلوس",
+     2,
+     false
+    ],
+    [
+     "عزتلو",
+     2,
+     true
+    ],
+    [
+     "بيصير",
+     2,
+     true
+    ],
+    [
+     "وصدرو",
+     2,
+     false
+    ],
+    [
+     "مرتموره",
+     2,
+     false
+    ],
+    [
+     "وفرفط",
+     2,
+     false
+    ],
+    [
+     "غناطيوس",
+     2,
+     false
+    ],
+    [
+     "الاطمنان",
+     2,
+     false
+    ],
+    [
+     "بيخفق",
+     2,
+     false
+    ],
+    [
+     "ترمانين",
+     2,
+     true
+    ],
+    [
+     "امطانيوس",
+     2,
+     true
+    ],
+    [
+     "هالميل",
+     2,
+     false
+    ],
+    [
+     "ترغيست",
+     2,
+     false
+    ],
+    [
+     "المحدي",
+     2,
+     true
+    ],
+    [
+     "تبخشش",
+     2,
+     false
+    ],
+    [
+     "الحمدلله",
+     2,
+     true
+    ],
+    [
+     "عالليالي",
+     2,
+     false
+    ],
+    [
+     "بتشرق",
+     2,
+     false
+    ],
+    [
+     "جايي",
+     2,
+     true
+    ]
+   ]
+  },
+  "nakba_blind": {
+   "tokens": 29737,
+   "types": 13420,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.901,
+     "variant": 0.0806
+    },
+    "aspell": {
+     "known": 0.977,
+     "variant": 0.0055
+    },
+    "pecina": {
+     "known": 0.8931,
+     "variant": 0.0935
+    },
+    "arwiki": {
+     "known": 0.9271,
+     "variant": 0.0132
+    },
+    "wikidata": {
+     "known": 0.6322,
+     "variant": 0.0262
+    },
+    "geonames": {
+     "known": 0.4498,
+     "variant": 0.0442
+    },
+    "anetac": {
+     "known": 0.0218,
+     "variant": 0.0059
+    },
+    "ayaspell_names": {
+     "known": 0.2399,
+     "variant": 0.0667
+    }
+   },
+   "common": {
+    "known": 0.9911,
+    "variant": 0.0035,
+    "unseen": 0.0054
+   },
+   "any_source_incl_names": 0.9956,
+   "unseen_tokens": 161,
+   "unseen_name_share": 0.1801,
+   "top_unseen": [
+    [
+     "القائممقام",
+     5,
+     true
+    ],
+    [
+     "الاتلانتي",
+     3,
+     false
+    ],
+    [
+     "كوسيفين",
+     2,
+     false
+    ],
+    [
+     "هايسود",
+     2,
+     false
+    ],
+    [
+     "بعملن",
+     1,
+     false
+    ],
+    [
+     "خفمر",
+     1,
+     false
+    ],
+    [
+     "الستعمار",
+     1,
+     false
+    ],
+    [
+     "موكنياتا",
+     1,
+     false
+    ],
+    [
+     "عنندي",
+     1,
+     false
+    ],
+    [
+     "البونجور",
+     1,
+     true
+    ],
+    [
+     "بمندريس",
+     1,
+     true
+    ],
+    [
+     "دعوب",
+     1,
+     false
+    ],
+    [
+     "الأخصار",
+     1,
+     false
+    ],
+    [
+     "كركبرايد",
+     1,
+     false
+    ],
+    [
+     "ولعبناو",
+     1,
+     false
+    ],
+    [
+     "بالنوصي",
+     1,
+     false
+    ],
+    [
+     "ترميج",
+     1,
+     false
+    ],
+    [
+     "غندوف",
+     1,
+     false
+    ],
+    [
+     "انتروفينوس",
+     1,
+     false
+    ],
+    [
+     "دغانا",
+     1,
+     false
+    ],
+    [
+     "خربثه",
+     1,
+     false
+    ],
+    [
+     "الشاسة",
+     1,
+     true
+    ],
+    [
+     "السلوادية",
+     1,
+     false
+    ],
+    [
+     "وعوبله",
+     1,
+     false
+    ],
+    [
+     "النكادة",
+     1,
+     true
+    ]
+   ]
+  },
+  "nakba_lines": {
+   "tokens": 20893,
+   "types": 10054,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.9535,
+     "variant": 0.0299
+    },
+    "aspell": {
+     "known": 0.9818,
+     "variant": 0.0016
+    },
+    "pecina": {
+     "known": 0.9519,
+     "variant": 0.0356
+    },
+    "arwiki": {
+     "known": 0.9354,
+     "variant": 0.0078
+    },
+    "wikidata": {
+     "known": 0.6409,
+     "variant": 0.0201
+    },
+    "geonames": {
+     "known": 0.4492,
+     "variant": 0.0448
+    },
+    "anetac": {
+     "known": 0.018,
+     "variant": 0.0066
+    },
+    "ayaspell_names": {
+     "known": 0.2473,
+     "variant": 0.0594
+    }
+   },
+   "common": {
+    "known": 0.9939,
+    "variant": 0.0017,
+    "unseen": 0.0044
+   },
+   "any_source_incl_names": 0.9962,
+   "unseen_tokens": 92,
+   "unseen_name_share": 0.1304,
+   "top_unseen": [
+    [
+     "ترميج",
+     3,
+     false
+    ],
+    [
+     "البراغثة",
+     3,
+     false
+    ],
+    [
+     "القائممقام",
+     3,
+     true
+    ],
+    [
+     "للتساءل",
+     2,
+     false
+    ],
+    [
+     "الاتلانتي",
+     2,
+     false
+    ],
+    [
+     "الطلوزي",
+     2,
+     false
+    ],
+    [
+     "المربعانية",
+     2,
+     false
+    ],
+    [
+     "وليسوقونهم",
+     2,
+     false
+    ],
+    [
+     "الماباي",
+     1,
+     true
+    ],
+    [
+     "هابوكر",
+     1,
+     false
+    ],
+    [
+     "ودغدته",
+     1,
+     false
+    ],
+    [
+     "البونجور",
+     1,
+     true
+    ],
+    [
+     "والبريغادر",
+     1,
+     false
+    ],
+    [
+     "تصاريخ",
+     1,
+     false
+    ],
+    [
+     "المدلف",
+     1,
+     false
+    ],
+    [
+     "واسلنقيت",
+     1,
+     false
+    ],
+    [
+     "الايكونومس",
+     1,
+     false
+    ],
+    [
+     "تطىء",
+     1,
+     false
+    ],
+    [
+     "يتخفوفون",
+     1,
+     false
+    ],
+    [
+     "غالفاو",
+     1,
+     true
+    ],
+    [
+     "التضاهر",
+     1,
+     false
+    ],
+    [
+     "وزقب",
+     1,
+     false
+    ],
+    [
+     "يتحادون",
+     1,
+     false
+    ],
+    [
+     "اللاجئوون",
+     1,
+     false
+    ],
+    [
+     "المتدابرة",
+     1,
+     false
+    ]
+   ]
+  },
+  "rasam1": {
+   "tokens": 9977,
+   "types": 4525,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.8269,
+     "variant": 0.1336
+    },
+    "aspell": {
+     "known": 0.9345,
+     "variant": 0.0152
+    },
+    "pecina": {
+     "known": 0.8021,
+     "variant": 0.1609
+    },
+    "arwiki": {
+     "known": 0.9019,
+     "variant": 0.0288
+    },
+    "wikidata": {
+     "known": 0.6765,
+     "variant": 0.0337
+    },
+    "geonames": {
+     "known": 0.5165,
+     "variant": 0.0479
+    },
+    "anetac": {
+     "known": 0.0252,
+     "variant": 0.0057
+    },
+    "ayaspell_names": {
+     "known": 0.2856,
+     "variant": 0.1003
+    }
+   },
+   "common": {
+    "known": 0.9682,
+    "variant": 0.0135,
+    "unseen": 0.0182
+   },
+   "any_source_incl_names": 0.9836,
+   "unseen_tokens": 182,
+   "unseen_name_share": 0.0989,
+   "top_unseen": [
+    [
+     "ءادم",
+     11,
+     false
+    ],
+    [
+     "ءاخر",
+     4,
+     false
+    ],
+    [
+     "ءاغة",
+     2,
+     false
+    ],
+    [
+     "اسراءيل",
+     2,
+     false
+    ],
+    [
+     "ءاخرهم",
+     2,
+     false
+    ],
+    [
+     "ءالاف",
+     2,
+     false
+    ],
+    [
+     "والاففاسد",
+     1,
+     false
+    ],
+    [
+     "فورخوا",
+     1,
+     false
+    ],
+    [
+     "وجرءته",
+     1,
+     false
+    ],
+    [
+     "االاديب",
+     1,
+     false
+    ],
+    [
+     "اتمخذت",
+     1,
+     false
+    ],
+    [
+     "المضوقة",
+     1,
+     false
+    ],
+    [
+     "عليهنا",
+     1,
+     false
+    ],
+    [
+     "والازورد",
+     1,
+     false
+    ],
+    [
+     "جلاوتها",
+     1,
+     false
+    ],
+    [
+     "صتحت",
+     1,
+     false
+    ],
+    [
+     "افوتعيا",
+     1,
+     false
+    ],
+    [
+     "وخفص",
+     1,
+     false
+    ],
+    [
+     "الانثين",
+     1,
+     false
+    ],
+    [
+     "بصبرو",
+     1,
+     true
+    ],
+    [
+     "للخرل",
+     1,
+     false
+    ],
+    [
+     "لنحصوص",
+     1,
+     false
+    ],
+    [
+     "واتبعتى",
+     1,
+     false
+    ],
+    [
+     "وءاخر",
+     1,
+     false
+    ],
+    [
+     "استفرك",
+     1,
+     false
+    ]
+   ]
+  },
+  "rasam2": {
+   "tokens": 4598,
+   "types": 2349,
+   "by_source": {
+    "ayaspell": {
+     "known": 0.8399,
+     "variant": 0.1248
+    },
+    "aspell": {
+     "known": 0.9508,
+     "variant": 0.0054
+    },
+    "pecina": {
+     "known": 0.8197,
+     "variant": 0.1433
+    },
+    "arwiki": {
+     "known": 0.9156,
+     "variant": 0.0204
+    },
+    "wikidata": {
+     "known": 0.6886,
+     "variant": 0.0328
+    },
+    "geonames": {
+     "known": 0.5472,
+     "variant": 0.0331
+    },
+    "anetac": {
+     "known": 0.0241,
+     "variant": 0.0013
+    },
+    "ayaspell_names": {
+     "known": 0.261,
+     "variant": 0.0863
+    }
+   },
+   "common": {
+    "known": 0.9724,
+    "variant": 0.0102,
+    "unseen": 0.0174
+   },
+   "any_source_incl_names": 0.9839,
+   "unseen_tokens": 80,
+   "unseen_name_share": 0.075,
+   "top_unseen": [
+    [
+     "ءاخر",
+     3,
+     false
+    ],
+    [
+     "ءال",
+     3,
+     true
+    ],
+    [
+     "انجانن",
+     2,
+     false
+    ],
+    [
+     "العورث",
+     2,
+     false
+    ],
+    [
+     "ميدنت",
+     2,
+     false
+    ],
+    [
+     "ءادم",
+     2,
+     false
+    ],
+    [
+     "اذوس",
+     2,
+     false
+    ],
+    [
+     "ءاس",
+     2,
+     false
+    ],
+    [
+     "الحالدين",
+     1,
+     false
+    ],
+    [
+     "اتيري",
+     1,
+     true
+    ],
+    [
+     "تيملل",
+     1,
+     false
+    ],
+    [
+     "ظهع",
+     1,
+     false
+    ],
+    [
+     "ءاش",
+     1,
+     false
+    ],
+    [
+     "منوتا",
+     1,
+     false
+    ],
+    [
+     "مجروئها",
+     1,
+     false
+    ],
+    [
+     "اذويدمن",
+     1,
+     false
+    ],
+    [
+     "المبتدء",
+     1,
+     false
+    ],
+    [
+     "فيجوزعند",
+     1,
+     false
+    ],
+    [
+     "معذا",
+     1,
+     false
+    ],
+    [
+     "إخالكه",
+     1,
+     false
+    ],
+    [
+     "ءاتيت",
+     1,
+     false
+    ],
+    [
+     "دغرس",
+     1,
+     false
+    ],
+    [
+     "ندوكل",
+     1,
+     false
+    ],
+    [
+     "ومسجنة",
+     1,
+     false
+    ],
+    [
+     "اوليتس",
+     1,
+     false
+    ]
+   ]
+  }
+ }
+}

@@ -1,0 +1,329 @@
+{
+ "generated": "2026-10-17T12:12+00:00",
+ "sources": {
+  "ayaspell": {
+   "url": "https://raw.githubusercontent.com/LibreOffice/dictionaries/master/ar/ (Ayaspell 3.x via LibreOffice)",
+   "licence": "GPL-2.0-or-later / LGPL-2.1-or-later / MPL-1.1 tri-licence",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/ayaspell/COPYING.txt",
+     "bytes": 532,
+     "sha256": "73480d918cd78d655508e80aa88c022cbd53634524a0f714b5f2519f2cf19124"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/ayaspell/README_ar.txt",
+     "bytes": 420,
+     "sha256": "5ead684ae5211ccf615686959e24bd21ef6eebbb6195997529fda08b993f615e"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/ayaspell/ar.aff",
+     "bytes": 86949,
+     "sha256": "cec30b8621001e49618feb05aec1984c5fcfbf7d2ec309901d5cbf66585217a3"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/ayaspell/ar.dic",
+     "bytes": 7217161,
+     "sha256": "2a3e5367f61c1583734db9d66734f5603e6be5c2d227cf5c5cd7e4ca586e34fe"
+    }
+   ]
+  },
+  "aspell_ar": {
+   "url": "https://ftp.gnu.org/gnu/aspell/dict/ar/aspell6-ar-1.2-0.tar.bz2",
+   "licence": "GPL-2.0-or-later",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/aspell_ar/aspell6-ar-1.2-0.tar.bz2",
+     "bytes": 1541037,
+     "sha256": "041ea24a82cdd6957040e2fb84262583bf46b3a8301283a75d257a7417207cab"
+    }
+   ]
+  },
+  "pecina": {
+   "url": "https://sourceforge.net/projects/arabic-wordlist/ (Attia, Pecina, Samih, Shaalan, van Genabith, LREC 2012)",
+   "licence": "GPL-3.0-or-later (COPYING in the zip)",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/pecina/Arabic-Wordlist-1.6.zip",
+     "bytes": 24934095,
+     "sha256": "794dcbb2a6b71f085d0b403e1d65d0cbcb56568259f401f5e856536bc011e843"
+    }
+   ]
+  },
+  "anetac": {
+   "url": "https://github.com/HadjAmeur/ANETAC-Dataset (Hadj Ameur, Meziane, Guessoum 2019)",
+   "licence": "no licence file; 'freely available' per the paper; cite arXiv:1907.03110",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/anetac/README.md",
+     "bytes": 1432,
+     "sha256": "54820dbc4c226736cf8a55f5e43c0a0b2e62da3154dd1ad96329c484cbcf4628"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/anetac/dev.ar",
+     "bytes": 13584,
+     "sha256": "9ba5bd936c6ab3a4c172a999089b22f54077d3f8508e336e304b54210e96a1c0"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/anetac/test.ar",
+     "bytes": 40335,
+     "sha256": "17e3f2bd63640dc6600c2860f05bb7987ad377c951efc720d7786e4f97909d50"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/anetac/train.ar",
+     "bytes": 1038168,
+     "sha256": "036264fca66ce65aa205b68e5119adffc273778767bf11549b1b6b4e6e1484ee"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/anetac/train.en",
+     "bytes": 605447,
+     "sha256": "c4ca00e158d8e3982b1cb5ff31e88c0ac56e71f03bb190ca81d3bf7c3e1b1c16"
+    }
+   ]
+  },
+  "geonames": {
+   "url": "https://download.geonames.org/export/dump/alternateNamesV2.zip",
+   "licence": "CC BY 4.0",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/geonames/alternateNamesV2.zip",
+     "bytes": 204947092,
+     "sha256": "5dc235aba7adca5290dd4f98b28b1a3534e1dbe97f4c5732323bcac865d535d1"
+    }
+   ]
+  },
+  "wikidata": {
+   "url": "https://qlever.dev/api/wikidata (QLever mirror of Wikidata)",
+   "licence": "CC0 1.0",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/admin_area.done",
+     "bytes": 30,
+     "sha256": "b756e2ba55d7d7619ca7efe7a3aedbf7922804741d083361a212ff5a7d101507"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/admin_area.tsv.gz",
+     "bytes": 2124210,
+     "sha256": "cc34d858b07d385a28c688927e6aac8a89cac2f0687781ee2568f726ec2e767b"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/country.done",
+     "bytes": 28,
+     "sha256": "efd4a6f74fd2f96f077b8c54673e7f77fb7aa8d572d14c2c6f050188cbe4fdc7"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/country.tsv.gz",
+     "bytes": 10477,
+     "sha256": "460879580959e49d3ea8eb28535589cd3a408e81e2ace506f2bb777237755c01"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/family_name.done",
+     "bytes": 30,
+     "sha256": "38d6a45ad655a97e54e6e85e15daaa6f295eafec9c13ef6a317fa727381a3023"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/family_name.tsv.gz",
+     "bytes": 3744114,
+     "sha256": "1228fadb9cdb763df341922f93b6cb9a17c08aa92adba0decba7e2516c9dc186"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/given_name.done",
+     "bytes": 29,
+     "sha256": "7cd979310368c201d402d869f965f475b812c1d26c2d9755ebd81bb8a51a4a17"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/given_name.tsv.gz",
+     "bytes": 257314,
+     "sha256": "e3889d3b79ac3c6ba42cc029b3b66762862e0f86b8f8615c71f4453513ba63eb"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/organisation.done",
+     "bytes": 30,
+     "sha256": "762258957b40f45b4004d95b3e36b020998fbb882085dec473c872c9ee1116cb"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/organisation.tsv.gz",
+     "bytes": 5077153,
+     "sha256": "c382f1bdce2feb0ae696810827f9553b2cfce3d1dd458e633828afe94d092ff3"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/person.done",
+     "bytes": 30,
+     "sha256": "ae4206a43a3ea2a56826b55658401ca98f0bfa9d8817065c4210739a2f53919c"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/person.tsv.gz",
+     "bytes": 8283000,
+     "sha256": "144eddd5b4a312c5e77d374c881bd08e397b0932e4ce4e7f27625d6cd62f6b86"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/settlement.done",
+     "bytes": 30,
+     "sha256": "c6c35b954d95dbbf0ce2620ccec79e6ce7355efbdd74d0753be7d9d6af6387c8"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/lexicon/wikidata/settlement.tsv.gz",
+     "bytes": 2041769,
+     "sha256": "bc170c53882f6f8a3244b9791dd9bb56e0a301a7e3fe48d62a53b67421ca148f"
+    }
+   ]
+  },
+  "arwiki": {
+   "url": "https://huggingface.co/datasets/wikimedia/wikipedia 20231101.ar",
+   "licence": "CC BY-SA 4.0 (and GFDL)",
+   "files": [
+    {
+     "path": "/Volumes/PortableSSD/data/text/arwiki/arwiki_20231101_shard2.txt.gz",
+     "bytes": 69667468,
+     "sha256": "6525d5f987e482ae714e190ff8c7421c3874803635a01dbddd53999f2b1ba759"
+    },
+    {
+     "path": "/Volumes/PortableSSD/data/text/arwiki/train-00002-of-00007.parquet",
+     "bytes": 144792516,
+     "sha256": "b4fd836164dab95ea52fc2893f0e31bcfb9f3eae6da21da3b7adc4befde80321"
+    }
+   ]
+  }
+ },
+ "build": [
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/anetac.tsv.gz",
+   "bytes": 243379,
+   "sha256": "025b160cfdf3bdcd0fd2037a6b17ca386791bd2c73815654cb2c00e9ff941da5"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/arwiki_vocab.tsv.gz",
+   "bytes": 3249595,
+   "sha256": "098a7f43af2710940679ea13ed980ec74fb15296e072fb06b8cdda4c6b9f266d"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/aspell_stems.tsv.gz",
+   "bytes": 3587128,
+   "sha256": "2b92439a978ecebb1a77ea4570cacfd01e3161e76c6eb971e44d87026462fdd4"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/ayaspell_stems.tsv.gz",
+   "bytes": 1578686,
+   "sha256": "aef57659b70e39f6b6478be3d505e01982c58c4d3147d7bee8dd786c14bf9cd9"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/build_stats.json",
+   "bytes": 1549,
+   "sha256": "0c5d1fb9efbed4f145fcbee71455cea511d202b833b6aad0115575868e3230ab"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/geonames.tsv.gz",
+   "bytes": 433022,
+   "sha256": "25f51b366a7c8711297b7cab2330239a3d7a29c18674838fcd776f9ca1145022"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/geonames_names.tsv.gz",
+   "bytes": 1214189,
+   "sha256": "c20d330cf00b31a4b3c398440e12028de1865555d084c0e750629e6e3460ff9d"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/lexicon.tsv.gz",
+   "bytes": 55510550,
+   "sha256": "c29cb5db6c8fe284158b0459bc8a9855f976ad81cf2f1b0f47993c412b669497"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/pecina.tsv.gz",
+   "bytes": 23680722,
+   "sha256": "749f7ed7faef7cf31f3a62ffc6d4bbdbbb0c498b7634d6b99913151b821da4e7"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/wikidata.tsv.gz",
+   "bytes": 1919545,
+   "sha256": "45f0c0f71435ea0ffd323fc18222d908a12ffeb1dc3d17497c0c8ef0015802e8"
+  },
+  {
+   "path": "/Volumes/PortableSSD/data/lexicon/build/wikidata_names.tsv.gz",
+   "bytes": 10099753,
+   "sha256": "4e76be7e113a3f57cab168a27794b5c7fbea4b67fd7e7fe84048ec1538850d18"
+  }
+ ],
+ "stats": {
+  "ayaspell": {
+   "stems": 465885,
+   "classes": {
+    "word": 411700,
+    "stopword": 13006,
+    "name": 39239,
+    "person": 1362,
+    "place": 568,
+    "organisation": 10
+   },
+   "rules": 1586
+  },
+  "aspell": {
+   "stems": 938957,
+   "stems_with_flags": 821466
+  },
+  "anetac": {
+   "tokens": 67049,
+   "note": "transliteration release only; no class labels in the public repo"
+  },
+  "pecina": {
+   "members": [
+    [
+     "Arabic-Wordlist-1.6/AUTHORS",
+     24
+    ],
+    [
+     "Arabic-Wordlist-1.6/README",
+     1308
+    ],
+    [
+     "Arabic-Wordlist-1.6/COPYING",
+     35147
+    ],
+    [
+     "Arabic-Wordlist-1.6/arabic-wordlist-1.6.txt",
+     155998790
+    ]
+   ],
+   "forms": 9196215
+  },
+  "arwiki": {
+   "parquet_files": [
+    "train-00002-of-00007.parquet"
+   ],
+   "articles": 174172,
+   "paragraphs": 1634012,
+   "characters": 162527771,
+   "tokens": 25690598,
+   "types": 601241,
+   "types_count_ge3": 230950,
+   "sample_file": "/Volumes/PortableSSD/data/text/arwiki/arwiki_20231101_shard2.txt.gz"
+  },
+  "geonames": {
+   "ar_names": 314610,
+   "distinct_names": 232737,
+   "tokens": 115627
+  },
+  "wikidata": {
+   "rows_by_class": {
+    "admin_area": 264865,
+    "country": 2123,
+    "family_name": 497886,
+    "given_name": 31417,
+    "organisation": 518639,
+    "person": 791423,
+    "settlement": 270443
+   },
+   "distinct_labels": 1823654,
+   "token_class_pairs": 467288
+  },
+  "merged": {
+   "forms": 9895243,
+   "forms_by_source": {
+    "ayaspell": 294178,
+    "arwiki": 230950,
+    "wikidata": 350065,
+    "pecina": 9196215,
+    "geonames": 115627,
+    "aspell": 938953,
+    "anetac": 67049
+   }
+  }
+ }
+}
