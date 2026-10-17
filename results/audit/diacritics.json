@@ -1,0 +1,1791 @@
+{
+ "decision_rule": "Marks are IMMATERIAL to the ranking of a set when the lower 95 % bound of Kendall tau(orth, no_diac) >= 0.90; otherwise\n  scoring with marks re-ranks systems. Headline rung: no_diacritics for \"undiacritised\" and \"sparse\" sets (keeping marks there\n  scores the model's mark habit against labels that mostly omit them); orthographic (marks kept) as the headline only for a\n  \"diacritised\" set, with no_diacritics beside it. If marks re-rank an undiacritised/sparse set, marks-kept numbers must not be\n  quoted for it at all.",
+ "R1.3_profile": {
+  "kitab_khatt": {
+   "lines": 200,
+   "share_lines_with_marks": 0.065,
+   "harakat_per_100_letters": 0.25020850708924103,
+   "mean_coverage_of_marked_lines": 0.03465030394455912,
+   "levels": {
+    "sparse": 0.065,
+    "none": 0.935
+   },
+   "policy": "sparse"
+  },
+  "kitab_khatt_full": {
+   "lines": 1038,
+   "share_lines_with_marks": 0.002890173410404624,
+   "harakat_per_100_letters": 0.006623686302216727,
+   "mean_coverage_of_marked_lines": 0.021716101694915252,
+   "levels": {
+    "none": 0.9971098265895953,
+    "sparse": 0.002890173410404624
+   },
+   "policy": "undiacritised"
+  },
+  "muharaf_lines": {
+   "lines": 1334,
+   "share_lines_with_marks": 0.3583208395802099,
+   "harakat_per_100_letters": 1.8479670455412311,
+   "mean_coverage_of_marked_lines": 0.04132793978393331,
+   "levels": {
+    "sparse": 0.3538230884557721,
+    "none": 0.6416791604197901,
+    "partial": 0.004497751124437781
+   },
+   "policy": "sparse"
+  },
+  "nakba_blind": {
+   "lines": 2671,
+   "share_lines_with_marks": 0.040434294271808315,
+   "harakat_per_100_letters": 0.11513441943469,
+   "mean_coverage_of_marked_lines": 0.025053826103397,
+   "levels": {
+    "none": 0.9606888805690752,
+    "sparse": 0.038936727817296894,
+    "partial": 0.00037439161362785476
+   },
+   "policy": "sparse"
+  },
+  "nakba_lines": {
+   "lines": 2095,
+   "share_lines_with_marks": 0.021957040572792363,
+   "harakat_per_100_letters": 0.055139738392574515,
+   "mean_coverage_of_marked_lines": 0.02285891268295485,
+   "levels": {
+    "none": 0.9780429594272076,
+    "sparse": 0.021957040572792363
+   },
+   "policy": "sparse"
+  },
+  "rasam1": {
+   "lines": 734,
+   "share_lines_with_marks": 0.10762942779291552,
+   "harakat_per_100_letters": 0.27842227378190254,
+   "mean_coverage_of_marked_lines": 0.032548703774428374,
+   "levels": {
+    "none": 0.8923705722070845,
+    "sparse": 0.10626702997275204,
+    "partial": 0.0013623978201634877
+   },
+   "policy": "sparse"
+  },
+  "rasam2": {
+   "lines": 372,
+   "share_lines_with_marks": 0.005376344086021506,
+   "harakat_per_100_letters": 0.01107603699396356,
+   "mean_coverage_of_marked_lines": 0.016001024065540194,
+   "levels": {
+    "none": 0.9946236559139785,
+    "sparse": 0.005376344086021506
+   },
+   "policy": "undiacritised"
+  },
+  "muharaf_train": {
+   "lines": 23161,
+   "share_lines_with_marks": 0.33936358533742067,
+   "harakat_per_100_letters": 1.8258525194869655,
+   "mean_coverage_of_marked_lines": 0.04559865058345164,
+   "levels": {
+    "none": 0.6609818228919304,
+    "sparse": 0.3288286343422132,
+    "full": 0.0002590561720132982,
+    "partial": 0.009930486593843098
+   },
+   "policy": "sparse"
+  },
+  "nakba_train": {
+   "lines": 15962,
+   "share_lines_with_marks": 0.02963287808545295,
+   "harakat_per_100_letters": 0.08457622432217035,
+   "mean_coverage_of_marked_lines": 0.023138286329494565,
+   "levels": {
+    "none": 0.970743014659817,
+    "sparse": 0.029131687758426263,
+    "partial": 0.0001252975817566721
+   },
+   "policy": "sparse"
+  },
+  "khatt_train": {
+   "lines": 5635,
+   "share_lines_with_marks": 0.001774622892635315,
+   "harakat_per_100_letters": 0.00436220584852835,
+   "mean_coverage_of_marked_lines": 0.02360158140317954,
+   "levels": {
+    "none": 0.9984028393966282,
+    "sparse": 0.0015971606033717836
+   },
+   "policy": "undiacritised"
+  },
+  "rasam1_train": {
+   "lines": 4692,
+   "share_lines_with_marks": 0.12148337595907928,
+   "harakat_per_100_letters": 0.3141178523646094,
+   "mean_coverage_of_marked_lines": 0.030440207572244242,
+   "levels": {
+    "none": 0.8785166240409207,
+    "sparse": 0.11956521739130435,
+    "partial": 0.0019181585677749361
+   },
+   "policy": "sparse"
+  }
+ },
+ "R2.7": {
+  "kitab_khatt": {
+   "policy": "sparse",
+   "systems": 32,
+   "lines": 164,
+   "lines_with_gt_marks": 0.06707317073170732,
+   "kendall_tau": 0.9352226720647772,
+   "tau_ci95": [
+    0.8868686868686868,
+    0.9636816832623507
+   ],
+   "spearman_rho": 0.9842317565089844,
+   "rho_ci95": [
+    0.9508615275611552,
+    0.9937671860678279
+   ],
+   "max_rank_move": 6,
+   "systems_moving_ge2": [
+    "vlm/exp3090-qwen3vl4b-ft-bf16",
+    "vlm/qwen3-vl-8b-bf16",
+    "crnn/std_s1",
+    "crnn/std_s1-best",
+    "vlm/fanar-oryx-7b-bf16",
+    "vlm/exp3090-paligemma2-3b-ft-bf16",
+    "crnn+llm/e8-qwen3-1.7b",
+    "crnn+llm/e8-qwen3-0.6b",
+    "vlm/qwen3-vl-4b-bf16"
+   ],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": false,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": false,
+   "per_system": [
+    {
+     "run": "vlm/suite-v1-fanar2-oryx-ft-bf16",
+     "cer_raw": 0.2198662846227316,
+     "cer_orth": 0.1997874601487779,
+     "cer_no_diac": 0.1965927790146162,
+     "diacritic_tax": 0.0031946811341617143,
+     "tax_ci95": [
+      0.002136908856398858,
+      0.0051873321190575175
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.3842653453331985
+    },
+    {
+     "run": "vlm/suite-v1-qwen3vl8b-ft-bf16",
+     "cer_raw": 0.2291308500477555,
+     "cer_orth": 0.2108008888030142,
+     "cer_no_diac": 0.20714354854321942,
+     "diacritic_tax": 0.003657340259794778,
+     "tax_ci95": [
+      0.002743054023826638,
+      0.005507863335830903
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.5575266092245311
+    },
+    {
+     "run": "crnn/shape_s3",
+     "cer_raw": 0.25377268385864377,
+     "cer_orth": 0.2382378514153222,
+     "cer_no_diac": 0.23695673216532764,
+     "diacritic_tax": 0.00128111924999455,
+     "tax_ci95": [
+      0.0007255562976391142,
+      0.0027694656925698878
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape_s2",
+     "cer_raw": 0.25577841451766953,
+     "cer_orth": 0.23920394164814993,
+     "cer_no_diac": 0.23792469267253896,
+     "diacritic_tax": 0.0012792489756109637,
+     "tax_ci95": [
+      0.0007959144500106789,
+      0.0028495038296246066
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo",
+     "cer_raw": 0.255396370582617,
+     "cer_orth": 0.23968698676456382,
+     "cer_no_diac": 0.23840867292614462,
+     "diacritic_tax": 0.0012783138384191983,
+     "tax_ci95": [
+      0.0007650508719035911,
+      0.0026865113676297963
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo_s2",
+     "cer_raw": 0.25644699140401145,
+     "cer_orth": 0.24017003188097769,
+     "cer_no_diac": 0.23898944923047138,
+     "diacritic_tax": 0.001180582650506301,
+     "tax_ci95": [
+      0.0006798812914802187,
+      0.0028310353217582975
+     ],
+     "rank_orth": 6,
+     "rank_no_diac": 6,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape",
+     "cer_raw": 0.2563514804202483,
+     "cer_orth": 0.24074968602067434,
+     "cer_no_diac": 0.23947342948407704,
+     "diacritic_tax": 0.0012762565365972978,
+     "tax_ci95": [
+      0.0007683677430470743,
+      0.0029525992189905178
+     ],
+     "rank_orth": 7,
+     "rank_no_diac": 7,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo_s3",
+     "cer_raw": 0.25902578796561604,
+     "cer_orth": 0.24268186648632983,
+     "cer_no_diac": 0.24140935049849965,
+     "diacritic_tax": 0.0012725159878301806,
+     "tax_ci95": [
+      0.0008168024972674818,
+      0.0030190333993886094
+     ],
+     "rank_orth": 8,
+     "rank_no_diac": 8,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s3",
+     "cer_raw": 0.2628462273161414,
+     "cer_orth": 0.24644961839435803,
+     "cer_no_diac": 0.24518439647662377,
+     "diacritic_tax": 0.0012652219177342605,
+     "tax_ci95": [
+      0.0008789215416200292,
+      0.002833346694271526
+     ],
+     "rank_orth": 9,
+     "rank_no_diac": 9,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s2",
+     "cer_raw": 0.263323782234957,
+     "cer_orth": 0.24683605448748913,
+     "cer_no_diac": 0.24557158067950827,
+     "diacritic_tax": 0.0012644738079808648,
+     "tax_ci95": [
+      0.00076221790872182,
+      0.002839736146433884
+     ],
+     "rank_orth": 10,
+     "rank_no_diac": 10,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl",
+     "cer_raw": 0.26370582617000954,
+     "cer_orth": 0.24702927253405468,
+     "cer_no_diac": 0.24576517278095053,
+     "diacritic_tax": 0.0012640997531041531,
+     "tax_ci95": [
+      0.0007818624916681905,
+      0.0028828295690637358
+     ],
+     "rank_orth": 11,
+     "rank_no_diac": 11,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/rep2",
+     "cer_raw": 0.26599808978032474,
+     "cer_orth": 0.24915467104627573,
+     "cer_no_diac": 0.2478946858968154,
+     "diacritic_tax": 0.0012599851494603242,
+     "tax_ci95": [
+      0.0007759119069242482,
+      0.002761354266992368
+     ],
+     "rank_orth": 12,
+     "rank_no_diac": 12,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base",
+     "cer_raw": 0.26504297994269344,
+     "cer_orth": 0.2499275432325379,
+     "cer_no_diac": 0.24866905430258446,
+     "diacritic_tax": 0.0012584889299534496,
+     "tax_ci95": [
+      0.000739626594366176,
+      0.002853533434650456
+     ],
+     "rank_orth": 13,
+     "rank_no_diac": 13,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base_s3",
+     "cer_raw": 0.2664756446991404,
+     "cer_orth": 0.2499275432325379,
+     "cer_no_diac": 0.24866905430258446,
+     "diacritic_tax": 0.0012584889299534496,
+     "tax_ci95": [
+      0.0006847582437753818,
+      0.002901638870106988
+     ],
+     "rank_orth": 14,
+     "rank_no_diac": 14,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/inkcrop",
+     "cer_raw": 0.26972301814708693,
+     "cer_orth": 0.2548546034199594,
+     "cer_no_diac": 0.253508856838641,
+     "diacritic_tax": 0.0013457465813184188,
+     "tax_ci95": [
+      0.0007681299870216534,
+      0.0030543446672478924
+     ],
+     "rank_orth": 15,
+     "rank_no_diac": 15,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/geomaug",
+     "cer_raw": 0.27153772683858646,
+     "cer_orth": 0.2551444304898077,
+     "cer_no_diac": 0.2538960410415255,
+     "diacritic_tax": 0.0012483894482822055,
+     "tax_ci95": [
+      0.000763503428777684,
+      0.002763090518986764
+     ],
+     "rank_orth": 16,
+     "rank_no_diac": 16,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/gemini-flash-lite",
+     "cer_raw": 0.2850047755491882,
+     "cer_orth": 0.2716645734711622,
+     "cer_no_diac": 0.2597038040847933,
+     "diacritic_tax": 0.011960769386368864,
+     "tax_ci95": [
+      0.004215318110275567,
+      0.022780262742703773
+     ],
+     "rank_orth": 18,
+     "rank_no_diac": 17,
+     "inserted_marks_per_100_letters": 1.169470660648338
+    },
+    {
+     "run": "vlm/suite-v1-qwen3vl4b-ft-bf16",
+     "cer_raw": 0.2842406876790831,
+     "cer_orth": 0.26567481402763016,
+     "cer_no_diac": 0.2619301132513793,
+     "diacritic_tax": 0.003744700776250831,
+     "tax_ci95": [
+      0.002727536440990086,
+      0.005892026271217453
+     ],
+     "rank_orth": 17,
+     "rank_no_diac": 18,
+     "inserted_marks_per_100_letters": 0.49847405900305186
+    },
+    {
+     "run": "vlm/exp3090-qwen3vl4b-ft-bf16",
+     "cer_raw": 0.2980897803247373,
+     "cer_orth": 0.2812288667761569,
+     "cer_no_diac": 0.27122253412060787,
+     "diacritic_tax": 0.01000633265554901,
+     "tax_ci95": [
+      0.008144495733994008,
+      0.013209063988101429
+     ],
+     "rank_orth": 23,
+     "rank_no_diac": 19,
+     "inserted_marks_per_100_letters": 1.2997562956945572
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.28911174785100285,
+     "cer_orth": 0.2736933629601005,
+     "cer_no_diac": 0.2725776788307037,
+     "diacritic_tax": 0.0011156841293967767,
+     "tax_ci95": [
+      0.0007686698494177517,
+      0.0028086957456876153
+     ],
+     "rank_orth": 19,
+     "rank_no_diac": 20,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.2894937917860554,
+     "cer_orth": 0.27378997198338323,
+     "cer_no_diac": 0.2726744748814248,
+     "diacritic_tax": 0.001115497101958407,
+     "tax_ci95": [
+      0.0007039649762355222,
+      0.002787132247527702
+     ],
+     "rank_orth": 20,
+     "rank_no_diac": 21,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/qwen3-vl-8b-bf16",
+     "cer_raw": 0.4731614135625597,
+     "cer_orth": 0.45976234180272435,
+     "cer_no_diac": 0.2766431129609912,
+     "diacritic_tax": 0.18311922884173315,
+     "tax_ci95": [
+      0.15236561298092488,
+      0.21875252224517186
+     ],
+     "rank_orth": 28,
+     "rank_no_diac": 22,
+     "inserted_marks_per_100_letters": 21.76685833768949
+    },
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.2961795606494747,
+     "cer_orth": 0.27977973142691526,
+     "cer_no_diac": 0.27867583002613494,
+     "diacritic_tax": 0.001103901400780316,
+     "tax_ci95": [
+      0.0006920967011927208,
+      0.0028855606718297335
+     ],
+     "rank_orth": 21,
+     "rank_no_diac": 23,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.2961795606494747,
+     "cer_orth": 0.27977973142691526,
+     "cer_no_diac": 0.27867583002613494,
+     "diacritic_tax": 0.001103901400780316,
+     "tax_ci95": [
+      0.0006669967918167105,
+      0.0029063798198002045
+     ],
+     "rank_orth": 22,
+     "rank_no_diac": 24,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/fanar-oryx-7b-bf16",
+     "cer_raw": 0.40792741165234003,
+     "cer_orth": 0.39049367210897495,
+     "cer_no_diac": 0.3038428032136289,
+     "diacritic_tax": 0.08665086889534607,
+     "tax_ci95": [
+      0.0617147637278114,
+      0.11360082463246791
+     ],
+     "rank_orth": 27,
+     "rank_no_diac": 25,
+     "inserted_marks_per_100_letters": 11.928386540120794
+    },
+    {
+     "run": "vlm/exp3090-paligemma2-3b-ft-bf16",
+     "cer_raw": 0.3926456542502388,
+     "cer_orth": 0.37426335619746887,
+     "cer_no_diac": 0.3678249927402962,
+     "diacritic_tax": 0.006438363457172691,
+     "tax_ci95": [
+      0.005268089798489823,
+      0.00955463231959646
+     ],
+     "rank_orth": 24,
+     "rank_no_diac": 26,
+     "inserted_marks_per_100_letters": 0.8167907361455748
+    },
+    {
+     "run": "crnn+llm/e8-qwen3-1.7b",
+     "cer_raw": 0.4055396370582617,
+     "cer_orth": 0.38614626606125013,
+     "cer_no_diac": 0.3852482818700997,
+     "diacritic_tax": 0.0008979841911504471,
+     "tax_ci95": [
+      0.0006547809765547051,
+      0.0026876818772831406
+     ],
+     "rank_orth": 25,
+     "rank_no_diac": 27,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn+llm/e8-qwen3-0.6b",
+     "cer_raw": 0.40773638968481374,
+     "cer_orth": 0.39020384503912664,
+     "cer_no_diac": 0.38921691994966606,
+     "diacritic_tax": 0.0009869250894605774,
+     "tax_ci95": [
+      0.0006957884510638169,
+      0.0029519577403080703
+     ],
+     "rank_orth": 26,
+     "rank_no_diac": 28,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/qwen3-vl-4b-bf16",
+     "cer_raw": 0.9828080229226361,
+     "cer_orth": 0.9611631726403246,
+     "cer_no_diac": 0.5433162326977059,
+     "diacritic_tax": 0.4178469399426187,
+     "tax_ci95": [
+      0.3329766611250963,
+      0.5309731849978561
+     ],
+     "rank_orth": 31,
+     "rank_no_diac": 29,
+     "inserted_marks_per_100_letters": 39.36067161769454
+    },
+    {
+     "run": "vlm/paligemma2-3b-bf16",
+     "cer_raw": 0.7005730659025788,
+     "cer_orth": 0.6843783209351754,
+     "cer_no_diac": 0.6547284870777272,
+     "diacritic_tax": 0.029649833857448127,
+     "tax_ci95": [
+      0.015247596139462803,
+      0.04763651877133104
+     ],
+     "rank_orth": 29,
+     "rank_no_diac": 30,
+     "inserted_marks_per_100_letters": 6.471030850263356
+    },
+    {
+     "run": "vlm/gemini-flash",
+     "cer_raw": 0.7723973256924547,
+     "cer_orth": 0.7677519080282098,
+     "cer_no_diac": 0.7661407414577486,
+     "diacritic_tax": 0.001611166570461231,
+     "tax_ci95": [
+      0.0015875592925107087,
+      0.0046800645399674365
+     ],
+     "rank_orth": 30,
+     "rank_no_diac": 31,
+     "inserted_marks_per_100_letters": 1.4542343883661248
+    },
+    {
+     "run": "vlm/pixtral-12b",
+     "cer_raw": 1.2241642788920726,
+     "cer_orth": 1.217756738479374,
+     "cer_no_diac": 0.7842416029425999,
+     "diacritic_tax": 0.433515135536774,
+     "tax_ci95": [
+      0.3889547656806064,
+      0.48703545742543575
+     ],
+     "rank_orth": 32,
+     "rank_no_diac": 32,
+     "inserted_marks_per_100_letters": 60.53635133472752
+    }
+   ]
+  },
+  "muharaf_lines": {
+   "policy": "sparse",
+   "systems": 5,
+   "lines": 1334,
+   "lines_with_gt_marks": 0.3583208395802099,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    1.0,
+    1.0
+   ],
+   "spearman_rho": 1.0,
+   "rho_ci95": [
+    1.0,
+    1.0
+   ],
+   "max_rank_move": 0,
+   "systems_moving_ge2": [],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": true,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": true,
+   "per_system": [
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.17816017781601778,
+     "cer_orth": 0.13287440122917482,
+     "cer_no_diac": 0.12050937108264285,
+     "diacritic_tax": 0.012365030146531966,
+     "tax_ci95": [
+      0.013008845123633822,
+      0.015492466247374407
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.17816017781601778,
+     "cer_orth": 0.13287440122917482,
+     "cer_no_diac": 0.12050937108264285,
+     "diacritic_tax": 0.012365030146531966,
+     "tax_ci95": [
+      0.012929418595884513,
+      0.01522612655941811
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.17972323797232378,
+     "cer_orth": 0.13462175759949388,
+     "cer_no_diac": 0.12245085149967896,
+     "diacritic_tax": 0.012170906099814915,
+     "tax_ci95": [
+      0.012739097894652014,
+      0.015138675632576802
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.1810711981071198,
+     "cer_orth": 0.13605278221311723,
+     "cer_no_diac": 0.12397957623750268,
+     "diacritic_tax": 0.012073205975614551,
+     "tax_ci95": [
+      0.01268949842802279,
+      0.015020949957382351
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/qari-ocr-0.2",
+     "cer_raw": 0.801190220119022,
+     "cer_orth": 0.7758714186726117,
+     "cer_no_diac": 0.714021463295319,
+     "diacritic_tax": 0.061849955377292654,
+     "tax_ci95": [
+      0.06250448225468165,
+      0.0829175055514014
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 12.066211703208944
+    }
+   ]
+  },
+  "nakba_blind": {
+   "policy": "sparse",
+   "systems": 20,
+   "lines": 2671,
+   "lines_with_gt_marks": 0.040434294271808315,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    0.9788359788359788,
+    1.0
+   ],
+   "spearman_rho": 0.9999999999999999,
+   "rho_ci95": [
+    0.9954853273137695,
+    0.9999999999999999
+   ],
+   "max_rank_move": 0,
+   "systems_moving_ge2": [],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": true,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": true,
+   "per_system": [
+    {
+     "run": "vlm/nakba-misraj-baseer",
+     "cer_raw": 0.09600465251526606,
+     "cer_orth": 0.06998456609685944,
+     "cer_no_diac": 0.0690795248405407,
+     "diacritic_tax": 0.0009050412563187393,
+     "tax_ci95": [
+      0.0007551835185453969,
+      0.00121984275490593
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.022715045728973638
+    },
+    {
+     "run": "vlm/nakba-misraj-baseer-contest",
+     "cer_raw": 0.09613841232916545,
+     "cer_orth": 0.07023595164043682,
+     "cer_no_diac": 0.06933114869214115,
+     "diacritic_tax": 0.0009048029482956743,
+     "tax_ci95": [
+      0.0007665870859511431,
+      0.0011990653195306452
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.02333624537762832
+    },
+    {
+     "run": "crnn/shape_s3",
+     "cer_raw": 0.1371968595521954,
+     "cer_orth": 0.11163856605009004,
+     "cer_no_diac": 0.11084323248873544,
+     "diacritic_tax": 0.000795333561354597,
+     "tax_ci95": [
+      0.000677231542643464,
+      0.0011554274552225624
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.002416173867871532
+    },
+    {
+     "run": "crnn/combo",
+     "cer_raw": 0.13913928467577785,
+     "cer_orth": 0.11335149545167551,
+     "cer_no_diac": 0.11258704429750131,
+     "diacritic_tax": 0.0007644511541742005,
+     "tax_ci95": [
+      0.0006666701595788014,
+      0.0010966482337463718
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s2",
+     "cer_raw": 0.13882523989531842,
+     "cer_orth": 0.11336318780253958,
+     "cer_no_diac": 0.1125928960149804,
+     "diacritic_tax": 0.0007702917875591769,
+     "tax_ci95": [
+      0.0006746902589747483,
+      0.0011081469233085088
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo_s2",
+     "cer_raw": 0.13956964233788893,
+     "cer_orth": 0.11408226738067956,
+     "cer_no_diac": 0.11331850898238634,
+     "diacritic_tax": 0.0007637583982932211,
+     "tax_ci95": [
+      0.0006760980760178727,
+      0.0011420622933902658
+     ],
+     "rank_orth": 6,
+     "rank_no_diac": 6,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape",
+     "cer_raw": 0.14070369293399243,
+     "cer_orth": 0.11473703902906718,
+     "cer_no_diac": 0.1139739013400433,
+     "diacritic_tax": 0.0007631376890238767,
+     "tax_ci95": [
+      0.0006562891246518504,
+      0.0011441003442014513
+     ],
+     "rank_orth": 7,
+     "rank_no_diac": 7,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl",
+     "cer_raw": 0.14114568188426868,
+     "cer_orth": 0.11521642541449384,
+     "cer_no_diac": 0.11444203873836971,
+     "diacritic_tax": 0.0007743866761241308,
+     "tax_ci95": [
+      0.0006539898170668682,
+      0.0011699219286394732
+     ],
+     "rank_orth": 8,
+     "rank_no_diac": 8,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape_s2",
+     "cer_raw": 0.14084326839197442,
+     "cer_orth": 0.1152807333442462,
+     "cer_no_diac": 0.11451225934811868,
+     "diacritic_tax": 0.0007684739961275194,
+     "tax_ci95": [
+      0.0006789316255656795,
+      0.001149478622635089
+     ],
+     "rank_orth": 9,
+     "rank_no_diac": 9,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s3",
+     "cer_raw": 0.14102936900261703,
+     "cer_orth": 0.11571919650164862,
+     "cer_no_diac": 0.11494528644157061,
+     "diacritic_tax": 0.0007739100600780147,
+     "tax_ci95": [
+      0.0006869744855751759,
+      0.0011527650259265624
+     ],
+     "rank_orth": 10,
+     "rank_no_diac": 10,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo_s3",
+     "cer_raw": 0.14132596685082874,
+     "cer_orth": 0.11603488997497836,
+     "cer_no_diac": 0.11528468605535724,
+     "diacritic_tax": 0.0007502039196211202,
+     "tax_ci95": [
+      0.0006460706645212668,
+      0.0010822027261985087
+     ],
+     "rank_orth": 11,
+     "rank_no_diac": 11,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base_s3",
+     "cer_raw": 0.14166327420761848,
+     "cer_orth": 0.11646750695694877,
+     "cer_no_diac": 0.1156826028439347,
+     "diacritic_tax": 0.0007849041130140733,
+     "tax_ci95": [
+      0.0006722747321972921,
+      0.0011420188346554089
+     ],
+     "rank_orth": 12,
+     "rank_no_diac": 12,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base",
+     "cer_raw": 0.14227391683628962,
+     "cer_orth": 0.11649089165867689,
+     "cer_no_diac": 0.1157411200187255,
+     "diacritic_tax": 0.0007497716399513937,
+     "tax_ci95": [
+      0.0006269573726832116,
+      0.0010791793779515093
+     ],
+     "rank_orth": 13,
+     "rank_no_diac": 13,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/rep2",
+     "cer_raw": 0.142867112532713,
+     "cer_orth": 0.11727427916656923,
+     "cer_no_diac": 0.11651939844344315,
+     "diacritic_tax": 0.0007548807231260724,
+     "tax_ci95": [
+      0.0006626209037197805,
+      0.001091296974186952
+     ],
+     "rank_orth": 14,
+     "rank_no_diac": 14,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.14251817388775806,
+     "cer_orth": 0.11749058765755442,
+     "cer_no_diac": 0.11674176370764819,
+     "diacritic_tax": 0.0007488239499062327,
+     "tax_ci95": [
+      0.0006399851593460457,
+      0.0010964437859306718
+     ],
+     "rank_orth": 15,
+     "rank_no_diac": 15,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.14251817388775806,
+     "cer_orth": 0.11749058765755442,
+     "cer_no_diac": 0.11674176370764819,
+     "diacritic_tax": 0.0007488239499062327,
+     "tax_ci95": [
+      0.0006625720761489895,
+      0.0010752618483761077
+     ],
+     "rank_orth": 16,
+     "rank_no_diac": 16,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/inkcrop",
+     "cer_raw": 0.14337888921198022,
+     "cer_orth": 0.11761920351705914,
+     "cer_no_diac": 0.11684709462227164,
+     "diacritic_tax": 0.0007721088947875016,
+     "tax_ci95": [
+      0.0006799530071484231,
+      0.0011085560517146483
+     ],
+     "rank_orth": 17,
+     "rank_no_diac": 17,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.14418144809537656,
+     "cer_orth": 0.11857213011248041,
+     "cer_no_diac": 0.11782433144127802,
+     "diacritic_tax": 0.0007477986712023932,
+     "tax_ci95": [
+      0.0006556350588989546,
+      0.001124096175506669
+     ],
+     "rank_orth": 18,
+     "rank_no_diac": 18,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.1463855772026752,
+     "cer_orth": 0.12082290765381287,
+     "cer_no_diac": 0.12007724267072385,
+     "diacritic_tax": 0.00074566498308902,
+     "tax_ci95": [
+      0.0006428978251541274,
+      0.0010934738759956547
+     ],
+     "rank_orth": 19,
+     "rank_no_diac": 19,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/geomaug",
+     "cer_raw": 0.15015411456818842,
+     "cer_orth": 0.12481584547389098,
+     "cer_no_diac": 0.12403300368658202,
+     "diacritic_tax": 0.0007828417873089605,
+     "tax_ci95": [
+      0.0006850323345624394,
+      0.001139213577219753
+     ],
+     "rank_orth": 20,
+     "rank_no_diac": 20,
+     "inserted_marks_per_100_letters": 0.0
+    }
+   ]
+  },
+  "nakba_lines": {
+   "policy": "sparse",
+   "systems": 18,
+   "lines": 2095,
+   "lines_with_gt_marks": 0.021957040572792363,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    0.9864338731779075,
+    1.0
+   ],
+   "spearman_rho": 1.0,
+   "rho_ci95": [
+    0.9974161538657828,
+    1.0
+   ],
+   "max_rank_move": 0,
+   "systems_moving_ge2": [],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": true,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": true,
+   "per_system": [
+    {
+     "run": "crnn/combo",
+     "cer_raw": 0.13510817797208902,
+     "cer_orth": 0.10412033682316783,
+     "cer_no_diac": 0.10372555391678957,
+     "diacritic_tax": 0.0003947829063782604,
+     "tax_ci95": [
+      0.00030579435404901923,
+      0.000572685026780534
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape_s3",
+     "cer_raw": 0.13479232987839848,
+     "cer_orth": 0.104536784854618,
+     "cer_no_diac": 0.10412552391903941,
+     "diacritic_tax": 0.00041126093557858345,
+     "tax_ci95": [
+      0.00032765827455493585,
+      0.0006125283485293084
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.0017156631466977773
+    },
+    {
+     "run": "crnn/combo_s2",
+     "cer_raw": 0.13728586746016574,
+     "cer_orth": 0.10682724902759384,
+     "cer_no_diac": 0.10644201684873635,
+     "diacritic_tax": 0.0003852321788574975,
+     "tax_ci95": [
+      0.00030260449480401015,
+      0.0005645165741563845
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl",
+     "cer_raw": 0.13876536642534765,
+     "cer_orth": 0.10792667183062225,
+     "cer_no_diac": 0.10754193435492337,
+     "diacritic_tax": 0.00038473747569887917,
+     "tax_ci95": [
+      0.0003081138744982905,
+      0.0005788524326361049
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape",
+     "cer_raw": 0.138890043304436,
+     "cer_orth": 0.10795998767313827,
+     "cer_no_diac": 0.1075752651884442,
+     "diacritic_tax": 0.00038472248469408055,
+     "tax_ci95": [
+      0.00031393880215237625,
+      0.0005825294338731939
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/combo_s3",
+     "cer_raw": 0.1384744537074748,
+     "cer_orth": 0.10810158000383133,
+     "cer_no_diac": 0.10770025581414727,
+     "diacritic_tax": 0.0004013241896840547,
+     "tax_ci95": [
+      0.0003164693354108981,
+      0.0005985128220746278
+     ],
+     "rank_orth": 6,
+     "rank_no_diac": 6,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s3",
+     "cer_raw": 0.13849938908329246,
+     "cer_orth": 0.10820985649200836,
+     "cer_no_diac": 0.10780858102308993,
+     "diacritic_tax": 0.00040127546891842447,
+     "tax_ci95": [
+      0.0003135275253733706,
+      0.000591693510095614
+     ],
+     "rank_orth": 7,
+     "rank_no_diac": 7,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/randctl_s2",
+     "cer_raw": 0.13874874284146918,
+     "cer_orth": 0.10845972531087845,
+     "cer_no_diac": 0.10807522769125649,
+     "diacritic_tax": 0.0003844976196219624,
+     "tax_ci95": [
+      0.000304449888569768,
+      0.0005696113024148456
+     ],
+     "rank_orth": 8,
+     "rank_no_diac": 8,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/shape_s2",
+     "cer_raw": 0.1390313437674028,
+     "cer_orth": 0.10866794932660354,
+     "cer_no_diac": 0.10828354540076161,
+     "diacritic_tax": 0.0003844039258419224,
+     "tax_ci95": [
+      0.0003145183219045535,
+      0.0005806801707081687
+     ],
+     "rank_orth": 9,
+     "rank_no_diac": 9,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.13913939706261272,
+     "cer_orth": 0.10903442359427967,
+     "cer_no_diac": 0.10864185186111042,
+     "diacritic_tax": 0.00039257173316925575,
+     "tax_ci95": [
+      0.00030700474891332945,
+      0.000581493112536447
+     ],
+     "rank_orth": 10,
+     "rank_no_diac": 10,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.13913939706261272,
+     "cer_orth": 0.10903442359427967,
+     "cer_no_diac": 0.10864185186111042,
+     "diacritic_tax": 0.00039257173316925575,
+     "tax_ci95": [
+      0.0003206864048927999,
+      0.0005720374369293616
+     ],
+     "rank_orth": 11,
+     "rank_no_diac": 11,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base",
+     "cer_raw": 0.14051915452452393,
+     "cer_orth": 0.10941755578321381,
+     "cer_no_diac": 0.10902515644659984,
+     "diacritic_tax": 0.0003923993366139744,
+     "tax_ci95": [
+      0.0003072693919674716,
+      0.0005829825023031268
+     ],
+     "rank_orth": 12,
+     "rank_no_diac": 12,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/inkcrop",
+     "cer_raw": 0.14027811255828643,
+     "cer_orth": 0.10963410875956789,
+     "cer_no_diac": 0.10925847228124558,
+     "diacritic_tax": 0.00037563647832231095,
+     "tax_ci95": [
+      0.0002892473569275386,
+      0.0005588107628080167
+     ],
+     "rank_orth": 13,
+     "rank_no_diac": 13,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.14070201394718687,
+     "cer_orth": 0.11003389886976005,
+     "cer_no_diac": 0.109641776866735,
+     "diacritic_tax": 0.0003921220030250472,
+     "tax_ci95": [
+      0.0003119915980801511,
+      0.0005856743575185418
+     ],
+     "rank_orth": 14,
+     "rank_no_diac": 14,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/base_s3",
+     "cer_raw": 0.14047759556482783,
+     "cer_orth": 0.11051697858624222,
+     "cer_no_diac": 0.11012507395278688,
+     "diacritic_tax": 0.0003919046334553422,
+     "tax_ci95": [
+      0.0003091817702470462,
+      0.0005720923648444622
+     ],
+     "rank_orth": 15,
+     "rank_no_diac": 15,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/rep2",
+     "cer_raw": 0.1412921511748718,
+     "cer_orth": 0.11092509765706338,
+     "cer_no_diac": 0.1105250439550367,
+     "diacritic_tax": 0.00040005370202667034,
+     "tax_ci95": [
+      0.0003254214277491318,
+      0.0005931210622467345
+     ],
+     "rank_orth": 16,
+     "rank_no_diac": 16,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.14317061615313645,
+     "cer_orth": 0.11245762641279995,
+     "cer_no_diac": 0.1120665950053746,
+     "diacritic_tax": 0.00039103140742535736,
+     "tax_ci95": [
+      0.00031898701879161124,
+      0.0005828710702821181
+     ],
+     "rank_orth": 17,
+     "rank_no_diac": 17,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/geomaug",
+     "cer_raw": 0.1488558818395658,
+     "cer_orth": 0.11864604416014926,
+     "cer_no_diac": 0.11825779733186678,
+     "diacritic_tax": 0.00038824682828247914,
+     "tax_ci95": [
+      0.00030061952312634396,
+      0.00057685216911489
+     ],
+     "rank_orth": 18,
+     "rank_no_diac": 18,
+     "inserted_marks_per_100_letters": 0.0
+    }
+   ]
+  },
+  "rasam1": {
+   "policy": "sparse",
+   "systems": 6,
+   "lines": 714,
+   "lines_with_gt_marks": 0.10364145658263306,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    0.9258200997725515,
+    1.0
+   ],
+   "spearman_rho": 1.0,
+   "rho_ci95": [
+    0.9548637106322311,
+    1.0
+   ],
+   "max_rank_move": 0,
+   "systems_moving_ge2": [],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": true,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": true,
+   "per_system": [
+    {
+     "run": "vlm/suite-v1-qwen3vl4b-ft-bf16",
+     "cer_raw": 0.26728975776993247,
+     "cer_orth": 0.2604451705125587,
+     "cer_no_diac": 0.25892802324867487,
+     "diacritic_tax": 0.0015171472638838557,
+     "tax_ci95": [
+      0.001599139319624685,
+      0.002548102470503682
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.056761122996987295
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.43240209783074507,
+     "cer_orth": 0.42760874004492544,
+     "cer_no_diac": 0.4267850930151649,
+     "diacritic_tax": 0.0008236470297605658,
+     "tax_ci95": [
+      0.0013068875297254745,
+      0.0022211059258006494
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.4349121482358223,
+     "cer_orth": 0.4299366959362875,
+     "cer_no_diac": 0.4291181466549332,
+     "diacritic_tax": 0.0008185492813543305,
+     "tax_ci95": [
+      0.0013459301927580445,
+      0.0022529098818936514
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.4367283635695774,
+     "cer_orth": 0.4318153971819481,
+     "cer_no_diac": 0.4311442195526267,
+     "diacritic_tax": 0.0006711776293213956,
+     "tax_ci95": [
+      0.0011845303997194056,
+      0.002079242189432645
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.4367283635695774,
+     "cer_orth": 0.4318153971819481,
+     "cer_no_diac": 0.4311442195526267,
+     "diacritic_tax": 0.0006711776293213956,
+     "tax_ci95": [
+      0.0011826253799763484,
+      0.0020618032036410316
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/qwen3-vl-4b-bf16",
+     "cer_raw": 1.5095402322306797,
+     "cer_orth": 1.4784970390034715,
+     "cer_no_diac": 0.8387123181139103,
+     "diacritic_tax": 0.6397847208895612,
+     "tax_ci95": [
+      0.5922273635182924,
+      0.7015302826311924
+     ],
+     "rank_orth": 6,
+     "rank_no_diac": 6,
+     "inserted_marks_per_100_letters": 58.348003996764525
+    }
+   ]
+  },
+  "rasam2": {
+   "policy": "undiacritised",
+   "systems": 8,
+   "lines": 352,
+   "lines_with_gt_marks": 0.005681818181818182,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    0.9259259259259258,
+    1.0
+   ],
+   "spearman_rho": 0.9999999999999998,
+   "rho_ci95": [
+    0.9759036144578312,
+    0.9999999999999998
+   ],
+   "max_rank_move": 0,
+   "systems_moving_ge2": [],
+   "top5_set_changed": false,
+   "marks_immaterial_to_ranking": true,
+   "headline_rung": "no_diacritics",
+   "marks_kept_quotable": true,
+   "per_system": [
+    {
+     "run": "vlm/suite-v1-qwen3vl4b-ft-bf16",
+     "cer_raw": 0.3295915479671729,
+     "cer_orth": 0.32192654913267477,
+     "cer_no_diac": 0.320633419995273,
+     "diacritic_tax": 0.0012931291374017606,
+     "tax_ci95": [
+      0.0005527120379642548,
+      0.002427007142583559
+     ],
+     "rank_orth": 1,
+     "rank_no_diac": 1,
+     "inserted_marks_per_100_letters": 0.19149156402028775
+    },
+    {
+     "run": "crnn/std_s1",
+     "cer_raw": 0.46736156966323933,
+     "cer_orth": 0.4604149926738195,
+     "cer_no_diac": 0.46036398014653745,
+     "diacritic_tax": 5.101252728206829e-05,
+     "tax_ci95": [
+      0.0,
+      0.000232900624035278
+     ],
+     "rank_orth": 2,
+     "rank_no_diac": 2,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s1-best",
+     "cer_raw": 0.46736156966323933,
+     "cer_orth": 0.4604149926738195,
+     "cer_no_diac": 0.46036398014653745,
+     "diacritic_tax": 5.101252728206829e-05,
+     "tax_ci95": [
+      0.0,
+      0.00023930702043519378
+     ],
+     "rank_orth": 3,
+     "rank_no_diac": 3,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0",
+     "cer_raw": 0.46783322328082255,
+     "cer_orth": 0.4618802287658931,
+     "cer_no_diac": 0.4618293547624675,
+     "diacritic_tax": 5.087400342557169e-05,
+     "tax_ci95": [
+      0.0,
+      0.00024058998989521344
+     ],
+     "rank_orth": 4,
+     "rank_no_diac": 4,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "crnn/std_s0-best",
+     "cer_raw": 0.46967267238939725,
+     "cer_orth": 0.4638181216618613,
+     "cer_no_diac": 0.46376743086740724,
+     "diacritic_tax": 5.069079445407798e-05,
+     "tax_ci95": [
+      0.0,
+      0.00024151124574341024
+     ],
+     "rank_orth": 5,
+     "rank_no_diac": 5,
+     "inserted_marks_per_100_letters": 0.0
+    },
+    {
+     "run": "vlm/exp3090-paligemma2-3b-ft-bf16",
+     "cer_raw": 0.5520233940194321,
+     "cer_orth": 0.5430826676750011,
+     "cer_no_diac": 0.5316000945402978,
+     "diacritic_tax": 0.011482573134703355,
+     "tax_ci95": [
+      0.008588062282502818,
+      0.014947885426684442
+     ],
+     "rank_orth": 6,
+     "rank_no_diac": 6,
+     "inserted_marks_per_100_letters": 1.5167642362959022
+    },
+    {
+     "run": "vlm/paligemma2-3b-bf16",
+     "cer_raw": 0.796622960098104,
+     "cer_orth": 0.7879661577728412,
+     "cer_no_diac": 0.7454029780193807,
+     "diacritic_tax": 0.04256317975346047,
+     "tax_ci95": [
+      0.030821957478390692,
+      0.053269571726317494
+     ],
+     "rank_orth": 7,
+     "rank_no_diac": 7,
+     "inserted_marks_per_100_letters": 12.911896465903435
+    },
+    {
+     "run": "vlm/qwen3-vl-4b-bf16",
+     "cer_raw": 1.4026978586925762,
+     "cer_orth": 1.3766602070236802,
+     "cer_no_diac": 0.8103048924604113,
+     "diacritic_tax": 0.5663553145632689,
+     "tax_ci95": [
+      0.49185609036407363,
+      0.6378534196537218
+     ],
+     "rank_orth": 8,
+     "rank_no_diac": 8,
+     "inserted_marks_per_100_letters": 55.97271517302573
+    }
+   ]
+  }
+ },
+ "R2.7_leaderboard_view": {
+  "kitab_khatt": {
+   "systems": 38,
+   "kendall_tau": 0.8858773181169758,
+   "tau_ci95": [
+    0.849217638691323,
+    0.9203413940256047
+   ],
+   "max_rank_move": 22,
+   "marks_immaterial_to_ranking": false,
+   "movers": [
+    [
+     "vlm/qwen3-vl-8b-bf16",
+     28,
+     6
+    ],
+    [
+     "vlm/fanar-oryx-7b-bf16",
+     27,
+     21
+    ],
+    [
+     "vlm/qwen3-vl-4b-bf16",
+     35,
+     30
+    ],
+    [
+     "crnn/shape_s3",
+     6,
+     9
+    ],
+    [
+     "vlm/exp3090-qwen3vl4b-ft-bf16",
+     8,
+     5
+    ],
+    [
+     "crnn+llm/e8-qwen3-0.6b",
+     26,
+     28
+    ],
+    [
+     "crnn+llm/e8-qwen3-1.7b",
+     25,
+     27
+    ],
+    [
+     "crnn/shape_s2",
+     5,
+     7
+    ]
+   ]
+  },
+  "muharaf_lines": {
+   "systems": 28,
+   "kendall_tau": 0.881806886493226,
+   "tau_ci95": [
+    0.8730158730158729,
+    0.9682539682539683
+   ],
+   "max_rank_move": 9,
+   "marks_immaterial_to_ranking": false,
+   "movers": [
+    [
+     "crnn/std_s0",
+     8,
+     17
+    ],
+    [
+     "crnn/std_s0-best",
+     6,
+     13
+    ],
+    [
+     "crnn/shape",
+     14,
+     10
+    ],
+    [
+     "crnn/shape_s2",
+     9,
+     5
+    ],
+    [
+     "crnn/combo",
+     7,
+     4
+    ],
+    [
+     "crnn/combo_s3",
+     10,
+     8
+    ],
+    [
+     "crnn/randctl_s3",
+     11,
+     9
+    ],
+    [
+     "crnn/std_s1",
+     5,
+     7
+    ]
+   ]
+  },
+  "nakba_blind": {
+   "systems": 22,
+   "kendall_tau": 1.0,
+   "tau_ci95": [
+    0.9653679653679654,
+    1.0
+   ],
+   "max_rank_move": 0,
+   "marks_immaterial_to_ranking": true,
+   "movers": []
+  },
+  "nakba_lines": {
+   "systems": 31,
+   "kendall_tau": 0.9913793103448277,
+   "tau_ci95": [
+    0.9784946236559141,
+    0.9956989247311829
+   ],
+   "max_rank_move": 1,
+   "marks_immaterial_to_ranking": true,
+   "movers": [
+    [
+     "vlm/fanar-oryx-7b-bf16",
+     28,
+     29
+    ],
+    [
+     "vlm/paligemma2-3b-bf16",
+     30,
+     31
+    ],
+    [
+     "vlm/qwen3-vl-4b-bf16",
+     31,
+     30
+    ],
+    [
+     "vlm/qwen3-vl-8b-bf16",
+     29,
+     28
+    ]
+   ]
+  },
+  "rasam1": {
+   "systems": 30,
+   "kendall_tau": 0.9896200354271276,
+   "tau_ci95": [
+    0.9586206896551724,
+    0.9908045977011495
+   ],
+   "max_rank_move": 2,
+   "marks_immaterial_to_ranking": true,
+   "movers": [
+    [
+     "vlm/qwen3-vl-8b-bf16",
+     29,
+     27
+    ],
+    [
+     "crnn/base_s3",
+     10,
+     11
+    ],
+    [
+     "crnn/inkcrop",
+     11,
+     10
+    ],
+    [
+     "vlm/fanar-oryx-7b-bf16",
+     27,
+     28
+    ],
+    [
+     "vlm/paligemma2-3b-bf16",
+     28,
+     29
+    ]
+   ]
+  },
+  "rasam2": {
+   "systems": 14,
+   "kendall_tau": 0.8666666666666667,
+   "tau_ci95": [
+    0.7796703296703297,
+    0.9120879120879122
+   ],
+   "max_rank_move": 3,
+   "marks_immaterial_to_ranking": false,
+   "movers": [
+    [
+     "vlm/baseer-nakba-bf16",
+     8,
+     11
+    ],
+    [
+     "vlm/qwen3-vl-8b-bf16",
+     13,
+     10
+    ],
+    [
+     "vlm/exp3090-paligemma2-3b-ft-bf16",
+     10,
+     12
+    ],
+    [
+     "vlm/fanar-oryx-7b-bf16",
+     11,
+     9
+    ],
+    [
+     "vlm/exp3090-baseer-nakba-ft-bf16",
+     9,
+     8
+    ],
+    [
+     "vlm/paligemma2-3b-bf16",
+     12,
+     13
+    ]
+   ]
+  }
+ },
+ "sparse_marks_note": {
+  "muharaf_test": {
+   "lines": 1334,
+   "share_lines_with_marks": 0.3583208395802099,
+   "harakat_per_100_letters": 1.8479670455412311,
+   "mean_coverage_of_marked_lines": 0.04132793978393331,
+   "levels": {
+    "sparse": 0.3538230884557721,
+    "none": 0.6416791604197901,
+    "partial": 0.004497751124437781
+   },
+   "policy": "sparse"
+  },
+  "muharaf_train_raw": {
+   "lines": 23161,
+   "share_lines_with_marks": 0.33936358533742067,
+   "harakat_per_100_letters": 1.8258525194869655,
+   "mean_coverage_of_marked_lines": 0.04559865058345164,
+   "levels": {
+    "none": 0.6609818228919304,
+    "sparse": 0.3288286343422132,
+    "full": 0.0002590561720132982,
+    "partial": 0.009930486593843098
+   },
+   "policy": "sparse"
+  },
+  "text": "Muharaf labels carry sparse marks (see share_lines_with_marks); the CRNN / aligner training targets strip them (clean()), so CRNN readings never carry marks; the marks-kept rung charges every CRNN the GT marks."
+ }
+}

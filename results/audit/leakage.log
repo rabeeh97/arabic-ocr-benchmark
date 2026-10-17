@@ -1,0 +1,194 @@
+{'muharaf_train': 23161, 'nakba_train': 15962, 'khatt_train': 5635, 'rasam1_train': 4692}
+lsh done
+hashes done {'muharaf_train': 22253, 'nakba_train': 15767, 'khatt_train': 5635, 'rasam1_train': 4692}
+{'positive_pairs': 89, 'positive_hamming': [0, 2, 8], 'negative_hamming_p0.5_p50': [167.995, 243.0], 'threshold': 9, 'positives_recalled': 1.0, 'random_pairs_below_threshold': 0.0}
+{
+ "kitab_khatt": {
+  "lines": 200,
+  "exact_in_home_train": 0.435,
+  "near_in_home_train": 0.01,
+  "image_in_home_train": 0.385,
+  "leaked_any": 0.445,
+  "text_dup_within_set": 0.1,
+  "image_dup_within_panel": 0.06
+ },
+ "kitab_khatt_full": {
+  "lines": 1038,
+  "exact_in_home_train": 0.7697495183044316,
+  "near_in_home_train": 0.17822736030828518,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.9479768786127167,
+  "text_dup_within_set": 0.649325626204239,
+  "image_dup_within_panel": 0.01348747591522158
+ },
+ "muharaf_lines": {
+  "lines": 1334,
+  "exact_in_home_train": 0.0727136431784108,
+  "near_in_home_train": 0.0022488755622188904,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.07496251874062969,
+  "text_dup_within_set": 0.03223388305847077,
+  "image_dup_within_panel": 0.0
+ },
+ "nakba_blind": {
+  "lines": 2671,
+  "exact_in_home_train": 0.14488955447397978,
+  "near_in_home_train": 0.017970797454137027,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.16286035192811682,
+  "text_dup_within_set": 0.10632721827031075,
+  "image_dup_within_panel": 0.005990265818045676
+ },
+ "nakba_lines": {
+  "lines": 2095,
+  "exact_in_home_train": 0.17136038186157518,
+  "near_in_home_train": 0.011455847255369928,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.18281622911694512,
+  "text_dup_within_set": 0.12601431980906921,
+  "image_dup_within_panel": 0.0
+ },
+ "rasam1": {
+  "lines": 734,
+  "exact_in_home_train": 0.010899182561307902,
+  "near_in_home_train": 0.0,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.010899182561307902,
+  "text_dup_within_set": 0.005449591280653951,
+  "image_dup_within_panel": 0.0
+ },
+ "rasam2": {
+  "lines": 372,
+  "exact_in_home_train": 0.005376344086021506,
+  "near_in_home_train": 0.0,
+  "image_in_home_train": 0.0,
+  "leaked_any": 0.005376344086021506,
+  "text_dup_within_set": 0.005376344086021506,
+  "image_dup_within_panel": 0.01881720430107527
+ }
+}
+{
+ "nakba_blind": {
+  "in_domain_runs": [
+   "vlm/nakba-misraj-baseer",
+   "vlm/nakba-misraj-baseer-contest"
+  ],
+  "out_domain_runs": 20,
+  "lines": 2671,
+  "leaked_lines": 435,
+  "gap_leaked": -0.3654516377402364,
+  "gap_clean": -0.05849107386202611,
+  "did_length_matched": -0.20113509039346558,
+  "ci95": [
+   -0.24192791280120599,
+   -0.1583279619922287
+  ],
+  "p": 1.7732744627766185e-20,
+  "q_bh": 7.093097851106474e-20,
+  "survives_fdr": true,
+  "decision": "report in-domain headline on clean lines only"
+ },
+ "nakba_lines": {
+  "in_domain_runs": [
+   "vlm/baseer-nakba-bf16",
+   "vlm/exp3090-baseer-nakba-ft-bf16"
+  ],
+  "out_domain_runs": 29,
+  "lines": 337,
+  "leaked_lines": 59,
+  "gap_leaked": -0.38485659201991074,
+  "gap_clean": -0.17851845355239718,
+  "did_length_matched": 0.15119956521066447,
+  "ci95": [
+   0.05337591987511,
+   0.25181315500323653
+  ],
+  "p": 0.0030239295554170004,
+  "q_bh": 0.006047859110834001,
+  "survives_fdr": true,
+  "decision": "flag and report; headline unchanged"
+ },
+ "muharaf_lines": {
+  "in_domain_runs": [
+   "crnn/base",
+   "crnn/shape",
+   "crnn/geomaug",
+   "crnn/base_s3",
+   "crnn/combo",
+   "crnn/combo_s2",
+   "crnn/combo_s3",
+   "crnn/inkcrop",
+   "crnn/randctl",
+   "crnn/randctl_s2",
+   "crnn/randctl_s3",
+   "crnn/rep2",
+   "crnn/shape_s2",
+   "crnn/shape_s3",
+   "crnn/std_s0",
+   "crnn/std_s1",
+   "crnn/std_s0-best",
+   "crnn/std_s1-best",
+   "crnn+llm/e8-qwen3-0.6b",
+   "crnn+llm/e8-qwen3-1.7b",
+   "vlm/suite-v1-fanar2-oryx-ft",
+   "vlm/suite-v1-qwen3vl4b-ft",
+   "vlm/suite-v1-qwen3vl4b-ft-bf16",
+   "vlm/suite-v1-qwen3vl4b-visft-difflr-ft",
+   "vlm/suite-v1-qwen3vl8b-ft"
+  ],
+  "out_domain_runs": 3,
+  "lines": 1334,
+  "leaked_lines": 100,
+  "gap_leaked": -0.3028240722812676,
+  "gap_clean": -0.47766834459573465,
+  "did_length_matched": 0.09371459247073011,
+  "ci95": [
+   0.016402025229365992,
+   0.17502412100578665
+  ],
+  "p": 0.023446332810906634,
+  "q_bh": 0.023446332810906634,
+  "survives_fdr": true,
+  "decision": "flag and report; headline unchanged"
+ },
+ "rasam1": {
+  "in_domain_runs": [
+   "crnn/base",
+   "crnn/base_s3",
+   "crnn/combo",
+   "crnn/combo_s2",
+   "crnn/combo_s3",
+   "crnn/geomaug",
+   "crnn/inkcrop",
+   "crnn/randctl",
+   "crnn/randctl_s2",
+   "crnn/randctl_s3",
+   "crnn/rep2",
+   "crnn/shape",
+   "crnn/shape_s2",
+   "crnn/shape_s3",
+   "crnn/std_s0",
+   "crnn/std_s1",
+   "crnn/std_s0-best",
+   "crnn/std_s1-best",
+   "crnn+llm/e8-qwen3-0.6b",
+   "crnn+llm/e8-qwen3-1.7b",
+   "vlm/exp3090-baseer-nakba-ft-bf16",
+   "vlm/exp3090-paligemma2-3b-ft-bf16",
+   "vlm/suite-v1-fanar2-oryx-ft-bf16",
+   "vlm/suite-v1-qwen3vl4b-ft-bf16",
+   "vlm/suite-v1-qwen3vl8b-ft-bf16"
+  ],
+  "out_domain_runs": 5,
+  "lines": 734,
+  "leaked_lines": 8,
+  "gap_leaked": -0.08912037037037036,
+  "gap_clean": -0.22206932880695632,
+  "did_length_matched": 0.10377898125074524,
+  "ci95": [
+   0.018394175949345302,
+   0.199740258078886
+  ],
+  "p": 0.02146643425633792,
+  "q_bh": 0.023446332810906634,
+  "survives_fdr": true,

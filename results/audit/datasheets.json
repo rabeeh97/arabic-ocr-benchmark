@@ -1,0 +1,923 @@
+{
+ "kitab_khatt": {
+  "lines": 200,
+  "source": "KHATT handwritten Arabic (KITAB-Bench 200-line sample); many writers copying fixed paragraphs plus free text",
+  "conventions": {
+   "source": "KHATT handwritten Arabic (KITAB-Bench 200-line sample); many writers copying fixed paragraphs plus free text",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.1404460518384569,
+   "ta_marbuta_share": 0.6868686868686869,
+   "alif_maqsura_share": 0.1895734597156398,
+   "digits": {
+    "western": 1.0
+   },
+   "double_space_lines": 0.335,
+   "space_before_punct": 0.5124223602484472,
+   "tatweel_lines": 0.13,
+   "lines_with_harakat": 0.065,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.193792280143255,
+   "spelling_minority_rate": 0.016716673810544362,
+   "spelling_nonstandard_rate": 0.008144020574367767
+  },
+  "diacritics": {
+   "lines": 200,
+   "share_lines_with_marks": 0.065,
+   "harakat_per_100_letters": 0.25020850708924103,
+   "mean_coverage_of_marked_lines": 0.03465030394455912,
+   "levels": {
+    "sparse": 0.065,
+    "none": 0.935
+   },
+   "policy": "sparse"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 200,
+   "home_pool": "khatt_train",
+   "exact_in_home_train": 0.435,
+   "near_in_home_train": 0.01,
+   "image_in_home_train": 0.385,
+   "image_any_train_pool": 0.39,
+   "leaked_any": 0.445,
+   "exact_short_le10": 0.005,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.0,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.1,
+   "text_dup_other_test_sets": {
+    "kitab_khatt_full": 50
+   },
+   "image_dup_within_panel": 0.06
+  },
+  "leak_effect": {},
+  "home_train_pool": "khatt_train",
+  "home_train_lines": 5635,
+  "image_profile": {
+   "h0": 146.0,
+   "w0": 2138.5,
+   "stroke_px64": 2.2076465196923154,
+   "dot_px64": 3.0280819790138622,
+   "slant_deg": -1.848574697971344,
+   "ink_px_per_char": 15.045179451090782,
+   "ink_density": 0.06174773188029501,
+   "pen_contrast": 0.891012373964851
+  },
+  "image_flags": {
+   "low_res": 0.215,
+   "ruled": 0.0,
+   "slant_outlier": 0.34,
+   "stroke_outlier": 0.46
+  },
+  "difficulty": {
+   "systems_full_coverage": 32,
+   "best": [
+    0.20935339568930458,
+    "vlm/suite-v1-fanar2-oryx-ft-bf16"
+   ],
+   "median_system_cer": 0.30158601057340384,
+   "irt": {
+    "systems": 34,
+    "lines": 200,
+    "split_half_spearman_b": [
+     0.6616839539245707,
+     0.5892428091779687,
+     0.7304208306112183
+    ],
+    "split_half_spearman_a": [
+     0.19819866695409488,
+     -0.2400791193626459,
+     0.38847243551575567
+    ],
+    "split_half_spearman_consensus": [
+     0.9696526767253042,
+     0.8849054956585463,
+     0.9854401386840059
+    ],
+    "spearman_b_vs_consensus": 0.49726740471157016,
+    "all_correct_lines": 0,
+    "all_wrong_lines": 99,
+    "negative_discrimination_lines": 9,
+    "adopt_irt_difficulty": false,
+    "report_discrimination": false,
+    "sensitivity_median_threshold": {
+     "threshold": 0.27692307692307694,
+     "split_half_spearman_b": 0.9079050444443114,
+     "split_half_spearman_a": 0.5938136684193522,
+     "all_wrong_lines": 12,
+     "all_correct_lines": 0,
+     "would_adopt": false
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.1,
+    "crnn_only_failure": 0.02,
+    "vlm_only_failure": 0.005,
+    "irt_top_quintile": 0.215,
+    "irt_low_discrimination": 0.045,
+    "dot_dense": 0.2,
+    "oov_heavy": 0.01,
+    "fragments": 0.03,
+    "loose_crops": 0.185,
+    "slant_outliers": 0.34,
+    "leaked": 0.445
+   },
+   "fragments_separate_subset": false
+  }
+ },
+ "kitab_khatt_full": {
+  "lines": 1038,
+  "source": "KHATT v1.0 test (Teklia copy), 1,038 lines",
+  "conventions": {
+   "source": "KHATT v1.0 test (Teklia copy), 1,038 lines",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": null,
+   "ta_marbuta_share": null,
+   "alif_maqsura_share": null,
+   "digits": null,
+   "double_space_lines": null,
+   "space_before_punct": null,
+   "tatweel_lines": null,
+   "lines_with_harakat": 0.002890173410404624,
+   "harakat_policy": "undiacritised",
+   "dialect_merger_per_1000": null,
+   "spelling_minority_rate": 0.017214519395544477,
+   "spelling_nonstandard_rate": 0.012930362984888612
+  },
+  "diacritics": {
+   "lines": 1038,
+   "share_lines_with_marks": 0.002890173410404624,
+   "harakat_per_100_letters": 0.006623686302216727,
+   "mean_coverage_of_marked_lines": 0.021716101694915252,
+   "levels": {
+    "none": 0.9971098265895953,
+    "sparse": 0.002890173410404624
+   },
+   "policy": "undiacritised"
+  },
+  "diacritic_rule": null,
+  "leakage": {
+   "lines": 1038,
+   "home_pool": "khatt_train",
+   "exact_in_home_train": 0.7697495183044316,
+   "near_in_home_train": 0.17822736030828518,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.0019267822736030828,
+   "leaked_any": 0.9479768786127167,
+   "exact_short_le10": 0.03371868978805395,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.0,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.649325626204239,
+   "text_dup_other_test_sets": {
+    "kitab_khatt": 233
+   },
+   "image_dup_within_panel": 0.01348747591522158
+  },
+  "leak_effect": {},
+  "home_train_pool": "khatt_train",
+  "home_train_lines": 5635,
+  "difficulty": {
+   "systems_full_coverage": 0,
+   "best": null,
+   "median_system_cer": null,
+   "irt": {},
+   "subset_shares": {
+    "hard_core": 0.0,
+    "crnn_only_failure": 0.0,
+    "vlm_only_failure": 0.0,
+    "irt_top_quintile": 0.0,
+    "irt_low_discrimination": 0.0,
+    "dot_dense": 0.21483622350674375,
+    "oov_heavy": 0.0,
+    "fragments": 0.036608863198458574,
+    "loose_crops": 0.0,
+    "slant_outliers": 0.0,
+    "leaked": 0.9479768786127167
+   },
+   "fragments_separate_subset": null
+  }
+ },
+ "muharaf_lines": {
+  "lines": 1334,
+  "source": "Muharaf public test split (aamijar/muharaf-public): Levantine historical manuscripts",
+  "conventions": {
+   "source": "Muharaf public test split (aamijar/muharaf-public): Levantine historical manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.027504472271914132,
+   "ta_marbuta_share": 0.6199430199430199,
+   "alif_maqsura_share": 0.39663629992992294,
+   "digits": {
+    "western": 0.2542372881355932,
+    "arabic-indic": 0.7397094430992736,
+    "persian": 0.006053268765133172
+   },
+   "double_space_lines": 0.11019490254872563,
+   "space_before_punct": 0.18356643356643357,
+   "tatweel_lines": 0.005247376311844078,
+   "lines_with_harakat": 0.3583208395802099,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 2.225886232481451,
+   "spelling_minority_rate": 0.02252837709037345,
+   "spelling_nonstandard_rate": 0.009791179273893077
+  },
+  "diacritics": {
+   "lines": 1334,
+   "share_lines_with_marks": 0.3583208395802099,
+   "harakat_per_100_letters": 1.8479670455412311,
+   "mean_coverage_of_marked_lines": 0.04132793978393331,
+   "levels": {
+    "sparse": 0.3538230884557721,
+    "none": 0.6416791604197901,
+    "partial": 0.004497751124437781
+   },
+   "policy": "sparse"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 1334,
+   "home_pool": "muharaf_train",
+   "exact_in_home_train": 0.0727136431784108,
+   "near_in_home_train": 0.0022488755622188904,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.0,
+   "leaked_any": 0.07496251874062969,
+   "exact_short_le10": 0.037481259370314844,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.0,
+    "nakba_train": 0.023238380809595203,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.03223388305847077,
+   "text_dup_other_test_sets": {
+    "nakba_blind": 27,
+    "nakba_lines": 26
+   },
+   "image_dup_within_panel": 0.0
+  },
+  "leak_effect": {
+   "out_domain_runs": 3,
+   "lines": 1334,
+   "leaked_lines": 100,
+   "gap_leaked": -0.3028240722812676,
+   "gap_clean": -0.47766834459573465,
+   "did_length_matched": 0.09371459247073011,
+   "ci95": [
+    0.016402025229365992,
+    0.17502412100578665
+   ],
+   "p": 0.023446332810906634,
+   "q_bh": 0.023446332810906634,
+   "survives_fdr": true,
+   "decision": "flag and report; headline unchanged"
+  },
+  "home_train_pool": "muharaf_train",
+  "home_train_lines": 23161,
+  "image_profile": {
+   "h0": 60.0,
+   "w0": 600.0,
+   "stroke_px64": 2.690764935946414,
+   "dot_px64": 4.006022022224306,
+   "slant_deg": 8.751158237457275,
+   "ink_px_per_char": 13.714285714285714,
+   "ink_density": 0.07773786156068294,
+   "pen_contrast": 0.9838877592299762
+  },
+  "image_flags": {
+   "low_res": 0.11077618688771665,
+   "ruled": 0.006028636021100226,
+   "slant_outlier": 0.06556141672946496,
+   "stroke_outlier": 0.15599095704596835
+  },
+  "difficulty": {
+   "systems_full_coverage": 5,
+   "best": [
+    0.12050937108264285,
+    "crnn/std_s1"
+   ],
+   "median_system_cer": 0.12245085149967896,
+   "irt": {
+    "systems": 7,
+    "lines": 1334,
+    "split_half_spearman_b": [
+     0.7953491894178156,
+     -0.03335804931468349,
+     0.9556358928810693
+    ],
+    "split_half_spearman_a": [
+     0.1326175648927684,
+     -0.5159119028595937,
+     0.8550042132889359
+    ],
+    "split_half_spearman_consensus": [
+     0.5181578271694927,
+     0.2628423615063388,
+     0.722244691998718
+    ],
+    "spearman_b_vs_consensus": 0.8202603803019178,
+    "all_correct_lines": 2,
+    "all_wrong_lines": 441,
+    "negative_discrimination_lines": 38,
+    "adopt_irt_difficulty": false,
+    "report_discrimination": false,
+    "sensitivity_median_threshold": {
+     "threshold": 0.15857300015715858,
+     "split_half_spearman_b": 0.7147873252906186,
+     "split_half_spearman_a": -0.0010807949367876019,
+     "all_wrong_lines": 244,
+     "all_correct_lines": 4,
+     "would_adopt": false
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.0022488755622188904,
+    "crnn_only_failure": 0.0022488755622188904,
+    "vlm_only_failure": 0.006746626686656672,
+    "irt_top_quintile": 0.3305847076461769,
+    "irt_low_discrimination": 0.02848575712143928,
+    "dot_dense": 0.20164917541229385,
+    "oov_heavy": 0.038980509745127435,
+    "fragments": 0.16941529235382308,
+    "loose_crops": 0.04047976011994003,
+    "slant_outliers": 0.06521739130434782,
+    "leaked": 0.07496251874062969
+   },
+   "fragments_separate_subset": true
+  }
+ },
+ "nakba_blind": {
+  "lines": 2671,
+  "source": "NAKBA contest blind test split: Omar al-Saleh manuscripts (U4RASD)",
+  "conventions": {
+   "source": "NAKBA contest blind test split: Omar al-Saleh manuscripts (U4RASD)",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.10644078631932236,
+   "ta_marbuta_share": 0.684747233673248,
+   "alif_maqsura_share": 0.45864661654135336,
+   "digits": {
+    "arabic-indic": 0.3832752613240418,
+    "western": 0.6167247386759582
+   },
+   "double_space_lines": 0.02208910520404343,
+   "space_before_punct": 0.03710094909404659,
+   "tatweel_lines": 0.0011231748408835642,
+   "lines_with_harakat": 0.040434294271808315,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.2438625204582652,
+   "spelling_minority_rate": 0.0561253657060228,
+   "spelling_nonstandard_rate": 0.020950331237179272
+  },
+  "diacritics": {
+   "lines": 2671,
+   "share_lines_with_marks": 0.040434294271808315,
+   "harakat_per_100_letters": 0.11513441943469,
+   "mean_coverage_of_marked_lines": 0.025053826103397,
+   "levels": {
+    "none": 0.9606888805690752,
+    "sparse": 0.038936727817296894,
+    "partial": 0.00037439161362785476
+   },
+   "policy": "sparse"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 2671,
+   "home_pool": "nakba_train",
+   "exact_in_home_train": 0.14488955447397978,
+   "near_in_home_train": 0.017970797454137027,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.0,
+   "leaked_any": 0.16286035192811682,
+   "exact_short_le10": 0.10108573567952078,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.03219767877199551,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.10632721827031075,
+   "text_dup_other_test_sets": {
+    "nakba_lines": 272,
+    "muharaf_lines": 35
+   },
+   "image_dup_within_panel": 0.005990265818045676
+  },
+  "leak_effect": {
+   "out_domain_runs": 20,
+   "lines": 2671,
+   "leaked_lines": 435,
+   "gap_leaked": -0.3654516377402364,
+   "gap_clean": -0.05849107386202611,
+   "did_length_matched": -0.20113509039346558,
+   "ci95": [
+    -0.24192791280120599,
+    -0.1583279619922287
+   ],
+   "p": 1.7732744627766185e-20,
+   "q_bh": 7.093097851106474e-20,
+   "survives_fdr": true,
+   "decision": "report in-domain headline on clean lines only"
+  },
+  "home_train_pool": "nakba_train",
+  "home_train_lines": 15962,
+  "image_profile": {
+   "h0": 55.0,
+   "w0": 823.0,
+   "stroke_px64": 3.4158368537685386,
+   "dot_px64": 4.959937760016534,
+   "slant_deg": 5.449123382568359,
+   "ink_px_per_char": 12.605369446424328,
+   "ink_density": 0.12417016732650327,
+   "pen_contrast": 1.0301545853675265
+  },
+  "image_flags": {
+   "low_res": 0.03631598652190191,
+   "ruled": 0.15574691126918758,
+   "slant_outlier": 0.023212280044926994,
+   "stroke_outlier": 0.08049419692998877
+  },
+  "difficulty": {
+   "systems_full_coverage": 20,
+   "best": [
+    0.0690795248405407,
+    "vlm/nakba-misraj-baseer"
+   ],
+   "median_system_cer": 0.11511498624846392,
+   "irt": {
+    "systems": 20,
+    "lines": 2671,
+    "split_half_spearman_b": [
+     0.93440813951928,
+     0.9079677189562623,
+     0.9583980175485345
+    ],
+    "split_half_spearman_a": [
+     0.6167097727352644,
+     0.44228582806063277,
+     0.789762879713657
+    ],
+    "split_half_spearman_consensus": [
+     0.960591812966789,
+     0.9494351383719589,
+     0.9700771326752146
+    ],
+    "spearman_b_vs_consensus": 0.9024933517810828,
+    "all_correct_lines": 733,
+    "all_wrong_lines": 285,
+    "negative_discrimination_lines": 220,
+    "adopt_irt_difficulty": false,
+    "report_discrimination": true,
+    "sensitivity_median_threshold": {
+     "threshold": 0.09210526315789473,
+     "split_half_spearman_b": 0.926854149923156,
+     "split_half_spearman_a": 0.5520391663455735,
+     "all_wrong_lines": 334,
+     "all_correct_lines": 600,
+     "would_adopt": false
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.02134032197678772,
+    "crnn_only_failure": 0.08536128790715088,
+    "vlm_only_failure": 0.00711344065892924,
+    "irt_top_quintile": 0.31224260576563084,
+    "irt_low_discrimination": 0.08236615499812804,
+    "dot_dense": 0.2025458629726694,
+    "oov_heavy": 0.0041183077499064025,
+    "fragments": 0.16922500935979035,
+    "loose_crops": 0.012354923249719206,
+    "slant_outliers": 0.023212280044926994,
+    "leaked": 0.16286035192811682
+   },
+   "fragments_separate_subset": true
+  }
+ },
+ "nakba_lines": {
+  "lines": 2095,
+  "source": "NAKBA contest test split: Omar al-Saleh manuscripts (U4RASD)",
+  "conventions": {
+   "source": "NAKBA contest test split: Omar al-Saleh manuscripts (U4RASD)",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.16769031385586297,
+   "ta_marbuta_share": 0.698196866686373,
+   "alif_maqsura_share": 0.3878562577447336,
+   "digits": {
+    "western": 0.15692007797270954,
+    "arabic-indic": 0.8430799220272904
+   },
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.012391573729863693,
+   "tatweel_lines": 0.0009546539379474941,
+   "lines_with_harakat": 0.021957040572792363,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.3515402898820899,
+   "spelling_minority_rate": 0.020916096300196238,
+   "spelling_nonstandard_rate": 0.0036854448858469344
+  },
+  "diacritics": {
+   "lines": 2095,
+   "share_lines_with_marks": 0.021957040572792363,
+   "harakat_per_100_letters": 0.055139738392574515,
+   "mean_coverage_of_marked_lines": 0.02285891268295485,
+   "levels": {
+    "none": 0.9780429594272076,
+    "sparse": 0.021957040572792363
+   },
+   "policy": "sparse"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 2095,
+   "home_pool": "nakba_train",
+   "exact_in_home_train": 0.17136038186157518,
+   "near_in_home_train": 0.011455847255369928,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.0009546539379474941,
+   "leaked_any": 0.18281622911694512,
+   "exact_short_le10": 0.12601431980906921,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.03436754176610979,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.12601431980906921,
+   "text_dup_other_test_sets": {
+    "muharaf_lines": 31,
+    "nakba_blind": 263
+   },
+   "image_dup_within_panel": 0.0
+  },
+  "leak_effect": {
+   "out_domain_runs": 29,
+   "lines": 337,
+   "leaked_lines": 59,
+   "gap_leaked": -0.38485659201991074,
+   "gap_clean": -0.17851845355239718,
+   "did_length_matched": 0.15119956521066447,
+   "ci95": [
+    0.05337591987511,
+    0.25181315500323653
+   ],
+   "p": 0.0030239295554170004,
+   "q_bh": 0.006047859110834001,
+   "survives_fdr": true,
+   "decision": "flag and report; headline unchanged"
+  },
+  "home_train_pool": "nakba_train",
+  "home_train_lines": 15962,
+  "image_profile": {
+   "h0": 52.0,
+   "w0": 789.0,
+   "stroke_px64": 3.6511491658033735,
+   "dot_px64": 5.550072608965619,
+   "slant_deg": 4.008596420288086,
+   "ink_px_per_char": 13.653333333333334,
+   "ink_density": 0.1288604549431321,
+   "pen_contrast": 1.0099388326876482
+  },
+  "image_flags": {
+   "low_res": 0.012887828162291169,
+   "ruled": 0.23484486873508353,
+   "slant_outlier": 0.050596658711217185,
+   "stroke_outlier": 0.09928400954653938
+  },
+  "difficulty": {
+   "systems_full_coverage": 18,
+   "best": [
+    0.10372555391678957,
+    "crnn/combo"
+   ],
+   "median_system_cer": 0.10846269863093602,
+   "irt": {
+    "systems": 18,
+    "lines": 2095,
+    "split_half_spearman_b": [
+     0.9417835942257353,
+     0.9304208803579064,
+     0.9529239075823894
+    ],
+    "split_half_spearman_a": [
+     0.7298555559199801,
+     0.665112999587175,
+     0.7829140955218149
+    ],
+    "split_half_spearman_consensus": [
+     0.9302330264076147,
+     0.9178670603279312,
+     0.9436691852361008
+    ],
+    "spearman_b_vs_consensus": 0.9189962981169574,
+    "all_correct_lines": 603,
+    "all_wrong_lines": 540,
+    "negative_discrimination_lines": 355,
+    "adopt_irt_difficulty": true,
+    "report_discrimination": true,
+    "sensitivity_median_threshold": {
+     "threshold": 0.09375,
+     "split_half_spearman_b": 0.9430560331661892,
+     "split_half_spearman_a": 0.5041295054970135,
+     "all_wrong_lines": 592,
+     "all_correct_lines": 534,
+     "would_adopt": true
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.0,
+    "crnn_only_failure": 0.008114558472553698,
+    "vlm_only_failure": 0.0,
+    "irt_top_quintile": 0.2577565632458234,
+    "irt_low_discrimination": 0.16945107398568018,
+    "dot_dense": 0.21479713603818615,
+    "oov_heavy": 0.0038186157517899762,
+    "fragments": 0.2405727923627685,
+    "loose_crops": 0.022911694510739856,
+    "slant_outliers": 0.050596658711217185,
+    "leaked": 0.18281622911694512
+   },
+   "fragments_separate_subset": true
+  }
+ },
+ "rasam1": {
+  "lines": 734,
+  "source": "RASAM-1 test (calfa-ai): Maghrebi manuscripts",
+  "conventions": {
+   "source": "RASAM-1 test (calfa-ai): Maghrebi manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.0015907447577729573,
+   "ta_marbuta_share": 0.38113207547169814,
+   "alif_maqsura_share": 0.6067019400352733,
+   "digits": {
+    "western": 1.0
+   },
+   "double_space_lines": 0.03678474114441417,
+   "space_before_punct": 0.0,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.10762942779291552,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 2.404809619238477,
+   "spelling_minority_rate": 0.0068156760549263305,
+   "spelling_nonstandard_rate": 0.0017039190137315826
+  },
+  "diacritics": {
+   "lines": 734,
+   "share_lines_with_marks": 0.10762942779291552,
+   "harakat_per_100_letters": 0.27842227378190254,
+   "mean_coverage_of_marked_lines": 0.032548703774428374,
+   "levels": {
+    "none": 0.8923705722070845,
+    "sparse": 0.10626702997275204,
+    "partial": 0.0013623978201634877
+   },
+   "policy": "sparse"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 734,
+   "home_pool": "rasam1_train",
+   "exact_in_home_train": 0.010899182561307902,
+   "near_in_home_train": 0.0,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.0,
+   "leaked_any": 0.010899182561307902,
+   "exact_short_le10": 0.010899182561307902,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.004087193460490463,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.005449591280653951,
+   "text_dup_other_test_sets": {
+    "rasam2": 4
+   },
+   "image_dup_within_panel": 0.0
+  },
+  "leak_effect": {
+   "out_domain_runs": 5,
+   "lines": 734,
+   "leaked_lines": 8,
+   "gap_leaked": -0.08912037037037036,
+   "gap_clean": -0.22206932880695632,
+   "did_length_matched": 0.10377898125074524,
+   "ci95": [
+    0.018394175949345302,
+    0.199740258078886
+   ],
+   "p": 0.02146643425633792,
+   "q_bh": 0.023446332810906634,
+   "survives_fdr": true,
+   "decision": "flag and report; headline unchanged"
+  },
+  "home_train_pool": "rasam1_train",
+  "home_train_lines": 4692,
+  "image_profile": {
+   "h0": 231.0,
+   "w0": 672.0,
+   "stroke_px64": 3.0651673118677305,
+   "dot_px64": 3.7704849562656926,
+   "slant_deg": 1.6382147073745728,
+   "ink_px_per_char": 8.312903225806451,
+   "ink_density": 0.2491616776979933,
+   "pen_contrast": 2.1111023185252806
+  },
+  "image_flags": {
+   "low_res": 0.5156889495225102,
+   "ruled": 0.1296043656207367,
+   "slant_outlier": 0.010914051841746248,
+   "stroke_outlier": 0.3519781718963165
+  },
+  "difficulty": {
+   "systems_full_coverage": 6,
+   "best": [
+    0.25892802324867487,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ],
+   "median_system_cer": 0.4305887507966858,
+   "irt": {
+    "systems": 8,
+    "lines": 734,
+    "split_half_spearman_b": [
+     0.6080201019053058,
+     0.12327373737028376,
+     0.8114163301758285
+    ],
+    "split_half_spearman_a": [
+     0.7027126717908972,
+     0.1103242038583651,
+     0.9504515298942784
+    ],
+    "split_half_spearman_consensus": [
+     0.773211049041971,
+     0.4279704766122159,
+     0.9089511736960878
+    ],
+    "spearman_b_vs_consensus": 0.11775371595987628,
+    "all_correct_lines": 0,
+    "all_wrong_lines": 673,
+    "negative_discrimination_lines": 2,
+    "adopt_irt_difficulty": false,
+    "report_discrimination": true,
+    "sensitivity_median_threshold": {
+     "threshold": 0.44565217391304346,
+     "split_half_spearman_b": 0.7341506931377147,
+     "split_half_spearman_a": 0.17732651207466615,
+     "all_wrong_lines": 57,
+     "all_correct_lines": 49,
+     "would_adopt": false
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.0013623978201634877,
+    "crnn_only_failure": 0.0,
+    "vlm_only_failure": 0.0027247956403269754,
+    "irt_top_quintile": 0.4891008174386921,
+    "irt_low_discrimination": 0.0027247956403269754,
+    "dot_dense": 0.20027247956403268,
+    "oov_heavy": 0.014986376021798364,
+    "fragments": 0.0667574931880109,
+    "loose_crops": 0.004087193460490463,
+    "slant_outliers": 0.010899182561307902,
+    "leaked": 0.010899182561307902
+   },
+   "fragments_separate_subset": false
+  }
+ },
+ "rasam2": {
+  "lines": 372,
+  "source": "RASAM-2 test (calfa-ai): Maghrebi manuscripts",
+  "conventions": {
+   "source": "RASAM-2 test (calfa-ai): Maghrebi manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.017159199237368923,
+   "ta_marbuta_share": 0.3960843373493976,
+   "alif_maqsura_share": 0.40755467196819084,
+   "digits": {},
+   "double_space_lines": 0.056451612903225805,
+   "space_before_punct": 0.0,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.005376344086021506,
+   "harakat_policy": "undiacritised",
+   "dialect_merger_per_1000": 3.9121930015214086,
+   "spelling_minority_rate": 0.008046976946498478,
+   "spelling_nonstandard_rate": 0.0015224010439321444
+  },
+  "diacritics": {
+   "lines": 372,
+   "share_lines_with_marks": 0.005376344086021506,
+   "harakat_per_100_letters": 0.01107603699396356,
+   "mean_coverage_of_marked_lines": 0.016001024065540194,
+   "levels": {
+    "none": 0.9946236559139785,
+    "sparse": 0.005376344086021506
+   },
+   "policy": "undiacritised"
+  },
+  "diacritic_rule": "no_diacritics",
+  "leakage": {
+   "lines": 372,
+   "home_pool": "rasam1_train",
+   "exact_in_home_train": 0.005376344086021506,
+   "near_in_home_train": 0.0,
+   "image_in_home_train": 0.0,
+   "image_any_train_pool": 0.01881720430107527,
+   "leaked_any": 0.005376344086021506,
+   "exact_short_le10": 0.005376344086021506,
+   "exact_in_other_train_pools": {
+    "muharaf_train": 0.0,
+    "nakba_train": 0.0,
+    "khatt_train": 0.0,
+    "rasam1_train": 0.0
+   },
+   "text_dup_within_set": 0.005376344086021506,
+   "text_dup_other_test_sets": {
+    "rasam1": 1
+   },
+   "image_dup_within_panel": 0.01881720430107527
+  },
+  "leak_effect": {
+   "leaked_lines": 2,
+   "note": "fewer than 5 leaked lines with readings"
+  },
+  "home_train_pool": "rasam1_train",
+  "home_train_lines": 4692,
+  "image_profile": {
+   "h0": 108.5,
+   "w0": 1256.5,
+   "stroke_px64": 4.10102290017751,
+   "dot_px64": 5.192873488204629,
+   "slant_deg": 2.8266615867614746,
+   "ink_px_per_char": 11.471655368450094,
+   "ink_density": 0.2624285005250203,
+   "pen_contrast": 1.5841132296487437
+  },
+  "image_flags": {
+   "low_res": 0.14606741573033707,
+   "ruled": 0.2247191011235955,
+   "slant_outlier": 0.05898876404494382,
+   "stroke_outlier": 0.3651685393258427
+  },
+  "difficulty": {
+   "systems_full_coverage": 8,
+   "best": [
+    0.320633419995273,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16"
+   ],
+   "median_system_cer": 0.4624164685832175,
+   "irt": {
+    "systems": 14,
+    "lines": 372,
+    "split_half_spearman_b": [
+     0.34403117163901126,
+     0.2747960015268521,
+     0.3904877345838272
+    ],
+    "split_half_spearman_a": [
+     0.7556406675926773,
+     0.5792896538591158,
+     0.8768896625485522
+    ],
+    "split_half_spearman_consensus": [
+     0.7593540501549457,
+     0.5808063138584645,
+     0.8762229155299105
+    ],
+    "spearman_b_vs_consensus": 0.32559240732781075,
+    "all_correct_lines": 0,
+    "all_wrong_lines": 289,
+    "negative_discrimination_lines": 3,
+    "adopt_irt_difficulty": false,
+    "report_discrimination": true,
+    "sensitivity_median_threshold": {
+     "threshold": 0.4571184659837142,
+     "split_half_spearman_b": 0.7533624947414401,
+     "split_half_spearman_a": 0.3236341082016053,
+     "all_wrong_lines": 31,
+     "all_correct_lines": 11,
+     "would_adopt": false
+    }
+   },
+   "subset_shares": {
+    "hard_core": 0.002688172043010753,
+    "crnn_only_failure": 0.0,
+    "vlm_only_failure": 0.0,
+    "irt_top_quintile": 0.3010752688172043,
+    "irt_low_discrimination": 0.008064516129032258,
+    "dot_dense": 0.20698924731182797,
+    "oov_heavy": 0.02956989247311828,
+    "fragments": 0.07795698924731183,
+    "loose_crops": 0.002688172043010753,
+    "slant_outliers": 0.056451612903225805,
+    "leaked": 0.005376344086021506
+   },
+   "fragments_separate_subset": false
+  }
+ }
+}

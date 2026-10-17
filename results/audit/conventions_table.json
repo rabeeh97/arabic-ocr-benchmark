@@ -1,0 +1,268 @@
+{
+ "table": {
+  "khatt_train": {
+   "source": "khatt_train",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": null,
+   "ta_marbuta_share": null,
+   "alif_maqsura_share": null,
+   "digits": null,
+   "double_space_lines": null,
+   "space_before_punct": null,
+   "tatweel_lines": null,
+   "lines_with_harakat": 0.001774622892635315,
+   "harakat_policy": "undiacritised",
+   "dialect_merger_per_1000": null,
+   "spelling_minority_rate": 0.014709576576325118,
+   "spelling_nonstandard_rate": 0.01091355681469283
+  },
+  "kitab_khatt": {
+   "source": "KHATT handwritten Arabic (KITAB-Bench 200-line sample); many writers copying fixed paragraphs plus free text",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.1404460518384569,
+   "ta_marbuta_share": 0.6868686868686869,
+   "alif_maqsura_share": 0.1895734597156398,
+   "digits": {
+    "western": 1.0
+   },
+   "double_space_lines": 0.335,
+   "space_before_punct": 0.5124223602484472,
+   "tatweel_lines": 0.13,
+   "lines_with_harakat": 0.065,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.193792280143255,
+   "spelling_minority_rate": 0.016716673810544362,
+   "spelling_nonstandard_rate": 0.008144020574367767
+  },
+  "kitab_khatt_full": {
+   "source": "KHATT v1.0 test (Teklia copy), 1,038 lines",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": null,
+   "ta_marbuta_share": null,
+   "alif_maqsura_share": null,
+   "digits": null,
+   "double_space_lines": null,
+   "space_before_punct": null,
+   "tatweel_lines": null,
+   "lines_with_harakat": 0.002890173410404624,
+   "harakat_policy": "undiacritised",
+   "dialect_merger_per_1000": null,
+   "spelling_minority_rate": 0.017214519395544477,
+   "spelling_nonstandard_rate": 0.012930362984888612
+  },
+  "muharaf_lines": {
+   "source": "Muharaf public test split (aamijar/muharaf-public): Levantine historical manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.027504472271914132,
+   "ta_marbuta_share": 0.6199430199430199,
+   "alif_maqsura_share": 0.39663629992992294,
+   "digits": {
+    "western": 0.2542372881355932,
+    "arabic-indic": 0.7397094430992736,
+    "persian": 0.006053268765133172
+   },
+   "double_space_lines": 0.11019490254872563,
+   "space_before_punct": 0.18356643356643357,
+   "tatweel_lines": 0.005247376311844078,
+   "lines_with_harakat": 0.3583208395802099,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 2.225886232481451,
+   "spelling_minority_rate": 0.02252837709037345,
+   "spelling_nonstandard_rate": 0.009791179273893077
+  },
+  "muharaf_train": {
+   "source": "muharaf_train",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.03823054241438517,
+   "ta_marbuta_share": 0.5804489277326454,
+   "alif_maqsura_share": 0.34840730609723813,
+   "digits": {
+    "arabic-indic": 0.7814624098867148,
+    "western": 0.21400617919670442,
+    "persian": 0.004531410916580845
+   },
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.21476007857076046,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.33936358533742067,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 2.7555232510834955,
+   "spelling_minority_rate": 0.04143726751810106,
+   "spelling_nonstandard_rate": 0.0158074935070899
+  },
+  "nakba_blind": {
+   "source": "NAKBA contest blind test split: Omar al-Saleh manuscripts (U4RASD)",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.10644078631932236,
+   "ta_marbuta_share": 0.684747233673248,
+   "alif_maqsura_share": 0.45864661654135336,
+   "digits": {
+    "arabic-indic": 0.3832752613240418,
+    "western": 0.6167247386759582
+   },
+   "double_space_lines": 0.02208910520404343,
+   "space_before_punct": 0.03710094909404659,
+   "tatweel_lines": 0.0011231748408835642,
+   "lines_with_harakat": 0.040434294271808315,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.2438625204582652,
+   "spelling_minority_rate": 0.0561253657060228,
+   "spelling_nonstandard_rate": 0.020950331237179272
+  },
+  "nakba_lines": {
+   "source": "NAKBA contest test split: Omar al-Saleh manuscripts (U4RASD)",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.16769031385586297,
+   "ta_marbuta_share": 0.698196866686373,
+   "alif_maqsura_share": 0.3878562577447336,
+   "digits": {
+    "western": 0.15692007797270954,
+    "arabic-indic": 0.8430799220272904
+   },
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.012391573729863693,
+   "tatweel_lines": 0.0009546539379474941,
+   "lines_with_harakat": 0.021957040572792363,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.3515402898820899,
+   "spelling_minority_rate": 0.020916096300196238,
+   "spelling_nonstandard_rate": 0.0036854448858469344
+  },
+  "nakba_train": {
+   "source": "nakba_train",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.16185494417060659,
+   "ta_marbuta_share": 0.7202094966021729,
+   "alif_maqsura_share": 0.38331474197146714,
+   "digits": {
+    "arabic-indic": 0.8241448692152917,
+    "western": 0.17585513078470824
+   },
+   "double_space_lines": 0.0,
+   "space_before_punct": 0.012762237762237762,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.02963287808545295,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 1.0732110993302129,
+   "spelling_minority_rate": 0.027833713697588042,
+   "spelling_nonstandard_rate": 0.006558886140037972
+  },
+  "rasam1": {
+   "source": "RASAM-1 test (calfa-ai): Maghrebi manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.0015907447577729573,
+   "ta_marbuta_share": 0.38113207547169814,
+   "alif_maqsura_share": 0.6067019400352733,
+   "digits": {
+    "western": 1.0
+   },
+   "double_space_lines": 0.03678474114441417,
+   "space_before_punct": 0.0,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.10762942779291552,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": 2.404809619238477,
+   "spelling_minority_rate": 0.0068156760549263305,
+   "spelling_nonstandard_rate": 0.0017039190137315826
+  },
+  "rasam1_train": {
+   "source": "rasam1_train",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": null,
+   "ta_marbuta_share": null,
+   "alif_maqsura_share": null,
+   "digits": null,
+   "double_space_lines": null,
+   "space_before_punct": null,
+   "tatweel_lines": null,
+   "lines_with_harakat": 0.12148337595907928,
+   "harakat_policy": "sparse",
+   "dialect_merger_per_1000": null,
+   "spelling_minority_rate": 0.01070382873874018,
+   "spelling_nonstandard_rate": 0.0025759587846594456
+  },
+  "rasam2": {
+   "source": "RASAM-2 test (calfa-ai): Maghrebi manuscripts",
+   "documented_conventions": "not yet extracted from the dataset paper",
+   "hamza_on_alif": 0.017159199237368923,
+   "ta_marbuta_share": 0.3960843373493976,
+   "alif_maqsura_share": 0.40755467196819084,
+   "digits": {},
+   "double_space_lines": 0.056451612903225805,
+   "space_before_punct": 0.0,
+   "tatweel_lines": 0.0,
+   "lines_with_harakat": 0.005376344086021506,
+   "harakat_policy": "undiacritised",
+   "dialect_merger_per_1000": 3.9121930015214086,
+   "spelling_minority_rate": 0.008046976946498478,
+   "spelling_nonstandard_rate": 0.0015224010439321444
+  }
+ },
+ "split_differences": {
+  "nakba_lines - nakba_blind": {
+   "diff": {
+    "hamza_on_alif": 0.061249527536540616,
+    "ta_marbuta_share": 0.013449633013125073,
+    "alif_maqsura_share": -0.07079035879661977,
+    "double_space_lines": -0.02208910520404343,
+    "space_before_punct": -0.024709375364182898,
+    "lines_with_harakat": -0.018477253699015952,
+    "spelling_minority_rate": -0.03520926940582656
+   },
+   "differs_by_gt_5pt": [
+    "hamza_on_alif",
+    "alif_maqsura_share"
+   ]
+  },
+  "kitab_khatt - kitab_khatt_full": {
+   "diff": {
+    "lines_with_harakat": 0.06210982658959538,
+    "spelling_minority_rate": -0.0004978455850001146
+   },
+   "differs_by_gt_5pt": [
+    "lines_with_harakat"
+   ]
+  },
+  "rasam1 - rasam2": {
+   "diff": {
+    "hamza_on_alif": -0.015568454479595966,
+    "ta_marbuta_share": -0.014952261877699435,
+    "alif_maqsura_share": 0.1991472680670825,
+    "double_space_lines": -0.019666871758811634,
+    "space_before_punct": 0.0,
+    "lines_with_harakat": 0.10225308370689402,
+    "spelling_minority_rate": -0.0012313008915721471
+   },
+   "differs_by_gt_5pt": [
+    "alif_maqsura_share",
+    "lines_with_harakat"
+   ]
+  },
+  "muharaf_lines - muharaf_train": {
+   "diff": {
+    "hamza_on_alif": -0.01072607014247104,
+    "ta_marbuta_share": 0.039494092210374476,
+    "alif_maqsura_share": 0.04822899383268481,
+    "double_space_lines": 0.11019490254872563,
+    "space_before_punct": -0.031193645004326892,
+    "lines_with_harakat": 0.018957254242789212,
+    "spelling_minority_rate": -0.01890889042772761
+   },
+   "differs_by_gt_5pt": [
+    "double_space_lines"
+   ]
+  },
+  "nakba_lines - nakba_train": {
+   "diff": {
+    "hamza_on_alif": 0.005835369685256386,
+    "ta_marbuta_share": -0.022012629915799886,
+    "alif_maqsura_share": 0.004541515773266447,
+    "double_space_lines": 0.0,
+    "space_before_punct": -0.0003706640323740684,
+    "lines_with_harakat": -0.007675837512660589,
+    "spelling_minority_rate": -0.006917617397391804
+   },
+   "differs_by_gt_5pt": []
+  }
+ }
+}

@@ -1,0 +1,7441 @@
+{
+ "decision_rule": "If a set's minority-variant token rate has a 95 % CI lower bound >= 1 % of tokens, its labels are internally inconsistent\n  in hamza / yāʾ / tāʾ spelling, and its headline CER must be quoted at the orthographic rung (folds applied) with the\n  canonical rung beside it; below that, the canonical rung may stand alone. Sets whose test splits differ in a convention by\n  more than 5 points (e.g. NAKBA test vs blind hamza) are reported per split, never pooled.",
+ "R4.3": {
+  "khatt_train": {
+   "lines": 5635,
+   "tokens": 71654,
+   "word_keys_recurring": 423,
+   "keys_inconsistent_share": 0.16784869976359337,
+   "minority_token_rate": 0.014709576576325118,
+   "minority_ci95": [
+    0.013740412806269241,
+    0.015658042081002826
+   ],
+   "nonstandard_token_rate": 0.01091355681469283,
+   "nonstandard_ci95": [
+    0.01010566699530782,
+    0.01165586514857575
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 7.382700198174561,
+    "taa/haa": 5.847545147514444,
+    "yaa/maqsura": 1.4514193206241104,
+    "alif/hamza+yaa/maqsura": 0.02791191001200212
+   },
+   "nonstandard_by_class_per_1000": {
+    "taa/haa": 5.749853462472437,
+    "alif/hamza": 4.3961258268903345,
+    "yaa/maqsura": 0.7675775253300583
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       1752
+      ],
+      [
+       "فى",
+       15
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "لوي",
+     "variants": [
+      [
+       "لؤي",
+       1019
+      ],
+      [
+       "لؤى",
+       28
+      ],
+      [
+       "لوي",
+       4
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لؤي": [
+       true,
+       103
+      ],
+      "لؤى": [
+       true,
+       0
+      ],
+      "لوي": [
+       true,
+       184
+      ]
+     }
+    },
+    {
+     "key": "رايق",
+     "variants": [
+      [
+       "رايق",
+       1010
+      ],
+      [
+       "راىق",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "رايق": [
+       true,
+       4
+      ],
+      "راىق": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "رووف",
+     "variants": [
+      [
+       "رؤوف",
+       1000
+      ],
+      [
+       "روؤف",
+       4
+      ],
+      [
+       "رووف",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "رؤوف": [
+       true,
+       117
+      ],
+      "روؤف": [
+       false,
+       0
+      ],
+      "رووف": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "بصحبه",
+     "variants": [
+      [
+       "بصحبة",
+       892
+      ],
+      [
+       "بصحبه",
+       106
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "بصحبة": [
+       true,
+       154
+      ],
+      "بصحبه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "عفيف",
+     "variants": [
+      [
+       "عفيف",
+       944
+      ],
+      [
+       "عفىف",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "عفيف": [
+       true,
+       260
+      ],
+      "عفىف": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "له",
+     "variants": [
+      [
+       "له",
+       932
+      ],
+      [
+       "لة",
+       5
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "له": [
+       true,
+       23863
+      ],
+      "لة": [
+       true,
+       86
+      ]
+     }
+    },
+    {
+     "key": "بدات",
+     "variants": [
+      [
+       "بدأت",
+       922
+      ],
+      [
+       "بدات",
+       12
+      ],
+      [
+       "بدآت",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "بدأت": [
+       true,
+       7637
+      ],
+      "بدات": [
+       true,
+       73
+      ],
+      "بدآت": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اثر",
+     "variants": [
+      [
+       "إثر",
+       881
+      ],
+      [
+       "اثر",
+       29
+      ],
+      [
+       "أثر",
+       9
+      ],
+      [
+       "آثر",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إثر": [
+       true,
+       906
+      ],
+      "أثر": [
+       true,
+       1176
+      ],
+      "اثر": [
+       true,
+       177
+      ],
+      "آثر": [
+       true,
+       35
+      ]
+     }
+    },
+    {
+     "key": "لا",
+     "variants": [
+      [
+       "لا",
+       895
+      ],
+      [
+       "لأ",
+       23
+      ],
+      [
+       "لآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لا": [
+       true,
+       36443
+      ],
+      "لأ": [
+       true,
+       11
+      ],
+      "لآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "سالت",
+     "variants": [
+      [
+       "سألت",
+       909
+      ],
+      [
+       "سالت",
+       8
+      ],
+      [
+       "سآلت",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "سألت": [
+       true,
+       75
+      ],
+      "سالت": [
+       true,
+       55
+      ],
+      "سآلت": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اخر",
+     "variants": [
+      [
+       "آخر",
+       844
+      ],
+      [
+       "أخر",
+       32
+      ],
+      [
+       "اخر",
+       28
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "آخر": [
+       true,
+       8410
+      ],
+      "أخر": [
+       true,
+       598
+      ],
+      "اخر": [
+       true,
+       429
+      ]
+     }
+    },
+    {
+     "key": "نايم",
+     "variants": [
+      [
+       "نائم",
+       897
+      ],
+      [
+       "نايم",
+       1
+      ]
+     ],
+     "class": "alif/hamza+yaa/maqsura",
+     "lexicon": {
+      "نائم": [
+       true,
+       30
+      ],
+      "نايم": [
+       true,
+       4
+      ]
+     }
+    },
+    {
+     "key": "جاري",
+     "variants": [
+      [
+       "جاري",
+       875
+      ],
+      [
+       "جارى",
+       16
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "جاري": [
+       true,
+       70
+      ],
+      "جارى": [
+       true,
+       4
+      ]
+     }
+    },
+    {
+     "key": "افهمها",
+     "variants": [
+      [
+       "أفهمها",
+       807
+      ],
+      [
+       "افهمها",
+       80
+      ],
+      [
+       "أفهمهآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أفهمها": [
+       true,
+       0
+      ],
+      "افهمها": [
+       true,
+       0
+      ],
+      "أفهمهآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "وسعينا",
+     "variants": [
+      [
+       "وسعينا",
+       881
+      ],
+      [
+       "وسعينآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وسعينا": [
+       true,
+       0
+      ],
+      "وسعينآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "انقض",
+     "variants": [
+      [
+       "انقض",
+       842
+      ],
+      [
+       "أنقض",
+       25
+      ],
+      [
+       "إنقض",
+       12
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انقض": [
+       true,
+       11
+      ],
+      "أنقض": [
+       true,
+       0
+      ],
+      "إنقض": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "الخيمه",
+     "variants": [
+      [
+       "الخيمة",
+       765
+      ],
+      [
+       "الخيمه",
+       110
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الخيمة": [
+       true,
+       236
+      ],
+      "الخيمه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "وصولنا",
+     "variants": [
+      [
+       "وصولنا",
+       874
+      ],
+      [
+       "وصولنآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وصولنا": [
+       true,
+       5
+      ],
+      "وصولنآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "طفنا",
+     "variants": [
+      [
+       "طفنا",
+       869
+      ],
+      [
+       "طفنآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "طفنا": [
+       true,
+       0
+      ],
+      "طفنآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اصحابنا",
+     "variants": [
+      [
+       "أصحابنا",
+       725
+      ],
+      [
+       "اصحابنا",
+       142
+      ],
+      [
+       "آصحابنا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أصحابنا": [
+       true,
+       50
+      ],
+      "اصحابنا": [
+       false,
+       0
+      ],
+      "آصحابنا": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "ه",
+     "variants": [
+      [
+       "ه",
+       867
+      ],
+      [
+       "ة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "ه": [
+       true,
+       12012
+      ],
+      "ة": [
+       true,
+       215
+      ]
+     }
+    },
+    {
+     "key": "الحجيج",
+     "variants": [
+      [
+       "الحجيج",
+       845
+      ],
+      [
+       "الحجىج",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الحجيج": [
+       true,
+       28
+      ],
+      "الحجىج": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اننا",
+     "variants": [
+      [
+       "أننا",
+       760
+      ],
+      [
+       "اننا",
+       69
+      ],
+      [
+       "إننا",
+       7
+      ],
+      [
+       "آننا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اننا": [
+       true,
+       47
+      ],
+      "أننا": [
+       true,
+       270
+      ],
+      "إننا": [
+       true,
+       96
+      ],
+      "آننا": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "يلبي",
+     "variants": [
+      [
+       "يلبي",
+       813
+      ],
+      [
+       "يلبى",
+       17
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يلبي": [
+       true,
+       47
+      ],
+      "يلبى": [
+       true,
+       3
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "kitab_khatt": {
+   "lines": 200,
+   "tokens": 2333,
+   "word_keys_recurring": 194,
+   "keys_inconsistent_share": 0.12886597938144329,
+   "minority_token_rate": 0.016716673810544362,
+   "minority_ci95": [
+    0.01093913519170393,
+    0.022604219149197385
+   ],
+   "nonstandard_token_rate": 0.008144020574367767,
+   "nonstandard_ci95": [
+    0.004271678769756515,
+    0.012366207665593572
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 8.572653236176597,
+    "taa/haa": 7.715387912558937,
+    "yaa/maqsura": 0.4286326618088298
+   },
+   "nonstandard_by_class_per_1000": {
+    "taa/haa": 5.572224603514788,
+    "alif/hamza": 2.571795970852979
+   },
+   "examples": [
+    {
+     "key": "انقض",
+     "variants": [
+      [
+       "انقض",
+       16
+      ],
+      [
+       "أنقض",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أنقض": [
+       true,
+       0
+      ],
+      "انقض": [
+       true,
+       11
+      ]
+     }
+    },
+    {
+     "key": "فايده",
+     "variants": [
+      [
+       "فائدة",
+       15
+      ],
+      [
+       "فائده",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "فائدة": [
+       true,
+       455
+      ],
+      "فائده": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "افهمها",
+     "variants": [
+      [
+       "أفهمها",
+       15
+      ],
+      [
+       "افهمها",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أفهمها": [
+       true,
+       0
+      ],
+      "افهمها": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "سالت",
+     "variants": [
+      [
+       "سألت",
+       15
+      ],
+      [
+       "سالت",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "سألت": [
+       true,
+       75
+      ],
+      "سالت": [
+       true,
+       55
+      ]
+     }
+    },
+    {
+     "key": "بدات",
+     "variants": [
+      [
+       "بدأت",
+       14
+      ],
+      [
+       "بدات",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "بدأت": [
+       true,
+       7637
+      ],
+      "بدات": [
+       true,
+       73
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       14
+      ],
+      [
+       "علي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "التاليه",
+     "variants": [
+      [
+       "التالية",
+       13
+      ],
+      [
+       "التاليه",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "التالية": [
+       true,
+       5189
+      ],
+      "التاليه": [
+       true,
+       19
+      ]
+     }
+    },
+    {
+     "key": "الخيمه",
+     "variants": [
+      [
+       "الخيمة",
+       9
+      ],
+      [
+       "الخيمه",
+       5
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الخيمة": [
+       true,
+       236
+      ],
+      "الخيمه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اخر",
+     "variants": [
+      [
+       "آخر",
+       12
+      ],
+      [
+       "اخر",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "آخر": [
+       true,
+       8410
+      ],
+      "اخر": [
+       true,
+       429
+      ]
+     }
+    },
+    {
+     "key": "بصحبه",
+     "variants": [
+      [
+       "بصحبة",
+       11
+      ],
+      [
+       "بصحبه",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "بصحبة": [
+       true,
+       154
+      ],
+      "بصحبه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "أن",
+       6
+      ],
+      [
+       "إن",
+       4
+      ],
+      [
+       "ان",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إن": [
+       true,
+       12266
+      ],
+      "أن": [
+       true,
+       120448
+      ],
+      "ان": [
+       true,
+       9010
+      ]
+     }
+    },
+    {
+     "key": "اننا",
+     "variants": [
+      [
+       "أننا",
+       9
+      ],
+      [
+       "اننا",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أننا": [
+       true,
+       270
+      ],
+      "اننا": [
+       true,
+       47
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "إلى",
+       7
+      ],
+      [
+       "الى",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إلى": [
+       true,
+       188531
+      ],
+      "الى": [
+       true,
+       173
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "أو",
+       6
+      ],
+      [
+       "او",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أو": [
+       true,
+       88853
+      ],
+      "او": [
+       true,
+       250
+      ]
+     }
+    },
+    {
+     "key": "الاشعه",
+     "variants": [
+      [
+       "الأشعة",
+       2
+      ],
+      [
+       "الاشعة",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الاشعة": [
+       true,
+       47
+      ],
+      "الأشعة": [
+       true,
+       1264
+      ]
+     }
+    },
+    {
+     "key": "العامه",
+     "variants": [
+      [
+       "العامه",
+       1
+      ],
+      [
+       "العامة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "العامه": [
+       true,
+       43
+      ],
+      "العامة": [
+       true,
+       9475
+      ]
+     }
+    },
+    {
+     "key": "الكثيره",
+     "variants": [
+      [
+       "الكثيره",
+       1
+      ],
+      [
+       "الكثيرة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الكثيره": [
+       false,
+       0
+      ],
+      "الكثيرة": [
+       true,
+       158
+      ]
+     }
+    },
+    {
+     "key": "وان",
+     "variants": [
+      [
+       "وان",
+       1
+      ],
+      [
+       "وأن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وان": [
+       true,
+       655
+      ],
+      "وأن": [
+       true,
+       3770
+      ]
+     }
+    },
+    {
+     "key": "كثيره",
+     "variants": [
+      [
+       "كثيره",
+       1
+      ],
+      [
+       "كثيرة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "كثيره": [
+       true,
+       38
+      ],
+      "كثيرة": [
+       true,
+       1625
+      ]
+     }
+    },
+    {
+     "key": "الطاقه",
+     "variants": [
+      [
+       "الطاقة",
+       1
+      ],
+      [
+       "الطاقه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الطاقة": [
+       true,
+       5424
+      ],
+      "الطاقه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اكبر",
+     "variants": [
+      [
+       "اكبر",
+       1
+      ],
+      [
+       "أكبر",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اكبر": [
+       true,
+       10
+      ],
+      "أكبر": [
+       true,
+       9428
+      ]
+     }
+    },
+    {
+     "key": "وجوده",
+     "variants": [
+      [
+       "وجودة",
+       1
+      ],
+      [
+       "وجوده",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "وجودة": [
+       true,
+       94
+      ],
+      "وجوده": [
+       true,
+       425
+      ]
+     }
+    },
+    {
+     "key": "المستدامه",
+     "variants": [
+      [
+       "المستدامة",
+       1
+      ],
+      [
+       "المستدامه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "المستدامة": [
+       true,
+       360
+      ],
+      "المستدامه": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "الزراعه",
+     "variants": [
+      [
+       "الزراعه",
+       1
+      ],
+      [
+       "الزراعة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الزراعه": [
+       true,
+       0
+      ],
+      "الزراعة": [
+       true,
+       1377
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "أنه",
+       1
+      ],
+      [
+       "إنه",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أنه": [
+       true,
+       21197
+      ],
+      "إنه": [
+       true,
+       1866
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "kitab_khatt_full": {
+   "lines": 1038,
+   "tokens": 12838,
+   "word_keys_recurring": 117,
+   "keys_inconsistent_share": 0.18803418803418803,
+   "minority_token_rate": 0.017214519395544477,
+   "minority_ci95": [
+    0.014676684493463252,
+    0.019803809929257756
+   ],
+   "nonstandard_token_rate": 0.012930362984888612,
+   "nonstandard_ci95": [
+    0.010900171353049349,
+    0.014943026371510345
+   ],
+   "minority_by_class_per_1000": {
+    "taa/haa": 8.256737809627667,
+    "alif/hamza": 7.166225268733448,
+    "yaa/maqsura": 1.6357688113413305,
+    "alif/hamza+yaa/maqsura": 0.15578750584203147
+   },
+   "nonstandard_by_class_per_1000": {
+    "taa/haa": 8.100950303785636,
+    "alif/hamza": 4.050475151892818,
+    "yaa/maqsura": 0.7789375292101574
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       322
+      ],
+      [
+       "فى",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "لوي",
+     "variants": [
+      [
+       "لؤي",
+       179
+      ],
+      [
+       "لؤى",
+       8
+      ],
+      [
+       "لوي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لؤي": [
+       true,
+       103
+      ],
+      "لؤى": [
+       true,
+       0
+      ],
+      "لوي": [
+       true,
+       184
+      ]
+     }
+    },
+    {
+     "key": "رووف",
+     "variants": [
+      [
+       "رؤوف",
+       186
+      ],
+      [
+       "رووف",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "رؤوف": [
+       true,
+       117
+      ],
+      "رووف": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "رايق",
+     "variants": [
+      [
+       "رايق",
+       183
+      ],
+      [
+       "رائق",
+       2
+      ]
+     ],
+     "class": "alif/hamza+yaa/maqsura",
+     "lexicon": {
+      "رايق": [
+       true,
+       4
+      ],
+      "رائق": [
+       true,
+       11
+      ]
+     }
+    },
+    {
+     "key": "بصحبه",
+     "variants": [
+      [
+       "بصحبة",
+       148
+      ],
+      [
+       "بصحبه",
+       29
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "بصحبة": [
+       true,
+       154
+      ],
+      "بصحبه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "جاري",
+     "variants": [
+      [
+       "جاري",
+       164
+      ],
+      [
+       "جارى",
+       6
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "جاري": [
+       true,
+       70
+      ],
+      "جارى": [
+       true,
+       4
+      ]
+     }
+    },
+    {
+     "key": "له",
+     "variants": [
+      [
+       "له",
+       167
+      ],
+      [
+       "لة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "له": [
+       true,
+       23863
+      ],
+      "لة": [
+       true,
+       86
+      ]
+     }
+    },
+    {
+     "key": "لا",
+     "variants": [
+      [
+       "لا",
+       163
+      ],
+      [
+       "لأ",
+       4
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لا": [
+       true,
+       36443
+      ],
+      "لأ": [
+       true,
+       11
+      ]
+     }
+    },
+    {
+     "key": "الخيمه",
+     "variants": [
+      [
+       "الخيمة",
+       137
+      ],
+      [
+       "الخيمه",
+       30
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الخيمة": [
+       true,
+       236
+      ],
+      "الخيمه": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اثر",
+     "variants": [
+      [
+       "إثر",
+       154
+      ],
+      [
+       "اثر",
+       9
+      ],
+      [
+       "أثر",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إثر": [
+       true,
+       906
+      ],
+      "اثر": [
+       true,
+       177
+      ],
+      "أثر": [
+       true,
+       1176
+      ]
+     }
+    },
+    {
+     "key": "اخر",
+     "variants": [
+      [
+       "آخر",
+       158
+      ],
+      [
+       "اخر",
+       3
+      ],
+      [
+       "أخر",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "آخر": [
+       true,
+       8410
+      ],
+      "اخر": [
+       true,
+       429
+      ],
+      "أخر": [
+       true,
+       598
+      ]
+     }
+    },
+    {
+     "key": "انقض",
+     "variants": [
+      [
+       "انقض",
+       157
+      ],
+      [
+       "أنقض",
+       4
+      ],
+      [
+       "إنقض",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انقض": [
+       true,
+       11
+      ],
+      "أنقض": [
+       true,
+       0
+      ],
+      "إنقض": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "افهمها",
+     "variants": [
+      [
+       "أفهمها",
+       149
+      ],
+      [
+       "افهمها",
+       12
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أفهمها": [
+       true,
+       0
+      ],
+      "افهمها": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اصحابنا",
+     "variants": [
+      [
+       "أصحابنا",
+       131
+      ],
+      [
+       "اصحابنا",
+       29
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أصحابنا": [
+       true,
+       50
+      ],
+      "اصحابنا": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "التاليه",
+     "variants": [
+      [
+       "التالية",
+       125
+      ],
+      [
+       "التاليه",
+       32
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "التالية": [
+       true,
+       5189
+      ],
+      "التاليه": [
+       true,
+       19
+      ]
+     }
+    },
+    {
+     "key": "ه",
+     "variants": [
+      [
+       "ه",
+       150
+      ],
+      [
+       "ة",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "ه": [
+       true,
+       12012
+      ],
+      "ة": [
+       true,
+       215
+      ]
+     }
+    },
+    {
+     "key": "اننا",
+     "variants": [
+      [
+       "أننا",
+       132
+      ],
+      [
+       "اننا",
+       17
+      ],
+      [
+       "إننا",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أننا": [
+       true,
+       270
+      ],
+      "اننا": [
+       true,
+       47
+      ],
+      "إننا": [
+       true,
+       96
+      ]
+     }
+    },
+    {
+     "key": "فايده",
+     "variants": [
+      [
+       "فائدة",
+       139
+      ],
+      [
+       "فائده",
+       12
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "فائدة": [
+       true,
+       455
+      ],
+      "فائده": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "يلبي",
+     "variants": [
+      [
+       "يلبي",
+       139
+      ],
+      [
+       "يلبى",
+       4
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يلبي": [
+       true,
+       47
+      ],
+      "يلبى": [
+       true,
+       3
+      ]
+     }
+    },
+    {
+     "key": "يلي",
+     "variants": [
+      [
+       "يلي",
+       14
+      ],
+      [
+       "يلى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يلي": [
+       true,
+       1607
+      ],
+      "يلى": [
+       true,
+       39
+      ]
+     }
+    },
+    {
+     "key": "ابلغ",
+     "variants": [
+      [
+       "أبلغ",
+       2
+      ],
+      [
+       "ابلغ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أبلغ": [
+       true,
+       331
+      ],
+      "ابلغ": [
+       true,
+       14
+      ]
+     }
+    },
+    {
+     "key": "لاافهمها",
+     "variants": [
+      [
+       "لاافهمها",
+       2
+      ],
+      [
+       "لأافهمها",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لأافهمها": [
+       false,
+       0
+      ],
+      "لاافهمها": [
+       false,
+       0
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "muharaf_lines": {
+   "lines": 1334,
+   "tokens": 11541,
+   "word_keys_recurring": 1556,
+   "keys_inconsistent_share": 0.09318766066838047,
+   "minority_token_rate": 0.02252837709037345,
+   "minority_ci95": [
+    0.0196534059673923,
+    0.025640154584100832
+   ],
+   "nonstandard_token_rate": 0.009791179273893077,
+   "nonstandard_ci95": [
+    0.007893452344510818,
+    0.011923733920144512
+   ],
+   "minority_by_class_per_1000": {
+    "yaa/maqsura": 10.571007711636772,
+    "alif/hamza": 7.2783987522745,
+    "taa/haa": 3.725846980330994,
+    "alif/hamza+yaa/maqsura": 0.6931808335499523,
+    "alif/hamza+taa/haa+yaa/maqsura": 0.17329520838748808,
+    "alif/hamza+taa/haa": 0.08664760419374404
+   },
+   "nonstandard_by_class_per_1000": {
+    "yaa/maqsura": 6.411922710337059,
+    "alif/hamza": 1.7329520838748809,
+    "taa/haa": 1.3863616670999046,
+    "alif/hamza+yaa/maqsura": 0.25994281258123214
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       205
+      ],
+      [
+       "فى",
+       35
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       151
+      ],
+      [
+       "علي",
+       8
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "علي": [
+       true,
+       16666
+      ],
+      "على": [
+       true,
+       304154
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "ان",
+       142
+      ],
+      [
+       "أن",
+       5
+      ],
+      [
+       "إن",
+       1
+      ],
+      [
+       "آن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ان": [
+       true,
+       9010
+      ],
+      "أن": [
+       true,
+       120448
+      ],
+      "إن": [
+       true,
+       12266
+      ],
+      "آن": [
+       true,
+       1575
+      ]
+     }
+    },
+    {
+     "key": "ما",
+     "variants": [
+      [
+       "ما",
+       82
+      ],
+      [
+       "مأ",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ما": [
+       true,
+       48753
+      ],
+      "مأ": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "الى",
+       70
+      ],
+      [
+       "الي",
+       12
+      ],
+      [
+       "إلى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الي": [
+       true,
+       1155
+      ],
+      "الى": [
+       true,
+       173
+      ],
+      "إلى": [
+       true,
+       188531
+      ]
+     }
+    },
+    {
+     "key": "الخوري",
+     "variants": [
+      [
+       "الخوري",
+       33
+      ],
+      [
+       "الخورى",
+       9
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الخوري": [
+       true,
+       65
+      ],
+      "الخورى": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       30
+      ],
+      [
+       "التى",
+       6
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "يوسف",
+     "variants": [
+      [
+       "يوسف",
+       35
+      ],
+      [
+       "ىوسف",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يوسف": [
+       true,
+       3599
+      ],
+      "ىوسف": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "الذي",
+     "variants": [
+      [
+       "الذي",
+       22
+      ],
+      [
+       "الذى",
+       4
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الذى": [
+       true,
+       22
+      ],
+      "الذي": [
+       true,
+       50137
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "او",
+       17
+      ],
+      [
+       "أو",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "او": [
+       true,
+       250
+      ],
+      "أو": [
+       true,
+       88853
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "انه",
+       18
+      ],
+      [
+       "آنه",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انه": [
+       true,
+       2469
+      ],
+      "آنه": [
+       true,
+       17
+      ]
+     }
+    },
+    {
+     "key": "لي",
+     "variants": [
+      [
+       "لي",
+       15
+      ],
+      [
+       "لى",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لي": [
+       true,
+       2270
+      ],
+      "لى": [
+       true,
+       73
+      ]
+     }
+    },
+    {
+     "key": "بان",
+     "variants": [
+      [
+       "بان",
+       15
+      ],
+      [
+       "بأن",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "بان": [
+       true,
+       691
+      ],
+      "بأن": [
+       true,
+       8516
+      ]
+     }
+    },
+    {
+     "key": "الان",
+     "variants": [
+      [
+       "الان",
+       9
+      ],
+      [
+       "الآن",
+       6
+      ],
+      [
+       "الأن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الان": [
+       true,
+       22
+      ],
+      "الآن": [
+       true,
+       6642
+      ],
+      "الأن": [
+       true,
+       9
+      ]
+     }
+    },
+    {
+     "key": "وفي",
+     "variants": [
+      [
+       "وفي",
+       12
+      ],
+      [
+       "وفى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وفي": [
+       true,
+       29827
+      ],
+      "وفى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "الا",
+     "variants": [
+      [
+       "الا",
+       11
+      ],
+      [
+       "الآ",
+       2
+      ],
+      [
+       "ألا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الا": [
+       true,
+       838
+      ],
+      "الآ": [
+       false,
+       0
+      ],
+      "ألا": [
+       true,
+       712
+      ]
+     }
+    },
+    {
+     "key": "الساعه",
+     "variants": [
+      [
+       "الساعة",
+       11
+      ],
+      [
+       "الساعه",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الساعة": [
+       true,
+       2571
+      ],
+      "الساعه": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "مخايل",
+     "variants": [
+      [
+       "مخايل",
+       12
+      ],
+      [
+       "مخائل",
+       1
+      ]
+     ],
+     "class": "alif/hamza+yaa/maqsura",
+     "lexicon": {
+      "مخايل": [
+       true,
+       6
+      ],
+      "مخائل": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "ابراهيم",
+     "variants": [
+      [
+       "ابراهيم",
+       10
+      ],
+      [
+       "ابراهىم",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "ابراهيم": [
+       true,
+       171
+      ],
+      "ابراهىم": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اما",
+     "variants": [
+      [
+       "اما",
+       9
+      ],
+      [
+       "أما",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اما": [
+       true,
+       678
+      ],
+      "أما": [
+       true,
+       7359
+      ]
+     }
+    },
+    {
+     "key": "اي",
+     "variants": [
+      [
+       "اي",
+       6
+      ],
+      [
+       "أي",
+       3
+      ],
+      [
+       "اى",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اى": [
+       true,
+       53
+      ],
+      "اي": [
+       true,
+       114
+      ],
+      "أي": [
+       true,
+       20770
+      ]
+     }
+    },
+    {
+     "key": "انت",
+     "variants": [
+      [
+       "انت",
+       9
+      ],
+      [
+       "أنت",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انت": [
+       true,
+       36
+      ],
+      "أنت": [
+       true,
+       573
+      ]
+     }
+    },
+    {
+     "key": "الامر",
+     "variants": [
+      [
+       "الامر",
+       8
+      ],
+      [
+       "الأمر",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الامر": [
+       true,
+       207
+      ],
+      "الأمر": [
+       true,
+       4383
+      ]
+     }
+    },
+    {
+     "key": "منه",
+     "variants": [
+      [
+       "منه",
+       8
+      ],
+      [
+       "منة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "منه": [
+       true,
+       5962
+      ],
+      "منة": [
+       true,
+       34
+      ]
+     }
+    },
+    {
+     "key": "اخي",
+     "variants": [
+      [
+       "اخي",
+       6
+      ],
+      [
+       "اخى",
+       2
+      ],
+      [
+       "آخى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "آخى": [
+       true,
+       12
+      ],
+      "اخى": [
+       true,
+       0
+      ],
+      "اخي": [
+       true,
+       0
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "muharaf_train": {
+   "lines": 23161,
+   "tokens": 195983,
+   "word_keys_recurring": 16954,
+   "keys_inconsistent_share": 0.16568361448625693,
+   "minority_token_rate": 0.04143726751810106,
+   "minority_ci95": [
+    0.040507008508690344,
+    0.042393178320195644
+   ],
+   "nonstandard_token_rate": 0.0158074935070899,
+   "nonstandard_ci95": [
+    0.015258484174843129,
+    0.01646009789524395
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 18.38935009669206,
+    "yaa/maqsura": 11.13361873223698,
+    "taa/haa": 9.771255670134655,
+    "alif/hamza+yaa/maqsura": 1.8062791160457794,
+    "alif/hamza+taa/haa": 0.1887918850104346,
+    "alif/hamza+taa/haa+yaa/maqsura": 0.12245960108784945,
+    "taa/haa+yaa/maqsura": 0.02551241689330197
+   },
+   "nonstandard_by_class_per_1000": {
+    "yaa/maqsura": 6.373001739946832,
+    "taa/haa": 5.69947393396366,
+    "alif/hamza": 2.7349310909619713,
+    "alif/hamza+yaa/maqsura": 0.8266023073429838,
+    "alif/hamza+taa/haa+yaa/maqsura": 0.07653725067990591,
+    "alif/hamza+taa/haa": 0.07143476730124551,
+    "taa/haa+yaa/maqsura": 0.02551241689330197
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       3877
+      ],
+      [
+       "فى",
+       448
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       2486
+      ],
+      [
+       "علي",
+       148
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "ان",
+       2465
+      ],
+      [
+       "أن",
+       136
+      ],
+      [
+       "إن",
+       25
+      ],
+      [
+       "آن",
+       6
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ان": [
+       true,
+       9010
+      ],
+      "إن": [
+       true,
+       12266
+      ],
+      "أن": [
+       true,
+       120448
+      ],
+      "آن": [
+       true,
+       1575
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "الى",
+       1678
+      ],
+      [
+       "الي",
+       87
+      ],
+      [
+       "إلى",
+       73
+      ],
+      [
+       "إلي",
+       9
+      ],
+      [
+       "ألي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الى": [
+       true,
+       173
+      ],
+      "ألي": [
+       true,
+       64
+      ],
+      "إلى": [
+       true,
+       188531
+      ],
+      "الي": [
+       true,
+       1155
+      ],
+      "إلي": [
+       true,
+       2872
+      ]
+     }
+    },
+    {
+     "key": "ما",
+     "variants": [
+      [
+       "ما",
+       1580
+      ],
+      [
+       "مأ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ما": [
+       true,
+       48753
+      ],
+      "مأ": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "لا",
+     "variants": [
+      [
+       "لا",
+       1274
+      ],
+      [
+       "لأ",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لا": [
+       true,
+       36443
+      ],
+      "لأ": [
+       true,
+       11
+      ]
+     }
+    },
+    {
+     "key": "كان",
+     "variants": [
+      [
+       "كان",
+       718
+      ],
+      [
+       "كأن",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "كان": [
+       true,
+       74812
+      ],
+      "كأن": [
+       true,
+       173
+      ]
+     }
+    },
+    {
+     "key": "سنه",
+     "variants": [
+      [
+       "سنة",
+       527
+      ],
+      [
+       "سنه",
+       77
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "سنة": [
+       true,
+       69359
+      ],
+      "سنه": [
+       true,
+       327
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       538
+      ],
+      [
+       "التى",
+       48
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "الذي",
+     "variants": [
+      [
+       "الذي",
+       523
+      ],
+      [
+       "الذى",
+       43
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الذي": [
+       true,
+       50137
+      ],
+      "الذى": [
+       true,
+       22
+      ]
+     }
+    },
+    {
+     "key": "الله",
+     "variants": [
+      [
+       "الله",
+       552
+      ],
+      [
+       "اللة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الله": [
+       true,
+       22053
+      ],
+      "اللة": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "يوسف",
+     "variants": [
+      [
+       "يوسف",
+       486
+      ],
+      [
+       "ىوسف",
+       26
+      ],
+      [
+       "يؤسف",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يوسف": [
+       true,
+       3599
+      ],
+      "يؤسف": [
+       true,
+       0
+      ],
+      "ىوسف": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "او",
+       405
+      ],
+      [
+       "أو",
+       66
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "او": [
+       true,
+       250
+      ],
+      "أو": [
+       true,
+       88853
+      ]
+     }
+    },
+    {
+     "key": "حتي",
+     "variants": [
+      [
+       "حتى",
+       422
+      ],
+      [
+       "حتي",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "حتى": [
+       true,
+       24204
+      ],
+      "حتي": [
+       true,
+       676
+      ]
+     }
+    },
+    {
+     "key": "عليه",
+     "variants": [
+      [
+       "عليه",
+       416
+      ],
+      [
+       "علية",
+       3
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "عليه": [
+       true,
+       12364
+      ],
+      "علية": [
+       true,
+       160
+      ]
+     }
+    },
+    {
+     "key": "الخوري",
+     "variants": [
+      [
+       "الخوري",
+       254
+      ],
+      [
+       "الخورى",
+       132
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الخوري": [
+       true,
+       65
+      ],
+      "الخورى": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "انا",
+     "variants": [
+      [
+       "انا",
+       319
+      ],
+      [
+       "أنا",
+       18
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انا": [
+       true,
+       93
+      ],
+      "أنا": [
+       true,
+       1316
+      ]
+     }
+    },
+    {
+     "key": "لي",
+     "variants": [
+      [
+       "لي",
+       300
+      ],
+      [
+       "لى",
+       30
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لي": [
+       true,
+       2270
+      ],
+      "لى": [
+       true,
+       73
+      ]
+     }
+    },
+    {
+     "key": "اذا",
+     "variants": [
+      [
+       "اذا",
+       310
+      ],
+      [
+       "إذا",
+       10
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اذا": [
+       true,
+       16
+      ],
+      "إذا": [
+       true,
+       10298
+      ]
+     }
+    },
+    {
+     "key": "الا",
+     "variants": [
+      [
+       "الا",
+       245
+      ],
+      [
+       "إلا",
+       49
+      ],
+      [
+       "ألا",
+       15
+      ],
+      [
+       "الآ",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الا": [
+       true,
+       838
+      ],
+      "ألا": [
+       true,
+       712
+      ],
+      "إلا": [
+       true,
+       11434
+      ],
+      "الآ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "وفي",
+     "variants": [
+      [
+       "وفي",
+       261
+      ],
+      [
+       "وفى",
+       45
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وفي": [
+       true,
+       29827
+      ],
+      "وفى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "انه",
+       277
+      ],
+      [
+       "أنه",
+       12
+      ],
+      [
+       "أنة",
+       1
+      ],
+      [
+       "إنه",
+       1
+      ],
+      [
+       "انة",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انه": [
+       true,
+       2469
+      ],
+      "أنه": [
+       true,
+       21197
+      ],
+      "أنة": [
+       true,
+       42
+      ],
+      "إنه": [
+       true,
+       1866
+      ],
+      "انة": [
+       true,
+       35
+      ]
+     }
+    },
+    {
+     "key": "وان",
+     "variants": [
+      [
+       "وان",
+       266
+      ],
+      [
+       "وإن",
+       7
+      ],
+      [
+       "وأن",
+       3
+      ],
+      [
+       "وآن",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وان": [
+       true,
+       655
+      ],
+      "وإن": [
+       true,
+       1527
+      ],
+      "وآن": [
+       true,
+       90
+      ],
+      "وأن": [
+       true,
+       3770
+      ]
+     }
+    },
+    {
+     "key": "سيادتكم",
+     "variants": [
+      [
+       "سيادتكم",
+       274
+      ],
+      [
+       "سىادتكم",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "سيادتكم": [
+       true,
+       0
+      ],
+      "سىادتكم": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "السيد",
+     "variants": [
+      [
+       "السيد",
+       270
+      ],
+      [
+       "السىد",
+       1
+      ],
+      [
+       "ألسيد",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "السيد": [
+       true,
+       2533
+      ],
+      "السىد": [
+       false,
+       0
+      ],
+      "ألسيد": [
+       true,
+       0
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "nakba_blind": {
+   "lines": 2671,
+   "tokens": 29737,
+   "word_keys_recurring": 3479,
+   "keys_inconsistent_share": 0.1313595860879563,
+   "minority_token_rate": 0.0561253657060228,
+   "minority_ci95": [
+    0.05363064221425188,
+    0.0588303820887958
+   ],
+   "nonstandard_token_rate": 0.020950331237179272,
+   "nonstandard_ci95": [
+    0.01900572919708056,
+    0.0228778755448274
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 45.16259205703332,
+    "yaa/maqsura": 7.9362410465077176,
+    "taa/haa": 2.0849446817096546,
+    "alif/hamza+yaa/maqsura": 0.8070753606618017,
+    "alif/hamza+taa/haa": 0.10088442008272522,
+    "alif/hamza+taa/haa+yaa/maqsura": 0.033628140027575075
+   },
+   "nonstandard_by_class_per_1000": {
+    "alif/hamza": 13.65302485119548,
+    "yaa/maqsura": 5.784040084742913,
+    "taa/haa": 0.907959780744527,
+    "alif/hamza+yaa/maqsura": 0.5716783804687763,
+    "alif/hamza+taa/haa": 0.033628140027575075
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       610
+      ],
+      [
+       "فى",
+       137
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "ان",
+       253
+      ],
+      [
+       "أن",
+       220
+      ],
+      [
+       "إن",
+       43
+      ],
+      [
+       "آن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ان": [
+       true,
+       9010
+      ],
+      "أن": [
+       true,
+       120448
+      ],
+      "آن": [
+       true,
+       1575
+      ],
+      "إن": [
+       true,
+       12266
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       386
+      ],
+      [
+       "علي",
+       16
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "إلى",
+       214
+      ],
+      [
+       "الى",
+       177
+      ],
+      [
+       "الي",
+       6
+      ],
+      [
+       "إلي",
+       4
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الى": [
+       true,
+       173
+      ],
+      "الي": [
+       true,
+       1155
+      ],
+      "إلى": [
+       true,
+       188531
+      ],
+      "إلي": [
+       true,
+       2872
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "أو",
+       101
+      ],
+      [
+       "او",
+       84
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "او": [
+       true,
+       250
+      ],
+      "أو": [
+       true,
+       88853
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       86
+      ],
+      [
+       "التى",
+       8
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "اذا",
+     "variants": [
+      [
+       "إذا",
+       40
+      ],
+      [
+       "اذا",
+       35
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اذا": [
+       true,
+       16
+      ],
+      "إذا": [
+       true,
+       10298
+      ]
+     }
+    },
+    {
+     "key": "الا",
+     "variants": [
+      [
+       "إلا",
+       42
+      ],
+      [
+       "الا",
+       24
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الا": [
+       true,
+       838
+      ],
+      "إلا": [
+       true,
+       11434
+      ]
+     }
+    },
+    {
+     "key": "اما",
+     "variants": [
+      [
+       "اما",
+       35
+      ],
+      [
+       "أما",
+       23
+      ],
+      [
+       "إما",
+       5
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اما": [
+       true,
+       678
+      ],
+      "أما": [
+       true,
+       7359
+      ],
+      "إما": [
+       true,
+       1937
+      ]
+     }
+    },
+    {
+     "key": "وان",
+     "variants": [
+      [
+       "وإن",
+       34
+      ],
+      [
+       "وان",
+       23
+      ],
+      [
+       "وأن",
+       5
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وان": [
+       true,
+       655
+      ],
+      "وإن": [
+       true,
+       1527
+      ],
+      "وأن": [
+       true,
+       3770
+      ]
+     }
+    },
+    {
+     "key": "العربيه",
+     "variants": [
+      [
+       "العربية",
+       57
+      ],
+      [
+       "العربيه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "العربية": [
+       true,
+       18551
+      ],
+      "العربيه": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "الذي",
+     "variants": [
+      [
+       "الذي",
+       49
+      ],
+      [
+       "الذى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الذي": [
+       true,
+       50137
+      ],
+      "الذى": [
+       true,
+       22
+      ]
+     }
+    },
+    {
+     "key": "فيها",
+     "variants": [
+      [
+       "فيها",
+       50
+      ],
+      [
+       "فىها",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "فيها": [
+       true,
+       15040
+      ],
+      "فىها": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "الاردن",
+     "variants": [
+      [
+       "الأردن",
+       25
+      ],
+      [
+       "الاردن",
+       24
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الاردن": [
+       true,
+       24
+      ],
+      "الأردن": [
+       true,
+       3816
+      ]
+     }
+    },
+    {
+     "key": "فيه",
+     "variants": [
+      [
+       "فيه",
+       44
+      ],
+      [
+       "فئة",
+       1
+      ]
+     ],
+     "class": "alif/hamza+taa/haa+yaa/maqsura",
+     "lexicon": {
+      "فيه": [
+       true,
+       10972
+      ],
+      "فئة": [
+       true,
+       5083
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "أنه",
+       24
+      ],
+      [
+       "انه",
+       18
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انه": [
+       true,
+       2469
+      ],
+      "أنه": [
+       true,
+       21197
+      ]
+     }
+    },
+    {
+     "key": "اسراييل",
+     "variants": [
+      [
+       "إسرائيل",
+       22
+      ],
+      [
+       "اسرائيل",
+       15
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إسرائيل": [
+       true,
+       6607
+      ],
+      "اسرائيل": [
+       true,
+       30
+      ]
+     }
+    },
+    {
+     "key": "وفي",
+     "variants": [
+      [
+       "وفي",
+       27
+      ],
+      [
+       "وفى",
+       9
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وفي": [
+       true,
+       29827
+      ],
+      "وفى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "الامم",
+     "variants": [
+      [
+       "الأمم",
+       18
+      ],
+      [
+       "الامم",
+       16
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الامم": [
+       true,
+       142
+      ],
+      "الأمم": [
+       true,
+       4953
+      ]
+     }
+    },
+    {
+     "key": "انهم",
+     "variants": [
+      [
+       "انهم",
+       16
+      ],
+      [
+       "أنهم",
+       15
+      ],
+      [
+       "إنهم",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انهم": [
+       true,
+       268
+      ],
+      "أنهم": [
+       true,
+       2443
+      ],
+      "إنهم": [
+       true,
+       271
+      ]
+     }
+    },
+    {
+     "key": "انها",
+     "variants": [
+      [
+       "انها",
+       19
+      ],
+      [
+       "أنها",
+       11
+      ],
+      [
+       "إنها",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انها": [
+       true,
+       1216
+      ],
+      "أنها": [
+       true,
+       11326
+      ],
+      "إنها": [
+       true,
+       1085
+      ]
+     }
+    },
+    {
+     "key": "الانكليز",
+     "variants": [
+      [
+       "الانكليز",
+       28
+      ],
+      [
+       "الإنكليز",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الانكليز": [
+       true,
+       0
+      ],
+      "الإنكليز": [
+       true,
+       68
+      ]
+     }
+    },
+    {
+     "key": "لي",
+     "variants": [
+      [
+       "لي",
+       28
+      ],
+      [
+       "لى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لي": [
+       true,
+       2270
+      ],
+      "لى": [
+       true,
+       73
+      ]
+     }
+    },
+    {
+     "key": "ابو",
+     "variants": [
+      [
+       "ابو",
+       14
+      ],
+      [
+       "أبو",
+       12
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ابو": [
+       true,
+       56
+      ],
+      "أبو": [
+       true,
+       9017
+      ]
+     }
+    },
+    {
+     "key": "فان",
+     "variants": [
+      [
+       "فإن",
+       15
+      ],
+      [
+       "فان",
+       10
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "فان": [
+       true,
+       2254
+      ],
+      "فإن": [
+       true,
+       11413
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "nakba_lines": {
+   "lines": 2095,
+   "tokens": 20893,
+   "word_keys_recurring": 2382,
+   "keys_inconsistent_share": 0.0764063811922754,
+   "minority_token_rate": 0.020916096300196238,
+   "minority_ci95": [
+    0.018874948314413206,
+    0.02298541848843551
+   ],
+   "nonstandard_token_rate": 0.0036854448858469344,
+   "nonstandard_ci95": [
+    0.0028414561387138603,
+    0.004511839696873717
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 17.51782893792179,
+    "yaa/maqsura": 2.0102426650074188,
+    "taa/haa": 1.052984253099124,
+    "alif/hamza+yaa/maqsura": 0.19145168238165894,
+    "alif/hamza+taa/haa": 0.1435887617862442
+   },
+   "nonstandard_by_class_per_1000": {
+    "alif/hamza": 3.4461302828698606,
+    "taa/haa": 0.1435887617862442,
+    "alif/hamza+yaa/maqsura": 0.047862920595414735,
+    "yaa/maqsura": 0.047862920595414735
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       540
+      ],
+      [
+       "فى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "أن",
+       281
+      ],
+      [
+       "إن",
+       60
+      ],
+      [
+       "ان",
+       29
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أن": [
+       true,
+       120448
+      ],
+      "إن": [
+       true,
+       12266
+      ],
+      "ان": [
+       true,
+       9010
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       276
+      ],
+      [
+       "علي",
+       17
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "إلى",
+       268
+      ],
+      [
+       "الى",
+       10
+      ],
+      [
+       "إلي",
+       7
+      ],
+      [
+       "الي",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إلى": [
+       true,
+       188531
+      ],
+      "الى": [
+       true,
+       173
+      ],
+      "الي": [
+       true,
+       1155
+      ],
+      "إلي": [
+       true,
+       2872
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "أو",
+       125
+      ],
+      [
+       "او",
+       14
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أو": [
+       true,
+       88853
+      ],
+      "او": [
+       true,
+       250
+      ]
+     }
+    },
+    {
+     "key": "وان",
+     "variants": [
+      [
+       "وإن",
+       32
+      ],
+      [
+       "وأن",
+       17
+      ],
+      [
+       "وان",
+       7
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وإن": [
+       true,
+       1527
+      ],
+      "وان": [
+       true,
+       655
+      ],
+      "وأن": [
+       true,
+       3770
+      ]
+     }
+    },
+    {
+     "key": "الا",
+     "variants": [
+      [
+       "إلا",
+       41
+      ],
+      [
+       "الا",
+       4
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إلا": [
+       true,
+       11434
+      ],
+      "الا": [
+       true,
+       838
+      ]
+     }
+    },
+    {
+     "key": "اذا",
+     "variants": [
+      [
+       "إذا",
+       43
+      ],
+      [
+       "اذا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إذا": [
+       true,
+       10298
+      ],
+      "اذا": [
+       true,
+       16
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "أنه",
+       35
+      ],
+      [
+       "انه",
+       6
+      ],
+      [
+       "إنه",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "انه": [
+       true,
+       2469
+      ],
+      "أنه": [
+       true,
+       21197
+      ],
+      "إنه": [
+       true,
+       1866
+      ]
+     }
+    },
+    {
+     "key": "اسراييل",
+     "variants": [
+      [
+       "إسرائيل",
+       31
+      ],
+      [
+       "اسرائيل",
+       8
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إسرائيل": [
+       true,
+       6607
+      ],
+      "اسرائيل": [
+       true,
+       30
+      ]
+     }
+    },
+    {
+     "key": "اما",
+     "variants": [
+      [
+       "أما",
+       26
+      ],
+      [
+       "إما",
+       4
+      ],
+      [
+       "اما",
+       4
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إما": [
+       true,
+       1937
+      ],
+      "أما": [
+       true,
+       7359
+      ],
+      "اما": [
+       true,
+       678
+      ]
+     }
+    },
+    {
+     "key": "الاردن",
+     "variants": [
+      [
+       "الأردن",
+       30
+      ],
+      [
+       "الاردن",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأردن": [
+       true,
+       3816
+      ],
+      "الاردن": [
+       true,
+       24
+      ]
+     }
+    },
+    {
+     "key": "فاذا",
+     "variants": [
+      [
+       "فإذا",
+       19
+      ],
+      [
+       "فاذا",
+       4
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "فإذا": [
+       true,
+       627
+      ],
+      "فاذا": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "اليه",
+     "variants": [
+      [
+       "إليه",
+       20
+      ],
+      [
+       "اليه",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إليه": [
+       true,
+       3620
+      ],
+      "اليه": [
+       true,
+       281
+      ]
+     }
+    },
+    {
+     "key": "الانكليز",
+     "variants": [
+      [
+       "الانكليز",
+       21
+      ],
+      [
+       "الإنكليز",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الانكليز": [
+       true,
+       0
+      ],
+      "الإنكليز": [
+       true,
+       68
+      ]
+     }
+    },
+    {
+     "key": "واذا",
+     "variants": [
+      [
+       "وإذا",
+       17
+      ],
+      [
+       "واذا",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وإذا": [
+       true,
+       1062
+      ],
+      "واذا": [
+       true,
+       18
+      ]
+     }
+    },
+    {
+     "key": "انني",
+     "variants": [
+      [
+       "أنني",
+       13
+      ],
+      [
+       "إنني",
+       4
+      ],
+      [
+       "انني",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أنني": [
+       true,
+       147
+      ],
+      "إنني": [
+       true,
+       64
+      ],
+      "انني": [
+       true,
+       13
+      ]
+     }
+    },
+    {
+     "key": "لان",
+     "variants": [
+      [
+       "لأن",
+       17
+      ],
+      [
+       "لان",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لأن": [
+       true,
+       4743
+      ],
+      "لان": [
+       true,
+       290
+      ]
+     }
+    },
+    {
+     "key": "الامم",
+     "variants": [
+      [
+       "الأمم",
+       14
+      ],
+      [
+       "الامم",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأمم": [
+       true,
+       4953
+      ],
+      "الامم": [
+       true,
+       142
+      ]
+     }
+    },
+    {
+     "key": "انهم",
+     "variants": [
+      [
+       "أنهم",
+       13
+      ],
+      [
+       "إنهم",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أنهم": [
+       true,
+       2443
+      ],
+      "إنهم": [
+       true,
+       271
+      ]
+     }
+    },
+    {
+     "key": "اي",
+     "variants": [
+      [
+       "أي",
+       14
+      ],
+      [
+       "اي",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أي": [
+       true,
+       20770
+      ],
+      "اي": [
+       true,
+       114
+      ]
+     }
+    },
+    {
+     "key": "امريكا",
+     "variants": [
+      [
+       "أمريكا",
+       14
+      ],
+      [
+       "امريكا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أمريكا": [
+       true,
+       8222
+      ],
+      "امريكا": [
+       true,
+       19
+      ]
+     }
+    },
+    {
+     "key": "وانا",
+     "variants": [
+      [
+       "وأنا",
+       11
+      ],
+      [
+       "وإنا",
+       3
+      ],
+      [
+       "وانا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وأنا": [
+       true,
+       284
+      ],
+      "وانا": [
+       true,
+       33
+      ],
+      "وإنا": [
+       true,
+       21
+      ]
+     }
+    },
+    {
+     "key": "الاحد",
+     "variants": [
+      [
+       "الأحد",
+       9
+      ],
+      [
+       "الاحد",
+       5
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأحد": [
+       true,
+       660
+      ],
+      "الاحد": [
+       true,
+       14
+      ]
+     }
+    },
+    {
+     "key": "الاخري",
+     "variants": [
+      [
+       "الأخرى",
+       11
+      ],
+      [
+       "الاخرى",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأخرى": [
+       true,
+       9636
+      ],
+      "الاخرى": [
+       true,
+       7
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "nakba_train": {
+   "lines": 15962,
+   "tokens": 156429,
+   "word_keys_recurring": 15319,
+   "keys_inconsistent_share": 0.08753835106730204,
+   "minority_token_rate": 0.027833713697588042,
+   "minority_ci95": [
+    0.0269444299827182,
+    0.028707357245819635
+   ],
+   "nonstandard_token_rate": 0.006558886140037972,
+   "nonstandard_ci95": [
+    0.006146396571791966,
+    0.007006479359174159
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 23.486693643761708,
+    "yaa/maqsura": 2.326934264107039,
+    "taa/haa": 1.4063888409438148,
+    "alif/hamza+yaa/maqsura": 0.4410946819323783,
+    "alif/hamza+taa/haa": 0.1470315606441261,
+    "alif/hamza+taa/haa+yaa/maqsura": 0.02557070619897845
+   },
+   "nonstandard_by_class_per_1000": {
+    "alif/hamza": 6.0474720160584035,
+    "taa/haa": 0.23013635579080605,
+    "yaa/maqsura": 0.12146085444514763,
+    "alif/hamza+yaa/maqsura": 0.08949747169642458,
+    "alif/hamza+taa/haa": 0.07031944204719073
+   },
+   "examples": [
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "أن",
+       2084
+      ],
+      [
+       "إن",
+       390
+      ],
+      [
+       "ان",
+       278
+      ],
+      [
+       "آن",
+       8
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أن": [
+       true,
+       120448
+      ],
+      "ان": [
+       true,
+       9010
+      ],
+      "إن": [
+       true,
+       12266
+      ],
+      "آن": [
+       true,
+       1575
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "إلى",
+       1994
+      ],
+      [
+       "الى",
+       109
+      ],
+      [
+       "إلي",
+       27
+      ],
+      [
+       "الي",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إلى": [
+       true,
+       188531
+      ],
+      "الى": [
+       true,
+       173
+      ],
+      "إلي": [
+       true,
+       2872
+      ],
+      "الي": [
+       true,
+       1155
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       1989
+      ],
+      [
+       "علي",
+       126
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "لا",
+     "variants": [
+      [
+       "لا",
+       1161
+      ],
+      [
+       "لآ",
+       1
+      ],
+      [
+       "لأ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لا": [
+       true,
+       36443
+      ],
+      "لآ": [
+       false,
+       0
+      ],
+      "لأ": [
+       true,
+       11
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "أو",
+       854
+      ],
+      [
+       "او",
+       71
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أو": [
+       true,
+       88853
+      ],
+      "او": [
+       true,
+       250
+      ]
+     }
+    },
+    {
+     "key": "حتي",
+     "variants": [
+      [
+       "حتى",
+       509
+      ],
+      [
+       "حتي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "حتى": [
+       true,
+       24204
+      ],
+      "حتي": [
+       true,
+       676
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       441
+      ],
+      [
+       "التى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "كان",
+     "variants": [
+      [
+       "كان",
+       415
+      ],
+      [
+       "كأن",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "كان": [
+       true,
+       74812
+      ],
+      "كأن": [
+       true,
+       173
+      ]
+     }
+    },
+    {
+     "key": "الا",
+     "variants": [
+      [
+       "إلا",
+       335
+      ],
+      [
+       "الا",
+       35
+      ],
+      [
+       "ألا",
+       18
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إلا": [
+       true,
+       11434
+      ],
+      "الا": [
+       true,
+       838
+      ],
+      "ألا": [
+       true,
+       712
+      ]
+     }
+    },
+    {
+     "key": "اذا",
+     "variants": [
+      [
+       "إذا",
+       344
+      ],
+      [
+       "اذا",
+       32
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إذا": [
+       true,
+       10298
+      ],
+      "اذا": [
+       true,
+       16
+      ]
+     }
+    },
+    {
+     "key": "وان",
+     "variants": [
+      [
+       "وإن",
+       180
+      ],
+      [
+       "وأن",
+       117
+      ],
+      [
+       "وان",
+       29
+      ],
+      [
+       "وآن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وإن": [
+       true,
+       1527
+      ],
+      "وأن": [
+       true,
+       3770
+      ],
+      "وان": [
+       true,
+       655
+      ],
+      "وآن": [
+       true,
+       90
+      ]
+     }
+    },
+    {
+     "key": "اسراييل",
+     "variants": [
+      [
+       "إسرائيل",
+       235
+      ],
+      [
+       "اسرائيل",
+       60
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "إسرائيل": [
+       true,
+       6607
+      ],
+      "اسرائيل": [
+       true,
+       30
+      ]
+     }
+    },
+    {
+     "key": "الاردن",
+     "variants": [
+      [
+       "الأردن",
+       265
+      ],
+      [
+       "الاردن",
+       12
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأردن": [
+       true,
+       3816
+      ],
+      "الاردن": [
+       true,
+       24
+      ]
+     }
+    },
+    {
+     "key": "عليه",
+     "variants": [
+      [
+       "عليه",
+       271
+      ],
+      [
+       "علية",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "عليه": [
+       true,
+       12364
+      ],
+      "علية": [
+       true,
+       160
+      ]
+     }
+    },
+    {
+     "key": "اما",
+     "variants": [
+      [
+       "أما",
+       198
+      ],
+      [
+       "إما",
+       42
+      ],
+      [
+       "اما",
+       32
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أما": [
+       true,
+       7359
+      ],
+      "إما": [
+       true,
+       1937
+      ],
+      "اما": [
+       true,
+       678
+      ]
+     }
+    },
+    {
+     "key": "فيه",
+     "variants": [
+      [
+       "فيه",
+       262
+      ],
+      [
+       "فئة",
+       4
+      ]
+     ],
+     "class": "alif/hamza+taa/haa+yaa/maqsura",
+     "lexicon": {
+      "فيه": [
+       true,
+       10972
+      ],
+      "فئة": [
+       true,
+       5083
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "أنه",
+       188
+      ],
+      [
+       "انه",
+       23
+      ],
+      [
+       "إنه",
+       11
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أنه": [
+       true,
+       21197
+      ],
+      "انه": [
+       true,
+       2469
+      ],
+      "إنه": [
+       true,
+       1866
+      ]
+     }
+    },
+    {
+     "key": "هو",
+     "variants": [
+      [
+       "هو",
+       176
+      ],
+      [
+       "هؤ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "هو": [
+       true,
+       131660
+      ],
+      "هؤ": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "وفي",
+     "variants": [
+      [
+       "وفي",
+       170
+      ],
+      [
+       "وفى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وفي": [
+       true,
+       29827
+      ],
+      "وفى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "الانكليز",
+     "variants": [
+      [
+       "الانكليز",
+       152
+      ],
+      [
+       "الإنكليز",
+       3
+      ],
+      [
+       "الأنكليز",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الانكليز": [
+       true,
+       0
+      ],
+      "الإنكليز": [
+       true,
+       68
+      ],
+      "الأنكليز": [
+       true,
+       3
+      ]
+     }
+    },
+    {
+     "key": "الامم",
+     "variants": [
+      [
+       "الأمم",
+       138
+      ],
+      [
+       "الامم",
+       16
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأمم": [
+       true,
+       4953
+      ],
+      "الامم": [
+       true,
+       142
+      ]
+     }
+    },
+    {
+     "key": "فاذا",
+     "variants": [
+      [
+       "فإذا",
+       144
+      ],
+      [
+       "فاذا",
+       9
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "فإذا": [
+       true,
+       627
+      ],
+      "فاذا": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "لان",
+     "variants": [
+      [
+       "لأن",
+       130
+      ],
+      [
+       "لان",
+       14
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لأن": [
+       true,
+       4743
+      ],
+      "لان": [
+       true,
+       290
+      ]
+     }
+    },
+    {
+     "key": "وكان",
+     "variants": [
+      [
+       "وكان",
+       139
+      ],
+      [
+       "وكأن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وكان": [
+       true,
+       19270
+      ],
+      "وكأن": [
+       true,
+       69
+      ]
+     }
+    },
+    {
+     "key": "منه",
+     "variants": [
+      [
+       "منه",
+       134
+      ],
+      [
+       "منة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "منه": [
+       true,
+       5962
+      ],
+      "منة": [
+       true,
+       34
+      ]
+     }
+    }
+   ],
+   "decision": "orthographic rung required in headline"
+  },
+  "rasam1": {
+   "lines": 734,
+   "tokens": 9977,
+   "word_keys_recurring": 1097,
+   "keys_inconsistent_share": 0.041932543299908843,
+   "minority_token_rate": 0.0068156760549263305,
+   "minority_ci95": [
+    0.005218172347701512,
+    0.008350669550413721
+   ],
+   "nonstandard_token_rate": 0.0017039190137315826,
+   "nonstandard_ci95": [
+    0.000916623960457553,
+    0.00256466537281614
+   ],
+   "minority_by_class_per_1000": {
+    "yaa/maqsura": 4.209682269219204,
+    "taa/haa": 1.3029968928535631,
+    "alif/hamza": 0.8018442417560389,
+    "alif/hamza+yaa/maqsura": 0.5011526510975243
+   },
+   "nonstandard_by_class_per_1000": {
+    "yaa/maqsura": 1.3029968928535631,
+    "taa/haa": 0.3006915906585146,
+    "alif/hamza+yaa/maqsura": 0.10023053021950486
+   },
+   "examples": [
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       131
+      ],
+      [
+       "علي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "الى",
+       80
+      ],
+      [
+       "الي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الى": [
+       true,
+       173
+      ],
+      "الي": [
+       true,
+       1155
+      ]
+     }
+    },
+    {
+     "key": "رضي",
+     "variants": [
+      [
+       "رضي",
+       21
+      ],
+      [
+       "رضى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "رضي": [
+       true,
+       371
+      ],
+      "رضى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "وهي",
+     "variants": [
+      [
+       "وهي",
+       13
+      ],
+      [
+       "وهى",
+       4
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وهي": [
+       true,
+       23195
+      ],
+      "وهى": [
+       true,
+       73
+      ]
+     }
+    },
+    {
+     "key": "بني",
+     "variants": [
+      [
+       "بنى",
+       15
+      ],
+      [
+       "بني",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "بنى": [
+       true,
+       450
+      ],
+      "بني": [
+       true,
+       16462
+      ]
+     }
+    },
+    {
+     "key": "هي",
+     "variants": [
+      [
+       "هي",
+       12
+      ],
+      [
+       "هى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "هي": [
+       true,
+       61669
+      ],
+      "هى": [
+       true,
+       3
+      ]
+     }
+    },
+    {
+     "key": "ابي",
+     "variants": [
+      [
+       "ابى",
+       7
+      ],
+      [
+       "ابي",
+       6
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "ابي": [
+       true,
+       146
+      ],
+      "ابى": [
+       true,
+       10
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       12
+      ],
+      [
+       "التى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "سته",
+     "variants": [
+      [
+       "ستة",
+       10
+      ],
+      [
+       "سته",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "ستة": [
+       true,
+       2697
+      ],
+      "سته": [
+       true,
+       20
+      ]
+     }
+    },
+    {
+     "key": "الثاني",
+     "variants": [
+      [
+       "الثاني",
+       7
+      ],
+      [
+       "الثانى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الثانى": [
+       true,
+       153
+      ],
+      "الثاني": [
+       true,
+       17414
+      ]
+     }
+    },
+    {
+     "key": "بقي",
+     "variants": [
+      [
+       "بقي",
+       7
+      ],
+      [
+       "بقى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "بقي": [
+       true,
+       832
+      ],
+      "بقى": [
+       true,
+       83
+      ]
+     }
+    },
+    {
+     "key": "يعني",
+     "variants": [
+      [
+       "يعني",
+       7
+      ],
+      [
+       "يعنى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يعنى": [
+       true,
+       135
+      ],
+      "يعني": [
+       true,
+       2592
+      ]
+     }
+    },
+    {
+     "key": "لي",
+     "variants": [
+      [
+       "لى",
+       4
+      ],
+      [
+       "لي",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لى": [
+       true,
+       73
+      ],
+      "لي": [
+       true,
+       2270
+      ]
+     }
+    },
+    {
+     "key": "رحمه",
+     "variants": [
+      [
+       "رحمه",
+       4
+      ],
+      [
+       "رحمة",
+       3
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "رحمه": [
+       true,
+       188
+      ],
+      "رحمة": [
+       true,
+       199
+      ]
+     }
+    },
+    {
+     "key": "نبي",
+     "variants": [
+      [
+       "نبى",
+       5
+      ],
+      [
+       "نبي",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "نبي": [
+       true,
+       173
+      ],
+      "نبى": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اولاد",
+     "variants": [
+      [
+       "اولاد",
+       5
+      ],
+      [
+       "أولاد",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اولاد": [
+       true,
+       78
+      ],
+      "أولاد": [
+       true,
+       20760
+      ]
+     }
+    },
+    {
+     "key": "امه",
+     "variants": [
+      [
+       "امه",
+       4
+      ],
+      [
+       "امة",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "امة": [
+       true,
+       6
+      ],
+      "امه": [
+       true,
+       56
+      ]
+     }
+    },
+    {
+     "key": "ايام",
+     "variants": [
+      [
+       "ايام",
+       4
+      ],
+      [
+       "أيام",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ايام": [
+       true,
+       13
+      ],
+      "أيام": [
+       true,
+       4058
+      ]
+     }
+    },
+    {
+     "key": "المسله",
+     "variants": [
+      [
+       "المسلة",
+       4
+      ],
+      [
+       "المسله",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "المسله": [
+       true,
+       0
+      ],
+      "المسلة": [
+       true,
+       35
+      ]
+     }
+    },
+    {
+     "key": "ولي",
+     "variants": [
+      [
+       "ولى",
+       4
+      ],
+      [
+       "ولي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "ولى": [
+       true,
+       58
+      ],
+      "ولي": [
+       true,
+       1091
+      ]
+     }
+    },
+    {
+     "key": "توفي",
+     "variants": [
+      [
+       "توفى",
+       4
+      ],
+      [
+       "توفي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "توفى": [
+       true,
+       242
+      ],
+      "توفي": [
+       true,
+       7847
+      ]
+     }
+    },
+    {
+     "key": "وبقي",
+     "variants": [
+      [
+       "وبقى",
+       3
+      ],
+      [
+       "وبقي",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وبقى": [
+       true,
+       40
+      ],
+      "وبقي": [
+       true,
+       525
+      ]
+     }
+    },
+    {
+     "key": "عني",
+     "variants": [
+      [
+       "عنى",
+       4
+      ],
+      [
+       "عني",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "عنى": [
+       true,
+       35
+      ],
+      "عني": [
+       true,
+       110
+      ]
+     }
+    },
+    {
+     "key": "مسايل",
+     "variants": [
+      [
+       "مسائل",
+       3
+      ],
+      [
+       "مسايل",
+       1
+      ]
+     ],
+     "class": "alif/hamza+yaa/maqsura",
+     "lexicon": {
+      "مسائل": [
+       true,
+       374
+      ],
+      "مسايل": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "ايها",
+     "variants": [
+      [
+       "ايها",
+       3
+      ],
+      [
+       "أيها",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ايها": [
+       true,
+       26
+      ],
+      "أيها": [
+       true,
+       196
+      ]
+     }
+    }
+   ],
+   "decision": "canonical rung may stand alone"
+  },
+  "rasam1_train": {
+   "lines": 4692,
+   "tokens": 62501,
+   "word_keys_recurring": 5445,
+   "keys_inconsistent_share": 0.05785123966942149,
+   "minority_token_rate": 0.01070382873874018,
+   "minority_ci95": [
+    0.00988250226809912,
+    0.011511013002993812
+   ],
+   "nonstandard_token_rate": 0.0025759587846594456,
+   "nonstandard_ci95": [
+    0.002167061950066171,
+    0.0029980769430486658
+   ],
+   "minority_by_class_per_1000": {
+    "yaa/maqsura": 6.143901697572839,
+    "taa/haa": 2.687956992688117,
+    "alif/hamza+yaa/maqsura": 1.1359818242908113,
+    "alif/hamza": 0.735988224188413
+   },
+   "nonstandard_by_class_per_1000": {
+    "yaa/maqsura": 1.6799731204300732,
+    "taa/haa": 0.5919905281515496,
+    "alif/hamza+yaa/maqsura": 0.25599590406553496,
+    "alif/hamza": 0.047999232012287806
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       1336
+      ],
+      [
+       "فى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       863
+      ],
+      [
+       "علي",
+       29
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "الى",
+       515
+      ],
+      [
+       "الي",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الى": [
+       true,
+       173
+      ],
+      "الي": [
+       true,
+       1155
+      ]
+     }
+    },
+    {
+     "key": "منه",
+     "variants": [
+      [
+       "منه",
+       154
+      ],
+      [
+       "منة",
+       2
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "منه": [
+       true,
+       5962
+      ],
+      "منة": [
+       true,
+       34
+      ]
+     }
+    },
+    {
+     "key": "الذي",
+     "variants": [
+      [
+       "الذي",
+       149
+      ],
+      [
+       "الذى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الذي": [
+       true,
+       50137
+      ],
+      "الذى": [
+       true,
+       22
+      ]
+     }
+    },
+    {
+     "key": "اي",
+     "variants": [
+      [
+       "اي",
+       145
+      ],
+      [
+       "اى",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "اي": [
+       true,
+       114
+      ],
+      "اى": [
+       true,
+       53
+      ]
+     }
+    },
+    {
+     "key": "رضي",
+     "variants": [
+      [
+       "رضي",
+       111
+      ],
+      [
+       "رضى",
+       19
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "رضي": [
+       true,
+       371
+      ],
+      "رضى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "سنه",
+     "variants": [
+      [
+       "سنة",
+       125
+      ],
+      [
+       "سنه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "سنة": [
+       true,
+       69359
+      ],
+      "سنه": [
+       true,
+       327
+      ]
+     }
+    },
+    {
+     "key": "انه",
+     "variants": [
+      [
+       "انه",
+       103
+      ],
+      [
+       "انة",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "انه": [
+       true,
+       2469
+      ],
+      "انة": [
+       true,
+       35
+      ]
+     }
+    },
+    {
+     "key": "وهي",
+     "variants": [
+      [
+       "وهي",
+       57
+      ],
+      [
+       "وهى",
+       27
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وهى": [
+       true,
+       73
+      ],
+      "وهي": [
+       true,
+       23195
+      ]
+     }
+    },
+    {
+     "key": "الارض",
+     "variants": [
+      [
+       "الارض",
+       77
+      ],
+      [
+       "الأرض",
+       5
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأرض": [
+       true,
+       17813
+      ],
+      "الارض": [
+       true,
+       30
+      ]
+     }
+    },
+    {
+     "key": "التي",
+     "variants": [
+      [
+       "التي",
+       77
+      ],
+      [
+       "التى",
+       4
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "التي": [
+       true,
+       113688
+      ],
+      "التى": [
+       true,
+       27
+      ]
+     }
+    },
+    {
+     "key": "وفي",
+     "variants": [
+      [
+       "وفي",
+       79
+      ],
+      [
+       "وفى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وفي": [
+       true,
+       29827
+      ],
+      "وفى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "اربعه",
+     "variants": [
+      [
+       "اربعة",
+       75
+      ],
+      [
+       "أربعة",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اربعة": [
+       true,
+       0
+      ],
+      "أربعة": [
+       true,
+       4420
+      ]
+     }
+    },
+    {
+     "key": "ابي",
+     "variants": [
+      [
+       "ابى",
+       43
+      ],
+      [
+       "ابي",
+       30
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "ابى": [
+       true,
+       10
+      ],
+      "ابي": [
+       true,
+       146
+      ]
+     }
+    },
+    {
+     "key": "بني",
+     "variants": [
+      [
+       "بنى",
+       60
+      ],
+      [
+       "بني",
+       10
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "بنى": [
+       true,
+       450
+      ],
+      "بني": [
+       true,
+       16462
+      ]
+     }
+    },
+    {
+     "key": "لي",
+     "variants": [
+      [
+       "لى",
+       55
+      ],
+      [
+       "لي",
+       12
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "لى": [
+       true,
+       73
+      ],
+      "لي": [
+       true,
+       2270
+      ]
+     }
+    },
+    {
+     "key": "لان",
+     "variants": [
+      [
+       "لان",
+       61
+      ],
+      [
+       "لأن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "لان": [
+       true,
+       290
+      ],
+      "لأن": [
+       true,
+       4743
+      ]
+     }
+    },
+    {
+     "key": "واما",
+     "variants": [
+      [
+       "واما",
+       55
+      ],
+      [
+       "وأما",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "وأما": [
+       true,
+       660
+      ],
+      "واما": [
+       true,
+       41
+      ]
+     }
+    },
+    {
+     "key": "شيء",
+     "variants": [
+      [
+       "شيء",
+       31
+      ],
+      [
+       "شىء",
+       21
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "شىء": [
+       false,
+       0
+      ],
+      "شيء": [
+       true,
+       2763
+      ]
+     }
+    },
+    {
+     "key": "ابو",
+     "variants": [
+      [
+       "ابو",
+       49
+      ],
+      [
+       "أبو",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أبو": [
+       true,
+       9017
+      ],
+      "ابو": [
+       true,
+       56
+      ]
+     }
+    },
+    {
+     "key": "وعلي",
+     "variants": [
+      [
+       "وعلى",
+       41
+      ],
+      [
+       "وعلي",
+       6
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "وعلى": [
+       true,
+       6090
+      ],
+      "وعلي": [
+       true,
+       558
+      ]
+     }
+    },
+    {
+     "key": "الثاني",
+     "variants": [
+      [
+       "الثاني",
+       40
+      ],
+      [
+       "الثانى",
+       7
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الثاني": [
+       true,
+       17414
+      ],
+      "الثانى": [
+       true,
+       153
+      ]
+     }
+    },
+    {
+     "key": "اني",
+     "variants": [
+      [
+       "انى",
+       35
+      ],
+      [
+       "اني",
+       12
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "اني": [
+       true,
+       57
+      ],
+      "انى": [
+       true,
+       5
+      ]
+     }
+    },
+    {
+     "key": "ايضا",
+     "variants": [
+      [
+       "ايضا",
+       39
+      ],
+      [
+       "أيضا",
+       3
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ايضا": [
+       true,
+       345
+      ],
+      "أيضا": [
+       true,
+       28820
+      ]
+     }
+    }
+   ],
+   "decision": "canonical rung may stand alone"
+  },
+  "rasam2": {
+   "lines": 372,
+   "tokens": 4598,
+   "word_keys_recurring": 513,
+   "keys_inconsistent_share": 0.05263157894736842,
+   "minority_token_rate": 0.008046976946498478,
+   "minority_ci95": [
+    0.00527940490384117,
+    0.010820322992796531
+   ],
+   "nonstandard_token_rate": 0.0015224010439321444,
+   "nonstandard_ci95": [
+    0.0004453276825123322,
+    0.002728001396243806
+   ],
+   "minority_by_class_per_1000": {
+    "alif/hamza": 4.349717268377556,
+    "yaa/maqsura": 2.827316224445411,
+    "taa/haa": 0.8699434536755111
+   },
+   "nonstandard_by_class_per_1000": {
+    "yaa/maqsura": 0.8699434536755111,
+    "taa/haa": 0.43497172683775553,
+    "alif/hamza": 0.21748586341887777
+   },
+   "examples": [
+    {
+     "key": "في",
+     "variants": [
+      [
+       "في",
+       127
+      ],
+      [
+       "فى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "في": [
+       true,
+       1289220
+      ],
+      "فى": [
+       true,
+       51
+      ]
+     }
+    },
+    {
+     "key": "ان",
+     "variants": [
+      [
+       "ان",
+       76
+      ],
+      [
+       "إن",
+       1
+      ],
+      [
+       "أن",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ان": [
+       true,
+       9010
+      ],
+      "إن": [
+       true,
+       12266
+      ],
+      "أن": [
+       true,
+       120448
+      ]
+     }
+    },
+    {
+     "key": "علي",
+     "variants": [
+      [
+       "على",
+       74
+      ],
+      [
+       "علي",
+       3
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "على": [
+       true,
+       304154
+      ],
+      "علي": [
+       true,
+       16666
+      ]
+     }
+    },
+    {
+     "key": "ما",
+     "variants": [
+      [
+       "ما",
+       36
+      ],
+      [
+       "مآ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ما": [
+       true,
+       48753
+      ],
+      "مآ": [
+       true,
+       0
+      ]
+     }
+    },
+    {
+     "key": "او",
+     "variants": [
+      [
+       "او",
+       35
+      ],
+      [
+       "أو",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "او": [
+       true,
+       250
+      ],
+      "أو": [
+       true,
+       88853
+      ]
+     }
+    },
+    {
+     "key": "الي",
+     "variants": [
+      [
+       "الى",
+       34
+      ],
+      [
+       "الي",
+       1
+      ],
+      [
+       "إلى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الى": [
+       true,
+       173
+      ],
+      "الي": [
+       true,
+       1155
+      ],
+      "إلى": [
+       true,
+       188531
+      ]
+     }
+    },
+    {
+     "key": "اي",
+     "variants": [
+      [
+       "اي",
+       7
+      ],
+      [
+       "أي",
+       4
+      ],
+      [
+       "اى",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أي": [
+       true,
+       20770
+      ],
+      "اي": [
+       true,
+       114
+      ],
+      "اى": [
+       true,
+       53
+      ]
+     }
+    },
+    {
+     "key": "سنه",
+     "variants": [
+      [
+       "سنة",
+       8
+      ],
+      [
+       "سنه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "سنة": [
+       true,
+       69359
+      ],
+      "سنه": [
+       true,
+       327
+      ]
+     }
+    },
+    {
+     "key": "اهل",
+     "variants": [
+      [
+       "اهل",
+       5
+      ],
+      [
+       "أهل",
+       2
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اهل": [
+       true,
+       177
+      ],
+      "أهل": [
+       true,
+       3579
+      ]
+     }
+    },
+    {
+     "key": "ابو",
+     "variants": [
+      [
+       "ابو",
+       6
+      ],
+      [
+       "أبو",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ابو": [
+       true,
+       56
+      ],
+      "أبو": [
+       true,
+       9017
+      ]
+     }
+    },
+    {
+     "key": "هي",
+     "variants": [
+      [
+       "هي",
+       5
+      ],
+      [
+       "هى",
+       2
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "هي": [
+       true,
+       61669
+      ],
+      "هى": [
+       true,
+       3
+      ]
+     }
+    },
+    {
+     "key": "واما",
+     "variants": [
+      [
+       "واما",
+       5
+      ],
+      [
+       "وأما",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "واما": [
+       true,
+       41
+      ],
+      "وأما": [
+       true,
+       660
+      ]
+     }
+    },
+    {
+     "key": "ايضا",
+     "variants": [
+      [
+       "ايضا",
+       4
+      ],
+      [
+       "أيضا",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "ايضا": [
+       true,
+       345
+      ],
+      "أيضا": [
+       true,
+       28820
+      ]
+     }
+    },
+    {
+     "key": "بدا",
+     "variants": [
+      [
+       "بدا",
+       3
+      ],
+      [
+       "بدأ",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "بدا": [
+       true,
+       353
+      ],
+      "بدأ": [
+       true,
+       17703
+      ]
+     }
+    },
+    {
+     "key": "الاول",
+     "variants": [
+      [
+       "الاول",
+       3
+      ],
+      [
+       "الأول",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "الأول": [
+       true,
+       21286
+      ],
+      "الاول": [
+       true,
+       89
+      ]
+     }
+    },
+    {
+     "key": "فعليه",
+     "variants": [
+      [
+       "فعليه",
+       2
+      ],
+      [
+       "فعلية",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "فعليه": [
+       true,
+       47
+      ],
+      "فعلية": [
+       true,
+       103
+      ]
+     }
+    },
+    {
+     "key": "ابيه",
+     "variants": [
+      [
+       "ابيه",
+       2
+      ],
+      [
+       "أبيه",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "أبيه": [
+       true,
+       638
+      ],
+      "ابيه": [
+       true,
+       54
+      ]
+     }
+    },
+    {
+     "key": "نفي",
+     "variants": [
+      [
+       "نفي",
+       2
+      ],
+      [
+       "نفى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "نفى": [
+       true,
+       239
+      ],
+      "نفي": [
+       true,
+       226
+      ]
+     }
+    },
+    {
+     "key": "الخصومه",
+     "variants": [
+      [
+       "الخصومة",
+       2
+      ],
+      [
+       "الخصومه",
+       1
+      ]
+     ],
+     "class": "taa/haa",
+     "lexicon": {
+      "الخصومة": [
+       true,
+       18
+      ],
+      "الخصومه": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "بقي",
+     "variants": [
+      [
+       "بقى",
+       1
+      ],
+      [
+       "بقي",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "بقى": [
+       true,
+       83
+      ],
+      "بقي": [
+       true,
+       832
+      ]
+     }
+    },
+    {
+     "key": "السوال",
+     "variants": [
+      [
+       "السوال",
+       1
+      ],
+      [
+       "السؤال",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "السوال": [
+       true,
+       11
+      ],
+      "السؤال": [
+       true,
+       272
+      ]
+     }
+    },
+    {
+     "key": "الصبي",
+     "variants": [
+      [
+       "الصبي",
+       1
+      ],
+      [
+       "الصبى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "الصبي": [
+       true,
+       189
+      ],
+      "الصبى": [
+       false,
+       0
+      ]
+     }
+    },
+    {
+     "key": "اله",
+     "variants": [
+      [
+       "اله",
+       1
+      ],
+      [
+       "إله",
+       1
+      ]
+     ],
+     "class": "alif/hamza",
+     "lexicon": {
+      "اله": [
+       true,
+       87
+      ],
+      "إله": [
+       true,
+       570
+      ]
+     }
+    },
+    {
+     "key": "يعني",
+     "variants": [
+      [
+       "يعني",
+       1
+      ],
+      [
+       "يعنى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "يعني": [
+       true,
+       2592
+      ],
+      "يعنى": [
+       true,
+       135
+      ]
+     }
+    },
+    {
+     "key": "رضي",
+     "variants": [
+      [
+       "رضي",
+       1
+      ],
+      [
+       "رضى",
+       1
+      ]
+     ],
+     "class": "yaa/maqsura",
+     "lexicon": {
+      "رضي": [
+       true,
+       371
+      ],
+      "رضى": [
+       true,
+       51
+      ]
+     }
+    }
+   ],
+   "decision": "canonical rung may stand alone"
+  }
+ }
+}

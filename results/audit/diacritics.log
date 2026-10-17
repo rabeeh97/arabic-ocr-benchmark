@@ -1,0 +1,13 @@
+{"kitab_khatt": [0.065, 0.25, "sparse"], "kitab_khatt_full": [0.003, 0.01, "undiacritised"], "muharaf_lines": [0.358, 1.85, "sparse"], "nakba_blind": [0.04, 0.12, "sparse"], "nakba_lines": [0.022, 0.06, "sparse"], "rasam1": [0.108, 0.28, "sparse"], "rasam2": [0.005, 0.01, "undiacritised"], "muharaf_train": [0.339, 1.83, "sparse"], "nakba_train": [0.03, 0.08, "sparse"], "khatt_train": [0.002, 0.0, "undiacritised"], "rasam1_train": [0.121, 0.31, "sparse"]}
+leaderboard view kitab_khatt {"systems": 38, "kendall_tau": 0.8858773181169758, "tau_ci95": [0.849217638691323, 0.9203413940256047], "max_rank_move": 22, "marks_immaterial_to_ranking": false}
+leaderboard view muharaf_lines {"systems": 28, "kendall_tau": 0.881806886493226, "tau_ci95": [0.8730158730158729, 0.9682539682539683], "max_rank_move": 9, "marks_immaterial_to_ranking": false}
+leaderboard view nakba_blind {"systems": 22, "kendall_tau": 1.0, "tau_ci95": [0.9653679653679654, 1.0], "max_rank_move": 0, "marks_immaterial_to_ranking": true}
+leaderboard view nakba_lines {"systems": 31, "kendall_tau": 0.9913793103448277, "tau_ci95": [0.9784946236559141, 0.9956989247311829], "max_rank_move": 1, "marks_immaterial_to_ranking": true}
+leaderboard view rasam1 {"systems": 30, "kendall_tau": 0.9896200354271276, "tau_ci95": [0.9586206896551724, 0.9908045977011495], "max_rank_move": 2, "marks_immaterial_to_ranking": true}
+leaderboard view rasam2 {"systems": 14, "kendall_tau": 0.8666666666666667, "tau_ci95": [0.7796703296703297, 0.9120879120879122], "max_rank_move": 3, "marks_immaterial_to_ranking": false}
+kitab_khatt sparse 32 164 tau 0.935 [0.887,0.964] maxmove 6 immaterial False max tax 0.434
+muharaf_lines sparse 5 1334 tau 1.000 [1.000,1.000] maxmove 0 immaterial True max tax 0.062
+nakba_blind sparse 20 2671 tau 1.000 [0.979,1.000] maxmove 0 immaterial True max tax 0.001
+nakba_lines sparse 18 2095 tau 1.000 [0.986,1.000] maxmove 0 immaterial True max tax 0.000
+rasam1 sparse 6 714 tau 1.000 [0.926,1.000] maxmove 0 immaterial True max tax 0.640
+rasam2 undiacritised 8 352 tau 1.000 [0.926,1.000] maxmove 0 immaterial True max tax 0.566

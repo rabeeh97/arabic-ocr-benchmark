@@ -1,0 +1,51 @@
+kitab_khatt {'systems': 34, 'lines': 200, 'split_half_spearman_b': [0.6616839539245707, 0.5892428091779687, 0.7304208306112183], 'split_half_spearman_a': [0.19819866695409488, -0.2400791193626459, 0.38847243551575567], 'split_half_spearman_consensus': [0.9696526767253042, 0.8849054956585463, 0.9854401386840059], 'spearman_b_vs_consensus': 0.49726740471157016, 'all_correct_lines': 0, 'all_wrong_lines': 99, 'negative_discrimination_lines': 9, 'adopt_irt_difficulty': False, 'report_discrimination': False, 'sensitivity_median_threshold': {'threshold': 0.27692307692307694, 'split_half_spearman_b': 0.9079050444443114, 'split_half_spearman_a': 0.5938136684193522, 'all_wrong_lines': 12, 'all_correct_lines': 0, 'would_adopt': False}}
+muharaf_lines {'systems': 7, 'lines': 1334, 'split_half_spearman_b': [0.7953491894178156, -0.03335804931468349, 0.9556358928810693], 'split_half_spearman_a': [0.1326175648927684, -0.5159119028595937, 0.8550042132889359], 'split_half_spearman_consensus': [0.5181578271694927, 0.2628423615063388, 0.722244691998718], 'spearman_b_vs_consensus': 0.8202603803019178, 'all_correct_lines': 2, 'all_wrong_lines': 441, 'negative_discrimination_lines': 38, 'adopt_irt_difficulty': False, 'report_discrimination': False, 'sensitivity_median_threshold': {'threshold': 0.15857300015715858, 'split_half_spearman_b': 0.7147873252906186, 'split_half_spearman_a': -0.0010807949367876019, 'all_wrong_lines': 244, 'all_correct_lines': 4, 'would_adopt': False}}
+nakba_blind {'systems': 20, 'lines': 2671, 'split_half_spearman_b': [0.93440813951928, 0.9079677189562623, 0.9583980175485345], 'split_half_spearman_a': [0.6167097727352644, 0.44228582806063277, 0.789762879713657], 'split_half_spearman_consensus': [0.960591812966789, 0.9494351383719589, 0.9700771326752146], 'spearman_b_vs_consensus': 0.9024933517810828, 'all_correct_lines': 733, 'all_wrong_lines': 285, 'negative_discrimination_lines': 220, 'adopt_irt_difficulty': False, 'report_discrimination': True, 'sensitivity_median_threshold': {'threshold': 0.09210526315789473, 'split_half_spearman_b': 0.926854149923156, 'split_half_spearman_a': 0.5520391663455735, 'all_wrong_lines': 334, 'all_correct_lines': 600, 'would_adopt': False}}
+nakba_lines {'systems': 18, 'lines': 2095, 'split_half_spearman_b': [0.9417835942257353, 0.9304208803579064, 0.9529239075823894], 'split_half_spearman_a': [0.7298555559199801, 0.665112999587175, 0.7829140955218149], 'split_half_spearman_consensus': [0.9302330264076147, 0.9178670603279312, 0.9436691852361008], 'spearman_b_vs_consensus': 0.9189962981169574, 'all_correct_lines': 603, 'all_wrong_lines': 540, 'negative_discrimination_lines': 355, 'adopt_irt_difficulty': True, 'report_discrimination': True, 'sensitivity_median_threshold': {'threshold': 0.09375, 'split_half_spearman_b': 0.9430560331661892, 'split_half_spearman_a': 0.5041295054970135, 'all_wrong_lines': 592, 'all_correct_lines': 534, 'would_adopt': True}}
+rasam1 {'systems': 8, 'lines': 734, 'split_half_spearman_b': [0.6080201019053058, 0.12327373737028376, 0.8114163301758285], 'split_half_spearman_a': [0.7027126717908972, 0.1103242038583651, 0.9504515298942784], 'split_half_spearman_consensus': [0.773211049041971, 0.4279704766122159, 0.9089511736960878], 'spearman_b_vs_consensus': 0.11775371595987628, 'all_correct_lines': 0, 'all_wrong_lines': 673, 'negative_discrimination_lines': 2, 'adopt_irt_difficulty': False, 'report_discrimination': True, 'sensitivity_median_threshold': {'threshold': 0.44565217391304346, 'split_half_spearman_b': 0.7341506931377147, 'split_half_spearman_a': 0.17732651207466615, 'all_wrong_lines': 57, 'all_correct_lines': 49, 'would_adopt': False}}
+rasam2 {'systems': 14, 'lines': 372, 'split_half_spearman_b': [0.34403117163901126, 0.2747960015268521, 0.3904877345838272], 'split_half_spearman_a': [0.7556406675926773, 0.5792896538591158, 0.8768896625485522], 'split_half_spearman_consensus': [0.7593540501549457, 0.5808063138584645, 0.8762229155299105], 'spearman_b_vs_consensus': 0.32559240732781075, 'all_correct_lines': 0, 'all_wrong_lines': 289, 'negative_discrimination_lines': 3, 'adopt_irt_difficulty': False, 'report_discrimination': True, 'sensitivity_median_threshold': {'threshold': 0.4571184659837142, 'split_half_spearman_b': 0.7533624947414401, 'split_half_spearman_a': 0.3236341082016053, 'all_wrong_lines': 31, 'all_correct_lines': 11, 'would_adopt': False}}
+{
+ "kitab_khatt": {
+  "systems": 0,
+  "fragments_worse_fdr": 0,
+  "fragments_better_fdr": 0,
+  "separate_subset": false,
+  "fragment_share": 0.03
+ },
+ "muharaf_lines": {
+  "systems": 28,
+  "fragments_worse_fdr": 23,
+  "fragments_better_fdr": 0,
+  "separate_subset": true,
+  "fragment_share": 0.16941529235382308
+ },
+ "nakba_blind": {
+  "systems": 22,
+  "fragments_worse_fdr": 19,
+  "fragments_better_fdr": 0,
+  "separate_subset": true,
+  "fragment_share": 0.16922500935979035
+ },
+ "nakba_lines": {
+  "systems": 31,
+  "fragments_worse_fdr": 23,
+  "fragments_better_fdr": 2,
+  "separate_subset": true,
+  "fragment_share": 0.2405727923627685
+ },
+ "rasam1": {
+  "systems": 30,
+  "fragments_worse_fdr": 9,
+  "fragments_better_fdr": 1,
+  "separate_subset": false,
+  "fragment_share": 0.0667574931880109
+ },
+ "rasam2": {
+  "systems": 14,
+  "fragments_worse_fdr": 6,
+  "fragments_better_fdr": 1,
+  "separate_subset": false,
+  "fragment_share": 0.07795698924731183
+ }
+}
+{"hard_core": [82, {"kitab_khatt": {"median_cer_gap_vs_rest": 0.24170433080009854, "systems": 38}, "nakba_blind": {"median_cer_gap_vs_rest": 0.37915162912109046, "systems": 22}}], "crnn_only_failure": [252, {"nakba_blind": {"median_cer_gap_vs_rest": 0.3774519852407834, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": 0.6388974792257509, "systems": 30}}], "vlm_only_failure": [31, {"nakba_blind": {"median_cer_gap_vs_rest": 0.015500626834382664, "systems": 22}}], "irt_top_quintile": [2329, {"kitab_khatt": {"median_cer_gap_vs_rest": 0.057824585170997395, "systems": 38}, "nakba_blind": {"median_cer_gap_vs_rest": 0.16147740921464543, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": 0.17844455876484008, "systems": 31}, "muharaf_lines": {"median_cer_gap_vs_rest": 0.1611736879536651, "systems": 28}, "rasam1": {"median_cer_gap_vs_rest": -0.00814465999386653, "systems": 30}, "rasam2": {"median_cer_gap_vs_rest": 0.07471116540999123, "systems": 14}}], "irt_low_discrimination": [627, {"nakba_blind": {"median_cer_gap_vs_rest": -0.02083489210457872, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": -0.008552414643808792, "systems": 31}, "muharaf_lines": {"median_cer_gap_vs_rest": 0.255549924283599, "systems": 28}}], "dot_dense": [1747, {"kitab_khatt": {"median_cer_gap_vs_rest": 0.06098753924321765, "systems": 38}, "nakba_blind": {"median_cer_gap_vs_rest": 0.004625976779503882, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": 0.010293010040632378, "systems": 31}, "muharaf_lines": {"median_cer_gap_vs_rest": -0.03761712316590586, "systems": 28}, "rasam1": {"median_cer_gap_vs_rest": -0.006403585322843769, "systems": 30}, "rasam2": {"median_cer_gap_vs_rest": 0.05152888666885791, "systems": 14}}], "oov_heavy": [95, {"nakba_blind": {"median_cer_gap_vs_rest": 0.05490762295355665, "systems": 22}, "muharaf_lines": {"median_cer_gap_vs_rest": -0.020883186098475254, "systems": 28}, "rasam1": {"median_cer_gap_vs_rest": 0.026867641642473385, "systems": 30}, "rasam2": {"median_cer_gap_vs_rest": 0.3588466561214141, "systems": 14}}], "fragments": [1304, {"nakba_blind": {"median_cer_gap_vs_rest": 0.3363745592692508, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": 0.24817167812587804, "systems": 31}, "muharaf_lines": {"median_cer_gap_vs_rest": 0.297552687384794, "systems": 28}, "rasam1": {"median_cer_gap_vs_rest": 0.12226479782192196, "systems": 30}, "rasam2": {"median_cer_gap_vs_rest": 0.10531533312649102, "systems": 14}}], "loose_crops": [176, {"kitab_khatt": {"median_cer_gap_vs_rest": 0.5838380745905721, "systems": 38}, "nakba_blind": {"median_cer_gap_vs_rest": 0.14487999234337956, "systems": 22}, "nakba_lines": {"median_cer_gap_vs_rest": 0.49038835598865704, "systems": 31}, "muharaf_lines": {"median_cer_gap_vs_rest": 0.21578002097721966, "systems": 28}}], "slant_outliers": [352, {"kitab_khatt": {"median_cer_gap_vs_rest": -0.0003620269669891707, "systems": 38}, "nakba_blind": {"median_cer_gap_vs_rest": 0.26397299884658265, "systems": 

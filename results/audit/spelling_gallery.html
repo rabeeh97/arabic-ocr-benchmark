@@ -1,0 +1,224 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spelling and conventions</title><style>
+:root{--bg:#fff;--fg:#1d1d1f;--mut:#666;--line:#ddd;--acc:#2b6cb0}
+@media (prefers-color-scheme:dark){:root{--bg:#151517;--fg:#e8e8ea;--mut:#9a9aa0;--line:#333;--acc:#7fb0ff}}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif;margin:0 auto;max-width:1500px;padding:16px}
+table{border-collapse:collapse;margin:8px 0 18px;font-size:13px}td,th{border:1px solid var(--line);padding:3px 7px;text-align:left;vertical-align:top}
+.ar{direction:rtl;font-size:17px;font-family:'Noto Naskh Arabic','Geeza Pro',serif}img{max-width:100%;display:block;background:#fff}
+.card{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:8px 0}.mut{color:var(--mut)}h2{margin-top:28px}
+</style></head><body>
+<h1>Spelling inconsistency (R4.3) and conventions (R4.4), checklist 2.10</h1>
+<table><tr><th>set</th><th>tokens</th><th>recurring keys written 2+ ways</th><th>minority-variant tokens [95% CI]</th><th>non-standard tokens [95% CI]</th><th>by class (/1000 tokens)</th><th>decision</th></tr>
+<tr><td>khatt_train</td><td>71654</td><td>16.8%</td><td>1.47% [1.37%, 1.57%]</td><td>1.09% [1.01%, 1.17%]</td><td>alif/hamza 7.4, taa/haa 5.8, yaa/maqsura 1.5, alif/hamza+yaa/maqsura 0.0</td><td>orthographic rung required in headline</td></tr>
+<tr><td>kitab_khatt</td><td>2333</td><td>12.9%</td><td>1.67% [1.09%, 2.26%]</td><td>0.81% [0.43%, 1.24%]</td><td>alif/hamza 8.6, taa/haa 7.7, yaa/maqsura 0.4</td><td>orthographic rung required in headline</td></tr>
+<tr><td>kitab_khatt_full</td><td>12838</td><td>18.8%</td><td>1.72% [1.47%, 1.98%]</td><td>1.29% [1.09%, 1.49%]</td><td>taa/haa 8.3, alif/hamza 7.2, yaa/maqsura 1.6, alif/hamza+yaa/maqsura 0.2</td><td>orthographic rung required in headline</td></tr>
+<tr><td>muharaf_lines</td><td>11541</td><td>9.3%</td><td>2.25% [1.97%, 2.56%]</td><td>0.98% [0.79%, 1.19%]</td><td>yaa/maqsura 10.6, alif/hamza 7.3, taa/haa 3.7, alif/hamza+yaa/maqsura 0.7, alif/hamza+taa/haa+yaa/maqsura 0.2, alif/hamza+taa/haa 0.1</td><td>orthographic rung required in headline</td></tr>
+<tr><td>muharaf_train</td><td>195983</td><td>16.6%</td><td>4.14% [4.05%, 4.24%]</td><td>1.58% [1.53%, 1.65%]</td><td>alif/hamza 18.4, yaa/maqsura 11.1, taa/haa 9.8, alif/hamza+yaa/maqsura 1.8, alif/hamza+taa/haa 0.2, alif/hamza+taa/haa+yaa/maqsura 0.1, taa/haa+yaa/maqsura 0.0</td><td>orthographic rung required in headline</td></tr>
+<tr><td>nakba_blind</td><td>29737</td><td>13.1%</td><td>5.61% [5.36%, 5.88%]</td><td>2.10% [1.90%, 2.29%]</td><td>alif/hamza 45.2, yaa/maqsura 7.9, taa/haa 2.1, alif/hamza+yaa/maqsura 0.8, alif/hamza+taa/haa 0.1, alif/hamza+taa/haa+yaa/maqsura 0.0</td><td>orthographic rung required in headline</td></tr>
+<tr><td>nakba_lines</td><td>20893</td><td>7.6%</td><td>2.09% [1.89%, 2.30%]</td><td>0.37% [0.28%, 0.45%]</td><td>alif/hamza 17.5, yaa/maqsura 2.0, taa/haa 1.1, alif/hamza+yaa/maqsura 0.2, alif/hamza+taa/haa 0.1</td><td>orthographic rung required in headline</td></tr>
+<tr><td>nakba_train</td><td>156429</td><td>8.8%</td><td>2.78% [2.69%, 2.87%]</td><td>0.66% [0.61%, 0.70%]</td><td>alif/hamza 23.5, yaa/maqsura 2.3, taa/haa 1.4, alif/hamza+yaa/maqsura 0.4, alif/hamza+taa/haa 0.1, alif/hamza+taa/haa+yaa/maqsura 0.0</td><td>orthographic rung required in headline</td></tr>
+<tr><td>rasam1</td><td>9977</td><td>4.2%</td><td>0.68% [0.52%, 0.84%]</td><td>0.17% [0.09%, 0.26%]</td><td>yaa/maqsura 4.2, taa/haa 1.3, alif/hamza 0.8, alif/hamza+yaa/maqsura 0.5</td><td>canonical rung may stand alone</td></tr>
+<tr><td>rasam1_train</td><td>62501</td><td>5.8%</td><td>1.07% [0.99%, 1.15%]</td><td>0.26% [0.22%, 0.30%]</td><td>yaa/maqsura 6.1, taa/haa 2.7, alif/hamza+yaa/maqsura 1.1, alif/hamza 0.7</td><td>canonical rung may stand alone</td></tr>
+<tr><td>rasam2</td><td>4598</td><td>5.3%</td><td>0.80% [0.53%, 1.08%]</td><td>0.15% [0.04%, 0.27%]</td><td>alif/hamza 4.3, yaa/maqsura 2.8, taa/haa 0.9</td><td>canonical rung may stand alone</td></tr>
+</table><h2>Conventions table (R4.4)</h2><table><tr><th>set</th><th>hamza on alif</th><th>tāʾ marbūṭa share</th><th>alif maqṣūra share</th><th>digits</th><th>double-space lines</th><th>space before punct.</th><th>lines with harakat</th><th>policy</th><th>dialect mergers /1000</th><th>source</th></tr>
+<tr><td>khatt_train</td><td>–</td><td>–</td><td>–</td><td>null</td><td>–</td><td>–</td><td>0.2%</td><td>undiacritised</td><td>–</td><td>khatt_train</td></tr>
+<tr><td>kitab_khatt</td><td>14.0%</td><td>68.7%</td><td>19.0%</td><td>{"western": 1.0}</td><td>33.5%</td><td>51.2%</td><td>6.5%</td><td>sparse</td><td>1.19</td><td>KHATT handwritten Arabic (KITAB-Bench 200-line sample); many writers copying fixed paragraphs plus free text</td></tr>
+<tr><td>kitab_khatt_full</td><td>–</td><td>–</td><td>–</td><td>null</td><td>–</td><td>–</td><td>0.3%</td><td>undiacritised</td><td>–</td><td>KHATT v1.0 test (Teklia copy), 1,038 lines</td></tr>
+<tr><td>muharaf_lines</td><td>2.8%</td><td>62.0%</td><td>39.7%</td><td>{"western": 0.2542372881355932, "arabic-indic": 0.7397094430992736, "persian": 0.006053268765133172}</td><td>11.0%</td><td>18.4%</td><td>35.8%</td><td>sparse</td><td>2.23</td><td>Muharaf public test split (aamijar/muharaf-public): Levantine historical manuscripts</td></tr>
+<tr><td>muharaf_train</td><td>3.8%</td><td>58.0%</td><td>34.8%</td><td>{"arabic-indic": 0.7814624098867148, "western": 0.21400617919670442, "persian": 0.004531410916580845}</td><td>0.0%</td><td>21.5%</td><td>33.9%</td><td>sparse</td><td>2.76</td><td>muharaf_train</td></tr>
+<tr><td>nakba_blind</td><td>10.6%</td><td>68.5%</td><td>45.9%</td><td>{"arabic-indic": 0.3832752613240418, "western": 0.6167247386759582}</td><td>2.2%</td><td>3.7%</td><td>4.0%</td><td>sparse</td><td>1.24</td><td>NAKBA contest blind test split: Omar al-Saleh manuscripts (U4RASD)</td></tr>
+<tr><td>nakba_lines</td><td>16.8%</td><td>69.8%</td><td>38.8%</td><td>{"western": 0.15692007797270954, "arabic-indic": 0.8430799220272904}</td><td>0.0%</td><td>1.2%</td><td>2.2%</td><td>sparse</td><td>1.35</td><td>NAKBA contest test split: Omar al-Saleh manuscripts (U4RASD)</td></tr>
+<tr><td>nakba_train</td><td>16.2%</td><td>72.0%</td><td>38.3%</td><td>{"arabic-indic": 0.8241448692152917, "western": 0.17585513078470824}</td><td>0.0%</td><td>1.3%</td><td>3.0%</td><td>sparse</td><td>1.07</td><td>nakba_train</td></tr>
+<tr><td>rasam1</td><td>0.2%</td><td>38.1%</td><td>60.7%</td><td>{"western": 1.0}</td><td>3.7%</td><td>0.0%</td><td>10.8%</td><td>sparse</td><td>2.4</td><td>RASAM-1 test (calfa-ai): Maghrebi manuscripts</td></tr>
+<tr><td>rasam1_train</td><td>–</td><td>–</td><td>–</td><td>null</td><td>–</td><td>–</td><td>12.1%</td><td>sparse</td><td>–</td><td>rasam1_train</td></tr>
+<tr><td>rasam2</td><td>1.7%</td><td>39.6%</td><td>40.8%</td><td>{}</td><td>5.6%</td><td>0.0%</td><td>0.5%</td><td>undiacritised</td><td>3.91</td><td>RASAM-2 test (calfa-ai): Maghrebi manuscripts</td></tr>
+</table><h2>Examples of inconsistent spellings</h2>
+<h3>khatt_train</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (1752) · فى (15)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>لؤي (1019) · لؤى (28) · لوي (4)</td><td>yaa/maqsura</td><td class=ar>لؤي: 1/103 · لؤى: 1/0 · لوي: 1/184</td></tr>
+<tr><td class=ar>رايق (1010) · راىق (1)</td><td>yaa/maqsura</td><td class=ar>رايق: 1/4 · راىق: 0/0</td></tr>
+<tr><td class=ar>رؤوف (1000) · روؤف (4) · رووف (2)</td><td>alif/hamza</td><td class=ar>رؤوف: 1/117 · روؤف: 0/0 · رووف: 1/0</td></tr>
+<tr><td class=ar>بصحبة (892) · بصحبه (106)</td><td>taa/haa</td><td class=ar>بصحبة: 1/154 · بصحبه: 1/0</td></tr>
+<tr><td class=ar>عفيف (944) · عفىف (1)</td><td>yaa/maqsura</td><td class=ar>عفيف: 1/260 · عفىف: 0/0</td></tr>
+<tr><td class=ar>له (932) · لة (5)</td><td>taa/haa</td><td class=ar>له: 1/23863 · لة: 1/86</td></tr>
+<tr><td class=ar>بدأت (922) · بدات (12) · بدآت (1)</td><td>alif/hamza</td><td class=ar>بدأت: 1/7637 · بدات: 1/73 · بدآت: 0/0</td></tr>
+<tr><td class=ar>إثر (881) · اثر (29) · أثر (9) · آثر (1)</td><td>alif/hamza</td><td class=ar>إثر: 1/906 · أثر: 1/1176 · اثر: 1/177 · آثر: 1/35</td></tr>
+<tr><td class=ar>لا (895) · لأ (23) · لآ (1)</td><td>alif/hamza</td><td class=ar>لا: 1/36443 · لأ: 1/11 · لآ: 0/0</td></tr>
+</table>
+<h3>kitab_khatt</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>انقض (16) · أنقض (1)</td><td>alif/hamza</td><td class=ar>أنقض: 1/0 · انقض: 1/11</td></tr>
+<tr><td class=ar>فائدة (15) · فائده (2)</td><td>taa/haa</td><td class=ar>فائدة: 1/455 · فائده: 0/0</td></tr>
+<tr><td class=ar>أفهمها (15) · افهمها (2)</td><td>alif/hamza</td><td class=ar>أفهمها: 1/0 · افهمها: 1/0</td></tr>
+<tr><td class=ar>سألت (15) · سالت (1)</td><td>alif/hamza</td><td class=ar>سألت: 1/75 · سالت: 1/55</td></tr>
+<tr><td class=ar>بدأت (14) · بدات (1)</td><td>alif/hamza</td><td class=ar>بدأت: 1/7637 · بدات: 1/73</td></tr>
+<tr><td class=ar>على (14) · علي (1)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>التالية (13) · التاليه (2)</td><td>taa/haa</td><td class=ar>التالية: 1/5189 · التاليه: 1/19</td></tr>
+<tr><td class=ar>الخيمة (9) · الخيمه (5)</td><td>taa/haa</td><td class=ar>الخيمة: 1/236 · الخيمه: 1/0</td></tr>
+<tr><td class=ar>آخر (12) · اخر (1)</td><td>alif/hamza</td><td class=ar>آخر: 1/8410 · اخر: 1/429</td></tr>
+<tr><td class=ar>بصحبة (11) · بصحبه (2)</td><td>taa/haa</td><td class=ar>بصحبة: 1/154 · بصحبه: 1/0</td></tr>
+</table>
+<h3>kitab_khatt_full</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (322) · فى (2)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>لؤي (179) · لؤى (8) · لوي (1)</td><td>yaa/maqsura</td><td class=ar>لؤي: 1/103 · لؤى: 1/0 · لوي: 1/184</td></tr>
+<tr><td class=ar>رؤوف (186) · رووف (1)</td><td>alif/hamza</td><td class=ar>رؤوف: 1/117 · رووف: 1/0</td></tr>
+<tr><td class=ar>رايق (183) · رائق (2)</td><td>alif/hamza+yaa/maqsura</td><td class=ar>رايق: 1/4 · رائق: 1/11</td></tr>
+<tr><td class=ar>بصحبة (148) · بصحبه (29)</td><td>taa/haa</td><td class=ar>بصحبة: 1/154 · بصحبه: 1/0</td></tr>
+<tr><td class=ar>جاري (164) · جارى (6)</td><td>yaa/maqsura</td><td class=ar>جاري: 1/70 · جارى: 1/4</td></tr>
+<tr><td class=ar>له (167) · لة (1)</td><td>taa/haa</td><td class=ar>له: 1/23863 · لة: 1/86</td></tr>
+<tr><td class=ar>لا (163) · لأ (4)</td><td>alif/hamza</td><td class=ar>لا: 1/36443 · لأ: 1/11</td></tr>
+<tr><td class=ar>الخيمة (137) · الخيمه (30)</td><td>taa/haa</td><td class=ar>الخيمة: 1/236 · الخيمه: 1/0</td></tr>
+<tr><td class=ar>إثر (154) · اثر (9) · أثر (2)</td><td>alif/hamza</td><td class=ar>إثر: 1/906 · اثر: 1/177 · أثر: 1/1176</td></tr>
+</table>
+<h3>muharaf_lines</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (205) · فى (35)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>على (151) · علي (8)</td><td>yaa/maqsura</td><td class=ar>علي: 1/16666 · على: 1/304154</td></tr>
+<tr><td class=ar>ان (142) · أن (5) · إن (1) · آن (1)</td><td>alif/hamza</td><td class=ar>ان: 1/9010 · أن: 1/120448 · إن: 1/12266 · آن: 1/1575</td></tr>
+<tr><td class=ar>ما (82) · مأ (2)</td><td>alif/hamza</td><td class=ar>ما: 1/48753 · مأ: 1/0</td></tr>
+<tr><td class=ar>الى (70) · الي (12) · إلى (1)</td><td>yaa/maqsura</td><td class=ar>الي: 1/1155 · الى: 1/173 · إلى: 1/188531</td></tr>
+<tr><td class=ar>الخوري (33) · الخورى (9)</td><td>yaa/maqsura</td><td class=ar>الخوري: 1/65 · الخورى: 1/0</td></tr>
+<tr><td class=ar>التي (30) · التى (6)</td><td>yaa/maqsura</td><td class=ar>التي: 1/113688 · التى: 1/27</td></tr>
+<tr><td class=ar>يوسف (35) · ىوسف (1)</td><td>yaa/maqsura</td><td class=ar>يوسف: 1/3599 · ىوسف: 1/0</td></tr>
+<tr><td class=ar>الذي (22) · الذى (4)</td><td>yaa/maqsura</td><td class=ar>الذى: 1/22 · الذي: 1/50137</td></tr>
+<tr><td class=ar>او (17) · أو (3)</td><td>alif/hamza</td><td class=ar>او: 1/250 · أو: 1/88853</td></tr>
+</table>
+<h3>muharaf_train</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (3877) · فى (448)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>على (2486) · علي (148)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>ان (2465) · أن (136) · إن (25) · آن (6)</td><td>alif/hamza</td><td class=ar>ان: 1/9010 · إن: 1/12266 · أن: 1/120448 · آن: 1/1575</td></tr>
+<tr><td class=ar>الى (1678) · الي (87) · إلى (73) · إلي (9) · ألي (1)</td><td>yaa/maqsura</td><td class=ar>الى: 1/173 · ألي: 1/64 · إلى: 1/188531 · الي: 1/1155 · إلي: 1/2872</td></tr>
+<tr><td class=ar>ما (1580) · مأ (1)</td><td>alif/hamza</td><td class=ar>ما: 1/48753 · مأ: 1/0</td></tr>
+<tr><td class=ar>لا (1274) · لأ (2)</td><td>alif/hamza</td><td class=ar>لا: 1/36443 · لأ: 1/11</td></tr>
+<tr><td class=ar>كان (718) · كأن (3)</td><td>alif/hamza</td><td class=ar>كان: 1/74812 · كأن: 1/173</td></tr>
+<tr><td class=ar>سنة (527) · سنه (77)</td><td>taa/haa</td><td class=ar>سنة: 1/69359 · سنه: 1/327</td></tr>
+<tr><td class=ar>التي (538) · التى (48)</td><td>yaa/maqsura</td><td class=ar>التي: 1/113688 · التى: 1/27</td></tr>
+<tr><td class=ar>الذي (523) · الذى (43)</td><td>yaa/maqsura</td><td class=ar>الذي: 1/50137 · الذى: 1/22</td></tr>
+</table>
+<h3>nakba_blind</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (610) · فى (137)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>ان (253) · أن (220) · إن (43) · آن (1)</td><td>alif/hamza</td><td class=ar>ان: 1/9010 · أن: 1/120448 · آن: 1/1575 · إن: 1/12266</td></tr>
+<tr><td class=ar>على (386) · علي (16)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>إلى (214) · الى (177) · الي (6) · إلي (4)</td><td>alif/hamza</td><td class=ar>الى: 1/173 · الي: 1/1155 · إلى: 1/188531 · إلي: 1/2872</td></tr>
+<tr><td class=ar>أو (101) · او (84)</td><td>alif/hamza</td><td class=ar>او: 1/250 · أو: 1/88853</td></tr>
+<tr><td class=ar>التي (86) · التى (8)</td><td>yaa/maqsura</td><td class=ar>التي: 1/113688 · التى: 1/27</td></tr>
+<tr><td class=ar>إذا (40) · اذا (35)</td><td>alif/hamza</td><td class=ar>اذا: 1/16 · إذا: 1/10298</td></tr>
+<tr><td class=ar>إلا (42) · الا (24)</td><td>alif/hamza</td><td class=ar>الا: 1/838 · إلا: 1/11434</td></tr>
+<tr><td class=ar>اما (35) · أما (23) · إما (5)</td><td>alif/hamza</td><td class=ar>اما: 1/678 · أما: 1/7359 · إما: 1/1937</td></tr>
+<tr><td class=ar>وإن (34) · وان (23) · وأن (5)</td><td>alif/hamza</td><td class=ar>وان: 1/655 · وإن: 1/1527 · وأن: 1/3770</td></tr>
+</table>
+<h3>nakba_lines</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (540) · فى (1)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>أن (281) · إن (60) · ان (29)</td><td>alif/hamza</td><td class=ar>أن: 1/120448 · إن: 1/12266 · ان: 1/9010</td></tr>
+<tr><td class=ar>على (276) · علي (17)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>إلى (268) · الى (10) · إلي (7) · الي (1)</td><td>alif/hamza</td><td class=ar>إلى: 1/188531 · الى: 1/173 · الي: 1/1155 · إلي: 1/2872</td></tr>
+<tr><td class=ar>أو (125) · او (14)</td><td>alif/hamza</td><td class=ar>أو: 1/88853 · او: 1/250</td></tr>
+<tr><td class=ar>وإن (32) · وأن (17) · وان (7)</td><td>alif/hamza</td><td class=ar>وإن: 1/1527 · وان: 1/655 · وأن: 1/3770</td></tr>
+<tr><td class=ar>إلا (41) · الا (4)</td><td>alif/hamza</td><td class=ar>إلا: 1/11434 · الا: 1/838</td></tr>
+<tr><td class=ar>إذا (43) · اذا (1)</td><td>alif/hamza</td><td class=ar>إذا: 1/10298 · اذا: 1/16</td></tr>
+<tr><td class=ar>أنه (35) · انه (6) · إنه (1)</td><td>alif/hamza</td><td class=ar>انه: 1/2469 · أنه: 1/21197 · إنه: 1/1866</td></tr>
+<tr><td class=ar>إسرائيل (31) · اسرائيل (8)</td><td>alif/hamza</td><td class=ar>إسرائيل: 1/6607 · اسرائيل: 1/30</td></tr>
+</table>
+<h3>nakba_train</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>أن (2084) · إن (390) · ان (278) · آن (8)</td><td>alif/hamza</td><td class=ar>أن: 1/120448 · ان: 1/9010 · إن: 1/12266 · آن: 1/1575</td></tr>
+<tr><td class=ar>إلى (1994) · الى (109) · إلي (27) · الي (2)</td><td>alif/hamza</td><td class=ar>إلى: 1/188531 · الى: 1/173 · إلي: 1/2872 · الي: 1/1155</td></tr>
+<tr><td class=ar>على (1989) · علي (126)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>لا (1161) · لآ (1) · لأ (1)</td><td>alif/hamza</td><td class=ar>لا: 1/36443 · لآ: 0/0 · لأ: 1/11</td></tr>
+<tr><td class=ar>أو (854) · او (71)</td><td>alif/hamza</td><td class=ar>أو: 1/88853 · او: 1/250</td></tr>
+<tr><td class=ar>حتى (509) · حتي (1)</td><td>yaa/maqsura</td><td class=ar>حتى: 1/24204 · حتي: 1/676</td></tr>
+<tr><td class=ar>التي (441) · التى (3)</td><td>yaa/maqsura</td><td class=ar>التي: 1/113688 · التى: 1/27</td></tr>
+<tr><td class=ar>كان (415) · كأن (3)</td><td>alif/hamza</td><td class=ar>كان: 1/74812 · كأن: 1/173</td></tr>
+<tr><td class=ar>إلا (335) · الا (35) · ألا (18)</td><td>alif/hamza</td><td class=ar>إلا: 1/11434 · الا: 1/838 · ألا: 1/712</td></tr>
+<tr><td class=ar>إذا (344) · اذا (32)</td><td>alif/hamza</td><td class=ar>إذا: 1/10298 · اذا: 1/16</td></tr>
+</table>
+<h3>rasam1</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>على (131) · علي (1)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>الى (80) · الي (1)</td><td>yaa/maqsura</td><td class=ar>الى: 1/173 · الي: 1/1155</td></tr>
+<tr><td class=ar>رضي (21) · رضى (3)</td><td>yaa/maqsura</td><td class=ar>رضي: 1/371 · رضى: 1/51</td></tr>
+<tr><td class=ar>وهي (13) · وهى (4)</td><td>yaa/maqsura</td><td class=ar>وهي: 1/23195 · وهى: 1/73</td></tr>
+<tr><td class=ar>بنى (15) · بني (1)</td><td>yaa/maqsura</td><td class=ar>بنى: 1/450 · بني: 1/16462</td></tr>
+<tr><td class=ar>هي (12) · هى (3)</td><td>yaa/maqsura</td><td class=ar>هي: 1/61669 · هى: 1/3</td></tr>
+<tr><td class=ar>ابى (7) · ابي (6)</td><td>yaa/maqsura</td><td class=ar>ابي: 1/146 · ابى: 1/10</td></tr>
+<tr><td class=ar>التي (12) · التى (1)</td><td>yaa/maqsura</td><td class=ar>التي: 1/113688 · التى: 1/27</td></tr>
+<tr><td class=ar>ستة (10) · سته (1)</td><td>taa/haa</td><td class=ar>ستة: 1/2697 · سته: 1/20</td></tr>
+<tr><td class=ar>الثاني (7) · الثانى (3)</td><td>yaa/maqsura</td><td class=ar>الثانى: 1/153 · الثاني: 1/17414</td></tr>
+</table>
+<h3>rasam1_train</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (1336) · فى (1)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>على (863) · علي (29)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>الى (515) · الي (3)</td><td>yaa/maqsura</td><td class=ar>الى: 1/173 · الي: 1/1155</td></tr>
+<tr><td class=ar>منه (154) · منة (2)</td><td>taa/haa</td><td class=ar>منه: 1/5962 · منة: 1/34</td></tr>
+<tr><td class=ar>الذي (149) · الذى (3)</td><td>yaa/maqsura</td><td class=ar>الذي: 1/50137 · الذى: 1/22</td></tr>
+<tr><td class=ar>اي (145) · اى (3)</td><td>yaa/maqsura</td><td class=ar>اي: 1/114 · اى: 1/53</td></tr>
+<tr><td class=ar>رضي (111) · رضى (19)</td><td>yaa/maqsura</td><td class=ar>رضي: 1/371 · رضى: 1/51</td></tr>
+<tr><td class=ar>سنة (125) · سنه (1)</td><td>taa/haa</td><td class=ar>سنة: 1/69359 · سنه: 1/327</td></tr>
+<tr><td class=ar>انه (103) · انة (1)</td><td>taa/haa</td><td class=ar>انه: 1/2469 · انة: 1/35</td></tr>
+<tr><td class=ar>وهي (57) · وهى (27)</td><td>yaa/maqsura</td><td class=ar>وهى: 1/73 · وهي: 1/23195</td></tr>
+</table>
+<h3>rasam2</h3><table><tr><th>variants (count)</th><th>class</th><th>in lexicon (arwiki freq)</th></tr>
+<tr><td class=ar>في (127) · فى (1)</td><td>yaa/maqsura</td><td class=ar>في: 1/1289220 · فى: 1/51</td></tr>
+<tr><td class=ar>ان (76) · إن (1) · أن (1)</td><td>alif/hamza</td><td class=ar>ان: 1/9010 · إن: 1/12266 · أن: 1/120448</td></tr>
+<tr><td class=ar>على (74) · علي (3)</td><td>yaa/maqsura</td><td class=ar>على: 1/304154 · علي: 1/16666</td></tr>
+<tr><td class=ar>ما (36) · مآ (1)</td><td>alif/hamza</td><td class=ar>ما: 1/48753 · مآ: 1/0</td></tr>
+<tr><td class=ar>او (35) · أو (1)</td><td>alif/hamza</td><td class=ar>او: 1/250 · أو: 1/88853</td></tr>
+<tr><td class=ar>الى (34) · الي (1) · إلى (1)</td><td>yaa/maqsura</td><td class=ar>الى: 1/173 · الي: 1/1155 · إلى: 1/188531</td></tr>
+<tr><td class=ar>اي (7) · أي (4) · اى (1)</td><td>alif/hamza</td><td class=ar>أي: 1/20770 · اي: 1/114 · اى: 1/53</td></tr>
+<tr><td class=ar>سنة (8) · سنه (1)</td><td>taa/haa</td><td class=ar>سنة: 1/69359 · سنه: 1/327</td></tr>
+<tr><td class=ar>اهل (5) · أهل (2)</td><td>alif/hamza</td><td class=ar>اهل: 1/177 · أهل: 1/3579</td></tr>
+<tr><td class=ar>ابو (6) · أبو (1)</td><td>alif/hamza</td><td class=ar>ابو: 1/56 · أبو: 1/9017</td></tr>
+</table>
+<h2>kitab_khatt: lines</h2>
+<div class=card><div class=mut>most minority spellings · kitab_khatt/train/000030 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>في خفض درجة الحرارة الارص . ومن حانب اخر تمنع الاشعة الحرارية</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt/train/000074 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>او نصوصاً طويله أْخذت منه، حتى يسهل علي الحكم من قراءتي.</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt/train/000099 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>امدا طويلا وأن آفات النسيان ونلاعب الزمان بالحفضـ لا بد ان يغير</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt/train/000110 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar> مع شيخ . كان جاري في الخيمه يتكلم وهو نائم  بكلمات لا افهمها مثل انقض بغـلس</div></div>
+<div class=card><div class=mut>random · kitab_khatt/train/000098 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>توازن بىين النمو والإنتاج وجودة الثمار .</div></div>
+<div class=card><div class=mut>random · kitab_khatt/train/000194 · 1 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>وسعينا مع شيخ . كان جاري في الخيمه وهو نائم  بكلمات لا أفهمها مثل انقض</div></div>
+<div class=card><div class=mut>random · kitab_khatt/train/000107 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>. و يتم عقد برامج "ضمان اجتماعي" للطلاب الذين لم يحققوا المستوى المطلوب في المرحلة</div></div>
+<h2>kitab_khatt_full: lines</h2>
+<div class=card><div class=mut>most minority spellings · kitab_khatt_full/test/000172 · 3 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ص غ هـ اننا في الحج. هل تعلم فائده الكلمات التاليه لهذا النص: مشمش، دراق</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt_full/test/000224 · 3 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>آخر يلبى . عند وصولنا طفنا وسعينا مع شيخ. كان جارى في الخيمه يتكلم</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt_full/test/000248 · 3 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ب س ش ، ص غ هـ اننا في الحج. هل تعلم فائدهـ الكلمات التاليه لهذا النص:</div></div>
+<div class=card><div class=mut>most minority spellings · kitab_khatt_full/test/000280 · 3 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ص غ هـ اننا في الحج.  هل تعلم فائده التاليه لهذا النص:</div></div>
+<div class=card><div class=mut>random · kitab_khatt_full/test/000082 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>وهو نائم  بكلمات لا أفهمها مثل انقض يغـلس له الضابط لزمتك.</div></div>
+<div class=card><div class=mut>random · kitab_khatt_full/test/000530 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>بث ، نسر .</div></div>
+<div class=card><div class=mut>random · kitab_khatt_full/test/000995 · 1 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>أننا في الحج .  هل تعلم فائدة الكلمات التاليه لهذا النص: مشمس ، دراق</div></div>
+<h2>nakba_lines: lines</h2>
+<div class=card><div class=mut>most minority spellings · nakba_lines/test/000957 · 5 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>اعتقد انه لا يرجى اصلاح الا اذا اتجهت النيات اليه وقنعت بان المصلحة العامة</div></div>
+<div class=card><div class=mut>most minority spellings · nakba_lines/test/000028 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>يختل امام الناظر له كان الطبيعة اختارتها لتكون اية الفن وملكة الحسن وتاج الجميلات واذا اومن انه</div></div>
+<div class=card><div class=mut>most minority spellings · nakba_lines/test/000412 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>لقد دفق علي كثير من الرقعاء طلاب المصالح وكم اردت ان اتخلص من فوج واذا الاخر</div></div>
+<div class=card><div class=mut>most minority spellings · nakba_lines/test/000621 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>دون ان تسيئ اليه او تجني على احد فبعثر اوراقها وحطم اعرافها وافراعها واجهز</div></div>
+<div class=card><div class=mut>random · nakba_lines/test/001658 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>الوحدة الاقتصادية العربية</div></div>
+<div class=card><div class=mut>random · nakba_lines/test/001242 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ستجري قبل شهر أيار. وتتألف لجنة الحاكم العام من خمسة أعضاء سودانيان</div></div>
+<div class=card><div class=mut>random · nakba_lines/test/001952 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>1384</div></div>
+<h2>nakba_blind: lines</h2>
+<div class=card><div class=mut>most minority spellings · nakba_blind/blind_test/000688 · 6 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>من الملك او الاخوان المسلمين او الاستعمار او الوفد او انهم رأوا فى تصرف الجمهورية ما لا يرضيهم</div></div>
+<div class=card><div class=mut>most minority spellings · nakba_blind/blind_test/000807 · 5 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>اذا كانت هذه الحوادث تصيب المرتشين او الفاسدين فلا بأس بها، وان كانت تريد إيجاد عمل الى </div></div>
+<div class=card><div class=mut>most minority spellings · nakba_blind/blind_test/000057 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ارسلت كتابا الى عفيف نصحته اذا كان يبغي الزواج ان لا يقدم عليه الا اذا كان لديه اموال كثيرة</div></div>
+<div class=card><div class=mut>most minority spellings · nakba_blind/blind_test/000230 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>او البعثية وصاروا يصدرون بحسب وحي اساتذتهم, ولا ادري اذا كانت هذه الحركة صحيحة او </div></div>
+<div class=card><div class=mut>random · nakba_blind/blind_test/001466 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>فإذا هو نفس ما نشره في جريدة الحياة وقد أخذت عليه بعض الهفوات وتصديت للرد عليها وتوضيحها.</div></div>
+<div class=card><div class=mut>random · nakba_blind/blind_test/002389 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>لسرقة السائق وجهله. الرجل الجاهل صغير النفس لا تجد عنده كرامة ولا يبالي بما صنع.</div></div>
+<div class=card><div class=mut>random · nakba_blind/blind_test/000894 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>حضر عبد الله المصري من شقبه ومعه ثلاثون بيضة جده واتت فى محلها.</div></div>
+<h2>muharaf_lines: lines</h2>
+<div class=card><div class=mut>most minority spellings · muharaf_lines/test/000000 · 5 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>اهدي سلامي الي جاركم الخواجه اسَعد الي بيت ملحم الي بيت الشيخ يزبك الي بيت الشيخ موسَي الي بيت بطرسَ</div></div>
+<div class=card><div class=mut>most minority spellings · muharaf_lines/test/000009 · 5 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>عبود الي الخوري طوبيا الي ابو طوبيا الي عبدالله غصن الي الخوري يوحنا والي كل أهالي قريتنا</div></div>
+<div class=card><div class=mut>most minority spellings · muharaf_lines/test/000127 · 4 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>فى التاريخ وفى الادب لا نعرف فى العالم العربى عالماً وشاعراً وفيلسوفاً</div></div>
+<div class=card><div class=mut>most minority spellings · muharaf_lines/test/000111 · 3 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ويعيشون بين ظهرانى هذه الامه فى اماراتهم وهى غارقه فى نكباتها واوهامها</div></div>
+<div class=card><div class=mut>random · muharaf_lines/test/001033 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>جبتلي معك .</div></div>
+<div class=card><div class=mut>random · muharaf_lines/test/000285 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>خدك على صدر الحياة باقة زهور                                  لا بتدبل ولا بتنلمسَ بيد الرياح</div></div>
+<div class=card><div class=mut>random · muharaf_lines/test/000577 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>٥- بما ان الابنة نسَرين المولودة في ٨/ ٥/ ١٩٧٩ لا تزال قاصرة وافق والداها: سمير مخول جبور</div></div>
+<h2>rasam1: lines</h2>
+<div class=card><div class=mut>most minority spellings · rasam1/test/000155 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>هى ايقاع النغم وطرقه قال خمسة اجناس الثقيل الاول وخفيفه والثقيل الثانى وخفيفه والرمل الاول وخفيفه</div></div>
+<div class=card><div class=mut>most minority spellings · rasam1/test/000669 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>ورقة ناسقال سابور هذا الذي منعك النوم قالت نعم قال لها فكيف تربيت  قالت كان ابي يفرش لي الدباج و يلبسنى</div></div>
+<div class=card><div class=mut>most minority spellings · rasam1/test/000011 · 1 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>لوارث وكذلك لا تجوز باكثر من ثلث لحديث ابن ابي وقاص فان اذن لورثة للموصي</div></div>
+<div class=card><div class=mut>most minority spellings · rasam1/test/000012 · 1 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>يده حربة ولم تزل كذلك حتى هشمه خالد بن الوليد رضى الله عنه لما بعثه اليه رسول الله صلى</div></div>
+<div class=card><div class=mut>random · rasam1/test/000143 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>عليه فلم تجد ليلا بدا من اتت قبره ودموعها تتحد ركالائالى وقال ااسلام عليك يا توبه فلم تتم كلامها حتى</div></div>
+<div class=card><div class=mut>random · rasam1/test/000097 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>الى المدينة في ماتي راجل من اهل الكوفة وماية وخمسين من اهل البصرة وستماية من مصر كل هولاء قد اتفقوا</div></div>
+<div class=card><div class=mut>random · rasam1/test/000633 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>بتاذيب الله المويد بنصر الله محمد ابن عبد الله بن عبد المطلب بن هاشم بن عبد مناف بن قصى بن كلاب بن موة بن</div></div>
+<h2>rasam2: lines</h2>
+<div class=card><div class=mut>most minority spellings · rasam2/test/000028 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>أفضل مآ ءاتيت أحدا من أهل</div></div>
+<div class=card><div class=mut>most minority spellings · rasam2/test/000138 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>على الابن وأما ان الجهل بعتق العبد لا يسقط ما بقي له في الثالثة فقال في النوادر في كتاب بن المواز</div></div>
+<div class=card><div class=mut>most minority spellings · rasam2/test/000341 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>خير من ان تراه أي ان تسمع به أي سماعك به خيرمن رويتك</div></div>
+<div class=card><div class=mut>most minority spellings · rasam2/test/000354 · 2 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>أي ذو صوم وذو رضى والاولى ان يقال اطلق اسم المعنى على الفاعل والمفعول مبالغة كانهما من كثرة الفعل</div></div>
+<div class=card><div class=mut>random · rasam2/test/000128 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>المؤلف في قناة الرجل تجري في دار فاحتاج الذي تجري على داره الى ردم داره لان الطريق ثبت عنه</div></div>
+<div class=card><div class=mut>random · rasam2/test/000272 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>للاستغناء عنه المفيد اذا المفيد الفايدة المذكورة لا يكون الا مركبا و يخرج بقوله المفيد غير</div></div>
+<div class=card><div class=mut>random · rasam2/test/000361 · 0 minority tokens</div><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mO0tLT8DwAEhQJ/ZRwzxQAAAABJRU5ErkJggg=='><div class=ar>الترتيب الطبيعي لطول الكلام على حروف الخفض و عطف العلامات بالواو المفيدة</div></div>
+</body></html>

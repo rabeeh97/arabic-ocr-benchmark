@@ -1,0 +1,1513 @@
+{
+ "decision_rules": "R3.2  IRT difficulty replaces the consensus median CER as the line-difficulty measure only if its mean split-half\n        Spearman >= 0.80 AND >= the consensus measure's; discrimination is reported per line only if its split-half\n        Spearman >= 0.50 (else only the negative-discrimination list is used, as R4.1 candidates).\n  X5-len Fragments become a separate leaderboard subset if fragment CER exceeds full-line CER for a majority of\n        systems in a set after FDR; a set's headline then shows CER(full lines) and CER(fragments) beside the micro CER.",
+ "R3.2": {
+  "kitab_khatt": {
+   "systems": 34,
+   "lines": 200,
+   "split_half_spearman_b": [
+    0.6616839539245707,
+    0.5892428091779687,
+    0.7304208306112183
+   ],
+   "split_half_spearman_a": [
+    0.19819866695409488,
+    -0.2400791193626459,
+    0.38847243551575567
+   ],
+   "split_half_spearman_consensus": [
+    0.9696526767253042,
+    0.8849054956585463,
+    0.9854401386840059
+   ],
+   "spearman_b_vs_consensus": 0.49726740471157016,
+   "all_correct_lines": 0,
+   "all_wrong_lines": 99,
+   "negative_discrimination_lines": 9,
+   "adopt_irt_difficulty": false,
+   "report_discrimination": false,
+   "sensitivity_median_threshold": {
+    "threshold": 0.27692307692307694,
+    "split_half_spearman_b": 0.9079050444443114,
+    "split_half_spearman_a": 0.5938136684193522,
+    "all_wrong_lines": 12,
+    "all_correct_lines": 0,
+    "would_adopt": false
+   },
+   "theta": {
+    "crnn/base": -1.5755472399624926,
+    "crnn/rep2": -1.4492902500928733,
+    "crnn/randctl": -1.400081525778129,
+    "crnn/shape": -1.5824757832344576,
+    "crnn/combo": -1.2289835338521378,
+    "crnn/geomaug": -1.6374935455101378,
+    "crnn/inkcrop": -1.574042922438597,
+    "crnn/base_s3": -1.457940835645416,
+    "crnn/combo_s2": -1.1768541237140473,
+    "crnn/combo_s3": -1.271544509635348,
+    "crnn/randctl_s2": -1.3154756277598125,
+    "crnn/randctl_s3": -1.599462844756596,
+    "crnn/shape_s2": -1.5319310996791466,
+    "crnn/shape_s3": -1.384081799535262,
+    "crnn/std_s0": -1.6601376144364317,
+    "crnn/std_s1": -1.9852416520880005,
+    "crnn/std_s0-best": -1.7737256562989823,
+    "crnn/std_s1-best": -1.9852416520880005,
+    "crnn+llm/e8-qwen3-0.6b": -2.621443237567973,
+    "crnn+llm/e8-qwen3-1.7b": -2.356096945381469,
+    "vlm/exp3090-paligemma2-3b-ft-bf16": -1.9663829338234913,
+    "vlm/exp3090-qwen3vl4b-ft-bf16": -0.9897068839476092,
+    "vlm/fanar-oryx-7b-bf16": -0.8601926068314063,
+    "vlm/gemini-flash": -2.145431164171998,
+    "vlm/gemini-flash-lite": 0.38641573740664764,
+    "vlm/openrouter-minimax-m3-free": -2.2254935285511754,
+    "vlm/openrouter-qwen3-vl-235b": -0.12039679003078879,
+    "vlm/paligemma2-3b-bf16": -2.155382489390188,
+    "vlm/pixtral-12b": -3.1361610550586962,
+    "vlm/qwen3-vl-4b-bf16": -1.4137563908792412,
+    "vlm/qwen3-vl-8b-bf16": -0.8085417275955242,
+    "vlm/suite-v1-fanar2-oryx-ft-bf16": -0.06028902405581194,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16": -0.674420867173631,
+    "vlm/suite-v1-qwen3vl8b-ft-bf16": -0.17466980108186744
+   },
+   "negative_discrimination_keys": [
+    "kitab_khatt/train/000015",
+    "kitab_khatt/train/000022",
+    "kitab_khatt/train/000027",
+    "kitab_khatt/train/000031",
+    "kitab_khatt/train/000118",
+    "kitab_khatt/train/000132",
+    "kitab_khatt/train/000140",
+    "kitab_khatt/train/000143",
+    "kitab_khatt/train/000194"
+   ]
+  },
+  "muharaf_lines": {
+   "systems": 7,
+   "lines": 1334,
+   "split_half_spearman_b": [
+    0.7953491894178156,
+    -0.03335804931468349,
+    0.9556358928810693
+   ],
+   "split_half_spearman_a": [
+    0.1326175648927684,
+    -0.5159119028595937,
+    0.8550042132889359
+   ],
+   "split_half_spearman_consensus": [
+    0.5181578271694927,
+    0.2628423615063388,
+    0.722244691998718
+   ],
+   "spearman_b_vs_consensus": 0.8202603803019178,
+   "all_correct_lines": 2,
+   "all_wrong_lines": 441,
+   "negative_discrimination_lines": 38,
+   "adopt_irt_difficulty": false,
+   "report_discrimination": false,
+   "sensitivity_median_threshold": {
+    "threshold": 0.15857300015715858,
+    "split_half_spearman_b": 0.7147873252906186,
+    "split_half_spearman_a": -0.0010807949367876019,
+    "all_wrong_lines": 244,
+    "all_correct_lines": 4,
+    "would_adopt": false
+   },
+   "theta": {
+    "crnn/std_s0": 0.39038271077907305,
+    "crnn/std_s1": 0.428669769224513,
+    "crnn/std_s0-best": 0.37275693359883677,
+    "crnn/std_s1-best": 0.428669769224513,
+    "vlm/qari-ocr-0.2": -4.600166358946885,
+    "vlm/qwen3-vl-4b-bf16": -4.189244691676891,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16": -3.0311557884312132
+   },
+   "negative_discrimination_keys": [
+    "muharaf_lines/test/000017",
+    "muharaf_lines/test/000024",
+    "muharaf_lines/test/000049",
+    "muharaf_lines/test/000107",
+    "muharaf_lines/test/000141",
+    "muharaf_lines/test/000152",
+    "muharaf_lines/test/000187",
+    "muharaf_lines/test/000207",
+    "muharaf_lines/test/000208",
+    "muharaf_lines/test/000209",
+    "muharaf_lines/test/000217",
+    "muharaf_lines/test/000271",
+    "muharaf_lines/test/000315",
+    "muharaf_lines/test/000427",
+    "muharaf_lines/test/000448",
+    "muharaf_lines/test/000611",
+    "muharaf_lines/test/000654",
+    "muharaf_lines/test/000657",
+    "muharaf_lines/test/000661",
+    "muharaf_lines/test/000664",
+    "muharaf_lines/test/000666",
+    "muharaf_lines/test/000667",
+    "muharaf_lines/test/000668",
+    "muharaf_lines/test/000669",
+    "muharaf_lines/test/000690",
+    "muharaf_lines/test/000714",
+    "muharaf_lines/test/000753",
+    "muharaf_lines/test/000754",
+    "muharaf_lines/test/000794",
+    "muharaf_lines/test/000810",
+    "muharaf_lines/test/000925",
+    "muharaf_lines/test/000974",
+    "muharaf_lines/test/001100",
+    "muharaf_lines/test/001121",
+    "muharaf_lines/test/001122",
+    "muharaf_lines/test/001142",
+    "muharaf_lines/test/001143",
+    "muharaf_lines/test/001231"
+   ]
+  },
+  "nakba_blind": {
+   "systems": 20,
+   "lines": 2671,
+   "split_half_spearman_b": [
+    0.93440813951928,
+    0.9079677189562623,
+    0.9583980175485345
+   ],
+   "split_half_spearman_a": [
+    0.6167097727352644,
+    0.44228582806063277,
+    0.789762879713657
+   ],
+   "split_half_spearman_consensus": [
+    0.960591812966789,
+    0.9494351383719589,
+    0.9700771326752146
+   ],
+   "spearman_b_vs_consensus": 0.9024933517810828,
+   "all_correct_lines": 733,
+   "all_wrong_lines": 285,
+   "negative_discrimination_lines": 220,
+   "adopt_irt_difficulty": false,
+   "report_discrimination": true,
+   "sensitivity_median_threshold": {
+    "threshold": 0.09210526315789473,
+    "split_half_spearman_b": 0.926854149923156,
+    "split_half_spearman_a": 0.5520391663455735,
+    "all_wrong_lines": 334,
+    "all_correct_lines": 600,
+    "would_adopt": false
+   },
+   "theta": {
+    "crnn/base": 0.08469911587650747,
+    "crnn/rep2": 0.0711153080296657,
+    "crnn/randctl": 0.20414259463870774,
+    "crnn/shape": 0.13006291252652968,
+    "crnn/combo": 0.27197320685013615,
+    "crnn/geomaug": -0.34549326693262766,
+    "crnn/inkcrop": 0.05469784913027515,
+    "crnn/base_s3": 0.09504598756522267,
+    "crnn/combo_s2": 0.23321673744274413,
+    "crnn/combo_s3": 0.14151358768957448,
+    "crnn/randctl_s2": 0.13334319666389766,
+    "crnn/randctl_s3": 0.18645120646045807,
+    "crnn/shape_s2": 0.13767471083306543,
+    "crnn/shape_s3": 0.43279505356071934,
+    "crnn/std_s0": -0.29905649883623464,
+    "crnn/std_s1": -0.0697953870931675,
+    "crnn/std_s0-best": -0.2098088173914163,
+    "crnn/std_s1-best": -0.0697953870931675,
+    "vlm/nakba-misraj-baseer": 2.409964788578675,
+    "vlm/nakba-misraj-baseer-contest": 2.4368089292853825
+   },
+   "negative_discrimination_keys": [
+    "nakba_blind/blind_test/000001",
+    "nakba_blind/blind_test/000002",
+    "nakba_blind/blind_test/000005",
+    "nakba_blind/blind_test/000024",
+    "nakba_blind/blind_test/000028",
+    "nakba_blind/blind_test/000037",
+    "nakba_blind/blind_test/000042",
+    "nakba_blind/blind_test/000048",
+    "nakba_blind/blind_test/000049",
+    "nakba_blind/blind_test/000053",
+    "nakba_blind/blind_test/000070",
+    "nakba_blind/blind_test/000074",
+    "nakba_blind/blind_test/000083",
+    "nakba_blind/blind_test/000090",
+    "nakba_blind/blind_test/000097",
+    "nakba_blind/blind_test/000105",
+    "nakba_blind/blind_test/000107",
+    "nakba_blind/blind_test/000109",
+    "nakba_blind/blind_test/000113",
+    "nakba_blind/blind_test/000119",
+    "nakba_blind/blind_test/000146",
+    "nakba_blind/blind_test/000149",
+    "nakba_blind/blind_test/000151",
+    "nakba_blind/blind_test/000177",
+    "nakba_blind/blind_test/000180",
+    "nakba_blind/blind_test/000186",
+    "nakba_blind/blind_test/000193",
+    "nakba_blind/blind_test/000230",
+    "nakba_blind/blind_test/000248",
+    "nakba_blind/blind_test/000257",
+    "nakba_blind/blind_test/000259",
+    "nakba_blind/blind_test/000265",
+    "nakba_blind/blind_test/000275",
+    "nakba_blind/blind_test/000281",
+    "nakba_blind/blind_test/000285",
+    "nakba_blind/blind_test/000289",
+    "nakba_blind/blind_test/000304",
+    "nakba_blind/blind_test/000340",
+    "nakba_blind/blind_test/000353",
+    "nakba_blind/blind_test/000355",
+    "nakba_blind/blind_test/000368",
+    "nakba_blind/blind_test/000383",
+    "nakba_blind/blind_test/000384",
+    "nakba_blind/blind_test/000396",
+    "nakba_blind/blind_test/000403",
+    "nakba_blind/blind_test/000404",
+    "nakba_blind/blind_test/000415",
+    "nakba_blind/blind_test/000420",
+    "nakba_blind/blind_test/000424",
+    "nakba_blind/blind_test/000435",
+    "nakba_blind/blind_test/000444",
+    "nakba_blind/blind_test/000460",
+    "nakba_blind/blind_test/000462",
+    "nakba_blind/blind_test/000473",
+    "nakba_blind/blind_test/000477",
+    "nakba_blind/blind_test/000478",
+    "nakba_blind/blind_test/000489",
+    "nakba_blind/blind_test/000491",
+    "nakba_blind/blind_test/000494",
+    "nakba_blind/blind_test/000499",
+    "nakba_blind/blind_test/000506",
+    "nakba_blind/blind_test/000514",
+    "nakba_blind/blind_test/000516",
+    "nakba_blind/blind_test/000535",
+    "nakba_blind/blind_test/000538",
+    "nakba_blind/blind_test/000551",
+    "nakba_blind/blind_test/000554",
+    "nakba_blind/blind_test/000582",
+    "nakba_blind/blind_test/000587",
+    "nakba_blind/blind_test/000619",
+    "nakba_blind/blind_test/000624",
+    "nakba_blind/blind_test/000627",
+    "nakba_blind/blind_test/000645",
+    "nakba_blind/blind_test/000650",
+    "nakba_blind/blind_test/000654",
+    "nakba_blind/blind_test/000662",
+    "nakba_blind/blind_test/000667",
+    "nakba_blind/blind_test/000672",
+    "nakba_blind/blind_test/000681",
+    "nakba_blind/blind_test/000684",
+    "nakba_blind/blind_test/000690",
+    "nakba_blind/blind_test/000711",
+    "nakba_blind/blind_test/000716",
+    "nakba_blind/blind_test/000739",
+    "nakba_blind/blind_test/000756",
+    "nakba_blind/blind_test/000770",
+    "nakba_blind/blind_test/000782",
+    "nakba_blind/blind_test/000788",
+    "nakba_blind/blind_test/000796",
+    "nakba_blind/blind_test/000819",
+    "nakba_blind/blind_test/000822",
+    "nakba_blind/blind_test/000845",
+    "nakba_blind/blind_test/000846",
+    "nakba_blind/blind_test/000847",
+    "nakba_blind/blind_test/000860",
+    "nakba_blind/blind_test/000863",
+    "nakba_blind/blind_test/000865",
+    "nakba_blind/blind_test/000866",
+    "nakba_blind/blind_test/000875",
+    "nakba_blind/blind_test/000880",
+    "nakba_blind/blind_test/000881",
+    "nakba_blind/blind_test/000888",
+    "nakba_blind/blind_test/000891",
+    "nakba_blind/blind_test/000900",
+    "nakba_blind/blind_test/000904",
+    "nakba_blind/blind_test/000912",
+    "nakba_blind/blind_test/000936",
+    "nakba_blind/blind_test/000955",
+    "nakba_blind/blind_test/000957",
+    "nakba_blind/blind_test/000959",
+    "nakba_blind/blind_test/000996",
+    "nakba_blind/blind_test/001003",
+    "nakba_blind/blind_test/001018",
+    "nakba_blind/blind_test/001028",
+    "nakba_blind/blind_test/001036",
+    "nakba_blind/blind_test/001037",
+    "nakba_blind/blind_test/001053",
+    "nakba_blind/blind_test/001079",
+    "nakba_blind/blind_test/001083",
+    "nakba_blind/blind_test/001095",
+    "nakba_blind/blind_test/001123",
+    "nakba_blind/blind_test/001178",
+    "nakba_blind/blind_test/001188",
+    "nakba_blind/blind_test/001196",
+    "nakba_blind/blind_test/001217",
+    "nakba_blind/blind_test/001218",
+    "nakba_blind/blind_test/001235",
+    "nakba_blind/blind_test/001243",
+    "nakba_blind/blind_test/001265",
+    "nakba_blind/blind_test/001284",
+    "nakba_blind/blind_test/001304",
+    "nakba_blind/blind_test/001332",
+    "nakba_blind/blind_test/001336",
+    "nakba_blind/blind_test/001342",
+    "nakba_blind/blind_test/001346",
+    "nakba_blind/blind_test/001349",
+    "nakba_blind/blind_test/001350",
+    "nakba_blind/blind_test/001368",
+    "nakba_blind/blind_test/001388",
+    "nakba_blind/blind_test/001397",
+    "nakba_blind/blind_test/001406",
+    "nakba_blind/blind_test/001427",
+    "nakba_blind/blind_test/001444",
+    "nakba_blind/blind_test/001452",
+    "nakba_blind/blind_test/001486",
+    "nakba_blind/blind_test/001507",
+    "nakba_blind/blind_test/001529",
+    "nakba_blind/blind_test/001557",
+    "nakba_blind/blind_test/001574",
+    "nakba_blind/blind_test/001586",
+    "nakba_blind/blind_test/001613",
+    "nakba_blind/blind_test/001643",
+    "nakba_blind/blind_test/001656",
+    "nakba_blind/blind_test/001669",
+    "nakba_blind/blind_test/001697",
+    "nakba_blind/blind_test/001698",
+    "nakba_blind/blind_test/001702",
+    "nakba_blind/blind_test/001710",
+    "nakba_blind/blind_test/001724",
+    "nakba_blind/blind_test/001729",
+    "nakba_blind/blind_test/001755",
+    "nakba_blind/blind_test/001768",
+    "nakba_blind/blind_test/001775",
+    "nakba_blind/blind_test/001776",
+    "nakba_blind/blind_test/001788",
+    "nakba_blind/blind_test/001799",
+    "nakba_blind/blind_test/001807",
+    "nakba_blind/blind_test/001809",
+    "nakba_blind/blind_test/001817",
+    "nakba_blind/blind_test/001821",
+    "nakba_blind/blind_test/001856",
+    "nakba_blind/blind_test/001866",
+    "nakba_blind/blind_test/001871",
+    "nakba_blind/blind_test/001874",
+    "nakba_blind/blind_test/001885",
+    "nakba_blind/blind_test/001894",
+    "nakba_blind/blind_test/001895",
+    "nakba_blind/blind_test/001914",
+    "nakba_blind/blind_test/001918",
+    "nakba_blind/blind_test/001948",
+    "nakba_blind/blind_test/001950",
+    "nakba_blind/blind_test/001952",
+    "nakba_blind/blind_test/001964",
+    "nakba_blind/blind_test/001967",
+    "nakba_blind/blind_test/001969",
+    "nakba_blind/blind_test/001972",
+    "nakba_blind/blind_test/001991",
+    "nakba_blind/blind_test/002026",
+    "nakba_blind/blind_test/002049",
+    "nakba_blind/blind_test/002058",
+    "nakba_blind/blind_test/002060",
+    "nakba_blind/blind_test/002066",
+    "nakba_blind/blind_test/002071",
+    "nakba_blind/blind_test/002078",
+    "nakba_blind/blind_test/002132",
+    "nakba_blind/blind_test/002184",
+    "nakba_blind/blind_test/002200",
+    "nakba_blind/blind_test/002201",
+    "nakba_blind/blind_test/002204",
+    "nakba_blind/blind_test/002233",
+    "nakba_blind/blind_test/002249",
+    "nakba_blind/blind_test/002281",
+    "nakba_blind/blind_test/002292",
+    "nakba_blind/blind_test/002339",
+    "nakba_blind/blind_test/002342",
+    "nakba_blind/blind_test/002359",
+    "nakba_blind/blind_test/002363",
+    "nakba_blind/blind_test/002428",
+    "nakba_blind/blind_test/002460",
+    "nakba_blind/blind_test/002464",
+    "nakba_blind/blind_test/002468",
+    "nakba_blind/blind_test/002480",
+    "nakba_blind/blind_test/002488",
+    "nakba_blind/blind_test/002532",
+    "nakba_blind/blind_test/002546",
+    "nakba_blind/blind_test/002585",
+    "nakba_blind/blind_test/002596",
+    "nakba_blind/blind_test/002604",
+    "nakba_blind/blind_test/002618",
+    "nakba_blind/blind_test/002642"
+   ]
+  },
+  "nakba_lines": {
+   "systems": 18,
+   "lines": 2095,
+   "split_half_spearman_b": [
+    0.9417835942257353,
+    0.9304208803579064,
+    0.9529239075823894
+   ],
+   "split_half_spearman_a": [
+    0.7298555559199801,
+    0.665112999587175,
+    0.7829140955218149
+   ],
+   "split_half_spearman_consensus": [
+    0.9302330264076147,
+    0.9178670603279312,
+    0.9436691852361008
+   ],
+   "spearman_b_vs_consensus": 0.9189962981169574,
+   "all_correct_lines": 603,
+   "all_wrong_lines": 540,
+   "negative_discrimination_lines": 355,
+   "adopt_irt_difficulty": true,
+   "report_discrimination": true,
+   "sensitivity_median_threshold": {
+    "threshold": 0.09375,
+    "split_half_spearman_b": 0.9430560331661892,
+    "split_half_spearman_a": 0.5041295054970135,
+    "all_wrong_lines": 592,
+    "all_correct_lines": 534,
+    "would_adopt": true
+   },
+   "theta": {
+    "crnn/base": 0.2824756947745699,
+    "crnn/rep2": 0.14297290070129903,
+    "crnn/randctl": 0.25527789562889425,
+    "crnn/shape": 0.3141557389106893,
+    "crnn/combo": 0.4554322290666982,
+    "crnn/geomaug": -0.5096203164441006,
+    "crnn/inkcrop": 0.17421201133613257,
+    "crnn/base_s3": 0.0560159713188341,
+    "crnn/combo_s2": 0.3896737278863341,
+    "crnn/combo_s3": 0.184710749689446,
+    "crnn/randctl_s2": 0.23021938463548544,
+    "crnn/randctl_s3": 0.1531578355822089,
+    "crnn/shape_s2": 0.26647787113051613,
+    "crnn/shape_s3": 0.583067702486891,
+    "crnn/std_s0": -0.003964196815813045,
+    "crnn/std_s1": 0.05223208457385045,
+    "crnn/std_s0-best": 0.14749048805413437,
+    "crnn/std_s1-best": 0.05223208240991265
+   },
+   "negative_discrimination_keys": [
+    "nakba_lines/test/000004",
+    "nakba_lines/test/000014",
+    "nakba_lines/test/000015",
+    "nakba_lines/test/000018",
+    "nakba_lines/test/000039",
+    "nakba_lines/test/000066",
+    "nakba_lines/test/000067",
+    "nakba_lines/test/000068",
+    "nakba_lines/test/000080",
+    "nakba_lines/test/000094",
+    "nakba_lines/test/000096",
+    "nakba_lines/test/000101",
+    "nakba_lines/test/000104",
+    "nakba_lines/test/000105",
+    "nakba_lines/test/000109",
+    "nakba_lines/test/000112",
+    "nakba_lines/test/000122",
+    "nakba_lines/test/000128",
+    "nakba_lines/test/000144",
+    "nakba_lines/test/000158",
+    "nakba_lines/test/000173",
+    "nakba_lines/test/000180",
+    "nakba_lines/test/000189",
+    "nakba_lines/test/000199",
+    "nakba_lines/test/000201",
+    "nakba_lines/test/000205",
+    "nakba_lines/test/000206",
+    "nakba_lines/test/000209",
+    "nakba_lines/test/000211",
+    "nakba_lines/test/000226",
+    "nakba_lines/test/000236",
+    "nakba_lines/test/000238",
+    "nakba_lines/test/000243",
+    "nakba_lines/test/000244",
+    "nakba_lines/test/000261",
+    "nakba_lines/test/000264",
+    "nakba_lines/test/000273",
+    "nakba_lines/test/000274",
+    "nakba_lines/test/000276",
+    "nakba_lines/test/000279",
+    "nakba_lines/test/000303",
+    "nakba_lines/test/000312",
+    "nakba_lines/test/000314",
+    "nakba_lines/test/000320",
+    "nakba_lines/test/000330",
+    "nakba_lines/test/000337",
+    "nakba_lines/test/000341",
+    "nakba_lines/test/000345",
+    "nakba_lines/test/000349",
+    "nakba_lines/test/000351",
+    "nakba_lines/test/000357",
+    "nakba_lines/test/000367",
+    "nakba_lines/test/000370",
+    "nakba_lines/test/000377",
+    "nakba_lines/test/000391",
+    "nakba_lines/test/000392",
+    "nakba_lines/test/000393",
+    "nakba_lines/test/000396",
+    "nakba_lines/test/000405",
+    "nakba_lines/test/000413",
+    "nakba_lines/test/000430",
+    "nakba_lines/test/000433",
+    "nakba_lines/test/000434",
+    "nakba_lines/test/000443",
+    "nakba_lines/test/000444",
+    "nakba_lines/test/000459",
+    "nakba_lines/test/000461",
+    "nakba_lines/test/000465",
+    "nakba_lines/test/000468",
+    "nakba_lines/test/000470",
+    "nakba_lines/test/000472",
+    "nakba_lines/test/000482",
+    "nakba_lines/test/000485",
+    "nakba_lines/test/000488",
+    "nakba_lines/test/000491",
+    "nakba_lines/test/000492",
+    "nakba_lines/test/000496",
+    "nakba_lines/test/000499",
+    "nakba_lines/test/000503",
+    "nakba_lines/test/000508",
+    "nakba_lines/test/000519",
+    "nakba_lines/test/000522",
+    "nakba_lines/test/000528",
+    "nakba_lines/test/000531",
+    "nakba_lines/test/000535",
+    "nakba_lines/test/000541",
+    "nakba_lines/test/000542",
+    "nakba_lines/test/000560",
+    "nakba_lines/test/000561",
+    "nakba_lines/test/000566",
+    "nakba_lines/test/000572",
+    "nakba_lines/test/000581",
+    "nakba_lines/test/000582",
+    "nakba_lines/test/000583",
+    "nakba_lines/test/000585",
+    "nakba_lines/test/000589",
+    "nakba_lines/test/000591",
+    "nakba_lines/test/000592",
+    "nakba_lines/test/000594",
+    "nakba_lines/test/000602",
+    "nakba_lines/test/000614",
+    "nakba_lines/test/000616",
+    "nakba_lines/test/000625",
+    "nakba_lines/test/000626",
+    "nakba_lines/test/000628",
+    "nakba_lines/test/000635",
+    "nakba_lines/test/000644",
+    "nakba_lines/test/000647",
+    "nakba_lines/test/000652",
+    "nakba_lines/test/000654",
+    "nakba_lines/test/000655",
+    "nakba_lines/test/000657",
+    "nakba_lines/test/000660",
+    "nakba_lines/test/000677",
+    "nakba_lines/test/000683",
+    "nakba_lines/test/000698",
+    "nakba_lines/test/000703",
+    "nakba_lines/test/000710",
+    "nakba_lines/test/000722",
+    "nakba_lines/test/000727",
+    "nakba_lines/test/000730",
+    "nakba_lines/test/000756",
+    "nakba_lines/test/000760",
+    "nakba_lines/test/000768",
+    "nakba_lines/test/000781",
+    "nakba_lines/test/000785",
+    "nakba_lines/test/000790",
+    "nakba_lines/test/000791",
+    "nakba_lines/test/000793",
+    "nakba_lines/test/000794",
+    "nakba_lines/test/000795",
+    "nakba_lines/test/000802",
+    "nakba_lines/test/000822",
+    "nakba_lines/test/000831",
+    "nakba_lines/test/000856",
+    "nakba_lines/test/000860",
+    "nakba_lines/test/000863",
+    "nakba_lines/test/000865",
+    "nakba_lines/test/000871",
+    "nakba_lines/test/000882",
+    "nakba_lines/test/000888",
+    "nakba_lines/test/000899",
+    "nakba_lines/test/000902",
+    "nakba_lines/test/000903",
+    "nakba_lines/test/000904",
+    "nakba_lines/test/000906",
+    "nakba_lines/test/000928",
+    "nakba_lines/test/000933",
+    "nakba_lines/test/000934",
+    "nakba_lines/test/000935",
+    "nakba_lines/test/000936",
+    "nakba_lines/test/000940",
+    "nakba_lines/test/000946",
+    "nakba_lines/test/000950",
+    "nakba_lines/test/000963",
+    "nakba_lines/test/000974",
+    "nakba_lines/test/000975",
+    "nakba_lines/test/000976",
+    "nakba_lines/test/000977",
+    "nakba_lines/test/000983",
+    "nakba_lines/test/000985",
+    "nakba_lines/test/000991",
+    "nakba_lines/test/000992",
+    "nakba_lines/test/000998",
+    "nakba_lines/test/001005",
+    "nakba_lines/test/001010",
+    "nakba_lines/test/001012",
+    "nakba_lines/test/001031",
+    "nakba_lines/test/001034",
+    "nakba_lines/test/001040",
+    "nakba_lines/test/001041",
+    "nakba_lines/test/001049",
+    "nakba_lines/test/001058",
+    "nakba_lines/test/001067",
+    "nakba_lines/test/001068",
+    "nakba_lines/test/001069",
+    "nakba_lines/test/001070",
+    "nakba_lines/test/001073",
+    "nakba_lines/test/001077",
+    "nakba_lines/test/001080",
+    "nakba_lines/test/001081",
+    "nakba_lines/test/001095",
+    "nakba_lines/test/001101",
+    "nakba_lines/test/001109",
+    "nakba_lines/test/001113",
+    "nakba_lines/test/001116",
+    "nakba_lines/test/001130",
+    "nakba_lines/test/001135",
+    "nakba_lines/test/001137",
+    "nakba_lines/test/001142",
+    "nakba_lines/test/001154",
+    "nakba_lines/test/001165",
+    "nakba_lines/test/001170",
+    "nakba_lines/test/001180",
+    "nakba_lines/test/001183",
+    "nakba_lines/test/001190",
+    "nakba_lines/test/001194",
+    "nakba_lines/test/001198",
+    "nakba_lines/test/001199",
+    "nakba_lines/test/001200",
+    "nakba_lines/test/001202",
+    "nakba_lines/test/001205",
+    "nakba_lines/test/001214",
+    "nakba_lines/test/001219",
+    "nakba_lines/test/001224",
+    "nakba_lines/test/001228",
+    "nakba_lines/test/001238",
+    "nakba_lines/test/001252",
+    "nakba_lines/test/001253",
+    "nakba_lines/test/001257",
+    "nakba_lines/test/001272",
+    "nakba_lines/test/001278",
+    "nakba_lines/test/001283",
+    "nakba_lines/test/001286",
+    "nakba_lines/test/001291",
+    "nakba_lines/test/001299",
+    "nakba_lines/test/001300",
+    "nakba_lines/test/001302",
+    "nakba_lines/test/001308",
+    "nakba_lines/test/001309",
+    "nakba_lines/test/001315",
+    "nakba_lines/test/001318",
+    "nakba_lines/test/001319",
+    "nakba_lines/test/001321",
+    "nakba_lines/test/001323",
+    "nakba_lines/test/001330",
+    "nakba_lines/test/001344",
+    "nakba_lines/test/001352",
+    "nakba_lines/test/001358",
+    "nakba_lines/test/001365",
+    "nakba_lines/test/001373",
+    "nakba_lines/test/001378",
+    "nakba_lines/test/001385",
+    "nakba_lines/test/001388",
+    "nakba_lines/test/001393",
+    "nakba_lines/test/001397",
+    "nakba_lines/test/001411",
+    "nakba_lines/test/001414",
+    "nakba_lines/test/001423",
+    "nakba_lines/test/001424",
+    "nakba_lines/test/001436",
+    "nakba_lines/test/001442",
+    "nakba_lines/test/001444",
+    "nakba_lines/test/001454",
+    "nakba_lines/test/001455",
+    "nakba_lines/test/001457",
+    "nakba_lines/test/001459",
+    "nakba_lines/test/001464",
+    "nakba_lines/test/001470",
+    "nakba_lines/test/001474",
+    "nakba_lines/test/001483",
+    "nakba_lines/test/001509",
+    "nakba_lines/test/001510",
+    "nakba_lines/test/001514",
+    "nakba_lines/test/001515",
+    "nakba_lines/test/001517",
+    "nakba_lines/test/001519",
+    "nakba_lines/test/001520",
+    "nakba_lines/test/001530",
+    "nakba_lines/test/001533",
+    "nakba_lines/test/001544",
+    "nakba_lines/test/001545",
+    "nakba_lines/test/001552",
+    "nakba_lines/test/001556",
+    "nakba_lines/test/001558",
+    "nakba_lines/test/001559",
+    "nakba_lines/test/001564",
+    "nakba_lines/test/001567",
+    "nakba_lines/test/001573",
+    "nakba_lines/test/001581",
+    "nakba_lines/test/001582",
+    "nakba_lines/test/001583",
+    "nakba_lines/test/001588",
+    "nakba_lines/test/001593",
+    "nakba_lines/test/001594",
+    "nakba_lines/test/001601",
+    "nakba_lines/test/001606",
+    "nakba_lines/test/001614",
+    "nakba_lines/test/001620",
+    "nakba_lines/test/001639",
+    "nakba_lines/test/001646",
+    "nakba_lines/test/001650",
+    "nakba_lines/test/001657",
+    "nakba_lines/test/001659",
+    "nakba_lines/test/001667",
+    "nakba_lines/test/001670",
+    "nakba_lines/test/001671",
+    "nakba_lines/test/001675",
+    "nakba_lines/test/001691",
+    "nakba_lines/test/001697",
+    "nakba_lines/test/001698",
+    "nakba_lines/test/001702",
+    "nakba_lines/test/001715",
+    "nakba_lines/test/001717",
+    "nakba_lines/test/001721",
+    "nakba_lines/test/001732",
+    "nakba_lines/test/001741",
+    "nakba_lines/test/001744",
+    "nakba_lines/test/001746",
+    "nakba_lines/test/001759",
+    "nakba_lines/test/001770",
+    "nakba_lines/test/001779",
+    "nakba_lines/test/001782",
+    "nakba_lines/test/001788",
+    "nakba_lines/test/001789",
+    "nakba_lines/test/001796",
+    "nakba_lines/test/001806",
+    "nakba_lines/test/001814",
+    "nakba_lines/test/001815",
+    "nakba_lines/test/001818",
+    "nakba_lines/test/001823",
+    "nakba_lines/test/001827",
+    "nakba_lines/test/001830",
+    "nakba_lines/test/001840",
+    "nakba_lines/test/001846",
+    "nakba_lines/test/001848",
+    "nakba_lines/test/001851",
+    "nakba_lines/test/001852",
+    "nakba_lines/test/001856",
+    "nakba_lines/test/001863",
+    "nakba_lines/test/001875",
+    "nakba_lines/test/001877",
+    "nakba_lines/test/001889",
+    "nakba_lines/test/001894",
+    "nakba_lines/test/001899",
+    "nakba_lines/test/001906",
+    "nakba_lines/test/001912",
+    "nakba_lines/test/001913",
+    "nakba_lines/test/001943",
+    "nakba_lines/test/001944",
+    "nakba_lines/test/001951",
+    "nakba_lines/test/001959",
+    "nakba_lines/test/001965",
+    "nakba_lines/test/001970",
+    "nakba_lines/test/001981",
+    "nakba_lines/test/001982",
+    "nakba_lines/test/001986",
+    "nakba_lines/test/001992",
+    "nakba_lines/test/001994",
+    "nakba_lines/test/001999",
+    "nakba_lines/test/002004",
+    "nakba_lines/test/002006",
+    "nakba_lines/test/002017",
+    "nakba_lines/test/002025",
+    "nakba_lines/test/002026",
+    "nakba_lines/test/002042",
+    "nakba_lines/test/002045",
+    "nakba_lines/test/002049",
+    "nakba_lines/test/002064",
+    "nakba_lines/test/002067",
+    "nakba_lines/test/002069",
+    "nakba_lines/test/002070",
+    "nakba_lines/test/002076",
+    "nakba_lines/test/002084",
+    "nakba_lines/test/002087"
+   ]
+  },
+  "rasam1": {
+   "systems": 8,
+   "lines": 734,
+   "split_half_spearman_b": [
+    0.6080201019053058,
+    0.12327373737028376,
+    0.8114163301758285
+   ],
+   "split_half_spearman_a": [
+    0.7027126717908972,
+    0.1103242038583651,
+    0.9504515298942784
+   ],
+   "split_half_spearman_consensus": [
+    0.773211049041971,
+    0.4279704766122159,
+    0.9089511736960878
+   ],
+   "spearman_b_vs_consensus": 0.11775371595987628,
+   "all_correct_lines": 0,
+   "all_wrong_lines": 673,
+   "negative_discrimination_lines": 2,
+   "adopt_irt_difficulty": false,
+   "report_discrimination": true,
+   "sensitivity_median_threshold": {
+    "threshold": 0.44565217391304346,
+    "split_half_spearman_b": 0.7341506931377147,
+    "split_half_spearman_a": 0.17732651207466615,
+    "all_wrong_lines": 57,
+    "all_correct_lines": 49,
+    "would_adopt": false
+   },
+   "theta": {
+    "crnn/std_s0": -4.448828892161034,
+    "crnn/std_s1": -4.605609792027974,
+    "crnn/std_s0-best": -4.351234751254923,
+    "crnn/std_s1-best": -4.605609792027974,
+    "vlm/exp3090-paligemma2-3b-ft-bf16": -3.9047281783937957,
+    "vlm/paligemma2-3b-bf16": -3.6925116539853646,
+    "vlm/qwen3-vl-4b-bf16": -4.42542360422788,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16": -2.05344301315168
+   },
+   "negative_discrimination_keys": [
+    "rasam1/test/000321",
+    "rasam1/test/000449"
+   ]
+  },
+  "rasam2": {
+   "systems": 14,
+   "lines": 372,
+   "split_half_spearman_b": [
+    0.34403117163901126,
+    0.2747960015268521,
+    0.3904877345838272
+   ],
+   "split_half_spearman_a": [
+    0.7556406675926773,
+    0.5792896538591158,
+    0.8768896625485522
+   ],
+   "split_half_spearman_consensus": [
+    0.7593540501549457,
+    0.5808063138584645,
+    0.8762229155299105
+   ],
+   "spearman_b_vs_consensus": 0.32559240732781075,
+   "all_correct_lines": 0,
+   "all_wrong_lines": 289,
+   "negative_discrimination_lines": 3,
+   "adopt_irt_difficulty": false,
+   "report_discrimination": true,
+   "sensitivity_median_threshold": {
+    "threshold": 0.4571184659837142,
+    "split_half_spearman_b": 0.7533624947414401,
+    "split_half_spearman_a": 0.3236341082016053,
+    "all_wrong_lines": 31,
+    "all_correct_lines": 11,
+    "would_adopt": false
+   },
+   "theta": {
+    "crnn/std_s0": -3.558702731091686,
+    "crnn/std_s1": -3.646043984413777,
+    "crnn/std_s0-best": -3.558702731091686,
+    "crnn/std_s1-best": -3.646043984413777,
+    "vlm/baseer-nakba-bf16": -3.1277401371601883,
+    "vlm/exp3090-baseer-nakba-ft-bf16": -3.241353895921141,
+    "vlm/exp3090-paligemma2-3b-ft-bf16": -3.479998216384298,
+    "vlm/fanar-oryx-7b-bf16": -3.241353895921141,
+    "vlm/paligemma2-3b-bf16": -3.441247391204418,
+    "vlm/qwen3-vl-4b-bf16": -3.558702731091686,
+    "vlm/qwen3-vl-8b-bf16": -3.0236450227005656,
+    "vlm/suite-v1-fanar2-oryx-ft-bf16": -0.02851126980343154,
+    "vlm/suite-v1-qwen3vl4b-ft-bf16": -1.9030543680712928,
+    "vlm/suite-v1-qwen3vl8b-ft-bf16": -2.2235611225986074
+   },
+   "negative_discrimination_keys": [
+    "rasam2/test/000047",
+    "rasam2/test/000131",
+    "rasam2/test/000224"
+   ]
+  }
+ },
+ "subsets": {
+  "hard_core": {
+   "definition": "every matrix system > 25 % line CER at no_diacritics (analyze_lines A3)",
+   "count": 82,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 20,
+     "share": 0.1
+    },
+    "nakba_blind": {
+     "n": 57,
+     "share": 0.02134032197678772
+    },
+    "muharaf_lines": {
+     "n": 3,
+     "share": 0.0022488755622188904
+    },
+    "rasam1": {
+     "n": 1,
+     "share": 0.0013623978201634877
+    },
+    "rasam2": {
+     "n": 1,
+     "share": 0.002688172043010753
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": 0.24170433080009854,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.37915162912109046,
+     "systems": 22
+    }
+   }
+  },
+  "crnn_only_failure": {
+   "definition": "all CRNNs > 25 %, median VLM <= 15 % (A3)",
+   "count": 252,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 4,
+     "share": 0.02
+    },
+    "nakba_lines": {
+     "n": 17,
+     "share": 0.008114558472553698
+    },
+    "nakba_blind": {
+     "n": 228,
+     "share": 0.08536128790715088
+    },
+    "muharaf_lines": {
+     "n": 3,
+     "share": 0.0022488755622188904
+    }
+   },
+   "cer_gap": {
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.3774519852407834,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.6388974792257509,
+     "systems": 30
+    }
+   }
+  },
+  "vlm_only_failure": {
+   "definition": "all VLMs > 25 %, best CRNN <= 15 % (A3)",
+   "count": 31,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 1,
+     "share": 0.005
+    },
+    "nakba_blind": {
+     "n": 19,
+     "share": 0.00711344065892924
+    },
+    "muharaf_lines": {
+     "n": 9,
+     "share": 0.006746626686656672
+    },
+    "rasam1": {
+     "n": 2,
+     "share": 0.0027247956403269754
+    }
+   },
+   "cer_gap": {
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.015500626834382664,
+     "systems": 22
+    }
+   }
+  },
+  "irt_top_quintile": {
+   "definition": "top 20 % of IRT 2PL difficulty b within the set",
+   "count": 2329,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 43,
+     "share": 0.215
+    },
+    "nakba_lines": {
+     "n": 540,
+     "share": 0.2577565632458234
+    },
+    "nakba_blind": {
+     "n": 834,
+     "share": 0.31224260576563084
+    },
+    "muharaf_lines": {
+     "n": 441,
+     "share": 0.3305847076461769
+    },
+    "rasam1": {
+     "n": 359,
+     "share": 0.4891008174386921
+    },
+    "rasam2": {
+     "n": 112,
+     "share": 0.3010752688172043
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": 0.057824585170997395,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.16147740921464543,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.17844455876484008,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.1611736879536651,
+     "systems": 28
+    },
+    "rasam1": {
+     "median_cer_gap_vs_rest": -0.00814465999386653,
+     "systems": 30
+    },
+    "rasam2": {
+     "median_cer_gap_vs_rest": 0.07471116540999123,
+     "systems": 14
+    }
+   }
+  },
+  "irt_low_discrimination": {
+   "definition": "point-biserial of line correctness with system ability < 0 (better systems fail it more); R4.1 candidates",
+   "count": 627,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 9,
+     "share": 0.045
+    },
+    "nakba_lines": {
+     "n": 355,
+     "share": 0.16945107398568018
+    },
+    "nakba_blind": {
+     "n": 220,
+     "share": 0.08236615499812804
+    },
+    "muharaf_lines": {
+     "n": 38,
+     "share": 0.02848575712143928
+    },
+    "rasam1": {
+     "n": 2,
+     "share": 0.0027247956403269754
+    },
+    "rasam2": {
+     "n": 3,
+     "share": 0.008064516129032258
+    }
+   },
+   "cer_gap": {
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": -0.02083489210457872,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": -0.008552414643808792,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.255549924283599,
+     "systems": 28
+    }
+   }
+  },
+  "dot_dense": {
+   "definition": "top 20 % of dotted letters per letter within the set",
+   "count": 1747,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 40,
+     "share": 0.2
+    },
+    "nakba_lines": {
+     "n": 450,
+     "share": 0.21479713603818615
+    },
+    "nakba_blind": {
+     "n": 541,
+     "share": 0.2025458629726694
+    },
+    "muharaf_lines": {
+     "n": 269,
+     "share": 0.20164917541229385
+    },
+    "rasam1": {
+     "n": 147,
+     "share": 0.20027247956403268
+    },
+    "rasam2": {
+     "n": 77,
+     "share": 0.20698924731182797
+    },
+    "kitab_khatt_full": {
+     "n": 223,
+     "share": 0.21483622350674375
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": 0.06098753924321765,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.004625976779503882,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.010293010040632378,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": -0.03761712316590586,
+     "systems": 28
+    },
+    "rasam1": {
+     "median_cer_gap_vs_rest": -0.006403585322843769,
+     "systems": 30
+    },
+    "rasam2": {
+     "median_cer_gap_vs_rest": 0.05152888666885791,
+     "systems": 14
+    }
+   }
+  },
+  "oov_heavy": {
+   "definition": ">= 30 % of the line's words absent from the lexicon (/Volumes/PortableSSD/data/lexicon, surface form)",
+   "count": 95,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 2,
+     "share": 0.01
+    },
+    "nakba_lines": {
+     "n": 8,
+     "share": 0.0038186157517899762
+    },
+    "nakba_blind": {
+     "n": 11,
+     "share": 0.0041183077499064025
+    },
+    "muharaf_lines": {
+     "n": 52,
+     "share": 0.038980509745127435
+    },
+    "rasam1": {
+     "n": 11,
+     "share": 0.014986376021798364
+    },
+    "rasam2": {
+     "n": 11,
+     "share": 0.02956989247311828
+    }
+   },
+   "cer_gap": {
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.05490762295355665,
+     "systems": 22
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": -0.020883186098475254,
+     "systems": 28
+    },
+    "rasam1": {
+     "median_cer_gap_vs_rest": 0.026867641642473385,
+     "systems": 30
+    },
+    "rasam2": {
+     "median_cer_gap_vs_rest": 0.3588466561214141,
+     "systems": 14
+    }
+   }
+  },
+  "fragments": {
+   "definition": "cleaned GT <= 20 characters, or digits only, or a single word",
+   "count": 1304,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 6,
+     "share": 0.03
+    },
+    "nakba_lines": {
+     "n": 504,
+     "share": 0.2405727923627685
+    },
+    "nakba_blind": {
+     "n": 452,
+     "share": 0.16922500935979035
+    },
+    "muharaf_lines": {
+     "n": 226,
+     "share": 0.16941529235382308
+    },
+    "rasam1": {
+     "n": 49,
+     "share": 0.0667574931880109
+    },
+    "rasam2": {
+     "n": 29,
+     "share": 0.07795698924731183
+    },
+    "kitab_khatt_full": {
+     "n": 38,
+     "share": 0.036608863198458574
+    }
+   },
+   "cer_gap": {
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.3363745592692508,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.24817167812587804,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.297552687384794,
+     "systems": 28
+    },
+    "rasam1": {
+     "median_cer_gap_vs_rest": 0.12226479782192196,
+     "systems": 30
+    },
+    "rasam2": {
+     "median_cer_gap_vs_rest": 0.10531533312649102,
+     "systems": 14
+    }
+   }
+  },
+  "loose_crops": {
+   "definition": "ink covers < 80 % of the crop height (samples.ink_extent)",
+   "count": 176,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 37,
+     "share": 0.185
+    },
+    "nakba_lines": {
+     "n": 48,
+     "share": 0.022911694510739856
+    },
+    "nakba_blind": {
+     "n": 33,
+     "share": 0.012354923249719206
+    },
+    "muharaf_lines": {
+     "n": 54,
+     "share": 0.04047976011994003
+    },
+    "rasam1": {
+     "n": 3,
+     "share": 0.004087193460490463
+    },
+    "rasam2": {
+     "n": 1,
+     "share": 0.002688172043010753
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": 0.5838380745905721,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.14487999234337956,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.49038835598865704,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.21578002097721966,
+     "systems": 28
+    }
+   }
+  },
+  "slant_outliers": {
+   "definition": "store_features slant_outlier",
+   "count": 352,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 68,
+     "share": 0.34
+    },
+    "nakba_lines": {
+     "n": 106,
+     "share": 0.050596658711217185
+    },
+    "nakba_blind": {
+     "n": 62,
+     "share": 0.023212280044926994
+    },
+    "muharaf_lines": {
+     "n": 87,
+     "share": 0.06521739130434782
+    },
+    "rasam1": {
+     "n": 8,
+     "share": 0.010899182561307902
+    },
+    "rasam2": {
+     "n": 21,
+     "share": 0.056451612903225805
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": -0.0003620269669891707,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.26397299884658265,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.3239541863116367,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.02566627610549889,
+     "systems": 28
+    },
+    "rasam2": {
+     "median_cer_gap_vs_rest": -0.060750284208660466,
+     "systems": 14
+    }
+   }
+  },
+  "leaked": {
+   "definition": "text or image found in the set's own training pool (audit_leakage)",
+   "count": 2001,
+   "per_set": {
+    "kitab_khatt": {
+     "n": 89,
+     "share": 0.445
+    },
+    "nakba_lines": {
+     "n": 383,
+     "share": 0.18281622911694512
+    },
+    "nakba_blind": {
+     "n": 435,
+     "share": 0.16286035192811682
+    },
+    "muharaf_lines": {
+     "n": 100,
+     "share": 0.07496251874062969
+    },
+    "rasam1": {
+     "n": 8,
+     "share": 0.010899182561307902
+    },
+    "rasam2": {
+     "n": 2,
+     "share": 0.005376344086021506
+    },
+    "kitab_khatt_full": {
+     "n": 984,
+     "share": 0.9479768786127167
+    }
+   },
+   "cer_gap": {
+    "kitab_khatt": {
+     "median_cer_gap_vs_rest": 0.08011208159429503,
+     "systems": 38
+    },
+    "nakba_blind": {
+     "median_cer_gap_vs_rest": 0.03577101860560408,
+     "systems": 22
+    },
+    "nakba_lines": {
+     "median_cer_gap_vs_rest": 0.0835717044500989,
+     "systems": 31
+    },
+    "muharaf_lines": {
+     "median_cer_gap_vs_rest": 0.25078149543699046,
+     "systems": 28
+    }
+   }
+  }
+ },
+ "X5_len_decision": {
+  "kitab_khatt": {
+   "systems": 0,
+   "fragments_worse_fdr": 0,
+   "fragments_better_fdr": 0,
+   "separate_subset": false,
+   "fragment_share": 0.03
+  },
+  "muharaf_lines": {
+   "systems": 28,
+   "fragments_worse_fdr": 23,
+   "fragments_better_fdr": 0,
+   "separate_subset": true,
+   "fragment_share": 0.16941529235382308
+  },
+  "nakba_blind": {
+   "systems": 22,
+   "fragments_worse_fdr": 19,
+   "fragments_better_fdr": 0,
+   "separate_subset": true,
+   "fragment_share": 0.16922500935979035
+  },
+  "nakba_lines": {
+   "systems": 31,
+   "fragments_worse_fdr": 23,
+   "fragments_better_fdr": 2,
+   "separate_subset": true,
+   "fragment_share": 0.2405727923627685
+  },
+  "rasam1": {
+   "systems": 30,
+   "fragments_worse_fdr": 9,
+   "fragments_better_fdr": 1,
+   "separate_subset": false,
+   "fragment_share": 0.0667574931880109
+  },
+  "rasam2": {
+   "systems": 14,
+   "fragments_worse_fdr": 6,
+   "fragments_better_fdr": 1,
+   "separate_subset": false,
+   "fragment_share": 0.07795698924731183
+  }
+ }
+}

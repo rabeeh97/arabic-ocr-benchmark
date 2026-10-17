@@ -1,0 +1,79 @@
+lexicon hits 84135 of 97671
+khatt_train 71654 keys inc 0.168 minority 0.0147 [0.0137,0.0157] nonstd 0.0109 {'alif/hamza': np.float64(7.382700198174561), 'taa/haa': np.float64(5.847545147514444), 'yaa/maqsura': np.float64(1.4514193206241104), 'alif/hamza+yaa/maqsura': np.float64(0.02791191001200212)}
+kitab_khatt 2333 keys inc 0.129 minority 0.0167 [0.0109,0.0226] nonstd 0.0081 {'alif/hamza': np.float64(8.572653236176597), 'taa/haa': np.float64(7.715387912558937), 'yaa/maqsura': np.float64(0.4286326618088298)}
+kitab_khatt_full 12838 keys inc 0.188 minority 0.0172 [0.0147,0.0198] nonstd 0.0129 {'taa/haa': np.float64(8.256737809627667), 'alif/hamza': np.float64(7.166225268733448), 'yaa/maqsura': np.float64(1.6357688113413305), 'alif/hamza+yaa/maqsura': np.float64(0.15578750584203147)}
+muharaf_lines 11541 keys inc 0.093 minority 0.0225 [0.0197,0.0256] nonstd 0.0098 {'yaa/maqsura': np.float64(10.571007711636772), 'alif/hamza': np.float64(7.2783987522745), 'taa/haa': np.float64(3.725846980330994), 'alif/hamza+yaa/maqsura': np.float64(0.6931808335499523), 'alif/hamza+taa/haa+yaa/maqsura': np.float64(0.17329520838748808), 'alif/hamza+taa/haa': np.float64(0.08664760419374404)}
+muharaf_train 195983 keys inc 0.166 minority 0.0414 [0.0405,0.0424] nonstd 0.0158 {'alif/hamza': np.float64(18.38935009669206), 'yaa/maqsura': np.float64(11.13361873223698), 'taa/haa': np.float64(9.771255670134655), 'alif/hamza+yaa/maqsura': np.float64(1.8062791160457794), 'alif/hamza+taa/haa': np.float64(0.1887918850104346), 'alif/hamza+taa/haa+yaa/maqsura': np.float64(0.12245960108784945), 'taa/haa+yaa/maqsura': np.float64(0.02551241689330197)}
+nakba_blind 29737 keys inc 0.131 minority 0.0561 [0.0536,0.0588] nonstd 0.0210 {'alif/hamza': np.float64(45.16259205703332), 'yaa/maqsura': np.float64(7.9362410465077176), 'taa/haa': np.float64(2.0849446817096546), 'alif/hamza+yaa/maqsura': np.float64(0.8070753606618017), 'alif/hamza+taa/haa': np.float64(0.10088442008272522), 'alif/hamza+taa/haa+yaa/maqsura': np.float64(0.033628140027575075)}
+nakba_lines 20893 keys inc 0.076 minority 0.0209 [0.0189,0.0230] nonstd 0.0037 {'alif/hamza': np.float64(17.51782893792179), 'yaa/maqsura': np.float64(2.0102426650074188), 'taa/haa': np.float64(1.052984253099124), 'alif/hamza+yaa/maqsura': np.float64(0.19145168238165894), 'alif/hamza+taa/haa': np.float64(0.1435887617862442)}
+nakba_train 156429 keys inc 0.088 minority 0.0278 [0.0269,0.0287] nonstd 0.0066 {'alif/hamza': np.float64(23.486693643761708), 'yaa/maqsura': np.float64(2.326934264107039), 'taa/haa': np.float64(1.4063888409438148), 'alif/hamza+yaa/maqsura': np.float64(0.4410946819323783), 'alif/hamza+taa/haa': np.float64(0.1470315606441261), 'alif/hamza+taa/haa+yaa/maqsura': np.float64(0.02557070619897845)}
+rasam1 9977 keys inc 0.042 minority 0.0068 [0.0052,0.0084] nonstd 0.0017 {'yaa/maqsura': np.float64(4.209682269219204), 'taa/haa': np.float64(1.3029968928535631), 'alif/hamza': np.float64(0.8018442417560389), 'alif/hamza+yaa/maqsura': np.float64(0.5011526510975243)}
+rasam1_train 62501 keys inc 0.058 minority 0.0107 [0.0099,0.0115] nonstd 0.0026 {'yaa/maqsura': np.float64(6.143901697572839), 'taa/haa': np.float64(2.687956992688117), 'alif/hamza+yaa/maqsura': np.float64(1.1359818242908113), 'alif/hamza': np.float64(0.735988224188413)}
+rasam2 4598 keys inc 0.053 minority 0.0080 [0.0053,0.0108] nonstd 0.0015 {'alif/hamza': np.float64(4.349717268377556), 'yaa/maqsura': np.float64(2.827316224445411), 'taa/haa': np.float64(0.8699434536755111)}
+{
+ "nakba_lines - nakba_blind": {
+  "diff": {
+   "hamza_on_alif": 0.061249527536540616,
+   "ta_marbuta_share": 0.013449633013125073,
+   "alif_maqsura_share": -0.07079035879661977,
+   "double_space_lines": -0.02208910520404343,
+   "space_before_punct": -0.024709375364182898,
+   "lines_with_harakat": -0.018477253699015952,
+   "spelling_minority_rate": -0.03520926940582656
+  },
+  "differs_by_gt_5pt": [
+   "hamza_on_alif",
+   "alif_maqsura_share"
+  ]
+ },
+ "kitab_khatt - kitab_khatt_full": {
+  "diff": {
+   "lines_with_harakat": 0.06210982658959538,
+   "spelling_minority_rate": -0.0004978455850001146
+  },
+  "differs_by_gt_5pt": [
+   "lines_with_harakat"
+  ]
+ },
+ "rasam1 - rasam2": {
+  "diff": {
+   "hamza_on_alif": -0.015568454479595966,
+   "ta_marbuta_share": -0.014952261877699435,
+   "alif_maqsura_share": 0.1991472680670825,
+   "double_space_lines": -0.019666871758811634,
+   "space_before_punct": 0.0,
+   "lines_with_harakat": 0.10225308370689402,
+   "spelling_minority_rate": -0.0012313008915721471
+  },
+  "differs_by_gt_5pt": [
+   "alif_maqsura_share",
+   "lines_with_harakat"
+  ]
+ },
+ "muharaf_lines - muharaf_train": {
+  "diff": {
+   "hamza_on_alif": -0.01072607014247104,
+   "ta_marbuta_share": 0.039494092210374476,
+   "alif_maqsura_share": 0.04822899383268481,
+   "double_space_lines": 0.11019490254872563,
+   "space_before_punct": -0.031193645004326892,
+   "lines_with_harakat": 0.018957254242789212,
+   "spelling_minority_rate": -0.01890889042772761
+  },
+  "differs_by_gt_5pt": [
+   "double_space_lines"
+  ]
+ },
+ "nakba_lines - nakba_train": {
+  "diff": {
+   "hamza_on_alif": 0.005835369685256386,
+   "ta_marbuta_share": -0.022012629915799886,
+   "alif_maqsura_share": 0.004541515773266447,
+   "double_space_lines": 0.0,
+   "space_before_punct": -0.0003706640323740684,
+   "lines_with_harakat": -0.007675837512660589,
+   "spelling_minority_rate": -0.006917617397391804
+  },
+  "differs_by_gt_5pt": []
+ }
+}
