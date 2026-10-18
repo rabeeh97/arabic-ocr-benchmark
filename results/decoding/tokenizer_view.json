@@ -1,0 +1,1654 @@
+{
+ "tokenizers": {
+  "qwen": "Qwen/Qwen3-VL-4B-Instruct",
+  "gemma2": "unsloth/gemma-2-2b-it"
+ },
+ "note_tokenizers": "Qwen2-VL, Qwen2.5-VL, Qwen3-VL, AIN, Fanar-2-Oryx, Baseer and Qari share one BPE (identical ids checked on Arabic text). PaliGemma2's tokenizer is gated; the Gemma-2 SentencePiece vocabulary (ungated mirror unsloth/gemma-2-2b-it) is the same text vocabulary without the <loc>/<seg> tokens.",
+ "readings": {
+  "ain-7b-bf16": 800,
+  "base": 5458,
+  "baseer-nakba-bf16": 600,
+  "combo": 5458,
+  "exp3090-paligemma2-3b-ft-bf16": 1331,
+  "fanar-oryx-7b-bf16": 800,
+  "paligemma2-3b-bf16": 1330,
+  "qari-ocr-0.2": 1414,
+  "qwen3-vl-4b-bf16": 2926,
+  "qwen3-vl-8b-bf16": 800,
+  "suite-v1-ain7b-ft-bf16": 800,
+  "suite-v1-fanar2-oryx-ft-bf16": 800,
+  "suite-v1-qwen3vl4b-ft-bf16": 2865,
+  "suite-v1-qwen3vl8b-ft-bf16": 800
+ },
+ "a_dot_pairs": {
+  "qwen": {
+   "all": {
+    "n_words": 26945,
+    "dice_dot": 0.4891156873064462,
+    "dice_ctrl": 0.4872429183154735,
+    "delta": 0.0018727689909727393,
+    "delta_ci": [
+     -0.00046195651938832485,
+     0.004193862919414966
+    ],
+    "zero_overlap_dot": 0.0993134162182223,
+    "zero_overlap_ctrl": 0.10302467990350714,
+    "edge_kept_dot": 0.46494994212195917,
+    "edge_kept_ctrl": 0.4636927957302795,
+    "token_count_changes_dot": 0.42275004639079605,
+    "token_count_changes_ctrl": 0.4147337168305808
+   },
+   "single_token_words": {
+    "n_words": 838,
+    "dice_dot": 0.0,
+    "dice_ctrl": 0.0,
+    "delta": 0.0,
+    "delta_ci": [
+     0.0,
+     0.0
+    ],
+    "zero_overlap_dot": 1.0,
+    "zero_overlap_ctrl": 1.0,
+    "edge_kept_dot": 0.0,
+    "edge_kept_ctrl": 0.0,
+    "token_count_changes_dot": 0.9725536992840096,
+    "token_count_changes_ctrl": 0.9665871121718377
+   },
+   "dot_variant_is_real_word": {
+    "n_words": 7532,
+    "dice_dot": 0.44621214037039847,
+    "dice_ctrl": 0.44852653689615984,
+    "delta": -0.0023143965257613687,
+    "delta_ci": [
+     -0.006833421509304409,
+     0.002345614938551737
+    ],
+    "zero_overlap_dot": 0.15254912373871482,
+    "zero_overlap_ctrl": 0.14445034519383962,
+    "edge_kept_dot": 0.42897636749867235,
+    "edge_kept_ctrl": 0.4291445388564348,
+    "token_count_changes_dot": 0.3475836431226766,
+    "token_count_changes_ctrl": 0.3712161444503452
+   }
+  },
+  "gemma2": {
+   "all": {
+    "n_words": 26945,
+    "dice_dot": 0.43886496711881756,
+    "dice_ctrl": 0.43266403150055033,
+    "delta": 0.006200935618267219,
+    "delta_ci": [
+     0.003709614384090168,
+     0.008669659570754391
+    ],
+    "zero_overlap_dot": 0.15925032473557246,
+    "zero_overlap_ctrl": 0.16997587678604564,
+    "edge_kept_dot": 0.4187624702877996,
+    "edge_kept_ctrl": 0.4130163737419258,
+    "token_count_changes_dot": 0.39176099461866765,
+    "token_count_changes_ctrl": 0.3924290220820189
+   },
+   "single_token_words": {
+    "n_words": 1200,
+    "dice_dot": 0.0,
+    "dice_ctrl": 0.0,
+    "delta": 0.0,
+    "delta_ci": [
+     0.0,
+     0.0
+    ],
+    "zero_overlap_dot": 1.0,
+    "zero_overlap_ctrl": 1.0,
+    "edge_kept_dot": 0.0,
+    "edge_kept_ctrl": 0.0,
+    "token_count_changes_dot": 0.8958333333333334,
+    "token_count_changes_ctrl": 0.895
+   },
+   "dot_variant_is_real_word": {
+    "n_words": 7532,
+    "dice_dot": 0.37958024597695333,
+    "dice_ctrl": 0.3768658202009238,
+    "delta": 0.0027144257760296,
+    "delta_ci": [
+     -0.0026805963663703975,
+     0.008289148230066974
+    ],
+    "zero_overlap_dot": 0.2542485395645247,
+    "zero_overlap_ctrl": 0.25451407328730746,
+    "edge_kept_dot": 0.3673415648787396,
+    "edge_kept_ctrl": 0.36210580886629745,
+    "token_count_changes_dot": 0.31638343069569835,
+    "token_count_changes_ctrl": 0.35262878385554963
+   }
+  }
+ },
+ "b_dot_errors": {
+  "ain-7b-bf16": {
+   "n_dot_errors": 166,
+   "n_unequal": 58,
+   "share_fewer": 0.43103448275862066,
+   "ci": [
+    0.2982456140350877,
+    0.5636583577712608
+   ],
+   "p": 0.30042406132114347,
+   "mean_dtok_all": 0.060240963855421686,
+   "hyp_in_lexicon": 0.8433734939759037,
+   "gt_in_lexicon": 0.9096385542168675,
+   "q": 0.45063609198171517,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "baseer-nakba-bf16": {
+   "n_dot_errors": 37,
+   "n_unequal": 20,
+   "share_fewer": 0.3,
+   "ci": [
+    0.10526315789473684,
+    0.5263157894736842
+   ],
+   "p": 0.05376873965559448,
+   "mean_dtok_all": 0.2972972972972973,
+   "hyp_in_lexicon": 0.8378378378378378,
+   "gt_in_lexicon": 0.8648648648648649,
+   "q": 0.12904497517342675,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "exp3090-paligemma2-3b-ft-bf16": {
+   "n_dot_errors": 125,
+   "n_unequal": 44,
+   "share_fewer": 0.36363636363636365,
+   "ci": [
+    0.23255813953488372,
+    0.5111111111111111
+   ],
+   "p": 0.053129463640860145,
+   "mean_dtok_all": 0.112,
+   "hyp_in_lexicon": 0.832,
+   "gt_in_lexicon": 0.928,
+   "q": 0.12904497517342675,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "fanar-oryx-7b-bf16": {
+   "n_dot_errors": 86,
+   "n_unequal": 34,
+   "share_fewer": 0.38235294117647056,
+   "ci": [
+    0.21875,
+    0.5588235294117647
+   ],
+   "p": 0.17117992135651366,
+   "mean_dtok_all": 0.1511627906976744,
+   "hyp_in_lexicon": 0.7674418604651163,
+   "gt_in_lexicon": 0.9186046511627907,
+   "q": 0.3423598427130273,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "paligemma2-3b-bf16": {
+   "n_dot_errors": 25,
+   "n_unequal": 9,
+   "share_fewer": 0.6666666666666666,
+   "ci": [
+    0.3333333333333333,
+    0.8888888888888888
+   ],
+   "p": 0.2896427384385175,
+   "mean_dtok_all": -0.12,
+   "hyp_in_lexicon": 0.84,
+   "gt_in_lexicon": 0.92,
+   "q": 0.45063609198171517,
+   "bh_survives": false,
+   "direction": "fewer"
+  },
+  "qari-ocr-0.2": {
+   "n_dot_errors": 36,
+   "n_unequal": 13,
+   "share_fewer": 0.15384615384615385,
+   "ci": [
+    0.0,
+    0.38461538461538464
+   ],
+   "p": 0.0005178840788118487,
+   "mean_dtok_all": 0.3611111111111111,
+   "hyp_in_lexicon": 0.9166666666666666,
+   "gt_in_lexicon": 1.0,
+   "q": 0.0020715363152473947,
+   "bh_survives": true,
+   "direction": "more"
+  },
+  "qwen3-vl-4b-bf16": {
+   "n_dot_errors": 139,
+   "n_unequal": 53,
+   "share_fewer": 0.24528301886792453,
+   "ci": [
+    0.1346153846153846,
+    0.3584905660377358
+   ],
+   "p": 1.4918941779175985e-05,
+   "mean_dtok_all": 0.22302158273381295,
+   "hyp_in_lexicon": 0.8273381294964028,
+   "gt_in_lexicon": 0.9280575539568345,
+   "q": 8.95136506750559e-05,
+   "bh_survives": true,
+   "direction": "more"
+  },
+  "qwen3-vl-8b-bf16": {
+   "n_dot_errors": 89,
+   "n_unequal": 37,
+   "share_fewer": 0.1891891891891892,
+   "ci": [
+    0.07894736842105263,
+    0.32432432432432434
+   ],
+   "p": 1.9023007954278243e-06,
+   "mean_dtok_all": 0.30337078651685395,
+   "hyp_in_lexicon": 0.8202247191011236,
+   "gt_in_lexicon": 0.9438202247191011,
+   "q": 2.282760954513389e-05,
+   "bh_survives": true,
+   "direction": "more"
+  },
+  "suite-v1-ain7b-ft-bf16": {
+   "n_dot_errors": 156,
+   "n_unequal": 78,
+   "share_fewer": 0.46153846153846156,
+   "ci": [
+    0.3420969353764157,
+    0.575
+   ],
+   "p": 0.5234251193878503,
+   "mean_dtok_all": 0.05128205128205128,
+   "hyp_in_lexicon": 0.7884615384615384,
+   "gt_in_lexicon": 0.8717948717948718,
+   "q": 0.6281101432654204,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "suite-v1-fanar2-oryx-ft-bf16": {
+   "n_dot_errors": 239,
+   "n_unequal": 96,
+   "share_fewer": 0.5208333333333334,
+   "ci": [
+    0.4299642857142857,
+    0.6195652173913043
+   ],
+   "p": 0.6688601130333608,
+   "mean_dtok_all": -0.012552301255230125,
+   "hyp_in_lexicon": 0.7112970711297071,
+   "gt_in_lexicon": 0.8702928870292888,
+   "q": 0.7296655778545754,
+   "bh_survives": false,
+   "direction": "fewer"
+  },
+  "suite-v1-qwen3vl4b-ft-bf16": {
+   "n_dot_errors": 475,
+   "n_unequal": 182,
+   "share_fewer": 0.4945054945054945,
+   "ci": [
+    0.42391304347826086,
+    0.5652353081700906
+   ],
+   "p": 0.8792733756349256,
+   "mean_dtok_all": 0.00631578947368421,
+   "hyp_in_lexicon": 0.7978947368421052,
+   "gt_in_lexicon": 0.9073684210526316,
+   "q": 0.8792733756349257,
+   "bh_survives": false,
+   "direction": "more"
+  },
+  "suite-v1-qwen3vl8b-ft-bf16": {
+   "n_dot_errors": 135,
+   "n_unequal": 66,
+   "share_fewer": 0.45454545454545453,
+   "ci": [
+    0.3384615384615385,
+    0.5774812940140844
+   ],
+   "p": 0.45896421598089376,
+   "mean_dtok_all": 0.044444444444444446,
+   "hyp_in_lexicon": 0.7777777777777778,
+   "gt_in_lexicon": 0.8888888888888888,
+   "q": 0.611952287974525,
+   "bh_survives": false,
+   "direction": "more"
+  }
+ },
+ "b_pooled_vs_crnn": {
+  "qwen": {
+   "vlm_models": [
+    "ain-7b-bf16",
+    "baseer-nakba-bf16",
+    "fanar-oryx-7b-bf16",
+    "qari-ocr-0.2",
+    "qwen3-vl-4b-bf16",
+    "qwen3-vl-8b-bf16",
+    "suite-v1-ain7b-ft-bf16",
+    "suite-v1-fanar2-oryx-ft-bf16",
+    "suite-v1-qwen3vl4b-ft-bf16",
+    "suite-v1-qwen3vl8b-ft-bf16"
+   ],
+   "vlm": {
+    "n_dot_errors": 1558,
+    "n_unequal": 637,
+    "share_fewer": 0.42700156985871274,
+    "ci": [
+     0.37729492335711035,
+     0.4774518420390944
+    ],
+    "p": 0.004644477658229309,
+    "mean_dtok_all": 0.07637997432605904
+   },
+   "crnn": {
+    "n_dot_errors": 5047,
+    "n_unequal": 1650,
+    "share_fewer": 0.336969696969697,
+    "ci": [
+     0.3111892393281335,
+     0.3629963303586249
+    ],
+    "p": 3.4613511475076016e-34,
+    "mean_dtok_all": 0.1486031305726174
+   },
+   "delta": 0.09003187288901576,
+   "delta_ci": [
+    0.03524329173854989,
+    0.14845926471242868
+   ],
+   "p": 0.001860986785425638
+  },
+  "gemma2": {
+   "vlm_models": [
+    "exp3090-paligemma2-3b-ft-bf16",
+    "paligemma2-3b-bf16"
+   ],
+   "vlm": {
+    "n_dot_errors": 150,
+    "n_unequal": 53,
+    "share_fewer": 0.41509433962264153,
+    "ci": [
+     0.2883928571428571,
+     0.5384999999999998
+    ],
+    "p": 0.203180480372084,
+    "mean_dtok_all": 0.07333333333333333
+   },
+   "crnn": {
+    "n_dot_errors": 5047,
+    "n_unequal": 1639,
+    "share_fewer": 0.25198291641244663,
+    "ci": [
+     0.2287614190082038,
+     0.2769940388124149
+    ],
+    "p": 9.62833344325996e-90,
+    "mean_dtok_all": 0.1791163067168615
+   },
+   "delta": 0.1631114232101949,
+   "delta_ci": [
+    0.029855688138172836,
+    0.29529832742236456
+   ],
+   "p": 0.01800345549369921
+  }
+ },
+ "c_line": [
+  {
+   "model": "ain-7b-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": -0.09403273941353625,
+   "ci": [
+    -0.23673066633701442,
+    0.0511325403424581
+   ],
+   "p": 0.21409618327166524,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.26529309666271567,
+   "bh_survives": false
+  },
+  {
+   "model": "ain-7b-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.1737409799639567,
+   "ci": [
+    0.05010109093097101,
+    0.31016636592671426
+   ],
+   "p": 0.013019488012850935,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.026503957740446542,
+   "bh_survives": true
+  },
+  {
+   "model": "ain-7b-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.18385291747544594,
+   "ci": [
+    0.03667376378840357,
+    0.308079733476428
+   ],
+   "p": 0.007311420229392759,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.01708616312544514,
+   "bh_survives": true
+  },
+  {
+   "model": "ain-7b-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.21361865471913205,
+   "ci": [
+    0.06981856249998292,
+    0.3424352204261167
+   ],
+   "p": 0.0017568429772650542,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.005563336094672671,
+   "bh_survives": true
+  },
+  {
+   "model": "base",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen (control)",
+   "n": 200,
+   "partial_rho": -0.07944124611833078,
+   "ci": [
+    -0.2179159065497447,
+    0.06808123374376245
+   ],
+   "p": 0.2763520109343047,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.33515031113309296,
+   "bh_survives": false
+  },
+  {
+   "model": "base",
+   "dataset": "muharaf_lines",
+   "tokenizer": "qwen (control)",
+   "n": 372,
+   "partial_rho": 0.2612280159744394,
+   "ci": [
+    0.15308048752768802,
+    0.3681319560392729
+   ],
+   "p": 2.413718538254174e-06,
+   "mean_fertility": 2.511025307797305,
+   "q": 2.293032611341465e-05,
+   "bh_survives": true
+  },
+  {
+   "model": "base",
+   "dataset": "nakba_blind",
+   "tokenizer": "qwen (control)",
+   "n": 2671,
+   "partial_rho": 0.24361373424447635,
+   "ci": [
+    0.20242954052373133,
+    0.2852935645240409
+   ],
+   "p": 3.6327873655972315e-30,
+   "mean_fertility": 2.378197631166083,
+   "q": 2.070688798390422e-28,
+   "bh_survives": true
+  },
+  {
+   "model": "base",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen (control)",
+   "n": 2095,
+   "partial_rho": 0.216659681416519,
+   "ci": [
+    0.16655209834052864,
+    0.26132369569529107
+   ],
+   "p": 7.783699452910294e-19,
+   "mean_fertility": 2.47710691159424,
+   "q": 1.1091771720397168e-17,
+   "bh_survives": true
+  },
+  {
+   "model": "base",
+   "dataset": "rasam1",
+   "tokenizer": "qwen (control)",
+   "n": 105,
+   "partial_rho": -0.0033040208564722538,
+   "ci": [
+    -0.222081231882641,
+    0.2284541424439949
+   ],
+   "p": 0.9776245491857638,
+   "mean_fertility": 2.0848144536239777,
+   "q": 0.9860962794780636,
+   "bh_survives": false
+  },
+  {
+   "model": "baseer-nakba-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": -0.024095668514279796,
+   "ci": [
+    -0.17022082693240315,
+    0.13559462034311326
+   ],
+   "p": 0.7677503359251057,
+   "mean_fertility": 2.5549623980895264,
+   "q": 0.8104031323653893,
+   "bh_survives": false
+  },
+  {
+   "model": "baseer-nakba-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.139865500051886,
+   "ci": [
+    -0.0012743494505516764,
+    0.27935355820303936
+   ],
+   "p": 0.048600546630840256,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.08147738699876161,
+   "bh_survives": true
+  },
+  {
+   "model": "baseer-nakba-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.2117457115193278,
+   "ci": [
+    0.07907723503224705,
+    0.3333345290537426
+   ],
+   "p": 0.001514923286318341,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.005079448665890908,
+   "bh_survives": true
+  },
+  {
+   "model": "combo",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen (control)",
+   "n": 200,
+   "partial_rho": 0.0012847726345373454,
+   "ci": [
+    -0.14193132903169753,
+    0.14444603710666257
+   ],
+   "p": 0.9860962794780636,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.9860962794780636,
+   "bh_survives": false
+  },
+  {
+   "model": "combo",
+   "dataset": "muharaf_lines",
+   "tokenizer": "qwen (control)",
+   "n": 372,
+   "partial_rho": 0.22826483891644583,
+   "ci": [
+    0.12178753266483011,
+    0.34596529681942684
+   ],
+   "p": 8.970662786524563e-05,
+   "mean_fertility": 2.511025307797305,
+   "q": 0.000568141976479889,
+   "bh_survives": true
+  },
+  {
+   "model": "combo",
+   "dataset": "nakba_blind",
+   "tokenizer": "qwen (control)",
+   "n": 2671,
+   "partial_rho": 0.22140299870996175,
+   "ci": [
+    0.17830567171468265,
+    0.26802295771417267
+   ],
+   "p": 1.9620951531458974e-22,
+   "mean_fertility": 2.378197631166083,
+   "q": 5.591971186465807e-21,
+   "bh_survives": true
+  },
+  {
+   "model": "combo",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen (control)",
+   "n": 2095,
+   "partial_rho": 0.2296987680620617,
+   "ci": [
+    0.1814471866449708,
+    0.27379910113057987
+   ],
+   "p": 7.482727258849917e-22,
+   "mean_fertility": 2.47710691159424,
+   "q": 1.4217181791814844e-20,
+   "bh_survives": true
+  },
+  {
+   "model": "combo",
+   "dataset": "rasam1",
+   "tokenizer": "qwen (control)",
+   "n": 105,
+   "partial_rho": 0.04399134209789507,
+   "ci": [
+    -0.19351921375775538,
+    0.27692768457180117
+   ],
+   "p": 0.7148284396787066,
+   "mean_fertility": 2.0848144536239777,
+   "q": 0.768777755880873,
+   "bh_survives": false
+  },
+  {
+   "model": "exp3090-paligemma2-3b-ft-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "gemma2",
+   "n": 180,
+   "partial_rho": 0.24855401351137155,
+   "ci": [
+    0.11159364269370145,
+    0.378842410687682
+   ],
+   "p": 0.00021341518344168995,
+   "mean_fertility": 1.9067484690157661,
+   "q": 0.0010053550422381066,
+   "bh_survives": true
+  },
+  {
+   "model": "exp3090-paligemma2-3b-ft-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "gemma2",
+   "n": 400,
+   "partial_rho": 0.06653523864425759,
+   "ci": [
+    -0.05000612814789776,
+    0.19690812890597492
+   ],
+   "p": 0.29654335632264295,
+   "mean_fertility": 2.1428024850657863,
+   "q": 0.3521452356331385,
+   "bh_survives": false
+  },
+  {
+   "model": "exp3090-paligemma2-3b-ft-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "gemma2",
+   "n": 399,
+   "partial_rho": 0.14957963919324954,
+   "ci": [
+    0.05258568092395139,
+    0.24648751424057025
+   ],
+   "p": 0.0036434368241750653,
+   "mean_fertility": 1.8245394379358142,
+   "q": 0.010383794948898937,
+   "bh_survives": true
+  },
+  {
+   "model": "exp3090-paligemma2-3b-ft-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "gemma2",
+   "n": 352,
+   "partial_rho": 0.12799037170095826,
+   "ci": [
+    0.021347459973914656,
+    0.22845624895345376
+   ],
+   "p": 0.015359762824099097,
+   "mean_fertility": 1.7916871260242517,
+   "q": 0.030189878654263744,
+   "bh_survives": true
+  },
+  {
+   "model": "fanar-oryx-7b-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.20599727955133956,
+   "ci": [
+    0.06113478394679613,
+    0.3317462653125783
+   ],
+   "p": 0.00408862260820521,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.011097689936557,
+   "bh_survives": true
+  },
+  {
+   "model": "fanar-oryx-7b-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.17174624217828116,
+   "ci": [
+    0.03734057391414774,
+    0.29716866811780507
+   ],
+   "p": 0.010367349641286518,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.021886627020493758,
+   "bh_survives": true
+  },
+  {
+   "model": "fanar-oryx-7b-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": -0.010318447030428687,
+   "ci": [
+    -0.1341204788564343,
+    0.11374634782846457
+   ],
+   "p": 0.8741971951017925,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.905986184014585,
+   "bh_survives": false
+  },
+  {
+   "model": "fanar-oryx-7b-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.09896709530714029,
+   "ci": [
+    -0.052870339113072866,
+    0.2467993640233243
+   ],
+   "p": 0.19959871056717335,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.2585710568711109,
+   "bh_survives": false
+  },
+  {
+   "model": "paligemma2-3b-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "gemma2",
+   "n": 180,
+   "partial_rho": 0.22476430936645403,
+   "ci": [
+    0.08401438095586092,
+    0.3639319940683645
+   ],
+   "p": 0.0019026068784008764,
+   "mean_fertility": 1.9067484690157661,
+   "q": 0.005707820635202629,
+   "bh_survives": true
+  },
+  {
+   "model": "paligemma2-3b-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "gemma2",
+   "n": 398,
+   "partial_rho": -0.1189816369806871,
+   "ci": [
+    -0.2425544435666495,
+    0.00731706420851298
+   ],
+   "p": 0.05954001131882811,
+   "mean_fertility": 2.1439388459622637,
+   "q": 0.0942716845881445,
+   "bh_survives": true
+  },
+  {
+   "model": "paligemma2-3b-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "gemma2",
+   "n": 400,
+   "partial_rho": 0.13052019612914226,
+   "ci": [
+    0.031869321643162016,
+    0.2251662954122554
+   ],
+   "p": 0.007493931195370674,
+   "mean_fertility": 1.8244780893409744,
+   "q": 0.01708616312544514,
+   "bh_survives": true
+  },
+  {
+   "model": "paligemma2-3b-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "gemma2",
+   "n": 352,
+   "partial_rho": 0.08715846093107163,
+   "ci": [
+    -0.02711349813853724,
+    0.20140561934715295
+   ],
+   "p": 0.1559021378864528,
+   "mean_fertility": 1.7916871260242517,
+   "q": 0.21674199657384902,
+   "bh_survives": false
+  },
+  {
+   "model": "qari-ocr-0.2",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 80,
+   "partial_rho": 0.16138158809962996,
+   "ci": [
+    -0.06993242866101931,
+    0.3889038202986156
+   ],
+   "p": 0.17346495177726565,
+   "mean_fertility": 2.0880261368654827,
+   "q": 0.23541672026914623,
+   "bh_survives": false
+  },
+  {
+   "model": "qari-ocr-0.2",
+   "dataset": "muharaf_lines",
+   "tokenizer": "qwen",
+   "n": 1334,
+   "partial_rho": 0.14890352176480265,
+   "ci": [
+    0.09078940986078399,
+    0.2071461601721332
+   ],
+   "p": 6.345791087327985e-07,
+   "mean_fertility": 2.494517489462477,
+   "q": 7.234201839553903e-06,
+   "bh_survives": true
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.2450716248880792,
+   "ci": [
+    0.10645474164403836,
+    0.3796645559340213
+   ],
+   "p": 0.0004153322332533563,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.0016909955211029503,
+   "bh_survives": true
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "dataset": "muharaf_lines",
+   "tokenizer": "qwen",
+   "n": 800,
+   "partial_rho": 0.07203953808672003,
+   "ci": [
+    -0.007614445616001561,
+    0.15103879004026935
+   ],
+   "p": 0.07342044433121239,
+   "mean_fertility": 2.4829382822457897,
+   "q": 0.11013066649681857,
+   "bh_survives": false
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 820,
+   "partial_rho": -0.05385682146885405,
+   "ci": [
+    -0.13157232884000017,
+    0.02387242931057766
+   ],
+   "p": 0.18344974589283877,
+   "mean_fertility": 2.4976526715672707,
+   "q": 0.24317757013701882,
+   "bh_survives": false
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 734,
+   "partial_rho": 0.049887773346227605,
+   "ci": [
+    -0.027370414199060777,
+    0.12281093822592663
+   ],
+   "p": 0.21379984507218333,
+   "mean_fertility": 2.0344552990019693,
+   "q": 0.26529309666271567,
+   "bh_survives": false
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 372,
+   "partial_rho": 0.1247007067391615,
+   "ci": [
+    0.01144982613012112,
+    0.24033147068307958
+   ],
+   "p": 0.032368750226358364,
+   "mean_fertility": 1.9778942055713773,
+   "q": 0.05590965948189172,
+   "bh_survives": true
+  },
+  {
+   "model": "qwen3-vl-8b-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.23752389707109237,
+   "ci": [
+    0.09720644119164189,
+    0.3584689562969264
+   ],
+   "p": 0.0005540300389135084,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.002105314147871332,
+   "bh_survives": true
+  },
+  {
+   "model": "qwen3-vl-8b-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": -0.05748599318439176,
+   "ci": [
+    -0.21210480906449877,
+    0.12272007852675375
+   ],
+   "p": 0.5126610785025763,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.5729741465617029,
+   "bh_survives": false
+  },
+  {
+   "model": "qwen3-vl-8b-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.028466064240517275,
+   "ci": [
+    -0.11110855114803254,
+    0.15551635006557515
+   ],
+   "p": 0.6752652784987763,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.7401946322005817,
+   "bh_survives": false
+  },
+  {
+   "model": "qwen3-vl-8b-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.16033983857583053,
+   "ci": [
+    0.020538758559931185,
+    0.28633839992839877
+   ],
+   "p": 0.01963934293222277,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.037314751571223256,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-ain7b-ft-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": -0.1320125835289,
+   "ci": [
+    -0.2645968695500374,
+    0.005413718144278981
+   ],
+   "p": 0.06909307915724751,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.10644068951251644,
+   "bh_survives": false
+  },
+  {
+   "model": "suite-v1-ain7b-ft-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.11645224814711932,
+   "ci": [
+    -0.015767046564763857,
+    0.26849690555897043
+   ],
+   "p": 0.11826700513355544,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.17285177673365795,
+   "bh_survives": false
+  },
+  {
+   "model": "suite-v1-ain7b-ft-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.17664065801896375,
+   "ci": [
+    0.018200478684734185,
+    0.3280312306988332
+   ],
+   "p": 0.031475996506445864,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.05590965948189172,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-ain7b-ft-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.28158496831571395,
+   "ci": [
+    0.139040408532657,
+    0.4090969930546975
+   ],
+   "p": 3.1371009721595316e-05,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.00022351844426636664,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-fanar2-oryx-ft-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.16692889115898066,
+   "ci": [
+    0.016545023456247417,
+    0.30512904484571424
+   ],
+   "p": 0.023941759672253645,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.044021945203821224,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-fanar2-oryx-ft-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.07713739053935988,
+   "ci": [
+    -0.09098318841394464,
+    0.2642228388997881
+   ],
+   "p": 0.3997797311343798,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.4650498913195847,
+   "bh_survives": false
+  },
+  {
+   "model": "suite-v1-fanar2-oryx-ft-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.2192467415143564,
+   "ci": [
+    0.08182391974277062,
+    0.3527901215032651
+   ],
+   "p": 0.0013683176008870994,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.004874631453160291,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-fanar2-oryx-ft-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.2773371552595016,
+   "ci": [
+    0.13606207131319545,
+    0.3962246033281522
+   ],
+   "p": 2.878967085496094e-05,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.00022351844426636664,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 180,
+   "partial_rho": 0.22298593236886669,
+   "ci": [
+    0.06233763263342525,
+    0.3776297543720316
+   ],
+   "p": 0.004688763457491175,
+   "mean_fertility": 2.0536474594545164,
+   "q": 0.012148159867136226,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "dataset": "muharaf_lines",
+   "tokenizer": "qwen",
+   "n": 800,
+   "partial_rho": 0.1185623146831204,
+   "ci": [
+    0.035132515898194376,
+    0.20622342488760373
+   ],
+   "p": 0.0049624243674478265,
+   "mean_fertility": 2.4829382822457897,
+   "q": 0.012298182128022875,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 819,
+   "partial_rho": -0.06098200141889599,
+   "ci": [
+    -0.14177363640239216,
+    0.02296641140231274
+   ],
+   "p": 0.14262999066439913,
+   "mean_fertility": 2.4954113032378857,
+   "q": 0.20324773669676874,
+   "bh_survives": false
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 714,
+   "partial_rho": 0.14305646318886428,
+   "ci": [
+    0.0665704051598574,
+    0.2182036197857442
+   ],
+   "p": 0.00022929150086132256,
+   "mean_fertility": 2.0352218287415527,
+   "q": 0.0010053550422381066,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 352,
+   "partial_rho": 0.20675565969933685,
+   "ci": [
+    0.09984473451665182,
+    0.30617949749114626
+   ],
+   "p": 0.00012264823163139676,
+   "mean_fertility": 1.9726348059787957,
+   "q": 0.0006990949202989615,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl8b-ft-bf16",
+   "dataset": "kitab_khatt",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.19509366947662646,
+   "ci": [
+    0.041813549638864224,
+    0.32141560886705756
+   ],
+   "p": 0.007917521091553442,
+   "mean_fertility": 2.0559289594200165,
+   "q": 0.017357642393021008,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl8b-ft-bf16",
+   "dataset": "nakba_lines",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.059586793896768554,
+   "ci": [
+    -0.07669882906143957,
+    0.23524798830321608
+   ],
+   "p": 0.4591531368987992,
+   "mean_fertility": 2.5753376218957977,
+   "q": 0.5234345760646311,
+   "bh_survives": false
+  },
+  {
+   "model": "suite-v1-qwen3vl8b-ft-bf16",
+   "dataset": "rasam1",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.15218186842475323,
+   "ci": [
+    -0.018473069405027614,
+    0.2961911527915777
+   ],
+   "p": 0.057954857290451446,
+   "mean_fertility": 2.0372293932529835,
+   "q": 0.0942716845881445,
+   "bh_survives": true
+  },
+  {
+   "model": "suite-v1-qwen3vl8b-ft-bf16",
+   "dataset": "rasam2",
+   "tokenizer": "qwen",
+   "n": 200,
+   "partial_rho": 0.25815855788126496,
+   "ci": [
+    0.11439746604124638,
+    0.382596166057518
+   ],
+   "p": 0.000196651869720178,
+   "mean_fertility": 2.0106160444906123,
+   "q": 0.0010053550422381066,
+   "bh_survives": true
+  }
+ ],
+ "c_word": {
+  "ain-7b-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.10060310832154849,
+   "ci": [
+    0.088289493432155,
+    0.11344523317173817
+   ],
+   "p": 2.675769810978157e-54,
+   "err_rate": 0.5385524054982818,
+   "mean_tokens": 2.00891323024055,
+   "q": 4.5870339616768404e-54,
+   "bh_survives": true
+  },
+  "baseer-nakba-bf16": {
+   "n_words": 7128,
+   "slope_err_per_token": 0.05042921941703225,
+   "ci": [
+    0.04036095379291662,
+    0.06098250025891229
+   ],
+   "p": 1.6380575894529216e-21,
+   "err_rate": 0.6341189674523008,
+   "mean_tokens": 2.0012626262626263,
+   "q": 1.7869719157668233e-21,
+   "bh_survives": true
+  },
+  "exp3090-paligemma2-3b-ft-bf16": {
+   "n_words": 15620,
+   "slope_err_per_token": 0.10624183502362632,
+   "ci": [
+    0.09509195395703907,
+    0.1165959470564182
+   ],
+   "p": 2.893715628352467e-82,
+   "err_rate": 0.8108194622279129,
+   "mean_tokens": 1.8164532650448144,
+   "q": 1.1574862513409868e-81,
+   "bh_survives": true
+  },
+  "fanar-oryx-7b-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.07118868564795232,
+   "ci": [
+    0.059912074333934,
+    0.08311656413436867
+   ],
+   "p": 3.029121318882925e-32,
+   "err_rate": 0.8206615120274914,
+   "mean_tokens": 2.00891323024055,
+   "q": 4.5436819783243877e-32,
+   "bh_survives": true
+  },
+  "paligemma2-3b-bf16": {
+   "n_words": 15609,
+   "slope_err_per_token": 0.03179505370002958,
+   "ci": [
+    0.025724839921970978,
+    0.038167396191394955
+   ],
+   "p": 1.36513917950783e-23,
+   "err_rate": 0.9595746043949004,
+   "mean_tokens": 1.8167723749119098,
+   "q": 1.8201855726771066e-23,
+   "bh_survives": true
+  },
+  "qari-ocr-0.2": {
+   "n_words": 11921,
+   "slope_err_per_token": 0.024159443594417348,
+   "ci": [
+    0.019172180098003724,
+    0.029243690243451317
+   ],
+   "p": 6.531108933737039e-21,
+   "err_rate": 0.943880546933982,
+   "mean_tokens": 2.1881553560942875,
+   "q": 6.531108933737039e-21,
+   "bh_survives": true
+  },
+  "qwen3-vl-4b-bf16": {
+   "n_words": 31502,
+   "slope_err_per_token": 0.03756228268153345,
+   "ci": [
+    0.03321967685242387,
+    0.04209485865609598
+   ],
+   "p": 2.887906428677877e-63,
+   "err_rate": 0.917751253888642,
+   "mean_tokens": 2.05383785156498,
+   "q": 5.775812857355754e-63,
+   "bh_survives": true
+  },
+  "qwen3-vl-8b-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.057465904255049265,
+   "ci": [
+    0.046627608958204086,
+    0.06930501323597725
+   ],
+   "p": 3.124092753086383e-23,
+   "err_rate": 0.8258161512027491,
+   "mean_tokens": 2.00891323024055,
+   "q": 3.7489113037036594e-23,
+   "bh_survives": true
+  },
+  "suite-v1-ain7b-ft-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.12353730283224519,
+   "ci": [
+    0.10968915638685262,
+    0.13807725762364484
+   ],
+   "p": 1.3979356874631369e-64,
+   "err_rate": 0.38853092783505155,
+   "mean_tokens": 2.00891323024055,
+   "q": 3.3550456499115286e-64,
+   "bh_survives": true
+  },
+  "suite-v1-fanar2-oryx-ft-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.14499146278777522,
+   "ci": [
+    0.13025384586983427,
+    0.16044599832256326
+   ],
+   "p": 3.711220119444682e-80,
+   "err_rate": 0.43503006872852235,
+   "mean_tokens": 2.00891323024055,
+   "q": 1.1133660358334046e-79,
+   "bh_survives": true
+  },
+  "suite-v1-qwen3vl4b-ft-bf16": {
+   "n_words": 30795,
+   "slope_err_per_token": 0.13691674452379754,
+   "ci": [
+    0.12900520250693026,
+    0.14492821576300174
+   ],
+   "p": 4.0995675813046014e-240,
+   "err_rate": 0.6510472479298588,
+   "mean_tokens": 2.05526871245332,
+   "q": 4.9194810975655214e-239,
+   "bh_survives": true
+  },
+  "suite-v1-qwen3vl8b-ft-bf16": {
+   "n_words": 9312,
+   "slope_err_per_token": 0.1505196841566482,
+   "ci": [
+    0.13761962403072409,
+    0.16467655725128053
+   ],
+   "p": 1.1567886624309318e-101,
+   "err_rate": 0.603307560137457,
+   "mean_tokens": 2.00891323024055,
+   "q": 6.940731974585591e-101,
+   "bh_survives": true
+  },
+  "base": {
+   "n_words": 55121,
+   "slope_err_per_token": 0.07174993543270669,
+   "ci": [
+    0.06607145552156067,
+    0.07734160673772043
+   ],
+   "p": 1.397592396033415e-142,
+   "err_rate": 0.4520781553309991,
+   "mean_tokens": 2.1314018250757423
+  },
+  "combo": {
+   "n_words": 55121,
+   "slope_err_per_token": 0.0658983865754884,
+   "ci": [
+    0.06069056913984118,
+    0.07136769538230255
+   ],
+   "p": 8.678451485132232e-128,
+   "err_rate": 0.440285916438381,
+   "mean_tokens": 2.1314018250757423
+  }
+ },
+ "c_word_pooled_vs_crnn": {
+  "vlm_qwen": {
+   "n_words": 137218,
+   "slope_err_per_token": 0.08785030026497007,
+   "ci": [
+    0.08284215069754651,
+    0.092822368504916
+   ],
+   "p": 2.5254548301822556e-253,
+   "err_rate": 0.7168593041729219,
+   "mean_tokens": 2.044804617470011
+  },
+  "crnn": {
+   "n_words": 110242,
+   "slope_err_per_token": 0.06882416100409752,
+   "ci": [
+    0.06419157458681778,
+    0.07408012938177604
+   ],
+   "p": 2.5745439478445027e-160,
+   "err_rate": 0.44618203588469,
+   "mean_tokens": 2.1314018250757423
+  },
+  "delta": 0.019026139260872543,
+  "delta_ci": [
+   0.011874981508838728,
+   0.026042894026871422
+  ],
+  "p": 1.7753144011227322e-07
+ },
+ "c_word_matched_crnn": {
+  "ain-7b-bf16": {
+   "vlm_slope": 0.08344563851580611,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.03208859846504961,
+   "ci": [
+    0.008295204616516687,
+    0.05514035386737762
+   ],
+   "p": 0.006493647544853026,
+   "n_clusters": 284,
+   "q": 0.007792377053823632,
+   "bh_survives": true
+  },
+  "baseer-nakba-bf16": {
+   "vlm_slope": 0.021448131188316375,
+   "crnn_slope_same_lines": 0.05953496365041867,
+   "delta": -0.03808683246210229,
+   "ci": [
+    -0.06918713948470373,
+    -0.007174161100204038
+   ],
+   "p": 0.015332138995176185,
+   "n_clusters": 90,
+   "q": 0.016725969812919475,
+   "bh_survives": true
+  },
+  "exp3090-paligemma2-3b-ft-bf16": {
+   "vlm_slope": 0.11651975527060784,
+   "crnn_slope_same_lines": 0.08205728620377177,
+   "delta": 0.034462469066836074,
+   "ci": [
+    0.011972600604360072,
+    0.055044118813795506
+   ],
+   "p": 0.0016910741736121016,
+   "n_clusters": 332,
+   "q": 0.002476095872997173,
+   "bh_survives": true
+  },
+  "fanar-oryx-7b-bf16": {
+   "vlm_slope": 0.09178131689992934,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.040424276849172845,
+   "ci": [
+    0.016085981384788714,
+    0.06616374545542945
+   ],
+   "p": 0.0018570719047478798,
+   "n_clusters": 284,
+   "q": 0.002476095872997173,
+   "bh_survives": true
+  },
+  "paligemma2-3b-bf16": {
+   "vlm_slope": 0.030035370452765883,
+   "crnn_slope_same_lines": 0.08161627280033112,
+   "delta": -0.05158090234756524,
+   "ci": [
+    -0.07502531756380754,
+    -0.02825867171025608
+   ],
+   "p": 1.2781204542454702e-05,
+   "n_clusters": 332,
+   "q": 3.8343613627364106e-05,
+   "bh_survives": true
+  },
+  "qari-ocr-0.2": {
+   "vlm_slope": 0.028990196828781727,
+   "crnn_slope_same_lines": 0.08020888669551997,
+   "delta": -0.05121868986673824,
+   "ci": [
+    -0.07453752889837921,
+    -0.02736941376635155
+   ],
+   "p": 1.7982836527565366e-05,
+   "n_clusters": 423,
+   "q": 4.315880766615688e-05,
+   "bh_survives": true
+  },
+  "qwen3-vl-4b-bf16": {
+   "vlm_slope": 0.03546485863402669,
+   "crnn_slope_same_lines": 0.059770733926035324,
+   "delta": -0.024305875292008637,
+   "ci": [
+    -0.036767911174057914,
+    -0.011648334331593383
+   ],
+   "p": 0.00014926302200378642,
+   "n_clusters": 717,
+   "q": 0.00029852604400757284,
+   "bh_survives": true
+  },
+  "qwen3-vl-8b-bf16": {
+   "vlm_slope": 0.07172659121157159,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.02036955116081509,
+   "ci": [
+    -0.0024025480796293314,
+    0.04482612907433996
+   ],
+   "p": 0.08948271983089819,
+   "n_clusters": 284,
+   "q": 0.08948271983089819,
+   "bh_survives": true
+  },
+  "suite-v1-ain7b-ft-bf16": {
+   "vlm_slope": 0.09488293854162569,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.04352589849086919,
+   "ci": [
+    0.02013325148731476,
+    0.06667344258982039
+   ],
+   "p": 0.00027308747702022213,
+   "n_clusters": 284,
+   "q": 0.0004681499606060951,
+   "bh_survives": true
+  },
+  "suite-v1-fanar2-oryx-ft-bf16": {
+   "vlm_slope": 0.13890864456888402,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.08755160451812752,
+   "ci": [
+    0.062177835393327004,
+    0.11360270819784674
+   ],
+   "p": 2.06008741052337e-11,
+   "n_clusters": 284,
+   "q": 8.24034964209348e-11,
+   "bh_survives": true
+  },
+  "suite-v1-qwen3vl4b-ft-bf16": {
+   "vlm_slope": 0.12044303464938702,
+   "crnn_slope_same_lines": 0.06079974720371893,
+   "delta": 0.05964328744566809,
+   "ci": [
+    0.04634706617965136,
+    0.07372192200859648
+   ],
+   "p": 3.0002038502444537e-17,
+   "n_clusters": 695,
+   "q": 3.6002446202933444e-16,
+   "bh_survives": true
+  },
+  "suite-v1-qwen3vl8b-ft-bf16": {
+   "vlm_slope": 0.13499626532765777,
+   "crnn_slope_same_lines": 0.051357040050756496,
+   "delta": 0.08363922527690126,
+   "ci": [
+    0.06012672925465152,
+    0.1084103629660794
+   ],
+   "p": 1.603244237703026e-11,
+   "n_clusters": 284,
+   "q": 8.24034964209348e-11,
+   "bh_survives": true
+  }
+ },
+ "decision": {
+  "E2-a": {
+   "qwen": "unrelated (dot pairs no closer than arbitrary swaps)",
+   "gemma2": "unrelated (dot pairs no closer than arbitrary swaps)"
+  },
+  "E2-b": {
+   "vlms_fewer_bh": [],
+   "vlm_minus_crnn_ci_above_0": {
+    "qwen": true,
+    "gemma2": true
+   },
+   "outcome": "DROP"
+  },
+  "E2-c": {
+   "vlms_positive_slope_bh": [
+    "ain-7b-bf16",
+    "baseer-nakba-bf16",
+    "exp3090-paligemma2-3b-ft-bf16",
+    "fanar-oryx-7b-bf16",
+    "paligemma2-3b-bf16",
+    "qari-ocr-0.2",
+    "qwen3-vl-4b-bf16",
+    "qwen3-vl-8b-bf16",
+    "suite-v1-ain7b-ft-bf16",
+    "suite-v1-fanar2-oryx-ft-bf16",
+    "suite-v1-qwen3vl4b-ft-bf16",
+    "suite-v1-qwen3vl8b-ft-bf16"
+   ],
+   "vlm_slope_above_crnn": true,
+   "outcome": "KEEP"
+  }
+ }
+}
