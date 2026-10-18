@@ -108,7 +108,7 @@ def test_errored_predictions_are_not_scored_or_counted(wired):
 def test_errored_predictions_are_not_cached(wired, monkeypatch):
     from arabic_ocr_bench.models.mock_client import MockClient
 
-    def boom(self, image, prompt):
+    def boom(self, image, prompt, max_tokens=None):
         from arabic_ocr_bench.models.base import Prediction
 
         return Prediction(raw_text="", cleaned_text="", error="500 server error")
@@ -156,7 +156,7 @@ def test_accumulate_targets_fresh_indices_on_rerun(monkeypatch, tmp_path):
 class _RateLimitedClient:
     name = "ratelimited"
 
-    def transcribe(self, image, prompt):
+    def transcribe(self, image, prompt, max_tokens=None):
         from arabic_ocr_bench.models.base import Prediction
 
         return Prediction(error="RateLimitError: rate limit exceeded", latency_ms=1.0)

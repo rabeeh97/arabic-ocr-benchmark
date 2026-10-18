@@ -77,9 +77,43 @@ exp3090-qwen3vl4b-visft:
     on Ruq'ah-style Muharaf handwriting may never see enough Maghrebi-specific
     grapheme shapes to adapt; unfreezing it isolates whether that's the cap.
   notes:
+    - "RESULT (2026-09-14): unfreezing wins everywhere vs the frozen-ViT fine-tune — kitab_khatt 30.0%->25.3%, nakba_lines 32.6%->20.8%, rasam1 52.1%->43.2%, rasam2 49.4%->48.6% (rasam1/rasam2 baseline was n=20/noisy; unfrozen numbers are n>=195). Confirms unfreezing helps generally, and closes a real chunk of the rasam1 Maghrebi gap, but rasam2 barely moves — see docs/experiments/findings-and-notes.md for the full writeup and open questions."
     - "Compare directly against exp3090-qwen3vl4b on rasam1 / rasam2 — same everything else, so any CER delta there is attributable to train_vision alone."
     - "Watch VRAM: unfreezing the ViT costs more memory on the 3090 than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
     - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base qwen3vl4b-visft --detach` (adds a `qwen3vl4b-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts, alongside qwen3vl4b / baseer / paligemma)."
+
+exp3090-paligemma2-3b-visft:
+  title: "PaliGemma-2-3B — Muharaf LoRA, vision unfrozen (RTX 3090)"
+  base_model: paligemma2-3b-bf16
+  ft_models: [exp3090-paligemma2-3b-visft-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, SigLIP UNfrozen), 1 epoch, 8,000 Muharaf train lines, google/paligemma2-3b-pt-448"
+  config: configs/training/exp3090_paligemma2_3b_visft.yaml
+  report_dir: results/training/exp3090-paligemma2-3b-visft
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets:
+    - kitab_khatt
+    - nakba_lines
+    - rasam1
+    - rasam2
+    - kitab_hindawi
+    - kitab_historicalbooks
+  hypothesis: >-
+    Same vision-unfrozen question as exp3090-qwen3vl4b-visft, on a second,
+    architecturally unrelated base — PaliGemma's fixed-448 SigLIP + Gemma-2
+    vs Qwen3-VL's dynamic-resolution ViT + Qwen3 decoder. The base-model A/B/C
+    found all three bases converge to 45-54% CER on Maghrebi RASAM regardless
+    of architecture, which argued the frozen-ViT recipe itself (not any one
+    base) is the cap. If unfreezing SigLIP moves RASAM here by roughly the
+    same amount unfreezing Qwen's ViT does, that's confirmation across two
+    unrelated vision towers rather than an artifact of one architecture.
+  notes:
+    - "Compare directly against exp3090-paligemma2-3b on rasam1 / rasam2 — same everything else, so any CER delta there is attributable to train_vision alone."
+    - "Watch VRAM: unfreezing SigLIP costs more memory than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
+    - "GATED base (google/paligemma2-3b-pt-448) — needs HF_TOKEN with the Gemma license accepted in <exp-folder>/experiment.env."
+    - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base paligemma-visft --detach` (adds a `paligemma-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts)."
+    - "RESULT (2026-09-15): the OPPOSITE of the qwen3vl4b-visft result — unfreezing SigLIP is flat-to-worse on 4/5 held-out sets (kitab_khatt 37.7%->39.2%, rasam1 52.0%->54.5%, rasam2 53.8%->55.6%, kitab_hindawi 39.5%->50.9% -- the largest regression seen in either vision-unfrozen experiment), only nakba_lines improved (31.8%->30.6%, marginal). \"Unfreeze the vision tower\" is NOT a universal win; don't default to it for PaliGemma. See docs/experiments/findings-and-notes.md for the full writeup and two candidate explanations (SigLIP's own OCR-adjacent pretraining leaving less headroom; a proportionally larger LoRA perturbation to a smaller vision tower)."
 
 baseer-nakba:
   title: "Baseer/NAKBA — Muharaf LoRA (RTX 3090)"

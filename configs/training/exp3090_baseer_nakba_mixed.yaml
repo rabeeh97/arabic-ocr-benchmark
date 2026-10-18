@@ -1,0 +1,74 @@
+# RTX 3090 experiment — bf16 LoRA on top of Misraj/Baseer__Nakba, mixing a
+# NAKBA replay slice into the training data instead of Muharaf alone.
+#
+# Why: exp3090-baseer-nakba's Muharaf-only fine-tune (this config's sibling)
+# genuinely BREAKS Baseer's own home-domain performance -- nakba_lines went
+# from 1.0% CER (untuned base, already excellent -- Baseer-Nakba's whole
+# reason to exist) to 3.4% after Muharaf-only fine-tuning, confirmed via
+# per-sample paired diff as real catastrophic forgetting (35/63 samples
+# worse, mostly previously-perfect lines picking up small errors), not
+# noise. See docs/experiments/findings-and-notes.md's base-model A/B/C
+# writeup. This config replays 2k lines of NAKBA's own train split alongside
+# 6k Muharaf lines (same 8k total as the Muharaf-only baseline, so this
+# isolates the mix question from a "more data" confound) specifically to
+# anchor the LoRA against forgetting what the base already knew, while
+# still testing whether it can pick up some of the Maghrebi
+# (rasam1/rasam2) generalization Muharaf-only bought elsewhere.
+#
+# Same gentle LR as the Muharaf-only sibling config (5e-5, already chosen to
+# go easy on an already-competent base) -- the lever under test here is the
+# training DATA MIX, not the learning rate.
+#
+# License: cc-by-nc-sa-4.0 (non-commercial) — fine for research/benchmark use;
+# the derived adapter inherits the NC terms.
+experiment: exp3090-baseer-nakba-mixed
+method: lora
+
+base_model:
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: nakba_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      subset: U4RASD/omar-al-saleh-manuscripts-segments
+      split: train
+      limit: 2000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 5.0e-5
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 100
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-baseer-nakba-mixed
+eval_datasets: [muharaf_lines]

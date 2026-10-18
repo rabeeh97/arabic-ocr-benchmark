@@ -1,0 +1,19 @@
+# Ad-hoc backfill: the untuned Baseer-Nakba base was never scored on
+# kitab_khatt -- the one empty cell in the base-model A/B/C table (see
+# docs/experiments/findings-and-notes.md, "To do" item 4). hf_local model,
+# needs the GPU box.
+models:
+  - nakba-misraj-baseer
+
+datasets:
+  - kitab_khatt
+
+limit: 200
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

@@ -28,7 +28,7 @@ class _FakeDataset:
 class _BoomClient:
     name = "boom"
 
-    def transcribe(self, image, prompt):
+    def transcribe(self, image, prompt, max_tokens=None):
         raise RuntimeError("kaboom")
 
 

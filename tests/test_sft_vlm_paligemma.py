@@ -22,10 +22,16 @@ def test_max_seq_len_guard_rejects_too_small_a_budget():
         sft_vlm._make_collator_paligemma(_FakeProcessor(), max_seq_len=640)
 
 
-def test_collate_prepends_exact_image_token_count_to_avoid_processor_inference():
-    # Passing the exact `image_seq_length` count of "<image>" tokens up front
-    # is what stops PaliGemmaProcessor from inferring the count itself and
-    # warning on every call.
+def test_collate_prepends_exactly_one_image_token_not_image_seq_length_copies():
+    # PaliGemmaProcessor.__call__ detects "<image>" already present in the text
+    # and expands EVERY occurrence into `image_seq_length` copies itself
+    # (processing_paligemma.py's `sample.replace(IMAGE_TOKEN, IMAGE_TOKEN *
+    # self.image_seq_length)`). Passing image_seq_length copies here (the old,
+    # buggy behaviour this test used to assert) made the processor expand each
+    # of those into another image_seq_length -- e.g. 1024*1024 = 1,048,576
+    # total "<image>" tokens for the -448 checkpoint, failing the processor's
+    # own image-token-count check on every call. Exactly one "<image>" is the
+    # fix: the processor's own expansion turns it into the correct count.
     processor = _FakeProcessor()
     collate = sft_vlm._make_collator_paligemma(processor, max_seq_len=1280)
     row = {
@@ -37,7 +43,7 @@ def test_collate_prepends_exact_image_token_count_to_avoid_processor_inference()
     collate([row])
 
     text = processor.last_call["text"][0]
-    assert text.count("<image>") == processor.image_seq_length
+    assert text.count("<image>") == 1
     assert text.endswith(sft_vlm._PALIGEMMA_PREFIX)
     assert processor.last_call["suffix"][0] == "target text"
 

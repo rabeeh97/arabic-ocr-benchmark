@@ -320,6 +320,11 @@ def _run_meta(run_dir: Path) -> dict:
     return meta
 
 
+_MIN_N = 10  # a handful of lines (a smoke batch, a rate-limit-truncated pass)
+             # isn't a meaningful score -- keep it off the board entirely
+             # rather than show a misleadingly precise CER from n<10.
+
+
 def collect(target: Path) -> list[dict]:
     rows: list[dict] = []
     run_dirs: dict[str, Path] = {}
@@ -334,7 +339,65 @@ def collect(target: Path) -> list[dict]:
                 if r.get("dataset") == "synthetic":
                     continue
                 rows.append({**meta, **r})
-    return _merge_duplicate_runs(rows, run_dirs)
+    merged = _merge_duplicate_runs(rows, run_dirs)
+    _compute_coverage(merged, run_dirs)
+    return [r for r in merged if int(r.get("n") or 0) >= _MIN_N]
+
+
+def _sample_index(sample_id: str) -> int | None:
+    """`<dataset>/<split>/000123` -> 123, the row's position in that split."""
+    tail = sample_id.rsplit("/", 1)[-1]
+    return int(tail) if tail.isdigit() else None
+
+
+def _compute_coverage(rows: list[dict], run_dirs: dict[str, Path]) -> None:
+    """Attach `_full` (bool) and `_pfx` (int) to every row for the "fair
+    comparison" leaderboard views: `_full` is whether the model was scored on
+    every line of the dataset (per `_dataset_rows()`); `_pfx` is the length of
+    the largest *clean, zero-based prefix* of sample indices it covers (0 if
+    the covered indices aren't a contiguous 0..k-1 run -- e.g. accumulate mode
+    filling in scattered gaps across passes). A model with `_pfx >= 20` was
+    scored on exactly the same first-20 lines as any other model with
+    `_pfx >= 20` on that dataset, so comparing them there is apples-to-apples
+    even if neither has finished the whole dataset.
+
+    Reads each contributing run's predictions.jsonl once (cached per run_dir,
+    not per row) rather than trusting `n` alone, since `n` doesn't say *which*
+    lines were scored -- only a contiguous-from-0 index set does.
+    """
+    sizes = _dataset_rows()
+    cache: dict[str, dict[tuple[str, str], set[int]]] = {}
+
+    def idx_for(run_name: str, model: str, dataset: str) -> set[int]:
+        if run_name not in cache:
+            m: dict[tuple[str, str], set[int]] = {}
+            rd = run_dirs.get(run_name)
+            pf = rd / "predictions.jsonl" if rd else None
+            if pf and pf.exists():
+                with pf.open(encoding="utf-8") as fh:
+                    for line in fh:
+                        line = line.strip()
+                        if not line:
+                            continue
+                        try:
+                            p = json.loads(line)
+                        except json.JSONDecodeError:
+                            continue
+                        if p.get("error"):
+                            continue
+                        i = _sample_index(p.get("sample_id", ""))
+                        if i is not None:
+                            m.setdefault((p.get("model"), p.get("dataset")), set()).add(i)
+            cache[run_name] = m
+        return cache[run_name].get((model, dataset), set())
+
+    for r in rows:
+        idxs: set[int] = set()
+        for run_name in (r.get("run") or "").split("+"):
+            idxs |= idx_for(run_name, r["model"], r["dataset"])
+        total = sizes.get(r["dataset"])
+        r["_full"] = bool(total and idxs == set(range(total)))
+        r["_pfx"] = len(idxs) if idxs and idxs == set(range(len(idxs))) else 0
 
 
 def _merge_duplicate_runs(rows: list[dict], run_dirs: dict[str, Path]) -> list[dict]:
@@ -461,7 +524,8 @@ _EXPLORER_JS = r"""
   var el=function(id){return document.getElementById(id);};
   var D={}; try{D=JSON.parse(el('ex-data').textContent);}catch(e){return;}
   var COLS=D.cols, DS=D.ds;
-  var sel=el('ex-ds'), card=el('ex-card'), out=el('ex-out');
+  var sel=el('ex-ds'), modeSel=el('ex-mode'), card=el('ex-card'), out=el('ex-out'),
+      modeNote=el('ex-modenote');
   var sortKey='cl', sortDir=1;
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -470,14 +534,32 @@ _EXPLORER_JS = r"""
     var n=Number(v); if(isNaN(n)) return '—';
     return (pct?n*100:n).toFixed(dp);
   }
+  // Same fair-comparison modes as the matrix section: 'full' keeps only rows
+  // scored on the entire dataset; 'pfxN' keeps only rows whose scored lines
+  // are a clean, zero-based prefix covering at least the first N -- i.e. the
+  // SAME N lines every other qualifying model in this view was scored on.
+  function passRow(r){
+    var md=modeSel?modeSel.value:'all';
+    if(md==='all') return true;
+    if(md==='full') return !!r.full;
+    var need = md==='pfx10'?10 : md==='pfx20'?20 : md==='pfx40'?40 : 0;
+    return (r.pfx||0) >= need;
+  }
   function render(){
     var d=DS[sel.value]; if(!d) return;
     card.textContent=d.card||'';
-    var rows=d.rows.slice().sort(function(a,b){
+    var rows=d.rows.filter(passRow).slice().sort(function(a,b){
       var x=a[sortKey], y=b[sortKey];
       x=(x==null||x==='')?Infinity:Number(x); y=(y==null||y==='')?Infinity:Number(y);
       return (x-y)*sortDir;
     });
+    var modeMsgs={full:'showing only models scored on every line of this dataset.',
+      pfx10:'showing only models scored on the same first 10 lines.',
+      pfx20:'showing only models scored on the same first 20 lines.',
+      pfx40:'showing only models scored on the same first 40 lines.'};
+    var md=modeSel?modeSel.value:'all';
+    if(modeNote) modeNote.textContent = md==='all' ? '' :
+      (rows.length+' of '+d.rows.length+' model(s) qualify — '+(modeMsgs[md]||''));
     var head="<th class='exm' data-k='m'>model</th>"+COLS.map(function(c){
       var tip=c[5]?" title='"+esc(c[5])+"'":"";
       var lab=c[5]?"<abbr class='gloss'"+tip+">"+esc(c[1])+"</abbr>":esc(c[1]);
@@ -510,6 +592,7 @@ _EXPLORER_JS = r"""
     });
   }
   sel.addEventListener('change',render);
+  if(modeSel) modeSel.addEventListener('change',render);
   render();
 })();
 """
@@ -551,6 +634,7 @@ def _render_explorer(rows: list[dict], target: Path) -> str:
                     "wil": r.get("wil_micro_light", ""),
                     "ex": r.get("exact_light", ""), "df": r.get("diac_f1", ""),
                     "ms": r.get("latency_ms_mean", ""), "cost": r.get("cost_usd_total", ""),
+                    "full": bool(r.get("_full")), "pfx": int(r.get("_pfx") or 0),
                 }
                 for r in drows
             ],
@@ -560,8 +644,16 @@ def _render_explorer(rows: list[dict], target: Path) -> str:
     return f"""<section class='explorer'><h2>By dataset</h2>
 <p class='board-note'>Pick a dataset to see its description and every model scored on it —
 same lines, same metrics. Click a column header to sort.</p>
-<div class='ex-controls'><label>dataset <select id='ex-ds'>{opts}</select></label></div>
+<div class='ex-controls'><label>dataset <select id='ex-ds'>{opts}</select></label>
+<label>comparison <select id='ex-mode'>
+<option value='all'>All scored (uneven coverage)</option>
+<option value='full'>Full dataset only</option>
+<option value='pfx10'>First 10 lines (aligned)</option>
+<option value='pfx20'>First 20 lines (aligned)</option>
+<option value='pfx40'>First 40 lines (aligned)</option>
+</select></label></div>
 <p class='ex-card' id='ex-card'></p>
+<p class='board-note' id='ex-modenote'></p>
 <div id='ex-out'></div>
 <script id='ex-data' type='application/json'>{blob}</script>
 <script>{_EXPLORER_JS}</script>
@@ -621,20 +713,34 @@ _MATRIX_JS = r"""
 (function(){
   var el=function(id){return document.getElementById(id);};
   var P={}; try{P=JSON.parse(el('mx-data').textContent);}catch(e){return;}
-  var DS=P.ds, M=P.m, C=P.c, IT=P.it||{};    // C[di][mi] = [cerLight, werLight] | "it" | null
+  var DS=P.ds, M=P.m, C=P.c, IT=P.it||{}, FULL=P.full, PFX=P.pfx;    // C[di][mi] = [cerLight, werLight] | "it" | null
   function num(c){return Array.isArray(c)?c[0]:Infinity;}  // "it" = fine-tune on an in-train set
-  var out=el('mx-out'), note=el('mx-sortnote');
+  var out=el('mx-out'), note=el('mx-sortnote'), modeSel=el('mx-mode');
   var meanOrder=P.order;                     // default model column order (indices)
   var sortDi=-1;                             // >=0 => columns sorted by that dataset
   function esc(s){return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function pc(v){return (v==null||isNaN(v))?'—':(v*100).toFixed(1);}
   function tcls(cer){ if(cer==null||isNaN(cer)) return ''; return 'mx-t'+Math.min(7,Math.max(0,Math.floor(cer/0.15))); }
+  function mode(){ return modeSel ? modeSel.value : 'all'; }
+  // Is this cell shown under the current comparison mode? 'full' = model
+  // scored the entire dataset; 'pfxN' = model's scored lines are a clean,
+  // zero-based prefix covering at least the first N -- i.e. the SAME N lines
+  // every other qualifying model was scored on, for a fair head-to-head.
+  function pass(di,mi){
+    if(!C[di][mi]) return false;
+    var md=mode();
+    if(md==='all') return true;
+    if(md==='full') return !!(FULL && FULL[di] && FULL[di][mi]);
+    var need = md==='pfx10'?10 : md==='pfx20'?20 : md==='pfx40'?40 : 0;
+    return !!(PFX && PFX[di] && PFX[di][mi] >= need);
+  }
   function colOrder(){
     if(sortDi<0) return meanOrder.slice();
     var row=C[sortDi];
     return M.map(function(_,i){return i;}).sort(function(a,b){
-      var x=num(row[a]), y=num(row[b]);
+      var x=pass(sortDi,a)?num(row[a]):Infinity;
+      var y=pass(sortDi,b)?num(row[b]):Infinity;
       return x-y;
     });
   }
@@ -645,13 +751,13 @@ _MATRIX_JS = r"""
     var body=DS.map(function(ds,di){
       var row=C[di];
       var best=Infinity;
-      row.forEach(function(c){ if(num(c)<best) best=c[0]; });
+      row.forEach(function(c,mi){ if(pass(di,mi) && num(c)<best) best=c[0]; });
       var it=IT[ds]?" <span class='mx-it' title='overlaps the training corpus "+esc(IT[ds])+
         " — fine-tuned scores here are hidden'>in-train</span>":"";
       var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+it+"</th>";
       cells+=ord.map(function(i){
         var c=row[i];
-        if(!c) return "<td class='mx-empty'>·</td>";
+        if(!c || !pass(di,i)) return "<td class='mx-empty'>·</td>";
         if(c==="it") return "<td class='mx-masked' title='fine-tuned on "+esc(IT[ds])+
           ", which contains these lines: score not quoted'>in-train</td>";
         var isBest=c[0]===best;
@@ -662,9 +768,13 @@ _MATRIX_JS = r"""
     }).join('');
     out.innerHTML="<div class='scroll'><table class='mx-tbl'><thead><tr>"+head+
       "</tr></thead><tbody>"+body+"</tbody></table></div>";
-    note.textContent = sortDi>=0
+    var modeNote={full:' — only models scored on every line of the dataset are shown.',
+      pfx10:' — only models scored on the same first 10 lines are shown.',
+      pfx20:' — only models scored on the same first 20 lines are shown.',
+      pfx40:' — only models scored on the same first 40 lines are shown.'}[mode()] || '';
+    note.textContent = (sortDi>=0
       ? ("columns sorted best→worst on "+DS[sortDi]+" — click it again (or the corner) to reset")
-      : "click a dataset name to sort the model columns best→worst on it";
+      : "click a dataset name to sort the model columns best→worst on it") + modeNote;
   }
   out.addEventListener('click',function(e){
     var t=e.target.closest('[data-di],[data-reset]'); if(!t) return;
@@ -677,6 +787,13 @@ _MATRIX_JS = r"""
     var t=e.target.closest('[data-di]'); if(!t) return;
     e.preventDefault(); var di=+t.getAttribute('data-di'); sortDi=(di===sortDi?-1:di); render();
   });
+  if(modeSel){
+    try{ var saved=localStorage.getItem('lb_mx_mode'); if(saved) modeSel.value=saved; }catch(_){}
+    modeSel.addEventListener('change',function(){
+      try{ localStorage.setItem('lb_mx_mode', modeSel.value); }catch(_){}
+      render();
+    });
+  }
   render();
 })();
 """
@@ -932,9 +1049,9 @@ def _render_matrix(rows: list[dict]) -> str:
     in_train = in_train_datasets()
     fts = fine_tuned_models(models)
 
-    cell = []
+    cell, full, pfx = [], [], []
     for ds in datasets:
-        row = []
+        row, frow, prow = [], [], []
         for m in models:
             r = idx.get((m, ds))
             cl = _num(r.get("cer_micro_light"), 1.0) if r else None
@@ -945,9 +1062,13 @@ def _render_matrix(rows: list[dict]) -> str:
                 row.append("it")
             else:
                 row.append([cl, wl] if cl is not None else None)
+            frow.append(bool(r and r.get("_full")))
+            prow.append(int(r.get("_pfx", 0)) if r else 0)
         cell.append(row)
+        full.append(frow)
+        pfx.append(prow)
 
-    payload = {"ds": datasets, "m": models, "c": cell,
+    payload = {"ds": datasets, "m": models, "c": cell, "full": full, "pfx": pfx,
                "it": {ds: src for ds, src in in_train.items() if ds in datasets},
                "order": list(range(len(models)))}  # already best-mean-CER first
     _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
@@ -960,13 +1081,22 @@ def _render_matrix(rows: list[dict]) -> str:
            "corpus-weighted.'>WER&middot;light</abbr>")
     return (
         f"<section class='matrix'><h2>All results — {_cl} / {_wl}</h2>"
-        f"<p class='board-note'>Every model &times; dataset in one grid. Top number is "
+        f"<p class='board-note'>Every model &times; dataset in one grid (models scored on "
+        f"fewer than {_MIN_N} lines are left off the board entirely). Top number is "
         f"<b>{_cl}&nbsp;%</b>, smaller number below is <b>{_wl}&nbsp;%</b> "
         "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
         "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
-        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset. "
+        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset "
+        "(or not run under the comparison mode below). "
         "Datasets tagged <b>in-train</b> overlap the Muharaf training corpus: base models "
         "are scored there as usual, fine-tunes are not quoted.</p>"
+        "<div class='mx-controls'><label>comparison <select id='mx-mode'>"
+        "<option value='all'>All scored (n&ge;10, uneven coverage)</option>"
+        "<option value='full'>Full dataset only (model scored every line)</option>"
+        "<option value='pfx10'>First 10 lines (same lines across models)</option>"
+        "<option value='pfx20'>First 20 lines (same lines across models)</option>"
+        "<option value='pfx40'>First 40 lines (same lines across models)</option>"
+        "</select></label></div>"
         "<p class='board-note mx-sortnote' id='mx-sortnote'></p>"
         f"<div id='mx-out'></div>"
         f"<script id='mx-data' type='application/json'>{blob}</script>"
@@ -977,7 +1107,10 @@ def _render_matrix(rows: list[dict]) -> str:
 _TOC_JS = r"""
 (function(){
   var toc=document.getElementById('toc'); if(!toc) return;
-  var links=[].slice.call(toc.querySelectorAll('a'));
+  // Only the per-section <ol> links participate in scroll-spy / click-to-jump
+  // below -- the "Back to top" link (outside any <ol>, shown on every tab)
+  // gets its own plain listener right after this IIFE's other setup.
+  var links=[].slice.call(toc.querySelectorAll('ol a'));
   var byId={};
   function openAncestor(t){ var d=t&&t.closest('details'); if(d && !d.open) d.open=true; }
   links.forEach(function(a){
@@ -1016,6 +1149,12 @@ _TOC_JS = r"""
     var t=document.getElementById(location.hash.slice(1));
     if(t){ openAncestor(t); requestAnimationFrame(function(){ t.scrollIntoView(); }); }
   }
+  var topLink=document.getElementById('sidenav-top');
+  if(topLink) topLink.addEventListener('click',function(e){
+    e.preventDefault();
+    window.scrollTo({top:0,left:0,behavior:'smooth'});
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(_){}
+  });
 })();
 """
 
@@ -1111,6 +1250,7 @@ def _toc(items: list[tuple[str, str]],
     return (
         "<nav class='sidenav' id='toc' aria-label='sections'>"
         "<p class='sidenav-h'>Contents</p>"
+        "<a href='#' class='sidenav-top' id='sidenav-top'>&uarr; Back to top</a>"
         f"{_ol(items, 'toc-leaderboard', False)}"
         f"{_ol(finetuning_items or [], 'toc-finetuning', True)}"
         f"{_ol(findings_items or [], 'toc-findings', True)}"
@@ -1138,7 +1278,9 @@ def _panel(section_html: str, *, pid: str, collapsible: bool,
     if not collapsible:
         return f"<section id='{pid}' class='{cls}'><h2>{h2}</h2>\n{rest}</section>"
     hint_html = f"<span class='panel-hint'>{html.escape(hint)}</span>" if hint else ""
-    op = " open" if open else ""
+    # open="" (not bare `open`): identical HTML5 boolean-attribute semantics,
+    # but a bare attribute isn't well-formed XML.
+    op = ' open=""' if open else ""
     return (
         f"<section id='{pid}' class='{cls} panel'>"
         f"<details class='panel-d' data-key='{pid}'{op}>"
@@ -1924,11 +2066,11 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 
 /* --- dataset explorer + model reference --- */
 .explorer,.modelref{margin:40px 0 0;}
-.ex-controls,.mr-controls{display:flex;gap:10px;align-items:center;margin:10px 0 8px;}
-.ex-controls label,.mr-controls label{display:flex;align-items:center;gap:7px;
+.ex-controls,.mr-controls,.mx-controls{display:flex;gap:10px;align-items:center;margin:10px 0 8px;}
+.ex-controls label,.mr-controls label,.mx-controls label{display:flex;align-items:center;gap:7px;
   font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
   text-transform:uppercase;color:var(--muted);}
-.ex-controls select,.mr-controls select{font:inherit;font-size:12.5px;padding:5px 9px;
+.ex-controls select,.mr-controls select,.mx-controls select{font:inherit;font-size:12.5px;padding:5px 9px;
   border:1px solid var(--line);border-radius:7px;background:var(--surface);
   color:var(--ink);text-transform:none;letter-spacing:0;max-width:70vw;}
 .ex-card,.mr-out{font-size:13.5px;line-height:1.6;color:var(--ink);max-width:70ch;
@@ -2149,6 +2291,9 @@ main section{scroll-margin-top:20px;}
   border-right:1px solid var(--line);scrollbar-width:thin;}
 .sidenav-h{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin:0 0 12px 10px;font-weight:500;}
+.sidenav-top{margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line);
+  font-weight:500;}
+.sidenav-top::before{content:none!important;}   /* not in the numbered <ol>, no counter digit */
 .sidenav ol[hidden]{display:none;}   /* per-tab list; .sidenav ol sets display:flex, so hide explicitly */
 .sidenav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
   gap:1px;counter-reset:sn;}

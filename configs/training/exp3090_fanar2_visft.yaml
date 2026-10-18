@@ -1,0 +1,56 @@
+# RTX 3090 experiment — same recipe as exp3090_fanar2.yaml (QLoRA on QCRI's
+# Fanar-2-Oryx-IVU), but with the ViT unfrozen (train_vision: true). The Fanar
+# counterpart to qwen3vl4b_visft.yaml / paligemma2_3b_visft.yaml — tests the same
+# "is the frozen vision encoder capping generalisation to the Maghrebi RASAM
+# script family" question on a third, unrelated vision tower (Fanar's is a
+# Qwen2.5-VL-derived ViT, architecturally close to Qwen3-VL's but a distinct
+# checkpoint/training lineage). Everything else identical to exp3090_fanar2.yaml.
+#
+# Costs more VRAM than the frozen sibling on top of an already-tight 7B+4-bit
+# budget -- drop image.max_pixels further first if this OOMs.
+experiment: exp3090-fanar2-visft
+method: qlora
+
+base_model:
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: true     # <-- the one change vs exp3090_fanar2.yaml
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704
+  max_pixels: 702464
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 100
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-fanar2-visft
+eval_datasets: [muharaf_lines]

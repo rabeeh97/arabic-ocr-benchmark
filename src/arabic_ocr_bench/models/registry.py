@@ -101,6 +101,17 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             reverse_output=bool(cfg.get("reverse_output", False)),
             device=device or None,
         )
+    if client == "tesseract":
+        from .tesseract_client import TesseractClient
+
+        return TesseractClient(name=name, lang=cfg.get("lang", "ara"))
+    if client == "ocr_corrected":
+        from .tesseract_client import OCRCorrectedClient
+
+        inner_name = cfg["inner"]
+        configs = load_model_configs()
+        inner = build_model(inner_name, configs[inner_name])
+        return OCRCorrectedClient(name=name, inner=inner, lang=cfg.get("lang", "ara"))
     raise ValueError(f"model {name!r}: unknown client {client!r}")
 
 

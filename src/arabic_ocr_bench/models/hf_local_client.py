@@ -20,10 +20,6 @@ from ..regex_compat import ensure_regex
 # these keep it honest and let EOS fire naturally.
 _GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
 
-# paligemma2-*-448: 448/14 patch size -> 32x32, matching training/sft_vlm.py's
-# _PALIGEMMA_IMAGE_TOKENS (kept as a separate constant - models/ shouldn't
-# import from training/).
-_PALIGEMMA_IMAGE_TOKENS = 1024
 _DEFAULT_PALIGEMMA_PROMPT = "ocr\n"  # matches the paligemma-arabic-hw adapter's training
 
 
@@ -453,11 +449,22 @@ class HFLocalClient:
                       flush=True)
 
     # -- inference -------------------------------------------------------- #
-    def transcribe(self, image: Image.Image, prompt: str) -> Prediction:
+    def transcribe(self, image: Image.Image, prompt: str,
+                    max_tokens: int | None = None) -> Prediction:
+        # max_tokens: an optional per-call override (the runner passes the
+        # calling dataset's `max_tokens_hint` from configs/datasets.yaml, if
+        # any). Only ever RAISES the effective cap above this client's own
+        # registered self.max_new_tokens, mirroring the existing run-level
+        # max_tokens_override in runner.py -- a page-scale dataset can ask for
+        # more room without a tighter per-model default ever being clobbered.
+        eff_max_new_tokens = (
+            max(self.max_new_tokens, max_tokens) if max_tokens is not None
+            else self.max_new_tokens
+        )
         t0 = time.perf_counter()
         try:
             self._ensure_loaded()
-            text = self._generate(image.convert("RGB"), prompt)
+            text = self._generate(image.convert("RGB"), prompt, eff_max_new_tokens)
         except Exception as e:  # noqa: BLE001
             # An OOM *during generate* (vs. during load) is usually one
             # pathological image, not the whole model — reclaim and let the next
@@ -474,16 +481,16 @@ class HFLocalClient:
         return Prediction(raw_text=text, cleaned_text=clean_output(text),
                           latency_ms=latency_ms)
 
-    def _generate(self, image: Image.Image, prompt: str) -> str:
+    def _generate(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
         import torch
 
         image = cap_image(image, 1024)  # bound vision tokens / activation memory
         if self.arch == "paligemma":
-            return self._generate_paligemma(image, prompt)
+            return self._generate_paligemma(image, prompt, max_new_tokens)
         if self.arch == "trocr":
-            return self._generate_trocr(image)
+            return self._generate_trocr(image, max_new_tokens)
         if self.arch == "minicpmv":
-            return self._generate_minicpmv(image, prompt)
+            return self._generate_minicpmv(image, prompt, max_new_tokens)
 
         messages = [{
             "role": "user",
@@ -497,20 +504,20 @@ class HFLocalClient:
         )
         with torch.no_grad():
             out = self._model.generate(
-                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+                **inputs, max_new_tokens=max_new_tokens, **_GEN_KW
             )
         gen = out[0][inputs["input_ids"].shape[1]:]
         return self._processor.decode(gen, skip_special_tokens=True).strip()
 
-    def _generate_minicpmv(self, image: Image.Image, prompt: str) -> str:
+    def _generate_minicpmv(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
         msgs = [{"role": "user", "content": [image, prompt]}]
         out = self._model.chat(
             image=None, msgs=msgs, tokenizer=self._tokenizer,
-            sampling=False, max_new_tokens=self.max_new_tokens,
+            sampling=False, max_new_tokens=max_new_tokens,
         )
         return (out if isinstance(out, str) else str(out)).strip()
 
-    def _generate_trocr(self, image: Image.Image) -> str:
+    def _generate_trocr(self, image: Image.Image, max_new_tokens: int) -> str:
         import torch
 
         pixel_values = self._processor(
@@ -518,24 +525,34 @@ class HFLocalClient:
         ).pixel_values.to(self._device)
         with torch.no_grad():
             ids = self._model.generate(
-                pixel_values, max_new_tokens=self.max_new_tokens, **_GEN_KW
+                pixel_values, max_new_tokens=max_new_tokens, **_GEN_KW
             )
         return self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
 
-    def _generate_paligemma(self, image: Image.Image, prompt: str) -> str:
+    def _generate_paligemma(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
         import torch
 
         # PaliGemma uses a task-prefix, not a chat template (see self.paligemma_prompt).
-        # Prepending the image tokens ourselves stops the processor from inferring
-        # them itself and logging a warning on every single call.
-        image_seq_length = getattr(self._processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
-        pg_prompt = "<image>" * image_seq_length + self.paligemma_prompt
+        #
+        # Exactly ONE "<image>" placeholder -- NOT `image_seq_length` copies.
+        # PaliGemmaProcessor.__call__ (transformers/models/paligemma/
+        # processing_paligemma.py) detects that the text already contains
+        # "<image>" and expands EVERY occurrence into `self.image_seq_length`
+        # copies itself (`sample.replace(IMAGE_TOKEN, IMAGE_TOKEN *
+        # self.image_seq_length)`). Passing image_seq_length copies here made
+        # it expand each of those into another image_seq_length -- e.g.
+        # 1024*1024 = 1,048,576 total "<image>" tokens for the -448 checkpoint
+        # -- failing the processor's own image-token-count check on every
+        # single call (100% error rate). See the identical bug/fix in
+        # training/sft_vlm.py's _make_collator_paligemma for the full story;
+        # this is the same mistake in the separate inference code path.
+        pg_prompt = "<image>" + self.paligemma_prompt
         inputs = self._processor(text=pg_prompt, images=image, return_tensors="pt").to(
             self._device
         )
         in_len = inputs["input_ids"].shape[-1]
         with torch.no_grad():
             out = self._model.generate(
-                **inputs, max_new_tokens=self.max_new_tokens, **_GEN_KW
+                **inputs, max_new_tokens=max_new_tokens, **_GEN_KW
             )
         return self._processor.decode(out[0][in_len:], skip_special_tokens=True).strip()

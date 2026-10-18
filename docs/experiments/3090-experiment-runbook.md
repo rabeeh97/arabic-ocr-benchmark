@@ -26,6 +26,19 @@ in with a normal shell (PowerShell or cmd both work).
 | ~60 GB free disk on `C:` | `Get-PSDrive C` | venv + HF cache + base weights (~8 GB) + checkpoints |
 | Python 3.9+ for the *launcher* only | `python --version` | launcher is **stdlib-only** (no pip installs needed); the venv it builds is separate and pulls its own 3.11 via uv |
 | PowerShell available (for the uv installer) | `powershell -?` | present on every modern Windows |
+| Windows Defender Application Control / Smart App Control status | `Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard` (nonzero `Available/RequiredSecurityProperties` means it's on) | **if enabled, do the two steps below once before your first experiment** — otherwise every fresh `--dir` hits `OSError: [WinError 4551] An Application Control policy has blocked this file` partway through `bootstrap`. See "WDAC/4551" in §9 Gotchas for the full failure modes; this is the one-time fix that avoids all of them. |
+
+If WDAC/Smart App Control is on, do this **once per box**, not per experiment:
+1. Install Python 3.11 from [python.org](https://www.python.org/downloads/) (a
+   signed installer — not the `uv`-managed build, which is what gets blocked).
+   Confirm it registered with the launcher: `py -0p` should list a `3.11` line
+   with its path (e.g. `C:\Users\User\AppData\Local\Programs\Python\Python311\python.exe`).
+2. `setx UV_PYTHON_PREFERENCE system` — makes `uv` prefer that already-installed,
+   signed interpreter over downloading its own (unsigned, blocked) one, for
+   **every** `uv venv` / `uv pip install` call this launcher makes, in every
+   experiment folder, from here on. Close and reopen your shell (or `ssh` back
+   in) so the new env var takes effect, then just run experiments normally —
+   no `--venv-python` flag, no per-run workaround needed.
 
 Nothing else is installed globally — `uv`, torch, transformers, bitsandbytes all
 go **inside the experiment folder**.
@@ -103,6 +116,7 @@ python scripts\run_3090_experiment.py --dir C:\Users\User\a-experiment\exp --bas
 | `baseer` | `Misraj/Baseer__Nakba` | `qwen2_5_vl` | Arabic-manuscript SOTA base (CER 0.079 on NAKBA); cc-by-nc-sa (research). The `fetch` phase prints the checkpoint's real `architectures` — if it's **not** a Qwen2.5-VL class, stop and use `--base qwen3vl4b` |
 | `paligemma` | `google/paligemma2-3b-pt-448` | `paligemma` (added) | **gated.** Uses a different collator (`_make_collator_paligemma`) from the published PaliGemma-2 recipe — **watch the first training batches** (loss should start ≈ 2–4 and fall; labels should be all `-100` except the target span) |
 | `qwen3vl4b-visft` | `Qwen/Qwen3-VL-4B-Instruct` | `qwen3_vl` (added) | Same recipe as `qwen3vl4b`, but `train_vision: true` (ViT unfrozen). Tests whether the frozen encoder caps generalisation to the Maghrebi RASAM script family — see `docs/experiments/findings-and-notes.md`. Costs more VRAM; drop `image.max_pixels` first if it OOMs |
+| `paligemma-visft` | `google/paligemma2-3b-pt-448` | `paligemma` (added) | **gated.** Same recipe as `paligemma`, but `train_vision: true` (SigLIP unfrozen) — the PaliGemma counterpart to `qwen3vl4b-visft`, testing the same question on a second, unrelated vision tower. Costs more VRAM; drop `image.max_pixels` first if it OOMs |
 
 `--detach` re-spawns the worker free of your SSH session (Windows
 `DETACHED_PROCESS`), writes `C:\Users\User\a-experiment\exp\logs\run.pid`, prints the log path, and
@@ -200,7 +214,7 @@ To fold the fine-tune into this repo's leaderboard afterwards: copy
 ## 6a. One-command experiment — `run_3090_pipeline.py`
 
 For a whole `train → merge → in-domain eval → held-out benchmark` in a single
-detached command per base (`qwen3vl4b` | `qwen3vl4b-visft` | `baseer` | `paligemma`):
+detached command per base (`qwen3vl4b` | `qwen3vl4b-visft` | `baseer` | `paligemma` | `paligemma-visft`):
 
 ```bat
 cd C:\Users\User\a-experiment\aocr-repo
@@ -243,6 +257,22 @@ same `--detach` / resume / one-run-lock / log-rotation as the trainer, plus:
   batch**; a dataset is finished once a batch returns fewer new lines than asked.
 - **`collect`** — regenerate `…\exp\bench\leaderboard.html` over everything scored
   so far (runs every pass).
+
+**The untuned base model's own scores are cached and shared across every
+`--dir`** that reuses the same base (`--base-name`), in
+`…\a-experiment\_shared-bench-cache\<base-name>\` — a sibling of every
+experiment folder, not inside any of them. Its weights never change between
+experiments (same HF checkpoint, deterministic at temperature 0), so a
+data-scaling sweep's four `--dir`s (1k/2k/4k/8k, all `qwen3vl4b-visft`) only
+ever score the untuned base **once**, total — every later `--dir` reuses
+those rows instantly instead of re-running the same inference. Only the
+fine-tune row is scored fresh per `--dir` (its registry name is fixed per
+`--base` choice, not per `--dir`, so its predictions must stay private —
+sharing them would silently serve one experiment's predictions for another's
+genuinely different merged weights). Deleting one `--dir` does not remove its
+contribution to this shared cache; delete
+`…\a-experiment\_shared-bench-cache\` itself to force every base to be
+re-scored from scratch.
 
 Models and datasets are the two lists in
 `configs/training/exp3090_bench.run.yaml`. `--with-4bit` adds a 4-bit fine-tune
@@ -377,6 +407,33 @@ training) to prove the whole pipeline before committing to the long run.
   --index-url https://download.pytorch.org/whl/cu124`. If the cu124 wheel *also*
   hits 4551, the box's WDAC policy blocks PyTorch outright — needs an admin to
   allowlist it or disable Smart App Control; no pip/code change helps.
+- **WDAC/4551 can block THREE different interpreters, one at a time, at three
+  different bootstrap steps** — same root cause (Smart App Control / WDAC
+  distrusts an "unrecognised" Windows binary), three separate fixes, because
+  each blocked `python.exe`/DLL is a **different** file on disk. **Do the
+  §0 one-time fix (`UV_PYTHON_PREFERENCE=system` + a python.org 3.11 install)
+  before your first experiment on a WDAC box and none of these three ever
+  trigger** — they're documented here in full only for a box where that
+  wasn't done up front, or mid-experiment as a manual workaround:
+  1. `uv venv`'s own managed CPython build (`OSError: [WinError 4551] …
+     python.exe`, right when the venv is created). One-off workaround
+     without touching the box's `UV_PYTHON_PREFERENCE`: `--venv-python
+     <path>` pointing at the signed python.org 3.11 (find its path with
+     `py -0p` — look for the `3.11` line, not whichever version is marked
+     `*` default; that default is unrelated and doesn't need to match).
+  2. **The editable-install build-isolation venv** (`Failed to build
+     arabic-ocr-bench … Failed to run
+     <dir>\uv_cache\builds-v0\.tmp…\Scripts\python.exe … (os error 4551)`,
+     during `pip install -e .[local,train]`) — a *third*, throwaway
+     interpreter `uv pip install -e` spawns for itself to run the PEP 517
+     build backend, separate from the main venv `--venv-python` already
+     fixed. Since this project's build backend (hatchling) has no build-time
+     dependencies of its own, the fix is to install `hatchling` into the
+     main (already-trusted) venv first and pass `--no-build-isolation` so
+     `uv` builds inside that venv instead of spawning a new one — wired into
+     `run_3090_experiment.py`'s bootstrap step 2 already, nothing to do by
+     hand unless running the `pip install -e` command manually.
+  3. `torch`'s own DLLs (`shm.dll`) — see the next point below.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
   CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.

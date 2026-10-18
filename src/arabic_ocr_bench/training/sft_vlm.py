@@ -48,7 +48,15 @@ def _load_processor(cfg: TrainingConfig):
     if cfg.base_model.arch == "paligemma":
         # PaliGemma's processor has a fixed image size baked into the checkpoint;
         # it rejects the Qwen min_pixels / max_pixels kwargs.
-        return AutoProcessor.from_pretrained(cfg.base_model.hf_id)
+        #
+        # use_fast=True: silences "Using a slow image processor as `use_fast`
+        # is unset..." and matches the default transformers is moving to
+        # (v4.52+). NOT what fixed the 1024**2 image-token-count crash chased
+        # around this area -- that was a genuine double-expansion bug in
+        # _make_collator_paligemma's prefix construction (see its comment in
+        # this file). Keeping use_fast=True anyway since it's the
+        # forward-compatible choice and the warning explicitly recommends it.
+        return AutoProcessor.from_pretrained(cfg.base_model.hf_id, use_fast=True)
     return AutoProcessor.from_pretrained(
         cfg.base_model.hf_id,
         min_pixels=cfg.image.min_pixels,
@@ -216,11 +224,22 @@ def _make_collator_paligemma(processor, max_seq_len: int):
             f"{_PALIGEMMA_IMAGE_TOKENS + 64}."
         )
 
-    # The processor otherwise infers the image-token count itself and warns on
-    # every single call ("You are passing both `text` and `images`...").
-    # Prepending the exact count ourselves gives it what it expects up front.
-    image_seq_length = getattr(processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
-    prefix_with_image_tokens = "<image>" * image_seq_length + _PALIGEMMA_PREFIX
+    # Exactly ONE "<image>" placeholder -- NOT `image_seq_length` copies of it.
+    # PaliGemmaProcessor.__call__ (transformers/models/paligemma/
+    # processing_paligemma.py) checks whether the text already contains
+    # "<image>"; if it does, it expands EVERY occurrence into
+    # `self.image_seq_length` copies via
+    #   sample.replace(IMAGE_TOKEN, IMAGE_TOKEN * self.image_seq_length)
+    # A single "<image>" here becomes exactly image_seq_length (1024) after
+    # that expansion -- matching the checkpoint's real patch count. Passing
+    # image_seq_length copies ourselves (the previous version of this line)
+    # made the processor expand each of those 1024 into another 1024,
+    # producing 1024*1024 = 1,048,576 total "<image>" tokens and failing
+    # processor()'s own image-token-count check -- confirmed by reading the
+    # actual installed transformers source, not by guessing at a version or
+    # slow/fast-processor difference (both were chased here first and were
+    # not the cause).
+    prefix_with_image_tokens = "<image>" + _PALIGEMMA_PREFIX
 
     def _target(row: dict) -> str:
         for m in reversed(row["messages"]):

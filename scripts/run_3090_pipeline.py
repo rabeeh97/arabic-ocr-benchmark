@@ -74,7 +74,7 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     tee = not stdout_is_regular_file()
     fh = (logs / "pipeline.log").open("a", encoding="utf-8") if tee else None
     try:
-        proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ},
+        proc = subprocess.Popen(cmd, cwd=str(REPO), env={**os.environ, "PYTHONUNBUFFERED": "1"},
                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                 text=True, bufsize=1)
         assert proc.stdout is not None

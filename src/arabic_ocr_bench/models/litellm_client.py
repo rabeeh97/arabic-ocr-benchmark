@@ -196,9 +196,21 @@ class LiteLLMClient:
         elif pairs and not self.api_key:
             self.api_key = pairs[0][1]
 
-    def transcribe(self, image: Image.Image, prompt: str) -> Prediction:
+    def transcribe(self, image: Image.Image, prompt: str,
+                    max_tokens: int | None = None) -> Prediction:
+        # max_tokens: an optional per-call override (the runner passes the
+        # calling dataset's `max_tokens_hint` from configs/datasets.yaml, if
+        # any). Only ever RAISES the effective cap above this client's own
+        # registered self.max_tokens -- see hf_local_client.py's identical
+        # pattern and runner.py's existing run-level max_tokens_override for
+        # why this never lowers a model's own cap (reasoning models already
+        # registered with a much higher budget must not get clobbered).
+        eff_max_tokens = (
+            max(self.max_tokens, max_tokens) if max_tokens is not None
+            else self.max_tokens
+        )
         if self._pool is None:
-            return self._complete(image, prompt, self.api_key)
+            return self._complete(image, prompt, self.api_key, eff_max_tokens)
         last_err: str | None = None
         for _ in range(self._pool.size + 2):
             try:
@@ -209,7 +221,7 @@ class LiteLLMClient:
                     or "RateLimitError: all Gemini API keys are out of quota",
                     latency_ms=0.0,
                 )
-            pred = self._complete(image, prompt, slot.key)
+            pred = self._complete(image, prompt, slot.key, eff_max_tokens)
             if pred.error and _is_rate_limit(pred.error):
                 self._pool.penalize(slot, capped=_is_daily_quota(pred.error))
                 last_err = pred.error
@@ -221,7 +233,7 @@ class LiteLLMClient:
         )
 
     def _complete(self, image: Image.Image, prompt: str,
-                  api_key: str | None) -> Prediction:
+                  api_key: str | None, max_tokens: int) -> Prediction:
         import litellm
 
         litellm.drop_params = True  # silently drop params a given model rejects
@@ -234,7 +246,7 @@ class LiteLLMClient:
             ],
         }]
         kwargs = dict(model=self.litellm_id, messages=messages,
-                      max_tokens=self.max_tokens, **self.params)
+                      max_tokens=max_tokens, **self.params)
         if self.api_base:
             kwargs["api_base"] = self.api_base
         if api_key:

@@ -153,7 +153,12 @@ def _read_state(dirs: dict) -> dict:
     }
     flat = st.pop("phases", {})
     boot = {"bootstrap": flat["bootstrap"]} if "bootstrap" in flat else {}
-    if not boot and (dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")).exists():
+    # Migration shim for state.json files written before phase records
+    # existed. Must prove the bootstrap actually FINISHED (import check),
+    # not just that `uv venv` created an interpreter file -- see
+    # _bootstrap_complete()'s docstring for why bare existence is a false
+    # positive that's bitten repeatedly on this box.
+    if not boot and _bootstrap_complete(dirs):
         boot = {"bootstrap": {"done": True, "at": "reconciled-from-disk"}}
     st["phases"] = boot
     exps = st.setdefault("experiments", {})
@@ -207,6 +212,31 @@ def _venv_python(dirs: dict) -> Path:
     return dirs["venv"] / ("Scripts/python.exe" if IS_WIN else "bin/python")
 
 
+def _bootstrap_complete(dirs: dict) -> bool:
+    """True only if the venv's interpreter can actually import this package
+    and its core deps -- proof the FULL bootstrap finished, not just that
+    `uv venv` created an interpreter file. `uv venv` itself is fast and
+    rarely fails; the slow steps after it (CUDA torch, the editable install,
+    the transformers/trl pins) are what actually go wrong (WDAC blocks,
+    missing build-time deps, a flaky download) -- and when one of them does,
+    python.exe is still sitting on disk from the successful `uv venv` step,
+    making a partial bootstrap indistinguishable from a finished one to a
+    bare existence check. That false positive is exactly what silently
+    skipped straight to `fetch` (missing `pandas`/`huggingface_hub`) on a
+    supposedly-fresh re-run here more than once."""
+    py = _venv_python(dirs)
+    if not py.exists():
+        return False
+    try:
+        r = subprocess.run(
+            [str(py), "-c", "import arabic_ocr_bench, torch, pandas, transformers"],
+            capture_output=True, timeout=60,
+        )
+        return r.returncode == 0
+    except OSError:
+        return False
+
+
 def _uv_bin(dirs: dict) -> str:
     """uv on PATH, else the copy we install into <dir>/bin."""
     onpath = shutil.which("uv")
@@ -225,7 +255,7 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
     download, a slow training step) gets an explicit heartbeat line instead of
     looking indistinguishable from a hang."""
     _log(dirs, f"$ {' '.join(str(c) for c in cmd)}")
-    e = {**os.environ, **(env or {})}
+    e = {**os.environ, "PYTHONUNBUFFERED": "1", **(env or {})}  # keep a crash traceback in run.log
     tee = not stdout_is_regular_file()  # tty or pipe -> echo; detached log file -> don't dup
     fh = (dirs["logs"] / "run.log").open("a", encoding="utf-8") if tee else None
     try:
@@ -270,9 +300,13 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
 # phases
 # --------------------------------------------------------------------------- #
 def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
-    # "done" is only trusted if the venv interpreter is actually on disk — it may
-    # have been deleted (e.g. rebuilding it from a different --venv-python).
-    if _done(state, "bootstrap") and not args.force and _venv_python(dirs).exists():
+    # "done" is only trusted if the venv can actually import this package and
+    # its core deps -- not just that a python.exe file exists (it may have
+    # been deleted, e.g. rebuilding from a different --venv-python; or it may
+    # be a survivor of a PARTIAL bootstrap where `uv venv` succeeded but a
+    # later pip-install step failed, which looks identical to a finished
+    # bootstrap under a bare existence check). See _bootstrap_complete().
+    if _done(state, "bootstrap") and not args.force and _bootstrap_complete(dirs):
         _log(dirs, "bootstrap: already done")
         return
     _log(dirs, "bootstrap: install uv / venv / deps")
@@ -309,8 +343,24 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    resolve would pick.
     if _run(dirs, [*pipbase, "torch", "torchvision", "--index-url", args.torch_index], phase="bootstrap"):
         raise SystemExit("bootstrap: torch (CUDA) install failed - check --torch-index / driver")
-    # 2. the benchmark + training extras (editable, from the SSH-copied repo)
-    if _run(dirs, [*pipbase, "-e", f"{REPO}[local,train]"], phase="bootstrap"):
+    # 2. the benchmark + training extras (editable, from the SSH-copied repo).
+    #    --no-build-isolation: by default `uv pip install -e` builds this
+    #    package's PEP 517 backend (hatchling) in a throwaway venv of its own
+    #    under <dir>\uv_cache\builds-v0\ -- a SEPARATE interpreter from the
+    #    one `--venv-python` just pinned, so on a WDAC/Smart-App-Control box
+    #    it hits the exact same "unrecognised python.exe blocked" (WinError
+    #    4551) that --venv-python was supposed to have already solved, one
+    #    step later. With isolation skipped, `uv` no longer auto-fetches the
+    #    build backend's own requirements into a throwaway env, so they have
+    #    to be installed into the main venv by hand first: hatchling itself,
+    #    plus `editables` -- hatchling's build_editable() imports it lazily
+    #    (hatchling/builders/wheel.py) only for an EDITABLE build specifically
+    #    (a plain `pip install .` wouldn't need it), so it's easy to miss.
+    if _run(dirs, [*pipbase, "hatchling", "editables"], phase="bootstrap"):
+        raise SystemExit("bootstrap: `pip install hatchling editables` failed")
+    if _run(
+        dirs, [*pipbase, "--no-build-isolation", "-e", f"{REPO}[local,train]"], phase="bootstrap"
+    ):
         raise SystemExit("bootstrap: `pip install -e .[local,train]` failed")
     # 3. pin the training stack to the era this code targets, then plotting.
     #    The pyproject floors (`transformers>=4.49`, `trl>=0.12`) are unbounded,
@@ -322,8 +372,9 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     #    also pull a fresh PyPI `torch`, replacing the CUDA wheel from step 1
     #    (and on WDAC-locked boxes the new torch DLLs fail to load, WinError 4551).
     tfloor = spec["needs_transformers"] or "4.49"
+    tmax = spec.get("transformers_max") or "5"
     if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
-                   f"transformers>={tfloor},<5", "trl>=0.21,<1.0"], phase="bootstrap"):
+                   f"transformers>={tfloor},<{tmax}", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
     # WDAC on this box blocks pandas 3.x indexing.pyd and pyarrow 25.x
@@ -628,7 +679,12 @@ def _respawn_detached(dirs: dict, argv: list[str]) -> int:
     )
     print(f"detached pid {pid}")
     print(f"log : {dirs['logs'] / 'run.log'}")
-    print(f"poll: python {Path(__file__).name} --dir {dirs['root']} status")
+    # Users always launch this as `python scripts\run_3090_experiment.py ...`
+    # (or scripts/... on posix) from the repo root -- Path(__file__).name alone
+    # prints a bare filename that only works if the cwd happens to already be
+    # scripts/, which it normally isn't, producing a confusing "No such file".
+    _script_rel = ("scripts\\" if IS_WIN else "scripts/") + Path(__file__).name
+    print(f"poll: python {_script_rel} --dir {dirs['root']} status")
     return 0
 
 

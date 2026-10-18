@@ -29,13 +29,17 @@ class ScoredSplitLeakError(RuntimeError):
 def _hf_id_for(cfg: dict) -> str | None:
     """The HF repo id a dataset entry pulls from, mirroring the adapters.
 
-    KITAB-Bench entries carry it as `params.subset` (a bare suffix under
-    `ahmedheakl/`, or a full `org/name`); everything else uses a top-level
-    `hf_id`. In-repo datasets (synthetic) have neither.
+    KITAB-Bench entries carry it as `subset` -- nested under `params.subset`
+    in the configs/datasets.yaml registry shape, or as a top-level `subset`
+    in a training SourceSpec's shape (see training/config.py's SourceSpec
+    and _source_cfg() above, which copies a SourceSpec's `subset` field to
+    the top level, not into `params`) -- a bare suffix under `ahmedheakl/`,
+    or a full `org/name`. Everything else uses a top-level `hf_id`. In-repo
+    datasets (synthetic) have neither.
     """
     if cfg.get("hf_id"):
         return cfg["hf_id"]
-    subset = (cfg.get("params") or {}).get("subset")
+    subset = cfg.get("subset") or (cfg.get("params") or {}).get("subset")
     if subset:
         return subset if "/" in subset else f"ahmedheakl/{subset}"
     return None

@@ -77,6 +77,46 @@ gemini-flash-lite-640tok:
   card: >-
     gemini-flash-lite at 640 max_tokens — for the page-v2 prompt-sensitivity
     variant on paragraph/page-scale datasets only.
+    SUPERSEDED for production page-scale runs by gemini-flash-lite-page below
+    (640 tokens still truncated hindawi — see that row's comment); kept as-is
+    so the prompt-sensitivity study's own cached results stay reproducible.
+gemini-flash-page:
+  # gemini-flash, fixed for kitab_hindawi / kitab_historicalbooks: 640 tokens
+  # (and even gemini-flash-lite-640tok's 640) still truncated hindawi's longer
+  # samples down to ~40-90 chars against a ~970-char ground truth, at
+  # output_tokens consistently ~636/640 — Gemini 3.x's adaptive thinking was
+  # consuming nearly the whole budget before the visible answer started, not
+  # a plain "cap too low" truncation. reasoning_effort: none disables that;
+  # max_tokens: 900 covers hindawi's p90 (~530 tok) with headroom for the
+  # (now much smaller) reasoning overhead. New row (not edited in place) so
+  # its cache key is fresh — the existing "gemini-flash" + page-v2 cache
+  # entries are the stale, still-thinking-enabled predictions.
+  client: litellm
+  litellm_id: gemini/gemini-3.6-flash
+  env_key: GEMINI_API_KEY
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
+  params: { temperature: 0, reasoning_effort: none }
+  max_tokens: 900
+  pricing: { input_usd_per_1m: 1.55, output_usd_per_1m: 8.00 }
+  card: >-
+    gemini-flash with thinking disabled (reasoning_effort: none) and
+    max_tokens: 900 — for page-scale kitab_hindawi / kitab_historicalbooks,
+    where adaptive thinking otherwise ate the output budget before the
+    transcription started.
+gemini-flash-lite-page:
+  # Same fix as gemini-flash-page, for gemini-flash-lite.
+  client: litellm
+  litellm_id: gemini/gemini-3.5-flash-lite
+  env_key: GEMINI_API_KEY
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
+  params: { temperature: 0, reasoning_effort: none }
+  max_tokens: 900
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }
+  card: >-
+    gemini-flash-lite with thinking disabled (reasoning_effort: none) and
+    max_tokens: 900 — for page-scale kitab_hindawi / kitab_historicalbooks.
 gemini-pro:
   client: litellm
   litellm_id: gemini/gemini-3.1-pro-preview
@@ -596,23 +636,31 @@ glm-5.3-flash-paid:
 
 # --- local open-weight / Arabic-specific VLMs (needs: uv sync --extra local)
 qari-ocr-0.3:
+  # max_new_tokens: the hf_local default (160) truncates page-scale output;
+  # this row is explicitly "full-page" per its own card below, so it needs
+  # the larger cap more than most -- see qwen3-vl-4b-bf16's comment / the
+  # kitab_hindawi/kitab_historicalbooks writeup in findings-and-notes.md.
   client: hf_local
   hf_id: NAMAA-Space/Qari-OCR-v0.3-VL-2B-Instruct
   arch: qwen2_vl
   min_ram_gb: 7       # CPU: skip (don't OOM-kill) if less free RAM
   dtype: float16
+  max_new_tokens: 640
   pricing: null
   card: >-
     NAMAA-Space's Arabic OCR model, 2B params, fine-tuned from Qwen2-VL-2B. The
     v0.3 line is "structure-first" — tuned for full-page documents with layout and
     Markdown output, so on single lines it can add markup or over-generate.
 qari-ocr-0.2:
+  # max_new_tokens: see qari-ocr-0.3's comment above -- measured at a 0.15
+  # prediction/reference length ratio on kitab_hindawi before this.
   client: hf_local
   hf_id: Qwen/Qwen2-VL-2B-Instruct
   adapter_id: NAMAA-Space/Qari-OCR-0.2.2.1-VL-2B-Instruct
   arch: qwen2_vl
   min_ram_gb: 7       # CPU: skip (don't OOM-kill) if less free RAM
   dtype: float16
+  max_new_tokens: 640
   pricing: null
   card: >-
     NAMAA-Space's earlier Arabic OCR checkpoint (v0.2.2.1), a LoRA adapter on
@@ -692,11 +740,19 @@ qwen3-vl-4b:
 qwen3-vl-4b-bf16:
   # bf16 (not 4-bit) sibling of qwen3-vl-4b — the same-precision base row for the
   # exp3090-qwen3vl4b-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  #
+  # max_new_tokens: the hf_local default (160) truncates every prediction on
+  # the page-scale kitab_hindawi/kitab_historicalbooks sets (median ground
+  # truth ~880/380 chars) -- see docs/experiments/findings-and-notes.md's
+  # kitab_hindawi/kitab_historicalbooks writeup. 640 matches what
+  # run_3090_benchmark.py already defaults to and what the paligemma rows
+  # already have.
   client: hf_local
   hf_id: Qwen/Qwen3-VL-4B-Instruct
   arch: qwen2_5_vl
   min_ram_gb: 16
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Alibaba's Qwen3-VL 4B at bf16 — the untuned, same-precision baseline for the
@@ -704,15 +760,33 @@ qwen3-vl-4b-bf16:
 exp3090-qwen3vl4b-ft-bf16:
   # RTX-3090 LoRA of Qwen3-VL-4B on Muharaf handwriting, merged to bf16 weights.
   # hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
   client: hf_local
   hf_id: models/exp3090-qwen3vl4b-ft
   arch: qwen2_5_vl
   min_ram_gb: 16
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
     an RTX 3090. Cuts held-out handwriting CER by ~half vs the untuned base.
+exp3090-qwen3vl4b-visft-ft-bf16:
+  # Same recipe/data as exp3090-qwen3vl4b-ft-bf16, but train_vision: true (ViT
+  # unfrozen). hf_id is a repo-relative dir: drop the merged weights there to
+  # re-run it. See docs/experiments/findings-and-notes.md for the comparison.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
+  client: hf_local
+  hf_id: models/exp3090-qwen3vl4b-visft-ft
+  arch: qwen2_5_vl
+  min_ram_gb: 16
+  dtype: bfloat16
+  max_new_tokens: 640
+  pricing: null
+  card: >-
+    Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines,
+    vision tower UNfrozen) on an RTX 3090. Beats the frozen-ViT fine-tune on
+    every held-out set, most on nakba_lines and the Maghrebi rasam1 set.
 qwen3-vl-8b:
   # 4-bit on a T4 (~6 GB weights); dropped automatically in CPU mode.
   # Needs a transformers new enough to know Qwen3-VL (>= 4.57) — the Colab
@@ -766,11 +840,14 @@ nakba-baseline-qwen3vl:
 baseer-nakba-bf16:
   # bf16 sibling of nakba-misraj-baseer — the same-precision base row for the
   # exp3090-baseer-nakba-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above -- this row measured
+  # at a 0.10 prediction/reference length ratio on kitab_hindawi before this.
   client: hf_local
   hf_id: Misraj/Baseer__Nakba
   arch: qwen2_5_vl
   min_ram_gb: 12
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Misraj's Baseer-Nakba at bf16 — the untuned, same-precision baseline for the
@@ -779,11 +856,13 @@ baseer-nakba-bf16:
 exp3090-baseer-nakba-ft-bf16:
   # RTX-3090 LoRA of Misraj/Baseer__Nakba on Muharaf handwriting, merged to bf16
   # weights. hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  # max_new_tokens: see qwen3-vl-4b-bf16's comment above.
   client: hf_local
   hf_id: models/exp3090-baseer-nakba-ft
   arch: qwen2_5_vl
   min_ram_gb: 12
   dtype: bfloat16
+  max_new_tokens: 640
   pricing: null
   card: >-
     Baseer-Nakba fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
@@ -819,6 +898,22 @@ exp3090-paligemma2-3b-ft-bf16:
     PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines)
     on an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 /
     exp3090-baseer-nakba-ft-bf16 — isolates the effect of the SigLIP+Gemma-2 base.
+exp3090-paligemma2-3b-visft-ft-bf16:
+  # Same recipe/data as exp3090-paligemma2-3b-ft-bf16, but train_vision: true
+  # (SigLIP unfrozen). hf_id is a repo-relative dir: drop the merged weights
+  # there to re-run it. See docs/experiments/findings-and-notes.md.
+  client: hf_local
+  hf_id: models/exp3090-paligemma2-3b-visft-ft
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines,
+    vision tower UNfrozen) on an RTX 3090. Companion to
+    exp3090-qwen3vl4b-visft-ft-bf16 -- second, unrelated vision tower testing
+    the same train_vision:true question.
 nakba-misraj-baseer:
   # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
   # family (via Misraj's general "Baseer" 3B VLM, further fine-tuned on
@@ -1011,3 +1106,37 @@ arabic-paddleocr-v5:
     Perso-Arabic-script languages (~2,676 images total) — a fast, lightweight
     baseline, not a deep Arabic-specialist. Confirmed weak on diacritized text
     in our own testing; see docs/experiments/paddleocr-runbook.md.
+# --- Tier 5 classical-OCR anchor + OCR-conditioned correction (2026-09) -------
+# From arXiv 2608.22366 ("When Do VLMs Help Arabic Manuscript OCR?"): feeding
+# a classical OCR engine's rough pass to a VLM as a correction prior helps a
+# lot on clean printed text (up to 53% relative CER improvement over
+# Tesseract alone in their aged-print analog) but HURTS on cursive/Maghrebi
+# manuscripts, where Tesseract's own output is unreliable enough to mislead
+# the corrector. Needs pytesseract (`pip install -e .[ocr]`) plus the system
+# tesseract-ocr binary and its Arabic traineddata — see docs/models.md Tier 5.
+tesseract-ara:
+  client: tesseract
+  lang: ara
+  pricing: null
+  card: >-
+    Tesseract 5 (via pytesseract), Arabic traineddata, ignores the prompt.
+    Classical-OCR floor the project's "does a VLM help" hypothesis is
+    measured against. Fast, free, expected weak on cursive manuscripts —
+    that's the point (see docs/models.md Tier 5).
+gemini-flash-lite-page-corrected:
+  # OCR-conditioned correction: Tesseract's raw pass is fed to
+  # gemini-flash-lite-page (the established best row for kitab_hindawi /
+  # kitab_historicalbooks — thinking disabled, max_tokens: 900) as a prior
+  # in the prompt, asking it to correct against the image rather than
+  # transcribe cold. Target THESE two page-scale printed sets specifically;
+  # do not expect this to help (and do not run it on) RASAM/Maghrebi or
+  # handwriting — the paper shows OCR-conditioning actively hurts there, and
+  # a Tesseract pass on cursive manuscripts is closer to noise than a prior.
+  client: ocr_corrected
+  inner: gemini-flash-lite-page
+  lang: ara
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }   # same as the wrapped gemini-flash-lite-page row
+  card: >-
+    gemini-flash-lite-page, given a Tesseract Arabic OCR pass as a correction
+    prior instead of transcribing cold. kitab_hindawi / kitab_historicalbooks
+    only — see docs/models.md Tier 5 and the header comment above this row.
