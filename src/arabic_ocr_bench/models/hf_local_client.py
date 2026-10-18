@@ -8,6 +8,7 @@ Qari-OCR) and PaliGemma. Other architectures get their own branch when added.
 from __future__ import annotations
 
 import time
+from dataclasses import dataclass
 
 from PIL import Image
 
@@ -21,6 +22,51 @@ from ..regex_compat import ensure_regex
 _GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
 
 _DEFAULT_PALIGEMMA_PROMPT = "ocr\n"  # matches the paligemma-arabic-hw adapter's training
+
+
+@dataclass
+class GenOut:
+    """One generate() call: the decoded text plus what X6 / vlm-logprobs need."""
+
+    text: str
+    n_tokens: int | None = None          # generated tokens (incl. EOS), None if unknown
+    finish_reason: str | None = None     # "stop" | "length" | None (unknown)
+    token_logprobs: list[float] | None = None
+    logprob_kind: str | None = None
+
+
+def token_logprobs(step_logits, token_ids) -> list[float]:
+    """log p(chosen token) at each generation step. ``step_logits`` is the
+    per-step tuple generate() returns (``out.logits`` / ``out.scores``), each
+    [batch=1, vocab]; ``token_ids`` the generated ids, one per step."""
+    import torch
+
+    out = []
+    for logits, tid in zip(step_logits, token_ids):
+        row = logits[0] if logits.dim() > 1 else logits
+        out.append(float(torch.log_softmax(row.float(), dim=-1)[int(tid)]))
+    return out
+
+
+def _as_id_set(v) -> set[int]:
+    """eos_token_id may be None, an int, a list, or a tensor."""
+    if v is None:
+        return set()
+    if hasattr(v, "tolist"):
+        v = v.tolist()
+    if isinstance(v, (list, tuple, set)):
+        return {int(x) for x in v if x is not None}
+    return {int(v)}
+
+
+def finish_reason(gen_ids: list[int], max_new_tokens: int, eos_ids: set[int]) -> str | None:
+    """"stop" if an end-of-sequence token was generated, "length" if generation
+    ran to max_new_tokens without one (X6: the reading may be cut off)."""
+    if any(t in eos_ids for t in gen_ids):
+        return "stop"
+    if len(gen_ids) >= max_new_tokens:
+        return "length"
+    return "stop" if eos_ids else None
 
 
 def _cuda_free_total_gb():
@@ -150,7 +196,7 @@ class HFLocalClient:
                  dtype: str = "auto", adapter_id: str | None = None,
                  max_new_tokens: int = 160, load_in_4bit: bool = False,
                  min_ram_gb: float = 0.0, subfolder: str | None = None,
-                 paligemma_prompt: str | None = None):
+                 paligemma_prompt: str | None = None, logprobs: bool = False):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
@@ -160,6 +206,9 @@ class HFLocalClient:
         # ships `final_model/` alongside training checkpoints)
         self.subfolder = subfolder or None
         self.max_new_tokens = max_new_tokens
+        # vlm-logprobs: also return per-token log-probabilities (needs
+        # return_dict_in_generate; costs one vocab-sized row per step).
+        self.logprobs = bool(logprobs)
         # PaliGemma has no chat template - the eval prefix must match whatever
         # prefix the checkpoint was fine-tuned with (`prompt:` in the model's
         # models.yaml entry), or eval scores it on a prefix it never saw.
@@ -464,7 +513,8 @@ class HFLocalClient:
         t0 = time.perf_counter()
         try:
             self._ensure_loaded()
-            text = self._generate(image.convert("RGB"), prompt, eff_max_new_tokens)
+            g = self._generate_full(image.convert("RGB"), prompt, eff_max_new_tokens)
+            text = g.text
         except Exception as e:  # noqa: BLE001
             # An OOM *during generate* (vs. during load) is usually one
             # pathological image, not the whole model — reclaim and let the next
@@ -475,13 +525,55 @@ class HFLocalClient:
             return Prediction(error=f"{type(e).__name__}: {e}",
                               latency_ms=(time.perf_counter() - t0) * 1000)
         latency_ms = (time.perf_counter() - t0) * 1000
+        extra = {"output_tokens": g.n_tokens or 0, "finish_reason": g.finish_reason,
+                 "token_logprobs": g.token_logprobs, "logprob_kind": g.logprob_kind}
         if looks_like_refusal(text):
             return Prediction(raw_text=text, cleaned_text="", error="refusal",
-                              latency_ms=latency_ms)
+                              latency_ms=latency_ms, **extra)
         return Prediction(raw_text=text, cleaned_text=clean_output(text),
-                          latency_ms=latency_ms)
+                          latency_ms=latency_ms, **extra)
+
+    # -- generate() plumbing shared by every generate()-based arch ---------- #
+    def _gen_kwargs(self, max_new_tokens: int | None = None) -> dict:
+        kw = {"max_new_tokens": max_new_tokens or self.max_new_tokens, **_GEN_KW, "return_dict_in_generate": True}
+        if self.logprobs:
+            # raw logits = the model's own distribution (preferred for
+            # calibration); scores = after repetition penalty / n-gram bans,
+            # the fallback on transformers builds without output_logits
+            kw["output_logits"] = True
+            kw["output_scores"] = True
+        return kw
+
+    def _eos_ids(self) -> set[int]:
+        ids: set[int] = set()
+        for owner in (getattr(self._model, "generation_config", None),
+                      getattr(self._model, "config", None)):
+            ids |= _as_id_set(getattr(owner, "eos_token_id", None))
+        return ids
+
+    def _gen_out(self, out, prefix_len: int, text: str, max_new_tokens: int | None = None) -> GenOut:
+        """GenOut from generate()'s output (a GenerateOutput with ``.sequences``,
+        or a bare tensor from an older/remote-code model)."""
+        seqs = getattr(out, "sequences", out)
+        gen = [int(t) for t in seqs[0][prefix_len:]]
+        steps = getattr(out, "logits", None)
+        kind = "raw_logits"
+        if not steps:
+            steps, kind = getattr(out, "scores", None), "processed_scores"
+        lps = None
+        if self.logprobs and steps:
+            gen_steps = gen[-len(steps):] if len(gen) >= len(steps) else gen
+            lps = token_logprobs(steps, gen_steps)
+        return GenOut(
+            text=text, n_tokens=len(gen),
+            finish_reason=finish_reason(gen, max_new_tokens or self.max_new_tokens, self._eos_ids()),
+            token_logprobs=lps, logprob_kind=kind if lps is not None else None,
+        )
 
     def _generate(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
+        return self._generate_full(image, prompt, max_new_tokens).text
+
+    def _generate_full(self, image: Image.Image, prompt: str, max_new_tokens: int) -> GenOut:
         import torch
 
         image = cap_image(image, 1024)  # bound vision tokens / activation memory
@@ -503,33 +595,33 @@ class HFLocalClient:
             self._device
         )
         with torch.no_grad():
-            out = self._model.generate(
-                **inputs, max_new_tokens=max_new_tokens, **_GEN_KW
-            )
-        gen = out[0][inputs["input_ids"].shape[1]:]
-        return self._processor.decode(gen, skip_special_tokens=True).strip()
+            out = self._model.generate(**inputs, **self._gen_kwargs(max_new_tokens))
+        in_len = inputs["input_ids"].shape[1]
+        gen = getattr(out, "sequences", out)[0][in_len:]
+        return self._gen_out(out, in_len, self._processor.decode(gen, skip_special_tokens=True).strip(), max_new_tokens)
 
-    def _generate_minicpmv(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
+    def _generate_minicpmv(self, image: Image.Image, prompt: str, max_new_tokens: int) -> GenOut:
+        # model.chat() hides generate(): no token counts or log-probabilities
         msgs = [{"role": "user", "content": [image, prompt]}]
         out = self._model.chat(
             image=None, msgs=msgs, tokenizer=self._tokenizer,
             sampling=False, max_new_tokens=max_new_tokens,
         )
-        return (out if isinstance(out, str) else str(out)).strip()
+        return GenOut(text=(out if isinstance(out, str) else str(out)).strip())
 
-    def _generate_trocr(self, image: Image.Image, max_new_tokens: int) -> str:
+    def _generate_trocr(self, image: Image.Image, max_new_tokens: int) -> GenOut:
         import torch
 
         pixel_values = self._processor(
             images=image, return_tensors="pt"
         ).pixel_values.to(self._device)
         with torch.no_grad():
-            ids = self._model.generate(
-                pixel_values, max_new_tokens=max_new_tokens, **_GEN_KW
-            )
-        return self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
+            out = self._model.generate(pixel_values, **self._gen_kwargs(max_new_tokens))
+        ids = getattr(out, "sequences", out)
+        text = self._processor.batch_decode(ids, skip_special_tokens=True)[0].strip()
+        return self._gen_out(out, 1, text, max_new_tokens)  # position 0 is the decoder start token
 
-    def _generate_paligemma(self, image: Image.Image, prompt: str, max_new_tokens: int) -> str:
+    def _generate_paligemma(self, image: Image.Image, prompt: str, max_new_tokens: int) -> GenOut:
         import torch
 
         # PaliGemma uses a task-prefix, not a chat template (see self.paligemma_prompt).
@@ -552,7 +644,7 @@ class HFLocalClient:
         )
         in_len = inputs["input_ids"].shape[-1]
         with torch.no_grad():
-            out = self._model.generate(
-                **inputs, max_new_tokens=max_new_tokens, **_GEN_KW
-            )
-        return self._processor.decode(out[0][in_len:], skip_special_tokens=True).strip()
+            out = self._model.generate(**inputs, **self._gen_kwargs(max_new_tokens))
+        seqs = getattr(out, "sequences", out)
+        text = self._processor.decode(seqs[0][in_len:], skip_special_tokens=True).strip()
+        return self._gen_out(out, in_len, text, max_new_tokens)

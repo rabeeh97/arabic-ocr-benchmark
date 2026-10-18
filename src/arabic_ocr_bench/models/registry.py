@@ -75,6 +75,7 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             api_key=api_key,
             api_keys=api_keys,
             per_key_rpm=float(cfg.get("per_key_rpm", 0) or 0),
+            logprobs=bool(cfg.get("logprobs", False)),
         )
     if client == "hf_local":
         from .hf_local_client import HFLocalClient
@@ -90,6 +91,7 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             min_ram_gb=float(cfg.get("min_ram_gb", 0) or 0),
             subfolder=cfg.get("subfolder"),
             paligemma_prompt=cfg.get("prompt"),
+            logprobs=bool(cfg.get("logprobs", False)),
         )
     if client == "paddleocr":
         from .paddleocr_client import PaddleOCRClient
@@ -113,6 +115,17 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
         inner = build_model(inner_name, configs[inner_name])
         return OCRCorrectedClient(name=name, inner=inner, lang=cfg.get("lang", "ara"))
     raise ValueError(f"model {name!r}: unknown client {client!r}")
+
+
+def output_token_cap(cfg: dict[str, Any]) -> int | None:
+    """The output-token cap a client built from ``cfg`` runs with (the same
+    defaults as build_model), or None for clients without one (mock, PaddleOCR)."""
+    client = cfg.get("client")
+    if client == "litellm":
+        return int(cfg.get("max_tokens", 256))
+    if client == "hf_local":
+        return int(cfg.get("max_new_tokens", 160))
+    return None
 
 
 def is_mock(cfg: dict[str, Any]) -> bool:

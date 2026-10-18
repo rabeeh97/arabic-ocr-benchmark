@@ -44,7 +44,14 @@ gemini-flash:
   # 429-ing (rested 60 s) or daily-capped (dropped for the run).
   env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
   per_key_rpm: 14                  # stay under the 15 req/min free-tier cap per key
-  params: { temperature: 0 }
+  # X6 (2026-10-15): 98 % of stored readings stopped at the 256 cap (most at
+  # 252 output tokens, hidden thinking included) and 353 of 385 lost text.
+  # Minimal thinking (litellm maps reasoning_effort -> Gemini 3 thinkingLevel)
+  # plus room for a long line. cache_tag keeps the old capped readings from
+  # being re-served. Probe 5 lines before a full re-run.
+  params: { temperature: 0, reasoning_effort: minimal }
+  max_tokens: 1024
+  cache_tag: x6
   pricing: { input_usd_per_1m: 1.55, output_usd_per_1m: 8.00 }   # confirmed 2026-09 (standard rate effective 2027-01-01: $1.50/$7.50; promo through end-2026 is lower), rounded up for safety margin
   card: >-
     Google's fast multimodal model (Gemini 3.6 Flash). General-purpose
@@ -269,6 +276,10 @@ openrouter-dots3-note-free:
   litellm_id: openrouter/dots-studio/dots-3-note-preview:free
   env_key: OPENROUTER_API_KEY
   params: { temperature: 0 }
+  # X6 (2026-10-15): all 116 stored readings stopped at exactly 256 tokens
+  # and lost text. Free tier, so the larger cap costs nothing.
+  max_tokens: 2048
+  cache_tag: x6
   pricing: null                    # :free variant — $0, rate-limited
   card: >-
     dots.studio "dots-3-note" preview on OpenRouter's free tier — a
@@ -307,6 +318,10 @@ nvidia-llama-3.2-11b-vl:
   env_key: NVIDIA_API_KEY
   api_base: https://integrate.api.nvidia.com/v1
   params: { temperature: 0 }
+  # X6 (2026-10-15): 25 % of stored readings at the 256 cap, 43 of 80 with
+  # text lost (the rest are loops, which any cap ends). Free NIM tier.
+  max_tokens: 512
+  cache_tag: x6
   pricing: null                    # free NIM tier
   card: >-
     Meta's Llama 3.2 11B Vision on NVIDIA's NIM catalog — the small sibling of
@@ -617,10 +632,13 @@ glm-5.3-flash-paid:
   env_key: ZAI_API_KEY_PAID
   api_base: https://api.z.ai/api/paas/v4
   params: { temperature: 0 }  # reasoning_effort tested (low) — see card note below on why it was dropped
-  max_tokens: 4000                             # reasoning model: empty content at 256. A single-sample probe at
+  max_tokens: 16000                            # reasoning model: empty content at 256. A single-sample probe at
                                                 # max_tokens=40000 showed the hardest lines can need >12k tokens to
-                                                # answer at all — kept at 4000 here to stay comparable with the
-                                                # already-reported N=10 run; raise it if a real re-run is wanted.
+                                                # answer at all. X6 (2026-10-15): 25 of 57 stored readings hit the
+                                                # old 4000 cap, so raised to 16000 (worst case ~$0.016/line at the
+                                                # $1/1M output price; cost-review before a full run). cache_tag
+                                                # keeps the 4000-cap readings from being re-served.
+  cache_tag: x6
   pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.00 }   # confirmed 2026-09 list price (post-promo, promo ended 2026-09-09): $0.15/$0.50, rounded up for safety margin
   card: >-
     Z.AI's GLM-5.3-Flash on the paid key. Cheap, native multimodal
@@ -1093,10 +1111,12 @@ arabic-paddleocr-v5:
   # and a known Windows DLL-loading gotcha to check for on this specific box.
   client: paddleocr
   model_name: arabic_PP-OCRv5_mobile_rec
-  # Confirmed on hardware 2026-09-17: this model emits RTL text in raw LTR
-  # pixel order — reverse_output undoes that. See paddleocr_client.py's
-  # docstring before changing this for a different model/version.
-  reverse_output: true
+  # 2026-10-13: turned OFF. The 2026-09-18 bench runs made with reverse_output
+  # read far better when un-reversed (KHATT 85.3 -> 63.0 % CER), i.e. on real
+  # line images the model already returns logical order. The 2026-09-17
+  # synthetic-line test that motivated the flag needs re-checking.
+  # See worktree xai-attribution-spike, docs/research/CORRECTIONS.md (C5).
+  reverse_output: false
   # Leave `device` unset so the launcher can pin CPU via PADDLEOCR_DEVICE
   # (needed while a VLM training run owns the GPU).
   pricing: null

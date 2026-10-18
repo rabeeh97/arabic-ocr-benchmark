@@ -21,7 +21,7 @@ from tqdm.auto import tqdm
 
 from .datasets.registry import build_dataset, load_dataset_configs
 from .models.mock_client import build_mock_prompt
-from .models.registry import build_model, is_mock, load_model_configs
+from .models.registry import build_model, is_mock, load_model_configs, output_token_cap
 from .prompting import get_prompt
 
 _TRANSIENT = ("429", "rate", "timeout", "500", "502", "503", "504", "overloaded")
@@ -64,10 +64,55 @@ class _RateLimiter:
 CACHE_REV = "3"
 
 
-def _cache_key(sample_id: str, model: str, prompt_version: str) -> str:
+def _cache_key(sample_id: str, model: str, prompt_version: str, variant: str = "") -> str:
+    """``variant`` is empty for every pre-existing configuration, so their keys
+    (and cached readings) are unchanged; see _key_variant."""
+    tail = f"|{variant}" if variant else ""
     return hashlib.sha1(
-        f"{sample_id}|{model}|{prompt_version}|r{CACHE_REV}".encode()
+        f"{sample_id}|{model}|{prompt_version}|r{CACHE_REV}{tail}".encode()
     ).hexdigest()
+
+
+def _key_variant(cfg: dict) -> str:
+    """Per-model cache-key suffix, so a generation change for ONE model misses
+    its old cache without a global CACHE_REV bump (which would re-spend every
+    model's calls):
+    - ``cache_tag`` in the model's configs/models.yaml entry (e.g. "x6" when its
+      output-token cap or thinking budget is raised);
+    - "lp" when token log-probabilities are requested (vlm-logprobs), so a
+      cached reading without them is never served to a run that wants them."""
+    parts = [str(cfg["cache_tag"])] if cfg.get("cache_tag") else []
+    if cfg.get("logprobs"):
+        parts.append("lp")
+    return "|".join(parts)
+
+
+def _cap_fields(cfg: dict, pred) -> dict:
+    """X6 row fields: the output-token cap the call ran under, the client's
+    finish reason, and whether the reading hit the cap (so a truncated reading
+    can be flagged or excluded at scoring time)."""
+    out: dict = {}
+    cap = output_token_cap(cfg)
+    if cap is not None:
+        out["token_cap"] = cap
+    if pred.finish_reason is not None:
+        out["finish_reason"] = pred.finish_reason
+        out["hit_token_cap"] = pred.finish_reason == "length"
+    elif cap is not None and pred.output_tokens:
+        out["hit_token_cap"] = pred.output_tokens >= cap
+    return out
+
+
+def _logprob_fields(pred) -> dict:
+    """vlm-logprobs row fields (only when the client returned them)."""
+    lps = pred.token_logprobs
+    if lps is None:
+        return {}
+    return {
+        "token_logprobs": [round(x, 4) for x in lps],
+        "mean_logprob": round(sum(lps) / len(lps), 5) if lps else None,
+        "logprob_kind": pred.logprob_kind,
+    }
 
 
 def _cost_usd(cfg: dict, in_tok: int, out_tok: int) -> float:
@@ -190,11 +235,21 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
                    if name in run_cfg["models"] else cfg)
             for name, cfg in models_cfg.items()
         }
+    # vlm-logprobs: ask every generate()/API client in this run for per-token
+    # log-probabilities. Part of the cache key (see _key_variant), so it only
+    # affects new calls; a model entry can also set `logprobs: true` itself.
+    if run_cfg.get("logprobs"):
+        models_cfg = {
+            name: ({**cfg, "logprobs": True}
+                   if name in run_cfg["models"] and cfg.get("client") in ("hf_local", "litellm")
+                   else cfg)
+            for name, cfg in models_cfg.items()
+        }
     clients = {name: build_model(name, models_cfg[name]) for name in run_cfg["models"]}
 
     def _one(model_name: str, ds_name: str, sample) -> dict:
         cfg = models_cfg[model_name]
-        key = _cache_key(sample.id, model_name, prompt_version)
+        key = _cache_key(sample.id, model_name, prompt_version, _key_variant(cfg))
         cache_file = cache_dir / f"{key}.json"
         if use_cache and cache_file.exists():
             row = json.loads(cache_file.read_text(encoding="utf-8"))
@@ -246,6 +301,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
             "error": pred.error,
             "attempts": attempts,
             "cached": False,
+            **_cap_fields(cfg, pred),
+            **_logprob_fields(pred),
         }
         if runner_id:
             row["runner"] = runner_id

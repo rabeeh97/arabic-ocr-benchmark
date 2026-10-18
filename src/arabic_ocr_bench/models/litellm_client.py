@@ -63,6 +63,26 @@ _RATE_LIMIT_HINTS = (
 )
 
 
+def _api_token_logprobs(choice) -> list[float] | None:
+    """Per-token log-probabilities from an OpenAI-style ``choices[0].logprobs``
+    (``.content`` = [{token, logprob, ...}], objects or dicts); None if absent."""
+    lp = getattr(choice, "logprobs", None)
+    if lp is None and isinstance(choice, dict):
+        lp = choice.get("logprobs")
+    if lp is None:
+        return None
+    content = lp.get("content") if isinstance(lp, dict) else getattr(lp, "content", None)
+    if not content:
+        return None
+    out = []
+    for t in content:
+        v = t.get("logprob") if isinstance(t, dict) else getattr(t, "logprob", None)
+        if v is None:
+            return None
+        out.append(float(v))
+    return out
+
+
 def _is_rate_limit(err: str | None) -> bool:
     return bool(err) and any(h in err.lower() for h in _RATE_LIMIT_HINTS)
 
@@ -175,7 +195,7 @@ class LiteLLMClient:
                  api_base: str | None = None, max_tokens: int = 256,
                  api_key: str | None = None,
                  api_keys: list[tuple[str, str]] | None = None,
-                 per_key_rpm: float = 0):
+                 per_key_rpm: float = 0, logprobs: bool = False):
         self.name = name
         self.litellm_id = litellm_id
         self.params = params or {}
@@ -186,6 +206,10 @@ class LiteLLMClient:
         # a line is <=181 chars; cap output so a model that rambles doesn't run
         # up cost / CER. Mirrors hf_local_client's 160-token cap.
         self.max_tokens = max_tokens
+        # Ask the provider for per-token log-probabilities (vlm-logprobs). Off by
+        # default: not every provider supports it (litellm drops it where it
+        # can't be sent) and it is part of the runner's cache key when on.
+        self.logprobs = bool(logprobs)
         # Optional multi-key pool (e.g. three Gemini free-tier keys). Each
         # (label, value) pair gets its own per-minute window; requests rotate
         # across keys and route around any that is 429-ing / daily-capped.
@@ -247,6 +271,8 @@ class LiteLLMClient:
         }]
         kwargs = dict(model=self.litellm_id, messages=messages,
                       max_tokens=max_tokens, **self.params)
+        if self.logprobs:
+            kwargs["logprobs"] = True
         if self.api_base:
             kwargs["api_base"] = self.api_base
         if api_key:
@@ -274,7 +300,12 @@ class LiteLLMClient:
                                   latency_ms=(time.perf_counter() - t0) * 1000)
         latency_ms = (time.perf_counter() - t0) * 1000
 
-        raw = (resp.choices[0].message.content or "").strip()
+        choice = resp.choices[0]
+        raw = (choice.message.content or "").strip()
+        # "length" = stopped at max_tokens (X6: the reading may be truncated;
+        # on reasoning models the hidden thinking counts against the same cap)
+        finish = getattr(choice, "finish_reason", None)
+        token_lps = _api_token_logprobs(choice) if self.logprobs else None
         usage = getattr(resp, "usage", None)
         in_tok = getattr(usage, "prompt_tokens", 0) or 0
         out_tok = getattr(usage, "completion_tokens", 0) or 0
@@ -286,4 +317,7 @@ class LiteLLMClient:
             input_tokens=in_tok,
             output_tokens=out_tok,
             error=err,
+            finish_reason=str(finish) if finish else None,
+            token_logprobs=token_lps,
+            logprob_kind="api" if token_lps is not None else None,
         )
