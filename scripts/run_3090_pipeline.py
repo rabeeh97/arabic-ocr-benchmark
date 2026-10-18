@@ -132,6 +132,12 @@ def main(argv: list[str] | None = None) -> int:
                     help="interpreter for `uv venv` — pass a signed python.org 3.11 path "
                          "if Smart App Control blocks uv's CPython (WinError 4551)")
     ap.add_argument("--detach", action="store_true", help="re-spawn free of this shell and return")
+    ap.add_argument(
+        "--shared", default=None,
+        help="shared venv + HF/uv cache path, forwarded to BOTH sub-steps — pass the "
+             "same value when hand-running several bases so they reuse one venv and "
+             "one model/dataset cache instead of duplicating both per base",
+    )
     args = ap.parse_args(argv)
 
     root = Path(args.dir).expanduser().resolve()
@@ -172,6 +178,8 @@ def main(argv: list[str] | None = None) -> int:
             train += ["--limit", str(args.limit)]
         if args.venv_python:
             train += ["--venv-python", args.venv_python]
+        if args.shared:
+            train += ["--shared", args.shared]
         if _run(logs, train, step="train"):
             _log(logs, "pipeline: STOP — training/eval did not finish (re-run to resume)")
             return 1

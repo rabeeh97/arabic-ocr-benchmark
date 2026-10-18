@@ -436,7 +436,25 @@ training) to prove the whole pipeline before committing to the long run.
   3. `torch`'s own DLLs (`shm.dll`) — see the next point below.
 - **bitsandbytes on Windows** — 0.44+ ships CUDA wheels; the `bootstrap`
   self-check (`import bitsandbytes`) fails loudly if the wheel is CPU-only or the
-  CUDA runtime mismatches. Only relevant if you switch a config to `qlora`.
+  CUDA runtime mismatches. Only hard-required when a config's `method:` is
+  actually `qlora` (checked via `_config_uses_qlora()`) — for `lora`/`full` a
+  failed import is logged and non-fatal, it was never going to be imported.
+- **`pyarrow`'s native extension also gets Application-Control-blocked** —
+  found 2026-09-17 fetching real training data for the first time on a fresh
+  `--shared` venv: `datasets`' unbounded pyarrow floor resolved to 25.0.1,
+  whose compiled `_dataset` extension this box's Application Control policy
+  rejected outright (`DLL load failed while importing _dataset: An
+  Application Control policy has blocked this file`) — the same failure
+  class as torch's WinError 4551, a different dependency. Unlike the
+  torch/bitsandbytes cases, downgrading enough to dodge the block (pyarrow
+  17) broke on `datasets` 5.x's own API (`AttributeError: module 'pyarrow'
+  has no attribute 'json_'`) — **pyarrow==21.0.0** is confirmed on this box
+  to satisfy both, and bootstrap now pins it explicitly right after the
+  transformers/trl pin. If this box's policy ever changes (or a different
+  box hits the same thing at a different pyarrow version), re-bisect between
+  "new enough for the installed `datasets` version's API" and "old enough
+  the specific compiled file is already trusted" — it is not a clean
+  monotonic version boundary, it's about the specific file's signature/hash.
 - **PaliGemma collator is new** — from the standard PaliGemma-2 SFT recipe but
   not yet run on hardware in this repo. First run: confirm loss starts finite
   (~2–4) and the processor's label mask looks right (spot-check
@@ -472,6 +490,19 @@ reimplemented, only sequencing across models is new. See
 `docs/experiments/misraj-baseer-research.md` for why this data mix (Muharaf +
 AraMS-28k-HTR + RASAM-1/2, NAKBA deliberately excluded) and this model lineup.
 
+**Shared venv and cache (the reason a 4-model queue doesn't cost 4x the
+disk).** The orchestrator passes `--shared <suite-dir>/_shared` to every child
+run, which moves the venv, the HF cache, the uv cache and the uv binary out of
+the per-model folders into one shared location — so there is exactly **one**
+venv (~7 GB) and **one** model/dataset cache for the whole suite, and no base
+weight or dataset is ever downloaded twice. Only each model's own
+`runs/merged/eval/plots/logs` stay under its own folder. `--shared` is also
+available on `run_3090_experiment.py`/`run_3090_benchmark.py` directly if you
+hand-run several experiments — pass the *same* path to both, or the benchmark
+will build a second venv and re-download what it scores. A shared venv is
+pinned to the strictest `needs_transformers` floor across all registered bases
+(4.57), so it serves every model in the queue.
+
 **One-time prerequisite — fetch the shared training data once, not once per
 model:**
 
@@ -491,8 +522,14 @@ re-downloads the same corpora independently.
 **Launch the whole queue, detached:**
 
 ```bat
-python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach
+python scripts\run_experiment_suite.py --dir C:\Users\User\a-experiment\suite-v1 --detach --prune-weights
 ```
+
+Disk-minimising flags: post-merge LoRA checkpoints are pruned by default
+(lossless; `--keep-checkpoints` opts out), and `--prune-weights` additionally
+deletes each model's merged weights once its benchmark sweep is finished,
+keeping all results — ~8 GB (4B) to ~16 GB (8B) reclaimed per model, at the
+cost of having to re-run that config if you later want the weights back.
 
 - Watch: `powershell -NoProfile -Command "Get-Content C:\Users\User\a-experiment\suite-v1\logs\suite.log -Wait -Tail 50"`
 - Status (phase-per-model table + log tail):

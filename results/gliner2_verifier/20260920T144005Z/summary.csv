@@ -1,0 +1,7 @@
+model,n,mean_conf,mean_conf_ground_truth,mean_conf_shuffled,auroc_gt_vs_shuffled,auroc_conf_predicts_low_cer,threshold,n_accepted,n_refused,cer_overall,cer_accepted,cer_refused
+paligemma2-3b-bf16,92,0.8917,0.9483,0.8474,0.9129,0.6797,0.5,91,1,0.2718,0.272,0.2346
+paligemma2-3b-bf16,92,0.8917,0.9483,0.8474,0.9129,0.6797,0.7,86,6,0.2718,0.2628,0.4123
+paligemma2-3b-bf16,92,0.8917,0.9483,0.8474,0.9129,0.6797,0.9,57,35,0.2718,0.2392,0.328
+exp3090-paligemma2-3b-ft-bf16,178,0.8711,0.9526,0.841,0.9183,0.6513,0.5,176,2,0.4323,0.4314,0.5789
+exp3090-paligemma2-3b-ft-bf16,178,0.8711,0.9526,0.841,0.9183,0.6513,0.7,164,14,0.4323,0.4238,0.5688
+exp3090-paligemma2-3b-ft-bf16,178,0.8711,0.9526,0.841,0.9183,0.6513,0.9,88,90,0.4323,0.4129,0.454

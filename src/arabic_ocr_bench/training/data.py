@@ -21,6 +21,13 @@ if TYPE_CHECKING:
 
 _DEFAULT_CFG = Path("configs/datasets.yaml")
 
+# qwen_vl_utils.vision_process.smart_resize hard-rejects an image whose
+# longest:shortest edge ratio is >= 200 ("absolute aspect ratio must be
+# smaller than 200"). 190 leaves a small margin for cap_image()'s integer
+# rounding to shift the ratio slightly without flipping a borderline sample
+# from "accepted here" to "crashes the collator anyway".
+_MAX_ASPECT_RATIO = 190
+
 
 class ScoredSplitLeakError(RuntimeError):
     """Raised when a training source names a split the benchmark scores on."""
@@ -180,6 +187,7 @@ def assemble_dataset(
     prompt_text = get_prompt(data.prompt_version)
     rows: list[dict] = []
     n_skipped = 0
+    n_skipped_aspect = 0
     for src in data.sources:
         for sample in iter_source_samples(src, cfg_path=cfg_path):
             # Some dataset splits carry None/empty transcriptions (already
@@ -188,6 +196,23 @@ def assemble_dataset(
             # (`"".join([None, ...])`), so drop it here instead.
             if not sample.ground_truth or not sample.ground_truth.strip():
                 n_skipped += 1
+                continue
+            # A real crash found training on AraMS-28k-HTR: some real
+            # manuscript-line crops are degenerate slivers with an extreme
+            # aspect ratio (one observed at 389:1). qwen_vl_utils.smart_resize
+            # hard-rejects anything >= 200:1 ("absolute aspect ratio must be
+            # smaller than 200"), which crashes the collator mid-training —
+            # not at data-assembly time, so it silently passes every earlier
+            # check and only surfaces however many steps in it takes to draw
+            # that specific sample. Filter it here instead, where every other
+            # per-sample data-quality check already lives. cap_image() only
+            # rescales proportionally (aspect ratio survives it unchanged
+            # bar integer rounding), so checking the already-capped image is
+            # equivalent to checking the source image.
+            w, h = sample.image.size
+            long_edge, short_edge = max(w, h), min(w, h)
+            if short_edge == 0 or long_edge / short_edge >= _MAX_ASPECT_RATIO:
+                n_skipped_aspect += 1
                 continue
             rows.append(
                 {
@@ -200,6 +225,11 @@ def assemble_dataset(
             )
     if n_skipped:
         print(f"[assemble_dataset] skipped {n_skipped} sample(s) with empty/missing ground truth")
+    if n_skipped_aspect:
+        print(
+            f"[assemble_dataset] skipped {n_skipped_aspect} sample(s) with an aspect ratio "
+            f">= {_MAX_ASPECT_RATIO}:1 (qwen_vl_utils.smart_resize hard-rejects >= 200:1)"
+        )
 
     random.Random(seed).shuffle(rows)
     n_val = round(len(rows) * data.val_fraction)

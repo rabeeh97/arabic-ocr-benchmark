@@ -1,0 +1,11 @@
+profile,model,n,cer_model,cer_mbr_all,cer_mbr_top,cer_oracle,cer_random,mbr_all_minus_model,ci_lo,ci_hi
+raw,baseer-nakba-bf16,198,0.8907,0.5552,0.4998,0.2838,0.6517,-0.3355,-0.3809,-0.2861
+raw,exp3090-baseer-nakba-ft-bf16,198,0.9003,0.5552,0.4998,0.2838,0.6517,-0.3452,-0.3904,-0.2951
+raw,exp3090-paligemma2-3b-ft-bf16,178,0.4323,0.5349,0.4764,0.294,0.6387,0.1026,0.0584,0.1491
+raw,gemini-flash-lite,198,0.796,0.5552,0.4998,0.2838,0.6517,-0.2408,-0.292,-0.1951
+raw,pixtral-12b,198,0.4451,0.5552,0.4998,0.2838,0.6517,0.11,0.0586,0.1613
+diac_insensitive,baseer-nakba-bf16,198,0.8798,0.51,0.4454,0.2147,0.6101,-0.3698,-0.4209,-0.3188
+diac_insensitive,exp3090-baseer-nakba-ft-bf16,198,0.8908,0.51,0.4454,0.2147,0.6101,-0.3807,-0.4316,-0.3321
+diac_insensitive,exp3090-paligemma2-3b-ft-bf16,178,0.3662,0.4871,0.4188,0.2223,0.5944,0.1209,0.0732,0.172
+diac_insensitive,gemini-flash-lite,198,0.7804,0.51,0.4454,0.2147,0.6101,-0.2704,-0.3247,-0.212
+diac_insensitive,pixtral-12b,198,0.3679,0.51,0.4454,0.2147,0.6101,0.1422,0.0931,0.1948

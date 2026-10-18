@@ -38,6 +38,7 @@ import json
 import os
 import platform
 import queue
+import shutil
 import subprocess
 import sys
 import threading
@@ -88,9 +89,47 @@ def _write_state(root: Path, state: dict) -> None:
     _state_path(root).write_text(json.dumps(state, indent=2), encoding="utf-8")
 
 
+def _model_phase_summary(model_dir: Path) -> str:
+    """The newest completed phase for one model, read from its own state.json —
+    the finest-grained "where is this model right now" available without
+    parsing its live log."""
+    p = model_dir / "state.json"
+    if not p.exists():
+        return "not started"
+    try:
+        st = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return "state.json unreadable"
+    phases = st.get("phases", {})
+    done = [ph for ph, rec in phases.items() if rec.get("done")]
+    if not done:
+        return "bootstrapping"
+    # PHASES order lives in run_3090_experiment.py; a plain string sort of a
+    # handful of fixed phase names ("bootstrap" < "eval" alphabetically, e.g.)
+    # would misorder them, so pick the one with the latest "at" timestamp.
+    latest = max(done, key=lambda ph: phases[ph].get("at", ""))
+    return f"{latest} done ({phases[latest].get('at', '?')})"
+
+
+def _write_status_file(root: Path, state: dict) -> None:
+    """A single always-current, plain-text snapshot — `Get-Content
+    <dir>\\STATUS.txt` shows exactly where the suite stands without running
+    any command or parsing JSON. Overwritten (not appended) on every queue
+    status change, so it never goes stale relative to suite_state.json."""
+    lines = [f"suite status — last updated {_now()}", f"suite dir: {root}", ""]
+    for name in round1_queue():
+        q = state.get("queue", {}).get(name, {})
+        status = q.get("status", "queued")
+        detail = _model_phase_summary(root / name) if status in ("running", "done") else ""
+        reason = f" — {q['reason']}" if q.get("reason") else ""
+        lines.append(f"  {name:<20} {status:<10} {detail}{reason}")
+    (root / "STATUS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _set(root: Path, state: dict, name: str, status: str, **extra) -> None:
     state.setdefault("queue", {})[name] = {"status": status, "at": _now(), **extra}
     _write_state(root, state)
+    _write_status_file(root, state)
 
 
 def _venv_python(root: Path) -> Path:
@@ -108,7 +147,11 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
     """Stream a child process's output to the suite log, with a heartbeat."""
     _log(logs, f"--- {step}: {' '.join(cmd)}")
     proc = subprocess.Popen(
-        cmd, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1
+        cmd, cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+        # Without this, Windows decodes child stdout as cp1252 — a child
+        # printing Arabic text raises UnicodeDecodeError right here, silently
+        # freezing suite.log (the one log meant to always be current).
+        encoding="utf-8", errors="replace",
     )
     q: "queue.Queue[str | None]" = queue.Queue()
 
@@ -133,6 +176,8 @@ def _run(logs: Path, cmd: list[str], *, step: str) -> int:
                     f"...  {step}: still running (pid {proc.pid}, "
                     f"{int(time.monotonic() - last)}s since last output)",
                 )
+                if on_heartbeat:
+                    on_heartbeat()
                 continue
             if ln is None:
                 break
@@ -162,18 +207,52 @@ def _bench_full_done(model_dir: Path, experiment: str) -> bool:
     )
 
 
+def _shared_dir(root: Path) -> Path:
+    """The one venv + HF/uv cache every model in the queue reuses.
+
+    Without this each model would get its own ~7 GB venv and its own HF cache,
+    re-downloading every dataset (and, for repeats of the same base, the same
+    weights) per model — the layout that ran the box to ~217 GB before.
+    """
+    return root / "_shared"
+
+
+def _prune_weights(logs: Path, model_dir: Path, name: str) -> None:
+    """Delete a finished model's merged weights, keeping all of its results.
+
+    Only called once that model's benchmark sweep is fully exhausted, so every
+    number has already been scored and copied into <model>/bench/ and
+    <model>/eval/. The weights are the single largest per-model item (~8 GB for
+    a 4B, ~16 GB for an 8B) and are regenerable by re-running the config, which
+    is the tradeoff this flag exists to make.
+    """
+    merged = model_dir / "merged"
+    if not merged.exists():
+        return
+    freed = sum(f.stat().st_size for f in merged.rglob("*") if f.is_file())
+    shutil.rmtree(merged, ignore_errors=True)
+    _log(logs, f"{name}: pruned merged weights ({freed // (1 << 30)} GB freed) — results kept")
+
+
 def _run_one(root: Path, logs: Path, name: str, args) -> int:
     spec = BASES[name]
     model_dir = root / name
+    shared = _shared_dir(root)
     py = sys.executable
+
+    def _refresh() -> None:
+        _write_status_file(root, _read_state(root))
 
     train_cmd = [
         py, str(REPO / "scripts" / "run_3090_experiment.py"),
         "--dir", str(model_dir), "--base", name, "--allow-contam",
+        "--shared", str(shared),
     ]
+    if not args.keep_checkpoints:
+        train_cmd.append("--prune-checkpoints")
     if args.venv_python:
         train_cmd += ["--venv-python", args.venv_python]
-    rc = _run(logs, train_cmd, step=f"{name}: train")
+    rc = _run(logs, train_cmd, step=f"{name}: train", on_heartbeat=_refresh)
     if rc:
         return rc
 
@@ -192,10 +271,15 @@ def _run_one(root: Path, logs: Path, name: str, args) -> int:
     # loop remains so a crash mid-sweep still resumes; with accumulate off,
     # `full` is marked done after a single successful pass.
     for i in range(args.max_bench_iters):
-        rc = _run(logs, bench_cmd, step=f"{name}: bench (pass {i + 1}/{args.max_bench_iters})")
+        rc = _run(
+            logs, bench_cmd, step=f"{name}: bench (pass {i + 1}/{args.max_bench_iters})",
+            on_heartbeat=_refresh,
+        )
         if rc:
             return rc
         if _bench_full_done(model_dir, spec["experiment"]):
+            if args.prune_weights:
+                _prune_weights(logs, model_dir, name)
             return 0
     _log(
         logs,
@@ -221,7 +305,8 @@ def _respawn_detached(logs: Path, argv: list[str]) -> int:
 def _pid_alive(pid: int) -> bool:
     if IS_WIN:
         out = subprocess.run(
-            ["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True, check=False
+            ["tasklist", "/FI", f"PID eq {pid}"],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
         )
         return str(pid) in out.stdout
     try:
@@ -276,6 +361,7 @@ def drive(root: Path, args) -> int:
         "env: HF_TOKEN=" + ("set" if os.environ.get("HF_TOKEN") else "MISSING"),
     )
     state = _read_state(root)
+    _write_status_file(root, state)  # exists from the first instant, not just after a transition
     try:
         for name in round1_queue():
             if state.get("queue", {}).get(name, {}).get("status") == "done" and not args.force:
@@ -323,6 +409,18 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument(
         "--venv-python", dest="venv_python", default=None,
         help="forwarded to run_3090_experiment.py — see its own --venv-python help",
+    )
+    ap.add_argument(
+        "--keep-checkpoints", dest="keep_checkpoints", action="store_true",
+        help="keep each model's runs/<exp>/checkpoint-* after its merge succeeds "
+             "(default: prune them — the merged weights supersede them, so pruning "
+             "is lossless)",
+    )
+    ap.add_argument(
+        "--prune-weights", dest="prune_weights", action="store_true",
+        help="delete each model's merged weights once its benchmark sweep is fully "
+             "exhausted, keeping every result. Saves ~8 GB (4B) to ~16 GB (8B) per "
+             "model; the weights are regenerable by re-running that model's config",
     )
     ap.add_argument(
         "--max-bench-iters", dest="max_bench_iters", type=int, default=50,

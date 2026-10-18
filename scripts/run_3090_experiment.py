@@ -102,13 +102,30 @@ def _rotate_log(dirs: dict) -> None:
         log.rename(dirs["logs"] / f"run.{stamp}.log")
 
 
-def _dirs(root: Path) -> dict:
+def _dirs(root: Path, shared: Path | None = None) -> dict:
+    """Folder layout. By default everything is self-contained under `root`.
+
+    `shared` (from `--shared`) moves the four *reusable, expensive* pieces —
+    the venv, the HF cache, the uv cache and the uv binary — to a path shared
+    across several experiments, while keeping each experiment's own outputs
+    (runs/merged/eval/plots/logs/state.json) under its own `root`. That's what
+    a multi-model queue needs: one venv and one model/dataset cache instead of
+    N copies (N x ~7 GB venv + N x every base weight and dataset download).
+    Without it, a 4-model sweep costs well over 100 GB in duplicated caches.
+    """
+    reusable = shared or root
     d = {
         "root": root,
-        "venv": root / "venv",
-        "hf_cache": root / "hf_cache",
-        "uv_cache": root / "uv_cache",
-        "bin": root / "bin",
+        # The directory --shared's caller considers "the suite root" — where a
+        # single experiment.env belongs when several models share one --shared
+        # (run_experiment_suite.py always passes --shared <suite-dir>/_shared,
+        # so this is <suite-dir>). None when --shared isn't used at all, in
+        # which case dirs["root"] is already the only place to look.
+        "shared_root": shared.parent if shared else None,
+        "venv": reusable / "venv",
+        "hf_cache": reusable / "hf_cache",
+        "uv_cache": reusable / "uv_cache",
+        "bin": reusable / "bin",
         "data": root / "data",
         "runs": root / "runs",
         "merged": root / "merged",
@@ -116,7 +133,9 @@ def _dirs(root: Path) -> dict:
         "plots": root / "plots",
         "logs": root / "logs",
     }
-    for p in d.values():
+    for k, p in d.items():
+        if k == "shared_root" and p is None:
+            continue  # nothing to create — it's just a path to look for experiment.env in
         p.mkdir(parents=True, exist_ok=True)
     return d
 
@@ -262,6 +281,12 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
         proc = subprocess.Popen(
             [str(c) for c in cmd], cwd=str(REPO), env=e,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1,
+            # Without this, Windows decodes child stdout as cp1252 (the locale
+            # default) — any Arabic text a child prints (a sample prediction, a
+            # warning) raises UnicodeDecodeError *in this log-streaming reader*,
+            # silently freezing run.log mid-run. errors="replace" means a truly
+            # undecodable byte degrades one character, not the whole log.
+            encoding="utf-8", errors="replace",
         )
         assert proc.stdout is not None
         q: queue.Queue = queue.Queue()
@@ -376,6 +401,18 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     if _run(dirs, [*pipbase, "-P", "transformers", "-P", "trl",
                    f"transformers>={tfloor},<{tmax}", "trl>=0.21,<1.0"], phase="bootstrap"):
         raise SystemExit("bootstrap: transformers/trl pin install failed")
+    # `datasets`' unbounded pyarrow floor resolves to whatever is newest on
+    # the day this runs (25.0.1 as of 2026-09-17) — that build's native
+    # `_dataset` extension got hard-blocked by this box's Application Control
+    # policy (DLL load failed while importing _dataset), the exact same class
+    # of problem as the transformers/trl drift above, just a different
+    # dependency. pyarrow==17 is old enough to dodge that block but too old
+    # for datasets 5.x's API (AttributeError: module 'pyarrow' has no
+    # attribute 'json_'); 21.0.0 is confirmed on this box to satisfy both.
+    # Re-verify this pin if it ever needs bumping — Application Control
+    # blocks are about the specific compiled file, not a clean version rule.
+    if _run(dirs, [*pipbase, "-P", "pyarrow", "pyarrow==21.0.0"], phase="bootstrap"):
+        raise SystemExit("bootstrap: pyarrow pin install failed")
     _run(dirs, [*pipbase, "matplotlib>=3.7", "hf_transfer"], phase="bootstrap")
     # WDAC on this box blocks pandas 3.x indexing.pyd and pyarrow 25.x
     # _dataset.pyd. Re-pin after the editable install in case the resolver
@@ -395,8 +432,21 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         "print('pandas', pandas.__version__);"
         "print('pyarrow', pyarrow.__version__)"
     )
+    if needs_qlora:
+        check += "import bitsandbytes;print('bitsandbytes', bitsandbytes.__version__)"
+    else:
+        check += (
+            "\ntry:\n"
+            "    import bitsandbytes\n"
+            "    print('bitsandbytes', bitsandbytes.__version__)\n"
+            "except Exception as e:\n"
+            "    print('bitsandbytes: unavailable, not needed for method: lora/full ->', e)"
+        )
     if _run(dirs, [str(py), "-c", check], phase="bootstrap"):
-        raise SystemExit("bootstrap: CUDA / bitsandbytes self-check failed (see log)")
+        raise SystemExit(
+            "bootstrap: CUDA self-check failed (see log)"
+            + (" — bitsandbytes is required because this config uses qlora" if needs_qlora else "")
+        )
     _mark(dirs, state, "bootstrap", uv=str(uv), python=str(py))
 
 
@@ -562,6 +612,20 @@ def phase_merge(dirs: dict, state: dict, spec: dict, args) -> None:
         raise SystemExit("merge: failed")
     _mark(dirs, state, "merge", exp=spec["experiment"], merged=str(out))
 
+    # Only after the merge is confirmed on disk: the checkpoint-* dirs are now
+    # pure redundancy (the merged weights contain the same training result), so
+    # dropping them is lossless and frees the largest remaining per-model item
+    # apart from the merged weights themselves.
+    if getattr(args, "prune_checkpoints", False) and (out / "config.json").exists():
+        freed = 0
+        for ck in sorted(adapter.glob("checkpoint-*")):
+            if not ck.is_dir():
+                continue
+            freed += sum(f.stat().st_size for f in ck.rglob("*") if f.is_file())
+            shutil.rmtree(ck, ignore_errors=True)
+        if freed:
+            _log(dirs, f"merge: pruned checkpoint-* under {adapter} ({freed // (1 << 20)} MB freed)")
+
 
 def phase_eval(dirs: dict, state: dict, spec: dict, args) -> None:
     if _done(state, "eval", spec["experiment"]) and not args.force:
@@ -607,7 +671,7 @@ direct = os.path.join(RUN, "trainer_state.json")
 if os.path.exists(direct):
     cands.append(direct)
 if cands:
-    hist = json.load(open(max(cands, key=os.path.getmtime)))["log_history"]
+    hist = json.load(open(max(cands, key=os.path.getmtime), encoding="utf-8"))["log_history"]
     tr = [(x["step"], x["loss"]) for x in hist if "loss" in x]
     ev = [(x["step"], x["eval_loss"]) for x in hist if "eval_loss" in x]
     if tr:
@@ -716,7 +780,7 @@ def cmd_status(dirs: dict) -> int:
     print(f"base           : {spec_name}")
     pidf = dirs["logs"] / "run.pid"
     if pidf.exists():
-        pid = int(pidf.read_text().strip() or 0)
+        pid = int(pidf.read_text(encoding="utf-8").strip() or 0)
         print(f"worker pid     : {pid}  ({'alive' if _pid_alive(pid) else 'not running'})")
     exp = state.get("experiment")
     print(f"\nphases ({exp or '?'}):")
@@ -825,13 +889,26 @@ def main(argv: list[str] | None = None) -> int:
                     help="proceed even if the contamination check flags an overlap")
     ap.add_argument("--force", action="store_true", help="re-run phases already marked done")
     ap.add_argument("--yes", action="store_true", help="clean: actually delete")
+    ap.add_argument(
+        "--shared", default=None,
+        help="put the venv, HF cache, uv cache and uv binary under this path instead "
+             "of inside --dir, so several experiments reuse ONE venv and ONE "
+             "model/dataset cache (a multi-model queue otherwise duplicates ~7 GB of "
+             "venv plus every base-weight and dataset download per model). "
+             "Each experiment's own runs/merged/eval/plots/logs stay under --dir",
+    )
+    ap.add_argument(
+        "--prune-checkpoints", dest="prune_checkpoints", action="store_true",
+        help="after a successful merge, delete runs/<experiment>/checkpoint-* — the "
+             "merged weights supersede them, so this loses nothing but frees disk",
+    )
     args = ap.parse_args(argv)
 
     root = Path(args.dir).expanduser().resolve()
     if args.cmd == "clean":
         return cmd_clean(root, args.yes)
 
-    dirs = _dirs(root)
+    dirs = _dirs(root, Path(args.shared).expanduser().resolve() if args.shared else None)
     _pin_env(dirs)
     if args.cmd == "status":
         return cmd_status(dirs)

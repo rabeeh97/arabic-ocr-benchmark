@@ -2,24 +2,26 @@
 
 Source: Zenodo `10.5281/zenodo.21499649` ("AraMS-28k-HTR"), ~27,971 real,
 pre-segmented handwritten-manuscript line crops. Not an HF dataset —
-`scripts/fetch_arams.py` downloads and extracts it into a local directory of
-`<id>.png` + `<id>.gt.txt` pairs (image + UTF-8 transcription sidecar), whose
-path is passed here as `root`.
+`scripts/fetch_arams.py` downloads and extracts it, and `root` here must be
+the directory the archive extracts INTO (`data/arams_28k_htr` by default) —
+NOT the nested `AraMs-28k-HTR/` folder the archive itself contains, since
+the corpus's own manifest files use paths relative to that parent
+(e.g. `./AraMs-28k-HTR/images/book_10_..._line000.png`).
 
-The corpus ships with no official train/test split, so this adapter carves
-its own, deterministically: every id is sorted then seed-shuffled, and a
-fixed-size slice is reserved as `split="test"` (the benchmark's held-out
-`arams_htr` row in `configs/datasets.yaml`) with the remainder as
-`split="train"` (a `data.sources` entry in a training config). The split is a
-pure function of the id list plus `TEST_SEED`/`TEST_SIZE` below, so it can
-never drift between the eval entry and any training source pointed at the
-same `root` — there is no other guard against training/eval leakage for this
-dataset (it has no `hf_id` for `check_source_not_scored` to key off).
+CORRECTED 2026-09-17, verified against a real extraction: an earlier version
+of this file assumed the corpus shipped no official split and invented a
+seeded random per-line one. That was wrong. The archive ships its own
+held-out split, **by book, not by line**
+(`train_manifest.txt` / `val_manifest.txt` / `test_manifest.txt` — 19,739 /
+1,486 / 6,744 lines respectively, confirmed different manuscript books
+entirely in each file) — a materially better generalization test than a
+per-line random split, since adjacent lines from the same page/book are
+highly correlated in handwriting style. This adapter reads those manifests
+directly; it does not invent a split.
 """
 
 from __future__ import annotations
 
-import random
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -28,24 +30,37 @@ from PIL import Image
 from ..imaging import cap_image
 from .base import Sample
 
-TEST_SEED = 0
-TEST_SIZE = 1800  # comparable order to nakba_lines (372) / muharaf_lines (1,334)
+_MANIFEST_NAMES = {
+    "train": "train_manifest.txt",
+    "val": "val_manifest.txt",
+    "test": "test_manifest.txt",
+}
 
 
-def _all_ids(root: Path) -> list[str]:
-    return sorted(p.stem for p in root.glob("*.png"))
+def _find_manifest(root: Path, split: str) -> Path:
+    name = _MANIFEST_NAMES.get(split)
+    if name is None:
+        raise ValueError(f"AraMSHTR split must be one of {sorted(_MANIFEST_NAMES)}, got {split!r}")
+    # The manifest lives inside the archive's own top-level folder (its exact
+    # name isn't hardcoded here in case a future release renames it), or
+    # directly under `root` if a caller already points there.
+    for candidate in (*root.glob(f"*/{name}"), root / name):
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(f"no {name} found under {root} (did scripts/fetch_arams.py finish?)")
 
 
-def _split_ids(root: Path, split: str) -> list[str]:
-    ids = _all_ids(root)
-    shuffled = ids[:]
-    random.Random(TEST_SEED).shuffle(shuffled)
-    test_ids = set(shuffled[:TEST_SIZE])
-    if split == "test":
-        return [i for i in ids if i in test_ids]
-    if split == "train":
-        return [i for i in ids if i not in test_ids]
-    raise ValueError(f"AraMSHTR split must be 'train' or 'test', got {split!r}")
+def _manifest_rel_paths(root: Path, split: str) -> list[str]:
+    manifest = _find_manifest(root, split)
+    rel_paths = []
+    for line in manifest.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        # Entries look like "./AraMs-28k-HTR/images/book_10_..._line000.png",
+        # relative to `root` — drop the leading "./".
+        rel_paths.append(line[2:] if line.startswith("./") else line)
+    return rel_paths
 
 
 class AraMSHTR:
@@ -70,36 +85,36 @@ class AraMSHTR:
         self.indices = None if indices is None else list(indices)
         self.name = name or self.__class__.name
         self.max_dim = max_dim
-        self._ids: list[str] | None = None
+        self._rel_paths: list[str] | None = None
         self._abs: list[int] = []
 
-    def _load_ids(self) -> list[str]:
-        if self._ids is not None:
-            return self._ids
-        all_ids = _split_ids(self.root, self.split)
+    def _load_rel_paths(self) -> list[str]:
+        if self._rel_paths is not None:
+            return self._rel_paths
+        all_rel = _manifest_rel_paths(self.root, self.split)
         if self.indices is not None:
-            sel = [i for i in self.indices if 0 <= i < len(all_ids)]
+            sel = [i for i in self.indices if 0 <= i < len(all_rel)]
         else:
-            start = min(self.offset, len(all_ids))
+            start = min(self.offset, len(all_rel))
             end = (
-                len(all_ids)
-                if self.limit is None
-                else min(self.offset + self.limit, len(all_ids))
+                len(all_rel) if self.limit is None else min(self.offset + self.limit, len(all_rel))
             )
             sel = list(range(start, end))
         self._abs = sel
-        self._ids = [all_ids[i] for i in sel]
-        return self._ids
+        self._rel_paths = [all_rel[i] for i in sel]
+        return self._rel_paths
 
     def __len__(self) -> int:
-        return len(self._load_ids())
+        return len(self._load_rel_paths())
 
     def __iter__(self) -> Iterator[Sample]:
-        ids = self._load_ids()
-        for i, item_id in enumerate(ids):
+        rel_paths = self._load_rel_paths()
+        for i, rel in enumerate(rel_paths):
             idx = self._abs[i] if i < len(self._abs) else self.offset + i
-            img = Image.open(self.root / f"{item_id}.png").convert("RGB")
-            gt = (self.root / f"{item_id}.gt.txt").read_text(encoding="utf-8").strip()
+            img_path = self.root / rel
+            gt_path = img_path.with_suffix(".gt.txt")
+            img = Image.open(img_path).convert("RGB")
+            gt = gt_path.read_text(encoding="utf-8").strip()
             yield Sample(
                 id=f"{self.name}/{self.split}/{idx:06d}",
                 image=cap_image(img, self.max_dim),
@@ -109,6 +124,6 @@ class AraMSHTR:
                     "source": "zenodo:10.5281/zenodo.21499649",
                     "split": self.split,
                     "row": idx,
-                    "item_id": item_id,
+                    "item_id": Path(rel).stem,
                 },
             )

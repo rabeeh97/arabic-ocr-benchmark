@@ -1,0 +1,15 @@
+profile,model,n,cer_model,cer_mbr_all,cer_mbr_top,cer_oracle,cer_random,mbr_all_minus_model,ci_lo,ci_hi
+raw,gemini-flash-lite,40,0.1148,0.1431,0.1667,0.0901,0.4676,0.0283,-0.0056,0.0684
+raw,nvidia-llama-3.2-11b-vl,40,0.9635,0.1431,0.1667,0.0901,0.4676,-0.8204,-1.3899,-0.4049
+raw,openrouter-llama-4-maverick,40,0.4747,0.1431,0.1667,0.0901,0.4676,-0.3316,-0.4263,-0.2475
+raw,openrouter-minimax-m3-free,40,1.086,0.1431,0.1667,0.0901,0.4676,-0.9429,-2.0073,-0.4018
+raw,openrouter-qwen2.5-vl-72b,40,0.5872,0.1431,0.1667,0.0901,0.4676,-0.4441,-0.564,-0.3366
+raw,openrouter-qwen3-vl-235b,40,0.351,0.1431,0.1667,0.0901,0.4676,-0.2079,-0.3336,-0.1093
+raw,pixtral-12b,40,1.1814,0.1431,0.1667,0.0901,0.4676,-1.0383,-1.2296,-0.8712
+diac_insensitive,gemini-flash-lite,40,0.09,0.0972,0.106,0.0711,0.3377,0.0071,-0.0098,0.0277
+diac_insensitive,nvidia-llama-3.2-11b-vl,40,0.7601,0.0972,0.106,0.0711,0.3377,-0.6629,-1.1331,-0.3582
+diac_insensitive,openrouter-llama-4-maverick,40,0.3412,0.0972,0.106,0.0711,0.3377,-0.2441,-0.2931,-0.1988
+diac_insensitive,openrouter-minimax-m3-free,40,0.9751,0.0972,0.106,0.0711,0.3377,-0.878,-1.908,-0.3479
+diac_insensitive,openrouter-qwen2.5-vl-72b,40,0.4384,0.0972,0.106,0.0711,0.3377,-0.3412,-0.4336,-0.2444
+diac_insensitive,openrouter-qwen3-vl-235b,40,0.2257,0.0972,0.106,0.0711,0.3377,-0.1286,-0.1853,-0.0814
+diac_insensitive,pixtral-12b,40,0.7666,0.0972,0.106,0.0711,0.3377,-0.6694,-0.7669,-0.5821

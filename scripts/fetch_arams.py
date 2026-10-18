@@ -1,30 +1,30 @@
-"""Download + extract AraMS-28k-HTR (Zenodo) into a local `<id>.png` + `<id>.gt.txt` directory.
+"""Download + extract AraMS-28k-HTR (Zenodo) for `src/arabic_ocr_bench/datasets/arams.py`.
 
     python scripts/fetch_arams.py --dest data/arams_28k_htr
 
 NOT run automatically by anything — the box operator runs this once before a
 training suite that includes `arams_htr`/`arams_train` as a data source (see
-`configs/datasets.yaml`'s `arams_htr` entry and
-`src/arabic_ocr_bench/datasets/arams.py`). Stdlib-only (urllib + zipfile),
+`configs/datasets.yaml`'s `arams_htr` entry). Stdlib-only (urllib + zipfile),
 matching every other launcher/fetch script in this repo — no extra deps to
 install before the download can even start. Idempotent: re-running skips
 files already present and correctly sized.
 
 Zenodo record: 10.5281/zenodo.21499649 ("AraMS-28k-HTR"), ~2.42 GB, real
-pre-segmented historical-manuscript line crops + `.gt.txt` transcriptions.
-Queries the Zenodo REST API for the record's file list rather than
-hardcoding a download URL, so a version bump on Zenodo's side doesn't need a
-code change here.
+pre-segmented historical-manuscript line crops + `.gt.txt` transcriptions,
+plus the corpus's own `train_manifest.txt` / `val_manifest.txt` /
+`test_manifest.txt` (a real, by-book held-out split — see `arams.py`'s
+module docstring). Queries the Zenodo REST API for the record's file list
+rather than hardcoding a download URL, so a version bump on Zenodo's side
+doesn't need a code change here.
 
-IMPORTANT — verify after first run: this script downloads and extracts
-whatever archive(s) the record lists, but the *internal* folder layout
-inside the archive (e.g. images and `.gt.txt` files nested under a
-`lines/` subdirectory, or a flat directory) is not knowable without actually
-fetching it. After the first real run, check that `--dest` ends up
-containing `<id>.png` next to a matching `<id>.gt.txt` directly (what
-`arams.py`'s adapter expects) — if the archive nests them one level deeper,
-rerun with `--strip-components 1` (or adjust the constant below) rather than
-patching the adapter to search subdirectories.
+CONFIRMED 2026-09-17 (extracted for real): the archive's own top-level
+folder nests everything (`<dest>/AraMs-28k-HTR/images/*.png`,
+`<dest>/AraMs-28k-HTR/*_manifest.txt`) — this is intentional, NOT a "needs
+--strip-components" situation, since the manifests' own paths are written
+relative to `<dest>` (e.g. `./AraMs-28k-HTR/images/book_10_..._line000.png`)
+and `arams.py` reads through them rather than assuming a flat layout.
+`--strip-components` is kept only in case a future Zenodo release changes
+this nesting.
 """
 
 from __future__ import annotations
@@ -130,16 +130,19 @@ def main() -> int:
         else:
             print(f"  (not a zip — left as-is under {download_dir}, inspect manually)")
 
-    n_png = len(list(dest.glob("*.png")))
-    n_gt = len(list(dest.glob("*.gt.txt")))
-    print(f"\n{dest}: {n_png} .png / {n_gt} .gt.txt files at the top level")
-    if n_png == 0:
+    # Success is "the manifests arams.py reads exist somewhere under --dest" —
+    # NOT "flat .png files at the top level" (the real layout nests both
+    # images and manifests one folder deeper; see the module docstring).
+    manifests = list(dest.rglob("train_manifest.txt"))
+    n_png = len(list(dest.rglob("*.png")))
+    n_gt = len(list(dest.rglob("*.gt.txt")))
+    if not manifests:
         print(
-            "No .png files found directly under --dest — the archive likely nests them "
-            "one or more directories deeper. Inspect the extracted tree and re-run with "
-            "--strip-components N, per the module docstring."
+            f"\nNo train_manifest.txt found anywhere under {dest} — extraction likely "
+            "failed or the archive's layout changed. Inspect the extracted tree by hand."
         )
         return 1
+    print(f"\n{dest}: manifests found under {manifests[0].parent}, {n_png} .png / {n_gt} .gt.txt files total")
     return 0
 
 

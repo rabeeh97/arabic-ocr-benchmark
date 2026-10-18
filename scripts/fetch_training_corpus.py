@@ -11,12 +11,12 @@ model queue.
 
 Without this, each of the ~4 sequential model runs in the suite would
 independently re-download the same HF corpora (Muharaf, RASAM-1, RASAM-2)
-via its own `phase_fetch`, since every run gets its own `--dir`. This script
-points every download at ONE shared cache
-(`<--dir>/data_cache/hf`, via `HF_HOME`) so it happens exactly once for the
-whole suite; each per-model `run_3090_experiment.py --dir <suite>/<model>`
-invocation should have its `HF_HOME` pointed at the same shared cache
-directory (see `run_experiment_suite.py`) to actually benefit from this.
+via its own `phase_fetch`. This script warms **the same** shared cache the
+suite's runs use — `<--dir>/_shared/hf_cache`, which is exactly what
+`run_experiment_suite.py` passes as `--shared <--dir>/_shared` to both
+`run_3090_experiment.py` and `run_3090_benchmark.py`, and what those pin as
+`HF_HOME`. Keep these paths in sync: if the shared layout changes, this
+prefetch silently warms a cache nobody reads.
 
 Also runs `fetch_arams.py` (AraMS-28k-HTR, the one non-HF source) into the
 SAME repo-relative `data/arams_28k_htr` that `configs/datasets.yaml`'s
@@ -31,11 +31,29 @@ references it to match).
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import fetch_arams  # noqa: E402  (local script import, path set above)
+
+
+def _load_env_file(path: Path) -> None:
+    """Load KEY=VALUE lines from <dir>/experiment.env into os.environ — same
+    convention as run_3090_experiment.py's `_load_env_file`, duplicated here
+    (not imported) because that module is a `__main__`-oriented launcher, not
+    a library. Muharaf is gated; without this, HF_TOKEN is never set and the
+    gated download fails with an auth error instead of using the token that's
+    sitting right next to this script's --dir."""
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        s = raw.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        k, v = s.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
 
 # Every real (non-synthetic) training-data source in the round-1 mix — kept
 # as a flat list here rather than re-parsing training YAML configs, since
@@ -44,9 +62,9 @@ import fetch_arams  # noqa: E402  (local script import, path set above)
 _HF_SOURCES: list[tuple[str, str]] = [
     ("aamijar/muharaf-public", "train"),
     ("calfa-ai/RASAM-1", "train"),
-    ("calfa-ai/RASAM-1", "val"),
+    ("calfa-ai/RASAM-1", "validation"),  # RASAM's own split name — NOT "val" (confirmed 2026-09-17)
     ("calfa-ai/RASAM-2", "train"),
-    ("calfa-ai/RASAM-2", "val"),
+    ("calfa-ai/RASAM-2", "validation"),
 ]
 
 
@@ -72,13 +90,16 @@ def main() -> int:
     args = ap.parse_args()
 
     suite_dir = Path(args.dir)
-    hf_cache = suite_dir / "data_cache" / "hf"
+    # Must match run_experiment_suite.py's _shared_dir() + the `hf_cache` key in
+    # run_3090_experiment.py's _dirs(), or this warms a cache nothing reads.
+    hf_cache = suite_dir / "_shared" / "hf_cache"
     arams_root = Path(args.arams_dest)
     hf_cache.mkdir(parents=True, exist_ok=True)
 
-    import os
-
     os.environ["HF_HOME"] = str(hf_cache)
+    # experiment.env lives next to --dir (same convention as
+    # run_3090_experiment.py) — load it BEFORE any gated download.
+    _load_env_file(suite_dir / "experiment.env")
 
     if not args.skip_hf:
         for hf_id, split in _HF_SOURCES:
@@ -96,7 +117,7 @@ def main() -> int:
             print(f"fetch_arams.py exited {rc} — inspect {arams_root} before starting the suite")
             return rc
 
-    print(f"\nShared cache ready under {suite_dir / 'data_cache'}")
+    print(f"\nShared cache ready under {suite_dir / '_shared'}")
     print(f"  HF_HOME:   {hf_cache}")
     print(f"  AraMS root: {arams_root}")
     return 0
