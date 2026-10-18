@@ -36,12 +36,19 @@ kitab_muharaf:
   params: { subset: arocrbench_muharaf }
   track: line
   split: train
+  # Repackaged from the same underlying Muharaf letters as `muharaf_lines`
+  # under a *different* HF repo id, so `check_source_not_scored()`'s exact
+  # (hf_id, split) match can't see the overlap with the `muharaf_train`
+  # training source. `safe_eval_datasets()` (training/data.py) reads this
+  # field to drop it from any sweep for a model trained on Muharaf.
+  overlaps_source: aamijar/muharaf-public
   license: CC-BY-NC-SA-4.0
   source: https://huggingface.co/datasets/ahmedheakl/arocrbench_muharaf
   card: >-
     KITAB-Bench / Muharaf subset — historical handwritten Arabic segments (a
     small slice of the same Muharaf corpus as `muharaf_lines`), for a direct
-    KITAB-Bench-scored comparison point.
+    KITAB-Bench-scored comparison point. Excluded from any benchmark sweep for
+    a model trained on Muharaf — see `overlaps_source` above.
 kitab_historicalbooks:
   adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
   params: { subset: arocrbench_historicalbooks }
@@ -93,7 +100,7 @@ nakba_lines:
   adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
   params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
   track: line
-  split: test               # also has train/ (fine-tuning) and blind_test/ (no GT)
+  split: test               # 2,095 labeled lines (public test / dev). Official ranking used blind_test.
   license: CC-BY-4.0
   source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
   card: >-
@@ -101,7 +108,22 @@ nakba_lines:
     Arabic documents, 1951-1965; the full collection is ~1.6M words / 6,395 pages)
     from the Palestinian Nakba oral-history archive. Real degraded 20th-century
     handwriting with a curated line-level transcription (`image` + `text`).
-    CC-BY-4.0; the `test` split of the shared task's Systems Track.
+    CC-BY-4.0; the public labeled `test` split (2,095 lines), not the Systems-Track
+    ranking set.
+
+# Official Systems-Track ranking set (corpus CER 0.079 winner). GT was held out
+# during the contest; the Hub copy now ships transcriptions for all 2,671 lines.
+nakba_blind:
+  adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+  params: { subset: U4RASD/omar-al-saleh-manuscripts-segments }
+  track: line
+  split: blind_test
+  license: CC-BY-4.0
+  source: https://huggingface.co/datasets/U4RASD/omar-al-saleh-manuscripts-segments
+  card: >-
+    NAKBA NLP 2026 Systems Track official test — 2,671 held-out line images.
+    Corpus-level CER on this split is the published leaderboard metric
+    (Misraj Baseer 0.079). Score with no `limit` and report `cer_micro_raw`.
 
 # --- RASAM (Calfa / BULAC) — Maghribi-script historical manuscripts ------------
 # HF, ungated, apache-2.0. Same `KitabBench` generic adapter: columns are
@@ -182,6 +204,27 @@ kitab_arabicocr:
   card: >-
     KITAB-Bench / ArabicOCR — a small 50-line printed-Arabic set; too small to
     weigh heavily, kept for completeness.
+
+# --- AraMS-28k-HTR (Zenodo 10.5281/zenodo.21499649) ----------------------------
+# ~27,971 real, pre-segmented handwritten-manuscript line crops. Not an HF
+# dataset — `scripts/fetch_arams.py` downloads + extracts it to `params.root`
+# (default `data/arams_28k_htr/`, not run automatically; see the fetch script).
+# No official split ships with the corpus; the adapter carves its own
+# deterministic train/test split (see `datasets/arams.py`) — `params.root`
+# must point at the SAME directory from any training config's matching
+# `data.sources` entry (split: train) so the two splits stay disjoint.
+arams_htr:
+  adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+  params: { root: data/arams_28k_htr }
+  track: line
+  split: test              # ~1,800 lines reserved; remainder is the `train` split
+  license: see Zenodo record 10.5281/zenodo.21499649
+  source: https://zenodo.org/records/21499649
+  card: >-
+    AraMS-28k-HTR — ~27,971 real historical-manuscript lines, pre-segmented
+    (Kraken-style) line crops, a genuinely different corpus from Muharaf/NAKBA.
+    This is the ~1,800-line held-out `test` slice; the remainder is reserved
+    for fine-tuning.
 
 synthetic:
   adapter: arabic_ocr_bench.datasets.synthetic:Synthetic

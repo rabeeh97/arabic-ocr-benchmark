@@ -24,6 +24,7 @@ eval set).
 | `kitab_historicalbooks` | `arocrbench_historicalbooks` | 10 | degraded historical **print** | KITAB-Bench | tiny |
 | `kitab_hindawi` | `arocrbench_hindawi` | 200 | clean digitised **print** | KITAB-Bench | easy anchor (≈0 CER for strong models) |
 | `synthetic` | in-repo | 10 | rendered print | n/a | offline pipeline check, not a benchmark |
+| `arams_htr` | Zenodo `10.5281/zenodo.21499649` | ~1,800 (test) | real historical-manuscript lines, pre-segmented | see Zenodo record | **wired 2026-09-16** (`datasets/arams.py`); adapter carves its own deterministic train/test split — remainder (~26k lines) is a `suite_v1` training source, not a separate catalog row. `scripts/fetch_arams.py` downloads it — not run automatically, see that script |
 
 ---
 
@@ -54,11 +55,16 @@ classical print) so the board isn't only handwriting.
 
 | corpus | where | size | why it's worth it | what it takes | difficulty |
 | --- | --- | --- | --- | --- | --- |
-| **AraMS-28k-HTR** | Zenodo `10.5281/zenodo.21499649` (~2.42 GB) | line crops + `.gt.txt` | 27,971 real historical-manuscript lines — the single biggest new signal; pre-segmented (Kraken-style) so no polygon work | one-time download, host the crops (Drive or a HF mirror), write `datasets/arams.py` reading `<id>.png` + `<id>.gt.txt` pairs, pick a held-out split | **medium** — the format is trivial; the friction is the 2.4 GB download + where to keep it |
 | **AraMS-28k** (pages) | Zenodo `10.5281/zenodo.22095333` (~2.05 GB) | 3,043 pages / 27,971+629 lines + JSONL | same corpus, page-level with line polygons — needed for a future page track | download + a page adapter that crops lines from the JSONL polygons | **medium-high** — only do this once a page track exists; use `-HTR` for line-level |
-| **SARD** | HF `riotu-lab/SARD` | ~100k+ samples, 6 fonts | clean synthetic **print**, contamination-free, per-font splits — a controlled baseline | custom `datasets/sard.py`: splits are per font (`Amiri`, `Sakkal_Majalla`, …), GT is the `chunk` column, image is **base64 in `image_base64`** (not an HF `Image` feature) — decode + subsample (100k is too big to score whole) | **medium** — non-standard schema; sample ~200/font |
+| **SARD** | HF `riotu-lab/SARD` | ~100k+ samples, 6 fonts | clean synthetic **print**, contamination-free, per-font splits — a controlled baseline | custom `datasets/sard.py`: splits are per font (`Amiri`, `Sakkal_Majalla`, …), GT is the `chunk` column, image is **base64 in `image_base64`** (not an HF `Image` feature) — decode + subsample (100k is too big to score whole) | **medium** — non-standard schema; sample ~200/font. Deliberately deprioritized — see `docs/experiments/misraj-baseer-research.md` |
 | **OpenITI MAKHZAN** | GitHub `OpenITI/MAKHZAN` (JOHD 2026) | 1,497 pages (822 Arabic) | diverse historical print/manuscript; also Persian/Ottoman/Urdu pages | page images + TEI-XML transcriptions; needs an XML parser + line segmentation, and a language filter to keep Arabic | **high** — page track + XML; lower priority |
-| **RASAM 2 val/train** | HF `calfa-ai/RASAM-*` | +2,976 / +5,864 lines | more Maghrebi data if the 372/734-line test sets prove too small to rank on | change `split:` in the config | trivial (already wired) |
+
+`AraMS-28k-HTR` (line crops) and RASAM-1/2's `train`/`val` splits are no
+longer in this table — both are **wired** as of 2026-09-16: AraMS as the
+`arams_htr` row in §1 plus an `arams_train` training source, RASAM's
+train/val as `rasam1_train`/`rasam1_val`/`rasam2_train`/`rasam2_val` training
+sources — see `configs/training/suite_v1/*.yaml` and
+`docs/experiments/misraj-baseer-research.md`.
 
 ---
 
@@ -83,7 +89,44 @@ classical print) so the board isn't only handwriting.
 
 ---
 
-## 5. How to add a dataset
+## 5. Surveyed from papers (2026-09-16) — reference only, not yet triaged into §3
+
+A literature pass over the KITAB-Bench paper (arXiv:2502.14949), Qari-OCR
+(arXiv:2506.02295), the Muharaf NeurIPS listing, and adjacent 2024-2026
+Arabic-OCR work, done to catch anything our own crawl of HF/Zenodo missed.
+Nothing here is wired or vetted for contamination yet — this is a shopping
+list for the next pass, not a commitment.
+
+| name | source | size | content | license/access | fit note |
+| --- | --- | --- | --- | --- | --- |
+| **RASM** (British Library / PRImA RASM2018/2019 competitions) | [BL repository](https://bl.iro.bl.uk/concern/datasets/f866aefa-b025-4675-b37d-44647649ba71), [PRImA](https://www.primaresearch.org/RASM2019/) | 120 pages, 10th–19th c. scientific manuscripts, PAGE-XML line transcriptions + polygons | handwritten historical, different genre (scientific mss) than Muharaf/NAKBA | **CC Public Domain Mark 1.0**, direct download | small but public-domain and genuinely different era/genre — plausible §3 candidate once someone writes the PAGE-XML adapter |
+| **MIRATH** | [Springer 2026 chapter](https://link.springer.com/chapter/10.1007/978-3-032-22032-5_23) (abstract only, paywalled) | 3,000 pages, 9th–19th c., Naskh/Farisi/Maghribi/Thuluth scripts | historical manuscripts | unconfirmed | title says "for Text-Line Segmentation" — **may be layout/polygon-only, not transcribed text**; verify before counting on it as an OCR source |
+| **BADAM** | [arXiv:1907.04041](https://arxiv.org/pdf/1907.04041) | unverified | Arabic-script manuscript baseline detection | public, license unconfirmed | layout/baseline-detection only, no transcriptions — segmentation-track use only |
+| **Arabic OCR Corpus v2 (QNL)** | [Manara/Figshare](https://manara.qnl.qa/articles/dataset/Arabic_OCR_Corpus_2_894_items_from_QNL_Collection_/26984785) | 2,894 printed works | printed, modern/historical mix, Qatar National Library | open, exact license unconfirmed | printed-text diversity, not handwriting — check format/license before adopting |
+| **DuwatBench** | [arXiv:2601.19898](https://arxiv.org/pdf/2601.19898), HF+GitHub | 1,272 samples, 6 calligraphic styles | **artistic/stylized calligraphy**, sentence-level | CC BY 4.0, open | too small/stylized for training; interesting as a robustness eval add-on only |
+| **QariOCR-v0.3-markdown-mixed-dataset** | HF `NAMAA-Space/QariOCR-v0.3-markdown-mixed-dataset` | 37,000 synthetic (29.6k/3.7k/3.7k) | **synthetic** printed, HTML/Markdown-structured | open on HF | same category as SARD — parked with the rest of synthetic data until that's back in scope |
+| **SythenAR** (KITAB-Bench internal) | via `mbzuai/KITAB-Bench` (gated) or upstream source | 500 samples | **synthetic** printed Arabic, distinct from SARD | gated repo | small, synthetic, low priority — noted for completeness |
+| **BCE-Arabic-v1** (KITAB-Bench internal) | via `mbzuai/KITAB-Bench` (gated) | 1,700 samples | layout/box detection only, not OCR text | gated | not an OCR-text source; layout-track only |
+| **CHURRO / CHURRO-DS** | [arXiv:2509.19768](https://arxiv.org/pdf/2509.19768) | 99,491 pages, 155 historical corpora, 46 language clusters | multilingual historical text recognition | unconfirmed | **could not confirm Arabic is even one of the 46 language clusters** — do not treat as an Arabic source until that's checked directly |
+
+**Confirmed detail, not a new dataset:** Muharaf's public corpus is broader
+than "personal letters" — per its NeurIPS listing it spans personal letters,
+diaries, notes, poems, church records, and legal correspondences (1,600+ page
+images, 1,216 public), all still in one consistent Ruq'ah-family calligraphic
+tradition and era. So its narrowness is calligraphic-style/era consistency,
+not lack of content-genre variety — worth keeping precise when arguing "we
+need more than Muharaf."
+
+**Dead ends** (named in review papers/titles but no working, checkable
+source found this pass): IFN/ENIT and AHDB exist but are word/vocabulary-level
+(town names, cheque amounts) rather than running-text lines — poor HTR-line
+fit regardless of license. APTI, PATS-A01/A02, VML-AHTE/HADARA — no working
+link found standalone (only mentioned inside other papers' related-work).
+"Digital Maktaba LP" — only an Academia.edu listing, content unverifiable.
+
+---
+
+## 6. How to add a dataset
 
 1. **If it's an HF `image` + text-column dataset** (any of `text` / `answer` /
    `transcription` / `label` / `gt` / `target`): just add a `configs/datasets.yaml`

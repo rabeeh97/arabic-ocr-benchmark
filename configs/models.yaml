@@ -1,9 +1,12 @@
 # Model registry. See docs/models.md for access details and quirks.
 #
 # client:
-#   mock      -> deterministic, zero-cost; pipeline sanity checks
-#   litellm   -> hosted APIs (or any OpenAI-compatible server via api_base)
-#   hf_local  -> local open-weight / Arabic-specific weights (needs the `local` extra)
+#   mock       -> deterministic, zero-cost; pipeline sanity checks
+#   litellm    -> hosted APIs (or any OpenAI-compatible server via api_base)
+#   hf_local   -> local open-weight / Arabic-specific weights (needs the `local` extra)
+#   paddleocr  -> PaddleOCR's own recognition model (PaddlePaddle, not PyTorch —
+#                 needs the `paddleocr` extra, a completely separate install from
+#                 everything else here; see docs/experiments/paddleocr-runbook.md)
 #
 # `card` is a 1-3 sentence description shown on the leaderboard page.
 # A model being defined here costs nothing; it is only exercised when a run
@@ -42,7 +45,7 @@ gemini-flash:
   env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
   per_key_rpm: 14                  # stay under the 15 req/min free-tier cap per key
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 2.50 }   # (verify)
+  pricing: { input_usd_per_1m: 1.55, output_usd_per_1m: 8.00 }   # confirmed 2026-09 (standard rate effective 2027-01-01: $1.50/$7.50; promo through end-2026 is lower), rounded up for safety margin
   card: >-
     Google's fast multimodal model (Gemini 3.6 Flash). General-purpose
     vision-language, not OCR-tuned; strong at reading printed and clear
@@ -54,9 +57,26 @@ gemini-flash-lite:
   env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
   per_key_rpm: 14
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.10, output_usd_per_1m: 0.40 }   # (verify)
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }   # confirmed 2026-09: $0.30/$2.50, rounded up for safety margin
   card: >-
     Google's cheapest/fastest Gemini (3.5 Flash-Lite). Low-cost baseline row.
+gemini-flash-lite-640tok:
+  # Same model/keys/pool as gemini-flash-lite, just with room to answer beyond
+  # one short line — for page-v2 (prompt-sensitivity study) on the paragraph
+  # /page-scale kitab_hindawi / kitab_historicalbooks subsets, which the
+  # default 256-token cap would truncate. Separate row so it doesn't touch the
+  # gemini-flash-lite config other runs (incl. the resumable full crawl) use.
+  client: litellm
+  litellm_id: gemini/gemini-3.5-flash-lite
+  env_key: GEMINI_API_KEY
+  env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
+  per_key_rpm: 14
+  params: { temperature: 0 }
+  max_tokens: 640
+  pricing: { input_usd_per_1m: 0.35, output_usd_per_1m: 3.00 }   # confirmed 2026-09: $0.30/$2.50, rounded up for safety margin
+  card: >-
+    gemini-flash-lite at 640 max_tokens — for the page-v2 prompt-sensitivity
+    variant on paragraph/page-scale datasets only.
 gemini-pro:
   client: litellm
   litellm_id: gemini/gemini-3.1-pro-preview
@@ -64,7 +84,7 @@ gemini-pro:
   env_keys: [GEMINI1_API_KEY, GEMINI2_API_KEY, GEMINI3_API_KEY]
   per_key_rpm: 14
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }   # (verify)
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 12.50 }   # confirmed 2026-09: $2.00/$12.00 (<=200K token prompts), rounded up for safety margin
   card: >-
     Google's larger multimodal model (Gemini 3.1 Pro) — slower and pricier than
     Flash, generally more accurate on hard images. General-purpose, not
@@ -76,7 +96,7 @@ gpt-4o:
   litellm_id: openai/gpt-4o
   env_key: OPENAI_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 2.50, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 2.55, output_usd_per_1m: 10.50 }   # confirmed 2026-09: $2.50/$10.00, rounded up for safety margin; kept in sync with gpt-4o-paid
   card: >-
     OpenAI's GPT-4o. Strong general vision-language reasoning and text reading;
     no Arabic-specific tuning.
@@ -85,7 +105,7 @@ gpt-4o-mini:
   litellm_id: openai/gpt-4o-mini
   env_key: OPENAI_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.60 }
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.00 }   # confirmed 2026-09: $0.15/$0.60, rounded up for safety margin; kept in sync with gpt-4o-mini-paid
   card: >-
     OpenAI's small vision model — cheap baseline; weaker on dense/degraded script.
 gpt-4.1:
@@ -93,7 +113,7 @@ gpt-4.1:
   litellm_id: openai/gpt-4.1
   env_key: OPENAI_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 8.00 }   # (verify)
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 8.50 }   # confirmed 2026-09: $2.00/$8.00, rounded up for safety margin
   card: >-
     OpenAI GPT-4.1 — improved instruction following over 4o; vision-capable.
 gpt-5:
@@ -101,7 +121,7 @@ gpt-5:
   litellm_id: openai/gpt-5
   env_key: OPENAI_API_KEY
   params: {}                                   # some GPT-5 tiers reject temperature
-  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }   # (verify)
+  pricing: { input_usd_per_1m: 0.65, output_usd_per_1m: 5.50 }   # confirmed 2026-09: $0.625/$5.00, rounded up for safety margin
   card: >-
     OpenAI's GPT-5 (vision). Verify availability/pricing on your account.
 
@@ -111,7 +131,7 @@ pixtral-12b:
   litellm_id: mistral/pixtral-12b-2409
   env_key: MISTRAL_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.15 }   # (verify)
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 0.50 }   # confirmed 2026-09: $0.15/$0.15, rounded up for safety margin (model reported retired by some providers in favor of mistral-large-latest — recheck availability)
   card: >-
     Mistral's open vision-language model (12B), served via Mistral's API. Free
     tier available. A useful open-weight comparison point without local GPU.
@@ -120,7 +140,7 @@ mistral-small:
   litellm_id: mistral/mistral-small-latest
   env_key: MISTRAL_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 0.60 }   # (verify)
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.00 }   # confirmed 2026-09: Mistral Small 4 (current mistral-small-latest) $0.15/$0.60, rounded up for safety margin
   card: >-
     Mistral Small (multimodal). Small, cheap, general-purpose.
 # pixtral-large omitted: `mistral/pixtral-large-latest` -> 400 "Invalid model"
@@ -131,7 +151,7 @@ mistral-medium:
   litellm_id: mistral/mistral-medium-latest
   env_key: MISTRAL_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.40, output_usd_per_1m: 2.00 }   # (verify)
+  pricing: { input_usd_per_1m: 1.55, output_usd_per_1m: 8.00 }   # confirmed 2026-09: mistral-medium-latest now resolves to Medium 3.5 at $1.50/$7.50 (up sharply from the old Medium 3 guess), rounded up for safety margin
   card: >-
     Mistral Medium 3 (multimodal). Mid-tier general model between Small and the
     Pixtral Large flagship; vision-capable, no Arabic-specific tuning.
@@ -142,7 +162,7 @@ openrouter-qwen2.5-vl-72b:
   litellm_id: openrouter/qwen/qwen2.5-vl-72b-instruct
   env_key: OPENROUTER_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.70, output_usd_per_1m: 0.70 }   # (verify)
+  pricing: { input_usd_per_1m: 0.30, output_usd_per_1m: 1.00 }   # confirmed 2026-09: $0.25/$0.75 on OpenRouter, rounded up for safety margin
   card: >-
     Qwen2.5-VL 72B via OpenRouter — a large open VLM with strong OCR, no local
     GPU needed. OpenRouter also exposes many models on one key.
@@ -151,7 +171,7 @@ openrouter-qwen3-vl-235b:
   litellm_id: openrouter/qwen/qwen3-vl-235b-a22b-instruct
   env_key: OPENROUTER_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.21, output_usd_per_1m: 1.90 }   # (verify)
+  pricing: { input_usd_per_1m: 0.25, output_usd_per_1m: 1.00 }   # confirmed 2026-09: $0.20/$0.88 on OpenRouter, rounded up for safety margin
   card: >-
     Qwen3-VL 235B (A22B MoE) via OpenRouter — current-generation large open VLM
     with very strong multilingual OCR. No local GPU needed.
@@ -160,7 +180,7 @@ openrouter-llama-4-maverick:
   litellm_id: openrouter/meta-llama/llama-4-maverick
   env_key: OPENROUTER_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 0.70 }   # (verify)
+  pricing: { input_usd_per_1m: 0.25, output_usd_per_1m: 1.00 }   # confirmed 2026-09: $0.20/$0.696-0.70 on OpenRouter (varies by routed provider), rounded up for safety margin
   card: >-
     Meta Llama 4 Maverick (multimodal MoE) via OpenRouter. A current open
     baseline; historically weaker on non-Latin script than Qwen-VL.
@@ -183,6 +203,11 @@ openrouter-gemma-4-26b-free:
   card: >-
     Google's Gemma 4 26B-A4B (sparse MoE, multimodal) on OpenRouter's free
     tier. Smaller/faster active-param sibling of the 31B row.
+# RETIRED 2026-09-12: OpenRouter now 404s this route — "This model is
+# unavailable for free. The paid version is available now - use this slug
+# instead: minimax/minimax-m3." Do not add back to any run config until
+# switched to the paid slug (and pricing updated) or OpenRouter reinstates a
+# free tier. Historical rows from before the retirement are left as-is.
 openrouter-minimax-m3-free:
   client: litellm
   litellm_id: openrouter/minimax/minimax-m3:free
@@ -192,17 +217,13 @@ openrouter-minimax-m3-free:
   card: >-
     MiniMax M3 (multimodal) on OpenRouter's free tier. Long-context general
     VLM from MiniMax; included as a non-Qwen / non-Google open comparison.
-openrouter-nemotron-omni-free:
-  client: litellm
-  litellm_id: openrouter/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
-  env_key: OPENROUTER_API_KEY
-  params: { temperature: 0 }
-  max_tokens: 2000                  # reasoning model — don't token-starve the answer
-  pricing: null                    # :free variant — $0, rate-limited
-  card: >-
-    NVIDIA Nemotron-3-Nano Omni 30B-A3B (reasoning) on OpenRouter's free tier.
-    Omni-modal MoE; the OpenRouter route is tried because the NVIDIA-NIM copy of
-    this model hangs on real handwriting crops (see nemotron-omni above).
+# openrouter-nemotron-omni-free REMOVED 2026-09-12: on real handwriting crops
+# its :free-tier route dumped reasoning/unrelated content into the scored
+# answer field — median CER 18,184%, 71% of lines over 200% CER (not "a hard
+# model," a broken output path). Its historical rows are archived, not
+# deleted, at results/_excluded/openrouter-nemotron-omni-free.jsonl. Do not
+# re-add without confirming OpenRouter's :free route separates reasoning from
+# the final answer the way nemotron-omni's direct NVIDIA-NIM route claims to.
 openrouter-dots3-note-free:
   client: litellm
   litellm_id: openrouter/dots-studio/dots-3-note-preview:free
@@ -317,7 +338,7 @@ deepseek-vl-flash:
   env_key: DEEPSEEK_API_KEY
   api_base: https://api.deepseek.com
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.22, output_usd_per_1m: 0.66 }   # off-peak; 2x at peak
+  pricing: { input_usd_per_1m: 0.25, output_usd_per_1m: 1.00 }   # confirmed 2026-09 off-peak: $0.2156/$0.6468, rounded up for safety margin; 2x at peak (not reflected here — treat this row as the optimistic case)
   card: >-
     DeepSeek V4-Flash-Vision-Exp — DeepSeek's first multimodal model, image +
     screenshot understanding on the ultra-fast V4-Flash base. Tuned for
@@ -370,7 +391,7 @@ claude-haiku:
   litellm_id: anthropic/claude-haiku-4-5
   env_key: ANTHROPIC_API_KEY
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 1.00, output_usd_per_1m: 5.00 }
+  pricing: { input_usd_per_1m: 1.05, output_usd_per_1m: 5.50 }   # confirmed 2026-09: $1.00/$5.00, rounded up for safety margin
   card: >-
     Anthropic's small, fast model (Haiku 4.5). Cheapest of the Claude tier;
     general-purpose, not OCR-specialised.
@@ -379,7 +400,7 @@ claude-sonnet:
   litellm_id: anthropic/claude-sonnet-5
   env_key: ANTHROPIC_API_KEY
   params: {}                                   # Sonnet 5 rejects temperature/top_p
-  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 10.50 }   # confirmed 2026-09: $2.00/$10.00, rounded up for safety margin
   card: >-
     Anthropic's mid-tier model (Sonnet 5). Careful transcriber that tends to
     preserve diacritics well; general-purpose, not OCR-specialised.
@@ -388,7 +409,7 @@ claude-opus:
   litellm_id: anthropic/claude-opus-5
   env_key: ANTHROPIC_API_KEY
   params: {}                                   # Opus 5 rejects temperature/top_p
-  pricing: { input_usd_per_1m: 5.00, output_usd_per_1m: 25.00 }
+  pricing: { input_usd_per_1m: 5.05, output_usd_per_1m: 25.50 }   # confirmed 2026-09: $5.00/$25.00, rounded up for safety margin
   card: >-
     Anthropic's most capable widely-released model (Opus 5). Strongest general
     vision-language reasoning in the set; no Arabic-specific tuning. Priciest.
@@ -412,7 +433,7 @@ claude-haiku-paid:
   litellm_id: anthropic/claude-haiku-4-5
   env_key: ANTHROPIC_API_KEY_PAID
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 1.00, output_usd_per_1m: 5.00 }
+  pricing: { input_usd_per_1m: 1.05, output_usd_per_1m: 5.50 }   # confirmed 2026-09: $1.00/$5.00, rounded up for safety margin
   card: >-
     Anthropic Claude Haiku 4.5 on the paid key. Cheapest Claude tier; fast,
     general-purpose, not OCR-specialised.
@@ -422,7 +443,7 @@ claude-sonnet-paid:
   env_key: ANTHROPIC_API_KEY_PAID
   params: {}                                   # Sonnet 5 rejects temperature/top_p
   max_tokens: 4000                             # adaptive thinking on by default
-  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 10.50 }   # confirmed 2026-09: $2.00/$10.00, rounded up for safety margin
   card: >-
     Anthropic Claude Sonnet 5 on the paid key. Careful transcriber, tends to
     preserve diacritics; adaptive thinking is on by default.
@@ -432,7 +453,7 @@ claude-opus-paid:
   env_key: ANTHROPIC_API_KEY_PAID
   params: {}                                   # Opus 5 rejects temperature/top_p
   max_tokens: 4000                             # adaptive thinking on by default
-  pricing: { input_usd_per_1m: 5.00, output_usd_per_1m: 25.00 }
+  pricing: { input_usd_per_1m: 5.05, output_usd_per_1m: 25.50 }   # confirmed 2026-09: $5.00/$25.00, rounded up for safety margin
   card: >-
     Anthropic Claude Opus 5 on the paid key. Strongest general vision-language
     reasoning in the set; no Arabic tuning.
@@ -442,7 +463,7 @@ claude-fable-paid:
   env_key: ANTHROPIC_API_KEY_PAID
   params: {}                                   # Fable 5 rejects temperature/top_p
   max_tokens: 4000                             # thinking always on (billed as output)
-  pricing: { input_usd_per_1m: 10.00, output_usd_per_1m: 50.00 }
+  pricing: { input_usd_per_1m: 10.05, output_usd_per_1m: 50.50 }   # confirmed 2026-09: $10.00/$50.00 (same for Fable 5 and 5.1 — Anthropic prices them identically; 5.1's only listed difference is a cheaper cache-read rate, which this registry doesn't track separately), rounded up for safety margin
   card: >-
     Anthropic Claude Fable 5 on the paid key — the flagship above Opus 5.
     Thinking is always on, so it is slower and spends output tokens on reasoning;
@@ -453,7 +474,7 @@ claude-fable-5-1-paid:
   env_key: ANTHROPIC_API_KEY_PAID
   params: {}
   max_tokens: 4000
-  pricing: { input_usd_per_1m: 10.00, output_usd_per_1m: 50.00 }
+  pricing: { input_usd_per_1m: 10.05, output_usd_per_1m: 50.50 }   # confirmed 2026-09: $10.00/$50.00, same as Fable 5, rounded up for safety margin
   card: >-
     Anthropic Claude Fable 5.1 on the paid key. Same price and always-on thinking
     as Fable 5; the current top flagship revision.
@@ -464,7 +485,7 @@ gpt-4o-mini-paid:
   litellm_id: openai/gpt-4o-mini
   env_key: OPENAI_API_KEY_PAID
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.60 }
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.00 }   # confirmed 2026-09: $0.15/$0.60, rounded up for safety margin
   card: >-
     OpenAI GPT-4o mini on the paid key. Cheap vision baseline; weaker on
     dense/degraded script.
@@ -473,7 +494,7 @@ gpt-4o-paid:
   litellm_id: openai/gpt-4o
   env_key: OPENAI_API_KEY_PAID
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 2.50, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 2.55, output_usd_per_1m: 10.50 }   # confirmed 2026-09: $2.50/$10.00, rounded up for safety margin
   card: >-
     OpenAI GPT-4o on the paid key. Strong general vision-language reasoning; no
     Arabic-specific tuning.
@@ -482,7 +503,7 @@ gpt-4.1-paid:
   litellm_id: openai/gpt-4.1
   env_key: OPENAI_API_KEY_PAID
   params: { temperature: 0 }
-  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 8.00 }
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 8.50 }   # confirmed 2026-09: $2.00/$8.00, rounded up for safety margin; kept in sync with the gpt-4.1 row (same litellm_id — a prior pass updated only one of the pair)
   card: >-
     OpenAI GPT-4.1 on the paid key. Better instruction-following than 4o;
     vision-capable.
@@ -492,7 +513,7 @@ gpt-5-paid:
   env_key: OPENAI_API_KEY_PAID
   params: { reasoning_effort: minimal }        # GPT-5 rejects temperature; minimal reasoning for OCR
   max_tokens: 4000                             # reasoning tokens still count toward output
-  pricing: { input_usd_per_1m: 1.25, output_usd_per_1m: 10.00 }
+  pricing: { input_usd_per_1m: 0.65, output_usd_per_1m: 5.50 }   # confirmed 2026-09: $0.625/$5.00, rounded up for safety margin; kept in sync with the gpt-5 row (same litellm_id — a prior pass updated only one of the pair)
   card: >-
     OpenAI GPT-5 (vision) on the paid key. Reasoning model, run at
     reasoning_effort=minimal — transcription needs no deliberation and full
@@ -503,7 +524,7 @@ gpt-5.6-sol-paid:
   env_key: OPENAI_API_KEY_PAID
   params: { reasoning_effort: none }            # "minimal" is ignored by this model; "none" is a distinct, lower level — probing it
   max_tokens: 8000                             # headroom: reasoning ~3k tok before the answer
-  pricing: { input_usd_per_1m: 4.00, output_usd_per_1m: 20.00 }
+  pricing: { input_usd_per_1m: 5.05, output_usd_per_1m: 30.50 }   # confirmed 2026-09: real list price is $5.00/$30.00 — the prior $4.00/$20.00 was simply wrong, not just unconfirmed; rounded up for safety margin
   card: >-
     OpenAI GPT-5.6 "sol" on the paid key — the largest of the GPT-5.6 trio.
     Reasoning model; ignores reasoning_effort=minimal, so probing
@@ -515,7 +536,7 @@ gpt-5.6-terra-paid:
   env_key: OPENAI_API_KEY_PAID
   params: { reasoning_effort: none }             # was "minimal" (honoured, but "none" is lower still) — probing it
   max_tokens: 4000
-  pricing: { input_usd_per_1m: 2.00, output_usd_per_1m: 12.00 }
+  pricing: { input_usd_per_1m: 2.05, output_usd_per_1m: 12.50 }   # confirmed 2026-09: $2.00/$12.00, rounded up for safety margin
   card: >-
     OpenAI GPT-5.6 "terra" on the paid key — the mid GPT-5.6 tier. Reasoning
     model, probing reasoning_effort=none (lower than the minimal we used before).
@@ -525,7 +546,7 @@ gpt-5.6-luna-paid:
   env_key: OPENAI_API_KEY_PAID
   params: { reasoning_effort: none }            # "minimal" is ignored by this model; "none" is a distinct, lower level — probing it
   max_tokens: 8000                             # headroom: reasoning ~2k tok before the answer
-  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.20 }
+  pricing: { input_usd_per_1m: 0.25, output_usd_per_1m: 1.50 }   # confirmed 2026-09: $0.20/$1.20, rounded up for safety margin
   card: >-
     OpenAI GPT-5.6 "luna" on the paid key — the small/cheap GPT-5.6 tier.
     Reasoning model; ignores reasoning_effort=minimal, so probing
@@ -538,7 +559,7 @@ gpt-6-astra-paid:
   env_key: OPENAI_API_KEY_PAID
   params: { reasoning_effort: low }              # Astra rejects reasoning_effort=none with a 400 (per OpenAI docs); low is its floor
   max_tokens: 4000
-  pricing: { input_usd_per_1m: 10.00, output_usd_per_1m: 50.00 }
+  pricing: { input_usd_per_1m: 10.05, output_usd_per_1m: 50.50 }   # confirmed 2026-09: $10.00/$50.00 standard short-context tier, rounded up for safety margin
   card: >-
     OpenAI's flagship GPT-6 Astra on the paid key. Not yet run here — a
     single-sample probe only, at reasoning_effort=low (its lowest supported
@@ -560,7 +581,7 @@ glm-5.3-flash-paid:
                                                 # max_tokens=40000 showed the hardest lines can need >12k tokens to
                                                 # answer at all — kept at 4000 here to stay comparable with the
                                                 # already-reported N=10 run; raise it if a real re-run is wanted.
-  pricing: { input_usd_per_1m: 0.15, output_usd_per_1m: 0.50 }   # list price (verify — currently ~50% promo)
+  pricing: { input_usd_per_1m: 0.20, output_usd_per_1m: 1.00 }   # confirmed 2026-09 list price (post-promo, promo ended 2026-09-09): $0.15/$0.50, rounded up for safety margin
   card: >-
     Z.AI's GLM-5.3-Flash on the paid key. Cheap, native multimodal
     (image/video/text/file) input — confirmed working on handwritten Arabic
@@ -642,6 +663,56 @@ ain-7b:
   card: >-
     AIN (MBZUAI), an Arabic-centric vision-language model built on Qwen2-VL-7B and
     trained on a large bilingual Arabic-English multimodal corpus. Run 4-bit here.
+ain-7b-bf16:
+  # bf16 (not 4-bit) sibling of ain-7b — the same-precision base row for the
+  # suite-v1-ain7b fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: MBZUAI/AIN
+  arch: qwen2_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    AIN (MBZUAI) at bf16 — the untuned, same-precision baseline for the
+    suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
+qwen3-vl-4b:
+  # The small dense Qwen3-VL. Untuned reference for the RTX-3090 fine-tune
+  # (configs/training/exp3090_qwen3vl4b.yaml). Needs transformers >= 4.57 — an
+  # old local env raises "Unrecognized ... Qwen3VL" and the sweep skips it.
+  client: hf_local
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen2_5_vl                # same processor / chat-template family as 2.5-VL
+  min_ram_gb: 16
+  dtype: bfloat16
+  load_in_4bit: true
+  pricing: null
+  card: >-
+    Alibaba's Qwen3-VL, 4B params, run 4-bit. Current-generation small general
+    VLM; the untuned baseline against the exp3090-qwen3vl4b fine-tune.
+qwen3-vl-4b-bf16:
+  # bf16 (not 4-bit) sibling of qwen3-vl-4b — the same-precision base row for the
+  # exp3090-qwen3vl4b-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen2_5_vl
+  min_ram_gb: 16
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Alibaba's Qwen3-VL 4B at bf16 — the untuned, same-precision baseline for the
+    RTX-3090 Muharaf LoRA. Near-unusable on cursive handwriting (~0.9 CER).
+exp3090-qwen3vl4b-ft-bf16:
+  # RTX-3090 LoRA of Qwen3-VL-4B on Muharaf handwriting, merged to bf16 weights.
+  # hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  client: hf_local
+  hf_id: models/exp3090-qwen3vl4b-ft
+  arch: qwen2_5_vl
+  min_ram_gb: 16
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Qwen3-VL-4B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
+    an RTX 3090. Cuts held-out handwriting CER by ~half vs the untuned base.
 qwen3-vl-8b:
   # 4-bit on a T4 (~6 GB weights); dropped automatically in CPU mode.
   # Needs a transformers new enough to know Qwen3-VL (>= 4.57) — the Colab
@@ -658,6 +729,18 @@ qwen3-vl-8b:
     Alibaba's Qwen3-VL, 8B params, run 4-bit. Current-generation general VLM and
     the base for the NAKBA NLP 2026 shared-task baseline; included both as a
     fresh untuned reference and as the backbone of `nakba-baseline-qwen3vl`.
+qwen3-vl-8b-bf16:
+  # bf16 (not 4-bit) sibling of qwen3-vl-8b — the same-precision base row for
+  # the suite-v1-qwen3vl8b fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: Qwen/Qwen3-VL-8B-Instruct
+  arch: qwen3_vl
+  min_ram_gb: 24
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Alibaba's Qwen3-VL 8B at bf16 — the untuned, same-precision baseline for the
+    suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
 nakba-baseline-qwen3vl:
   # 4-bit base + LoRA adapter; dropped automatically in CPU mode.
   client: hf_local
@@ -680,10 +763,69 @@ nakba-baseline-qwen3vl:
 # The rest (Al-Warraq, Not Gemma, Latent Narratives, Oblevit, 3reeq) only
 # describe their approach in the proceedings — no checkpoint to load. PALNLP /
 # SARD were Subtask 1 (manual transcription), not OCR systems.
+baseer-nakba-bf16:
+  # bf16 sibling of nakba-misraj-baseer — the same-precision base row for the
+  # exp3090-baseer-nakba-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  client: hf_local
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Misraj's Baseer-Nakba at bf16 — the untuned, same-precision baseline for the
+    RTX-3090 Muharaf LoRA. Already Arabic-manuscript-specialised (NAKBA CER 0.079)
+    going in, unlike the generic Qwen3-VL base.
+exp3090-baseer-nakba-ft-bf16:
+  # RTX-3090 LoRA of Misraj/Baseer__Nakba on Muharaf handwriting, merged to bf16
+  # weights. hf_id is a repo-relative dir: drop the merged weights there to re-run it.
+  client: hf_local
+  hf_id: models/exp3090-baseer-nakba-ft
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Baseer-Nakba fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines) on
+    an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 — isolates
+    the effect of starting from an Arabic-specialised base.
+paligemma2-3b-bf16:
+  # bf16 sibling of paligemma-arabic-hw's base — the untuned base row for the
+  # exp3090-paligemma2-3b-ft-bf16 fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # `prompt` must match the fine-tune's training prefix (PaliGemma has no chat
+  # template) — see training.sft_vlm._PALIGEMMA_PREFIX.
+  client: hf_local
+  hf_id: google/paligemma2-3b-pt-448
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    Untuned google/paligemma2-3b-pt-448 at bf16 — base row for the
+    exp3090-paligemma2-3b held-out benchmark.
+exp3090-paligemma2-3b-ft-bf16:
+  # RTX-3090 LoRA of PaliGemma-2-3B on Muharaf handwriting, merged to bf16
+  # weights. hf_id is a repo-relative dir: drop the merged weights there to
+  # re-run it.
+  client: hf_local
+  hf_id: models/exp3090-paligemma2-3b-ft
+  arch: paligemma
+  dtype: bfloat16
+  max_new_tokens: 640
+  prompt: transcribe the arabic text in this image
+  pricing: null
+  card: >-
+    PaliGemma-2-3B fine-tuned (bf16 LoRA r=16, 1 epoch, 8k Muharaf train lines)
+    on an RTX 3090. Same recipe and data as exp3090-qwen3vl4b-ft-bf16 /
+    exp3090-baseer-nakba-ft-bf16 — isolates the effect of the SigLIP+Gemma-2 base.
 nakba-misraj-baseer:
   # Winner of the Systems Track (corpus CER 0.079 / WER 0.244). Qwen2.5-VL-3B
-  # family (via Misraj's "Baseer" 3B VLM), slerp-merged checkpoints. ~7.6 GB
-  # bf16 — fits a T4 without quantization. License CC-BY-NC-SA-4.0 (research).
+  # family (via Misraj's general "Baseer" 3B VLM, further fine-tuned on
+  # Muharaf->NAKBA with a differential vision/decoder LR, then epoch-1+epoch-5
+  # weight-averaged — NOT a cross-model SLERP merge, see
+  # docs/experiments/misraj-baseer-research.md). ~7.6 GB bf16 — fits a T4
+  # without quantization. License CC-BY-NC-SA-4.0 (research).
   client: hf_local
   hf_id: Misraj/Baseer__Nakba
   arch: qwen2_5_vl
@@ -695,6 +837,20 @@ nakba-misraj-baseer:
     competition (corpus CER 0.079). Adapts the 3B Baseer Arabic VLM to cursive
     historical manuscripts with a progressive training pipeline, domain-matched
     augmentation and SLERP checkpoint merging. CC-BY-NC-SA-4.0.
+nakba-misraj-baseer-contest:
+  # Same weights as nakba-misraj-baseer, decoded the way Misraj published:
+  # prompt "Extract the text from the above document.", max 128 new tokens
+  # (misraj-ai/Nakba-pipeline). A separate row so line-v2 cache stays intact.
+  client: hf_local
+  hf_id: Misraj/Baseer__Nakba
+  arch: qwen2_5_vl
+  min_ram_gb: 12
+  dtype: bfloat16
+  max_new_tokens: 128
+  pricing: null
+  card: >-
+    Misraj Baseer-Nakba re-scored with the contest inference prompt and 128-token
+    cap from misraj-ai/Nakba-pipeline, to compare against the published 0.079 CER.
 nakba-ketaba-ocr:
   # Ketaba-OCR team (self-reported CER 0.082). A DoRA + rslora adapter (r=32) on
   # a dedicated Arabic-English handwritten-OCR model that is itself a
@@ -771,6 +927,21 @@ fanar-oryx-7b:
     Fanar-2-Oryx-IVU (QCRI) — an Arabic-first vision-language model fine-tuned
     from Qwen2.5-VL-7B for culturally-aware image understanding. Not OCR-tuned;
     the un-adapted base of nakba-warraq-fanar. Run 4-bit.
+fanar-oryx-7b-bf16:
+  # bf16 (not 4-bit) sibling of fanar-oryx-7b — the same-precision base row for
+  # the suite-v1-fanar2-oryx fine-tune. Registered by scripts/run_3090_benchmark.py.
+  # Fine-tuning/redistribution license unconfirmed as of 2026-09-16 — see
+  # scripts/_experiment_bases.py's `license_check` gate before actually running
+  # this experiment slot.
+  client: hf_local
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  arch: qwen2_5_vl
+  min_ram_gb: 22
+  dtype: bfloat16
+  pricing: null
+  card: >-
+    Fanar-2-Oryx-IVU (QCRI) at bf16 — the untuned, same-precision baseline for
+    the suite_v1 fine-tune on the combined Muharaf+AraMS+RASAM mix.
 # NOT addable: factlogic/phoenix-arabic-manuscript-htr is a Kraken (CTC) model,
 # not a HF-transformers model — it needs the `kraken` runtime, a different
 # inference path — and is CC-BY-NC-SA. Strong on historical Arabic manuscripts
@@ -812,3 +983,31 @@ minicpm-v:
     MiniCPM-V 2.6 (8B), a compact multimodal model with multilingual document
     OCR across 30+ languages including Arabic. The strongest non-Qwen small VLM
     in the set; also the one to run locally via Ollama (`ollama pull minicpm-v`).
+
+arabic-paddleocr-v5:
+  # PaddlePaddle, not PyTorch — a dedicated 5M-param recognition model, not a
+  # VLM (no prompt/chat; `prompt` is accepted and ignored by the client to
+  # satisfy the ModelClient protocol). CAVEAT (2026-09 research pass, see
+  # docs/experiments/paddleocr-runbook.md): this is actually a SHARED
+  # Perso-Arabic-script model (Arabic+Persian+Uyghur+Urdu+Pashto+Kurdish+
+  # Sindhi+Balochi+English together), trained on ~2,676 images total across
+  # all 8 languages — tiny next to Muharaf/AraMS/RASAM. Harakat/diacritic
+  # support is UNCONFIRMED and plausibly weak; test on real lines before
+  # trusting the "Arabic" label. Needs the separate `paddleocr` extra (not
+  # installed by default) — see the runbook for the exact install command
+  # and a known Windows DLL-loading gotcha to check for on this specific box.
+  client: paddleocr
+  model_name: arabic_PP-OCRv5_mobile_rec
+  # Confirmed on hardware 2026-09-17: this model emits RTL text in raw LTR
+  # pixel order — reverse_output undoes that. See paddleocr_client.py's
+  # docstring before changing this for a different model/version.
+  reverse_output: true
+  # Leave `device` unset so the launcher can pin CPU via PADDLEOCR_DEVICE
+  # (needed while a VLM training run owns the GPU).
+  pricing: null
+  card: >-
+    Baidu's PP-OCRv5 recognition model (mobile/5M-param variant), Arabic-script
+    configuration. Shares its dictionary/training data with 7 other
+    Perso-Arabic-script languages (~2,676 images total) — a fast, lightweight
+    baseline, not a deep Arabic-specialist. Confirmed weak on diacritized text
+    in our own testing; see docs/experiments/paddleocr-runbook.md.

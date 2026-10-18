@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000011", "model": "gpt-4o-mini-paid", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "لل لى حعڡر الخادن", "raw_text": "عَلَيْهِمْ", "cleaned_text": "عَلَيْهِمْ", "latency_ms": 37197.6, "input_tokens": 8587, "output_tokens": 6, "cost_usd": 0.0017234, "error": null, "attempts": 1, "cached": false}

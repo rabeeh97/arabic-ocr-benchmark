@@ -1,0 +1,82 @@
+# suite_v1 round 1 — QCRI's Fanar-2-Oryx-IVU, an Arabic-first VLM built on
+# Qwen2.5-VL-7B. `arch: qwen2_5_vl` is already wired (same class used for
+# Misraj/Baseer__Nakba's training config) — no new training-dispatch code
+# needed.
+#
+# HF repo is ungated Apache 2.0 (model card + Qwen2.5-VL-7B base). Confirmed
+# 2026-09-18: no click-through gate; fine-tune/redistribute allowed with the
+# usual Apache notices. Fanar's api.fanar.qa request form is a different
+# product and is not required for local training. scripts/_experiment_bases.py
+# has `license_check: "ok"` so the suite queue runs this slot.
+#
+# `data.sources` is identical to qwen3vl4b.yaml — see that file's header.
+experiment: suite-v1-fanar2-oryx
+method: lora
+
+base_model:
+  hf_id: QCRI/Fanar-2-Oryx-IVU
+  arch: qwen2_5_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 802816     # ~1024*784 — trimmed, same reasoning as qwen3vl8b.yaml
+
+train:
+  epochs: 1
+  lr: 5.0e-5              # gentler LR — an Arabic-tuned base, same reasoning as
+                           # exp3090_baseer_nakba.yaml
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-fanar2-oryx
+eval_datasets: [muharaf_lines]

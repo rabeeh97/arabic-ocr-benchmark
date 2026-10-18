@@ -20,13 +20,21 @@ def build_model_entry(
     arch: str,
     adapter_id: str | None = None,
     dtype: str = "bfloat16",
+    load_in_4bit: bool = False,
+    max_new_tokens: int | None = None,
     min_ram_gb: int | None = None,
     card: str | None = None,
+    prompt: str | None = None,
 ) -> dict:
     """One `hf_local` registry entry for a trained model.
 
     Pass a merged directory as `hf_id_or_path` (no `adapter_id`), or the base
-    `hf_id` plus an `adapter_id` pointing at the LoRA output dir.
+    `hf_id` plus an `adapter_id` pointing at the LoRA output dir. Set
+    `load_in_4bit` to score the model 4-bit-quantised (matches the 4-bit base
+    rows already in the registry). `prompt` is the eval-time task prefix for
+    arches with no chat template (currently just PaliGemma) - it must match
+    what the checkpoint was actually fine-tuned with, or eval scores it on a
+    prefix it never saw.
     """
     entry: dict = {"client": "hf_local", "hf_id": hf_id_or_path, "arch": arch}
     if adapter_id:
@@ -34,6 +42,12 @@ def build_model_entry(
     if min_ram_gb is not None:
         entry["min_ram_gb"] = min_ram_gb
     entry["dtype"] = dtype
+    if load_in_4bit:
+        entry["load_in_4bit"] = True
+    if max_new_tokens is not None:
+        entry["max_new_tokens"] = int(max_new_tokens)
+    if prompt is not None:
+        entry["prompt"] = prompt
     entry["pricing"] = None
     entry["card"] = card or f"Fine-tuned model {name} (arabic_ocr_bench training subsystem)."
     return entry
@@ -44,6 +58,6 @@ def register_model(
 ) -> None:
     """Add / overwrite one entry in models.yaml, leaving the rest untouched."""
     p = Path(path)
-    doc = yaml.safe_load(p.read_text()) or {}
+    doc = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
     doc[name] = entry
-    p.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False))
+    p.write_text(yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8")

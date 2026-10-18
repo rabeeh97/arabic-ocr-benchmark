@@ -16,10 +16,12 @@ models:
   - openrouter-qwen2.5-vl-72b
   - openrouter-qwen3-vl-235b
   - openrouter-llama-4-maverick
-  - openrouter-minimax-m3-free
+  # openrouter-minimax-m3-free REMOVED: OpenRouter retired its :free route
+  # (404 "use the paid slug instead"), see configs/models.yaml.
   - openrouter-gemma-4-31b-free
   - openrouter-gemma-4-26b-free
-  - openrouter-nemotron-omni-free   # new — reasoning omni-modal
+  # openrouter-nemotron-omni-free REMOVED: broken output on real crops, see
+  # its comment in configs/models.yaml.
   - openrouter-dots3-note-free      # new — doc/note-tuned (dots.ocr team)
   - nvidia-llama-3.2-11b-vl
   - nvidia-llama-3.2-90b-vl

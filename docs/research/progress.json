@@ -1,0 +1,447 @@
+{
+ "_comment": "Single source of truth for the research tracker shown on the Atlas page. Edit, then run scripts/build_atlas.py. status: done | active | next | planned | blocked",
+ "phases": [
+  {
+   "id": "W0-lit",
+   "title": "Wave 0 literature: script & language characteristics",
+   "status": "done",
+   "doc": "docs/research/script-characteristics.md",
+   "tasks": [
+    {
+     "t": "Survey positional forms, PAWs, dots, ligatures, language stats, writer variability",
+     "s": "done"
+    },
+    {
+     "t": "16 references in references.bib",
+     "s": "done"
+    },
+    {
+     "t": "Cleaned Muharaf (alazzawi2026labelerr): public flag logs at SanaNGU/CER-HV, no licence; re-scored",
+     "s": "done"
+    }
+   ]
+  },
+  {
+   "id": "W0-fw",
+   "title": "Characteristics framework: decisions, catalogue, validation gates",
+   "status": "done",
+   "doc": "docs/research/characteristics-framework.md",
+   "tasks": [
+    {
+     "t": "Lineage: ISRI, DIQA, HTR datasheets, benchmark hygiene, cartography/IRT, radicals/ligatures, graphemic normalisation",
+     "s": "done"
+    },
+    {
+     "t": "Catalogue A–O mapped to decisions D1–D4 with priorities",
+     "s": "done"
+    },
+    {
+     "t": "Six Arabic-specific measures (ladder, rasm-CER, coverage curve, diacritic mismatch, PAW-space, hallucination)",
+     "s": "done"
+    },
+    {
+     "t": "Validation gates V1–V6",
+     "s": "done"
+    }
+   ]
+  },
+  {
+   "id": "P0",
+   "title": "Inventory: datasets, metadata, usable prediction runs",
+   "status": "active",
+   "tasks": [
+    {
+     "t": "Recover GT for 18 datasets from 489 prediction files (no downloads)",
+     "s": "done"
+    },
+    {
+     "t": "Muharaf train text from the local HF cache",
+     "s": "done"
+    },
+    {
+     "t": "Pick one canonical reading per (model, sample): standard prompt, latest success, no smoke runs → results/characterize/canonical_runs.json",
+     "s": "done"
+    },
+    {
+     "t": "Recover writer / page IDs into Sample.meta",
+     "s": "planned"
+    }
+   ]
+  },
+  {
+   "id": "P1",
+   "title": "Text profiler (L1): loci, rasm, PAWs, diacritics, hygiene",
+   "status": "active",
+   "doc": "src/arabic_ocr_bench/characterize/text.py",
+   "tasks": [
+    {
+     "t": "Joining-type positional-form analyzer + position-aware rasm map",
+     "s": "done"
+    },
+    {
+     "t": "13 unit tests (forms, PAWs, lam-alef, rasm, diacritics, hygiene)",
+     "s": "done"
+    },
+    {
+     "t": "scripts/profile_datasets.py over all datasets",
+     "s": "done"
+    },
+    {
+     "t": "Exact-line leakage vs Muharaf train",
+     "s": "done"
+    },
+    {
+     "t": "Tokenizer fertility per line (feeds E2)",
+     "s": "planned"
+    }
+   ]
+  },
+  {
+   "id": "P2",
+   "title": "Error decomposition: normalisation ladder, rasm-CER, mismatch tax, taxonomy",
+   "status": "active",
+   "tasks": [
+    {
+     "t": "Ladder rungs raw → canonical → +tatweel/digits → +orthography → −diacritics → rasm → −spaces",
+     "s": "done"
+    },
+    {
+     "t": "rasm-CER and dot tax per (model, dataset)",
+     "s": "done"
+    },
+    {
+     "t": "Diacritic-mismatch tax (insert vs drop)",
+     "s": "done"
+    },
+    {
+     "t": "Aligned error taxonomy + PAW-boundary space errors + hallucination rate",
+     "s": "done"
+    },
+    {
+     "t": "Fluency-hallucination rate (R2.5)",
+     "s": "planned"
+    },
+    {
+     "t": "End-of-line excess = model-specific early stopping + token caps, not script (R2.8)",
+     "s": "done"
+    }
+   ],
+   "doc": "src/arabic_ocr_bench/characterize/errors.py"
+  },
+  {
+   "id": "P3",
+   "title": "Consensus difficulty: quality groups, IRT, challenge subsets",
+   "status": "active",
+   "tasks": [
+    {
+     "t": "Consensus difficulty over complete blocks + split-half reliability (V1)",
+     "s": "done"
+    },
+    {
+     "t": "Rank regression of difficulty on text features",
+     "s": "done"
+    },
+    {
+     "t": "Letter error by positional form, dot ambiguity, line position",
+     "s": "done"
+    },
+    {
+     "t": "Challenge subsets (hard quintile, dot-dense, OOV-heavy, medial-dense, fragments)",
+     "s": "next"
+    },
+    {
+     "t": "IRT 2PL difficulty / discrimination",
+     "s": "planned"
+    }
+   ],
+   "doc": "src/arabic_ocr_bench/characterize/samples.py"
+  },
+  {
+   "id": "P4",
+   "title": "Annotation audit: label noise, near-dup leakage, spelling inconsistency",
+   "status": "planned",
+   "tasks": [
+    {
+     "t": "Exact-line leakage vs Muharaf train",
+     "s": "done"
+    },
+    {
+     "t": "Model-consensus label-noise ranking (AUC 0.94 on real CER-HV noise, n=7) + manual top-30 review",
+     "s": "next"
+    },
+    {
+     "t": "MinHash / image-hash near-duplicates",
+     "s": "planned"
+    },
+    {
+     "t": "Same-word spelling variants within each dataset",
+     "s": "planned"
+    }
+   ]
+  },
+  {
+   "id": "P5",
+   "title": "Language layer + tokenizer view",
+   "status": "planned",
+   "tasks": []
+  },
+  {
+   "id": "P6",
+   "title": "Image layer: px per x-height, dot size, degradation, style",
+   "status": "active",
+   "tasks": [
+    {
+     "t": "Image features on all 10 blocks: R² 0.15–0.63 with text+image",
+     "s": "done"
+    },
+    {
+     "t": "Ink px per character predicts difficulty within RASAM-1 and NAKBA-blind",
+     "s": "done"
+    },
+    {
+     "t": "Full-resolution Muharaf? (public copy is 60 px tall) + resolution probe",
+     "s": "next"
+    }
+   ]
+  },
+  {
+   "id": "P7",
+   "title": "Validity analysis (gate V2): which characteristics predict errors",
+   "status": "planned",
+   "tasks": []
+  },
+  {
+   "id": "P8",
+   "title": "Decision experiments (gate V5): normalisation, data selection, pre-processing",
+   "status": "planned",
+   "tasks": []
+  },
+  {
+   "id": "P9",
+   "title": "Causal synthetic probes (gate V3)",
+   "status": "planned",
+   "tasks": []
+  },
+  {
+   "id": "P10",
+   "title": "Cross-script check (gate V4): Persian, Urdu, Pashto, IAM",
+   "status": "planned",
+   "tasks": []
+  },
+  {
+   "id": "P11",
+   "title": "Synthesis & release (gate V6)",
+   "status": "planned",
+   "tasks": []
+  }
+ ],
+ "updates": [
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "The end-of-line error rise is a pipeline artefact. Gemini 3.6 Flash spends its default 256-token output budget on hidden reasoning and truncates 74 % of lines; four more models pile up at their caps. No line end is cropped in the images."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "The public Muharaf copy, our training data, is stored at 60 px line height (≈12 px letter core) vs ≈146 px for KHATT. Across all 10 blocks, image features raise explained line difficulty from 6–51 % (text only) to 15–63 %; within RASAM-1 and NAKBA-blind, fewer ink pixels per character means a harder line."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Supervisor tracker and teaching explainer published as Claude Docs (links in GUIDELINES §4). 3090 checked: reachable but empty of weights; E1 needs only a 142 MB adapter, planned on Colab."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Line difficulty is a property of the line: split-half reliability of consensus difficulty is 0.54–0.81 on handwriting line sets (0.23 on page-scale Hindawi). But nine text features together explain only 6–32 % of it, so most difficulty is visual. The image layer (R6) moves up."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Letter level, across 10 complete blocks: medial forms are hardest (9/10), isolated easiest (8/10). Dot-ambiguous letters fail 10–17 points more often at every position. Hardest shapes are medial dotted letters (ف ح ض ث خ ج ش) and small final non-joiners (ز ذ د); easiest are the tall strokes ا and ل. Errors rise in the last tenth of the line (9/10)."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Short lines (≤ 20 characters) carry the whole-line failures. Ensembling would gain only 0.8–3.6 CER points. Half of word substitutions are real words, which limits lexicon post-correction. CER-HV \"script mismatch\" flags are correct labels for VLMs; consensus difficulty finds the real noise (AUC 0.94, n = 7)."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Backlog re-ordered: end-of-line check (R2.8), image layer (R6.0), length-stratified reporting (X5), challenge subsets, label-noise review on CPU; E1 on GPU with letter error on medial and dot-ambiguous letters as its new primary outcome."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "E1 preliminary (one seed, in-domain): unfreezing the ViT with a differential vision LR (suite-v1 recipe otherwise identical) cuts Muharaf-test CER·light from 36.3 % to 28.7 % on the same 200 lines (paired bootstrap 95 % CI −9.1 to −6.2 points). The dot share of error did not fall (7.2 → 8.3 %). The gain is general letter identity (rasm-CER 32 → 24 %). The held-out panel bench is the next GPU step."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Cleaned Muharaf is public as CER-HV review logs (github.com/SanaNGU/CER-HV, no licence file): 126 test and 1,424 train lines flagged. Dropping the flagged test lines moves every model by < 1 CER point and changes no rank, so Muharaf label noise is not distorting our comparisons."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Error decomposition over 194 scored model × dataset pairs (91 competent, diac-insensitive CER ≤ 40 %). Dots alone account for a median 8 % of diacritic-insensitive error (0.1–1.3 CER points): real, but small next to wrong, missing and extra letters (~60 % of edits). 60 % of spaces wrongly inserted inside a word fall at a PAW gap, against a 35 % chance rate, so models split words where the script itself breaks the ink."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Diacritic policy mismatch is a model-side tax on printed sets: base Qwen3-VL-4B adds 10.5 marks per 100 letters on PATS (raw CER 18.8 % vs 7.1 % once marks are folded). Its fine-tunes drop that to ~0.1. The headline light CER keeps harakat, so it charges this tax to the model."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "R0.3 canonical predictions + R2.1–R2.4 (ladder, rasm-CER/dot tax, diacritic mismatch, aligned taxonomy, PAW-gap spaces): characterize/runs.py, characterize/errors.py, scripts/decompose_errors.py, 11 tests. New Atlas section 9. A smoke run that reused an older model name was caught and excluded."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "X1: the leaderboard reads overlaps_source from configs/datasets.yaml. kitab_muharaf is tagged in-train in the results matrix, fine-tune cells there are masked, and the Fine-tuning tab never counts it as held-out. No fine-tuned kitab_muharaf score had been published: the 3090 runners already banned it."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Backlog in docs/research/NEXT_STEPS.md (tracks R, L, E, X, S with done-when criteria). Rules and results so far are kept in GUIDELINES.md, and a root CLAUDE.md points every new session at both."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "Prior art check: no common characterisation standard for Arabic OCR data exists. The closest is Al-azzawi et al. 2026 (shapes, confusions, label noise; CRNN only). Diacritic policy, normalisation, register, PAW spacing, leakage and VLM behaviour are uncovered, which is our gap to fill."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Characteristics framework written. Each characteristic must change a decision (data, model, transformations, evaluation) and pass six validation gates. The plan now has P0–P11, with error decomposition (the normalisation ladder) moved up to P2."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "86.5% of kitab_muharaf lines appear verbatim in Muharaf train, our fine-tuning data. Fine-tuned scores on kitab_muharaf are leaked; drop it from the fine-tune panel or report it apart."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "finding",
+   "text": "About a third of Muharaf lines carry sparse diacritics (mostly fatha, fathatan, shadda), while NAKBA, KHATT and RASAM are almost undiacritised. A fine-tune learns Muharaf's habit and gets penalised under the raw profile elsewhere."
+  },
+  {
+   "date": "2026-10-07",
+   "kind": "done",
+   "text": "Text profiler shipped: 32,112 lines across 19 datasets (18 test sets + Muharaf train)."
+  },
+  {
+   "date": "2026-10-06",
+   "kind": "done",
+   "text": "Wave 0 literature note and characterisation plan written."
+  }
+ ],
+ "catalogue": [
+  {
+   "k": "A",
+   "name": "Shape inventory & tail",
+   "dec": "D1 D2 D4",
+   "pri": 3,
+   "state": "measured"
+  },
+  {
+   "k": "B",
+   "name": "Dot structure (rasm / i'jam)",
+   "dec": "D2 D3 D4",
+   "pri": 3,
+   "state": "measured · error side next"
+  },
+  {
+   "k": "C",
+   "name": "Connectivity, PAWs, spacing",
+   "dec": "D2 D3 D4",
+   "pri": 3,
+   "state": "measured · error side next"
+  },
+  {
+   "k": "D",
+   "name": "Diacritic policy",
+   "dec": "D1 D3 D4",
+   "pri": 3,
+   "state": "measured"
+  },
+  {
+   "k": "E",
+   "name": "Orthographic variation",
+   "dec": "D3 D4",
+   "pri": 3,
+   "state": "next (P2 ladder, P4)"
+  },
+  {
+   "k": "F",
+   "name": "Encoding hygiene",
+   "dec": "D3 D4",
+   "pri": 3,
+   "state": "measured"
+  },
+  {
+   "k": "G",
+   "name": "Leakage & duplicates",
+   "dec": "D1 D4",
+   "pri": 3,
+   "state": "exact done · near-dup next"
+  },
+  {
+   "k": "H",
+   "name": "Annotation quality",
+   "dec": "D1 D4",
+   "pri": 3,
+   "state": "P4"
+  },
+  {
+   "k": "I",
+   "name": "Instance difficulty (consensus / IRT)",
+   "dec": "D4",
+   "pri": 3,
+   "state": "P3"
+  },
+  {
+   "k": "J",
+   "name": "Granularity & length, px resolution",
+   "dec": "D2 D4",
+   "pri": 2,
+   "state": "length measured · px in P6"
+  },
+  {
+   "k": "K",
+   "name": "Language & register",
+   "dec": "D1 D2 D3",
+   "pri": 2,
+   "state": "P5"
+  },
+  {
+   "k": "L",
+   "name": "Image quality & degradation",
+   "dec": "D1 D3",
+   "pri": 2,
+   "state": "P6"
+  },
+  {
+   "k": "M",
+   "name": "Script style / hand",
+   "dec": "D1 D2",
+   "pri": 2,
+   "state": "P6"
+  },
+  {
+   "k": "N",
+   "name": "Writer & demographics",
+   "dec": "D1 D4",
+   "pri": 1,
+   "state": "needs metadata; key for own dataset"
+  },
+  {
+   "k": "O",
+   "name": "Tokenizer view",
+   "dec": "D2",
+   "pri": 2,
+   "state": "P5"
+  }
+ ]
+}

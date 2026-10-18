@@ -1,0 +1,1 @@
+{"sample_id": "kitab_historyar/train/000024", "model": "claude-haiku-paid", "dataset": "kitab_historyar", "track": "line", "prompt_version": "line-v2", "ground_truth": "هَذِهِ", "raw_text": "شلو", "cleaned_text": "شلو", "latency_ms": 13243.5, "input_tokens": 164, "output_tokens": 6, "cost_usd": 0.0002052, "error": null, "attempts": 1, "cached": false}

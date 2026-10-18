@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000179", "model": "pixtral-12b", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "رئيس البلدية", "raw_text": "يسُو البَابِ", "cleaned_text": "يسُو البَابِ", "latency_ms": 6024.33, "input_tokens": 115, "output_tokens": 8, "cost_usd": 1.845e-05, "error": null, "attempts": 1, "cached": false}

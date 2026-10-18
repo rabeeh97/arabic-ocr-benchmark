@@ -1,0 +1,265 @@
+{
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 10,
+    "skipped_new": 5
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true
+  },
+  "line-v2 \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-modality \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-claims-printed \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-arabic \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-persona \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 muharaf_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 nakba_lines": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 rasam1": {
+    "requested": 15,
+    "done": false,
+    "cached": 0,
+    "skipped_new": 15
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 kitab_khatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 kitab_historyar": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 kitab_onlinekhatt": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "line-v2-no-diac \u00b7 gemini-flash-lite \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  },
+  "page-v2 \u00b7 gemini-flash-lite-640tok \u00b7 kitab_hindawi": {
+    "requested": 15,
+    "done": true,
+    "missing": 0
+  },
+  "page-v2 \u00b7 gemini-flash-lite-640tok \u00b7 kitab_historicalbooks": {
+    "requested": 10,
+    "done": true,
+    "missing": 0
+  }
+}

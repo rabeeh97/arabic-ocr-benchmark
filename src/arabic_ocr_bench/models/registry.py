@@ -14,7 +14,7 @@ _DEFAULT_CFG = Path("configs/models.yaml")
 
 
 def load_model_configs(path: str | Path = _DEFAULT_CFG) -> dict[str, dict]:
-    return yaml.safe_load(Path(path).read_text()) or {}
+    return yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
 
 
 def available_hosted_models(
@@ -89,6 +89,17 @@ def build_model(name: str, cfg: dict[str, Any]) -> ModelClient:
             max_new_tokens=int(cfg.get("max_new_tokens", 160)),
             min_ram_gb=float(cfg.get("min_ram_gb", 0) or 0),
             subfolder=cfg.get("subfolder"),
+            paligemma_prompt=cfg.get("prompt"),
+        )
+    if client == "paddleocr":
+        from .paddleocr_client import PaddleOCRClient
+
+        device = cfg.get("device") or os.environ.get("PADDLEOCR_DEVICE")
+        return PaddleOCRClient(
+            name=name,
+            model_name=cfg.get("model_name", "arabic_PP-OCRv5_mobile_rec"),
+            reverse_output=bool(cfg.get("reverse_output", False)),
+            device=device or None,
         )
     raise ValueError(f"model {name!r}: unknown client {client!r}")
 

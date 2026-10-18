@@ -1,0 +1,144 @@
+# Fine-tuning experiment ledger — feeds the leaderboard's "Fine-tuning" tab
+# (scripts/make_leaderboard.py -> _render_finetuning). One entry per training
+# run: what was trained, from what, and which already-scored rows are its
+# base / fine-tuned pair. The tab reads CER etc. straight from the benchmark
+# results — it does not run anything.
+#
+# Fields:
+#   title            short human name
+#   base_model       models.yaml row name of the UNtuned starting point
+#   ft_models        list of models.yaml row names of the fine-tune(s)
+#   training         one-line recipe summary (method, data, epochs)
+#   config           path to the training config (for the "recipe" link)
+#   report_dir       where the fetched reports/<exp>/ snapshot lives
+#                    (trainer_state.json -> loss curve; effective_config.yaml)
+#   in_domain        {dataset, note} — the held-out split of the TRAINING corpus
+#   holdout_datasets datasets disjoint from the training data (the real test of
+#                    generalisation); the tab tabulates base vs ft on each
+#   hypothesis       why this fine-tune was expected to help (free text)
+#   notes            list of short observations / open questions
+
+exp3090-qwen3vl4b:
+  title: "Qwen3-VL-4B — Muharaf LoRA (RTX 3090)"
+  base_model: qwen3-vl-4b-bf16
+  ft_models: [exp3090-qwen3vl4b-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, 8,000 Muharaf train lines, Qwen3-VL-4B-Instruct"
+  config: configs/training/exp3090_qwen3vl4b.yaml
+  report_dir: results/training/exp3090-qwen3vl4b
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets:
+    - kitab_khatt
+    - nakba_lines
+    - rasam1
+    - rasam2
+    - kitab_hindawi
+    - kitab_historicalbooks
+  hypothesis: >-
+    A general VLM has the visual features but no prior for cursive Arabic line
+    layout, ligature segmentation, or diacritic placement. A small LoRA on real
+    Ruq'ah handwriting should teach the decoder the output distribution (line =
+    one clean transcript, no commentary) and the script's grapheme inventory,
+    and that should transfer to other Arabic handwriting, not just Muharaf.
+  notes:
+    - "Base Qwen3-VL-4B is near-unusable on cursive handwriting (~0.87 CER-light on KHATT / NAKBA smoke) — it mostly produces meta-commentary or wrong-script output; the fine-tune's first win is just emitting a bare line transcript."
+    - "Gain transfers off-corpus: on KITAB-KHATT and NAKBA (neither in training) the LoRA cuts CER-light by 0.49 / 0.60 — similar magnitude to its in-domain Muharaf gain — so this is script-level learning, not corpus memorisation."
+    - "The fine-tune is also ~2x faster: the base runs to the token cap emitting filler, the LoRA stops at end-of-line."
+    - "Diacritics: base diac-F1 ~0.03 on KHATT, ~0.35 on NAKBA; LoRA reaches 0.35 / 0.69. Its diac-insensitive vs raw CER are close, so it is not just guessing skeletons."
+    - "Open: how much of the gain is the OUTPUT FORMAT prior (line-only, no chat) vs. genuine visual grapheme learning? A prompt-only / format-only control run would separate them."
+    - "Open: data-scaling — 8,000 lines was one arbitrary point. Re-run at 1k / 2k / 4k / full to trace where the held-out curve flattens; that sizes the moat for a from-scratch Arabic HTR effort."
+    - "Open: unfreezing the ViT (train_vision: true) is the lever for the Maghrebi RASAM sets, where the fine-tune is weakest (~50% CER vs ~30% on Naskh/Ruq'ah) and the frozen encoder may be the bottleneck."
+    - "kitab_hindawi / kitab_historicalbooks are paragraph-scale (GT ~350 tok), not lines: rows now registered with max_new_tokens=640 so output is not hard-truncated; residual gap is the line-prompt vs page-content mismatch. Treat as a 'volunteers a full-page transcript?' probe, not a clean OCR score (see findings doc)."
+
+exp3090-qwen3vl4b-visft:
+  title: "Qwen3-VL-4B — Muharaf LoRA, vision unfrozen (RTX 3090)"
+  base_model: qwen3-vl-4b-bf16
+  ft_models: [exp3090-qwen3vl4b-visft-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT UNfrozen), 1 epoch, 8,000 Muharaf train lines, Qwen3-VL-4B-Instruct"
+  config: configs/training/exp3090_qwen3vl4b_visft.yaml
+  report_dir: results/training/exp3090-qwen3vl4b-visft
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets:
+    - kitab_khatt
+    - nakba_lines
+    - rasam1
+    - rasam2
+    - kitab_hindawi
+    - kitab_historicalbooks
+  hypothesis: >-
+    Identical recipe and data to exp3090-qwen3vl4b, only train_vision flips
+    false -> true. The base-model A/B/C (exp3090-qwen3vl4b vs -baseer-nakba vs
+    -paligemma2-3b) found all three land at 45-54% CER on the Maghrebi RASAM
+    sets even after fine-tuning, well behind their ~30% on Naskh/Ruq'ah —
+    consistent across three unrelated architectures. A frozen ViT trained only
+    on Ruq'ah-style Muharaf handwriting may never see enough Maghrebi-specific
+    grapheme shapes to adapt; unfreezing it isolates whether that's the cap.
+  notes:
+    - "Compare directly against exp3090-qwen3vl4b on rasam1 / rasam2 — same everything else, so any CER delta there is attributable to train_vision alone."
+    - "Watch VRAM: unfreezing the ViT costs more memory on the 3090 than the frozen run; drop image.max_pixels first if it OOMs (see the config's comment)."
+    - "Launch: `python scripts/run_3090_pipeline.py --dir <exp> --base qwen3vl4b-visft --detach` (adds a `qwen3vl4b-visft` choice to run_3090_experiment.py / run_3090_pipeline.py's BASES dicts, alongside qwen3vl4b / baseer / paligemma)."
+
+baseer-nakba:
+  title: "Baseer/NAKBA — Muharaf LoRA (RTX 3090)"
+  base_model: baseer-nakba-bf16
+  ft_models: [exp3090-baseer-nakba-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, 8,000 Muharaf train lines, Misraj/Baseer__Nakba"
+  config: configs/training/exp3090_baseer_nakba.yaml
+  report_dir: results/training/exp3090-baseer-nakba
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets: [kitab_khatt, nakba_lines, rasam1, rasam2, kitab_hindawi, kitab_historicalbooks]
+  hypothesis: >-
+    Baseer is already an Arabic-manuscript-specialised base (reported CER ~0.08
+    on NAKBA out of the box). Same LoRA recipe as exp3090-qwen3vl4b, same data —
+    so the delta vs the Qwen3-VL fine-tune isolates "how much does starting from
+    an Arabic-specialised base buy you". If it barely beats generic-Qwen + LoRA,
+    the moat is in the SFT, not the base.
+  notes:
+    - "Controlled A/B against exp3090-qwen3vl4b: identical data, recipe, and held-out sets — only the base changes."
+    - "fetch phase prints the checkpoint's real `architectures`; if it is not a Qwen2.5-VL class, the config's arch shim is wrong."
+
+paligemma2-3b:
+  title: "PaliGemma-2-3B — Muharaf LoRA (RTX 3090)"
+  base_model: paligemma2-3b-bf16
+  ft_models: [exp3090-paligemma2-3b-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32), 1 epoch, 8,000 Muharaf train lines, google/paligemma2-3b-pt-448"
+  config: configs/training/exp3090_paligemma2_3b.yaml
+  report_dir: results/training/exp3090-paligemma2-3b
+  in_domain:
+    dataset: muharaf_lines
+    note: "held-out test split of the same Muharaf corpus the LoRA trained on"
+  holdout_datasets: [kitab_khatt, nakba_lines, rasam1, rasam2, kitab_hindawi, kitab_historicalbooks]
+  hypothesis: >-
+    PaliGemma-2 is a different architecture family (SigLIP vision encoder + Gemma
+    decoder, 448px fixed tiling) from Qwen-VL. Same data and recipe — the delta
+    tells us whether the vision-encoder / decoder lineage matters for cursive
+    Arabic, which informs a from-scratch architecture choice.
+  notes:
+    - "Uses a different collator (_make_collator_paligemma) — watch the first training batches: loss should start ~2-4 and fall, labels all -100 except the target span."
+    - "448px fixed input may hurt long / dense lines vs Qwen's dynamic resolution."
+
+ain7b-nakba-sft:
+  title: "AIN-7B — NAKBA LoRA on suite-v1 FT (RTX 3090)"
+  base_model: suite-v1-ain7b-ft-bf16
+  ft_models: [ain7b-nakba-sft-ft-bf16]
+  training: "bf16 LoRA (r=16, α=32, ViT frozen), 1 epoch, full NAKBA train, stacked on suite-v1 AIN FT"
+  config: configs/training/ain7b_nakba.yaml
+  report_dir: results/training/ain7b-nakba-sft
+  in_domain:
+    dataset: nakba_lines
+    note: "held-out test split of Omar Al-Saleh; train split only in the LoRA"
+  holdout_datasets: [kitab_khatt, muharaf_lines, rasam1, rasam2]
+  hypothesis: >-
+    Suite-v1 AIN-7B FT already beats the official Qwen3-VL-8B NAKBA baseline
+    with no Omar Al-Saleh in training (~10.6% CER-light). A second-stage LoRA
+    on NAKBA train is the fair shot at Baseer-Nakba's band (~8%) without
+    repeating the generic Muharaf recipe that made Baseer worse on its home set.
+  notes:
+    - "Do not add to the suite_v1 round-1 queue; launch with --base ain7b_nakba after Fanar."
+    - "Compare against suite-v1-ain7b-ft-bf16 (this run's 'base') and against nakba-misraj-baseer (~1% CER-light on the same 200-line slice)."
+    - "Watch RASAM/Muharaf/KHATT for forgetting — that is how the Baseer Muharaf LoRA failed."

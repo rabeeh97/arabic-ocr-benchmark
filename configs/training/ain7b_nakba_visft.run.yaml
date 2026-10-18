@@ -1,0 +1,13 @@
+# Held-out in-domain eval for ain7b-nakba-visft — NAKBA test split, 200 lines.
+models:
+  - ain7b-nakba-visft-ft
+datasets:
+  - nakba_lines
+limit: 200
+offset: 0
+prompt_version: line-v2
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 1
+max_retries: 2
+cache: true
+results_dir: results

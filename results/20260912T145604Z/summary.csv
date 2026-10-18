@@ -1,0 +1,7 @@
+model,dataset,n,errors,refusal_rate,latency_ms_mean,cost_usd_total,cer_micro_raw,cer_macro_raw,car_micro_raw,car_macro_raw,wer_micro_raw,mer_micro_raw,mer_macro_raw,wil_micro_raw,wip_micro_raw,exact_raw,cer_micro_light,cer_macro_light,car_micro_light,car_macro_light,wer_micro_light,mer_micro_light,mer_macro_light,wil_micro_light,wip_micro_light,exact_light,cer_micro_diac_insensitive,cer_macro_diac_insensitive,car_micro_diac_insensitive,car_macro_diac_insensitive,wer_micro_diac_insensitive,mer_micro_diac_insensitive,mer_macro_diac_insensitive,wil_micro_diac_insensitive,wip_micro_diac_insensitive,exact_diac_insensitive,diac_f1
+pixtral-12b,kitab_hindawi,80,1,0.0123,5254.3,0.013937,0.4118,0.4167,0.5882,0.5872,0.6771,0.6531,0.652,0.8566,0.1434,0.0,0.3702,0.3732,0.6298,0.6306,0.6172,0.5946,0.5937,0.8149,0.1851,0.0,0.316,0.3221,0.684,0.6802,0.5666,0.5453,0.5436,0.7665,0.2335,0.0,0.2408
+gemini-flash,kitab_hindawi,3,9,0.75,8172.8,0.005854,0.9152,0.8908,0.0848,0.1092,0.9136,0.9136,0.8831,0.9262,0.0738,0.0,0.909,0.8858,0.091,0.1142,0.9046,0.9046,0.8731,0.9135,0.0865,0.0,0.9074,0.8845,0.0926,0.1155,0.9046,0.9046,0.8731,0.9135,0.0865,0.0,0.0
+mistral-medium,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+mistral-small,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-gemma-4-26b-free,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+openrouter-gemma-4-31b-free,kitab_hindawi,0,12,1.0,0.0,0.0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

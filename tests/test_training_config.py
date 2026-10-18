@@ -16,6 +16,29 @@ def test_loads_the_bundled_smoke_config():
     assert cfg.eval_datasets == ["muharaf_lines"]
 
 
+@pytest.mark.parametrize(
+    "name, arch",
+    [
+        ("exp3090_qwen3vl4b", "qwen3_vl"),
+        ("exp3090_baseer_nakba", "qwen2_5_vl"),
+        ("exp3090_paligemma2_3b", "paligemma"),
+    ],
+)
+def test_3090_experiment_configs_load(name, arch):
+    cfg = load_training_config(f"configs/training/{name}.yaml")
+    assert cfg.base_model.arch == arch
+    assert cfg.data.sources[0].split == "train"  # never a scored split
+    assert cfg.eval_datasets == ["muharaf_lines"]
+
+
+def test_new_arches_are_wired_into_both_trainers_and_merge():
+    from arabic_ocr_bench.training.merge import _ARCH_MODEL_CLS as merge_map
+    from arabic_ocr_bench.training.sft_vlm import _ARCH_MODEL_CLS as sft_map
+
+    for arch in ("qwen3_vl", "paligemma"):
+        assert arch in sft_map and arch in merge_map
+
+
 def test_rejects_a_config_that_names_a_scored_split(tmp_path):
     bad = tmp_path / "bad.yaml"
     bad.write_text(
@@ -30,6 +53,29 @@ def test_rejects_a_config_that_names_a_scored_split(tmp_path):
         "      split: test\n"
         "output_dir: results/training/bad\n"
         "eval_datasets: [muharaf_lines]\n"
+    )
+    with pytest.raises(ScoredSplitLeakError):
+        load_training_config(bad)
+
+
+def test_rejects_a_scored_split_named_via_subset_not_top_level_hf_id(tmp_path):
+    # Regression: check_source_not_scored used to only look at a source's
+    # literal `hf_id` field, silently skipping the guard for a KitabBench-style
+    # source that names its corpus via `params.subset` instead (e.g. a RASAM
+    # training source) — see resolve_source_hf_id in training/data.py.
+    bad = tmp_path / "bad_subset.yaml"
+    bad.write_text(
+        "experiment: bad-subset\n"
+        "method: qlora\n"
+        "base_model: {hf_id: Qwen/Qwen2-VL-2B-Instruct, arch: qwen2_vl}\n"
+        "data:\n"
+        "  sources:\n"
+        "    - name: leak\n"
+        "      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench\n"
+        "      params: {subset: calfa-ai/RASAM-1}\n"
+        "      split: test\n"
+        "output_dir: results/training/bad-subset\n"
+        "eval_datasets: [rasam1]\n"
     )
     with pytest.raises(ScoredSplitLeakError):
         load_training_config(bad)

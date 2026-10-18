@@ -1,0 +1,78 @@
+# suite_v1 round 1 — Qwen3-VL-8B-Instruct. Same arch family / training
+# pipeline as qwen3vl4b.yaml (arch: qwen3_vl — no new training-dispatch code),
+# just a bigger checkpoint. Bigger base weights leave less VRAM headroom on a
+# 24 GB 3090, so `image.max_pixels` is trimmed a notch as the first OOM lever
+# (per docs/experiments/3090-experiment-runbook.md's priority order: max_pixels
+# down -> max_seq_len down -> method: qlora). If it still OOMs, switch
+# `method: qlora` before touching anything else.
+#
+# `data.sources` is identical to qwen3vl4b.yaml — see that file's header.
+experiment: suite-v1-qwen3vl8b
+method: lora
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-8B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 802816     # ~1024*784 — trimmed from the 4B config's 1003520
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-qwen3vl8b
+eval_datasets: [muharaf_lines]

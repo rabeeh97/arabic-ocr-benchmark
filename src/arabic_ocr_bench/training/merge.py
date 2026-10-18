@@ -13,13 +13,15 @@ from pathlib import Path
 _ARCH_MODEL_CLS = {
     "qwen2_vl": "Qwen2VLForConditionalGeneration",
     "qwen2_5_vl": "Qwen2_5_VLForConditionalGeneration",
+    "qwen3_vl": "Qwen3VLForConditionalGeneration",   # needs transformers>=4.57
+    "paligemma": "PaliGemmaForConditionalGeneration",  # PaliGemma 1 & 2
 }
 
 
 def _adapter_meta(adapter_dir: Path) -> dict:
     cfg = adapter_dir / "training_config.yaml"
     if cfg.exists():
-        return json.loads(cfg.read_text())
+        return json.loads(cfg.read_text(encoding="utf-8"))
     return {}
 
 
@@ -60,6 +62,7 @@ def merge_adapter(
     except Exception:  # noqa: BLE001 - fall back to the base processor
         AutoProcessor.from_pretrained(base_hf_id).save_pretrained(str(out))
     (out / "merge_info.json").write_text(
-        json.dumps({"base_hf_id": base_hf_id, "arch": arch, "adapter": str(adapter_dir)}, indent=2)
+        json.dumps({"base_hf_id": base_hf_id, "arch": arch, "adapter": str(adapter_dir)}, indent=2),
+        encoding="utf-8",
     )
     return out

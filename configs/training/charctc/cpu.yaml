@@ -1,0 +1,44 @@
+# Character-level CTC, CPU-first experiment.
+#
+# Same 8k Muharaf train lines as exp3090-qwen3vl4b, closed character vocab,
+# tiny CRNN. Designed to run with CUDA_VISIBLE_DEVICES empty while suite_v1
+# owns the 3090. Driven by scripts/run_charctc_experiment.py.
+experiment: charctc-cpu
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+train:
+  epochs: 3
+  lr: 1.0e-3
+  batch_size: 4
+  seed: 0
+  save_steps: 50
+  save_total_limit: 6
+  resume: true
+  img_height: 32
+  max_width: 512
+  hidden: 128
+  log_every: 5
+  val_every: 50
+  val_samples: 32
+  num_workers: 0
+  # Epoch-1 greedy was all-blank (CER=1). Penalize blank logits so a later
+  # epoch can leave that local min; sample hyps are logged every log_every.
+  blank_penalty: 0.5
+
+eval_datasets:
+  - muharaf_lines
+  - kitab_khatt
+  - nakba_lines
+  - rasam1
+  - rasam2
+
+output_dir: results/training/charctc-cpu

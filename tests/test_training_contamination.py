@@ -52,3 +52,12 @@ def test_scan_overlap_clean_sets_report_nothing():
     report = scan_overlap(train, test, near_dup_threshold=2)
     assert report["n_text_collisions"] == 0
     assert report["n_near_dup_images"] == 0
+
+
+def test_scan_overlap_tolerates_missing_ground_truth():
+    """Some dataset splits carry None/empty transcriptions — don't crash."""
+    train = [("t/0", _img(1), None), ("t/1", _img(2), "")]
+    test = [("x/0", _img(40), None), ("x/1", _img(41), "بسم الله الرحمن الرحيم")]
+    report = scan_overlap(train, test)
+    assert report["n_text_collisions"] == 0
+    assert report["n_train_items"] == 2

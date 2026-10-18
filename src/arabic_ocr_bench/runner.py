@@ -86,12 +86,18 @@ _IDX_RE = re.compile(r"(\d+)\s*$")
 
 
 def scored_indices(
-    root: Path, model: str, dataset: str, *, exclude: Path | None = None
+    root: Path, model: str, dataset: str, *, exclude: Path | None = None,
+    prompt_version: str | None = None,
 ) -> set[int]:
     """Absolute row indices this (model, dataset) already has a NON-errored
     prediction for, across every run dir under ``root`` (except ``exclude`` —
     the in-progress run whose predictions file is mid-write). Used by accumulate
-    mode so a re-run never re-spends a call that already succeeded."""
+    mode so a re-run never re-spends a call that already succeeded.
+
+    ``prompt_version``, when given, also requires the cached row to match it —
+    the same (model, dataset) pair scored under a different prompt doesn't
+    count as done. Omitted, the default, keeps every existing caller's
+    behavior (any prompt version counts) unchanged."""
     done: set[int] = set()
     skip = exclude.resolve() if exclude else None
     for pred in root.glob("*/predictions.jsonl"):
@@ -110,6 +116,8 @@ def scored_indices(
             except json.JSONDecodeError:
                 continue
             if r.get("model") != model or r.get("dataset") != dataset or r.get("error"):
+                continue
+            if prompt_version is not None and r.get("prompt_version") != prompt_version:
                 continue
             m = _IDX_RE.search(str(r.get("sample_id", "")).split("/")[-1])
             if m:
@@ -165,9 +173,23 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     cache_dir = root / "_cache"
     cache_dir.mkdir(parents=True, exist_ok=True)
 
-    (run_dir / "run_config.snapshot.yaml").write_text(yaml.safe_dump(run_cfg, sort_keys=False))
+    (run_dir / "run_config.snapshot.yaml").write_text(
+        yaml.safe_dump(run_cfg, sort_keys=False), encoding="utf-8"
+    )
     pred_path = run_dir / "predictions.jsonl"
 
+    # Optional run-level generation-length override — for a prompt/dataset pair
+    # that needs more room than a model's registered default (e.g. page-scale
+    # ground truth under a normally line-scale cap) without cloning a sibling
+    # registry row per model. Not part of the cache key: only safe to use with
+    # a prompt_version that has never been cached under a shorter cap.
+    max_tokens_override = run_cfg.get("max_tokens_override")
+    if max_tokens_override is not None:
+        models_cfg = {
+            name: ({**cfg, "max_tokens": max_tokens_override, "max_new_tokens": max_tokens_override}
+                   if name in run_cfg["models"] else cfg)
+            for name, cfg in models_cfg.items()
+        }
     clients = {name: build_model(name, models_cfg[name]) for name in run_cfg["models"]}
 
     def _one(model_name: str, ds_name: str, sample) -> dict:
@@ -175,7 +197,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         key = _cache_key(sample.id, model_name, prompt_version)
         cache_file = cache_dir / f"{key}.json"
         if use_cache and cache_file.exists():
-            row = json.loads(cache_file.read_text())
+            row = json.loads(cache_file.read_text(encoding="utf-8"))
             if not row.get("error"):  # never serve a stale errored result — retry it
                 row["cached"] = True
                 # keep the original runner's attribution; record who re-served it
@@ -222,7 +244,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         if session_id:
             row["session"] = session_id
         if use_cache and pred.error is None:
-            cache_file.write_text(json.dumps(row, ensure_ascii=False))
+            cache_file.write_text(json.dumps(row, ensure_ascii=False), encoding="utf-8")
         return row
 
     def _chunks(it, n):

@@ -12,10 +12,10 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field
 
-from .data import check_source_not_scored
+from .data import check_source_not_scored, resolve_source_hf_id
 
 Method = Literal["qlora", "lora", "full", "trocr"]
-Arch = Literal["qwen2_vl", "qwen2_5_vl", "trocr", "paligemma", "minicpmv"]
+Arch = Literal["qwen2_vl", "qwen2_5_vl", "qwen3_vl", "trocr", "paligemma", "minicpmv"]
 
 
 class BaseModelSpec(BaseModel):
@@ -66,6 +66,10 @@ class ImageSpec(BaseModel):
 class TrainSpec(BaseModel):
     epochs: float = 1.0
     lr: float = 1e-4
+    # When set, parameters whose names contain the vision tower (``.visual.``)
+    # get this LR; everything else keeps ``lr``. Baseer-Nakba used 9e-6 on the
+    # encoder vs 1e-4 on the decoder. None = one LR for all trainable params.
+    vision_lr: float | None = None
     batch_size: int = 1
     grad_accum: int = 8
     scheduler: str = "cosine"
@@ -81,10 +85,18 @@ class TrainSpec(BaseModel):
     # `save_strategy: steps`. Re-running with `resume: true` picks up the last
     # one. `push_to_hub` mirrors every checkpoint to a private HF model repo as
     # a second backup.
+    # Cap the run at this many optimizer steps. When set, overrides ``epochs``
+    # for early-stop / staged train→score→continue loops. None = full epochs.
+    max_steps: int | None = None
     save_strategy: str = "epoch"        # "epoch" | "steps" | "no"
     save_steps: int = 200              # used when save_strategy == "steps"
     save_total_limit: int = 3         # keep only the last N local checkpoints
     resume: bool = True               # resume from the last checkpoint if present
+    # When True, eval runs on the same cadence as saves and the trainer reloads
+    # the lowest-eval_loss checkpoint before the final save_model. Uses the
+    # training val split, never a held-out test set. Requires an eval dataset
+    # (data.val_fraction > 0). save_strategy must stay "epoch" or "steps".
+    load_best_model_at_end: bool = False
     push_to_hub: bool = False
     hub_model_id: str | None = None   # e.g. "rabeeh97/arabic-ocr-<experiment>"
     hub_private: bool = True
@@ -121,8 +133,14 @@ def hub_trainer_kwargs(cfg: TrainingConfig) -> dict:
 def load_training_config(
     path: str | Path, *, datasets_cfg: str | Path = "configs/datasets.yaml"
 ) -> TrainingConfig:
-    cfg = TrainingConfig.model_validate(yaml.safe_load(Path(path).read_text()))
+    cfg = TrainingConfig.model_validate(yaml.safe_load(Path(path).read_text(encoding="utf-8")))
     for src in cfg.data.sources:
-        if src.hf_id and src.split:
-            check_source_not_scored(src.hf_id, src.split, cfg_path=datasets_cfg)
+        # Resolves hf_id however the source names its corpus (top-level
+        # hf_id, top-level subset, or params.subset) — a source declared
+        # via subset (e.g. a KitabBench-style `rasam1_train`) must not
+        # silently skip this guard just because it isn't spelled the same
+        # way `MuharafLines`-style sources are.
+        hf_id = resolve_source_hf_id(src)
+        if hf_id and src.split:
+            check_source_not_scored(hf_id, src.split, cfg_path=datasets_cfg)
     return cfg

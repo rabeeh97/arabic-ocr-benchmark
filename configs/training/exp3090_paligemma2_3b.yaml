@@ -1,0 +1,65 @@
+# RTX 3090 experiment — LoRA of PaliGemma 2-3B (google/paligemma2-3b-pt-448) on
+# the Muharaf `train` split. PaliGemma 2 is purpose-built for single-task
+# fine-tuning; the SigLIP+Gemma-2 stack is a strong, memory-light OCR base
+# (~10-16 GB LoRA on a 3090).
+#
+# GATED: google/paligemma2-3b-pt-448 needs a HF token that has accepted the
+# Gemma license. Put HF_TOKEN in <exp-folder>/experiment.env.
+#
+# NOTE: this uses a different collator (_make_collator_paligemma in
+# src/arabic_ocr_bench/training/sft_vlm.py) built from the published PaliGemma 2
+# recipe. Watch the first training batches — labels should be all -100 except the
+# ground-truth span, and loss should start ~2-4 and fall.
+experiment: exp3090-paligemma2-3b
+method: lora            # switch to `qlora` only if 24 GB is tight (it should not be)
+
+base_model:
+  hf_id: google/paligemma2-3b-pt-448
+  arch: paligemma
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false   # keep SigLIP frozen
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 8000
+  val_fraction: 0.03
+  prompt_version: line-v2   # unused by the PaliGemma collator (terse prefix instead)
+
+image:
+  min_pixels: 200704       # ignored by PaliGemma (fixed 448 in the checkpoint)
+  max_pixels: 1003520
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1            # bumped down from 2 — max_seq_len below nearly doubled
+  grad_accum: 8            # keeps the same effective batch size (8) as the other bases
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  # paligemma2-3b-pt-448 tiles the image into 32x32=1024 placeholder tokens
+  # (patch size 14) that are PREPENDED to the sequence — "448" is the pixel
+  # resolution, not the token count. max_seq_len must clear 1024 by enough to
+  # hold the prefix+suffix text too, or truncation cuts into the image-token
+  # block itself (corrupts the image, not just the label) — see the assert in
+  # _make_collator_paligemma. 1280 leaves ~256 tokens for text, generous for a
+  # single OCR line.
+  max_seq_len: 1280
+  save_strategy: steps
+  save_steps: 100        # frequent checkpoints — this box reboots/gets killed a lot
+  save_total_limit: 5    # more, smaller-interval checkpoints -> keep a few more
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/exp3090-paligemma2-3b
+eval_datasets: [muharaf_lines]

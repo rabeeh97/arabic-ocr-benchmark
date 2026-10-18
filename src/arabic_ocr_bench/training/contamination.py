@@ -22,7 +22,7 @@ from PIL import Image
 
 from ..normalize import normalize
 
-_Item = tuple[str, Image.Image | None, str]  # (id, image_or_None, ground_truth)
+_Item = tuple[str, Image.Image | None, str | None]  # (id, image_or_None, ground_truth)
 
 
 def dhash(image: Image.Image, hash_size: int = 8) -> int:
@@ -42,8 +42,15 @@ def hamming(a: int, b: int) -> int:
     return int(a ^ b).bit_count()
 
 
-def _match_key(text: str) -> str:
-    """Normalized form used for exact text-collision comparison."""
+def _match_key(text: str | None) -> str:
+    """Normalized form used for exact text-collision comparison.
+
+    A row with no ground truth (some dataset splits carry ``None``/empty
+    transcriptions) yields an empty key, so it is skipped by the
+    ``min_text_len`` guard rather than crashing the scan.
+    """
+    if not text:
+        return ""
     return normalize(text, "diac_insensitive").replace(" ", "")
 
 
@@ -155,5 +162,5 @@ def check_datasets(
     }
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report

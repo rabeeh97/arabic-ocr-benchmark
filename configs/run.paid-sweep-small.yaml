@@ -1,0 +1,44 @@
+# Small, capped sweep of paid models to broaden coverage a bit and get a feel
+# for where results are heading, without real spend. Deliberately EXCLUDES
+# every model known to burn heavy thinking/reasoning tokens (Claude Fable 5 /
+# 5.1 — thinking always on, $10/$50 tier; every GPT-5 / GPT-5.6 / GPT-6 row —
+# reasoning models, several already documented as ignoring low
+# reasoning_effort settings; glm-5.3-flash-paid — documented needing >12k
+# reasoning tokens on hard lines). Projected cost before running: ~$0.27 for
+# the 6 models with prior data, small (a few cents/line) for deepseek-vl-flash
+# which has none yet.
+#
+# rasam2 REMOVED: assumed safe because its HF cache dir already existed, but
+# it hit the exact same download crash as rasam1/nakba_lines/muharaf_lines —
+# an unhandled OSError from hf_hub_download's xet path, which killed the
+# ENTIRE run (not just that cell) before any model past claude-haiku-paid got
+# a turn. All four of these datasets are cache-unreliable on this network;
+# see docs/experiments/prompt-study.md.
+models:
+  - claude-haiku-paid
+  - claude-sonnet-paid
+  - claude-opus-paid
+  - gpt-4o-paid
+  - gpt-4o-mini-paid
+  - gpt-4.1-paid
+  - deepseek-vl-flash
+
+datasets:
+  - kitab_khatt
+  - kitab_muharaf
+  - kitab_historicalbooks
+  - kitab_hindawi
+  - kitab_historyar
+  - kitab_onlinekhatt
+
+prompt_version: line-v2
+limit: 10          # low cap per (model, dataset) — accumulate mode, so a re-run only tops up
+offset: 0
+accumulate: true
+normalization_profiles: [raw, light, diac_insensitive]
+concurrency: 2
+rpm: 0
+rate_limit_abort: 5
+max_retries: 2
+cache: true
+results_dir: results

@@ -1,0 +1,132 @@
+{
+ "source": "github.com/SanaNGU/CER-HV@a39544d7794ea4481060c3a2699b7d57343260cb",
+ "flagged_test": 126,
+ "flagged_train": 1424,
+ "flagged_test_labels": {
+  "Segmentation error": 23,
+  "Script mismatch (non-Arabic)": 70,
+  "Orientation error": 7,
+  "Wrong transcription": 9,
+  "Irrelevant / signature": 7,
+  "Irrelevant / non-text": 10
+ },
+ "rows": [
+  {
+   "model": "suite-v1-ain7b-ft",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.1399924684616833,
+   "cer_light_clean": 0.13713580715573692,
+   "rank": 1,
+   "rank_clean": 1
+  },
+  {
+   "model": "ain7b-nakba-ckpt-800",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.14526454528337412,
+   "cer_light_clean": 0.14320964221315366,
+   "rank": 2,
+   "rank_clean": 2
+  },
+  {
+   "model": "ain7b-nakba-ckpt-400",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.1479947279231783,
+   "cer_light_clean": 0.14510771566859637,
+   "rank": 3,
+   "rank_clean": 3
+  },
+  {
+   "model": "suite-v1-fanar2-oryx-ft",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.1932781020523442,
+   "cer_light_clean": 0.1909461896175382,
+   "rank": 4,
+   "rank_clean": 4
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-visft-difflr-ft",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.28704575409527394,
+   "cer_light_clean": 0.28309765587928254,
+   "rank": 5,
+   "rank_clean": 5
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft-bf16",
+   "n": 798,
+   "n_clean": 738,
+   "cer_light": 0.3476571546200756,
+   "cer_light_clean": 0.34667401980094015,
+   "rank": 6,
+   "rank_clean": 6
+  },
+  {
+   "model": "suite-v1-qwen3vl4b-ft",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.36330257955187345,
+   "cer_light_clean": 0.3631963556989655,
+   "rank": 7,
+   "rank_clean": 7
+  },
+  {
+   "model": "suite-v1-qwen3vl8b-ft",
+   "n": 200,
+   "n_clean": 191,
+   "cer_light": 0.3672566371681416,
+   "cer_light_clean": 0.3667077915915346,
+   "rank": 8,
+   "rank_clean": 8
+  },
+  {
+   "model": "nakba-baseline-qwen3vl",
+   "n": 500,
+   "n_clean": 473,
+   "cer_light": 0.4944396177237185,
+   "cer_light_clean": 0.4902822970714977,
+   "rank": 9,
+   "rank_clean": 9
+  },
+  {
+   "model": "qari-ocr-0.2",
+   "n": 1319,
+   "n_clean": 1193,
+   "cer_light": 0.7790249571813066,
+   "cer_light_clean": 0.7827513176961417,
+   "rank": 10,
+   "rank_clean": 10
+  },
+  {
+   "model": "trocr-large-arabic",
+   "n": 1334,
+   "n_clean": 1208,
+   "cer_light": 0.8108787997469346,
+   "cer_light_clean": 0.8122521279764238,
+   "rank": 11,
+   "rank_clean": 11
+  },
+  {
+   "model": "arabic-paddleocr-v5",
+   "n": 220,
+   "n_clean": 209,
+   "cer_light": 0.8847983089660032,
+   "cer_light_clean": 0.884693968197566,
+   "rank": 12,
+   "rank_clean": 12
+  },
+  {
+   "model": "qwen3-vl-4b-bf16",
+   "n": 800,
+   "n_clean": 740,
+   "cer_light": 1.3662376288395466,
+   "cer_light_clean": 1.374849547333717,
+   "rank": 13,
+   "rank_clean": 13
+  }
+ ]
+}

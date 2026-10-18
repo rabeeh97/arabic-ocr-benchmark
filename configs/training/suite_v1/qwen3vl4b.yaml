@@ -1,0 +1,82 @@
+# suite_v1 round 1 — Qwen3-VL-4B-Instruct, re-run on the expanded real-data
+# mix (Muharaf + AraMS-28k-HTR + RASAM-1/2; NAKBA deliberately excluded so it
+# stays an unseen-domain check — see docs/experiments/misraj-baseer-research.md).
+# Updated baseline/reference point vs. the original exp3090_qwen3vl4b.yaml,
+# which only ever saw 8k lines of Muharaf.
+#
+# Data is CAPPED for round 1 (fast multi-model comparison first, full-corpus
+# runs later) — see per-source `limit:` below. Total ~18k lines/model.
+#
+# `data.sources` here is intentionally IDENTICAL across every suite_v1 config
+# (qwen3vl4b.yaml, qwen3vl8b.yaml, ain7b.yaml, fanar2_oryx.yaml) so the A/B/C/D
+# comparison is apples-to-apples — only base_model/lora/train differ per model.
+experiment: suite-v1-qwen3vl4b
+method: lora
+
+base_model:
+  hf_id: Qwen/Qwen3-VL-4B-Instruct
+  arch: qwen3_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false   # frozen ViT for round 1; unfreezing is a round-2 lever
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 1003520    # ~1120*896  (lower first if you OOM)
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5           # tight cadence — a crash must lose a few samples, not
+                           # hundreds; cheap because LoRA checkpoints are small
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-qwen3vl4b
+eval_datasets: [muharaf_lines]

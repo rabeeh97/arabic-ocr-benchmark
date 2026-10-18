@@ -10,12 +10,19 @@ authors = [{ name = "rabeeh97" }]
 dependencies = [
     "jiwer>=3.0",
     "datasets>=3.0",
+    # 25.x's _dataset.pyd is WDAC-blocked on the 3090 box (Application Control
+    # policy); 21.0.0 is the wheel the suite venv already loads successfully.
+    "pyarrow>=15,<22",
     "pillow>=10.0",
     "pyyaml>=6.0",
     "pydantic>=2.0",
     "tqdm>=4.66",
     "tenacity>=8.2",
-    "pandas>=2.0",
+    # 3.x's indexing.pyd is WDAC-blocked on the 3090 box (same class of
+    # Application Control failure as pyarrow 25.x). 2.3.3 already imports
+    # cleanly in paddleocr_venv on that machine.
+    "pandas>=2.0,<3",
+    "numpy>=1.26",
     "pyarabic>=0.6.15",
     "litellm>=1.50",
     "python-dotenv>=1.0",
@@ -27,7 +34,7 @@ dependencies = [
 # local open-weight / Arabic-specific models (Qwen2.5-VL, Qari-OCR, PaliGemma, ...)
 local = [
     "torch>=2.2",
-    "transformers>=4.49",
+    "transformers>=4.49,<5",  # 5.x drops TrainingArguments fields the training code relies on
     "accelerate>=0.30",
     "qwen-vl-utils>=0.0.8",
     "peft>=0.11",
@@ -37,7 +44,7 @@ local = [
 # fine-tuning: LoRA/QLoRA SFT of the local VLMs + encoder-decoder models.
 # Needs the `local` extra too (torch, transformers, peft, accelerate).
 train = [
-    "trl>=0.12",
+    "trl>=0.12,<1.0",         # 1.x rewrote SFTConfig/SFTTrainer; this code targets the 0.x API
     "bitsandbytes>=0.44",     # 4-bit base weights for QLoRA (CUDA only)
     "imagehash>=4.3",         # perceptual hashing for the contamination check
     "fonttools>=4.50",        # cmap probe: skip fonts that can't render via reshaper+Pillow
@@ -46,6 +53,12 @@ train = [
 dev = [
     "pytest>=8.0",
     "ruff>=0.6",
+]
+# PaddleOCR recognition client. The GPU wheel (`paddlepaddle-gpu`) MUST come
+# from Paddle's own index, not PyPI — see docs/experiments/paddleocr-runbook.md.
+# Do not install this extra into the suite's torch venv.
+paddleocr = [
+    "paddleocr>=3.7",
 ]
 
 [project.scripts]

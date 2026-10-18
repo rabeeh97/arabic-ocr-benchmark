@@ -1,0 +1,1 @@
+{"sample_id": "kitab_muharaf/train/000054", "model": "gemini-flash", "dataset": "kitab_muharaf", "track": "line", "prompt_version": "line-v2", "ground_truth": "HABIB MASSOUD", "raw_text": "HABIB MASSOUD", "cleaned_text": "HABIB MASSOUD", "latency_ms": 5704.59, "input_tokens": 1122, "output_tokens": 245, "cost_usd": 0.0009491, "error": null, "attempts": 1, "cached": false}

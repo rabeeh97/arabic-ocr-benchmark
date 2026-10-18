@@ -1,0 +1,76 @@
+# suite_v1 round 1 — AIN-7B (MBZUAI), an Arabic-centric VLM built on
+# Qwen2-VL-7B. `arch: qwen2_vl` is already wired in sft_vlm.py's
+# _ARCH_MODEL_CLS (Qwen2VLForConditionalGeneration) — no new training-dispatch
+# code needed. 7B base weights are comparable in size to Qwen3-VL-8B, so the
+# same trimmed `image.max_pixels` applies (see qwen3vl8b.yaml's comment).
+#
+# `data.sources` is identical to qwen3vl4b.yaml — see that file's header.
+experiment: suite-v1-ain7b
+method: lora
+
+base_model:
+  hf_id: MBZUAI/AIN
+  arch: qwen2_vl
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  train_vision: false
+
+data:
+  sources:
+    - name: muharaf_train
+      adapter: arabic_ocr_bench.datasets.muharaf_lines:MuharafLines
+      hf_id: aamijar/muharaf-public
+      split: train
+      limit: 6000
+    - name: arams_train
+      adapter: arabic_ocr_bench.datasets.arams:AraMSHTR
+      params: { root: data/arams_28k_htr }
+      split: train
+      limit: 6000
+    - name: rasam1_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: train
+      limit: 3000
+    - name: rasam1_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-1 }
+      split: validation
+    - name: rasam2_train
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: train
+      limit: 2000
+    - name: rasam2_val
+      adapter: arabic_ocr_bench.datasets.kitab_bench:KitabBench
+      params: { subset: calfa-ai/RASAM-2 }
+      split: validation
+  val_fraction: 0.03
+  prompt_version: line-v2
+
+image:
+  min_pixels: 200704     # 448*448
+  max_pixels: 802816     # ~1024*784 — trimmed, same reasoning as qwen3vl8b.yaml
+
+train:
+  epochs: 1
+  lr: 1.0e-4
+  batch_size: 1
+  grad_accum: 8
+  scheduler: cosine
+  warmup_ratio: 0.03
+  seed: 0
+  bf16: true
+  gradient_checkpointing: true
+  max_seq_len: 1024
+  save_strategy: steps
+  save_steps: 5
+  save_total_limit: 5
+  resume: true
+  push_to_hub: false
+
+output_dir: results/training/suite-v1-ain7b
+eval_datasets: [muharaf_lines]

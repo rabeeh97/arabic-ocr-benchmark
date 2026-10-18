@@ -16,8 +16,11 @@ import datetime as dt
 import html
 import json
 import re
+import sys
 from pathlib import Path
 
+import _leaderboard_findings as _lf  # scripts/ sibling; resolvable on sys.path[0]
+import _leaderboard_prompt_study as _lps  # scripts/ sibling; the Research tab
 import yaml
 
 _PROFILES = ("raw", "light", "diac_insensitive")
@@ -40,7 +43,7 @@ def _dataset_rows() -> dict[str, int]:
     out = dict(_DATASET_ROWS)
     f = _REPO / "results" / "_dataset_sizes.json"
     try:
-        out.update({k: int(v) for k, v in json.loads(f.read_text()).items()})
+        out.update({k: int(v) for k, v in json.loads(f.read_text(encoding="utf-8")).items()})
     except (OSError, json.JSONDecodeError, ValueError, TypeError):
         pass
     return out
@@ -50,13 +53,39 @@ def load_cards() -> dict[str, dict[str, str]]:
     out: dict[str, dict[str, str]] = {"models": {}, "datasets": {}}
     for kind, fname in (("models", "models.yaml"), ("datasets", "datasets.yaml")):
         try:
-            cfg = yaml.safe_load((_REPO / "configs" / fname).read_text()) or {}
+            cfg = yaml.safe_load((_REPO / "configs" / fname).read_text(encoding="utf-8")) or {}
         except OSError:
             continue
         for name, entry in cfg.items():
             if isinstance(entry, dict) and entry.get("card"):
                 out[kind][name] = " ".join(str(entry["card"]).split())
     return out
+
+
+def in_train_datasets() -> dict[str, str]:
+    """{dataset -> training corpus it overlaps}, from ``overlaps_source`` in
+    configs/datasets.yaml. Every fine-tune so far samples from Muharaf train,
+    so a fine-tuned score on one of these measures recall, not recognition
+    (e.g. 86.5 % of `kitab_muharaf` long lines occur in Muharaf train)."""
+    try:
+        cfg = yaml.safe_load((_REPO / "configs" / "datasets.yaml").read_text(encoding="utf-8")) or {}
+    except OSError:
+        return {}
+    return {name: str(e["overlaps_source"]) for name, e in cfg.items()
+            if isinstance(e, dict) and e.get("overlaps_source")}
+
+
+def fine_tuned_models(models) -> set[str]:
+    """Rows that are fine-tunes: every ``ft_models`` entry in
+    configs/training/experiments.yaml, plus any name carrying an ``-ft`` tag."""
+    try:
+        manifest = yaml.safe_load(
+            (_REPO / "configs" / "training" / "experiments.yaml").read_text(encoding="utf-8")
+        ) or {}
+    except OSError:
+        manifest = {}
+    out = {m for e in manifest.values() if isinstance(e, dict) for m in (e.get("ft_models") or [])}
+    return out | {m for m in models if re.search(r"-ft(-|$)", m)}
 
 
 def collect_samples(target: Path) -> dict:
@@ -69,7 +98,7 @@ def collect_samples(target: Path) -> dict:
     by_id: dict[str, dict] = {}
     for f in files:
         try:
-            data = json.loads(f.read_text())
+            data = json.loads(f.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError):
             continue
         for s in data.get("samples", []):
@@ -181,12 +210,12 @@ def collect_costs(target: Path) -> dict[str, dict]:
     import statistics
 
     priced = {
-        name for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        name for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text(encoding="utf-8")) or {}).items()
         if isinstance(c, dict) and (c.get("pricing") or {}).get("input_usd_per_1m") is not None
     }
     pricing = {
         name: (c.get("pricing") or {})
-        for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text()) or {}).items()
+        for name, c in (yaml.safe_load((_REPO / "configs" / "models.yaml").read_text(encoding="utf-8")) or {}).items()
         if isinstance(c, dict)
     }
     seen: dict[tuple[str, str], dict] = {}
@@ -242,17 +271,48 @@ def _run_dirs(target: Path) -> list[Path]:
     return sorted(p.parent for p in target.glob("*/summary.csv"))
 
 
+def _ensure_findings(target: Path) -> dict:
+    """Return the parsed findings doc for ``target``, (re)building
+    ``results/findings.json`` when it is missing or older than the newest run
+    file under ``target``, else reading the cached file. Never raises on an
+    analysis failure — logs to stderr and returns ``{}``."""
+    fj = (target / "findings.json") if target.is_dir() else target.parent / "findings.json"
+    newest = 0.0
+    for rd in _run_dirs(target):
+        for name in ("predictions.jsonl", "scores.jsonl"):
+            p = rd / name
+            if p.exists():
+                newest = max(newest, p.stat().st_mtime)
+    if fj.exists() and fj.stat().st_mtime >= newest:
+        try:
+            doc = json.loads(fj.read_text(encoding="utf-8"))
+            if isinstance(doc, dict):
+                return doc
+            # valid JSON but not an object — treat like a decode error, rebuild.
+        except (OSError, json.JSONDecodeError):
+            pass
+    try:
+        from arabic_ocr_bench.analysis.findings import build
+
+        doc = build(target)
+        fj.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+        return doc
+    except Exception as e:  # noqa: BLE001
+        print(f"findings build failed: {e}", file=sys.stderr)
+        return {}
+
+
 def _run_meta(run_dir: Path) -> dict:
     meta = {"run": run_dir.name, "when": "", "limit": "", "prompt_version": ""}
     try:
         stamp = run_dir.name.split("-")[0]  # tolerate a "-2" same-second suffix
-        parsed = dt.datetime.strptime(stamp, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.UTC)
+        parsed = dt.datetime.strptime(stamp, "%Y%m%dT%H%M%SZ").replace(tzinfo=dt.timezone.utc)
         meta["when"] = parsed.strftime("%Y-%m-%d %H:%M UTC")
     except ValueError:
         pass
     snap = run_dir / "run_config.snapshot.yaml"
     if snap.exists():
-        for line in snap.read_text().splitlines():
+        for line in snap.read_text(encoding="utf-8").splitlines():
             if line.startswith("limit:"):
                 meta["limit"] = line.split(":", 1)[1].strip()
             if line.startswith("prompt_version:"):
@@ -561,7 +621,8 @@ _MATRIX_JS = r"""
 (function(){
   var el=function(id){return document.getElementById(id);};
   var P={}; try{P=JSON.parse(el('mx-data').textContent);}catch(e){return;}
-  var DS=P.ds, M=P.m, C=P.c;                 // C[di][mi] = [cerLight, werLight] | null
+  var DS=P.ds, M=P.m, C=P.c, IT=P.it||{};    // C[di][mi] = [cerLight, werLight] | "it" | null
+  function num(c){return Array.isArray(c)?c[0]:Infinity;}  // "it" = fine-tune on an in-train set
   var out=el('mx-out'), note=el('mx-sortnote');
   var meanOrder=P.order;                     // default model column order (indices)
   var sortDi=-1;                             // >=0 => columns sorted by that dataset
@@ -573,7 +634,7 @@ _MATRIX_JS = r"""
     if(sortDi<0) return meanOrder.slice();
     var row=C[sortDi];
     return M.map(function(_,i){return i;}).sort(function(a,b){
-      var x=row[a]?row[a][0]:Infinity, y=row[b]?row[b][0]:Infinity;
+      var x=num(row[a]), y=num(row[b]);
       return x-y;
     });
   }
@@ -584,11 +645,15 @@ _MATRIX_JS = r"""
     var body=DS.map(function(ds,di){
       var row=C[di];
       var best=Infinity;
-      row.forEach(function(c){ if(c && c[0]<best) best=c[0]; });
-      var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+"</th>";
+      row.forEach(function(c){ if(num(c)<best) best=c[0]; });
+      var it=IT[ds]?" <span class='mx-it' title='overlaps the training corpus "+esc(IT[ds])+
+        " — fine-tuned scores here are hidden'>in-train</span>":"";
+      var cells="<th class='mx-ds"+(di===sortDi?" mx-ds-on":"")+"' data-di='"+di+"' role='button' tabindex='0'>"+esc(ds)+it+"</th>";
       cells+=ord.map(function(i){
         var c=row[i];
         if(!c) return "<td class='mx-empty'>·</td>";
+        if(c==="it") return "<td class='mx-masked' title='fine-tuned on "+esc(IT[ds])+
+          ", which contains these lines: score not quoted'>in-train</td>";
         var isBest=c[0]===best;
         return "<td class='"+tcls(c[0])+(isBest?" mx-best":"")+"'>"+
           "<span class='mx-cer'>"+pc(c[0])+"</span><span class='mx-wer'>"+pc(c[1])+"</span></td>";
@@ -617,6 +682,242 @@ _MATRIX_JS = r"""
 """
 
 
+_FT_CSS = """<style>
+.ft-view{max-width:900px}
+.ft-view>h2{margin:.2rem 0 .3rem}
+.ft-exp{border:1px solid var(--line);border-radius:10px;padding:.9rem 1.05rem;margin:0 0 1.1rem}
+.ft-exp h3{margin:.1rem 0 .55rem;font-size:1.02rem}
+.ft-meta{font-size:.84rem;color:var(--muted);margin:.18rem 0;line-height:1.55}
+.ft-meta code{font-size:.86em}
+.ft-head{font-size:.92rem;margin:.55rem 0 .7rem}
+.ft-head b{font-variant-numeric:tabular-nums}
+.ft-tbl{border-collapse:collapse;width:100%;font-size:.85rem;font-variant-numeric:tabular-nums}
+.ft-tbl th,.ft-tbl td{padding:.32rem .55rem;border-bottom:1px solid var(--line);text-align:right}
+.ft-tbl th:first-child,.ft-tbl td:first-child{text-align:left}
+.ft-tbl thead th{color:var(--muted);font-weight:600}
+.ft-tbl tr.ft-mean td{border-top:2px solid var(--line);font-weight:600}
+.ft-gain{color:#0a7d3c}.ft-loss{color:#c0392b}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]) .ft-gain{color:#4ade80}
+  :root:not([data-theme=light]) .ft-loss{color:#f87171}}
+:root[data-theme=dark] .ft-gain{color:#4ade80}
+:root[data-theme=dark] .ft-loss{color:#f87171}
+.ft-train{margin:.4rem 0 .7rem;max-width:340px}
+.ft-train .ft-curve{display:block;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.ft-hyp{font-size:.84rem;font-style:italic;color:var(--muted);margin:.6rem 0 .1rem}
+.ft-note{font-size:.85rem;line-height:1.55;margin:.5rem 0 0;padding-left:1.15rem}
+.ft-note li{margin:.22rem 0}
+.ft-empty{color:var(--muted);font-size:.9rem}
+</style>"""
+
+
+def _loss_curve_svg(train: list[tuple[float, float]], evals: list[tuple[float, float]]) -> str:
+    """Tiny inline SVG: training loss line + eval-loss dots vs optimizer step."""
+    if len(train) < 2:
+        return ""
+    W, H, ml, mr, mt, mb = 320, 120, 34, 8, 8, 20
+    xs = [s for s, _ in train] + [s for s, _ in evals]
+    ys = [v for _, v in train] + [v for _, v in evals]
+    x0, x1 = min(xs), max(xs) or 1
+    y0, y1 = min(ys), max(ys)
+    yr = (y1 - y0) or 1.0
+    xr = (x1 - x0) or 1.0
+
+    def fx(s):
+        return ml + (W - mr - ml) * (s - x0) / xr
+
+    def fy(v):
+        return (H - mb) - (H - mb - mt) * (v - y0) / yr
+
+    pts = " ".join(f"{fx(s):.1f},{fy(v):.1f}" for s, v in train)
+    dots = "".join(
+        f'<circle cx="{fx(s):.1f}" cy="{fy(v):.1f}" r="2.6" fill="var(--accent)"></circle>'
+        for s, v in evals
+    )
+    return (
+        f'<svg class="ft-curve" viewBox="0 0 {W} {H}" width="100%" '
+        f'preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">'
+        f'<line x1="{ml}" y1="{H-mb}" x2="{W-mr}" y2="{H-mb}" stroke="var(--line)"></line>'
+        f'<line x1="{ml}" y1="{mt}" x2="{ml}" y2="{H-mb}" stroke="var(--line)"></line>'
+        f'<text x="{ml-4}" y="{fy(y1):.1f}" text-anchor="end" font-size="8" '
+        f'fill="var(--muted)">{y1:.2f}</text>'
+        f'<text x="{ml-4}" y="{fy(y0):.1f}" text-anchor="end" font-size="8" '
+        f'fill="var(--muted)">{y0:.2f}</text>'
+        f'<text x="{(ml+W-mr)/2:.0f}" y="{H-4}" text-anchor="middle" font-size="8" '
+        f'fill="var(--muted)">optimizer step</text>'
+        f'<polyline points="{pts}" fill="none" stroke="var(--accent)" stroke-width="1.5"></polyline>'
+        f'{dots}</svg>'
+    )
+
+
+def _ft_training_block(e: dict) -> str:
+    """Per-experiment training snapshot: loss curve + a couple of numbers, from
+    the fetched ``<report_dir>/trainer_state.json`` if it has been committed."""
+    rd = e.get("report_dir")
+    if not rd:
+        return ""
+    tsp = _REPO / rd / "trainer_state.json"
+    if not tsp.exists():
+        return (f"<p class='ft-meta'>Training curve: drop the run's "
+                f"<code>trainer_state.json</code> at <code>{html.escape(rd)}/</code> "
+                f"(from the pipeline's <code>reports/&lt;exp&gt;/</code> snapshot).</p>")
+    try:
+        ts = json.loads(tsp.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    lh = ts.get("log_history") or []
+    train = [(float(x["step"]), float(x["loss"])) for x in lh if "loss" in x and "step" in x]
+    evals = [(float(x["step"]), float(x["eval_loss"])) for x in lh if "eval_loss" in x]
+    bits = []
+    if ts.get("global_step"):
+        bits.append(f"{int(ts['global_step'])} steps")
+    if ts.get("epoch"):
+        bits.append(f"{float(ts['epoch']):.2f} epoch")
+    if train:
+        bits.append(f"loss {train[0][1]:.2f} &rarr; {train[-1][1]:.2f}")
+    if evals:
+        bits.append(f"eval-loss {evals[-1][1]:.2f}")
+    svg = _loss_curve_svg(train, evals)
+    head = " &middot; ".join(bits)
+    return (f"<div class='ft-train'>{svg}"
+            + (f"<p class='ft-meta'>{head}</p>" if head else "")
+            + "</div>")
+
+
+def _render_finetuning(rows: list[dict], target: Path) -> tuple[str, list[tuple[str, str]]]:
+    """The Fine-tuning tab: per training experiment (from
+    ``configs/training/experiments.yaml``), base vs fine-tune on held-out
+    datasets. Returns ``(html, toc_items)``; ``toc_items`` empty => no tab."""
+    try:
+        manifest = yaml.safe_load(
+            (_REPO / "configs" / "training" / "experiments.yaml").read_text(encoding="utf-8")
+        ) or {}
+    except OSError:
+        manifest = {}
+
+    idx: dict[tuple[str, str], dict] = {
+        (r["model"], r.get("dataset", "")): r for r in rows
+    }
+
+    def _cer(model: str, ds: str):
+        r = idx.get((model, ds))
+        try:
+            return float(r["cer_micro_light"]) if r and r.get("cer_micro_light") else None
+        except (TypeError, ValueError):
+            return None
+
+    parts = [
+        _FT_CSS, "<div class='ft-view'>",
+        "<h2>Fine-tuning experiments</h2>",
+        "<p class='board-note'>Each training run, its recipe, and what it gained "
+        "over the untuned base on datasets it never trained on. CER is "
+        "%-of-characters (light-normalised), lower is better; Δ is fine-tune "
+        "minus base. Sets that overlap the training corpus (<b>in-train</b>, "
+        "e.g. <code>kitab_muharaf</code>) are never counted as held-out.</p>",
+    ]
+    in_train = in_train_datasets()
+    toc: list[tuple[str, str]] = []
+    if not manifest:
+        parts.append("<p class='ft-empty'>No experiments defined "
+                     "(<code>configs/training/experiments.yaml</code>).</p></div>")
+        return "".join(parts), toc
+
+    for exp_id, e in manifest.items():
+        if not isinstance(e, dict):
+            continue
+        sid = f"ft-{exp_id}"
+        toc.append((sid, e.get("title", exp_id)))
+        base = e.get("base_model", "")
+        fts = e.get("ft_models") or []
+        ft = fts[0] if fts else ""
+        listed = e.get("holdout_datasets") or []
+        dsets = [ds for ds in listed if ds not in in_train]
+        dropped = [ds for ds in listed if ds in in_train]
+
+        trip = []  # (dataset, n, base_cer, ft_cer)
+        for ds in dsets:
+            bc, fc = _cer(base, ds), _cer(ft, ds)
+            if bc is not None and fc is not None:
+                n = (idx.get((ft, ds)) or {}).get("n", "?")
+                trip.append((ds, n, bc, fc))
+
+        body = ""
+        if trip:
+            rows_html = ""
+            for ds, n, bc, fc in trip:
+                d, dp = fc - bc, ((fc - bc) / bc * 100 if bc else 0.0)
+                cls = "ft-gain" if d < 0 else ("ft-loss" if d > 0 else "")
+                rows_html += (
+                    f"<tr><td>{html.escape(ds)}</td><td>{html.escape(str(n))}</td>"
+                    f"<td>{bc * 100:.1f}</td><td>{fc * 100:.1f}</td>"
+                    f"<td class='{cls}'>{d * 100:+.1f}</td>"
+                    f"<td class='{cls}'>{dp:+.0f}%</td></tr>"
+                )
+            mb = sum(t[2] for t in trip) / len(trip)
+            mf = sum(t[3] for t in trip) / len(trip)
+            md = mf - mb
+            mcls = "ft-gain" if md < 0 else ("ft-loss" if md > 0 else "")
+            rows_html += (
+                f"<tr class='ft-mean'><td>mean · {len(trip)} set(s)</td><td></td>"
+                f"<td>{mb * 100:.1f}</td><td>{mf * 100:.1f}</td>"
+                f"<td class='{mcls}'>{md * 100:+.1f}</td>"
+                f"<td class='{mcls}'>{(md / mb * 100 if mb else 0):+.0f}%</td></tr>"
+            )
+            headline = (
+                f"held-out CER <b>{mb * 100:.1f}% &rarr; {mf * 100:.1f}%</b> "
+                f"<span class='{mcls}'>({md * 100:+.1f}, {(md / mb * 100 if mb else 0):+.0f}%)</span> "
+                f"across {len(trip)} dataset(s)"
+            )
+            body = (
+                "<div class='scroll'><table class='ft-tbl'><thead><tr>"
+                "<th>dataset</th><th>n</th><th>base CER</th><th>ft CER</th>"
+                "<th>&Delta;</th><th>&Delta;%</th></tr></thead>"
+                f"<tbody>{rows_html}</tbody></table></div>"
+            )
+        else:
+            headline = "no held-out results scored yet"
+
+        io = e.get("in_domain") or {}
+        indom = ""
+        if io.get("dataset"):
+            bc, fc = _cer(base, io["dataset"]), _cer(ft, io["dataset"])
+            indom = (
+                f"<p class='ft-meta'>In-domain (<code>{html.escape(io['dataset'])}</code>"
+                + (f" &mdash; {html.escape(io.get('note', ''))}" if io.get("note") else "")
+                + f"): base {bc * 100:.1f}% &middot; fine-tune {fc * 100:.1f}%</p>"
+                if bc is not None and fc is not None else ""
+            )
+
+        cfg = e.get("config", "")
+        block = [
+            f"<section id='{sid}' class='ft-exp'>",
+            f"<h3>{html.escape(e.get('title', exp_id))}</h3>",
+            f"<p class='ft-meta'><b>Base</b> <code>{html.escape(base)}</code> "
+            f"&nbsp;&nbsp; <b>Fine-tune</b> <code>{html.escape(ft)}</code></p>",
+            f"<p class='ft-meta'>{html.escape(e.get('training', ''))}"
+            + (f" &nbsp;&middot;&nbsp; recipe <code>{html.escape(cfg)}</code>" if cfg else "")
+            + "</p>",
+            f"<p class='ft-head'>{headline}</p>",
+            _ft_training_block(e),
+            indom, body,
+        ]
+        if e.get("hypothesis"):
+            block.append(f"<p class='ft-hyp'>Hypothesis &mdash; {html.escape(e['hypothesis'].strip())}</p>")
+        notes = list(e.get("notes") or [])
+        if dropped:
+            notes.append("Not counted as held-out (in-train, overlaps "
+                         + ", ".join(sorted({in_train[d] for d in dropped})) + "): "
+                         + ", ".join(dropped) + ".")
+        if notes:
+            block.append("<ul class='ft-note'>" + "".join(
+                f"<li>{html.escape(str(x))}</li>" for x in notes) + "</ul>")
+        block.append("</section>")
+        parts.append("".join(block))
+
+    parts.append("</div>")
+    return "".join(parts), toc
+
+
 def _render_matrix(rows: list[dict]) -> str:
     """Datasets down the side, models across the top, each cell CER-light (big)
     over WER-light (small). Best model per dataset is bold; a faint green→red CER
@@ -628,6 +929,8 @@ def _render_matrix(rows: list[dict]) -> str:
         return ""
     m_ix = {m: i for i, m in enumerate(models)}
     idx = {(r["model"], r["dataset"]): r for r in rows}
+    in_train = in_train_datasets()
+    fts = fine_tuned_models(models)
 
     cell = []
     for ds in datasets:
@@ -636,10 +939,16 @@ def _render_matrix(rows: list[dict]) -> str:
             r = idx.get((m, ds))
             cl = _num(r.get("cer_micro_light"), 1.0) if r else None
             wl = _num(r.get("wer_micro_light"), 1.0) if r else None
-            row.append([cl, wl] if cl is not None else None)
+            # a fine-tune scored on a set that overlaps its training corpus:
+            # keep the cell visible as "in-train" but never show the number
+            if cl is not None and ds in in_train and m in fts:
+                row.append("it")
+            else:
+                row.append([cl, wl] if cl is not None else None)
         cell.append(row)
 
     payload = {"ds": datasets, "m": models, "c": cell,
+               "it": {ds: src for ds, src in in_train.items() if ds in datasets},
                "order": list(range(len(models)))}  # already best-mean-CER first
     _ = m_ix  # (kept for clarity; order is identity since `models` is pre-sorted)
     blob = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
@@ -655,7 +964,9 @@ def _render_matrix(rows: list[dict]) -> str:
         f"<b>{_cl}&nbsp;%</b>, smaller number below is <b>{_wl}&nbsp;%</b> "
         "(both lower = better). The <b>best model on each dataset is bold</b>; cells carry a "
         "faint green&rarr;red wash by CER. <b>Click a dataset name</b> to sort the model "
-        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset.</p>"
+        "columns best&rarr;worst on it. <code>&middot;</code> = not run on that dataset. "
+        "Datasets tagged <b>in-train</b> overlap the Muharaf training corpus: base models "
+        "are scored there as usual, fine-tunes are not quoted.</p>"
         "<p class='board-note mx-sortnote' id='mx-sortnote'></p>"
         f"<div id='mx-out'></div>"
         f"<script id='mx-data' type='application/json'>{blob}</script>"
@@ -709,17 +1020,102 @@ _TOC_JS = r"""
 """
 
 
-def _toc(items: list[tuple[str, str]]) -> str:
+_TABS_JS = r"""
+(function(){
+  var bar=document.querySelector('.tabbar');
+  var btns=bar?[].slice.call(bar.querySelectorAll('.tab')):[];
+  var views={};
+  [].forEach.call(document.querySelectorAll('.view[data-view]'),function(v){
+    views[v.getAttribute('data-view')]=v;
+  });
+  var TABS=btns.map(function(b){return b.getAttribute('data-tab');});
+  var DEF=TABS[0]||'leaderboard';
+  var navs={};
+  TABS.forEach(function(n){ navs[n]=document.getElementById('toc-'+n); });
+
+  function want(){
+    var h=location.hash||'';
+    if(h.indexOf('#f-')===0||h.indexOf('#findings')===0) return 'findings';
+    if(h.indexOf('#ft-')===0||h.indexOf('#finetuning')===0) return 'finetuning';
+    if(h.indexOf('#rs-')===0||h.indexOf('#research')===0) return 'research';
+    try{ var s=localStorage.getItem('lb_tab');
+         if(TABS.indexOf(s)>=0) return s; }catch(_){}
+    return DEF;
+  }
+  function activate(name,push){
+    if(TABS.indexOf(name)<0) name=DEF;
+    btns.forEach(function(b){
+      b.classList.toggle('tab--on', b.getAttribute('data-tab')===name);
+    });
+    Object.keys(views).forEach(function(k){ if(views[k]) views[k].hidden=(k!==name); });
+    TABS.forEach(function(k){ if(navs[k]) navs[k].hidden=(k!==name); });
+    try{ localStorage.setItem('lb_tab',name); }catch(_){}
+    if(push){ try{ history.replaceState(null,'',name===DEF?'#':'#'+name); }catch(_){} }
+  }
+
+  var init=want();
+  activate(init,false);
+  if((init==='findings' && location.hash.indexOf('#f-')===0)
+     || (init==='research' && location.hash.indexOf('#rs-')===0)){
+    var t=document.getElementById(location.hash.slice(1));
+    if(t) requestAnimationFrame(function(){ t.scrollIntoView({block:'start'}); });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){ activate(b.getAttribute('data-tab'),true); });
+  });
+
+  // one shared cursor tooltip for any [data-tip] element (charts live here)
+  var tip=null;
+  function host(el){
+    while(el && el.getAttribute){
+      if(el.hasAttribute('data-tip')) return el;
+      el=el.parentNode;
+    }
+    return null;
+  }
+  document.addEventListener('mousemove',function(e){
+    var h=host(e.target);
+    if(!h){ if(tip) tip.classList.remove('on'); return; }
+    if(!tip){ tip=document.createElement('div'); tip.className='chart-tip';
+              document.body.appendChild(tip); }
+    tip.textContent=h.getAttribute('data-tip')||'';
+    tip.classList.add('on');
+    var pad=14, w=tip.offsetWidth, ht=tip.offsetHeight;
+    var x=e.clientX+pad, y=e.clientY+pad;
+    if(x+w>window.innerWidth-4) x=e.clientX-pad-w;
+    if(y+ht>window.innerHeight-4) y=e.clientY-pad-ht;
+    tip.style.left=Math.max(4,x)+'px';
+    tip.style.top=Math.max(4,y)+'px';
+  });
+  document.addEventListener('mouseout',function(e){
+    if(tip && !host(e.target)) tip.classList.remove('on');
+  });
+})();
+"""
+
+
+def _toc(items: list[tuple[str, str]],
+         findings_items: list[tuple[str, str]] | None = None,
+         finetuning_items: list[tuple[str, str]] | None = None,
+         research_items: list[tuple[str, str]] | None = None) -> str:
     """A vertical section index, fixed to the left of the page (scroll-spy in
-    ``_TOC_JS`` highlights the section currently in view)."""
-    lis = "".join(
-        f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
-        for sid, label in items
-    )
+    ``_TOC_JS`` highlights the section currently in view). One list per tab
+    shares the nav; ``_TABS_JS`` shows only the one matching the active tab."""
+    def _ol(pairs: list[tuple[str, str]], oid: str, hidden: bool) -> str:
+        lis = "".join(
+            f"<li><a href='#{html.escape(sid)}'>{html.escape(label)}</a></li>"
+            for sid, label in pairs
+        )
+        return f"<ol id='{oid}'{' hidden' if hidden else ''}>{lis}</ol>"
+
     return (
         "<nav class='sidenav' id='toc' aria-label='sections'>"
         "<p class='sidenav-h'>Contents</p>"
-        f"<ol>{lis}</ol></nav>"
+        f"{_ol(items, 'toc-leaderboard', False)}"
+        f"{_ol(finetuning_items or [], 'toc-finetuning', True)}"
+        f"{_ol(findings_items or [], 'toc-findings', True)}"
+        f"{_ol(research_items or [], 'toc-research', True)}"
+        "</nav>"
     )
 
 
@@ -752,14 +1148,15 @@ def _panel(section_html: str, *, pid: str, collapsible: bool,
     )
 
 
-def render(rows: list[dict], title: str, target: Path | None = None) -> str:
+def render(rows: list[dict], title: str, target: Path | None = None,
+           findings: dict | None = None) -> str:
     _RENDER_CTX["target"] = target or Path("results")
     rows = sorted(rows, key=lambda r: (r.get("dataset", ""),
                                        float(r.get("cer_micro_light", 1) or 1)))
     preview = _is_preview(rows)
     real = [r for r in rows if not (r["model"].startswith("mock") or r["dataset"] == "synthetic")]
 
-    gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    gen = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     n_runs = len({r["run"] for r in rows})
 
     out = [_HEAD.replace("{{TITLE}}", html.escape(title))]
@@ -790,6 +1187,22 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
             f"{n_ds} dataset(s) — Muharaf handwriting + KITAB-Bench subsets</p>"
         )
     out.append("</header>")
+
+    ft_html, ft_toc = _render_finetuning(rows, Path(_RENDER_CTX["target"]))
+    rs_html, rs_toc = _lps.render_research_view(Path(_RENDER_CTX["target"]))
+    out.append(
+        "<div class=\"tabbar\" role=\"tablist\">"
+        "<button type=\"button\" class=\"tab tab--on\" data-tab=\"leaderboard\" "
+        "role=\"tab\">Leaderboard</button>"
+        + ("<button type=\"button\" class=\"tab\" data-tab=\"finetuning\" "
+           "role=\"tab\">Fine-tuning</button>" if ft_toc else "")
+        + "<button type=\"button\" class=\"tab\" data-tab=\"findings\" "
+        "role=\"tab\">Findings &amp; analysis</button>"
+        "<button type=\"button\" class=\"tab\" data-tab=\"research\" "
+        "role=\"tab\">Research</button>"
+        "</div>"
+    )
+    out.append('<div class="view" data-view="leaderboard">')
 
     real_rows = [
         r for r in rows
@@ -843,7 +1256,33 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         out.append(f"<div><dt>{html.escape(term)}</dt><dd>{desc}</dd></div>")
     out.append("</dl></section>")
     present.append(("legend", "Definitions"))
-    out[_SIDENAV_AT] = _toc(present)
+    out[_SIDENAV_AT] = _toc(
+        present,
+        [(f"f-{slug}", label) for slug, label in _lf.FINDINGS_SECTIONS],
+        ft_toc,
+        rs_toc,
+    )
+
+    out.append("</div>")  # close data-view="leaderboard"
+    if ft_toc:
+        out.append('<div class="view" data-view="finetuning" hidden>')
+        out.append(ft_html)
+        out.append("</div>")
+    out.append('<div class="view" data-view="findings" hidden>')
+    # A structurally-wrong (but JSON-valid) findings doc can make a "trust the
+    # golden shape" renderer raise; degrade the tab to its empty shell rather
+    # than crash the whole leaderboard build.
+    try:
+        _fv = _lf.render_findings_view(findings or {})
+    except Exception as e:  # noqa: BLE001
+        print(f"findings view render failed: {e}", file=sys.stderr)
+        _fv = _lf.render_findings_view({})
+    out.append(_fv)
+    out.append("</div>")
+
+    out.append('<div class="view" data-view="research" hidden>')
+    out.append(rs_html)
+    out.append("</div>")
 
     out.append(
         "<footer><p>Datasets: <b>Muharaf-public</b> (Manuscripts of Handwritten "
@@ -853,6 +1292,7 @@ def render(rows: list[dict], title: str, target: Path | None = None) -> str:
         "Harness: <code>arabic-ocr-bench</code>. "
         f"Generated {gen} by <code>scripts/make_leaderboard.py</code>.</p></footer>"
     )
+    out.append(f"<script>{_TABS_JS}</script>")
     out.append(f"<script>{_TOC_JS}</script>")
     out.append("</main>")
     out.append("</div>")
@@ -1465,6 +1905,9 @@ tbody tr.mock td.t{font-weight:400;font-style:italic;}
 .mx-tbl .mx-cer{display:block;font-family:"IBM Plex Mono",monospace;color:var(--ink);}
 .mx-tbl .mx-wer{display:block;font-size:10px;color:var(--muted);margin-top:2px;}
 .mx-tbl td.mx-empty{color:var(--line);}
+.mx-tbl td.mx-masked{color:var(--muted);font-size:10px;font-style:italic;}
+.mx-it{display:inline-block;margin-left:6px;padding:0 5px;border:1px solid var(--line);
+  border-radius:4px;font-size:9.5px;color:var(--muted);}
 .mx-tbl td.mx-best .mx-cer{font-weight:700;}
 .mx-tbl td.mx-best{box-shadow:inset 0 0 0 1px var(--accent);}
 /* CER wash — green (low) -> amber -> red (high), .15 alpha; theme-agnostic */
@@ -1706,6 +2149,7 @@ main section{scroll-margin-top:20px;}
   border-right:1px solid var(--line);scrollbar-width:thin;}
 .sidenav-h{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin:0 0 12px 10px;font-weight:500;}
+.sidenav ol[hidden]{display:none;}   /* per-tab list; .sidenav ol sets display:flex, so hide explicitly */
 .sidenav ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
   gap:1px;counter-reset:sn;}
 .sidenav a{display:flex;gap:9px;align-items:baseline;padding:7px 10px;border-radius:8px;
@@ -1763,11 +2207,35 @@ abbr.gloss{text-decoration:none;border-bottom:1px dotted currentColor;cursor:hel
   background:var(--surface);box-shadow:1px 0 0 var(--line);}
 .ex-tbl tbody tr:hover td.exm{background:var(--accent-soft);}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+
+/* --- tab bar + view split (Findings & analysis) --- */
+.tabbar{display:flex;gap:2px;margin:26px 0 2px;border-bottom:1px solid var(--line);}
+.tab{appearance:none;-webkit-appearance:none;background:none;border:0;
+  border-bottom:2px solid transparent;margin-bottom:-1px;padding:9px 15px;
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--muted);cursor:pointer;
+  transition:color .12s,border-color .12s;}
+.tab:hover{color:var(--ink);}
+.tab--on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
+.view[hidden]{display:none;}
+/* the shared cursor tooltip is appended to <body>, so it needs unscoped rules
+   (FINDINGS_CSS only styles .findings-view .chart-tip). */
+.chart-tip{position:fixed;z-index:60;left:0;top:0;pointer-events:none;opacity:0;
+  max-width:280px;padding:6px 9px;border:1px solid var(--line);border-radius:8px;
+  background:var(--surface);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:11.5px;line-height:1.45;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);transition:opacity .1s;}
+.chart-tip.on{opacity:1;}
 </style>"""
+
+# Fold the Findings view's own stylesheet (scoped under ``.findings-view``) into
+# the single ``<style>`` block so the published fragment stays self-contained.
+_HEAD = _HEAD.replace("\n</style>", "\n" + _lf.FINDINGS_CSS.strip() + "\n</style>")
 
 
 def _render_empty(title: str) -> str:
-    gen = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    gen = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return _HEAD.replace("{{TITLE}}", html.escape(title)) + f"""
 <main>
 <header class='top'>
@@ -1796,6 +2264,7 @@ def main() -> int:
 
     target = Path(args.target)
     rows = collect(target)
+    findings = _ensure_findings(target)
     if not rows:
         Path(args.out).write_text(_render_empty(args.title), encoding="utf-8")
         Path(args.out).with_suffix(".json").write_text("[]", encoding="utf-8")
@@ -1804,7 +2273,7 @@ def main() -> int:
     # Model outputs occasionally contain U+FFFD (an undecodable byte). It is
     # valid text but the Artifact deploy validator rejects a raw U+FFFD, so drop
     # it from the published page and the bundle — nothing meaningful is lost.
-    page = render(rows, args.title, target).replace("�", "")
+    page = render(rows, args.title, target, findings=findings).replace("�", "")
     Path(args.out).write_text(page, encoding="utf-8")
     print(f"leaderboard -> {args.out}  ({len(rows)} rows from "
           f"{len({r['run'] for r in rows})} run(s))")

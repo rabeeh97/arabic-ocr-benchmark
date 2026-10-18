@@ -14,10 +14,17 @@ from PIL import Image
 from ..imaging import cap_image
 from .base import Prediction
 from .litellm_client import clean_output, looks_like_refusal
+from ..regex_compat import ensure_regex
 
 # greedy decoding on a hard manuscript line collapses into "الشبق الشبق ..." loops;
 # these keep it honest and let EOS fire naturally.
 _GEN_KW = {"do_sample": False, "repetition_penalty": 1.15, "no_repeat_ngram_size": 3}
+
+# paligemma2-*-448: 448/14 patch size -> 32x32, matching training/sft_vlm.py's
+# _PALIGEMMA_IMAGE_TOKENS (kept as a separate constant - models/ shouldn't
+# import from training/).
+_PALIGEMMA_IMAGE_TOKENS = 1024
+_DEFAULT_PALIGEMMA_PROMPT = "ocr\n"  # matches the paligemma-arabic-hw adapter's training
 
 
 def _cuda_free_total_gb():
@@ -123,6 +130,7 @@ def _cpu_dtype():
 def _load_model(hf_id: str, load_kwargs: dict):
     """Try the vision-text auto classes in order — which one carries a given
     architecture shifts between transformers releases."""
+    ensure_regex()
     import transformers
 
     errors = []
@@ -145,7 +153,8 @@ class HFLocalClient:
     def __init__(self, name: str, hf_id: str, arch: str = "qwen2_5_vl",
                  dtype: str = "auto", adapter_id: str | None = None,
                  max_new_tokens: int = 160, load_in_4bit: bool = False,
-                 min_ram_gb: float = 0.0, subfolder: str | None = None):
+                 min_ram_gb: float = 0.0, subfolder: str | None = None,
+                 paligemma_prompt: str | None = None):
         self.name = name
         self.hf_id = hf_id
         self.arch = arch
@@ -155,6 +164,12 @@ class HFLocalClient:
         # ships `final_model/` alongside training checkpoints)
         self.subfolder = subfolder or None
         self.max_new_tokens = max_new_tokens
+        # PaliGemma has no chat template - the eval prefix must match whatever
+        # prefix the checkpoint was fine-tuned with (`prompt:` in the model's
+        # models.yaml entry), or eval scores it on a prefix it never saw.
+        # Falls back to the paligemma-arabic-hw adapter's prefix for entries
+        # that don't set one.
+        self.paligemma_prompt = paligemma_prompt or _DEFAULT_PALIGEMMA_PROMPT
         self.load_in_4bit = load_in_4bit
         # How much memory this model needs to load safely, in GB — enforced
         # against free system RAM on CPU and against free VRAM on a CUDA GPU.
@@ -256,6 +271,7 @@ class HFLocalClient:
             raise
 
     def _load_dispatch(self):
+        ensure_regex()
         if self.arch == "trocr":
             self._ensure_loaded_trocr()
             return
@@ -276,11 +292,13 @@ class HFLocalClient:
             )
 
         try:
+            ensure_regex()
             import torch
             from transformers import AutoProcessor
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         import torch
@@ -367,7 +385,8 @@ class HFLocalClient:
             from transformers import TrOCRProcessor, VisionEncoderDecoderModel
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         device = "mps" if torch.backends.mps.is_available() else (
@@ -389,7 +408,8 @@ class HFLocalClient:
             from transformers import AutoModel, AutoTokenizer
         except ImportError as e:  # pragma: no cover
             raise RuntimeError(
-                "local models need the 'local' extra: uv sync --extra local"
+                "local models need the 'local' extra: uv sync --extra local "
+                f"({type(e).__name__}: {e})"
             ) from e
 
         device = "cuda" if torch.cuda.is_available() else (
@@ -505,9 +525,11 @@ class HFLocalClient:
     def _generate_paligemma(self, image: Image.Image, prompt: str) -> str:
         import torch
 
-        # PaliGemma uses a task-prefix, not a chat template. The Arabic-HW adapter
-        # was trained with a short OCR instruction; keep it terse.
-        pg_prompt = "ocr\n"
+        # PaliGemma uses a task-prefix, not a chat template (see self.paligemma_prompt).
+        # Prepending the image tokens ourselves stops the processor from inferring
+        # them itself and logging a warning on every single call.
+        image_seq_length = getattr(self._processor, "image_seq_length", _PALIGEMMA_IMAGE_TOKENS)
+        pg_prompt = "<image>" * image_seq_length + self.paligemma_prompt
         inputs = self._processor(text=pg_prompt, images=image, return_tensors="pt").to(
             self._device
         )

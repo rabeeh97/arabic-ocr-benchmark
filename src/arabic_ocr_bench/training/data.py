@@ -43,7 +43,7 @@ def _hf_id_for(cfg: dict) -> str | None:
 
 def scored_splits(cfg_path: str | Path = _DEFAULT_CFG) -> set[tuple[str, str]]:
     """`(hf_id, split)` pairs the benchmark evaluates on — the do-not-train set."""
-    registry = yaml.safe_load(Path(cfg_path).read_text()) or {}
+    registry = yaml.safe_load(Path(cfg_path).read_text(encoding="utf-8")) or {}
     pairs: set[tuple[str, str]] = set()
     for entry in registry.values():
         if not isinstance(entry, dict):
@@ -63,6 +63,48 @@ def check_source_not_scored(
         raise ScoredSplitLeakError(
             f"{hf_id}:{split} is scored by the benchmark and must not be used for training"
         )
+
+
+def safe_eval_datasets(data: "DataSpec", *, cfg_path: str | Path = _DEFAULT_CFG) -> list[str]:
+    """Every `track: line` benchmark dataset safe to score a model trained on
+    ``data``'s sources against.
+
+    Starts from every registered line-track dataset except ``synthetic``
+    (not a real benchmark), then drops anything that overlaps a training
+    source, by either signal:
+
+    * an exact ``(hf_id, split)`` match — already structurally impossible
+      given ``check_source_not_scored`` forbids training on a scored split in
+      the first place, kept here as defense-in-depth;
+    * a declared ``overlaps_source`` on the dataset entry — a same-corpus
+      dataset repackaged under a *different* HF repo id (e.g. `kitab_muharaf`
+      vs. a `muharaf_train` source's `aamijar/muharaf-public`), which the
+      exact-tuple check can't see on its own.
+    """
+    registry = yaml.safe_load(Path(cfg_path).read_text(encoding="utf-8")) or {}
+
+    train_hf_ids: set[str] = set()
+    train_pairs: set[tuple[str, str]] = set()
+    for src in data.sources:
+        hf_id = resolve_source_hf_id(src)
+        split = getattr(src, "split", None) or (src.get("split") if isinstance(src, dict) else None)
+        if hf_id:
+            train_hf_ids.add(hf_id)
+            if split:
+                train_pairs.add((hf_id, split))
+
+    safe = []
+    for name, entry in registry.items():
+        if not isinstance(entry, dict) or entry.get("track") != "line" or name == "synthetic":
+            continue
+        hf_id = _hf_id_for(entry)
+        split = entry.get("split")
+        if hf_id and split and (hf_id, split) in train_pairs:
+            continue
+        if entry.get("overlaps_source") in train_hf_ids:
+            continue
+        safe.append(name)
+    return sorted(safe)
 
 
 def build_conversation(prompt_text: str, target: str) -> list[dict]:
@@ -94,12 +136,28 @@ def _source_cfg(src) -> dict:
     return cfg
 
 
+def resolve_source_hf_id(src) -> str | None:
+    """A training source's real HF repo id, however it's declared.
+
+    A source can name its corpus three ways: a top-level ``hf_id`` (e.g.
+    ``MuharafLines``), a top-level ``subset`` (e.g. ``KitabBench`` used
+    directly), or ``params.subset`` (the same ``KitabBench`` convention used
+    in ``configs/datasets.yaml``, e.g. a ``rasam1_train`` source). Checking
+    only the literal ``.hf_id`` attribute (as this function's callers used to)
+    silently skips the leak guard for the latter two — this resolves all
+    three the same way `safe_eval_datasets` already does for the registry
+    side, so the guard can't be bypassed just by choosing a different
+    (equally valid) way to spell the same source.
+    """
+    return _hf_id_for(_source_cfg(src))
+
+
 def iter_source_samples(src, *, cfg_path: str | Path = _DEFAULT_CFG):
     """Yield `Sample`s from one training source, after the no-leak check."""
     from ..datasets.registry import build_dataset
 
     get = src.get if isinstance(src, dict) else lambda k, d=None: getattr(src, k, d)
-    hf_id, split = get("hf_id"), get("split")
+    hf_id, split = resolve_source_hf_id(src), get("split")
     if hf_id and split:
         check_source_not_scored(hf_id, split, cfg_path=cfg_path)
     adapter = build_dataset(get("name"), _source_cfg(src), limit=get("limit"))
@@ -117,8 +175,16 @@ def assemble_dataset(
     """
     prompt_text = get_prompt(data.prompt_version)
     rows: list[dict] = []
+    n_skipped = 0
     for src in data.sources:
         for sample in iter_source_samples(src, cfg_path=cfg_path):
+            # Some dataset splits carry None/empty transcriptions (already
+            # anticipated in contamination._match_key); an empty assistant
+            # target isn't a trainable example and crashes the collators
+            # (`"".join([None, ...])`), so drop it here instead.
+            if not sample.ground_truth or not sample.ground_truth.strip():
+                n_skipped += 1
+                continue
             rows.append(
                 {
                     "messages": build_conversation(prompt_text, sample.ground_truth),
@@ -128,6 +194,8 @@ def assemble_dataset(
                     "id": sample.id,
                 }
             )
+    if n_skipped:
+        print(f"[assemble_dataset] skipped {n_skipped} sample(s) with empty/missing ground truth")
 
     random.Random(seed).shuffle(rows)
     n_val = round(len(rows) * data.val_fraction)
