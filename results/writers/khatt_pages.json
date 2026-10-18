@@ -1,0 +1,173 @@
+{
+ "item": "MASTER-CHECKLIST 2.17 (R0.4)",
+ "canon_words": 77,
+ "splits": {
+  "train": {
+   "lines": 4672,
+   "aligned": 4672,
+   "paragraph_starts": 879,
+   "paragraph_ends": 712,
+   "links": 3503,
+   "pages": 1169,
+   "pages_len_ge2": 871,
+   "pages_complete": 455,
+   "page_len_hist": {
+    "1": 298,
+    "2": 71,
+    "3": 105,
+    "4": 72,
+    "5": 207,
+    "6": 321,
+    "7": 92,
+    "8": 3
+   },
+   "compatible_pairs": 858404,
+   "median_link_cost": 0.4245,
+   "median_compatible_cost": 1.3904
+  },
+  "validation": {
+   "lines": 963,
+   "aligned": 963,
+   "paragraph_starts": 190,
+   "paragraph_ends": 157,
+   "links": 704,
+   "pages": 259,
+   "pages_len_ge2": 183,
+   "pages_complete": 92,
+   "page_len_hist": {
+    "1": 76,
+    "2": 21,
+    "3": 22,
+    "4": 21,
+    "5": 42,
+    "6": 58,
+    "7": 15,
+    "8": 4
+   },
+   "compatible_pairs": 35166,
+   "median_link_cost": 0.5255,
+   "median_compatible_cost": 1.4109
+  },
+  "test": {
+   "lines": 1038,
+   "aligned": 1038,
+   "paragraph_starts": 188,
+   "paragraph_ends": 160,
+   "links": 775,
+   "pages": 263,
+   "pages_len_ge2": 188,
+   "pages_complete": 88,
+   "page_len_hist": {
+    "1": 75,
+    "2": 16,
+    "3": 18,
+    "4": 20,
+    "5": 43,
+    "6": 58,
+    "7": 30,
+    "8": 3
+   },
+   "compatible_pairs": 41485,
+   "median_link_cost": 0.5098,
+   "median_compatible_cost": 1.402
+  }
+ },
+ "validation": {
+  "train": {
+   "link_on_stroke+density+slant": {
+    "heldout": [
+     "letter_w",
+     "ink_h",
+     "word_gap"
+    ],
+    "linked_pairs": 3534,
+    "heldout_dist_linked": 0.9742,
+    "heldout_dist_random_compatible": 1.1174,
+    "ratio": 0.8718,
+    "ratio_ci95": [
+     0.8538,
+     0.8899
+    ]
+   },
+   "link_on_letter_w+ink_h+word_gap": {
+    "heldout": [
+     "stroke",
+     "density",
+     "slant"
+    ],
+    "linked_pairs": 3415,
+    "heldout_dist_linked": 0.9347,
+    "heldout_dist_random_compatible": 1.1016,
+    "ratio": 0.8485,
+    "ratio_ci95": [
+     0.829,
+     0.8672
+    ]
+   }
+  },
+  "validation": {
+   "link_on_stroke+density+slant": {
+    "heldout": [
+     "letter_w",
+     "ink_h",
+     "word_gap"
+    ],
+    "linked_pairs": 695,
+    "heldout_dist_linked": 0.9622,
+    "heldout_dist_random_compatible": 1.1153,
+    "ratio": 0.8627,
+    "ratio_ci95": [
+     0.8152,
+     0.8995
+    ]
+   },
+   "link_on_letter_w+ink_h+word_gap": {
+    "heldout": [
+     "stroke",
+     "density",
+     "slant"
+    ],
+    "linked_pairs": 684,
+    "heldout_dist_linked": 0.9515,
+    "heldout_dist_random_compatible": 1.1441,
+    "ratio": 0.8316,
+    "ratio_ci95": [
+     0.7926,
+     0.8778
+    ]
+   }
+  },
+  "test": {
+   "link_on_stroke+density+slant": {
+    "heldout": [
+     "letter_w",
+     "ink_h",
+     "word_gap"
+    ],
+    "linked_pairs": 776,
+    "heldout_dist_linked": 0.9175,
+    "heldout_dist_random_compatible": 1.0962,
+    "ratio": 0.837,
+    "ratio_ci95": [
+     0.7947,
+     0.8789
+    ]
+   },
+   "link_on_letter_w+ink_h+word_gap": {
+    "heldout": [
+     "stroke",
+     "density",
+     "slant"
+    ],
+    "linked_pairs": 748,
+    "heldout_dist_linked": 0.9236,
+    "heldout_dist_random_compatible": 1.1603,
+    "ratio": 0.796,
+    "ratio_ci95": [
+     0.7585,
+     0.833
+    ]
+   }
+  }
+ }
+}
