@@ -135,3 +135,39 @@ Live view: `ssh spring-win-server-3090 "powershell Get-Content C:\Users\User\a-e
 Bring back: `scp "spring-win-server-3090:C:/Users/User/a-experiment/xai/aligner/panel_out/*.json" results/panel/out/`.
 
 **Backups:** `/Volumes/PortableSSD/aocr-box-backup/xai-2026-10-13/` holds the `xai` folder from 2026-10-13, without `.venv`: weights, data pickles and outputs. After new runs, copy their `aligner_run_*` folders the same way, then delete the large pickles on the box once the queues are done. All of them can be regenerated from the laptop.
+
+## 4. GPU night 2 (2026-10-18): VLM jobs 7.1-7.6, 7.2 and the CRNN item 4.8
+
+Box folder `C:\Users\User\a-experiment\xai\vlm_n2` (VLM jobs), `xai\aligner` (CRNN). One venv (`xai\.venv`: torch 2.6 cu124,
+transformers 5.19, peft 0.21.2, qwen_vl_utils) and one HF cache (`C:\Users\User\.cache\huggingface`, the default; HF_HOME unset).
+
+**From scratch, in order (laptop commands from the worktree root):**
+1. Base VLMs into the shared cache, detached: `scp scripts/box/n2_fetch_models.bat spring-win-server-3090:C:/Users/User/a-experiment/xai/`,
+   then Win32_Process Create with `cmd /c C:\Users\User\a-experiment\xai\n2_fetch_models.bat` (log `vlm_n2\fetch.log`). `hf` 2.x
+   keeps a content-addressed blob store (`hub\blobs\<xx>\<sha256>`) shared by all repos, so the 4B, already there, cost nothing
+   and the 8B took 16.3 GB and 7 minutes. Check with the 8B's `snapshots\...\model-0000*-of-00004.safetensors` links.
+2. Line images: `.geomvenv/bin/python scripts/vlm_n2_export.py results/vlm_n2/vlm_n2_lines.pkl` (205 MB, native resolution,
+   benchmark ids; also writes `results/vlm_n2/icl_trials.json`). Needs the cached Arrow files of KITAB-KHATT, NAKBA test and
+   blind, RASAM-1/2 test and Muharaf test.
+3. The patched benchmark client: zip `src/arabic_ocr_bench` of the main checkout (branch research-characterization with
+   `docs/research/patches/0002*` applied) without `__pycache__` as `aocr_pkg.zip`; the queue unpacks it to `vlm_n2\pkg`.
+4. Upload `aocr_pkg.zip`, `scripts/vlm_n2.py`, `scripts/queue_n2.bat`, `results/vlm_n2/vlm_n2_lines.pkl` and `icl_trials.json`
+   to `xai/vlm_n2/`; `scripts/queue_n2c.bat`, `scripts/xai_shape_select.py` (gained `--dataset`) and `scripts/xai_train_aligner.py`
+   (gained `AOCR_CUDA_MEM_FRACTION`) to `xai/aligner/`. Upload ran at 0.1-0.6 MB/s, so the 205 MB pickle takes 6-30 minutes.
+5. Laptop check first: `.geomvenv/bin/python scripts/vlm_n2.py selftest --pkg <unzipped pkg> --lines <export --limit 40>
+   --trials <its icl_trials.json>` builds a tiny random Qwen3-VL and LoRA and runs gen, reliance and icl end to end
+   (the laptop venv needs transformers 5.19, peft 0.21.2 and torchvision; without torchvision the Qwen3-VL processor fails).
+6. Launch: Win32_Process Create with `cmd /c C:\Users\User\a-experiment\xai\vlm_n2\queue_n2.bat`. Live view:
+   `ssh spring-win-server-3090 "powershell Get-Content C:\Users\User\a-experiment\xai\vlm_n2\queue_n2.log -Wait -Tail 30"`;
+   the CRNN stream logs to `xai\aligner\queue_n2c.log`.
+
+**Notes.**
+- The suite fine-tuned Qwen3-VL-8B exists only as merged weights (16 GB, `suite-v1-artifacts/qwen3vl8b/merged`, no LoRA kept);
+  at the measured upload speed it cannot reach the box in a night. The fine-tuned arm is the 4B diff-LR adapter
+  (`xai\adapter`, sha256 d20417e0..., the same file as `suite-v1-artifacts/qwen3vl4b_visft_difflr/runs/.../adapter_model.safetensors`).
+  To get the 8B arm: extract a rank-16 LoRA from merged minus base on the laptop, or upload the merged weights over a faster link.
+- A CRNN training run holds about 13 GB of GPU memory by the end of an epoch although its peak is about 4.2 GB (caching
+  allocator, varying widths). `AOCR_CUDA_MEM_FRACTION=0.30` caps it so a 4B VLM (about 11 GB) runs beside it; the 8B
+  (about 19 GB) does not fit beside a CRNN, so queue_n2 waits for "N2C DONE" before loading the 8B.
+- `n2_deadline.txt` (queue start + 8 h) stops every VLM job past it; delete it before relaunching on another day.
+- Back up and trim afterwards: `scripts/box/backup_n2.sh` (checklist 7.7).
