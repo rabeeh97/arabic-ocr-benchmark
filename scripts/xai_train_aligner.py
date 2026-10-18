@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import pickle
 import random
 import sys
@@ -172,6 +173,10 @@ def main() -> None:
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     dev = a.device
+    if dev == "cuda" and os.environ.get("AOCR_CUDA_MEM_FRACTION"):
+        # night 2 (2026-10-18): a CRNN shares the 3090 with a 4B VLM. Its true peak is about 4.2 GB (widest batch), but the caching
+        # allocator grows to about 13 GB over an epoch; the cap makes it free cached blocks instead of growing past the share.
+        torch.cuda.set_per_process_memory_fraction(float(os.environ["AOCR_CUDA_MEM_FRACTION"]))
     if a.seed is not None:
         random.seed(a.seed)
         np.random.seed(a.seed)

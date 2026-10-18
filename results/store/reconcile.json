@@ -2079,6 +2079,216 @@
   "ref_len_equals": 1.0,
   "no_diacritics_cer": 0.15906307026972977
  },
+ "results/panel/khatt_full_out/aligner_run.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3087405549872967,
+  "native_cer": 0.3087405549872967,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.30138251889002543
+ },
+ "results/panel/khatt_full_out/aligner_run_base_s3.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3135909195895338,
+  "native_cer": 0.3135909195895338,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3055234764245884
+ },
+ "results/panel/khatt_full_out/aligner_run_combo.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30633187052496125,
+  "native_cer": 0.30633187052496125,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29859438413567824
+ },
+ "results/panel/khatt_full_out/aligner_run_combo_s2.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3084270960504174,
+  "native_cer": 0.3084270960504174,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.30121754050219424
+ },
+ "results/panel/khatt_full_out/aligner_run_combo_s3.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30676081433332236,
+  "native_cer": 0.30676081433332236,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.299122314976738
+ },
+ "results/panel/khatt_full_out/aligner_run_geomaug.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.31647804137657964,
+  "native_cer": 0.31647804137657964,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3086085722770317
+ },
+ "results/panel/khatt_full_out/aligner_run_hard_s2.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.31552116672715874,
+  "native_cer": 0.31552116672715874,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3068762992048042
+ },
+ "results/panel/khatt_full_out/aligner_run_hard_s3.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.313755897977365,
+  "native_cer": 0.313755897977365,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3055234764245884
+ },
+ "results/panel/khatt_full_out/aligner_run_inkcrop.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.31477876398191834,
+  "native_cer": 0.31477876398191834,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.30692579272115356
+ },
+ "results/panel/khatt_full_out/aligner_run_nakba_s0.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.5027386412379978,
+  "native_cer": 0.5035635331771537,
+  "native_equals_stored": 0.9556840077071291,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4877751014617085
+ },
+ "results/panel/khatt_full_out/aligner_run_randctl.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.31255155574619725,
+  "native_cer": 0.31255155574619725,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3036262249645296
+ },
+ "results/panel/khatt_full_out/aligner_run_randctl_s2.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3115121919028607,
+  "native_cer": 0.3115121919028607,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.30385719470749334
+ },
+ "results/panel/khatt_full_out/aligner_run_randctl_s3.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3102913518329099,
+  "native_cer": 0.3102913518329099,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.302982809251988
+ },
+ "results/panel/khatt_full_out/aligner_run_rep2.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3132774606526545,
+  "native_cer": 0.3132774606526545,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3053749958755403
+ },
+ "results/panel/khatt_full_out/aligner_run_shape.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30387369254627644,
+  "native_cer": 0.30387369254627644,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29621869535090906
+ },
+ "results/panel/khatt_full_out/aligner_run_shape_s2.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30692579272115356,
+  "native_cer": 0.30692579272115356,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29935328471970174
+ },
+ "results/panel/khatt_full_out/aligner_run_shape_s3.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30040914640182137,
+  "native_cer": 0.30040914640182137,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2927871448840202
+ },
+ "results/panel/khatt_full_out/aligner_run_std_s0.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.33813970369881546,
+  "native_cer": 0.33813970369881546,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3285874550433893
+ },
+ "results/panel/khatt_full_out/aligner_run_std_s1.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.33738080311479196,
+  "native_cer": 0.33738080311479196,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.328405978816775
+ },
+ "results/panel/khatt_full_out/khatt_run_s0.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.08478239350645066,
+  "native_cer": 0.08478239350645066,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.08146632791104365
+ },
+ "results/panel/khatt_full_out_skel/aligner_run_skel_s0.json::kitab_khatt_full": {
+  "lines": 1038,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3123535816807998,
+  "native_cer": 0.3123535816807998,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3132774606526545
+ },
  "results/panel/out/aligner_run.json::kitab_khatt": {
   "lines": 200,
   "unmapped_ids": 0,
@@ -2799,6 +3009,246 @@
   "ref_len_equals": 1.0,
   "no_diacritics_cer": 0.07086155088128447
  },
+ "results/panel/out/aligner_run_hard_s2.json::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3077673851159008,
+  "native_cer": 0.3077673851159008,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29857665717771453
+ },
+ "results/panel/out/aligner_run_hard_s2.json::kitab_khatt__inkcrop": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.23635624237494918,
+  "native_cer": 0.23635624237494918,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.22659617730784873
+ },
+ "results/panel/out/aligner_run_hard_s2.json::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.061882777387103675,
+  "native_cer": 0.061882777387103675,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.05958969028036812
+ },
+ "results/panel/out/aligner_run_hard_s2.json::muharaf_lines__inkcrop": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06350322560919681,
+  "native_cer": 0.06350322560919681,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.061164276760326534
+ },
+ "results/panel/out/aligner_run_hard_s2.json::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13684826496576746,
+  "native_cer": 0.13684826496576746,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11560653051670665
+ },
+ "results/panel/out/aligner_run_hard_s2.json::nakba_blind__inkcrop": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13687167183568377,
+  "native_cer": 0.13687167183568377,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11561238223418574
+ },
+ "results/panel/out/aligner_run_hard_s2.json::nakba_lines": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13607312784874467,
+  "native_cer": 0.13607312784874467,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1086168537359698
+ },
+ "results/panel/out/aligner_run_hard_s2.json::nakba_lines__inkcrop": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1362731128498696,
+  "native_cer": 0.1362731128498696,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10881683873709472
+ },
+ "results/panel/out/aligner_run_hard_s2.json::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.02770474824729127,
+  "native_cer": 0.02770474824729127,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.026808476736775017
+ },
+ "results/panel/out/aligner_run_hard_s2.json::rasam1__inkcrop": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.027764499681325685,
+  "native_cer": 0.027764499681325685,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.026848311026131295
+ },
+ "results/panel/out/aligner_run_hard_s2.json::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04489393191909225,
+  "native_cer": 0.04489393191909225,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.044086648428039645
+ },
+ "results/panel/out/aligner_run_hard_s2.json::rasam2__inkcrop": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04565636632730861,
+  "native_cer": 0.04565636632730861,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.04489393191909225
+ },
+ "results/panel/out/aligner_run_hard_s3.json::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3111020740138268,
+  "native_cer": 0.3111020740138268,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29987799918666125
+ },
+ "results/panel/out/aligner_run_hard_s3.json::kitab_khatt__inkcrop": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2370882472549817,
+  "native_cer": 0.2370882472549817,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2260268401789345
+ },
+ "results/panel/out/aligner_run_hard_s3.json::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06276943773504143,
+  "native_cer": 0.06276943773504143,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06061393585471
+ },
+ "results/panel/out/aligner_run_hard_s3.json::muharaf_lines__inkcrop": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06509309933653347,
+  "native_cer": 0.06509309933653347,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.06287644846668909
+ },
+ "results/panel/out/aligner_run_hard_s3.json::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13921821054479488,
+  "native_cer": 0.13921821054479488,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11795892094329685
+ },
+ "results/panel/out/aligner_run_hard_s3.json::nakba_blind__inkcrop": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13924161741471122,
+  "native_cer": 0.13924161741471122,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1179764760957341
+ },
+ "results/panel/out/aligner_run_hard_s3.json::nakba_lines": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1376896732745044,
+  "native_cer": 0.1376896732745044,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10996675249356298
+ },
+ "results/panel/out/aligner_run_hard_s3.json::nakba_lines__inkcrop": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13772300410802524,
+  "native_cer": 0.13772300410802524,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10997508520194318
+ },
+ "results/panel/out/aligner_run_hard_s3.json::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.028561185468451242,
+  "native_cer": 0.028561185468451242,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.02784416826003824
+ },
+ "results/panel/out/aligner_run_hard_s3.json::rasam1__inkcrop": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.028521351179094965,
+  "native_cer": 0.028521351179094965,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.027764499681325685
+ },
+ "results/panel/out/aligner_run_hard_s3.json::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04736063147508633,
+  "native_cer": 0.04736063147508633,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.046373951652688705
+ },
+ "results/panel/out/aligner_run_hard_s3.json::rasam2__inkcrop": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04839216038032022,
+  "native_cer": 0.04839216038032022,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.04736063147508633
+ },
  "results/panel/out/aligner_run_inkcrop.json::kitab_khatt": {
   "lines": 200,
   "unmapped_ids": 0,
@@ -2918,6 +3368,126 @@
   "native_equals_stored": 1.0,
   "ref_len_equals": 1.0,
   "no_diacritics_cer": 0.05615105171099251
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.49133794225294836,
+  "native_cer": 0.4918259455063034,
+  "native_equals_stored": 0.975,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4749084993899959
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::kitab_khatt__inkcrop": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.43139487596583975,
+  "native_cer": 0.43180154534363563,
+  "native_equals_stored": 0.975,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4142334282228548
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3479224630812976,
+  "native_cer": 0.3484575167395359,
+  "native_equals_stored": 0.9790104947526237,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.32968477695906073
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::muharaf_lines__inkcrop": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3456140887271838,
+  "native_cer": 0.3461644296328003,
+  "native_equals_stored": 0.9775112443778111,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3271165193995169
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.07009772368190063,
+  "native_cer": 0.0701094271168588,
+  "native_equals_stored": 0.9996256083863722,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.050313066885130785
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::nakba_blind__inkcrop": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.06997483761483995,
+  "native_cer": 0.06998654104979811,
+  "native_equals_stored": 0.9996256083863722,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.05023114284042367
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::nakba_lines": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04000533293336333,
+  "native_cer": 0.04001366564174354,
+  "native_equals_stored": 0.9995226730310263,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.03124765642576807
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::nakba_lines__inkcrop": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.04013865626744661,
+  "native_cer": 0.04014698897582681,
+  "native_equals_stored": 0.9995226730310263,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.031364314343090935
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.5715623008285532,
+  "native_cer": 0.5716618865519439,
+  "native_equals_stored": 0.9931880108991825,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.5555489165073295
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::rasam1__inkcrop": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.5711241236456341,
+  "native_cer": 0.5712237093690249,
+  "native_equals_stored": 0.9931880108991825,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.5550709050350542
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.5777458850966498,
+  "native_cer": 0.5778804323451585,
+  "native_equals_stored": 0.9973118279569892,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.5621384042696327
+ },
+ "results/panel/out/aligner_run_nakba_s0.json::rasam2__inkcrop": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.5776561869309773,
+  "native_cer": 0.577790734179486,
+  "native_equals_stored": 0.9973118279569892,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.5620038570211239
  },
  "results/panel/out/aligner_run_randctl.json::kitab_khatt": {
   "lines": 200,
@@ -3999,6 +4569,126 @@
   "ref_len_equals": 1.0,
   "no_diacritics_cer": 0.45983764632013274
  },
+ "results/panel/out/khatt_run_s0.json::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.42936152907686054,
+  "native_cer": 0.43139487596583975,
+  "native_equals_stored": 0.955,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4257015046766978
+ },
+ "results/panel/out/khatt_run_s0.json::kitab_khatt__inkcrop": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.39715331435542905,
+  "native_cer": 0.39926799511996747,
+  "native_equals_stored": 0.955,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3930866205774705
+ },
+ "results/panel/out/khatt_run_s0.json::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7211300333261993,
+  "native_cer": 0.730653988442841,
+  "native_equals_stored": 0.8725637181409296,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7185006267771425
+ },
+ "results/panel/out/khatt_run_s0.json::muharaf_lines__inkcrop": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7205796924205827,
+  "native_cer": 0.7303176690005198,
+  "native_equals_stored": 0.8725637181409296,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7178891368820131
+ },
+ "results/panel/out/khatt_run_s0.json::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7113406284744572,
+  "native_cer": 0.718772309672889,
+  "native_equals_stored": 0.8461250467989517,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7002750307215168
+ },
+ "results/panel/out/khatt_run_s0.json::nakba_blind__inkcrop": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7115337351512669,
+  "native_cer": 0.7189420094797823,
+  "native_equals_stored": 0.8472482216398353,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7003862133536193
+ },
+ "results/panel/out/khatt_run_s0.json::nakba_lines": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7167545767400778,
+  "native_cer": 0.7215458840586956,
+  "native_equals_stored": 0.8940334128878281,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7008807672757876
+ },
+ "results/panel/out/khatt_run_s0.json::nakba_lines__inkcrop": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.717454524244015,
+  "native_cer": 0.7222458315626328,
+  "native_equals_stored": 0.894510739856802,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7015557166545843
+ },
+ "results/panel/out/khatt_run_s0.json::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7442240280433398,
+  "native_cer": 0.7442837794773741,
+  "native_equals_stored": 0.997275204359673,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7270156150414276
+ },
+ "results/panel/out/khatt_run_s0.json::rasam1__inkcrop": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7442439451880178,
+  "native_cer": 0.7443036966220523,
+  "native_equals_stored": 0.997275204359673,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7270753664754621
+ },
+ "results/panel/out/khatt_run_s0.json::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7621204646364982,
+  "native_cer": 0.7621204646364982,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7479481544602413
+ },
+ "results/panel/out/khatt_run_s0.json::rasam2__inkcrop": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.7621653137193345,
+  "native_cer": 0.7621653137193345,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.7478584562945688
+ },
  "results/panel/out_best/aligner_run_std_s0.json::kitab_khatt": {
   "lines": 200,
   "unmapped_ids": 0,
@@ -4238,6 +4928,896 @@
   "native_equals_stored": 1.0,
   "ref_len_equals": 1.0,
   "no_diacritics_cer": 0.45983764632013274
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::kitab_khatt": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30963806425376167,
+  "native_cer": 0.30963806425376167,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.31004473363155755
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::kitab_khatt__inkcrop": {
+  "lines": 200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.23481089873932492,
+  "native_cer": 0.23481089873932492,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2348922326148841
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::muharaf_lines": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.10746934906900664,
+  "native_cer": 0.10746934906900664,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1073317638426025
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::muharaf_lines__inkcrop": {
+  "lines": 1334,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1079891154798667,
+  "native_cer": 0.1079891154798667,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10779038126394962
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::nakba_blind": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.11092515653344256,
+  "native_cer": 0.11092515653344256,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1084440283223126
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::nakba_blind__inkcrop": {
+  "lines": 2671,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.11109485634033589,
+  "native_cer": 0.11109485634033589,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10863713499912224
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::nakba_lines": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1006424518161138,
+  "native_cer": 0.1006424518161138,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1004924630652701
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::nakba_lines__inkcrop": {
+  "lines": 2095,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1008424368172387,
+  "native_cer": 0.1008424368172387,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10060912098259298
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::rasam1": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.38571542383683877,
+  "native_cer": 0.38571542383683877,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3861536010197578
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::rasam1__inkcrop": {
+  "lines": 734,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.38539674952198855,
+  "native_cer": 0.38539674952198855,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3858349267049076
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::rasam2": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.4114903350226488,
+  "native_cer": 0.4114903350226488,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4122976185137014
+ },
+ "results/panel/out_skel/aligner_run_skel_s0.json::rasam2__inkcrop": {
+  "lines": 372,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.4116697313539938,
+  "native_cer": 0.4116697313539938,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4126115620935552
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K0-base": {
+  "lines": 358,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.46909837212556554,
+  "native_cer": 0.46909837212556554,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.4637809599328327
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-coverage-d0-full": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.35402712894692406,
+  "native_cer": 0.35402712894692406,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.34974953565599143
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-coverage-d0-top": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3724883210446333,
+  "native_cer": 0.3724883210446333,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.36815444363145156
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-novelty-d0-full": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.36041702079437926,
+  "native_cer": 0.36041702079437926,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3557708652048275
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-novelty-d0-top": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3830245339679302,
+  "native_cer": 0.3830245339679302,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3783217179443595
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d0-full": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.37206999009574115,
+  "native_cer": 0.37206999009574115,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.36733795532078795
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d0-top": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.38824694618686034,
+  "native_cer": 0.38824694618686034,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.383569935072081
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d1-full": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.37020390265292696,
+  "native_cer": 0.37020390265292696,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3648870861653146
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d1-top": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3874150405612804,
+  "native_cer": 0.3874150405612804,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.381550098662574
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d2-full": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3639254630662799,
+  "native_cer": 0.3639254630662799,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3586253068511493
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K4-random-d2-top": {
+  "lines": 302,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3852934612809641,
+  "native_cer": 0.3852934612809641,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.38004909618388755
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-coverage-d0-full": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2840513145391194,
+  "native_cer": 0.2840513145391194,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.27929996832435855
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-coverage-d0-top": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30962939499524866,
+  "native_cer": 0.30962939499524866,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3047196705733291
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-novelty-d0-full": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2829826386110889,
+  "native_cer": 0.2829826386110889,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.27842227378190254
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-novelty-d0-top": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30962476998159855,
+  "native_cer": 0.30962476998159855,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.304664373149852
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d0-full": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2955339805825243,
+  "native_cer": 0.2955339805825243,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2901747572815534
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d0-top": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.32248543689320386,
+  "native_cer": 0.32248543689320386,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3174368932038835
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d1-full": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3018007574001082,
+  "native_cer": 0.3018007574001082,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2958497565499652
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d1-top": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.32514104644872094,
+  "native_cer": 0.32514104644872094,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.32034933147847594
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d2-full": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.303424029348823,
+  "native_cer": 0.303424029348823,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29807398349128705
+ },
+ "results/n1b/adapt_out/rasam2.json::rasam2#K8-random-d2-top": {
+  "lines": 220,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.32635279730969124,
+  "native_cer": 0.32635279730969124,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.32092632222561907
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K0-base": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14273564069851982,
+  "native_cer": 0.14273564069851982,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11804326652674321
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-coverage-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1169869816316172,
+  "native_cer": 0.1169869816316172,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.09598474559995611
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-coverage-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12855124353539926,
+  "native_cer": 0.12855124353539926,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10779593124545592
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-novelty-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.11728877731593892,
+  "native_cer": 0.11728877731593892,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.0944071772500926
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-novelty-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13265292124504438,
+  "native_cer": 0.13265292124504438,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1101279888061237
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13362689822626445,
+  "native_cer": 0.13362689822626445,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11207594276856386
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13805780759153327,
+  "native_cer": 0.13805780759153327,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11680864781815438
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d1-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12667187950121403,
+  "native_cer": 0.12667187950121403,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10468194850268187
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d1-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13406587376709603,
+  "native_cer": 0.13406587376709603,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11248748233809347
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d2-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12938804066010948,
+  "native_cer": 0.12938804066010948,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10689054419249078
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K16-random-d2-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13679575291164245,
+  "native_cer": 0.13679575291164245,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11460005212834547
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-coverage-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13140458455080456,
+  "native_cer": 0.13140458455080456,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.1085504204562602
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-coverage-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.139388452199679,
+  "native_cer": 0.139388452199679,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11653428810513464
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-novelty-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1476192435902712,
+  "native_cer": 0.1476192435902712,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.12340699891627914
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-novelty-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.15051373856262945,
+  "native_cer": 0.15051373856262945,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.12624662194603345
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14015665939613428,
+  "native_cer": 0.14015665939613428,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11652057011948365
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14333923206716326,
+  "native_cer": 0.14333923206716326,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11964827084790869
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d1-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13340741045584867,
+  "native_cer": 0.13340741045584867,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10941465355227238
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d1-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13930614428577306,
+  "native_cer": 0.13930614428577306,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11577979889433036
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d2-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1369466507538033,
+  "native_cer": 0.1369466507538033,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11311850967803888
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K4-random-d2-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.14154217594688395,
+  "native_cer": 0.14154217594688395,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11732993127289189
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-coverage-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12447700179705612,
+  "native_cer": 0.12447700179705612,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10234989094201408
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-coverage-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13665857305513257,
+  "native_cer": 0.13665857305513257,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11410620464490995
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-novelty-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1270422651137907,
+  "native_cer": 0.1270422651137907,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10416066504794436
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-novelty-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13742678025158786,
+  "native_cer": 0.13742678025158786,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11492928378396916
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d0-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12953893850227033,
+  "native_cer": 0.12953893850227033,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10839952261409934
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d0-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1373719083089839,
+  "native_cer": 0.1373719083089839,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11634223630602082
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d1-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.12754983058287722,
+  "native_cer": 0.12754983058287722,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.10420181900489732
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d1-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1361372896003951,
+  "native_cer": 0.1361372896003951,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11314594564934086
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d2-full": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.13523190254742992,
+  "native_cer": 0.13523190254742992,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11251491830939545
+ },
+ "results/n1b/adapt_out/nakba.json::nakba#K8-random-d2-top": {
+  "lines": 1200,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.1406642248652208,
+  "native_cer": 0.1406642248652208,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.11776890681372347
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K0-base": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.42987855598070207,
+  "native_cer": 0.42987855598070207,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.42560860644374204
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-coverage-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2580824044806743,
+  "native_cer": 0.2580824044806743,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25525425608606445
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-coverage-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.28464481783397105,
+  "native_cer": 0.28464481783397105,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.28187212332945155
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-novelty-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25774968114013197,
+  "native_cer": 0.25774968114013197,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25525425608606445
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-novelty-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.28481117950424223,
+  "native_cer": 0.28481117950424223,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2817057616591804
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-random-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2813730383186381,
+  "native_cer": 0.2813730383186381,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2781567126933954
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-random-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2939056174790662,
+  "native_cer": 0.2939056174790662,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2908556535240947
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-random-d1-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.27643764210059335,
+  "native_cer": 0.27643764210059335,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2736094937059835
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K100-random-d1-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2920756391060833,
+  "native_cer": 0.2920756391060833,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2887484057006599
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-coverage-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.304552764376421,
+  "native_cer": 0.304552764376421,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.30050463039982256
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-coverage-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.33477513447568347,
+  "native_cer": 0.33477513447568347,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.33089336216935616
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-novelty-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.301280984861088,
+  "native_cer": 0.301280984861088,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2985637442466589
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-novelty-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3395996229135474,
+  "native_cer": 0.3395996229135474,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.3362169356180336
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-random-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.30105916930072646,
+  "native_cer": 0.30105916930072646,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.29778738978539343
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-random-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3280097598846559,
+  "native_cer": 0.3280097598846559,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.32434980313869016
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-random-d1-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3003382687295514,
+  "native_cer": 0.3003382687295514,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2975101203349415
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K16-random-d1-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.3324460710918871,
+  "native_cer": 0.3324460710918871,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.32939610713691564
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-coverage-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.26235235401763435,
+  "native_cer": 0.26235235401763435,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.25969056729329565
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-coverage-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2739976709366162,
+  "native_cer": 0.2739976709366162,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.27100316087173515
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-novelty-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.25187156879055067,
+  "native_cer": 0.25187156879055067,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.24871069705539844
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-novelty-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2687295513780292,
+  "native_cer": 0.2687295513780292,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.26584594909332887
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-random-d0-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.27211223867354295,
+  "native_cer": 0.27211223867354295,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2690622747185715
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-random-d0-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.28187212332945155,
+  "native_cer": 0.28187212332945155,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.27854488992402815
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-random-d1-full": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.27322131647535075,
+  "native_cer": 0.27322131647535075,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2702268064104697
+ },
+ "results/n1b/adapt_out/rasam1.json::rasam1#K300-random-d1-top": {
+  "lines": 274,
+  "unmapped_ids": 0,
+  "reversed_suspect": 0,
+  "stored_cer": 0.2820384849997227,
+  "native_cer": 0.2820384849997227,
+  "native_equals_stored": 1.0,
+  "ref_len_equals": 1.0,
+  "no_diacritics_cer": 0.2791548827150225
  },
  "results/geometry/e8/per_line.json::kitab_khatt::crnn": {
   "lines": 183,

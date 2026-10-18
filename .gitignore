@@ -47,4 +47,10 @@ src/arabic_ocr_bench/assets/fonts/
 
 # regenerable analysis data (plan 2026-10-13)
 results/panel/*.pkl
+results/vlm_n2/*.pkl
 results/store/*.parquet
+
+# regenerable letter-feature banks (scripts/shape_letter_feats.py)
+results/characterize/shape/**/letter_feats.npz
+results/characterize/shape/letter_feats.npz
+results/panel/*.pkl.gz

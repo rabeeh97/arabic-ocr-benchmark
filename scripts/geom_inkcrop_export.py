@@ -32,9 +32,13 @@ def clean(t):
 
 def inkcrop(g: np.ndarray) -> np.ndarray:
     try:
-        ink = g < threshold_otsu(g)
+        t = threshold_otsu(g)
     except ValueError:
         return g
+    # On a two-level (binarised) image, e.g. KHATT v1.0 from Teklia ({0, 255} only), Otsu returns the lower level itself, so
+    # `g < t` finds no ink and the crop silently returned the whole image (bug found 2026-10-18). Only that degenerate case
+    # switches to `<=`; grey-level images keep exactly the earlier behaviour.
+    ink = g <= t if t <= g.min() else g < t
     prof = ink.sum(1).astype(float)
     if prof.sum() == 0:
         return g

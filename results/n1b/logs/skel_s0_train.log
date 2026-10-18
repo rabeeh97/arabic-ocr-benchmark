@@ -1,0 +1,35 @@
+train 21260  heldout 993  classes 148
+params 9.489236 M steps/epoch 665
+C:\Users\User\a-experiment\xai\.venv\Lib\site-packages\torch\optim\lr_scheduler.py:227: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+epoch 1/30  loss 3.637  127s
+epoch 2/30  loss 2.848  127s  heldout CER {'muharaf_lines': 0.7339}
+epoch 3/30  loss 1.666  127s
+epoch 4/30  loss 1.069  134s  heldout CER {'muharaf_lines': 0.243}
+epoch 5/30  loss 0.893  138s
+epoch 6/30  loss 0.778  149s  heldout CER {'muharaf_lines': 0.1835}
+epoch 7/30  loss 0.726  144s
+epoch 8/30  loss 0.672  148s  heldout CER {'muharaf_lines': 0.1626}
+epoch 9/30  loss 0.626  149s
+epoch 10/30  loss 0.589  150s  heldout CER {'muharaf_lines': 0.1526}
+epoch 11/30  loss 0.556  150s
+epoch 12/30  loss 0.529  150s  heldout CER {'muharaf_lines': 0.1486}
+epoch 13/30  loss 0.487  149s
+epoch 14/30  loss 0.452  151s  heldout CER {'muharaf_lines': 0.1292}
+epoch 15/30  loss 0.429  152s
+epoch 16/30  loss 0.404  153s  heldout CER {'muharaf_lines': 0.1214}
+epoch 17/30  loss 0.376  150s
+epoch 18/30  loss 0.346  152s  heldout CER {'muharaf_lines': 0.1171}
+epoch 19/30  loss 0.320  158s
+epoch 20/30  loss 0.299  163s  heldout CER {'muharaf_lines': 0.1129}
+epoch 21/30  loss 0.278  142s
+epoch 22/30  loss 0.262  141s  heldout CER {'muharaf_lines': 0.1073}
+epoch 23/30  loss 0.245  110s
+epoch 24/30  loss 0.232  108s  heldout CER {'muharaf_lines': 0.105}
+epoch 25/30  loss 0.222  106s
+epoch 26/30  loss 0.213  106s  heldout CER {'muharaf_lines': 0.1036}
+epoch 27/30  loss 0.205  107s
+epoch 28/30  loss 0.200  106s  heldout CER {'muharaf_lines': 0.1025}
+epoch 29/30  loss 0.198  107s
+epoch 30/30  loss 0.197  106s  heldout CER {'muharaf_lines': 0.1027}
+done

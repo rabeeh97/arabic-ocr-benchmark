@@ -1,0 +1,35 @@
+train 15250  heldout 517  classes 128
+params 9.478976 M steps/epoch 477
+C:\Users\User\a-experiment\xai\.venv\Lib\site-packages\torch\optim\lr_scheduler.py:227: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+epoch 1/30  loss 4.196  96s
+epoch 2/30  loss 3.416  94s  heldout CER {'nakba_train': 1.0}
+epoch 3/30  loss 3.046  91s
+epoch 4/30  loss 1.943  92s  heldout CER {'nakba_train': 0.2825}
+epoch 5/30  loss 0.921  92s
+epoch 6/30  loss 0.609  93s  heldout CER {'nakba_train': 0.1345}
+epoch 7/30  loss 0.495  92s
+epoch 8/30  loss 0.384  94s  heldout CER {'nakba_train': 0.0822}
+epoch 9/30  loss 0.339  97s
+epoch 10/30  loss 0.291  98s  heldout CER {'nakba_train': 0.075}
+epoch 11/30  loss 0.259  96s
+epoch 12/30  loss 0.245  96s  heldout CER {'nakba_train': 0.06}
+epoch 13/30  loss 0.225  97s
+epoch 14/30  loss 0.211  97s  heldout CER {'nakba_train': 0.0519}
+epoch 15/30  loss 0.185  92s
+epoch 16/30  loss 0.170  92s  heldout CER {'nakba_train': 0.0525}
+epoch 17/30  loss 0.163  94s
+epoch 18/30  loss 0.150  96s  heldout CER {'nakba_train': 0.0459}
+epoch 19/30  loss 0.139  96s
+epoch 20/30  loss 0.131  93s  heldout CER {'nakba_train': 0.0431}
+epoch 21/30  loss 0.121  102s
+epoch 22/30  loss 0.112  131s  heldout CER {'nakba_train': 0.0413}
+epoch 23/30  loss 0.105  124s
+epoch 24/30  loss 0.101  102s  heldout CER {'nakba_train': 0.0402}
+epoch 25/30  loss 0.095  99s
+epoch 26/30  loss 0.092  99s  heldout CER {'nakba_train': 0.0397}
+epoch 27/30  loss 0.089  97s
+epoch 28/30  loss 0.087  97s  heldout CER {'nakba_train': 0.0394}
+epoch 29/30  loss 0.085  96s
+epoch 30/30  loss 0.085  96s  heldout CER {'nakba_train': 0.0394}
+done

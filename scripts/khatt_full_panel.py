@@ -160,7 +160,9 @@ def main() -> None:
 
     files = {}
     p = a.out_dir / "khatt_full_panel.pkl"
-    pickle.dump({"H": 64, "split": "panel-khatt-full-2026-10-15", "rows": panel}, open(p, "wb"), protocol=4)
+    # 2026-10-18: the __inkcrop rows were uncropped copies before the inkcrop() fix for binarised images (KHATT v1.0 is
+    # {0, 255}); the new pack name lets store_build.py drop __inkcrop scores made on the old pack (sources.json stale_packs).
+    pickle.dump({"H": 64, "split": "panel-khatt-full-2026-10-18", "rows": panel}, open(p, "wb"), protocol=4)
     files[p.name] = p
     if not a.skip_train:
         p = a.out_dir / "khatt_full_train.pkl"

@@ -1,0 +1,33 @@
+train 4672  heldout 963  classes 50
+params 9.438962 M steps/epoch 146
+epoch 1/30  loss 4.159  32s
+epoch 2/30  loss 2.980  30s  heldout CER {'kitab_khatt_full': 1.0}
+epoch 3/30  loss 3.016  31s
+epoch 4/30  loss 2.929  31s  heldout CER {'kitab_khatt_full': 0.9943}
+epoch 5/30  loss 2.853  30s
+epoch 6/30  loss 2.778  31s  heldout CER {'kitab_khatt_full': 0.9901}
+epoch 7/30  loss 2.641  32s
+epoch 8/30  loss 2.359  32s  heldout CER {'kitab_khatt_full': 0.7318}
+epoch 9/30  loss 1.714  31s
+epoch 10/30  loss 1.015  31s  heldout CER {'kitab_khatt_full': 0.3113}
+epoch 11/30  loss 0.631  32s
+epoch 12/30  loss 0.470  32s  heldout CER {'kitab_khatt_full': 0.1715}
+epoch 13/30  loss 0.394  32s
+epoch 14/30  loss 0.321  31s  heldout CER {'kitab_khatt_full': 0.1332}
+epoch 15/30  loss 0.321  30s
+epoch 16/30  loss 0.284  30s  heldout CER {'kitab_khatt_full': 0.1324}
+epoch 17/30  loss 0.263  30s
+epoch 18/30  loss 0.253  30s  heldout CER {'kitab_khatt_full': 0.1179}
+epoch 19/30  loss 0.231  30s
+epoch 20/30  loss 0.217  30s  heldout CER {'kitab_khatt_full': 0.114}
+epoch 21/30  loss 0.202  30s
+epoch 22/30  loss 0.191  31s  heldout CER {'kitab_khatt_full': 0.1065}
+epoch 23/30  loss 0.192  31s
+epoch 24/30  loss 0.180  31s  heldout CER {'kitab_khatt_full': 0.1054}
+epoch 25/30  loss 0.173  31s
+epoch 26/30  loss 0.167  32s  heldout CER {'kitab_khatt_full': 0.1043}
+epoch 27/30  loss 0.163  31s
+epoch 28/30  loss 0.161  32s  heldout CER {'kitab_khatt_full': 0.103}
+epoch 29/30  loss 0.158  31s
+epoch 30/30  loss 0.162  30s  heldout CER {'kitab_khatt_full': 0.1023}
+done

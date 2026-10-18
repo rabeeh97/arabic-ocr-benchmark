@@ -157,6 +157,36 @@
   ],
   "khatt_full_flags": "results/panel/khatt_full_flags.parquet",
   "crnn_panel_glob_extra": [
-    "results/panel/khatt_full_out/*.json"
+    "results/panel/khatt_full_out/*.json",
+    "results/panel/khatt_full_out_skel/*.json"
+  ],
+  "stale_packs": {
+    "panel-khatt-full-2026-10-15": {
+      "tags": ["kitab_khatt_full__inkcrop"],
+      "why": "inkcrop() found no ink on binarised ({0, 255}) KHATT v1.0 images, so these 'ink-cropped' rows were the stored images (fixed 2026-10-18, pack panel-khatt-full-2026-10-18); re-score with scripts/box/rescore_khatt_inkcrop.bat"
+    }
+  },
+  "label_maps": {
+    "skeleton_map.json": "results/n1b/skeleton_map.json"
+  },
+  "crnn_adapt": [
+    {
+      "file": "results/n1b/adapt_out/rasam2.json",
+      "testbed": "rasam2",
+      "pack": "panel",
+      "numerics": "fp32-bs1"
+    },
+    {
+      "file": "results/n1b/adapt_out/nakba.json",
+      "testbed": "nakba",
+      "pack": "panel",
+      "numerics": "fp32-bs1"
+    },
+    {
+      "file": "results/n1b/adapt_out/rasam1.json",
+      "testbed": "rasam1",
+      "pack": "panel",
+      "numerics": "fp32-bs1"
+    }
   ]
 }

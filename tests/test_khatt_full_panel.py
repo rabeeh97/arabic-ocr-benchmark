@@ -47,3 +47,16 @@ def test_built_manifest_counts():
     assert {s: c["lines"] for s, c in m["counts"].items()} == {"train": 4672, "validation": 963, "test": 1038}
     assert m["panel_rows"] == 2 * 1038
     assert m["counts"]["test"]["kitab_image_id"] <= m["counts"]["test"]["kitab_text"]
+
+
+def test_inkcrop_crops_binary_images():
+    """KHATT v1.0 (Teklia) lines are {0, 255} only; Otsu then returns 0 and `g < 0` found no ink (crop was a no-op)."""
+    from geom_inkcrop_export import inkcrop
+
+    g = np.full((200, 400), 255, dtype=np.uint8)
+    g[90:110, 50:350] = 0  # one band of ink in the middle
+    c = inkcrop(g)
+    assert c.shape[0] < 60 and (c == 0).any()
+    grey = g.astype(np.float32) * 0.8 + 20  # same image with grey levels: crop unchanged
+    grey[0, 0] = 0
+    assert inkcrop(grey.astype(np.uint8)).shape[0] < 60

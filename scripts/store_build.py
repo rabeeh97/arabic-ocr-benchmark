@@ -10,7 +10,10 @@ Readings come from:
   crnn_tta        xai_geom_tta.py files: tags ds, ds__tta, ds__inkcrop, ds__inkcrop__tta
   e8              xai_e8_spike.py per_line.json: {ds: {id: {gt, crnn, e8}}}
   crnn_panel      crnn_eval_panel.py files (fp32, one line at a time, with confidence): crnn_panel_glob, plus every glob in
-                  crnn_panel_glob_extra (e.g. the full KHATT v1.0 test, results/panel/khatt_full_out/*.json)
+                  crnn_panel_glob_extra (e.g. the full KHATT v1.0 test, results/panel/khatt_full_out/*.json). A file made with
+                  --label-map (skeleton CRNN) is scored against the mapped GT (label_maps; column gt_map); tags listed under
+                  stale_packs for the file's pack are skipped
+  crnn_adapt      xai_adapt_crnn.py files: one run crnn-adapt/<testbed>/K<K>-<selection>-d<draw>-<method> per configuration
   vlm             every predictions*.jsonl under the main checkout, via characterize/runs.py (standard prompt, latest
                   success per sample, smoke runs skipped, renames applied), one run per model name
 Ids are mapped to the store key "{dataset}/{split}/{index:06d}" through the panel's legacy ids; GT always comes from the
@@ -79,8 +82,8 @@ class Store:
             "no" today, although KHATT-FULL-3090.md says the aligner CRNNs trained on the KITAB lines;
         standard split (crnn/std*): none of the panel;
         in-domain KHATT (crnn/khatt*, checklist 4.6): the KHATT v1.0 train split, which holds 64 KITAB-KHATT images."""
-        if run.startswith("crnn/std"):
-            return "no"
+        if run.startswith(("crnn/std", "crnn/skel", "crnn/nakba", "crnn-adapt/")):
+            return "no"  # standard split, its skeleton twin and the NAKBA-train CRNN see none of the panel; adaptation tests on unseen lines
         if run.startswith("crnn/khatt"):
             return "yes" if key in self.khatt_train_kitab else "no"
         if run.startswith(("crnn/", "crnn+llm/")):
@@ -92,16 +95,19 @@ class Store:
             return sid
         return self.legacy.get(sid)
 
-    def add(self, run, family, model, transform, key, hyp, pack, numerics, source, stored=None, conf=None):
+    def add(self, run, family, model, transform, key, hyp, pack, numerics, source, stored=None, conf=None, gt_map=None):
         s = self.samples[key]
         gt, gtc = s["gt_raw"], s["gt_clean"]
+        if gt_map is not None:  # e.g. the skeleton-only CRNN: score against the dotless GT it was trained on (all rungs)
+            gt = gtc = gt_map[1][gtc]
         hyp = hyp or ""
         lad = errors.ladder_edits(gt, hyp)
         native = Levenshtein.distance(gtc, hyp)
         row = {"run_id": run, "family": family, "model": model, "transform": transform, "sample_key": key, "dataset": s["dataset"],
                "pack": pack, "numerics": numerics, "source": source, "hyp": hyp, "conf": conf,
                "stored_edits": None if stored is None else int(stored[0]), "stored_ref_len": None if stored is None else int(stored[1]),
-               "reversed_suspect": reversed_suspect(gtc, hyp, native), "in_train": self.in_train(run, key)}
+               "reversed_suspect": reversed_suspect(gtc, hyp, native), "in_train": self.in_train(run, key),
+               "gt_map": None if gt_map is None else gt_map[0]}
         for name, (e, n) in zip(errors.RUNGS, lad):
             row[f"e_{name}"], row[f"n_{name}"] = e, n
         row["e_crnn_native"], row["n_crnn_native"] = native, len(gtc)
@@ -120,6 +126,13 @@ class Store:
         if rows:
             r["no_diacritics_cer"] = sum(x["e_no_diacritics"] for x in rows) / max(1, sum(x["n_no_diacritics"] for x in rows))
         self.rec[f"{source}::{tag}"] = r
+
+
+def adapt_run(testbed: str, cfg: dict) -> str:
+    """xai_adapt_crnn.py configuration -> store run id; units (RASAM-2 manuscripts) are pooled into one run per configuration."""
+    if int(cfg["K"]) == 0:
+        return f"crnn-adapt/{testbed}/K0-base"
+    return f"crnn-adapt/{testbed}/K{cfg['K']}-{cfg['selection']}-d{cfg['draw']}-{cfg['method']}"
 
 
 def split_tag(tag: str) -> tuple[str, str]:
@@ -170,7 +183,7 @@ def main() -> None:
         st.khatt_train_kitab = {r["kitab_image_id"] for r in fl if r["split"] == "train" and r["kitab_image_id"]}
     print("samples", len(samples), Counter(s["dataset"] for s in samples.values()), flush=True)
 
-    def ingest_pl(src, run, pack, numerics, per_line, conf=None):
+    def ingest_pl(src, run, pack, numerics, per_line, conf=None, gt_map=None, family="crnn"):
         for tag, d in per_line.items():
             ds, tr = split_tag(tag)
             rows, unm = [], 0
@@ -180,7 +193,7 @@ def main() -> None:
                     unm += 1
                     continue
                 c = None if conf is None else conf.get(tag, {}).get(sid)
-                rows.append(st.add(run, "crnn", run.split("/")[1], tr, k, v[2], pack, numerics, src, stored=v[:2], conf=c))
+                rows.append(st.add(run, family, run.split("/", 1)[1], tr, k, v[2], pack, numerics, src, stored=v[:2], conf=c, gt_map=gt_map))
             st.reconcile(src, tag, rows, unm)
 
     for s in S["crnn_per_line"] + S["crnn_tta"]:
@@ -191,8 +204,23 @@ def main() -> None:
     for f in panel_files:
         d = json.loads(Path(f).read_text(encoding="utf-8"))
         run = "crnn/" + d["run"].replace("aligner_run_", "").replace("aligner_run", "base") + ("" if d["ckpt"] == "model_final.pt" else "-best")
-        ingest_pl(str(Path(f).relative_to(W)), run, d.get("panel", "panel"), d["numerics"], d["per_line"], d.get("conf"))
+        gm = None
+        if d.get("label_map"):  # crnn_eval_panel.py --label-map: the file names the map, sources.json says where it is
+            name = d["label_map"]
+            gm = (name, json.loads((W / S["label_maps"][name]).read_text(encoding="utf-8")))
+        stale = S.get("stale_packs", {}).get(d.get("panel"), {}).get("tags", [])  # tags scored on images later found wrong
+        pl = {t: v for t, v in d["per_line"].items() if t not in stale}
+        ingest_pl(str(Path(f).relative_to(W)), run, d.get("panel", "panel"), d["numerics"], pl, d.get("conf"), gt_map=gm)
         print("ingested", f, flush=True)
+    for s in S.get("crnn_adapt", []):  # xai_adapt_crnn.py: one run per configuration, rows from all units of the testbed
+        d = json.loads((W / s["file"]).read_text(encoding="utf-8"))
+        by_run = defaultdict(dict)
+        for cfg in d["results"].values():
+            run = adapt_run(s["testbed"], cfg)
+            by_run[run].update(cfg["per_line"])
+        for run, pl in sorted(by_run.items()):
+            ingest_pl(s["file"], run, s["pack"], s["numerics"], {f"{s['testbed']}#{run.rsplit('/', 1)[1]}": pl}, family="crnn-adapt")
+        print("ingested", s["file"], len(by_run), "configurations", flush=True)
     for s in S["e8"]:
         d = json.loads((W / s["file"]).read_text(encoding="utf-8"))
         for ds, m in d.items():

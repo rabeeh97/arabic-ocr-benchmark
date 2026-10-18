@@ -1,0 +1,50 @@
+[Sat 10/17/2026 15:31:24.79] N1A-1 existing CRNNs on full KHATT test (stored + ink-cropped) 
+aligner_run              kitab_khatt_full         lines  1038  CER  30.9 %
+aligner_run              kitab_khatt_full__inkcrop lines  1038  CER  30.9 %
+aligner_run_base_s3      kitab_khatt_full         lines  1038  CER  31.4 %
+aligner_run_base_s3      kitab_khatt_full__inkcrop lines  1038  CER  31.4 %
+aligner_run_combo        kitab_khatt_full         lines  1038  CER  30.6 %
+aligner_run_combo        kitab_khatt_full__inkcrop lines  1038  CER  30.6 %
+aligner_run_combo_s2     kitab_khatt_full         lines  1038  CER  30.8 %
+aligner_run_combo_s2     kitab_khatt_full__inkcrop lines  1038  CER  30.8 %
+aligner_run_combo_s3     kitab_khatt_full         lines  1038  CER  30.7 %
+aligner_run_combo_s3     kitab_khatt_full__inkcrop lines  1038  CER  30.7 %
+aligner_run_geomaug      kitab_khatt_full         lines  1038  CER  31.6 %
+aligner_run_geomaug      kitab_khatt_full__inkcrop lines  1038  CER  31.6 %
+aligner_run_inkcrop      kitab_khatt_full         lines  1038  CER  31.5 %
+aligner_run_inkcrop      kitab_khatt_full__inkcrop lines  1038  CER  31.5 %
+aligner_run_randctl      kitab_khatt_full         lines  1038  CER  31.3 %
+aligner_run_randctl      kitab_khatt_full__inkcrop lines  1038  CER  31.3 %
+aligner_run_randctl_s2   kitab_khatt_full         lines  1038  CER  31.2 %
+aligner_run_randctl_s2   kitab_khatt_full__inkcrop lines  1038  CER  31.2 %
+aligner_run_randctl_s3   kitab_khatt_full         lines  1038  CER  31.0 %
+aligner_run_randctl_s3   kitab_khatt_full__inkcrop lines  1038  CER  31.0 %
+aligner_run_rep2         kitab_khatt_full         lines  1038  CER  31.3 %
+aligner_run_rep2         kitab_khatt_full__inkcrop lines  1038  CER  31.3 %
+aligner_run_shape        kitab_khatt_full         lines  1038  CER  30.4 %
+aligner_run_shape        kitab_khatt_full__inkcrop lines  1038  CER  30.4 %
+aligner_run_shape_s2     kitab_khatt_full         lines  1038  CER  30.7 %
+aligner_run_shape_s2     kitab_khatt_full__inkcrop lines  1038  CER  30.7 %
+aligner_run_shape_s3     kitab_khatt_full         lines  1038  CER  30.0 %
+aligner_run_shape_s3     kitab_khatt_full__inkcrop lines  1038  CER  30.0 %
+aligner_run_std_s0       kitab_khatt_full         lines  1038  CER  33.8 %
+aligner_run_std_s0       kitab_khatt_full__inkcrop lines  1038  CER  33.8 %
+aligner_run_std_s1       kitab_khatt_full         lines  1038  CER  33.7 %
+aligner_run_std_s1       kitab_khatt_full__inkcrop lines  1038  CER  33.7 %
+[Sat 10/17/2026 15:56:34.81] N1A-2 in-domain KHATT CRNN, seed 0 (resumable; ckpt every 10 steps) 
+[Sat 10/17/2026 16:13:25.55] N1A-3 in-domain KHATT CRNN on full KHATT and on the panel 
+khatt_run_s0             kitab_khatt_full         lines  1038  CER   8.5 %
+khatt_run_s0             kitab_khatt_full__inkcrop lines  1038  CER   8.5 %
+khatt_run_s0             kitab_khatt              lines   200  CER  42.9 %
+khatt_run_s0             kitab_khatt__inkcrop     lines   200  CER  39.7 %
+khatt_run_s0             muharaf_lines            lines  1334  CER  72.1 %
+khatt_run_s0             muharaf_lines__inkcrop   lines  1334  CER  72.1 %
+khatt_run_s0             nakba_blind              lines  2671  CER  71.1 %
+khatt_run_s0             nakba_blind__inkcrop     lines  2671  CER  71.2 %
+khatt_run_s0             nakba_lines              lines  2095  CER  71.7 %
+khatt_run_s0             nakba_lines__inkcrop     lines  2095  CER  71.7 %
+khatt_run_s0             rasam1                   lines   734  CER  74.4 %
+khatt_run_s0             rasam1__inkcrop          lines   734  CER  74.4 %
+khatt_run_s0             rasam2                   lines   372  CER  76.2 %
+khatt_run_s0             rasam2__inkcrop          lines   372  CER  76.2 %
+[Sat 10/17/2026 16:24:46.43] N1A ALL DONE 

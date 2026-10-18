@@ -1,0 +1,35 @@
+train 24201  heldout 400  classes 165
+params 9.497957 M steps/epoch 1124
+C:\Users\User\a-experiment\xai\.venv\Lib\site-packages\torch\optim\lr_scheduler.py:227: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn(
+epoch 1/30  loss 3.614  188s
+epoch 2/30  loss 2.605  184s  heldout CER {'muharaf_lines': 0.413, 'rasam1': 0.5377}
+epoch 3/30  loss 1.414  184s
+epoch 4/30  loss 1.114  183s  heldout CER {'muharaf_lines': 0.1642, 'rasam1': 0.2759}
+epoch 5/30  loss 0.964  184s
+epoch 6/30  loss 0.870  184s  heldout CER {'muharaf_lines': 0.1297, 'rasam1': 0.1711}
+epoch 7/30  loss 0.796  183s
+epoch 8/30  loss 0.735  184s  heldout CER {'muharaf_lines': 0.1195, 'rasam1': 0.1673}
+epoch 9/30  loss 0.707  184s
+epoch 10/30  loss 0.643  183s  heldout CER {'muharaf_lines': 0.1175, 'rasam1': 0.1627}
+epoch 11/30  loss 0.592  184s
+epoch 12/30  loss 0.551  184s  heldout CER {'muharaf_lines': 0.1038, 'rasam1': 0.1354}
+epoch 13/30  loss 0.505  183s
+epoch 14/30  loss 0.470  184s  heldout CER {'muharaf_lines': 0.0973, 'rasam1': 0.1218}
+epoch 15/30  loss 0.436  183s
+epoch 16/30  loss 0.394  184s  heldout CER {'muharaf_lines': 0.0903, 'rasam1': 0.1152}
+epoch 17/30  loss 0.361  184s
+epoch 18/30  loss 0.332  184s  heldout CER {'muharaf_lines': 0.0857, 'rasam1': 0.1071}
+epoch 19/30  loss 0.305  184s
+epoch 20/30  loss 0.282  183s  heldout CER {'muharaf_lines': 0.0805, 'rasam1': 0.1077}
+epoch 21/30  loss 0.254  183s
+epoch 22/30  loss 0.227  183s  heldout CER {'muharaf_lines': 0.0807, 'rasam1': 0.106}
+epoch 23/30  loss 0.211  184s
+epoch 24/30  loss 0.197  181s  heldout CER {'muharaf_lines': 0.0789, 'rasam1': 0.0988}
+epoch 25/30  loss 0.184  184s
+epoch 26/30  loss 0.175  192s  heldout CER {'muharaf_lines': 0.0757, 'rasam1': 0.1005}
+epoch 27/30  loss 0.168  192s
+epoch 28/30  loss 0.163  184s  heldout CER {'muharaf_lines': 0.0767, 'rasam1': 0.1011}
+epoch 29/30  loss 0.161  189s
+epoch 30/30  loss 0.160  191s  heldout CER {'muharaf_lines': 0.0771, 'rasam1': 0.1008}
+done

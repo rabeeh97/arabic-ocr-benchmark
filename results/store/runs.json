@@ -9,6 +9,7 @@
    "results/geometry/night/tta_inkcrop_pl.json",
    "results/geometry/shape/base.json",
    "results/geometry/transfer_cer.json",
+   "results/panel/khatt_full_out/aligner_run.json",
    "results/panel/out/aligner_run.json",
    "results/panel/tta/tta_base_allvar.json"
   ]
@@ -19,6 +20,7 @@
   "sources": [
    "results/geometry/night/rep2_eval.json",
    "results/geometry/night/rep2_inkcrop.json",
+   "results/panel/khatt_full_out/aligner_run_rep2.json",
    "results/panel/out/aligner_run_rep2.json"
   ]
  },
@@ -28,6 +30,7 @@
   "sources": [
    "results/geometry/night/randctl_inkcrop.json",
    "results/geometry/shape/random_eval.json",
+   "results/panel/khatt_full_out/aligner_run_randctl.json",
    "results/panel/out/aligner_run_randctl.json"
   ]
  },
@@ -38,6 +41,7 @@
    "results/geometry/night/shape_inkcrop.json",
    "results/geometry/night/shape_transfer.json",
    "results/geometry/shape/targeted_eval.json",
+   "results/panel/khatt_full_out/aligner_run_shape.json",
    "results/panel/out/aligner_run_shape.json"
   ]
  },
@@ -47,6 +51,7 @@
   "sources": [
    "results/geometry/night/combo_inkcrop.json",
    "results/geometry/night/tta_inkcrop_combo.json",
+   "results/panel/khatt_full_out/aligner_run_combo.json",
    "results/panel/out/aligner_run_combo.json",
    "results/panel/tta/tta_combo_allvar.json"
   ]
@@ -58,6 +63,7 @@
    "results/geometry/aug_evaldata.json",
    "results/geometry/aug_transfer.json",
    "results/geometry/inkcrop_aug.json",
+   "results/panel/khatt_full_out/aligner_run_geomaug.json",
    "results/panel/out/aligner_run_geomaug.json"
   ]
  },
@@ -66,6 +72,7 @@
   "model": "inkcrop",
   "sources": [
    "results/geometry/inkcrop_trained.json",
+   "results/panel/khatt_full_out/aligner_run_inkcrop.json",
    "results/panel/out/aligner_run_inkcrop.json"
   ]
  },
@@ -73,6 +80,7 @@
   "family": "crnn",
   "model": "base_s3",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_base_s3.json",
    "results/panel/out/aligner_run_base_s3.json"
   ]
  },
@@ -80,6 +88,7 @@
   "family": "crnn",
   "model": "combo_s2",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_combo_s2.json",
    "results/panel/out/aligner_run_combo_s2.json"
   ]
  },
@@ -87,13 +96,39 @@
   "family": "crnn",
   "model": "combo_s3",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_combo_s3.json",
    "results/panel/out/aligner_run_combo_s3.json"
+  ]
+ },
+ "crnn/hard_s2": {
+  "family": "crnn",
+  "model": "hard_s2",
+  "sources": [
+   "results/panel/khatt_full_out/aligner_run_hard_s2.json",
+   "results/panel/out/aligner_run_hard_s2.json"
+  ]
+ },
+ "crnn/hard_s3": {
+  "family": "crnn",
+  "model": "hard_s3",
+  "sources": [
+   "results/panel/khatt_full_out/aligner_run_hard_s3.json",
+   "results/panel/out/aligner_run_hard_s3.json"
+  ]
+ },
+ "crnn/nakba_s0": {
+  "family": "crnn",
+  "model": "nakba_s0",
+  "sources": [
+   "results/panel/khatt_full_out/aligner_run_nakba_s0.json",
+   "results/panel/out/aligner_run_nakba_s0.json"
   ]
  },
  "crnn/randctl_s2": {
   "family": "crnn",
   "model": "randctl_s2",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_randctl_s2.json",
    "results/panel/out/aligner_run_randctl_s2.json"
   ]
  },
@@ -101,6 +136,7 @@
   "family": "crnn",
   "model": "randctl_s3",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_randctl_s3.json",
    "results/panel/out/aligner_run_randctl_s3.json"
   ]
  },
@@ -108,6 +144,7 @@
   "family": "crnn",
   "model": "shape_s2",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_shape_s2.json",
    "results/panel/out/aligner_run_shape_s2.json"
   ]
  },
@@ -115,6 +152,7 @@
   "family": "crnn",
   "model": "shape_s3",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_shape_s3.json",
    "results/panel/out/aligner_run_shape_s3.json"
   ]
  },
@@ -122,6 +160,7 @@
   "family": "crnn",
   "model": "std_s0",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_std_s0.json",
    "results/panel/out/aligner_run_std_s0.json"
   ]
  },
@@ -129,7 +168,24 @@
   "family": "crnn",
   "model": "std_s1",
   "sources": [
+   "results/panel/khatt_full_out/aligner_run_std_s1.json",
    "results/panel/out/aligner_run_std_s1.json"
+  ]
+ },
+ "crnn/khatt_run_s0": {
+  "family": "crnn",
+  "model": "khatt_run_s0",
+  "sources": [
+   "results/panel/khatt_full_out/khatt_run_s0.json",
+   "results/panel/out/khatt_run_s0.json"
+  ]
+ },
+ "crnn/skel_s0": {
+  "family": "crnn",
+  "model": "skel_s0",
+  "sources": [
+   "results/panel/khatt_full_out_skel/aligner_run_skel_s0.json",
+   "results/panel/out_skel/aligner_run_skel_s0.json"
   ]
  },
  "crnn/std_s0-best": {
@@ -144,6 +200,545 @@
   "model": "std_s1-best",
   "sources": [
    "results/panel/out_best/aligner_run_std_s1.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K0-base": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K0-base",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d2-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d2-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K4-random-d2-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K4-random-d2-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d2-full": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d2-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/rasam2/K8-random-d2-top": {
+  "family": "crnn-adapt",
+  "model": "rasam2/K8-random-d2-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam2.json"
+  ]
+ },
+ "crnn-adapt/nakba/K0-base": {
+  "family": "crnn-adapt",
+  "model": "nakba/K0-base",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d2-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d2-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K16-random-d2-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K16-random-d2-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d2-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d2-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K4-random-d2-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K4-random-d2-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d2-full": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d2-full",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/nakba/K8-random-d2-top": {
+  "family": "crnn-adapt",
+  "model": "nakba/K8-random-d2-top",
+  "sources": [
+   "results/n1b/adapt_out/nakba.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K0-base": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K0-base",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K100-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K100-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K16-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K16-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-coverage-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-coverage-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-coverage-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-coverage-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-novelty-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-novelty-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-novelty-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-novelty-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-random-d0-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-random-d0-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-random-d0-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-random-d0-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-random-d1-full": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-random-d1-full",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
+  ]
+ },
+ "crnn-adapt/rasam1/K300-random-d1-top": {
+  "family": "crnn-adapt",
+  "model": "rasam1/K300-random-d1-top",
+  "sources": [
+   "results/n1b/adapt_out/rasam1.json"
   ]
  },
  "crnn+llm/e8-qwen3-0.6b": {

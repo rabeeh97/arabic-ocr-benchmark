@@ -1,0 +1,121 @@
+[Sat 10/17/2026 16:26:46.21] N1B start 
+[Sat 10/17/2026 16:26:46.22] N1B-1 (4.1) CTC posterior dump: base, combo, standard-split s0 on the panel and full KHATT (about 45 min) 
+aligner_run              kitab_khatt              posteriors only (200 lines)
+aligner_run              kitab_khatt__inkcrop     posteriors only (200 lines)
+aligner_run              muharaf_lines            posteriors only (1334 lines)
+aligner_run              muharaf_lines__inkcrop   posteriors only (1334 lines)
+aligner_run              nakba_blind              posteriors only (2671 lines)
+aligner_run              nakba_blind__inkcrop     posteriors only (2671 lines)
+aligner_run              nakba_lines              posteriors only (2095 lines)
+aligner_run              nakba_lines__inkcrop     posteriors only (2095 lines)
+aligner_run              rasam1                   posteriors only (734 lines)
+aligner_run              rasam1__inkcrop          posteriors only (734 lines)
+aligner_run              rasam2                   posteriors only (372 lines)
+aligner_run              rasam2__inkcrop          posteriors only (372 lines)
+aligner_run: posteriors of 14812 lines -> posteriors\aligner_run__panel.npz (704 MB)
+aligner_run_combo        kitab_khatt              posteriors only (200 lines)
+aligner_run_combo        kitab_khatt__inkcrop     posteriors only (200 lines)
+aligner_run_combo        muharaf_lines            posteriors only (1334 lines)
+aligner_run_combo        muharaf_lines__inkcrop   posteriors only (1334 lines)
+aligner_run_combo        nakba_blind              posteriors only (2671 lines)
+aligner_run_combo        nakba_blind__inkcrop     posteriors only (2671 lines)
+aligner_run_combo        nakba_lines              posteriors only (2095 lines)
+aligner_run_combo        nakba_lines__inkcrop     posteriors only (2095 lines)
+aligner_run_combo        rasam1                   posteriors only (734 lines)
+aligner_run_combo        rasam1__inkcrop          posteriors only (734 lines)
+aligner_run_combo        rasam2                   posteriors only (372 lines)
+aligner_run_combo        rasam2__inkcrop          posteriors only (372 lines)
+aligner_run_combo: posteriors of 14812 lines -> posteriors\aligner_run_combo__panel.npz (705 MB)
+aligner_run_std_s0       kitab_khatt              posteriors only (200 lines)
+aligner_run_std_s0       kitab_khatt__inkcrop     posteriors only (200 lines)
+aligner_run_std_s0       muharaf_lines            posteriors only (1334 lines)
+aligner_run_std_s0       muharaf_lines__inkcrop   posteriors only (1334 lines)
+aligner_run_std_s0       nakba_blind              posteriors only (2671 lines)
+aligner_run_std_s0       nakba_blind__inkcrop     posteriors only (2671 lines)
+aligner_run_std_s0       nakba_lines              posteriors only (2095 lines)
+aligner_run_std_s0       nakba_lines__inkcrop     posteriors only (2095 lines)
+aligner_run_std_s0       rasam1                   posteriors only (734 lines)
+aligner_run_std_s0       rasam1__inkcrop          posteriors only (734 lines)
+aligner_run_std_s0       rasam2                   posteriors only (372 lines)
+aligner_run_std_s0       rasam2__inkcrop          posteriors only (372 lines)
+aligner_run_std_s0: posteriors of 14812 lines -> posteriors\aligner_run_std_s0__panel.npz (701 MB)
+aligner_run              kitab_khatt_full         posteriors only (1038 lines)
+aligner_run              kitab_khatt_full__inkcrop posteriors only (1038 lines)
+aligner_run: posteriors of 2076 lines -> posteriors\aligner_run__khatt_full_panel.npz (115 MB)
+aligner_run_combo        kitab_khatt_full         posteriors only (1038 lines)
+aligner_run_combo        kitab_khatt_full__inkcrop posteriors only (1038 lines)
+aligner_run_combo: posteriors of 2076 lines -> posteriors\aligner_run_combo__khatt_full_panel.npz (115 MB)
+aligner_run_std_s0       kitab_khatt_full         posteriors only (1038 lines)
+aligner_run_std_s0       kitab_khatt_full__inkcrop posteriors only (1038 lines)
+aligner_run_std_s0: posteriors of 2076 lines -> posteriors\aligner_run_std_s0__khatt_full_panel.npz (114 MB)
+[Sat 10/17/2026 17:04:00.10] N1B-2 (4.2) skeleton-only CRNN: standard recipe, dotless labels, seed 0 (about 70 min) 
+22253 rows -> aligner_data_standard_skel.pkl classes 148
+aligner_run_skel_s0      kitab_khatt              lines   200  CER  31.0 %
+aligner_run_skel_s0      kitab_khatt__inkcrop     lines   200  CER  23.5 %
+aligner_run_skel_s0      muharaf_lines            lines  1334  CER  10.7 %
+aligner_run_skel_s0      muharaf_lines__inkcrop   lines  1334  CER  10.8 %
+aligner_run_skel_s0      nakba_blind              lines  2671  CER  11.1 %
+aligner_run_skel_s0      nakba_blind__inkcrop     lines  2671  CER  11.1 %
+aligner_run_skel_s0      nakba_lines              lines  2095  CER  10.1 %
+aligner_run_skel_s0      nakba_lines__inkcrop     lines  2095  CER  10.1 %
+aligner_run_skel_s0      rasam1                   lines   734  CER  38.6 %
+aligner_run_skel_s0      rasam1__inkcrop          lines   734  CER  38.5 %
+aligner_run_skel_s0      rasam2                   lines   372  CER  41.1 %
+aligner_run_skel_s0      rasam2__inkcrop          lines   372  CER  41.2 %
+aligner_run_skel_s0: posteriors of 14812 lines -> posteriors\aligner_run_skel_s0__panel.npz (627 MB)
+aligner_run_skel_s0      kitab_khatt_full         lines  1038  CER  31.2 %
+aligner_run_skel_s0      kitab_khatt_full__inkcrop lines  1038  CER  31.2 %
+aligner_run_skel_s0: posteriors of 2076 lines -> posteriors\aligner_run_skel_s0__khatt_full_panel.npz (102 MB)
+[Sat 10/17/2026 18:25:50.27] N1B-3 (4.5) in-domain NAKBA CRNN, seed 0 (about 50 min) 
+aligner_run_nakba_s0     kitab_khatt              lines   200  CER  49.1 %
+aligner_run_nakba_s0     kitab_khatt__inkcrop     lines   200  CER  43.1 %
+aligner_run_nakba_s0     muharaf_lines            lines  1334  CER  34.8 %
+aligner_run_nakba_s0     muharaf_lines__inkcrop   lines  1334  CER  34.6 %
+aligner_run_nakba_s0     nakba_blind              lines  2671  CER   7.0 %
+aligner_run_nakba_s0     nakba_blind__inkcrop     lines  2671  CER   7.0 %
+aligner_run_nakba_s0     nakba_lines              lines  2095  CER   4.0 %
+aligner_run_nakba_s0     nakba_lines__inkcrop     lines  2095  CER   4.0 %
+aligner_run_nakba_s0     rasam1                   lines   734  CER  57.2 %
+aligner_run_nakba_s0     rasam1__inkcrop          lines   734  CER  57.1 %
+aligner_run_nakba_s0     rasam2                   lines   372  CER  57.8 %
+aligner_run_nakba_s0     rasam2__inkcrop          lines   372  CER  57.8 %
+aligner_run_nakba_s0     kitab_khatt_full         lines  1038  CER  50.3 %
+aligner_run_nakba_s0     kitab_khatt_full__inkcrop lines  1038  CER  50.3 %
+[Sat 10/17/2026 19:27:13.12] N1B-4 (4.3) CRNN writer adaptation, RASAM-2 manuscripts and NAKBA (about 95 min) 
+[Sat 10/17/2026 22:14:02.01] N1B-5 (4.4) few-shot Maghrebi curve, RASAM-1, K = 16 / 100 / 300 (about 15 min) 
+[Sat 10/17/2026 22:30:52.69] N1B-6 (4.7) hard-example control: selection, then seeds 2 and 3 (about 3.7 h) 
+scored 0 of 22126
+scored 5000 of 22126
+scored 10000 of 22126
+scored 15000 of 22126
+scored 20000 of 22126
+{"scored": 22126, "selected": 2904, "copies": 3, "min_loss_selected": 0.3333, "overlap_with_match": 516, "examples": ["والمحل المسطورين سليخ ومختلف محسومة من اصل النومرو السابقة يحدها قبلة ملك المعقود له", "روحه الاستقلالية عن السدة البطرسية، بل نعرف ان كل", "الزيتونه بمطعم مروش احلى من الديك الرومي الزيتونه بمطعم مروش احلى من الديك الرومي", "اترنان ما عجلوا الإفطار وما عجلت امتي الإفطار واخروا", "ندوكل نشينين اذون غفتنجر انييض ءاش سالحمد"]}
+aligner_run_hard_s2      kitab_khatt              lines   200  CER  30.8 %
+aligner_run_hard_s2      kitab_khatt__inkcrop     lines   200  CER  23.6 %
+aligner_run_hard_s2      muharaf_lines            lines  1334  CER   6.2 %
+aligner_run_hard_s2      muharaf_lines__inkcrop   lines  1334  CER   6.4 %
+aligner_run_hard_s2      nakba_blind              lines  2671  CER  13.7 %
+aligner_run_hard_s2      nakba_blind__inkcrop     lines  2671  CER  13.7 %
+aligner_run_hard_s2      nakba_lines              lines  2095  CER  13.6 %
+aligner_run_hard_s2      nakba_lines__inkcrop     lines  2095  CER  13.6 %
+aligner_run_hard_s2      rasam1                   lines   734  CER   2.8 %
+aligner_run_hard_s2      rasam1__inkcrop          lines   734  CER   2.8 %
+aligner_run_hard_s2      rasam2                   lines   372  CER   4.5 %
+aligner_run_hard_s2      rasam2__inkcrop          lines   372  CER   4.6 %
+aligner_run_hard_s2      kitab_khatt_full         lines  1038  CER  31.6 %
+aligner_run_hard_s2      kitab_khatt_full__inkcrop lines  1038  CER  31.6 %
+aligner_run_hard_s3      kitab_khatt              lines   200  CER  31.1 %
+aligner_run_hard_s3      kitab_khatt__inkcrop     lines   200  CER  23.7 %
+aligner_run_hard_s3      muharaf_lines            lines  1334  CER   6.3 %
+aligner_run_hard_s3      muharaf_lines__inkcrop   lines  1334  CER   6.5 %
+aligner_run_hard_s3      nakba_blind              lines  2671  CER  13.9 %
+aligner_run_hard_s3      nakba_blind__inkcrop     lines  2671  CER  13.9 %
+aligner_run_hard_s3      nakba_lines              lines  2095  CER  13.8 %
+aligner_run_hard_s3      nakba_lines__inkcrop     lines  2095  CER  13.8 %
+aligner_run_hard_s3      rasam1                   lines   734  CER   2.9 %
+aligner_run_hard_s3      rasam1__inkcrop          lines   734  CER   2.9 %
+aligner_run_hard_s3      rasam2                   lines   372  CER   4.7 %
+aligner_run_hard_s3      rasam2__inkcrop          lines   372  CER   4.8 %
+aligner_run_hard_s3      kitab_khatt_full         lines  1038  CER  31.4 %
+aligner_run_hard_s3      kitab_khatt_full__inkcrop lines  1038  CER  31.4 %
+[Sun 10/18/2026  2:14:37.71] N1B ALL DONE 

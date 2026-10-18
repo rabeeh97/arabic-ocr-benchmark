@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
-from store_build import reversed_suspect, split_tag, vlm_family  # noqa: E402
+from store_build import adapt_run, reversed_suspect, split_tag, vlm_family  # noqa: E402
 
 
 def test_split_tag():
@@ -19,6 +19,11 @@ def test_reversed_suspect():
     assert reversed_suspect(gt, gt[::-1], native=len(gt))
     assert not reversed_suspect(gt, gt, native=0)
     assert not reversed_suspect(gt, "كثافة الهوا بها قليله", native=2)
+
+
+def test_adapt_run():
+    assert adapt_run("rasam2", {"K": 0, "selection": "base", "draw": 0, "method": "none"}) == "crnn-adapt/rasam2/K0-base"
+    assert adapt_run("nakba", {"K": 8, "selection": "coverage", "draw": 1, "method": "top"}) == "crnn-adapt/nakba/K8-coverage-d1-top"
 
 
 def test_vlm_family():

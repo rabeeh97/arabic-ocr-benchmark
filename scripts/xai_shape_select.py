@@ -54,6 +54,7 @@ def main():
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--threshold", type=float, default=2.128, help="novelty above which a letter counts as unusual (X-G10 Muharaf 95th pct)")
     ap.add_argument("--share", type=float, default=0.12)
+    ap.add_argument("--dataset", default="kitab_khatt", help="eval-data rows to select on (half A) and evaluate (half B); nakba_blind for checklist 4.8")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     chars = json.loads((a.run / "charset.json").read_text(encoding="utf-8"))["chars"]
@@ -62,8 +63,9 @@ def main():
     model = CRNN(len(chars) + 1).cuda().eval()
     model.load_state_dict(torch.load(a.run / "model_final.pt", map_location="cuda"))
 
-    # 1. KHATT half A, unlabeled
-    kh = sorted([r for r in pickle.load(open(a.eval_data, "rb"))["rows"] if r["dataset"] == "kitab_khatt"], key=lambda r: r["id"])
+    # 1. half A of the target set (KHATT for X-G11, NAKBA blind for 4.8), unlabeled
+    kh = sorted([r for r in pickle.load(open(a.eval_data, "rb"))["rows"] if r["dataset"] == a.dataset], key=lambda r: r["id"])
+    assert kh, f"no rows with dataset {a.dataset!r} in {a.eval_data}"
     half_a, half_b = kh[0::2], kh[1::2]
     qf, qc = [], []
     for r in half_a:
@@ -141,7 +143,7 @@ def main():
     (a.out / "targeted.json").write_text(json.dumps({"extra": targeted}))
     (a.out / "random.json").write_text(json.dumps({"extra": {str(j): 3 for j in rnd}}))
     (a.out / "halves.json").write_text(json.dumps({"half_a": [r["id"] for r in half_a], "half_b": [r["id"] for r in half_b]}))
-    summ = {"half_a_letters": len(qc), "unusual_letters": unusual, "lines_marked": len(marks), "lines_selected": len(targeted), "train_lines": len(train_idx),
+    summ = {"dataset": a.dataset, "half_a_letters": len(qc), "unusual_letters": unusual, "lines_marked": len(marks), "lines_selected": len(targeted), "train_lines": len(train_idx),
             "min_marks_selected": ranked[-1][1] if ranked else 0, "examples": [{"row": j, "marks": m, "label": rows[j]["label"]} for j, m in ranked[:12]]}
     (a.out / "summary.json").write_text(json.dumps(summ, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: v for k, v in summ.items() if k != "examples"}), flush=True)
