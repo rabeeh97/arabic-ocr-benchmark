@@ -1,0 +1,2320 @@
+{
+ "prereg": "results/characterize/dots/prereg.json",
+ "families": {
+  "CRNN": {
+   "readings": 54540,
+   "lines": 4429,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 9964.0,
+     "unsplit_paw_gaps": 745430.0,
+     "word_gaps": 520474.0,
+     "merged_word_gaps": 31912.0,
+     "median_xh": {
+      "split": 0.15000000000000002,
+      "unsplit": 0.07,
+      "word": 0.45,
+      "merged_word": 0.16999999999999998,
+      "kept_word": 0.45
+     },
+     "delta_median_split_minus_unsplit": 0.08000000000000002,
+     "delta_ci": [
+      0.020000000000000004,
+      0.09999999999999998
+     ],
+     "auc_word_gt_split": 0.6826167106628418,
+     "auc_word_gt_split_ci": [
+      0.6694164738059044,
+      0.6957202076911926
+     ],
+     "auc_split_gt_unsplit": 0.5568176507949829,
+     "auc_split_gt_unsplit_ci": [
+      0.5398484274744988,
+      0.5727548763155937
+     ],
+     "auc_word_gt_unsplit": 0.7392473220825195,
+     "split_rate_per_paw_gap": 0.013190467841923237,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 7956.0,
+     "unsplit_paw_gaps": 673944.0,
+     "word_gaps": 454217.0,
+     "merged_word_gaps": 20963.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.09,
+      "word": 0.47,
+      "merged_word": 0.19,
+      "kept_word": 0.47
+     },
+     "delta_median_split_minus_unsplit": 0.07999999999999999,
+     "delta_ci": [
+      0.04000000000000001,
+      0.1
+     ],
+     "auc_word_gt_split": 0.7080674767494202,
+     "auc_word_gt_split_ci": [
+      0.6929284647107125,
+      0.7239032909274101
+     ],
+     "auc_split_gt_unsplit": 0.5725456476211548,
+     "auc_split_gt_unsplit_ci": [
+      0.55324437469244,
+      0.5916480362415314
+     ],
+     "auc_word_gt_unsplit": 0.7693668603897095,
+     "split_rate_per_paw_gap": 0.011667399667203426,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "kitab_khatt": {
+     "split_paw_gaps": 677.0,
+     "unsplit_paw_gaps": 42359.0,
+     "word_gaps": 33663.0,
+     "merged_word_gaps": 3529.0,
+     "median_xh": {
+      "split": 0.33,
+      "unsplit": 0.15000000000000002,
+      "word": 0.65,
+      "merged_word": 0.43,
+      "kept_word": 0.67
+     },
+     "delta_median_split_minus_unsplit": 0.18,
+     "delta_ci": [
+      0.07999999999999996,
+      0.32
+     ],
+     "auc_word_gt_split": 0.7160943150520325,
+     "auc_word_gt_split_ci": [
+      0.654473888874054,
+      0.7766529291868209
+     ],
+     "auc_split_gt_unsplit": 0.6472873687744141,
+     "auc_split_gt_unsplit_ci": [
+      0.579655545949936,
+      0.7103375986218452
+     ],
+     "auc_word_gt_unsplit": 0.8314775824546814,
+     "split_rate_per_paw_gap": 0.01573101617395878,
+     "outcome": "undecided"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 1113.0,
+     "unsplit_paw_gaps": 113201.0,
+     "word_gaps": 81733.0,
+     "merged_word_gaps": 3511.0,
+     "median_xh": {
+      "split": 0.07,
+      "unsplit": 0.01,
+      "word": 0.47,
+      "merged_word": 0.11,
+      "kept_word": 0.51
+     },
+     "delta_median_split_minus_unsplit": 0.060000000000000005,
+     "delta_ci": [
+      0.0,
+      0.15999999999999998
+     ],
+     "auc_word_gt_split": 0.7224862575531006,
+     "auc_word_gt_split_ci": [
+      0.6797524616122246,
+      0.7651621550321579
+     ],
+     "auc_split_gt_unsplit": 0.5622596740722656,
+     "auc_split_gt_unsplit_ci": [
+      0.5139630436897278,
+      0.6114017739892006
+     ],
+     "auc_word_gt_unsplit": 0.7875204086303711,
+     "split_rate_per_paw_gap": 0.009736340492963791,
+     "outcome": "undecided"
+    },
+    "nakba_lines": {
+     "split_paw_gaps": 6166.0,
+     "unsplit_paw_gaps": 518384.0,
+     "word_gaps": 338821.0,
+     "merged_word_gaps": 13923.0,
+     "median_xh": {
+      "split": 0.15000000000000002,
+      "unsplit": 0.09,
+      "word": 0.45,
+      "merged_word": 0.15000000000000002,
+      "kept_word": 0.47
+     },
+     "delta_median_split_minus_unsplit": 0.060000000000000026,
+     "delta_ci": [
+      0.04000000000000001,
+      0.1
+     ],
+     "auc_word_gt_split": 0.7081594467163086,
+     "auc_word_gt_split_ci": [
+      0.690562616288662,
+      0.7252189993858338
+     ],
+     "auc_split_gt_unsplit": 0.5636714100837708,
+     "auc_split_gt_unsplit_ci": [
+      0.5424786731600761,
+      0.5850198790431023
+     ],
+     "auc_word_gt_unsplit": 0.7598809003829956,
+     "split_rate_per_paw_gap": 0.011754837818443775,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "rasam1": {
+     "split_paw_gaps": 1536.0,
+     "unsplit_paw_gaps": 52048.0,
+     "word_gaps": 47061.0,
+     "merged_word_gaps": 6830.0,
+     "median_xh": {
+      "split": 0.01,
+      "unsplit": 0.01,
+      "word": 0.16999999999999998,
+      "merged_word": 0.11,
+      "kept_word": 0.19
+     },
+     "delta_median_split_minus_unsplit": 0.0,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "auc_word_gt_split": 0.5722350478172302,
+     "auc_word_gt_split_ci": [
+      0.5450616985559463,
+      0.59809909760952
+     ],
+     "auc_split_gt_unsplit": 0.5046899914741516,
+     "auc_split_gt_unsplit_ci": [
+      0.48001509085297583,
+      0.5296865493059159
+     ],
+     "auc_word_gt_unsplit": 0.5779649019241333,
+     "split_rate_per_paw_gap": 0.028665272518992424,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "rasam2": {
+     "split_paw_gaps": 472.0,
+     "unsplit_paw_gaps": 19438.0,
+     "word_gaps": 19196.0,
+     "merged_word_gaps": 4119.0,
+     "median_xh": {
+      "split": 0.05,
+      "unsplit": 0.01,
+      "word": 0.15000000000000002,
+      "merged_word": 0.05,
+      "kept_word": 0.19
+     },
+     "delta_median_split_minus_unsplit": 0.04,
+     "delta_ci": [
+      0.0,
+      0.14
+     ],
+     "auc_word_gt_split": 0.5410686731338501,
+     "auc_word_gt_split_ci": [
+      0.5036263272166253,
+      0.5823966130614281
+     ],
+     "auc_split_gt_unsplit": 0.5275850892066956,
+     "auc_split_gt_unsplit_ci": [
+      0.4893800228834152,
+      0.5662348240613937
+     ],
+     "auc_word_gt_unsplit": 0.5665590167045593,
+     "split_rate_per_paw_gap": 0.023706680163741112,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 48244,
+     "rate": 0.048524168808556506,
+     "separate_rate": 0.027593253303371378,
+     "ratio_mh_dataset_letter_form": 1.9020927204864997,
+     "ratio": 1.9020927204864997,
+     "ratio_ci": [
+      1.6567202969914168,
+      2.176131046674799
+     ],
+     "p": 3.217688182554815e-20,
+     "q": 8.687758092898002e-19,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 107871,
+     "rate": 0.04307923352893734,
+     "separate_rate": 0.027593253303371378,
+     "ratio_mh_dataset_letter_form": 1.9135596099251964,
+     "ratio": 1.9135596099251964,
+     "ratio_ci": [
+      1.6889818479787384,
+      2.1371389291314618
+     ],
+     "p": 4.638122671262548e-29,
+     "q": 2.504586242481776e-27,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:dash": {
+     "letters": 33863,
+     "rate": 0.01881109175205977,
+     "separate_rate": 0.06929573766665695,
+     "ratio_mh_dataset_letter_form": 0.3560482499091282,
+     "ratio": 0.3560482499091282,
+     "ratio_ci": [
+      0.28630353990279833,
+      0.4578023049926652
+     ],
+     "p": 6.126732314605159e-17,
+     "q": 1.1028118166289285e-15,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 56330,
+     "rate": 0.02716137049529558,
+     "separate_rate": 0.06929573766665695,
+     "ratio_mh_dataset_letter_form": 0.5944362293217409,
+     "ratio": 0.5944362293217409,
+     "ratio_ci": [
+      0.5110407674460039,
+      0.6959968119416297
+     ],
+     "p": 2.184154338475169e-10,
+     "q": 1.965738904627652e-09,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 47495,
+     "rate": 0.059290451626486995,
+     "separate_rate": 0.06929573766665695,
+     "ratio_mh_dataset_letter_form": 1.1125207601502196,
+     "ratio": 1.1125207601502196,
+     "ratio_ci": [
+      0.9779929017921563,
+      1.2681377072787507
+     ],
+     "p": 0.1073814569318485,
+     "q": 0.21075937194099187,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 149099,
+     "rate": 0.08924271792567355,
+     "separate_rate": 0.06929573766665695,
+     "ratio_mh_dataset_letter_form": 1.0118486228333068,
+     "ratio": 1.0118486228333068,
+     "ratio_ci": [
+      0.9362715670531512,
+      1.106285137623261
+     ],
+     "p": 0.7814629867980364,
+     "q": 0.879145860147791,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:caret": {
+     "letters": 8105,
+     "rate": 0.15644663787785318,
+     "separate_rate": 0.07323340471092077,
+     "ratio_mh_dataset_letter_form": 2.21916982920848,
+     "ratio": 2.21916982920848,
+     "ratio_ci": [
+      1.4881003355926532,
+      3.6787312100326974
+     ],
+     "p": 0.0005525383162060419,
+     "q": 0.0033152298972362517,
+     "fdr_survives": true,
+     "keep": true
+    },
+    "3:partial": {
+     "letters": 2995,
+     "rate": 0.10951585976627713,
+     "separate_rate": 0.07323340471092077,
+     "ratio_mh_dataset_letter_form": 1.625476401719009,
+     "ratio": 1.625476401719009,
+     "ratio_ci": [
+      0.9816642811290863,
+      2.7506967582337545
+     ],
+     "p": 0.05785901009373337,
+     "q": 0.1301827727109001,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:dash": {
+     "letters": 758,
+     "rate": 0.1662269129287599,
+     "separate_rate": 0.07323340471092077,
+     "ratio_mh_dataset_letter_form": 3.6266512942525835,
+     "ratio": 3.6266512942525835,
+     "ratio_ci": [
+      1.578370330902695,
+      9.915939822961482
+     ],
+     "p": 0.006231023871338616,
+     "q": 0.01914296052992556,
+     "fdr_survives": true,
+     "keep": true
+    },
+    "3:displaced": {
+     "letters": 7275,
+     "rate": 0.14694158075601374,
+     "separate_rate": 0.07323340471092077,
+     "ratio_mh_dataset_letter_form": 2.716622886627269,
+     "ratio": 2.716622886627269,
+     "ratio_ci": [
+      1.6961092295245834,
+      4.504920911640712
+     ],
+     "p": 0.00012699263841666297,
+     "q": 0.0008572003093124751,
+     "fdr_survives": true,
+     "keep": true
+    },
+    "3:touching": {
+     "letters": 20986,
+     "rate": 0.14076050700466977,
+     "separate_rate": 0.07323340471092077,
+     "ratio_mh_dataset_letter_form": 1.85387427318281,
+     "ratio": 1.85387427318281,
+     "ratio_ci": [
+      1.298318017363675,
+      2.7699770523236777
+     ],
+     "p": 0.0017763812455131459,
+     "q": 0.007425720408723377,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "prevalence": {
+     "1:separate": 304386.0,
+     "1:touching": 107871.0,
+     "2:dash": 33863.0,
+     "2:blob": 56330.0,
+     "3:displaced": 7275.0,
+     "2:separate": 137108.0,
+     "2:displaced": 47495.0,
+     "1:displaced": 48244.0,
+     "2:touching": 149099.0,
+     "3:touching": 20986.0,
+     "3:caret": 8105.0,
+     "3:partial": 2995.0,
+     "3:separate": 2335.0,
+     "3:dash": 758.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 79993,
+     "joined_pairs": 1320332,
+     "del_or_transposition": {
+      "rate_stacked": 0.0839198429862613,
+      "rate_not_stacked": 0.07275994707898405,
+      "mh_ratio": 0.9893418359187187,
+      "mh_ci": [
+       0.9027706349718956,
+       1.093864422174493
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.000950083132274074,
+      "rate_not_stacked": 0.0006594971213515015,
+      "mh_ratio": 1.9491283794759346,
+      "mh_ci": [
+       0.5479377740187513,
+       3.802561629381562
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 270613,
+     "joined_pairs": 1320332,
+     "del_or_transposition": {
+      "rate_stacked": 0.07016292639304099,
+      "rate_not_stacked": 0.07427987871039773,
+      "mh_ratio": 0.9427545579918304,
+      "mh_ci": [
+       0.891401929017539,
+       0.9979053665472224
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.000654070573106244,
+      "rate_not_stacked": 0.0006830399373546635,
+      "mh_ratio": 1.3048489077395373,
+      "mh_ci": [
+       0.7267890860876617,
+       2.109874468329659
+      ]
+     }
+    }
+   }
+  },
+  "CRNN → LLM (E8)": {
+   "readings": 2248,
+   "lines": 1124,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 408.0,
+     "unsplit_paw_gaps": 26516.0,
+     "word_gaps": 18820.0,
+     "merged_word_gaps": 956.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.11,
+      "word": 0.53,
+      "merged_word": 0.33,
+      "kept_word": 0.53
+     },
+     "delta_median_split_minus_unsplit": 0.059999999999999984,
+     "delta_ci": [
+      -0.020000000000000004,
+      0.12000000000000002
+     ],
+     "auc_word_gt_split": 0.7274948954582214,
+     "auc_word_gt_split_ci": [
+      0.6979136094450951,
+      0.7549161165952682
+     ],
+     "auc_split_gt_unsplit": 0.5446242094039917,
+     "auc_split_gt_unsplit_ci": [
+      0.5103810518980026,
+      0.5793507933616638
+     ],
+     "auc_word_gt_unsplit": 0.7674862146377563,
+     "split_rate_per_paw_gap": 0.015153766609728336,
+     "outcome": "undecided"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 384.0,
+     "unsplit_paw_gaps": 25084.0,
+     "word_gaps": 17642.0,
+     "merged_word_gaps": 886.0,
+     "median_xh": {
+      "split": 0.19,
+      "unsplit": 0.11,
+      "word": 0.53,
+      "merged_word": 0.33,
+      "kept_word": 0.55
+     },
+     "delta_median_split_minus_unsplit": 0.08,
+     "delta_ci": [
+      0.0,
+      0.12000000000000002
+     ],
+     "auc_word_gt_split": 0.7383072376251221,
+     "auc_word_gt_split_ci": [
+      0.7085233092308044,
+      0.7667574793100357
+     ],
+     "auc_split_gt_unsplit": 0.5524644255638123,
+     "auc_split_gt_unsplit_ci": [
+      0.5164834022521972,
+      0.5886046081781388
+     ],
+     "auc_word_gt_unsplit": 0.7838858366012573,
+     "split_rate_per_paw_gap": 0.015077744610607624,
+     "outcome": "undecided"
+    },
+    "kitab_khatt": {
+     "split_paw_gaps": 98.0,
+     "unsplit_paw_gaps": 4398.0,
+     "word_gaps": 3534.0,
+     "merged_word_gaps": 371.0,
+     "median_xh": {
+      "split": 0.21000000000000002,
+      "unsplit": 0.15000000000000002,
+      "word": 0.65,
+      "merged_word": 0.49,
+      "kept_word": 0.67
+     },
+     "delta_median_split_minus_unsplit": 0.06,
+     "delta_ci": [
+      -0.019999999999999962,
+      0.16000000000000003
+     ],
+     "auc_word_gt_split": 0.7609837055206299,
+     "auc_word_gt_split_ci": [
+      0.697240574657917,
+      0.8209680080413818
+     ],
+     "auc_split_gt_unsplit": 0.5644100904464722,
+     "auc_split_gt_unsplit_ci": [
+      0.4883364111185074,
+      0.6400177657604217
+     ],
+     "auc_word_gt_unsplit": 0.8326767683029175,
+     "split_rate_per_paw_gap": 0.02179715223610401,
+     "outcome": "undecided"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 85.0,
+     "unsplit_paw_gaps": 4879.0,
+     "word_gaps": 3726.0,
+     "merged_word_gaps": 116.0,
+     "median_xh": {
+      "split": 0.27,
+      "unsplit": 0.11,
+      "word": 0.6900000000000001,
+      "merged_word": 0.19,
+      "kept_word": 0.71
+     },
+     "delta_median_split_minus_unsplit": 0.16000000000000003,
+     "delta_ci": [
+      -0.1,
+      0.24
+     ],
+     "auc_word_gt_split": 0.7402166128158569,
+     "auc_word_gt_split_ci": [
+      0.6863164603710175,
+      0.7898961201310157
+     ],
+     "auc_split_gt_unsplit": 0.5755868554115295,
+     "auc_split_gt_unsplit_ci": [
+      0.49656416550278665,
+      0.6522746369242668
+     ],
+     "auc_word_gt_unsplit": 0.8014938235282898,
+     "split_rate_per_paw_gap": 0.017123287543654442,
+     "outcome": "undecided"
+    },
+    "nakba_lines": {
+     "split_paw_gaps": 201.0,
+     "unsplit_paw_gaps": 15807.0,
+     "word_gaps": 10382.0,
+     "merged_word_gaps": 399.0,
+     "median_xh": {
+      "split": 0.11,
+      "unsplit": 0.09,
+      "word": 0.47,
+      "merged_word": 0.19,
+      "kept_word": 0.47
+     },
+     "delta_median_split_minus_unsplit": 0.020000000000000004,
+     "delta_ci": [
+      -0.01999999999999999,
+      0.12000000000000002
+     ],
+     "auc_word_gt_split": 0.7475423812866211,
+     "auc_word_gt_split_ci": [
+      0.7113897040486336,
+      0.7811519086360932
+     ],
+     "auc_split_gt_unsplit": 0.5302731394767761,
+     "auc_split_gt_unsplit_ci": [
+      0.4837864637374878,
+      0.5783114239573479
+     ],
+     "auc_word_gt_unsplit": 0.7638906836509705,
+     "split_rate_per_paw_gap": 0.012556222267448902,
+     "outcome": "undecided"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 1848,
+     "rate": 0.045454545454545456,
+     "separate_rate": 0.027625257378174332,
+     "ratio_mh_dataset_letter_form": 1.498298824791876,
+     "ratio": 1.498298824791876,
+     "ratio_ci": [
+      1.0791253729634342,
+      1.9922065292862696
+     ],
+     "p": 0.012112996432414763,
+     "q": 0.03270509036751986,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 3802,
+     "rate": 0.04944765912677538,
+     "separate_rate": 0.027625257378174332,
+     "ratio_mh_dataset_letter_form": 2.1854835204555196,
+     "ratio": 2.1854835204555196,
+     "ratio_ci": [
+      1.7241222992593594,
+      2.702405917450324
+     ],
+     "p": 2.435517877829657e-11,
+     "q": 3.236161733557907e-10,
+     "fdr_survives": true,
+     "keep": true
+    },
+    "2:dash": {
+     "letters": 1798,
+     "rate": 0.025583982202447165,
+     "separate_rate": 0.05679824561403509,
+     "ratio_mh_dataset_letter_form": 0.3765043774279554,
+     "ratio": 0.3765043774279554,
+     "ratio_ci": [
+      0.24866847879050205,
+      0.5439945094739554
+     ],
+     "p": 2.303635458460069e-06,
+     "q": 1.7770902108120532e-05,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 2040,
+     "rate": 0.02892156862745098,
+     "separate_rate": 0.05679824561403509,
+     "ratio_mh_dataset_letter_form": 0.6093038877584795,
+     "ratio": 0.6093038877584795,
+     "ratio_ci": [
+      0.42099758602367293,
+      0.8356979431896259
+     ],
+     "p": 0.005329792132819119,
+     "q": 0.01798804844826453,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 1758,
+     "rate": 0.047212741751990896,
+     "separate_rate": 0.05679824561403509,
+     "ratio_mh_dataset_letter_form": 0.8907043716252766,
+     "ratio": 0.8907043716252766,
+     "ratio_ci": [
+      0.6365688195521796,
+      1.1978756006590108
+     ],
+     "p": 0.4791513692544937,
+     "q": 0.6160517604700634,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 5578,
+     "rate": 0.06884187880960918,
+     "separate_rate": 0.05679824561403509,
+     "ratio_mh_dataset_letter_form": 0.9219109510929472,
+     "ratio": 0.9219109510929472,
+     "ratio_ci": [
+      0.7664023092074617,
+      1.1282134452207855
+     ],
+     "p": 0.4296486864805492,
+     "q": 0.5739240561999789,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "prevalence": {
+     "3:caret": 366.0,
+     "1:separate": 11656.0,
+     "2:displaced": 1758.0,
+     "2:touching": 5578.0,
+     "2:dash": 1798.0,
+     "1:touching": 3802.0,
+     "2:separate": 4560.0,
+     "1:displaced": 1848.0,
+     "3:touching": 700.0,
+     "3:separate": 82.0,
+     "2:blob": 2040.0,
+     "3:partial": 138.0,
+     "3:displaced": 262.0,
+     "3:dash": 44.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 2790,
+     "joined_pairs": 48936,
+     "del_or_transposition": {
+      "rate_stacked": 0.08064516129032258,
+      "rate_not_stacked": 0.0951761799505916,
+      "mh_ratio": 0.8897685933102135,
+      "mh_ci": [
+       0.7575928236359433,
+       1.0516007577510005
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0014336917562724014,
+      "rate_not_stacked": 0.0019069908551120358,
+      "mh_ratio": 0.5641327860285607,
+      "mh_ci": [
+       0.02985180790462021,
+       1.5957427561165836
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 9514,
+     "joined_pairs": 48936,
+     "del_or_transposition": {
+      "rate_stacked": 0.08208955223880597,
+      "rate_not_stacked": 0.09730607275125565,
+      "mh_ratio": 0.8954078914975611,
+      "mh_ci": [
+       0.8237231931850469,
+       0.9821251017931795
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0018919487071683834,
+      "rate_not_stacked": 0.0018771244482776114,
+      "mh_ratio": 0.8276584467860195,
+      "mh_ci": [
+       0.4069183533300442,
+       1.5637486324813503
+      ]
+     }
+    }
+   }
+  },
+  "VLM fine-tuned": {
+   "readings": 8269,
+   "lines": 2785,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 2486.0,
+     "unsplit_paw_gaps": 107282.0,
+     "word_gaps": 86261.0,
+     "merged_word_gaps": 9672.0,
+     "median_xh": {
+      "split": 0.09,
+      "unsplit": 0.07,
+      "word": 0.39,
+      "merged_word": 0.21000000000000002,
+      "kept_word": 0.41000000000000003
+     },
+     "delta_median_split_minus_unsplit": 0.01999999999999999,
+     "delta_ci": [
+      0.0,
+      0.06
+     ],
+     "auc_word_gt_split": 0.629469096660614,
+     "auc_word_gt_split_ci": [
+      0.612728787958622,
+      0.644258463382721
+     ],
+     "auc_split_gt_unsplit": 0.5351970791816711,
+     "auc_split_gt_unsplit_ci": [
+      0.5199368983507157,
+      0.5507563546299934
+     ],
+     "auc_word_gt_unsplit": 0.6739106178283691,
+     "split_rate_per_paw_gap": 0.022647766396403313,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 873.0,
+     "unsplit_paw_gaps": 63665.0,
+     "word_gaps": 44889.0,
+     "merged_word_gaps": 3941.0,
+     "median_xh": {
+      "split": 0.19,
+      "unsplit": 0.09,
+      "word": 0.55,
+      "merged_word": 0.33,
+      "kept_word": 0.5700000000000001
+     },
+     "delta_median_split_minus_unsplit": 0.1,
+     "delta_ci": [
+      0.059999999999999984,
+      0.13999999999999999
+     ],
+     "auc_word_gt_split": 0.7365188598632812,
+     "auc_word_gt_split_ci": [
+      0.7136833265423774,
+      0.7570524036884307
+     ],
+     "auc_split_gt_unsplit": 0.5807948112487793,
+     "auc_split_gt_unsplit_ci": [
+      0.5547756358981133,
+      0.6078279301524162
+     ],
+     "auc_word_gt_unsplit": 0.7979608178138733,
+     "split_rate_per_paw_gap": 0.0135269146412611,
+     "outcome": "undecided"
+    },
+    "kitab_khatt": {
+     "split_paw_gaps": 186.0,
+     "unsplit_paw_gaps": 10668.0,
+     "word_gaps": 8544.0,
+     "merged_word_gaps": 811.0,
+     "median_xh": {
+      "split": 0.39,
+      "unsplit": 0.15000000000000002,
+      "word": 0.65,
+      "merged_word": 0.43,
+      "kept_word": 0.6900000000000001
+     },
+     "delta_median_split_minus_unsplit": 0.24,
+     "delta_ci": [
+      0.12,
+      0.31999999999999995
+     ],
+     "auc_word_gt_split": 0.6911783218383789,
+     "auc_word_gt_split_ci": [
+      0.6329577922821045,
+      0.7460366412997246
+     ],
+     "auc_split_gt_unsplit": 0.6859177947044373,
+     "auc_split_gt_unsplit_ci": [
+      0.6345167443156242,
+      0.7348818182945251
+     ],
+     "auc_word_gt_unsplit": 0.8340678215026855,
+     "split_rate_per_paw_gap": 0.01713654026389122,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 363.0,
+     "unsplit_paw_gaps": 21921.0,
+     "word_gaps": 15636.0,
+     "merged_word_gaps": 1573.0,
+     "median_xh": {
+      "split": 0.09,
+      "unsplit": 0.07,
+      "word": 0.53,
+      "merged_word": 0.29000000000000004,
+      "kept_word": 0.55
+     },
+     "delta_median_split_minus_unsplit": 0.01999999999999999,
+     "delta_ci": [
+      0.0,
+      0.10000000000000002
+     ],
+     "auc_word_gt_split": 0.7637984156608582,
+     "auc_word_gt_split_ci": [
+      0.7333526462316513,
+      0.7926395922899246
+     ],
+     "auc_split_gt_unsplit": 0.5607039928436279,
+     "auc_split_gt_unsplit_ci": [
+      0.5193935200572014,
+      0.6010302260518074
+     ],
+     "auc_word_gt_unsplit": 0.8138635754585266,
+     "split_rate_per_paw_gap": 0.016289714723825455,
+     "outcome": "undecided"
+    },
+    "nakba_lines": {
+     "split_paw_gaps": 324.0,
+     "unsplit_paw_gaps": 31076.0,
+     "word_gaps": 20709.0,
+     "merged_word_gaps": 1557.0,
+     "median_xh": {
+      "split": 0.19,
+      "unsplit": 0.11,
+      "word": 0.53,
+      "merged_word": 0.31,
+      "kept_word": 0.55
+     },
+     "delta_median_split_minus_unsplit": 0.08,
+     "delta_ci": [
+      0.03999999999999998,
+      0.11999999999999998
+     ],
+     "auc_word_gt_split": 0.7403532266616821,
+     "auc_word_gt_split_ci": [
+      0.7074746638536453,
+      0.7711402103304863
+     ],
+     "auc_split_gt_unsplit": 0.5555311441421509,
+     "auc_split_gt_unsplit_ci": [
+      0.5190097287297248,
+      0.5938917890191078
+     ],
+     "auc_word_gt_unsplit": 0.7734357714653015,
+     "split_rate_per_paw_gap": 0.010318471118807793,
+     "outcome": "undecided"
+    },
+    "rasam1": {
+     "split_paw_gaps": 956.0,
+     "unsplit_paw_gaps": 25992.0,
+     "word_gaps": 23988.0,
+     "merged_word_gaps": 2731.0,
+     "median_xh": {
+      "split": 0.01,
+      "unsplit": 0.01,
+      "word": 0.13,
+      "merged_word": 0.07,
+      "kept_word": 0.15000000000000002
+     },
+     "delta_median_split_minus_unsplit": 0.0,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "auc_word_gt_split": 0.5640360116958618,
+     "auc_word_gt_split_ci": [
+      0.5416074320673943,
+      0.5854890182614326
+     ],
+     "auc_split_gt_unsplit": 0.5206356644630432,
+     "auc_split_gt_unsplit_ci": [
+      0.5027076527476311,
+      0.5404755786061287
+     ],
+     "auc_word_gt_unsplit": 0.5866063833236694,
+     "split_rate_per_paw_gap": 0.035475730895996094,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "rasam2": {
+     "split_paw_gaps": 657.0,
+     "unsplit_paw_gaps": 17625.0,
+     "word_gaps": 17384.0,
+     "merged_word_gaps": 3000.0,
+     "median_xh": {
+      "split": 0.05,
+      "unsplit": 0.01,
+      "word": 0.15000000000000002,
+      "merged_word": 0.05,
+      "kept_word": 0.16999999999999998
+     },
+     "delta_median_split_minus_unsplit": 0.04,
+     "delta_ci": [
+      0.0,
+      0.12000000000000001
+     ],
+     "auc_word_gt_split": 0.5273339152336121,
+     "auc_word_gt_split_ci": [
+      0.5000118352472782,
+      0.5588251113891601
+     ],
+     "auc_split_gt_unsplit": 0.5393975377082825,
+     "auc_split_gt_unsplit_ci": [
+      0.5087359949946404,
+      0.5692526653409005
+     ],
+     "auc_word_gt_unsplit": 0.5657376050949097,
+     "split_rate_per_paw_gap": 0.03593698889017105,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 6587,
+     "rate": 0.06102930013663276,
+     "separate_rate": 0.05521070014757209,
+     "ratio_mh_dataset_letter_form": 1.2235692610204276,
+     "ratio": 1.2235692610204276,
+     "ratio_ci": [
+      1.0707188910025933,
+      1.3981476440076488
+     ],
+     "p": 0.0030893142473294383,
+     "q": 0.011915926382556405,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 25047,
+     "rate": 0.04830917874396135,
+     "separate_rate": 0.05521070014757209,
+     "ratio_mh_dataset_letter_form": 1.0116652483057393,
+     "ratio": 1.0116652483057393,
+     "ratio_ci": [
+      0.917635194673805,
+      1.1116943077723926
+     ],
+     "p": 0.8144576399178194,
+     "q": 0.8975655623584132,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:dash": {
+     "letters": 4298,
+     "rate": 0.03745928338762215,
+     "separate_rate": 0.09174632272707434,
+     "ratio_mh_dataset_letter_form": 0.5005158751003287,
+     "ratio": 0.5005158751003287,
+     "ratio_ci": [
+      0.40302611284395035,
+      0.6004755446630787
+     ],
+     "p": 2.996446049590655e-11,
+     "q": 3.236161733557907e-10,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 5968,
+     "rate": 0.06166219839142091,
+     "separate_rate": 0.09174632272707434,
+     "ratio_mh_dataset_letter_form": 0.8064461632234342,
+     "ratio": 0.8064461632234342,
+     "ratio_ci": [
+      0.7075477434225284,
+      0.9218532178339057
+     ],
+     "p": 0.001787673431729702,
+     "q": 0.007425720408723377,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 5006,
+     "rate": 0.06412305233719537,
+     "separate_rate": 0.09174632272707434,
+     "ratio_mh_dataset_letter_form": 0.7869224989911054,
+     "ratio": 0.7869224989911054,
+     "ratio_ci": [
+      0.6767029785719152,
+      0.9073235802200692
+     ],
+     "p": 0.0008039051373619616,
+     "q": 0.004341087741754593,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 22261,
+     "rate": 0.08243115762993576,
+     "separate_rate": 0.09174632272707434,
+     "ratio_mh_dataset_letter_form": 0.8837999973286428,
+     "ratio": 0.8837999973286428,
+     "ratio_ci": [
+      0.8222194594954153,
+      0.9550069107651257
+     ],
+     "p": 0.0012881802966583766,
+     "q": 0.006323794183595666,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "3:caret": {
+     "letters": 1129,
+     "rate": 0.11691762621789194,
+     "separate_rate": 0.09049255441008018,
+     "ratio_mh_dataset_letter_form": 1.1177049356458368,
+     "ratio": 1.1177049356458368,
+     "ratio_ci": [
+      0.7820548645724233,
+      1.6456402458338322
+     ],
+     "p": 0.5628029834647451,
+     "q": 0.6907127524340054,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:partial": {
+     "letters": 626,
+     "rate": 0.13738019169329074,
+     "separate_rate": 0.09049255441008018,
+     "ratio_mh_dataset_letter_form": 1.2552181889328462,
+     "ratio": 1.2552181889328462,
+     "ratio_ci": [
+      0.7267095234854808,
+      2.0389741720863404
+     ],
+     "p": 0.37661935056686113,
+     "q": 0.5351959192265922,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:dash": {
+     "letters": 130,
+     "rate": 0.16923076923076924,
+     "separate_rate": 0.09049255441008018,
+     "ratio_mh_dataset_letter_form": 2.8803756629278836,
+     "ratio": 2.8803756629278836,
+     "ratio_ci": [
+      0.9954548117219713,
+      11.245823113706376
+     ],
+     "p": 0.08292882139944042,
+     "q": 0.1722367829065301,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:displaced": {
+     "letters": 872,
+     "rate": 0.12155963302752294,
+     "separate_rate": 0.09049255441008018,
+     "ratio_mh_dataset_letter_form": 1.4750296374118663,
+     "ratio": 1.4750296374118663,
+     "ratio_ci": [
+      0.9866881933735129,
+      2.3531083921348155
+     ],
+     "p": 0.07770915058682937,
+     "q": 0.16785176526755144,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:touching": {
+     "letters": 2866,
+     "rate": 0.10921144452198185,
+     "separate_rate": 0.09049255441008018,
+     "ratio_mh_dataset_letter_form": 1.053895043801723,
+     "ratio": 1.053895043801723,
+     "ratio_ci": [
+      0.8059119532672628,
+      1.4167673668960084
+     ],
+     "p": 0.7216434876431639,
+     "q": 0.8471467028854532,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "prevalence": {
+     "3:caret": 1129.0,
+     "1:separate": 42691.0,
+     "2:touching": 22261.0,
+     "2:blob": 5968.0,
+     "1:displaced": 6587.0,
+     "2:displaced": 5006.0,
+     "2:separate": 22911.0,
+     "1:touching": 25047.0,
+     "2:dash": 4298.0,
+     "3:touching": 2866.0,
+     "3:displaced": 872.0,
+     "3:partial": 626.0,
+     "3:dash": 130.0,
+     "3:separate": 873.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 15553,
+     "joined_pairs": 204782,
+     "del_or_transposition": {
+      "rate_stacked": 0.12409181508390664,
+      "rate_not_stacked": 0.12603776376771003,
+      "mh_ratio": 1.0012592708411552,
+      "mh_ci": [
+       0.956322260018844,
+       1.061600073197119
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0014145180994020446,
+      "rate_not_stacked": 0.0011150510756807888,
+      "mh_ratio": 1.3572376693960033,
+      "mh_ci": [
+       0.7062310213725662,
+       2.1942848923280245
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 41486,
+     "joined_pairs": 204782,
+     "del_or_transposition": {
+      "rate_stacked": 0.12433109964807405,
+      "rate_not_stacked": 0.12628600823045266,
+      "mh_ratio": 0.9656642448058784,
+      "mh_ci": [
+       0.9251120040347423,
+       1.0019573275323637
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0014221665140047245,
+      "rate_not_stacked": 0.0010655496766607878,
+      "mh_ratio": 1.5311772905023588,
+      "mh_ci": [
+       0.9898015556413179,
+       2.191933598479343
+      ]
+     }
+    }
+   }
+  },
+  "API": {
+   "readings": 1539,
+   "lines": 207,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 323.0,
+     "unsplit_paw_gaps": 18237.0,
+     "word_gaps": 14004.0,
+     "merged_word_gaps": 5615.0,
+     "median_xh": {
+      "split": 0.25,
+      "unsplit": 0.15000000000000002,
+      "word": 0.61,
+      "merged_word": 0.55,
+      "kept_word": 0.63
+     },
+     "delta_median_split_minus_unsplit": 0.09999999999999998,
+     "delta_ci": [
+      0.03999999999999998,
+      0.19999999999999996
+     ],
+     "auc_word_gt_split": 0.726631760597229,
+     "auc_word_gt_split_ci": [
+      0.6792399317026139,
+      0.7789496228098869
+     ],
+     "auc_split_gt_unsplit": 0.6134797930717468,
+     "auc_split_gt_unsplit_ci": [
+      0.5615246593952179,
+      0.6611658185720444
+     ],
+     "auc_word_gt_unsplit": 0.8160850405693054,
+     "split_rate_per_paw_gap": 0.017403017729520798,
+     "outcome": "undecided"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 323.0,
+     "unsplit_paw_gaps": 18237.0,
+     "word_gaps": 14004.0,
+     "merged_word_gaps": 5615.0,
+     "median_xh": {
+      "split": 0.25,
+      "unsplit": 0.15000000000000002,
+      "word": 0.61,
+      "merged_word": 0.55,
+      "kept_word": 0.63
+     },
+     "delta_median_split_minus_unsplit": 0.09999999999999998,
+     "delta_ci": [
+      0.03999999999999998,
+      0.19999999999999996
+     ],
+     "auc_word_gt_split": 0.726631760597229,
+     "auc_word_gt_split_ci": [
+      0.6792399317026139,
+      0.7789496228098869
+     ],
+     "auc_split_gt_unsplit": 0.6134797930717468,
+     "auc_split_gt_unsplit_ci": [
+      0.5615246593952179,
+      0.6611658185720444
+     ],
+     "auc_word_gt_unsplit": 0.8160850405693054,
+     "split_rate_per_paw_gap": 0.017403017729520798,
+     "outcome": "undecided"
+    },
+    "kitab_khatt": {
+     "split_paw_gaps": 290.0,
+     "unsplit_paw_gaps": 16812.0,
+     "word_gaps": 12764.0,
+     "merged_word_gaps": 5157.0,
+     "median_xh": {
+      "split": 0.29000000000000004,
+      "unsplit": 0.16999999999999998,
+      "word": 0.63,
+      "merged_word": 0.59,
+      "kept_word": 0.65
+     },
+     "delta_median_split_minus_unsplit": 0.12000000000000005,
+     "delta_ci": [
+      0.06,
+      0.21999999999999997
+     ],
+     "auc_word_gt_split": 0.7191869020462036,
+     "auc_word_gt_split_ci": [
+      0.6692442342638969,
+      0.7750897452235221
+     ],
+     "auc_split_gt_unsplit": 0.6399859189987183,
+     "auc_split_gt_unsplit_ci": [
+      0.5935306906700134,
+      0.685011550784111
+     ],
+     "auc_word_gt_unsplit": 0.8233802318572998,
+     "split_rate_per_paw_gap": 0.016957081854343414,
+     "outcome": "undecided"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 33.0,
+     "unsplit_paw_gaps": 1425.0,
+     "word_gaps": 1240.0,
+     "merged_word_gaps": 458.0,
+     "median_xh": {
+      "split": 0.01,
+      "unsplit": 0.01,
+      "word": 0.33,
+      "merged_word": 0.27,
+      "kept_word": 0.37
+     },
+     "delta_median_split_minus_unsplit": 0.0,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "auc_word_gt_split": 0.8277614712715149,
+     "auc_word_gt_split_ci": [
+      0.7540802791714668,
+      0.8664792850613594
+     ],
+     "auc_split_gt_unsplit": 0.4615311026573181,
+     "auc_split_gt_unsplit_ci": [
+      0.3854606993496418,
+      0.5378675743937492
+     ],
+     "auc_word_gt_unsplit": 0.7972506880760193,
+     "split_rate_per_paw_gap": 0.022633744403719902,
+     "outcome": "models over-split"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 1445,
+     "rate": 0.04013840830449827,
+     "separate_rate": 0.02814070351758794,
+     "ratio_mh_dataset_letter_form": 1.4343435106883462,
+     "ratio": 1.4343435106883462,
+     "ratio_ci": [
+      0.9100078967286286,
+      2.178381076702561
+     ],
+     "p": 0.10938963035637662,
+     "q": 0.21075937194099187,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 2767,
+     "rate": 0.03794723527285869,
+     "separate_rate": 0.02814070351758794,
+     "ratio_mh_dataset_letter_form": 1.4287847626153658,
+     "ratio": 1.4287847626153658,
+     "ratio_ci": [
+      1.0609135291324105,
+      1.8279194471093678
+     ],
+     "p": 0.01385608351671066,
+     "q": 0.03562992904297027,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:dash": {
+     "letters": 2685,
+     "rate": 0.03985102420856611,
+     "separate_rate": 0.06483238456672992,
+     "ratio_mh_dataset_letter_form": 0.6971470839753972,
+     "ratio": 0.6971470839753972,
+     "ratio_ci": [
+      0.4432012255899462,
+      1.1195512635075335
+     ],
+     "p": 0.12950505568567883,
+     "q": 0.22166969930641778,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 746,
+     "rate": 0.05093833780160858,
+     "separate_rate": 0.06483238456672992,
+     "ratio_mh_dataset_letter_form": 0.8358733328751264,
+     "ratio": 0.8358733328751264,
+     "ratio_ci": [
+      0.5093338332702226,
+      1.2590070846404973
+     ],
+     "p": 0.4357571537814655,
+     "q": 0.5739240561999789,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 983,
+     "rate": 0.04069175991861648,
+     "separate_rate": 0.06483238456672992,
+     "ratio_mh_dataset_letter_form": 0.8201755158574606,
+     "ratio": 0.8201755158574606,
+     "ratio_ci": [
+      0.5626605651119239,
+      1.2194233244005475
+     ],
+     "p": 0.3130943222856196,
+     "q": 0.46964148342842943,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 3541,
+     "rate": 0.040948884495905113,
+     "separate_rate": 0.06483238456672992,
+     "ratio_mh_dataset_letter_form": 0.7001554360113941,
+     "ratio": 0.7001554360113941,
+     "ratio_ci": [
+      0.4894111333577894,
+      1.0012669805685084
+     ],
+     "p": 0.0456571816742271,
+     "q": 0.10719512219166363,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:caret": {
+     "letters": 429,
+     "rate": 0.08391608391608392,
+     "separate_rate": 0.034482758620689655,
+     "ratio_mh_dataset_letter_form": 1.87151022130259,
+     "ratio": 1.87151022130259,
+     "ratio_ci": [
+      0.7203152674804062,
+      2690112925859.888
+     ],
+     "p": 0.9247730866226921,
+     "q": 0.9366708769274498,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:partial": {
+     "letters": 244,
+     "rate": 0.06147540983606557,
+     "separate_rate": 0.034482758620689655,
+     "ratio_mh_dataset_letter_form": 2.1291117818961283,
+     "ratio": 2.1291117818961283,
+     "ratio_ci": [
+      0.8829648603182155,
+      3153841742259.143
+     ],
+     "p": 0.9092500646849581,
+     "q": 0.9366708769274498,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:displaced": {
+     "letters": 217,
+     "rate": 0.10138248847926268,
+     "separate_rate": 0.034482758620689655,
+     "ratio_mh_dataset_letter_form": 2.394000075228053,
+     "ratio": 2.394000075228053,
+     "ratio_ci": [
+      1.3976503759398498,
+      2613360619680.402
+     ],
+     "p": 0.8939651542746372,
+     "q": 0.9366708769274498,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:touching": {
+     "letters": 474,
+     "rate": 0.05063291139240506,
+     "separate_rate": 0.034482758620689655,
+     "ratio_mh_dataset_letter_form": 1.6955554193036502,
+     "ratio": 1.6955554193036502,
+     "ratio_ci": [
+      0.5644030978363791,
+      2441456407437.634
+     ],
+     "p": 0.9366708769274498,
+     "q": 0.9366708769274498,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "prevalence": {
+     "1:separate": 9950.0,
+     "1:touching": 2767.0,
+     "2:dash": 2685.0,
+     "2:blob": 746.0,
+     "3:displaced": 217.0,
+     "2:separate": 3162.0,
+     "2:displaced": 983.0,
+     "1:displaced": 1445.0,
+     "2:touching": 3541.0,
+     "3:touching": 474.0,
+     "3:caret": 429.0,
+     "3:partial": 244.0,
+     "3:separate": 116.0,
+     "3:dash": 45.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 551,
+     "joined_pairs": 36121,
+     "del_or_transposition": {
+      "rate_stacked": 0.41197822141560797,
+      "rate_not_stacked": 0.4203261175147596,
+      "mh_ratio": 0.9616085126092953,
+      "mh_ci": [
+       0.8515667220228388,
+       1.0871619294367274
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0,
+      "rate_not_stacked": 0.000281135788585887,
+      "mh_ratio": 0.0,
+      "mh_ci": [
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 4080,
+     "joined_pairs": 36121,
+     "del_or_transposition": {
+      "rate_stacked": 0.41568627450980394,
+      "rate_not_stacked": 0.4207733841016198,
+      "mh_ratio": 0.9821896377450778,
+      "mh_ci": [
+       0.9455854197720734,
+       1.0275188454514323
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0,
+      "rate_not_stacked": 0.0003121001217190475,
+      "mh_ratio": 0.0,
+      "mh_ci": [
+       0.0,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  "VLM base": {
+   "readings": 5623,
+   "lines": 2785,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 1975.0,
+     "unsplit_paw_gaps": 73533.0,
+     "word_gaps": 60208.0,
+     "merged_word_gaps": 18944.0,
+     "median_xh": {
+      "split": 0.07,
+      "unsplit": 0.07,
+      "word": 0.37,
+      "merged_word": 0.27,
+      "kept_word": 0.43
+     },
+     "delta_median_split_minus_unsplit": 0.0,
+     "delta_ci": [
+      -0.020000000000000004,
+      0.039999999999999994
+     ],
+     "auc_word_gt_split": 0.6330630779266357,
+     "auc_word_gt_split_ci": [
+      0.6159429132938385,
+      0.6505134582519532
+     ],
+     "auc_split_gt_unsplit": 0.5223527550697327,
+     "auc_split_gt_unsplit_ci": [
+      0.5053640767931938,
+      0.5392814189195633
+     ],
+     "auc_word_gt_unsplit": 0.6607508063316345,
+     "split_rate_per_paw_gap": 0.026156168431043625,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 826.0,
+     "unsplit_paw_gaps": 39829.0,
+     "word_gaps": 28340.0,
+     "merged_word_gaps": 7767.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.11,
+      "word": 0.5700000000000001,
+      "merged_word": 0.43,
+      "kept_word": 0.61
+     },
+     "delta_median_split_minus_unsplit": 0.059999999999999984,
+     "delta_ci": [
+      0.020000000000000004,
+      0.10000000000000002
+     ],
+     "auc_word_gt_split": 0.765487551689148,
+     "auc_word_gt_split_ci": [
+      0.7404352590441704,
+      0.7881626069545746
+     ],
+     "auc_split_gt_unsplit": 0.538642406463623,
+     "auc_split_gt_unsplit_ci": [
+      0.506085529923439,
+      0.5718030840158462
+     ],
+     "auc_word_gt_unsplit": 0.797409176826477,
+     "split_rate_per_paw_gap": 0.020317304879426956,
+     "outcome": "undecided"
+    },
+    "kitab_khatt": {
+     "split_paw_gaps": 200.0,
+     "unsplit_paw_gaps": 9102.0,
+     "word_gaps": 7246.0,
+     "merged_word_gaps": 1420.0,
+     "median_xh": {
+      "split": 0.35,
+      "unsplit": 0.15000000000000002,
+      "word": 0.63,
+      "merged_word": 0.49,
+      "kept_word": 0.6900000000000001
+     },
+     "delta_median_split_minus_unsplit": 0.19999999999999996,
+     "delta_ci": [
+      0.12,
+      0.27999999999999997
+     ],
+     "auc_word_gt_split": 0.703362226486206,
+     "auc_word_gt_split_ci": [
+      0.651953125,
+      0.7501726642251014
+     ],
+     "auc_split_gt_unsplit": 0.6914730072021484,
+     "auc_split_gt_unsplit_ci": [
+      0.6509824827313423,
+      0.7287182703614234
+     ],
+     "auc_word_gt_unsplit": 0.8311246633529663,
+     "split_rate_per_paw_gap": 0.021500753238797188,
+     "outcome": "undecided"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 337.0,
+     "unsplit_paw_gaps": 8318.0,
+     "word_gaps": 6075.0,
+     "merged_word_gaps": 1279.0,
+     "median_xh": {
+      "split": 0.01,
+      "unsplit": 0.07,
+      "word": 0.5700000000000001,
+      "merged_word": 0.37,
+      "kept_word": 0.63
+     },
+     "delta_median_split_minus_unsplit": -0.060000000000000005,
+     "delta_ci": [
+      -0.08,
+      0.01999999999999999
+     ],
+     "auc_word_gt_split": 0.8234152793884277,
+     "auc_word_gt_split_ci": [
+      0.793605063855648,
+      0.848722031712532
+     ],
+     "auc_split_gt_unsplit": 0.47224727272987366,
+     "auc_split_gt_unsplit_ci": [
+      0.431489122658968,
+      0.5195391148328781
+     ],
+     "auc_word_gt_unsplit": 0.8133471012115479,
+     "split_rate_per_paw_gap": 0.0389370322227478,
+     "outcome": "models over-split"
+    },
+    "nakba_lines": {
+     "split_paw_gaps": 289.0,
+     "unsplit_paw_gaps": 22409.0,
+     "word_gaps": 15019.0,
+     "merged_word_gaps": 5068.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.11,
+      "word": 0.53,
+      "merged_word": 0.43,
+      "kept_word": 0.59
+     },
+     "delta_median_split_minus_unsplit": 0.059999999999999984,
+     "delta_ci": [
+      0.0,
+      0.11999999999999998
+     ],
+     "auc_word_gt_split": 0.7452439069747925,
+     "auc_word_gt_split_ci": [
+      0.7014195159077644,
+      0.7811801016330719
+     ],
+     "auc_split_gt_unsplit": 0.5411233305931091,
+     "auc_split_gt_unsplit_ci": [
+      0.498665639013052,
+      0.5941163763403893
+     ],
+     "auc_word_gt_unsplit": 0.7766479253768921,
+     "split_rate_per_paw_gap": 0.012732399627566338,
+     "outcome": "undecided"
+    },
+    "rasam1": {
+     "split_paw_gaps": 769.0,
+     "unsplit_paw_gaps": 20664.0,
+     "word_gaps": 19100.0,
+     "merged_word_gaps": 6311.0,
+     "median_xh": {
+      "split": 0.01,
+      "unsplit": 0.01,
+      "word": 0.13,
+      "merged_word": 0.11,
+      "kept_word": 0.16999999999999998
+     },
+     "delta_median_split_minus_unsplit": 0.0,
+     "delta_ci": [
+      0.0,
+      0.0
+     ],
+     "auc_word_gt_split": 0.5699761509895325,
+     "auc_word_gt_split_ci": [
+      0.5434101194143295,
+      0.5964130476117134
+     ],
+     "auc_split_gt_unsplit": 0.5157842636108398,
+     "auc_split_gt_unsplit_ci": [
+      0.49072390496730806,
+      0.5393916592001915
+     ],
+     "auc_word_gt_unsplit": 0.5858554840087891,
+     "split_rate_per_paw_gap": 0.03587925061583519,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    },
+    "rasam2": {
+     "split_paw_gaps": 380.0,
+     "unsplit_paw_gaps": 13040.0,
+     "word_gaps": 12768.0,
+     "merged_word_gaps": 4866.0,
+     "median_xh": {
+      "split": 0.05,
+      "unsplit": 0.01,
+      "word": 0.15000000000000002,
+      "merged_word": 0.07,
+      "kept_word": 0.19
+     },
+     "delta_median_split_minus_unsplit": 0.04,
+     "delta_ci": [
+      0.0,
+      0.15999999999999998
+     ],
+     "auc_word_gt_split": 0.5215572714805603,
+     "auc_word_gt_split_ci": [
+      0.4896275199949741,
+      0.5529026001691818
+     ],
+     "auc_split_gt_unsplit": 0.5436832308769226,
+     "auc_split_gt_unsplit_ci": [
+      0.5133481323719025,
+      0.575332199037075
+     ],
+     "auc_word_gt_unsplit": 0.5668163299560547,
+     "split_rate_per_paw_gap": 0.028315946459770203,
+     "outcome": "overlap: spacing visually ambiguous at the split gaps"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 4470,
+     "rate": 0.04407158836689038,
+     "separate_rate": 0.045104236957062185,
+     "ratio_mh_dataset_letter_form": 1.198152701380352,
+     "ratio": 1.198152701380352,
+     "ratio_ci": [
+      1.0209308513428939,
+      1.4119360363607298
+     ],
+     "p": 0.026534382285824987,
+     "q": 0.06512984742884315,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 18944,
+     "rate": 0.03990709459459459,
+     "separate_rate": 0.045104236957062185,
+     "ratio_mh_dataset_letter_form": 1.0801720337463456,
+     "ratio": 1.0801720337463456,
+     "ratio_ci": [
+      0.9683173117052024,
+      1.2005032977563468
+     ],
+     "p": 0.1477118986490382,
+     "q": 0.24171037960751704,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:dash": {
+     "letters": 2784,
+     "rate": 0.05100574712643678,
+     "separate_rate": 0.08321423931401845,
+     "ratio_mh_dataset_letter_form": 0.7579616796067687,
+     "ratio": 0.7579616796067687,
+     "ratio_ci": [
+      0.6037863634890855,
+      0.8897375612147821
+     ],
+     "p": 0.007816853891001653,
+     "q": 0.022216321584952067,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 3696,
+     "rate": 0.06466450216450216,
+     "separate_rate": 0.08321423931401845,
+     "ratio_mh_dataset_letter_form": 0.8899761574074121,
+     "ratio": 0.8899761574074121,
+     "ratio_ci": [
+      0.7641052877312242,
+      1.0196763012246286
+     ],
+     "p": 0.12703634714852724,
+     "q": 0.22166969930641778,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 3330,
+     "rate": 0.054954954954954956,
+     "separate_rate": 0.08321423931401845,
+     "ratio_mh_dataset_letter_form": 0.7995425466763842,
+     "ratio": 0.7995425466763842,
+     "ratio_ci": [
+      0.6719182190895081,
+      0.9183453107946367
+     ],
+     "p": 0.00638098684330852,
+     "q": 0.01914296052992556,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 16425,
+     "rate": 0.07123287671232877,
+     "separate_rate": 0.08321423931401845,
+     "ratio_mh_dataset_letter_form": 0.8872925469691908,
+     "ratio": 0.8872925469691908,
+     "ratio_ci": [
+      0.8132337769078092,
+      0.9669092526346506
+     ],
+     "p": 0.005070239705036495,
+     "q": 0.01798804844826453,
+     "fdr_survives": true,
+     "keep": false
+    },
+    "3:caret": {
+     "letters": 782,
+     "rate": 0.09335038363171355,
+     "separate_rate": 0.10766721044045677,
+     "ratio_mh_dataset_letter_form": 0.6724486972767456,
+     "ratio": 0.6724486972767456,
+     "ratio_ci": [
+      0.403993075889529,
+      1.062746203745901
+     ],
+     "p": 0.11318558863497712,
+     "q": 0.21075937194099187,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:partial": {
+     "letters": 420,
+     "rate": 0.14523809523809525,
+     "separate_rate": 0.10766721044045677,
+     "ratio_mh_dataset_letter_form": 1.0428820917303725,
+     "ratio": 1.0428820917303725,
+     "ratio_ci": [
+      0.6700142684348138,
+      1.5064154225141875
+     ],
+     "p": 0.8368618010424451,
+     "q": 0.9038107451258408,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:displaced": {
+     "letters": 559,
+     "rate": 0.1073345259391771,
+     "separate_rate": 0.10766721044045677,
+     "ratio_mh_dataset_letter_form": 1.1066991874889267,
+     "ratio": 1.1066991874889267,
+     "ratio_ci": [
+      0.5997453275119033,
+      2.0238057188388106
+     ],
+     "p": 0.7384101740351392,
+     "q": 0.8483861574020749,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "3:touching": {
+     "letters": 2161,
+     "rate": 0.1045812124016659,
+     "separate_rate": 0.10766721044045677,
+     "ratio_mh_dataset_letter_form": 0.9261087333537195,
+     "ratio": 0.9261087333537195,
+     "ratio_ci": [
+      0.7034492278696746,
+      1.2872372004289698
+     ],
+     "p": 0.6293272509678393,
+     "q": 0.755192701161407,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "prevalence": {
+     "1:separate": 28157.0,
+     "1:touching": 18944.0,
+     "2:dash": 2784.0,
+     "2:blob": 3696.0,
+     "3:displaced": 559.0,
+     "2:separate": 15394.0,
+     "2:displaced": 3330.0,
+     "1:displaced": 4470.0,
+     "2:touching": 16425.0,
+     "3:touching": 2161.0,
+     "3:caret": 782.0,
+     "3:partial": 420.0,
+     "3:separate": 613.0,
+     "3:dash": 82.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 11359,
+     "joined_pairs": 141668,
+     "del_or_transposition": {
+      "rate_stacked": 0.3587463685183555,
+      "rate_not_stacked": 0.33657690566269405,
+      "mh_ratio": 1.00620565724612,
+      "mh_ci": [
+       0.9733091205800365,
+       1.0386290469392199
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0006162514305836781,
+      "rate_not_stacked": 0.0007750807695554413,
+      "mh_ratio": 0.8786810382272183,
+      "mh_ci": [
+       0.29788032984471285,
+       1.6348066218674993
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 29189,
+     "joined_pairs": 141668,
+     "del_or_transposition": {
+      "rate_stacked": 0.3536263660968173,
+      "rate_not_stacked": 0.3343913085998275,
+      "mh_ratio": 0.9974404399776677,
+      "mh_ci": [
+       0.9761661572302619,
+       1.019763214392645
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0007537085888519648,
+      "rate_not_stacked": 0.0007645871673823559,
+      "mh_ratio": 1.125142797381859,
+      "mh_ci": [
+       0.6418355079652368,
+       1.8715300877420105
+      ]
+     }
+    }
+   }
+  },
+  "OCR engine": {
+   "readings": 1345,
+   "lines": 1306,
+   "paw_gaps_2_1": {
+    "all": {
+     "split_paw_gaps": 170.0,
+     "unsplit_paw_gaps": 15244.0,
+     "word_gaps": 10788.0,
+     "merged_word_gaps": 4300.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.05,
+      "word": 0.53,
+      "merged_word": 0.41000000000000003,
+      "kept_word": 0.59
+     },
+     "delta_median_split_minus_unsplit": 0.11999999999999998,
+     "delta_ci": [
+      0.06,
+      0.18
+     ],
+     "auc_word_gt_split": 0.7221550345420837,
+     "auc_word_gt_split_ci": [
+      0.6780899718403817,
+      0.761463887989521
+     ],
+     "auc_split_gt_unsplit": 0.6141642928123474,
+     "auc_split_gt_unsplit_ci": [
+      0.5633673816919327,
+      0.6605820685625077
+     ],
+     "auc_word_gt_unsplit": 0.8050169348716736,
+     "split_rate_per_paw_gap": 0.011028934270143509,
+     "outcome": "undecided"
+    },
+    "no_rasam": {
+     "split_paw_gaps": 170.0,
+     "unsplit_paw_gaps": 15244.0,
+     "word_gaps": 10788.0,
+     "merged_word_gaps": 4300.0,
+     "median_xh": {
+      "split": 0.16999999999999998,
+      "unsplit": 0.05,
+      "word": 0.53,
+      "merged_word": 0.41000000000000003,
+      "kept_word": 0.59
+     },
+     "delta_median_split_minus_unsplit": 0.11999999999999998,
+     "delta_ci": [
+      0.06,
+      0.18
+     ],
+     "auc_word_gt_split": 0.7221550345420837,
+     "auc_word_gt_split_ci": [
+      0.6780899718403817,
+      0.761463887989521
+     ],
+     "auc_split_gt_unsplit": 0.6141642928123474,
+     "auc_split_gt_unsplit_ci": [
+      0.5633673816919327,
+      0.6605820685625077
+     ],
+     "auc_word_gt_unsplit": 0.8050169348716736,
+     "split_rate_per_paw_gap": 0.011028934270143509,
+     "outcome": "undecided"
+    },
+    "muharaf_lines": {
+     "split_paw_gaps": 143.0,
+     "unsplit_paw_gaps": 14102.0,
+     "word_gaps": 9923.0,
+     "merged_word_gaps": 4122.0,
+     "median_xh": {
+      "split": 0.15000000000000002,
+      "unsplit": 0.01,
+      "word": 0.51,
+      "merged_word": 0.41000000000000003,
+      "kept_word": 0.59
+     },
+     "delta_median_split_minus_unsplit": 0.14,
+     "delta_ci": [
+      0.039999999999999994,
+      0.18
+     ],
+     "auc_word_gt_split": 0.7528155446052551,
+     "auc_word_gt_split_ci": [
+      0.7124758437275887,
+      0.7910036385059357
+     ],
+     "auc_split_gt_unsplit": 0.5812811851501465,
+     "auc_split_gt_unsplit_ci": [
+      0.5292685270309448,
+      0.6276742413640022
+     ],
+     "auc_word_gt_unsplit": 0.8031136393547058,
+     "split_rate_per_paw_gap": 0.010038609616458416,
+     "outcome": "undecided"
+    }
+   },
+   "dot_styles_2_4": {
+    "1:displaced": {
+     "letters": 875,
+     "rate": 0.038857142857142854,
+     "separate_rate": 0.0377381239450205,
+     "ratio_mh_dataset_letter_form": 1.1648521384008803,
+     "ratio": 1.1648521384008803,
+     "ratio_ci": [
+      0.7775434441589651,
+      1.606438747569221
+     ],
+     "p": 0.4349236192427639,
+     "q": 0.5739240561999789,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "1:touching": {
+     "letters": 961,
+     "rate": 0.031217481789802288,
+     "separate_rate": 0.0377381239450205,
+     "ratio_mh_dataset_letter_form": 0.8047826113360838,
+     "ratio": 0.8047826113360838,
+     "ratio_ci": [
+      0.511475879217609,
+      1.1051551735220886
+     ],
+     "p": 0.26926960774457753,
+     "q": 0.42766349465315256,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:dash": {
+     "letters": 992,
+     "rate": 0.06653225806451613,
+     "separate_rate": 0.05525407005426739,
+     "ratio_mh_dataset_letter_form": 1.24489106868112,
+     "ratio": 1.24489106868112,
+     "ratio_ci": [
+      0.919253330183534,
+      1.600503472442639
+     ],
+     "p": 0.13135982181121053,
+     "q": 0.22166969930641778,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:blob": {
+     "letters": 1418,
+     "rate": 0.0613540197461213,
+     "separate_rate": 0.05525407005426739,
+     "ratio_mh_dataset_letter_form": 1.117405744086339,
+     "ratio": 1.117405744086339,
+     "ratio_ci": [
+      0.8742137965715516,
+      1.3980002886785399
+     ],
+     "p": 0.35665619176327173,
+     "q": 0.5205252528436939,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:displaced": {
+     "letters": 884,
+     "rate": 0.04751131221719457,
+     "separate_rate": 0.05525407005426739,
+     "ratio_mh_dataset_letter_form": 0.8346428735916622,
+     "ratio": 0.8346428735916622,
+     "ratio_ci": [
+      0.5790794304956126,
+      1.1360497604979873
+     ],
+     "p": 0.29943314848183605,
+     "q": 0.4619825719434042,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "2:touching": {
+     "letters": 1646,
+     "rate": 0.05224787363304982,
+     "separate_rate": 0.05525407005426739,
+     "ratio_mh_dataset_letter_form": 0.930041716295478,
+     "ratio": 0.930041716295478,
+     "ratio_ci": [
+      0.7393500035346026,
+      1.1709684803057703
+     ],
+     "p": 0.5397771397769298,
+     "q": 0.6778596639059118,
+     "fdr_survives": false,
+     "keep": false
+    },
+    "prevalence": {
+     "1:separate": 8294.0,
+     "1:touching": 961.0,
+     "2:dash": 992.0,
+     "2:blob": 1418.0,
+     "3:displaced": 158.0,
+     "2:separate": 4054.0,
+     "2:displaced": 884.0,
+     "1:displaced": 875.0,
+     "2:touching": 1646.0,
+     "3:touching": 235.0,
+     "3:caret": 224.0,
+     "3:partial": 164.0,
+     "3:separate": 72.0,
+     "3:dash": 24.0
+    }
+   },
+   "stacking_2_5": {
+    "1.0": {
+     "stacked_pairs": 861,
+     "joined_pairs": 28412,
+     "del_or_transposition": {
+      "rate_stacked": 0.48664343786295006,
+      "rate_not_stacked": 0.47657072338572104,
+      "mh_ratio": 0.9593233753823316,
+      "mh_ci": [
+       0.8811532562253223,
+       1.0273167443210915
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.0,
+      "rate_not_stacked": 0.00029037058545969296,
+      "mh_ratio": 0.0,
+      "mh_ci": [
+       0.0,
+       0.0
+      ]
+     }
+    },
+    "0.5": {
+     "stacked_pairs": 4252,
+     "joined_pairs": 28412,
+     "del_or_transposition": {
+      "rate_stacked": 0.4757761053621825,
+      "rate_not_stacked": 0.47706953642384103,
+      "mh_ratio": 0.9738497369811893,
+      "mh_ci": [
+       0.9405879320531352,
+       1.014303055736075
+      ]
+     },
+     "transposition": {
+      "rate_stacked": 0.00023518344308560678,
+      "rate_not_stacked": 0.00028973509933774837,
+      "mh_ratio": 1.0812683213134553,
+      "mh_ci": [
+       0.0,
+       6.390474906121814
+      ]
+     }
+    }
+   }
+  }
+ },
+ "baseline_2_18": {
+  "band_bottom_acc": 0.76740621376776,
+  "band_ci": [
+   0.7611678267933202,
+   0.7731933962645661
+  ],
+  "subword_acc": 0.7935921375921376,
+  "subword_ci": [
+   0.7891081101214701,
+   0.7979303716570494
+  ],
+  "delta_sub_minus_band": 0.026185923824377677,
+  "delta_ci": [
+   0.022580273542821168,
+   0.030104283889284347
+  ],
+  "dots_scored": 50887,
+  "outcome": "sub-word estimator preferred"
+ },
+ "dot_detection_2_18": {
+  "kitab_khatt": {
+   "dotted_letters": 3391,
+   "hit_in_span": 0.6313771748746683,
+   "hit_within_one_letter": 0.7239752285461516,
+   "undotted_letters": 5408,
+   "false_dot_rate": 0.11778846153846154,
+   "usable": false
+  },
+  "muharaf_lines": {
+   "dotted_letters": 17986,
+   "hit_in_span": 0.7721005226287112,
+   "hit_within_one_letter": 0.8679528522183921,
+   "undotted_letters": 33874,
+   "false_dot_rate": 0.2927614099309205,
+   "usable": false
+  },
+  "nakba_lines": {
+   "dotted_letters": 33653,
+   "hit_in_span": 0.5703503402371259,
+   "hit_within_one_letter": 0.6944997474222209,
+   "undotted_letters": 60669,
+   "false_dot_rate": 0.17318564670589592,
+   "usable": false
+  },
+  "rasam1": {
+   "dotted_letters": 13330,
+   "hit_in_span": 0.4439609902475619,
+   "hit_within_one_letter": 0.5090772693173293,
+   "undotted_letters": 27411,
+   "false_dot_rate": 0.1759512604428879,
+   "usable": false
+  },
+  "rasam2": {
+   "dotted_letters": 5965,
+   "hit_in_span": 0.3446772841575859,
+   "hit_within_one_letter": 0.4068734283319363,
+   "undotted_letters": 11749,
+   "false_dot_rate": 0.1253723721167759,
+   "usable": false
+  }
+ },
+ "dot_styles_kept": {}
+}

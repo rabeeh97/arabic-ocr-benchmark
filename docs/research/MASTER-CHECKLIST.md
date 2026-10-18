@@ -53,13 +53,18 @@ are batched so the 3090 runs unattended.
   - *2026-10-15:* grouping by model, `--paddle-order stored|unreverse` and the ⏎ newline escapes are done and re-run. *2026-10-17:* no PaddleOCR re-run needed. The client's `reverse_output` is a plain `text[::-1]` on a deterministic model's output, so the un-reversed stored readings are exactly what a re-run would give. Regenerated with `--paddle-order unreverse`: PaddleOCR 63.2 % CER overall, 98.2 % on loose crops, 58.3 % on tight crops.
 
 ## Phase 2 — Characterisation on existing data (CPU)
-- [ ] **2.1 PAW gap widths:** split vs unsplit PAW gaps against word gaps. → [dots-and-skeleton §1](designs/dots-and-skeleton-studies.md) · map: `PAW-gap-width`
+- [x] **2.1 PAW gap widths:** split vs unsplit PAW gaps against word gaps. → [dots-and-skeleton §1](designs/dots-and-skeleton-studies.md) · map: `PAW-gap-width`
+  - *2026-10-18:* `dots_analyze.py` (rules pre-registered in `results/characterize/dots/prereg.json`). P(word gap is wider than a split PAW gap) = 0.68 [0.67, 0.70] for CRNN and 0.63 for VLMs: **word and PAW gaps overlap, so spacing is visually ambiguous.** Grade B−.
 - [ ] **2.2 Novel-shape clusters (atlas v0).** → [shape-programme step 1](designs/shape-programme.md) · map: `novel-clusters`
-- [ ] **2.3 Skeleton features:** loops, teeth, tails; tooth-count detector. → [dots-and-skeleton §3](designs/dots-and-skeleton-studies.md) · map: `loops-teeth`
-- [ ] **2.4 Dot-writing styles:** dash, caret, displaced, touching. → [dots-and-skeleton §2](designs/dots-and-skeleton-studies.md) · map: `dot-styles`
-- [ ] **2.5 Vertical stacking** and reading-order errors. → [dots-and-skeleton §4](designs/dots-and-skeleton-studies.md) · map: `vertical-stacking`
+- [x] **2.3 Skeleton features:** loops, teeth, tails; tooth-count detector. → [dots-and-skeleton §3](designs/dots-and-skeleton-studies.md) · map: `loops-teeth`
+  - *2026-10-18:* Teeth beat the letter baseline in all 6 families (1.06–1.21, survive BH), so a **T3 finding, grade B**. The minim-style tooth-count test fails as specified (س counts as 3 teeth). Among one-tooth letters, errors rise with run length (CRNN 3+ vs 1 = 1.84×), grade C+.
+- [x] **2.4 Dot-writing styles:** dash, caret, displaced, touching. → [dots-and-skeleton §2](designs/dots-and-skeleton-studies.md) · map: `dot-styles`
+  - *2026-10-18:* No dot style survives the rule (grade D/C). Low confidence: dot detection on spans failed its validation (2.18). Re-run after a body-assigned dot detector.
+- [x] **2.5 Vertical stacking** and reading-order errors. → [dots-and-skeleton §4](designs/dots-and-skeleton-studies.md) · map: `vertical-stacking`
+  - *2026-10-18:* **Null result** (stacked vs non-stacked about 1.0 after stratification; CRNN 0.99 [0.90, 1.09]). Grade C. The ink-centroid stacking detector isn't hand-validated.
 - [ ] **2.6 PAW-inventory coverage curve** (distinct PAWs for 95 / 99 %). → [shape-programme, related](designs/shape-programme.md) · map: `P-L3`
-- [ ] **2.7 Calibration-sentence candidates** (set cover over letter × form). *after:* 1.7 → [writer-adaptation C](designs/writer-adaptation.md) · map: `calibration-sentence`
+- [x] **2.7 Calibration-sentence candidates** (set cover over letter × form). *after:* 1.7 → [writer-adaptation C](designs/writer-adaptation.md) · map: `calibration-sentence`
+  - *2026-10-18:* `calib_sentence_cover.py`. Full coverage needs at least 44 words (22 letters × final/isolated forms), so one or two lines can't cover everything. Best single sentence 65/104 forms; 7–8 real sentences reach 104/104; 6 short sets plus patch words reach 104/104 (shortest 51 chars). **Review page for 0.5: `results/calibration/review.html`.**
 - [x] **2.8 Diacritic scoring rule** (rank correlation with and without marks; includes the sparse-marks note). → [data-and-label-audit §4](designs/data-and-label-audit.md) · map: `R2.7`
   - *2026-10-17:* `audit_diacritics.py`. Marks re-rank the leaderboard on KITAB-KHATT (τ 0.886), Muharaf (0.882) and RASAM-2 (0.867). **Rule: no_diacritics is the headline rung everywhere.** Muharaf has marks on 35.8 % of test lines (the sparse-marks note, confirmed). Grade A−.
 - [x] **2.9 Leakage and duplicates** (MinHash plus image hash; the 6 % Muharaf test-in-train lines). → [data-and-label-audit §2](designs/data-and-label-audit.md) · map: `R4.2`
@@ -70,12 +75,14 @@ are batched so the 3090 runs unattended.
   - *2026-10-17:* `audit_datasheets.py`: 7 datasheet cards (`results/audit/datasheets.html`). Still to do: put them on the Atlas.
 - [x] **2.12 IRT difficulty and discrimination** (R3.2); **challenge subsets** as dataset filters (R3.3); **length-stratified reporting** (X5-len). → [data-and-label-audit §6](designs/data-and-label-audit.md) · map: `R3.2`, `R3.3`, `X5-len`
   - *2026-10-17:* `audit_difficulty.py`. IRT difficulty beats median CER only on NAKBA test, so keep median CER elsewhere. 12 challenge subsets registered (loose crops cost +58 points on KITAB, +49 on NAKBA test). Fragments are worse after FDR on Muharaf, NAKBA test and NAKBA blind, so they get a separate leaderboard subset there. 627 lines with negative discrimination go to R4.1. Still to do: a `subset_keys` loader and fragment columns in `make_leaderboard`.
-- [ ] **2.13 Similarity-choice model** of confusions (Müller-style; human vs model confusability). → [dots-and-skeleton](designs/dots-and-skeleton-studies.md) · map: `P-L4`
+- [x] **2.13 Similarity-choice model** of confusions (Müller-style; human vs model confusability). → [dots-and-skeleton](designs/dots-and-skeleton-studies.md) · map: `P-L4`
+  - *2026-10-18:* Confusability is shared across families (Spearman ρ 0.63–0.90, all lower bounds above 0.4), so it is **a script property, grade B**. Dot-only pairs are 3–18× more confusable. Response bias follows letter frequency. The human-vs-model comparison is still open (no human confusion matrix).
 - [ ] **2.14 Tokenizer view** (dot-pair token sequences, fertility vs CER). → [decoding-and-restoration §6](designs/decoding-and-restoration.md) · map: `E2`
 - [ ] **2.15 Root-sharing of real-word substitutions** (CAMeL Tools). → [decoding-and-restoration §6](designs/decoding-and-restoration.md) · map: `perea-root`
 - [ ] **2.16 KHATT fixed-text natural experiment** (same text, several writers). *after:* 1.6 → [writer-adaptation D](designs/writer-adaptation.md) · map: `P1.8`
 - [ ] **2.17 Writer and page IDs** (R0.4): recover what exists; otherwise document page clusters. → [writer-adaptation D](designs/writer-adaptation.md) · map: `R0.4`
 - [ ] **2.18 Geometry literature follow-ups:** second baseline estimator, AHTID/MW check, polygon-curvature descriptor, codebook paper, FATF curves, dots validated on spans. → [dots-and-skeleton §11](designs/dots-and-skeleton-studies.md) · map: `geometry-lit`
+  - *2026-10-18:* First slice: the Abu-Ain-style sub-word baseline beats the band estimator (+0.026 [0.023, 0.030]), so **adopt it**. Dots-on-spans fails validation (hit rate 0.34–0.77). Still to do: reading AHTID/MW, Abdi, Ahmed and Parvez.
 - [ ] **2.19 Detector residual review:** the worst lines no detector explains; write the next detector. Repeat after every phase that adds results. → [data-and-label-audit §9](designs/data-and-label-audit.md) · map: `detector-residual`
 - [ ] **2.20 Ledger and map update** with phase-2 results (panels, grades, checklist ticks).
 

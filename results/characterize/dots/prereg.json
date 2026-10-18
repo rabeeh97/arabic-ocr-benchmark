@@ -1,0 +1,35 @@
+{
+ "written": "2026-10-17, before any number of these studies was computed",
+ "data": "Panel lines as stored (KHATT 200, NAKBA test 2095, Muharaf test 1334, RASAM-1 734, RASAM-2 372; NAKBA blind has no spans), 64 px panel images, CTC spans of the base aligner (4 px frames), every reading in results/store (families as analyze_dots.fam; in_train lines, AIN, PaddleOCR, TrOCR excluded). Intervals: line-cluster bootstrap, 2000 reps. Many cells: BH q = 0.1 via eval_stats.bh.",
+ "2.1_paw_gap_width": {
+  "measure": "ink gap = longest run of ink-free columns (any ink, dots included) between the span centres of the two letters at the boundary, in x-heights (also stroke widths). PAW gap = word-internal boundary after a non-joining letter. split = the reading inserted a space there; merged word gap = the reading dropped a GT space.",
+  "stats": "per family (datasets pooled, and per dataset): delta = median(split) - median(unsplit PAW gaps); AUC = P(word gap > split PAW gap), ties 1/2.",
+  "rule": "AUC CI upper < 0.75 -> 'overlap: spacing visually ambiguous at the split gaps'. AUC CI lower >= 0.75 and delta CI includes 0 or is negative -> 'models over-split'. AUC >= 0.75 and delta CI > 0 -> 'split gaps wider than other PAW gaps yet separable: partial ambiguity'. Grade B if >= 3 families give the same outcome, C otherwise."
+ },
+ "2.3_skeleton": {
+  "classes": "loops ف ق و م ه ع ص ض ط ظ; teeth ini/med ب ت ث ن ي ئ س ش; tails final/isolated ر ز و ن ي ع; verticals ا ل ك ط (a letter may be in two classes)",
+  "stats": "error = sub + del on the letters view per GT letter; ratio to the all-letter error rate of the same family, line-cluster bootstrap; BH over class x family.",
+  "rule": "a class whose ratio CI lower > 1 (and survives BH) in every family with >= 2000 class letters becomes a T3 finding (grade B; A needs a second aligner/seed).",
+  "tooth_detector": "tooth runs = maximal runs of consecutive joined ini/med tooth letters within a PAW (ب ت ث ن ي ئ = 1 tooth, س ش = 3). Event = a tooth letter deleted in the run or a tooth letter inserted inside it or at its ends. Minim analogue holds if the event rate per run grows with the tooth count and the per-tooth event rate at >= 4 teeth over the rate at 1 tooth has CI lower > 1 in every family (BH over families)."
+ },
+ "2.4_dot_styles": {
+  "classify": "small components (not body) on the expected side of the main band within the letter span +-1 frame: separate (n components as expected), dash (2-dot letter, one component with aspect w/h > 2), caret (3-dot letter, one or two components covering all dots, not a dash), displaced (no small component on the expected side inside the span, but one within one more span width either side), touching (none found). 64 px images: a first slice; native resolution remains.",
+  "stats": "dot-error rate = share of readings that put a same-skeleton letter in place of the GT letter; ratio style / separate within the same dot count; line-cluster bootstrap; BH over style x family.",
+  "rule": "keep a style if ratio >= 2 with CI lower > 1 and BH survival in >= 2 families -> finding and synthesis requirement.",
+  "validation_2.18": "dot detection on CTC spans is usable if, on KHATT and NAKBA, >= 80 % of dotted letters have a small component on the expected side within the span +-1 frame and <= 20 % of undotted, non-hamza letters have one on the side where a dot would sit."
+ },
+ "2.5_vertical_stacking": {
+  "detect": "consecutive joined letters A, B in one PAW; A stacked over B if the body-ink centroid of A's span columns lies >= 1 x-height above that of B's (spec threshold; 0.5 x-height reported as sensitivity). The spec's span-overlap test is impossible with CTC spans (frames are assigned to one letter), so adjacency replaces it.",
+  "stats": "reading-order error (the reading has B before A at that place) and deletion of A or B; Mantel-Haenszel ratio stacked vs non-stacked pairs stratified by the (A, B) letter pair; line-cluster bootstrap.",
+  "rule": "finding if the MH ratio of (deletion or transposition) has CI lower > 1 in every family with >= 200 stacked pairs; grade C if only in some."
+ },
+ "2.13_similarity_choice": {
+  "model": "Luce similarity-choice model P(j|i) = b_j eta_ij / sum_k b_k eta_ik, eta symmetric, eta_ii = 1, fitted by maximum likelihood per family on the letters-view confusion matrix (deletions excluded), 36 letters.",
+  "stats": "(a) Spearman rho between families of log eta over letter pairs with any confusion; (b) geometric-mean eta of same-skeleton (dot-only) pairs over different-skeleton pairs; bootstrap over lines (200 reps).",
+  "rule": "shared similarity if every family-pair rho has CI lower > 0.4 -> confusability is a property of the script (grade B); dot-pair ratio CI lower > 1 in every family confirms dots as the main similarity axis. Human vs model needs a human Arabic confusion matrix (not in hand)."
+ },
+ "2.18_geometry_lit": {
+  "slice": "(i) dot detection validated on CTC spans (rule in 2.4); (ii) a second baseline estimator after Abu-Ain (sub-word based: per main-body component, the densest row of its lower half; weighted median) against the line-band estimator, judged by an external check: the share of below-dots (ب ي ج) whose centroid lies below the baseline and above-dots above it.",
+  "rule": "the sub-word estimator is preferred if its dot-side accuracy is higher with a paired CI excluding 0; otherwise the band estimator stays. The rest (AHTID/MW ground truth, Abdi curvature, Ahmed codebooks, Parvez FATF) is reading, not compute."
+ }
+}
