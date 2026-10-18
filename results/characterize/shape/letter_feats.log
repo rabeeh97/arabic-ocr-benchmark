@@ -1,0 +1,35 @@
+train 0 8000 1s
+train 500 8000 124s
+train 1000 8000 181s
+train 1500 8000 240s
+train 2000 8000 306s
+train 2500 8000 371s
+train 3000 8000 436s
+train 3500 8000 502s
+train 4000 8000 572s
+train 4500 8000 642s
+train 5000 8000 695s
+train 5500 8000 746s
+train 6000 8000 790s
+train 6500 8000 854s
+train 7000 8000 897s
+train 7500 8000 935s
+train lines 7999 letters 298468
+muharaf_test 0 1334 0s
+muharaf_test 500 1334 35s
+muharaf_test 1000 1334 85s
+muharaf_test lines 1325 letters 52269
+nakba_lines 0 1500 0s
+nakba_lines 500 1500 64s
+nakba_lines 1000 1500 129s
+nakba_lines lines 1499 letters 69684
+nakba_blind 0 1500 0s
+nakba_blind 500 1500 57s
+nakba_blind 1000 1500 127s
+nakba_blind lines 1500 letters 78482
+khatt 0 1038 0s
+khatt 500 1038 51s
+khatt 1000 1038 99s
+khatt lines 971 letters 43058
+PCA 128 explained variance 0.877
+wrote results/characterize/shape/letter_feats.npz (541961, 1024)

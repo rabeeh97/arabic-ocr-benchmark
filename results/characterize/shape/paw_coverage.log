@@ -1,0 +1,38 @@
+{'nakba_lines': 2095, 'nakba_blind': 2671, 'muharaf_lines': 1334, 'rasam1': 734, 'rasam2': 372, 'kitab_khatt_full': 1038}
+{'muharaf_lines': 23186, 'nakba': 15250, 'kitab_khatt_full': 4672}
+arwiki PAW tokens 60982576
+nakba_lines dotted arwiki N95 6632 [6159, 6970] N99 39621 [36820, 45135] cov@8000 [0.957, 0.9548, 0.959]
+/Volumes/PortableSSD/repos/arabic_ocr/.claude/worktrees/xai-attribution-spike/.geomvenv/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4609: RuntimeWarning: invalid value encountered in subtract
+  diff_b_a = b - a
+nakba_lines dotted train:all N95 4174 [3966, 4379] N99 None [None, None] cov@8000 [0.9709, 0.9692, 0.9724]
+nakba_lines dotted train:nakba N95 3686 [3451, 3887] N99 None [None, None] cov@8000 [0.9721, 0.9705, 0.9738]
+nakba_blind dotted arwiki N95 6960 [6617, 7286] N99 44038 [39642, 46956] cov@8000 [0.9551, 0.9534, 0.9567]
+nakba_blind dotted train:all N95 4343 [4178, 4537] N99 None [None, None] cov@8000 [0.9689, 0.9676, 0.9703]
+nakba_blind dotted train:nakba N95 3912 [3774, 4100] N99 None [None, None] cov@8000 [0.9707, 0.9692, 0.972]
+muharaf_lines dotted arwiki N95 10226 [9392, 11126] N99 None [98121, None] cov@8000 [0.9414, 0.9383, 0.9446]
+muharaf_lines dotted train:all N95 4065 [4009, 4443] N99 14477 [12455, 17935] cov@8000 [0.9732, 0.9711, 0.9754]
+muharaf_lines dotted train:muharaf_lines N95 3627 [3574, 4047] N99 14858 [11637, None] cov@8000 [0.9756, 0.9735, 0.9777]
+rasam1 dotted arwiki N95 9814 [8795, 10877] N99 82981 [62877, None] cov@8000 [0.9439, 0.9403, 0.9475]
+rasam1 dotted train:all N95 7769 [6709, 8682] N99 None [None, None] cov@8000 [0.9507, 0.947, 0.9538]
+rasam2 dotted arwiki N95 8763 [7112, 9672] N99 76129 [47020, None] cov@8000 [0.9485, 0.9427, 0.9542]
+rasam2 dotted train:all N95 7408 [6495, 8651] N99 None [None, None] cov@8000 [0.9525, 0.9477, 0.9574]
+kitab_khatt_full dotted arwiki N95 17298 [17298, 18239] N99 None [77966, None] cov@8000 [0.893, 0.8857, 0.8998]
+kitab_khatt_full dotted train:all N95 177 [176, 180] N99 604 [260, 792] cov@8000 [0.9979, 0.9972, 0.9986]
+kitab_khatt_full dotted train:kitab_khatt_full N95 100 [99, 101] N99 111 [108, 116] cov@8000 [0.9985, 0.998, 0.999]
+nakba_lines dotless arwiki N95 2107 [2020, 2257] N99 11791 [10778, 12977] cov@8000 [0.9853, 0.9841, 0.9865]
+nakba_lines dotless train:all N95 1521 [1459, 1601] N99 8108 [7334, 10011] cov@8000 [0.99, 0.9891, 0.9909]
+nakba_lines dotless train:nakba N95 1379 [1325, 1467] N99 7718 [7351, None] cov@8000 [0.9906, 0.9897, 0.9915]
+nakba_blind dotless arwiki N95 2199 [2092, 2273] N99 11878 [11060, 12765] cov@8000 [0.9853, 0.9844, 0.9862]
+nakba_blind dotless train:all N95 1577 [1529, 1634] N99 7692 [7297, 8900] cov@8000 [0.9903, 0.9895, 0.991]
+nakba_blind dotless train:nakba N95 1422 [1368, 1478] N99 7867 [7554, None] cov@8000 [0.9903, 0.9895, 0.9911]
+muharaf_lines dotless arwiki N95 2988 [2778, 3282] N99 17410 [14807, 19897] cov@8000 [0.9793, 0.9774, 0.981]
+muharaf_lines dotless train:all N95 1630 [1540, 1734] N99 6479 [5779, 7553] cov@8000 [0.9947, 0.9937, 0.9957]
+muharaf_lines dotless train:muharaf_lines N95 1501 [1403, 1592] N99 5422 [5388, 5455] cov@8000 [0.994, 0.993, 0.9951]
+rasam1 dotless arwiki N95 2684 [2439, 3042] N99 16710 [14849, 18161] cov@8000 [0.9801, 0.9778, 0.982]
+rasam1 dotless train:all N95 2016 [1822, 2265] N99 None [None, None] cov@8000 [0.9821, 0.98, 0.984]
+rasam2 dotless arwiki N95 2718 [2354, 3138] N99 13648 [11860, 17879] cov@8000 [0.9809, 0.9773, 0.9845]
+rasam2 dotless train:all N95 2230 [1912, 2493] N99 None [None, None] cov@8000 [0.9814, 0.9776, 0.9852]
+kitab_khatt_full dotless arwiki N95 7086 [6861, 7086] N99 22065 [22065, None] cov@8000 [0.9631, 0.9586, 0.9673]
+kitab_khatt_full dotless train:all N95 156 [155, 158] N99 170 [166, 170] cov@8000 [0.9996, 0.9994, 0.9999]
+kitab_khatt_full dotless train:kitab_khatt_full N95 79 [77, 80] N99 85 [84, 85] cov@8000 [0.9992, 0.9988, 0.9996]
+{'lower_bound_coverage_at_cap': {'nakba_lines': 0.98409, 'nakba_blind': 0.98436, 'muharaf_lines': 0.97744, 'rasam1': 0.97779, 'rasam2': 0.97732, 'kitab_khatt_full': 0.95863}, 'outcome': 'PAW + sub-PAW fallback'}
