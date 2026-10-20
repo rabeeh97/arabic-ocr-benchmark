@@ -456,7 +456,7 @@ def pop_r2() -> str:
         "<p>The exact values behind the two bars: one row per line set. Each number is the share of the differences in line difficulty that the features account for "
         "(R², fitted on ranks), using text features alone, image features alone, and both together.</p>"
         f'<div class="scroll"><table class="ft"><thead><tr><th>Dataset</th><th>Lines</th><th>Text alone</th><th>Image alone</th><th>Text + image</th><th>Gain (points)</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
-        '<p class="sm">Sorted by the combined value. The range of the first column is the <b>6–51 %</b> bar, and the range of the fifth column is the <b>15–63 %</b> bar.</p>'
+        '<p class="sm">Sorted by the combined value. The range of the <i>Text alone</i> column is the <b>6–51 %</b> bar, and the range of the <i>Text + image</i> column is the <b>15–63 %</b> bar.</p>'
         '<h4>Why there are no model-by-dataset rows</h4><p class="sm">Difficulty is one consensus value per line, taken over a group of models that all read it, so each dataset has one value per feature set, not one per model. '
         "Per-model values would answer a different question (what makes <i>this</i> model fail).</p>"
         '<h4>How much to trust each row</h4><p class="sm">The line counts matter: most sets have 60 to 180 lines, so single values are noisy, while NAKBA blind (2,669) and Muharaf (472) are the most stable. '
@@ -536,7 +536,7 @@ EXTRA_CSS = """
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.two figure{margin:0}.two img{width:100%;height:auto;display:block;border-radius:3px;background:#fff;border:1px solid var(--line)}.two figcaption{font-size:11px;color:var(--muted)}
 .vcol{display:flex;flex-direction:column;gap:10px;min-width:0}
 .vnote{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
-.vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote ul{margin:6px 0 0;padding-left:18px}.vnote li{margin:4px 0}.vnote i{font-style:italic}
+.vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote ul{margin:6px 0 0;padding-left:18px}.vnote>b+ul,.vnote>p+b{display:block;margin-top:14px}.vnote li{margin:4px 0}.vnote i{font-style:italic}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
