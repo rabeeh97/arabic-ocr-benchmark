@@ -106,7 +106,7 @@ step("p2", "Read the closest papers and borrow their yardstick",
 step("p2", "Characterise the data we already had",
      "Before adding experiments, learn what the existing readings can already tell us about why lines are hard.",
      "Re-scored every reading on the [[ladder|normalisation ladder]], [[align|aligned edits]], and [[reg|regressed line difficulty]] on text and image features across complete model blocks.",
-     "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.76 to 0.81), and image features lift the explained variance from 0.06–0.32 to 0.15–0.63.",
+     "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.54 to 0.81), and image features lift the explained variance from 0.06–0.32 to 0.15–0.63.",
      B.stack([("skeleton", 92, "hi"), ("dots", 8, "mid")]) + '<p class="key">what the error is made of, median over 91 model × dataset pairs</p>'
      + B.rangebars([("Text features alone", 6, 32, "gr"), ("Text + image features", 15, 63, "lo")], 90, " %") + '<p class="key">share of the differences between lines that the features explain</p>', "alshaibani2025dotless")
 step("p2", "Check how much label noise matters",
@@ -268,6 +268,21 @@ for _st in S:
         T = '<button type="button" class="term" data-pop="%s" aria-haspopup="dialog">%s</button>'
         _st["ev"] = _st["ev"].replace('<span class="bl">Text features alone</span>', '<span class="bl">' + T % ("text", "Text features") + ' alone</span>')
         _st["ev"] = _st["ev"].replace('<span class="bl">Text + image features</span>', '<span class="bl">' + T % ("text", "Text") + ' + ' + T % ("image", "image") + ' features</span>')
+
+_NOTE6 = (
+    "<b>How to read the two bars</b>"
+    "<p>Every line has a <i>difficulty</i>: the median error over a group of models that all read exactly that line. The question is how much of the "
+    "difference in difficulty <i>between lines</i> some simple facts about a line can predict.</p>"
+    "<p><b>Text features alone</b> use only the transcription, with no picture (length, letters with dots, word parts and so on). They account for 6 to 32 % of "
+    "the differences in difficulty, depending on the dataset. 0 % would mean the text tells us nothing about which lines are hard, and 100 % would mean it tells us everything.</p>"
+    "<p><b>Text + image features</b> add facts about the picture (ink density, stroke width, line height and so on). The share rises to 15 to 63 %, which is 7 to 27 points more, "
+    "so how a line looks explains a real part of why it is hard.</p>"
+    "<p>This does not mean text <i>causes</i> 6 to 32 % of the errors. It means how much of the spread between lines these facts can predict. "
+    "The rest (37 to 85 % in the combined fit) is difficulty that neither kind of feature captures. The ranges run from the lowest to the highest of eight datasets, not over models.</p>"
+    "<p>This only makes sense because difficulty belongs to the line: different models tend to find the same lines hard (split-half reliability 0.54 to 0.81).</p>")
+for _st in S:
+    if _st["title"] == "Characterise the data we already had":
+        _st["note"] = _NOTE6
 
 import re as _re
 
@@ -477,6 +492,9 @@ EXTRA_CSS = """
 .ft{width:100%;border-collapse:collapse;font-size:13px}.ft th,.ft td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 .ft th small{display:block;font:400 11px var(--f-body);color:var(--muted)}.ft th .ar{font-size:15px;font-weight:400}.ft td:not(:first-child){font:500 12.5px var(--f-mono);white-space:nowrap}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.two figure{margin:0}.two img{width:100%;height:auto;display:block;border-radius:3px;background:#fff;border:1px solid var(--line)}.two figcaption{font-size:11px;color:var(--muted)}
+.vcol{display:flex;flex-direction:column;gap:10px;min-width:0}
+.vnote{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
+.vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote i{font-style:italic}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
@@ -514,10 +532,13 @@ def render() -> str:
             idx = [p[0] for p in PHASES].index(cur) + 1
             parts.append(f'<div class="ph" id="{pid}"><span class="pn">Phase {idx}</span><h2>{e(pt)}</h2><p>{e(pd)}</p></div>')
         n += 1
+        viz_html = (f'<div class="vcol"><div class="viz">{s["ev"]}</div><div class="vnote">{s["note"]}</div></div>' if s.get("note")
+                    else f'<div class="viz">{s["ev"]}</div>')
+        chips_html = f'<div class="chips">{B.chips(s["papers"])}</div>' if s["papers"] else ""
         parts.append(
             f'<section class="step"><div class="card"><span class="sn">Step {n}</span><h3>{e(s["title"])}</h3>'
             f'<div class="cbody"><dl><dt>Why</dt><dd>{rich(s["why"])}</dd><dt>What we did</dt><dd>{rich(s["did"])}</dd><dt>What came out</dt><dd>{rich(s["out"])}</dd></dl>'
-            f'<div class="viz">{s["ev"]}</div></div>' + (f'<div class="chips">{B.chips(s["papers"])}</div>' if s["papers"] else "") + "</div></section>")
+            f'{viz_html}</div>{chips_html}</div></section>')
     parts.append("</div>")
     for pid, (ptitle, fn) in POPS.items():
         parts.append(f'<div class="pop" id="pop-{pid}" role="dialog" aria-modal="true" aria-label="{e(ptitle)}" hidden><div class="pp"><header><h3>{e(ptitle)}</h3><button type="button" class="x">Close</button></header>{fn()}</div></div>')
