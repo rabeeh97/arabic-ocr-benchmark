@@ -112,7 +112,7 @@ step("p2", "Characterise the data we already had",
 step("p2", "Check how much label noise matters",
      "If some test labels are wrong, our rankings might be wrong.",
      "Used the published human review logs to drop the flagged Muharaf test lines and re-scored 13 models.",
-     "126 of 1,334 lines are flagged, and dropping them moves CER by −0.4 to +0.9 points with no change of rank.",
+     "126 of 1,334 lines are flagged, and dropping them moves CER by −0.4 to +0.9 points with no change of rank. A rank change would mean two models swapping places when all 13 are sorted by CER, so none means the leaderboard order is the same with and without the flagged lines.",
      B.stack([("flagged", 9.4, "hi"), ("kept", 90.6, "lo")]) + B.forest([("CER change", None, -0.4, 0.9)], -2, 2, note="points, across 13 models; 0 rank changes"), "alazzawi2026labelerr")
 step("p2", "Probe where a vision-language model looks",
      "An idea on the table was to protect or freeze the weights that matter for a given letter. Before guessing which weights, check where the model looks for that letter.",
