@@ -108,7 +108,7 @@ step("p2", "Characterise the data we already had",
      "Re-scored every reading on the [[ladder|normalisation ladder]], [[align|aligned edits]], and [[reg|regressed line difficulty]] on text and image features across complete model blocks.",
      "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.76 to 0.81), and image features lift the explained variance from 0.06–0.32 to 0.15–0.63.",
      B.stack([("skeleton", 92, "hi"), ("dots", 8, "mid")]) + '<p class="key">what the error is made of, median over 91 model × dataset pairs</p>'
-     + B.rangebars([("Text features alone", 6, 32, "gr"), ("Text + image features", 15, 63, "lo")], 70, " % explained"), "alshaibani2025dotless")
+     + B.rangebars([("Text features alone", 6, 32, "gr"), ("Text + image features", 15, 63, "lo")], 70, " %") + '<p class="key">share of the differences between lines that the features explain</p>', "alshaibani2025dotless")
 step("p2", "Check how much label noise matters",
      "If some test labels are wrong, our rankings might be wrong.",
      "Used the published human review logs to drop the flagged Muharaf test lines and re-scored 13 models.",
