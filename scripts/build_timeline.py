@@ -492,6 +492,8 @@ def sweep_svg():
     cells = []
     for ln in D["lines"]:
         v = ln["sweep"]
+        lo_, hi_ = min(v), max(v)
+        v = [(x - lo_) / ((hi_ - lo_) or 1) for x in v]
         pts = " ".join(f"{i / (len(v) - 1) * 300:.1f},{54 - x * 48:.1f}" for i, x in enumerate(v))
         b = max(range(len(v)), key=lambda i: v[i])
         bx = b / (len(v) - 1) * 300
@@ -683,7 +685,7 @@ EXTRA_CSS = """
 POP_JS = """
 (function(){var last=null;
 function close(){document.querySelectorAll('.pop').forEach(function(p){p.hidden=true});document.body.style.overflow='';if(last){last.focus();last=null}}
-document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;var inside=!!b.closest('.pop');document.querySelectorAll('.pop').forEach(function(x){x.hidden=true});if(!inside)last=b;p.hidden=false;document.body.style.overflow='hidden';var sec=b.getAttribute('data-sec');var pp=p.querySelector('.pp');pp.scrollTop=0;if(sec){var t=document.getElementById('sec-'+sec);if(t){pp.scrollTop=Math.max(t.offsetTop-70,0)}}p.querySelector('.x').focus()})});
+document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;var inside=!!b.closest('.pop');document.querySelectorAll('.pop').forEach(function(x){x.hidden=true});if(!inside)last=b;p.hidden=false;document.body.style.overflow='hidden';var sec=b.getAttribute('data-sec');var pp=p.querySelector('.pp');pp.scrollTop=0;if(sec){var jump=function(){var t=document.getElementById('sec-'+sec);if(t){pp.scrollTop=Math.max(t.offsetTop-70,0)}};p.querySelectorAll('img').forEach(function(i){i.loading='eager'});jump();setTimeout(jump,150);setTimeout(jump,500);setTimeout(jump,1200)}p.querySelector('.x').focus()})});
 document.querySelectorAll('.pop').forEach(function(p){p.addEventListener('click',function(ev){if(ev.target===p)close()});p.querySelector('.x').addEventListener('click',close)});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape')close()});})();
 """
