@@ -105,7 +105,7 @@ step("p2", "Read the closest papers and borrow their yardstick",
      "alazzawi2026gap alazzawi2026crossling")
 step("p2", "Characterise the data we already had",
      "Before adding experiments, learn what the existing readings can already tell us about why lines are hard.",
-     "Re-scored every reading on the normalisation ladder, aligned edits, and regressed line difficulty on text and image features across complete model blocks.",
+     "Re-scored every reading on the [[ladder|normalisation ladder]], [[align|aligned edits]], and [[reg|regressed line difficulty]] on text and image features across complete model blocks.",
      "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.76 to 0.81), and image features lift the explained variance from 0.06–0.32 to 0.15–0.63.",
      B.stack([("skeleton", 92, "hi"), ("dots", 8, "mid")]) + '<p class="key">what the error is made of, median over 91 model × dataset pairs</p>'
      + B.rangebars([("Text features alone", 6, 32, "gr"), ("Text + image features", 15, 63, "lo")], 70, " % explained"), "alshaibani2025dotless")
@@ -262,6 +262,100 @@ step("p5", "Run GPU night 2 and tidy the project",
      "Night 2 was launched and its results are not in yet; the 3090 became unreachable afterwards. All code and results are on one branch.",
      B.chips_plain(["night 2 launched", "follow-up queue waiting", "one branch", "ledger overview", "visual brief", "this timeline"]))
 
+
+import re as _re
+
+P = json.loads(Path("docs/research/timeline_popups.json").read_text(encoding="utf8"))
+TERM = _re.compile(r"\[\[(\w+)\|([^\]]+)\]\]")
+
+
+def rich(text: str) -> str:
+    """Escape text, then turn [[id|label]] into a button that opens the pop-up with that id."""
+    return TERM.sub(lambda m: f'<button type="button" class="term" data-pop="{m.group(1)}" aria-haspopup="dialog">{m.group(2)}</button>', e(text))
+
+
+RUNG_INFO = {
+    "raw": ("raw", "As stored. Nothing changed."),
+    "canonical": ("canonical", "Unicode clean-up: invisible controls removed, presentation forms folded back to letters, spaces collapsed."),
+    "tatweel_digits": ("tatweel and digits", "The stretching mark ـ is removed and Arabic-Indic digits (١٢٣) become 123."),
+    "orthographic": ("spelling folds", "Spelling variants are treated as the same: the alef forms, ي and ى, ة and ه, and hamza carriers."),
+    "no_diacritics": ("no diacritics", "Every mark (fatha, kasra, damma, shadda and the rest) is removed."),
+    "rasm": ("rasm", "Dots are removed: every letter becomes its dotless skeleton."),
+    "no_spaces": ("no spaces", "Spaces are removed, so only letter errors remain."),
+}
+
+
+def pop_ladder() -> str:
+    ex = P["example"]
+    top = max(r["edits"] for r in ex["rungs"]) or 1
+    rows = []
+    for r in ex["rungs"]:
+        name, desc = RUNG_INFO[r["name"]]
+        rows.append(
+            f'<div class="lr"><div class="lh"><b>{e(name)}</b><span>{e(desc)}</span></div>'
+            f'<div class="ls"><span class="ar" dir="rtl" lang="ar">{e(r["gt"])}</span><span class="ar hy" dir="rtl" lang="ar">{e(r["hyp"])}</span></div>'
+            f'<div class="le"><i style="--w:{r["edits"] / top * 100:.0f}%"></i><b>{r["edits"]}</b></div></div>')
+    st = P["stair"]
+    names = {r["name"]: RUNG_INFO[r["name"]][0] for r in st["rungs"]}
+    stair = B.bars([(names[r["name"]], r["cer"] * 100, f'{r["cer"] * 100:.1f}', "lo" if r["name"] != "no_spaces" else "gr") for r in st["rungs"]], 35, " %")
+    return (
+        "<p>The same reading, scored again and again. Each rung removes one more kind of detail from <i>both</i> the reference and the reading, then counts the errors that are left. "
+        "Errors that disappear at a rung were only about that detail. What remains at the end is letter identity.</p>"
+        f'<h4>One real line</h4><p class="sm">Reference on top, a fine-tuned model\'s reading below, and the number of edits at each rung (line {e(ex["sample"])}). The edits fall from {ex["rungs"][0]["edits"]} to {ex["rungs"][-1]["edits"]}.</p>'
+        f'<div class="ladder">{"".join(rows)}</div>'
+        f'<h4>The same staircase over a whole set</h4><p class="sm">Corpus CER of a fine-tuned Qwen3-VL-8B on {st["n_lines"]} NAKBA lines, at each rung. '
+        "The last bar rises because removing spaces also shortens the reference, so the rate can go up even though fewer errors remain.</p>"
+        f"{stair}"
+        '<h4>What we use it for</h4><p class="sm">The <b>dot tax</b> is the drop between the no-diacritics rung and the rasm rung: error that only the dots explain. '
+        "Here it is 2.2 points (27.7 → 25.5 %), and about nine tenths of the error is still there once the dots are gone.</p>")
+
+
+def pop_align() -> str:
+    ex = P["example"]
+    c = ex["counts"]
+    ref_len = c["eq"] + c["sub"] + c["del"]
+    cols = []
+    for op, g, h in ex["ops"]:
+        gm = e(g) if g else "–"
+        hm = e(h) if h else "–"
+        mark = {"eq": "=", "sub": "×", "del": "−", "ins": "+"}[op]
+        cols.append(f'<div class="col {op}"><span class="ar">{gm}</span><i>{mark}</i><span class="ar">{hm}</span></div>')
+    edits = c["sub"] + c["del"] + c["ins"]
+    return (
+        "<p>To count errors, the reading is lined up against the reference character by character using the fewest possible changes. "
+        "Every change is one of three kinds, and CER is simply the number of changes divided by the length of the reference:</p>"
+        '<div class="legend2"><span class="k eq">= match</span><span class="k sub">× substitution: a wrong letter</span><span class="k del">− deletion: a letter the model skipped</span><span class="k ins">+ insertion: a letter the model added</span></div>'
+        f'<h4>One real line, aligned</h4><p class="sm">Reference above, reading below. Read right to left, as the Arabic is.</p>'
+        f'<div class="scroll"><div class="agrid" dir="rtl">{"".join(cols)}</div></div>'
+        f'<p class="eq2"><b>{c["sub"]}</b> substitutions + <b>{c["del"]}</b> deletions + <b>{c["ins"]}</b> insertions = <b>{edits}</b> edits, over <b>{ref_len}</b> reference characters: '
+        f'CER = {edits}/{ref_len} = <b>{edits / ref_len * 100:.0f} %</b>.</p>'
+        '<h4>Why it matters</h4><p class="sm">Counting is not enough. Because every edit has a place and a kind, we can ask where errors fall (the end of the line, the gaps inside words, dots) and what kind they are. '
+        "That is how we found that spaces cost more than dots. It also shows why CER can pass 100 %: insertions have no ceiling.</p>")
+
+
+def pop_reg() -> str:
+    r2 = [("Historical books", 0.32, 0.58), ("KITAB online KHATT", 0.16, 0.43), ("RASAM-1", 0.11, 0.36), ("NAKBA lines", 0.51, 0.63),
+          ("RASAM-2", 0.10, 0.25), ("NAKBA blind", 0.17, 0.27), ("KITAB-KHATT", 0.32, 0.39), ("Muharaf", 0.06, 0.15)]
+    chart = B.pairbars(r2, 0.7, unit="", lo_is_good=False, la="text features only", lb="text + image features")
+    return (
+        "<p>Each line has a <b>difficulty</b>: how badly the models read it, taken as the median error over a block of models that all read exactly the same lines. "
+        "A <b>regression</b> predicts that number from properties of the line, by fitting a weight for each property. If the properties predict difficulty well, they explain why a line is hard.</p>"
+        '<div class="flow"><div><b>Text features</b><span>length, rare letters, unseen words, digits</span></div>'
+        '<div><b>Image features</b><span>size, ink density, stroke width, contrast, blur, skew, ink per character</span></div>'
+        '<i>→</i><div class="fit"><b>Fitted weights</b><span>one per feature</span></div><i>→</i>'
+        '<div class="fit"><b>Predicted difficulty</b><span>compared with the actual line CER</span></div></div>'
+        '<h4>What the score means</h4><p class="sm"><b>R²</b> is the share of the differences between lines that the features explain: 0 is none, 1 is all. We fit on ranks (which line is harder than which), so a few extreme lines do not dominate.</p>'
+        f'<h4>Real results, by set</h4>{chart}'
+        '<p class="sm">Text alone explains 0.06 to 0.32 of the differences (NAKBA lines, 0.51, is the exception). Adding image features lifts it to 0.15 to 0.63, most on the historical books, online KHATT and RASAM-1 (about +0.25), and least on KHATT (+0.07). '
+        "Single image coefficients turned out unstable, so we only trust the combined fit, not any one feature on its own.</p>")
+
+
+POPS = {
+    "ladder": ("The normalisation ladder", pop_ladder),
+    "align": ("Aligned edits", pop_align),
+    "reg": ("Regressed line difficulty", pop_reg),
+}
+
 EXTRA_CSS = """
 .tl{position:relative;margin-left:14px;border-left:2px solid var(--line);padding-left:22px}
 .tl .step{position:relative;margin:0 0 22px}
@@ -297,7 +391,44 @@ EXTRA_CSS = """
 .why{background:var(--bg);border-radius:6px;padding:8px 10px}
 .jump{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
 .jump a{font:500 13px var(--f-body);color:var(--accent);text-decoration:none;border:1px solid var(--accent-soft);background:var(--accent-soft);border-radius:99px;padding:5px 12px}
+
+.term{font:inherit;color:var(--accent);background:none;border:0;border-bottom:1.5px dotted var(--accent);padding:0;cursor:help}
+.term:hover{background:var(--accent-soft)}.term:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pop{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(8,14,20,.62);padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
+.pop[hidden]{display:none}
+.pp{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;max-width:700px;width:100%;max-height:88vh;overflow:auto;padding:18px 20px 20px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.pp header{display:flex;justify-content:space-between;align-items:center;gap:12px;border:0;padding:0 0 8px;margin:0}
+.pp header h3{margin:0;font-size:19px}
+.pp .x{font:500 13px var(--f-body);background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:5px 12px;cursor:pointer;flex:none}
+.pp p{margin:8px 0;font-size:14px}.pp p.sm{font-size:13px;color:var(--muted)}
+.pp h4{margin:16px 0 4px;font:500 11px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.ladder{display:flex;flex-direction:column;gap:8px}
+.lr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:8px 10px;background:var(--bg);border-radius:6px}
+.lh{grid-column:1/-1;display:flex;flex-direction:column}.lh b{font:500 12px var(--f-mono);color:var(--accent)}.lh span{font-size:12px;color:var(--muted)}
+.ls{display:flex;flex-direction:column;min-width:0}.ls .ar{font-size:17px;line-height:1.5;overflow-wrap:anywhere}.ls .hy{color:var(--hi)}
+.le{display:flex;align-items:center;gap:6px;min-width:70px}.le i{display:block;height:8px;width:var(--w);max-width:60px;border-radius:4px;background:var(--hi)}.le b{font:500 12px var(--f-mono)}
+.legend2{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;margin:8px 0}
+.k{display:inline-flex;align-items:center;gap:5px}.k.eq{color:var(--muted)}.k.sub{color:var(--hi)}.k.del{color:var(--mid)}.k.ins{color:var(--gb)}
+.scroll{overflow-x:auto;padding-bottom:6px}
+.agrid{display:inline-grid;grid-auto-flow:column;gap:2px}
+.col{display:grid;grid-template-rows:auto auto auto;justify-items:center;width:27px;padding:2px 0;border-radius:4px}
+.col .ar{font-size:19px;line-height:1.4}.col i{font:500 11px var(--f-mono);font-style:normal;color:var(--muted)}
+.col.sub{background:color-mix(in srgb,var(--hi) 22%,transparent)}.col.del{background:color-mix(in srgb,var(--mid) 26%,transparent)}.col.ins{background:color-mix(in srgb,var(--gb) 24%,transparent)}
+.eq2{font-size:14px}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:10px 0}
+.flow>div{flex:1 1 150px;min-width:0;background:var(--bg);border-radius:6px;padding:8px 10px}.flow b{display:block;font-size:13px}.flow span{font-size:12px;color:var(--muted)}
+.flow>i{align-self:center;font-style:normal;color:var(--muted);font-size:18px}.flow .fit{flex:0 1 140px}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
+"""
+
+
+
+POP_JS = """
+(function(){var last=null;
+function close(){document.querySelectorAll('.pop').forEach(function(p){p.hidden=true});document.body.style.overflow='';if(last){last.focus();last=null}}
+document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;last=b;p.hidden=false;document.body.style.overflow='hidden';p.querySelector('.x').focus()})});
+document.querySelectorAll('.pop').forEach(function(p){p.addEventListener('click',function(ev){if(ev.target===p)close()});p.querySelector('.x').addEventListener('click',close)});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape')close()});})();
 """
 
 
@@ -326,10 +457,13 @@ def render() -> str:
         n += 1
         parts.append(
             f'<section class="step"><div class="card"><span class="sn">Step {n}</span><h3>{e(s["title"])}</h3>'
-            f'<div class="cbody"><dl><dt>Why</dt><dd>{e(s["why"])}</dd><dt>What we did</dt><dd>{e(s["did"])}</dd><dt>What came out</dt><dd>{e(s["out"])}</dd></dl>'
+            f'<div class="cbody"><dl><dt>Why</dt><dd>{rich(s["why"])}</dd><dt>What we did</dt><dd>{rich(s["did"])}</dd><dt>What came out</dt><dd>{rich(s["out"])}</dd></dl>'
             f'<div class="viz">{s["ev"]}</div></div>' + (f'<div class="chips">{B.chips(s["papers"])}</div>' if s["papers"] else "") + "</div></section>")
     parts.append("</div>")
+    for pid, (ptitle, fn) in POPS.items():
+        parts.append(f'<div class="pop" id="pop-{pid}" role="dialog" aria-modal="true" aria-label="{e(ptitle)}" hidden><div class="pp"><header><h3>{e(ptitle)}</h3><button type="button" class="x">Close</button></header>{fn()}</div></div>')
     parts.append(f'<footer>Built from the research ledger and the brief. <a href="{LEDGER}" target="_blank" rel="noopener">Open the full ledger</a> · <a href="{BRIEF}" target="_blank" rel="noopener">Open the brief</a>.</footer></div>')
+    parts.append(f"<script>{POP_JS}</script>")
     return "".join(parts)
 
 
