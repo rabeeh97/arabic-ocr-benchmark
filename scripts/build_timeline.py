@@ -125,7 +125,7 @@ step("p2", "Probe where a vision-language model looks",
 # ---------------------------------------------------------------- phase 3
 step("p3", "Measure how the writing differs between datasets",
      "Datasets differ visibly. Which physical properties differ enough to explain why a model trained on one fails on another?",
-     "Built detectors for slant (stroke orientation), stroke width and pen contrast, dots, baseline, paper tone, ruled lines and contour loci, and checked each against the transcriptions and with overlays on real lines.",
+     "Built detectors for [[det:slant|slant]] (stroke orientation), [[det:stroke|stroke width and pen contrast]], [[det:dots|dots]], [[det:baseline|baseline]], [[det:tone|paper tone]], [[det:rules|ruled lines]] and [[det:loci|contour loci]], and checked each against the transcriptions and with overlays on real lines.",
      "Slant is the clearest difference: KHATT is upright while Muharaf leans right, and 41 % of KHATT lines sit where under 5 % of training lines do. Pen contrast separates Maghrebi (0.5–0.6) from the rest (about 1.0). Tone, noise and ruled lines differ a lot, but contour histograms that identify a dataset 70–73 % of the time do not track the transfer gap. The dot detector tracks dotted letters with r from 0.31 to 0.78.",
      viz(B.forest([("KHATT", -2, None, None), ("NAKBA", 5, 4, 6), ("Muharaf", 11, None, None)], -5, 15, "°", note="median slant of near-vertical strokes; positive leans right"),
          '<div class="evs">' + "".join(img(d["src"], d["caption"]) for d in A["detectors"][:2]) + "</div>"))
@@ -305,12 +305,12 @@ for _st in S:
 import re as _re
 
 P = json.loads(Path("docs/research/timeline_popups.json").read_text(encoding="utf8"))
-TERM = _re.compile(r"\[\[(\w+)\|([^\]]+)\]\]")
+TERM = _re.compile(r"\[\[(\w+)(?::(\w+))?\|([^\]]+)\]\]")
 
 
 def rich(text: str) -> str:
     """Escape text, then turn [[id|label]] into a button that opens the pop-up with that id."""
-    return TERM.sub(lambda m: f'<button type="button" class="term" data-pop="{m.group(1)}" aria-haspopup="dialog">{m.group(2)}</button>', e(text))
+    return TERM.sub(lambda m: f'<button type="button" class="term" data-pop="{m.group(1)}"' + (f' data-sec="{m.group(2)}"' if m.group(2) else "") + f' aria-haspopup="dialog">{m.group(3)}</button>', e(text))
 
 
 RUNG_INFO = {
@@ -466,6 +466,135 @@ def pop_r2() -> str:
 
 POPS["r2"] = ("Explained difficulty, by dataset", pop_r2)
 
+D = json.loads(Path("docs/research/timeline_detectors.json").read_text(encoding="utf8"))
+AUG = {a["id"]: a for a in A["aug"]}
+
+
+def thumbs(panels, k=4):
+    ps = [p for p in panels if p["src"]][:k]
+    return '<div class="ag"><div>' + "".join(
+        f'<figure><img alt="{e(p["caption"])}" src="{p["src"]}" loading="lazy"><figcaption>{"original" if p["orig"] else e(p["caption"][:44])}</figcaption></figure>' for p in ps) + "</div></div>"
+
+
+def used(title, body):
+    return f'<div class="used"><b>Also used in</b> {e(title)}{body}</div>'
+
+
+def dcards(key, fmt):
+    out = ['<div class="dgrid">']
+    for ln in D["lines"]:
+        out.append(f'<figure class="dcard"><img alt="{e(ln["name"])} {key}" src="{ln[key]}" loading="lazy"><figcaption><b>{e(ln["name"])}</b><br>{fmt(ln)}</figcaption></figure>')
+    out.append("</div>")
+    return "".join(out)
+
+
+def sweep_svg():
+    cells = []
+    for ln in D["lines"]:
+        v = ln["sweep"]
+        pts = " ".join(f"{i / (len(v) - 1) * 300:.1f},{54 - x * 48:.1f}" for i, x in enumerate(v))
+        b = max(range(len(v)), key=lambda i: v[i])
+        bx = b / (len(v) - 1) * 300
+        cells.append(f'<figure class="dcard"><svg viewBox="0 0 300 70" class="sw" role="img" aria-label="Sharpness of the vertical projection at each trial shear">'
+                     f'<polyline points="{pts}" fill="none" stroke="var(--accent)" stroke-width="2"/><line x1="150" y1="4" x2="150" y2="56" stroke="var(--line)"/>'
+                     f'<line x1="{bx:.1f}" y1="4" x2="{bx:.1f}" y2="56" stroke="var(--hi)" stroke-width="1.5"/>'
+                     f'<text x="2" y="68" class="sv">−30°</text><text x="150" y="68" class="sv" text-anchor="middle">0°</text><text x="298" y="68" class="sv" text-anchor="end">+30°</text></svg>'
+                     f'<figcaption><b>{e(ln["name"])}</b><br>peak at {b - 30:+d}° (red)</figcaption></figure>')
+    return '<div class="dgrid">' + "".join(cells) + "</div>"
+
+
+def hist_svg():
+    cells = []
+    for ln in D["lines"]:
+        t = ln["tone"]
+        h = t["hist"]
+        m = max(h) ** 0.5
+        bars = "".join(f'<rect x="{i * 8}" y="{50 - (v ** 0.5) / m * 46:.1f}" width="7" height="{(v ** 0.5) / m * 46:.1f}" fill="var(--gr)"/>' for i, v in enumerate(h))
+        cells.append(f'<figure class="dcard"><svg viewBox="0 0 256 70" class="sw" role="img" aria-label="Grey-level histogram">{bars}'
+                     f'<line x1="{t["ink"]:.0f}" y1="2" x2="{t["ink"]:.0f}" y2="52" stroke="var(--hi)" stroke-width="2"/><line x1="{t["paper"]:.0f}" y1="2" x2="{t["paper"]:.0f}" y2="52" stroke="var(--lo)" stroke-width="2"/>'
+                     f'<text x="2" y="66" class="sv">black</text><text x="254" y="66" class="sv" text-anchor="end">white</text></svg>'
+                     f'<figcaption><b>{e(ln["name"])}</b><br><span class="k sub">ink {t["ink"]:.0f}</span> · <span class="k eq" style="color:var(--lo)">paper {t["paper"]:.0f}</span></figcaption></figure>')
+    return '<div class="dgrid">' + "".join(cells) + '</div><p class="sm">Grey levels (0 black, 255 white), square-rooted so the ink is visible next to the huge paper peak.</p>'
+
+
+def loci_heat():
+    rows = D["loci"]["zones"]
+    mx = max(max(r) for r in rows) or 1
+    cells = []
+    for zi, r in enumerate(rows):
+        cells.append("".join(f'<rect x="{j * 3.6:.1f}" y="{zi * 11}" width="3.4" height="9.5" fill="var(--accent)" fill-opacity="{(v / mx) ** 0.5:.2f}"/>' for j, v in enumerate(r)))
+    return ('<svg viewBox="0 0 295 36" class="sw" role="img" aria-label="Histogram of the 81 locus codes in three zones">' + "".join(cells)
+            + '</svg><p class="sm">The 81 codes, in three rows: above, near and below the baseline. Darker means more background pixels with that code (this KHATT line).</p>')
+
+
+def pop_det() -> str:
+    L = {ln["tag"]: ln for ln in D["lines"]}
+    v = lambda ln, k: ln["values"].get(k)
+    sec = []
+    # slant
+    sec.append(("slant", "Slant", [
+        "<p><b>How it is computed.</b> The writing is thinned to a one-pixel skeleton. At every skeleton pixel the stroke direction is estimated (a structure tensor on the blurred skeleton), "
+        "near-vertical strokes are kept, and the median angle is the line's slant (positive leans right). A second estimator shears the whole line by trial angles from −30° to +30° and keeps "
+        "the shear that makes the vertical projection most peaked: upright writing stacks its strokes into sharp columns.</p>",
+        '<p class="sm">Orange ticks: the stroke direction on every near-vertical skeleton pixel of the line.</p>',
+        dcards("slant", lambda ln: f'skeleton estimate {v(ln, "slant_skel_deg"):+.1f}°<br>projection estimate {v(ln, "slant_proj_deg"):+.0f}°'),
+        '<p class="sm">The second estimator: sharpness of the vertical projection at each trial shear.</p>', sweep_svg(),
+        used("training and tests", '<p class="sm">The transfer test moved a line to another dataset\'s slant with one shear knob (here −11.6° to look like KHATT); training with random shear from −12° to +20°; and slant test-time augmentation.</p>'
+             + pair_rows(A["transfer"]["muharaf_to_khatt"], "Muharaf original", "sheared and restyled like KHATT", 1) + thumbs(AUG["1"]["panels"]))]))
+    # stroke
+    pc = lambda ln: v(ln, "sw_vertical_stroke") / v(ln, "sw_horizontal_stroke")
+    sec.append(("stroke", "Stroke width and pen contrast", [
+        "<p><b>How it is computed.</b> The ink mask is thinned to a skeleton. At each skeleton pixel the distance to the nearest paper pixel is half the local stroke width, "
+        "and the 10–90 % trimmed mean of those values (times two) is the line's stroke width. Splitting the skeleton by direction gives the width of near-vertical strokes and of near-horizontal strokes. "
+        "<b>Pen contrast</b> is vertical ÷ horizontal: about 1 for an evenly held pen, much lower when the pen leaves thick horizontals and thin verticals, as in Maghrebi hands.</p>",
+        '<p class="sm">Blue: near-vertical strokes. Orange: near-horizontal strokes. Grey: everything else.</p>',
+        dcards("stroke", lambda ln: f'vertical {v(ln, "sw_vertical_stroke"):.1f} px, horizontal {v(ln, "sw_horizontal_stroke"):.1f} px<br><b>pen contrast {pc(ln):.2f}</b>'),
+        used("augmentation and the transfer test", '<p class="sm">Stroke width was an augmentation (thicker or thinner ink, with a guard that rejects variants that merge dots) and a knob in the transfer test (NAKBA strokes thinned to Muharaf\'s width).</p>'
+             + pair_rows(A["transfer"]["nakba_to_muharaf"], "NAKBA original", "strokes made like Muharaf", 1) + thumbs(AUG["3"]["panels"]))]))
+    # dots
+    sec.append(("dots", "Dots", [
+        "<p><b>How it is computed.</b> After the line is rescaled so the stroke is a fixed width, connected ink components that are small (no larger than 3.2 stroke widths across) are called dots. "
+        "Their number is compared with the number of dotted letters in the transcription, which is how the detector was checked (correlation 0.31 to 0.78 per set).</p>",
+        '<p class="sm">Red: components called dots. Blue: the rest of the writing, as a skeleton.</p>',
+        dcards("dots", lambda ln: f'{v(ln, "n_dots"):.0f} dots found<br>transcription has {v(ln, "exp_marks"):.0f} dotted letters'),
+        '<p class="sm">On the manuscript line the detector finds far more components than there are dotted letters (stains and fragments), which is why dots are treated as a rough statistic and dot pairs as one component.</p>',
+        used("augmentation", '<p class="sm">Preview of removing or moving small components (dots), used to judge whether an augmentation keeps the label valid.</p>' + thumbs(AUG["15"]["panels"]))]))
+    # baseline
+    sec.append(("baseline", "Baseline", [
+        "<p><b>How it is computed.</b> In sliding windows along the line, take the row with the most body ink (dots removed), then fit a straight line through those rows with robust, trimmed least squares. "
+        "Two other estimators (a rotation search, and the lowest horizontal strokes on the skeleton) give a cross-check.</p>",
+        '<p class="sm">Green: the fitted baseline.</p>',
+        dcards("baseline", lambda ln: f'projection {v(ln, "slope_proj_deg"):+.1f}°, rotation {v(ln, "slope_rot_deg"):+.1f}°, skeleton {v(ln, "slope_skel_deg") if v(ln, "slope_skel_deg") is not None else float("nan"):+.1f}°'),
+        '<p class="sm">The baseline is the reference line for heights (ascenders and descenders measured in stroke widths) and for the loci zones. Baseline slope itself did not change recognition, and it is not used in training.</p>']))
+    # tone
+    sec.append(("tone", "Paper tone", [
+        "<p><b>How it is computed.</b> The ink mask splits the original greys into ink and paper, and the median of each is reported. The paper median says how light the page is, the ink median how dark the pen, and the gap between them is the contrast.</p>",
+        hist_svg(),
+        used("augmentation and the transfer test", '<p class="sm">Grey levels were knobs in the transfer test (ink grey, paper grey, noise) and the photometric augmentation (gamma, contrast, noise). Tone differs a lot between datasets but did not change recognition.</p>' + thumbs(AUG["4"]["panels"]))]))
+    # rules
+    R = D["rules"]
+    sec.append(("rules", "Ruled lines", [
+        "<p><b>How it is computed.</b> After rescaling, connected ink components that are much wider than a word (over 45 stroke widths) and no taller than three stroke widths are called ruled lines or table borders and removed. The share of ink removed is recorded.</p>",
+        '<div class="dgrid">' + f'<figure class="dcard"><img alt="line before" src="{R["orig"]}" loading="lazy"><figcaption>the line as it is</figcaption></figure>'
+        + f'<figure class="dcard"><img alt="ruled lines marked" src="{R["image"]}" loading="lazy"><figcaption>magenta: removed ({R["share"] * 100:.0f} % of this RASAM-1 line\'s ink)</figcaption></figure></div>',
+        '<p class="sm">This is a cleaning step inside the other measurements. Removing ruled lines did not change recognition, and they are not used in training.</p>']))
+    # loci
+    Lc = D["loci"]
+    codes = "".join(f'<li>north {p["n"]}, south {p["s"]}, east {p["e"]}, west {p["w"]}</li>' for p in Lc["probes"])
+    sec.append(("loci", "Contour loci", [
+        "<p><b>How it is computed.</b> For every background pixel, look in the four directions (north, south, east, west) and count how many separate runs of ink you meet, capped at two. "
+        "The four counts give one of 81 codes, and the histogram of codes over the line, split into zones above, near and below the baseline, describes its shape. "
+        "Such histograms identify a line's dataset 70 to 73 % of the time, but they do not track the transfer gap.</p>",
+        f'<figure class="dcard wide"><img alt="loci probes" src="{Lc["image"]}" loading="lazy"><figcaption>The red dots are example pixels. Blue rays look north and south, orange rays east and west, and yellow dots mark the ink runs they meet (0 means the ray reaches the edge without meeting ink). Counts met: <ul class="lc2">{codes}</ul></figcaption></figure>',
+        loci_heat(),
+        '<p class="sm">Used to describe and compare datasets. It is not part of any augmentation or training.</p>']))
+    body = "".join(f'<section class="dsec" id="sec-{sid}"><h4>{e(t)}</h4>{"".join(parts)}</section>' for sid, t, parts in sec)
+    return ('<p>Each detector below was run on one real line from each of three datasets, using the same code as the measurements in the ledger. '
+            "Every picture is the detector's own output drawn on the line, with the numbers it produced, and each section says where the same property was reused in augmentation or training.</p>" + body)
+
+
+POPS["det"] = ("How each detector works", pop_det)
+
 EXTRA_CSS = """
 .tl{position:relative;margin-left:14px;border-left:2px solid var(--line);padding-left:22px}
 .tl .step{position:relative;margin:0 0 22px}
@@ -537,6 +666,15 @@ EXTRA_CSS = """
 .vcol{display:flex;flex-direction:column;gap:10px;min-width:0}
 .vnote{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
 .vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote ul{margin:6px 0 0;padding-left:18px}.vnote>b+ul,.vnote>p+b{display:block;margin-top:14px}.vnote li{margin:4px 0}.vnote i{font-style:italic}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:8px 0}
+.dcard{margin:0;background:var(--bg);border-radius:6px;padding:6px;min-width:0}.dcard img{width:100%;height:auto;display:block;border-radius:3px;background:#fff}
+.dcard figcaption{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}.dcard.wide{grid-column:1/-1}
+.sw{width:100%;height:auto;display:block}.sw .sv{font:500 9px var(--f-body);fill:var(--muted)}
+.dsec{border-top:1px solid var(--line);margin-top:16px;padding-top:6px}.dsec h4{font-size:13px;color:var(--ink);letter-spacing:.04em}
+.used{margin-top:10px;padding:8px 10px;border-left:3px solid var(--accent);background:var(--bg);border-radius:0 6px 6px 0;font-size:13px}
+.used>b{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-right:6px}
+.lc2{margin:4px 0 0;padding-left:16px}
+.pp{position:relative}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
@@ -545,7 +683,7 @@ EXTRA_CSS = """
 POP_JS = """
 (function(){var last=null;
 function close(){document.querySelectorAll('.pop').forEach(function(p){p.hidden=true});document.body.style.overflow='';if(last){last.focus();last=null}}
-document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;var inside=!!b.closest('.pop');document.querySelectorAll('.pop').forEach(function(x){x.hidden=true});if(!inside)last=b;p.hidden=false;document.body.style.overflow='hidden';p.scrollTop=0;p.querySelector('.x').focus()})});
+document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;var inside=!!b.closest('.pop');document.querySelectorAll('.pop').forEach(function(x){x.hidden=true});if(!inside)last=b;p.hidden=false;document.body.style.overflow='hidden';var sec=b.getAttribute('data-sec');var pp=p.querySelector('.pp');pp.scrollTop=0;if(sec){var t=document.getElementById('sec-'+sec);if(t){pp.scrollTop=Math.max(t.offsetTop-70,0)}}p.querySelector('.x').focus()})});
 document.querySelectorAll('.pop').forEach(function(p){p.addEventListener('click',function(ev){if(ev.target===p)close()});p.querySelector('.x').addEventListener('click',close)});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape')close()});})();
 """
