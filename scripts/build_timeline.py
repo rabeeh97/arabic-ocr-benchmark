@@ -263,6 +263,12 @@ step("p5", "Run GPU night 2 and tidy the project",
      B.chips_plain(["night 2 launched", "follow-up queue waiting", "one branch", "ledger overview", "visual brief", "this timeline"]))
 
 
+for _st in S:
+    if _st["title"] == "Characterise the data we already had":
+        T = '<button type="button" class="term" data-pop="%s" aria-haspopup="dialog">%s</button>'
+        _st["ev"] = _st["ev"].replace('<span class="bl">Text features alone</span>', '<span class="bl">' + T % ("text", "Text features") + ' alone</span>')
+        _st["ev"] = _st["ev"].replace('<span class="bl">Text + image features</span>', '<span class="bl">' + T % ("text", "Text") + ' + ' + T % ("image", "image") + ' features</span>')
+
 import re as _re
 
 P = json.loads(Path("docs/research/timeline_popups.json").read_text(encoding="utf8"))
@@ -340,8 +346,8 @@ def pop_reg() -> str:
     return (
         "<p>Each line has a <b>difficulty</b>: how badly the models read it, taken as the median error over a block of models that all read exactly the same lines. "
         "A <b>regression</b> predicts that number from properties of the line, by fitting a weight for each property. If the properties predict difficulty well, they explain why a line is hard.</p>"
-        '<div class="flow"><div><b>Text features</b><span>length, rare letters, unseen words, digits</span></div>'
-        '<div><b>Image features</b><span>size, ink density, stroke width, contrast, blur, skew, ink per character</span></div>'
+        '<div class="flow"><div><b><button type="button" class="term" data-pop="text">Text features</button></b><span>length, rare letters, unseen words, digits</span></div>'
+        '<div><b><button type="button" class="term" data-pop="image">Image features</button></b><span>size, ink density, stroke width, contrast, blur, skew, ink per character</span></div>'
         '<i>→</i><div class="fit"><b>Fitted weights</b><span>one per feature</span></div><i>→</i>'
         '<div class="fit"><b>Predicted difficulty</b><span>compared with the actual line CER</span></div></div>'
         '<h4>What the score means</h4><p class="sm"><b>R²</b> is the share of the differences between lines that the features explain: 0 is none, 1 is all. We fit on ranks (which line is harder than which), so a few extreme lines do not dominate.</p>'
@@ -355,6 +361,53 @@ POPS = {
     "align": ("Aligned edits", pop_align),
     "reg": ("Regressed line difficulty", pop_reg),
 }
+
+TEXT_LABELS = [("chars", "Characters", "n"), ("words", "Words", "n"), ("word_len", "Average word length", "d"), ("dotted_share", "Letters that carry dots", "p"),
+               ("ambiguous_share", "Letters whose skeleton another letter shares", "p"), ("paws_per_word", "Word parts per word", "d"),
+               ("hamza_share", "Hamza, share of letters", "p"), ("digit_share", "Digits, share of characters", "p"), ("punct_share", "Punctuation, share of characters", "p")]
+IMG_LABELS = [("aspect", "Width ÷ height", "d"), ("ink_density", "Ink density: share of pixels that are ink", "p"), ("ink_height_frac", "Ink height: share of the image height", "p"),
+              ("core_height", "Core height of the writing (px)", "n"), ("stroke_width", "Typical stroke width (px)", "n"), ("contrast", "Contrast: paper brightness minus ink", "n"),
+              ("blur_lapvar", "Sharpness (Laplacian variance)", "n"), ("skew_deg", "Skew of the line (degrees)", "d"), ("ink_px_per_char", "Ink width per character (px)", "d")]
+
+
+def _fmt(v, kind):
+    return f"{v * 100:.0f} %" if kind == "p" else (f"{v:.0f}" if kind == "n" else f"{v:.1f}")
+
+
+def pop_text() -> str:
+    ex = P["features"]["text"]
+    head = "".join(f'<th><span class="ar" dir="rtl" lang="ar">{e(t["text"])}</span><small>{e(t["label"])}</small></th>' for t in ex)
+    rows = "".join(f'<tr><td>{e(lab)}</td>' + "".join(f'<td>{_fmt(t["vals"][k], kind)}</td>' for t in ex) + "</tr>" for k, lab, kind in TEXT_LABELS)
+    return (
+        "<p><b>Text features</b> are measurements taken from the reference transcription alone, without looking at the picture. They describe what the line says: how long it is, "
+        "which letters it contains, and how awkward those letters are for a recogniser.</p>"
+        '<div class="grp"><div><b>Length</b><span>characters, words, average word length</span></div>'
+        "<div><b>Dots</b><span>how many letters carry dots, and how many have a skeleton another letter shares (they differ only by dots)</span></div>"
+        "<div><b>Marks and hamza</b><span>how many diacritics the label has, and how often a hamza appears</span></div>"
+        "<div><b>Connectedness</b><span>word parts per word, lam-alef ligatures, how many letters sit at the end of a word part</span></div>"
+        "<div><b>Non-Arabic content</b><span>digits, Latin letters and punctuation</span></div></div>"
+        f'<h4>Two real lines, measured</h4><div class="scroll"><table class="ft"><thead><tr><th></th>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+        '<h4>How they are used</h4><p class="sm">They are the text side of the difficulty regression. On their own they explain 6 to 32 % of the differences between lines (NAKBA lines, 51 %, is the exception). '
+        "Longer lines simply have more chances for errors, so we also test each feature with length held fixed.</p>")
+
+
+def pop_image() -> str:
+    ex = P["features"]["image"]
+    figs = "".join(f'<figure><img alt="{e(t["label"])}" src="{t["src"]}" loading="lazy"><figcaption>{e(t["label"])} ({t["vals"]["width"]:.0f} × {t["vals"]["height"]:.0f} px)</figcaption></figure>' for t in ex)
+    rows = "".join(f'<tr><td>{e(lab)}</td>' + "".join(f'<td>{_fmt(t["vals"][k], kind)}</td>' for t in ex) + "</tr>" for k, lab, kind in IMG_LABELS if k in ex[0]["vals"])
+    return (
+        "<p><b>Image features</b> are measurements taken from the picture of the line alone, without knowing what it says. They describe how the line looks: how big it is, how dark, how sharp and how tilted.</p>"
+        '<div class="grp"><div><b>Size and shape</b><span>width, height, aspect ratio, and how much of the image the ink fills</span></div>'
+        "<div><b>Writing</b><span>core height of the writing, typical stroke width, ink width per character</span></div>"
+        "<div><b>Tone</b><span>contrast between ink and paper, and sharpness (blur)</span></div>"
+        "<div><b>Geometry</b><span>skew of the text line, and ink touching the left or right edge (a cut-off line)</span></div></div>"
+        f'<h4>One real line, measured twice</h4><div class="two">{figs}</div><div class="scroll"><table class="ft"><thead><tr><th></th><th>as stored</th><th>cropped to the ink</th></tr></thead><tbody>{rows}</tbody></table></div>'
+        '<p class="sm">Same words, very different numbers: the loose crop leaves the ink filling under a third of the height, with low contrast. That is how a loose crop shows up in the data.</p>'
+        '<h4>How they are used</h4><p class="sm">They are the image side of the difficulty regression. Adding them to the text features lifts the share of differences explained from 6–32 % to 15–63 %, most on the historical books, online KHATT and RASAM-1. '
+        "Single image coefficients turned out unstable, so only the combined fit is trusted.</p>")
+
+
+POPS.update({"text": ("Text features", pop_text), "image": ("Image features", pop_image)})
 
 EXTRA_CSS = """
 .tl{position:relative;margin-left:14px;border-left:2px solid var(--line);padding-left:22px}
@@ -418,6 +471,12 @@ EXTRA_CSS = """
 .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin:10px 0}
 .flow>div{flex:1 1 150px;min-width:0;background:var(--bg);border-radius:6px;padding:8px 10px}.flow b{display:block;font-size:13px}.flow span{font-size:12px;color:var(--muted)}
 .flow>i{align-self:center;font-style:normal;color:var(--muted);font-size:18px}.flow .fit{flex:0 1 140px}
+
+.grp{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:10px 0}
+.grp>div{background:var(--bg);border-radius:6px;padding:8px 10px}.grp b{display:block;font:500 12px var(--f-mono);color:var(--accent);margin-bottom:2px}.grp span{font-size:12.5px;color:var(--muted)}
+.ft{width:100%;border-collapse:collapse;font-size:13px}.ft th,.ft td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.ft th small{display:block;font:400 11px var(--f-body);color:var(--muted)}.ft th .ar{font-size:15px;font-weight:400}.ft td:not(:first-child){font:500 12.5px var(--f-mono);white-space:nowrap}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.two figure{margin:0}.two img{width:100%;height:auto;display:block;border-radius:3px;background:#fff;border:1px solid var(--line)}.two figcaption{font-size:11px;color:var(--muted)}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
@@ -426,7 +485,7 @@ EXTRA_CSS = """
 POP_JS = """
 (function(){var last=null;
 function close(){document.querySelectorAll('.pop').forEach(function(p){p.hidden=true});document.body.style.overflow='';if(last){last.focus();last=null}}
-document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;last=b;p.hidden=false;document.body.style.overflow='hidden';p.querySelector('.x').focus()})});
+document.querySelectorAll('.term').forEach(function(b){b.addEventListener('click',function(){var p=document.getElementById('pop-'+b.getAttribute('data-pop'));if(!p)return;var inside=!!b.closest('.pop');document.querySelectorAll('.pop').forEach(function(x){x.hidden=true});if(!inside)last=b;p.hidden=false;document.body.style.overflow='hidden';p.scrollTop=0;p.querySelector('.x').focus()})});
 document.querySelectorAll('.pop').forEach(function(p){p.addEventListener('click',function(ev){if(ev.target===p)close()});p.querySelector('.x').addEventListener('click',close)});
 document.addEventListener('keydown',function(ev){if(ev.key==='Escape')close()});})();
 """
