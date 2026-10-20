@@ -85,7 +85,7 @@ ERA1 = [
      "R2.8, X6, C5", "A", "hegghammer2021noisy baek2019wrong rice1995isri"),
     ("Leakage can fake a fine-tuning gain: 86.5 % of kitab_muharaf lines (20+ characters) occur word for word in Muharaf train, so fine-tuned rows there measure recall.",
      "profile P1", "A", "heakl2025kitab"),
-    ("Difficulty belongs to the line: consensus difficulty has split-half reliability 0.54–0.81, and image features lift rank-regression R² from 0.06–0.32 (text only) to 0.15–0.63.",
+    ("Difficulty belongs to the line: consensus difficulty has split-half reliability 0.54–0.81, and image features lift rank-regression R² from 0.06–0.51 (text only) to 0.15–0.63.",
      "sample characteristics", "B", "rodriguez2021irt swayamdipta2020cartography ye2013diqa"),
     ("Muharaf label noise (126 of 1,334 test lines flagged by CER-HV) does not move our comparisons: dropping them changes CER by −0.4 to +0.9 points for 13 models and changes no rank.",
      "X2", "A", "alazzawi2026labelerr"),

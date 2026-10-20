@@ -86,7 +86,20 @@ for lab, key in [("The line as stored", "stored"), ("The same line cropped to it
     f = image_features(im, n_chars)
     img_ex.append({"label": lab, "src": crop[key], "vals": {k: round(float(f[k]), 3) for k in img_keys if k in f}})
 out["features"] = {"text": text_ex, "image": img_ex}
+
+# --- per-dataset R^2 (image_layer.json from the two characterisation runs; later runs win)
+import glob
+import os
+
+r2 = {}
+for base in ["results/characterize", "/Volumes/PortableSSD/repos/arabic_ocr/results/characterize"]:
+    for fp in sorted(glob.glob(base + "/*/image_layer.json")):
+        for blk in json.load(open(fp, encoding="utf8"))["blocks"]:
+            r2[blk["dataset"]] = {"dataset": blk["dataset"], "n": blk["n"], "text": blk["r2_text"], "image": blk["r2_image"], "both": blk["r2_both"],
+                                  "run": os.path.basename(os.path.dirname(fp))}
+out["r2"] = sorted(r2.values(), key=lambda r: -r["both"])
 Path("docs/research/timeline_popups.json").write_text(json.dumps(out, ensure_ascii=False), encoding="utf8")
 print("example edits per rung:", [r["edits"] for r in rungs], "alignment:", counts)
 print("text feats:", [t["vals"] for t in text_ex]); print("image feats:", [i["vals"] for i in img_ex])
+print("r2 sets:", len(out["r2"]), "text range", round(min(r["text"] for r in out["r2"]), 3), round(max(r["text"] for r in out["r2"]), 3), "both range", round(min(r["both"] for r in out["r2"]), 3), round(max(r["both"] for r in out["r2"]), 3))
 print("stair:", [(s["name"], round(s["cer"] * 100, 1)) for s in stair])

@@ -106,9 +106,9 @@ step("p2", "Read the closest papers and borrow their yardstick",
 step("p2", "Characterise the data we already had",
      "Before adding experiments, learn what the existing readings can already tell us about why lines are hard.",
      "Re-scored every reading on the [[ladder|normalisation ladder]], [[align|aligned edits]], and [[reg|regressed line difficulty]] on text and image features across complete model blocks.",
-     "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.54 to 0.81), and image features lift the explained variance from 0.06–0.32 to 0.15–0.63.",
+     "Dots are a small tax (median 1.8 CER points, 8 % of error). 60 % of spaces wrongly inserted inside words sit at gaps between word parts. Difficulty belongs to the line (split-half reliability 0.54 to 0.81), and image features lift the explained variance from 0.06–0.51 to 0.15–0.63.",
      B.stack([("skeleton", 92, "hi"), ("dots", 8, "mid")]) + '<p class="key">what the error is made of, median over 91 model × dataset pairs</p>'
-     + B.rangebars([("Text features alone", 6, 32, "gr"), ("Text + image features", 15, 63, "lo")], 90, " %") + '<p class="key">share of the differences between lines that the features explain</p>', "alshaibani2025dotless")
+     + B.rangebars([("Text features alone", 6, 51, "gr"), ("Text + image features", 15, 63, "lo")], 90, " %") + '<p class="key">share of the differences between lines that the features explain</p>', "alshaibani2025dotless")
 step("p2", "Check how much label noise matters",
      "If some test labels are wrong, our rankings might be wrong.",
      "Used the published human review logs to drop the flagged Muharaf test lines and re-scored 13 models.",
@@ -267,22 +267,40 @@ for _st in S:
     if _st["title"] == "Characterise the data we already had":
         T = '<button type="button" class="term" data-pop="%s" aria-haspopup="dialog">%s</button>'
         _st["ev"] = _st["ev"].replace('<span class="bl">Text features alone</span>', '<span class="bl">' + T % ("text", "Text features") + ' alone</span>')
+        for _rng in ("6–51 %", "15–63 %"):
+            _st["ev"] = _st["ev"].replace(f"<b>{_rng}</b>", f'<b><button type="button" class="term" data-pop="r2" aria-haspopup="dialog">{_rng}</button></b>')
+        _st["ev"] = _st["ev"].replace("share of the differences between lines that the features explain", "share of the differences between lines that the features explain (tap a number for every dataset)")
         _st["ev"] = _st["ev"].replace('<span class="bl">Text + image features</span>', '<span class="bl">' + T % ("text", "Text") + ' + ' + T % ("image", "image") + ' features</span>')
 
 _NOTE6 = (
     "<b>How to read the two bars</b>"
     "<p>Every line has a <i>difficulty</i>: the median error over a group of models that all read exactly that line. The question is how much of the "
     "difference in difficulty <i>between lines</i> some simple facts about a line can predict.</p>"
-    "<p><b>Text features alone</b> use only the transcription, with no picture (length, letters with dots, word parts and so on). They account for 6 to 32 % of "
+    "<p><b>Text features alone</b> use only the transcription, with no picture (length, letters with dots, word parts and so on). They account for 6 to 51 % of "
     "the differences in difficulty, depending on the dataset. 0 % would mean the text tells us nothing about which lines are hard, and 100 % would mean it tells us everything.</p>"
     "<p><b>Text + image features</b> add facts about the picture (ink density, stroke width, line height and so on). The share rises to 15 to 63 %, which is 7 to 27 points more, "
     "so how a line looks explains a real part of why it is hard.</p>"
-    "<p>This does not mean text <i>causes</i> 6 to 32 % of the errors. It means how much of the spread between lines these facts can predict. "
-    "The rest (37 to 85 % in the combined fit) is difficulty that neither kind of feature captures. The ranges run from the lowest to the highest of eight datasets, not over models.</p>"
+    "<p>This does not mean text <i>causes</i> 6 to 51 % of the errors. It means how much of the spread between lines these facts can predict. "
+    "The rest (37 to 85 % in the combined fit) is difficulty that neither kind of feature captures. The ranges run from the lowest to the highest of ten line sets, not over models. Tap a number in the chart for every set.</p>"
     "<p>This only makes sense because difficulty belongs to the line: different models tend to find the same lines hard (split-half reliability 0.54 to 0.81).</p>")
 for _st in S:
     if _st["title"] == "Characterise the data we already had":
         _st["note"] = _NOTE6
+
+_LEARN6 = (
+    "<b>What we learned, and how we used it</b>"
+    "<ul>"
+    "<li><b>Dots are a small share of the error</b> (about 8 %), and nine tenths remains without them. So we scored every later result on the ladder, kept dots as a separate and smaller question, "
+    "and turned to letter skeletons: which shapes and parts of letters fail (see the steps on letter shapes and teeth).</li>"
+    "<li><b>Extra spaces sit at word-part gaps.</b> So we measured word gaps against part gaps directly, and found they overlap: spacing is visually ambiguous. Word-part-aware decoding stays an open idea.</li>"
+    "<li><b>Difficulty belongs to the line.</b> So we studied hard lines instead of averages: a line-by-system matrix, a queue of lines no system reads that goes to label review, and later item-response difficulty and challenge subsets.</li>"
+    "<li><b>Image features add real explanatory power</b> (7 to 27 points), <b>but single coefficients are unstable.</b> So we looked for causes in the picture and tested each one directly: we measured how the datasets look, "
+    "transformed lines to test each property, and found the loose crops, instead of trusting any one regression coefficient.</li>"
+    "<li><b>Text alone predicts little for most sets,</b> but we did not assume text distance was unimportant. We tested it directly, with a language-model decoder and a lexicon.</li>"
+    "</ul>")
+for _st in S:
+    if _st["title"] == "Characterise the data we already had":
+        _st["note"] += _LEARN6
 
 import re as _re
 
@@ -355,8 +373,7 @@ def pop_align() -> str:
 
 
 def pop_reg() -> str:
-    r2 = [("Historical books", 0.32, 0.58), ("KITAB online KHATT", 0.16, 0.43), ("RASAM-1", 0.11, 0.36), ("NAKBA lines", 0.51, 0.63),
-          ("RASAM-2", 0.10, 0.25), ("NAKBA blind", 0.17, 0.27), ("KITAB-KHATT", 0.32, 0.39), ("Muharaf", 0.06, 0.15)]
+    r2 = [(DS_NAMES[r["dataset"]], r["text"], r["both"]) for r in P["r2"]]
     chart = B.pairbars(r2, 0.7, unit="", lo_is_good=False, la="text features only", lb="text + image features")
     return (
         "<p>Each line has a <b>difficulty</b>: how badly the models read it, taken as the median error over a block of models that all read exactly the same lines. "
@@ -366,8 +383,8 @@ def pop_reg() -> str:
         '<i>→</i><div class="fit"><b>Fitted weights</b><span>one per feature</span></div><i>→</i>'
         '<div class="fit"><b>Predicted difficulty</b><span>compared with the actual line CER</span></div></div>'
         '<h4>What the score means</h4><p class="sm"><b>R²</b> is the share of the differences between lines that the features explain: 0 is none, 1 is all. We fit on ranks (which line is harder than which), so a few extreme lines do not dominate.</p>'
-        f'<h4>Real results, by set</h4>{chart}'
-        '<p class="sm">Text alone explains 0.06 to 0.32 of the differences (NAKBA lines, 0.51, is the exception). Adding image features lifts it to 0.15 to 0.63, most on the historical books, online KHATT and RASAM-1 (about +0.25), and least on KHATT (+0.07). '
+        f'<h4>Real results, by set</h4>{chart}<p class="sm">Line counts, image-only values and the gain for every set are in <button type="button" class="term" data-pop="r2">the table</button>.</p>'
+        '<p class="sm">Across the ten line sets, text alone explains 0.06 to 0.51 of the differences. Adding image features lifts it to 0.15 to 0.63, most on the historical books, online KHATT and RASAM-1 (about +0.25) and least on KHATT (+0.07). '
         "Single image coefficients turned out unstable, so we only trust the combined fit, not any one feature on its own.</p>")
 
 
@@ -402,7 +419,7 @@ def pop_text() -> str:
         "<div><b>Connectedness</b><span>word parts per word, lam-alef ligatures, how many letters sit at the end of a word part</span></div>"
         "<div><b>Non-Arabic content</b><span>digits, Latin letters and punctuation</span></div></div>"
         f'<h4>Two real lines, measured</h4><div class="scroll"><table class="ft"><thead><tr><th></th>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
-        '<h4>How they are used</h4><p class="sm">They are the text side of the difficulty regression. On their own they explain 6 to 32 % of the differences between lines (NAKBA lines, 51 %, is the exception). '
+        '<h4>How they are used</h4><p class="sm">They are the text side of the difficulty regression. On their own they explain 6 to 51 % of the differences between lines, depending on the dataset. '
         "Longer lines simply have more chances for errors, so we also test each feature with length held fixed.</p>")
 
 
@@ -418,11 +435,36 @@ def pop_image() -> str:
         "<div><b>Geometry</b><span>skew of the text line, and ink touching the left or right edge (a cut-off line)</span></div></div>"
         f'<h4>One real line, measured twice</h4><div class="two">{figs}</div><div class="scroll"><table class="ft"><thead><tr><th></th><th>as stored</th><th>cropped to the ink</th></tr></thead><tbody>{rows}</tbody></table></div>'
         '<p class="sm">Same words, very different numbers: the loose crop leaves the ink filling under a third of the height, with low contrast. That is how a loose crop shows up in the data.</p>'
-        '<h4>How they are used</h4><p class="sm">They are the image side of the difficulty regression. Adding them to the text features lifts the share of differences explained from 6–32 % to 15–63 %, most on the historical books, online KHATT and RASAM-1. '
+        '<h4>How they are used</h4><p class="sm">They are the image side of the difficulty regression. Adding them to the text features lifts the share of differences explained from 6–51 % to 15–63 %, most on the historical books, online KHATT and RASAM-1. '
         "Single image coefficients turned out unstable, so only the combined fit is trusted.</p>")
 
 
 POPS.update({"text": ("Text features", pop_text), "image": ("Image features", pop_image)})
+
+DS_NAMES = {"kitab_historyar": "Historical books", "kitab_onlinekhatt": "Online KHATT", "kitab_khatt": "KHATT", "rasam1": "RASAM-1", "rasam2": "RASAM-2",
+            "nakba_blind": "NAKBA blind", "nakba_lines": "NAKBA lines", "muharaf_lines": "Muharaf", "kitab_muharaf": "KITAB-Muharaf", "kitab_hindawi": "Hindawi (page-scale)"}
+
+
+def pop_r2() -> str:
+    rows = []
+    for r in P["r2"]:
+        gain = (r["both"] - r["text"]) * 100
+        flag = {"kitab_muharaf": " ¹", "kitab_hindawi": " ²", "nakba_lines": " ³"}.get(r["dataset"], "")
+        rows.append(f'<tr><td>{e(DS_NAMES[r["dataset"]])}{flag}</td><td>{r["n"]:,}</td><td>{r["text"] * 100:.0f} %</td><td>{r["image"] * 100:.0f} %</td>'
+                    f'<td><b>{r["both"] * 100:.0f} %</b></td><td>+{gain:.0f}</td></tr>')
+    return (
+        "<p>The exact values behind the two bars: one row per line set. Each number is the share of the differences in line difficulty that the features account for "
+        "(R², fitted on ranks), using text features alone, image features alone, and both together.</p>"
+        f'<div class="scroll"><table class="ft"><thead><tr><th>Dataset</th><th>Lines</th><th>Text alone</th><th>Image alone</th><th>Text + image</th><th>Gain (points)</th></tr></thead><tbody>{"".join(rows)}</tbody></table></div>'
+        '<p class="sm">Sorted by the combined value. The range of the first column is the <b>6–51 %</b> bar, and the range of the fifth column is the <b>15–63 %</b> bar.</p>'
+        '<h4>Why there are no model-by-dataset rows</h4><p class="sm">Difficulty is one consensus value per line, taken over a group of models that all read it, so each dataset has one value per feature set, not one per model. '
+        "Per-model values would answer a different question (what makes <i>this</i> model fail).</p>"
+        '<h4>How much to trust each row</h4><p class="sm">The line counts matter: most sets have 60 to 180 lines, so single values are noisy, while NAKBA blind (2,669) and Muharaf (472) are the most stable. '
+        "¹ KITAB-Muharaf overlaps Muharaf's training text. ² Hindawi lines are page-scale. ³ NAKBA lines has only 62 lines, so its 51 % is the least certain value. "
+        "They come from our first image-layer analysis (<code>scripts/image_layer.py</code>), over complete blocks of models that all read the same lines.</p>")
+
+
+POPS["r2"] = ("Explained difficulty, by dataset", pop_r2)
 
 EXTRA_CSS = """
 .tl{position:relative;margin-left:14px;border-left:2px solid var(--line);padding-left:22px}
@@ -494,7 +536,7 @@ EXTRA_CSS = """
 .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 8px}.two figure{margin:0}.two img{width:100%;height:auto;display:block;border-radius:3px;background:#fff;border:1px solid var(--line)}.two figcaption{font-size:11px;color:var(--muted)}
 .vcol{display:flex;flex-direction:column;gap:10px;min-width:0}
 .vnote{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--muted)}
-.vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote i{font-style:italic}
+.vnote b{color:var(--ink)}.vnote p{margin:6px 0 0}.vnote ul{margin:6px 0 0;padding-left:18px}.vnote li{margin:4px 0}.vnote i{font-style:italic}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
