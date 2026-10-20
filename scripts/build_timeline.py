@@ -157,7 +157,7 @@ step("p3", "Notice that loose crops hurt, and crop to the ink",
      viz(B.crop_pairs(), B.pairbars([("KHATT, 200 lines", 31.0, 23.3)], 35, la="as stored", lb="ink-cropped")), "retsinas2022best")
 step("p3", "Ask whether unusual letter shapes explain the errors",
      "After the crop, what remains? The letters themselves might look unlike anything in training.",
-     "Aligned each line to its letters with CTC forced alignment, gave each letter a feature vector, and measured its distance to the nearest training letter of the same character and position. Built a bank of 75,182 training letters and clustered it into allographs.",
+     "Aligned each line to its letters with [[ctc|CTC]] forced alignment, gave each letter a feature vector, and measured its distance to the nearest training letter of the same character and position. Built a bank of 75,182 training letters and clustered it into allographs.",
      "Letter-shape novelty is the strongest error predictor we found: letter error climbs from 1–5 % in the most typical fifth to 30–53 % in the most novel band, in every dataset, confirmed with a second model's features.",
      viz(B.letter_grid(B.ASSETS["novel"], "Most novel KHATT letters (left) beside the nearest training letter (right). All misread."),
          B.letter_grid(B.ASSETS["typical"], "Typical letters, read correctly."),
@@ -198,7 +198,7 @@ step("p4", "Go line by line, and correct our own mistakes",
          '<p class="key">Lines no system reads: the first queue for label review</p>'), "mueller2012letter alluhaybi2020connect")
 step("p4", "Test whether the shape library is feasible",
      "A library of real letter shapes could feed synthesis and a shape-token recogniser, but only if letters can be cut out reliably.",
-     "Checked the CTC letter spans against the ink and counted how often a line's ink components match its label's word parts.",
+     "Checked the [[ctc|CTC]] letter spans against the ink and counted how often a line's ink components match its label's word parts.",
      "Spans are narrow anchors, not cut lines (median 12 px at 64 px height), and handwritten word parts often touch: ink components match the label's parts exactly on only 6–9 % of lines. A library needs alignment and ink together.",
      img(A["contact"]["src"], "Letter crops from the CTC spans, by letter and form: the boxes show how narrow the spans are"))
 step("p4", "Write the map, the plan and the rules",
@@ -597,6 +597,62 @@ def pop_det() -> str:
 
 POPS["det"] = ("How each detector works", pop_det)
 
+C = json.loads(Path("docs/research/timeline_ctc.json").read_text(encoding="utf8"))
+
+
+def ctc_viz() -> str:
+    T = C["T"]
+    alpha = C["alphabet"]
+    img = C["img"]
+    cells = []
+    marks = []
+    prev = 0
+    for k, (cls, pr) in enumerate(C["frames"]):
+        if cls == 0:
+            cells.append('<i class="blank"></i>')
+        else:
+            hue = (cls * 47) % 360
+            cells.append(f'<i style="background:color-mix(in srgb,hsl({hue} 65% 52%) {int(pr * 100)}%,transparent)"></i>')
+            if cls != prev:
+                marks.append(f'<span class="em" style="left:{(k + 0.5) / T * 100:.2f}%">{e(alpha[cls - 1])}</span>')
+        prev = cls
+    sp = []
+    for j, sdef in enumerate(C["spans"]):
+        left, width = sdef["f0"] / T * 100, (sdef["f1"] - sdef["f0"] + 1) / T * 100
+        sp.append(f'<i class="sb sb{j % 2}" style="left:{left:.2f}%;width:{width:.2f}%"></i>')
+        sp.append(f'<span class="sl" style="left:{left + width / 2:.2f}%">{e(sdef["ch"])}</span>')
+    return (
+        '<div class="ctcv">'
+        f'<div class="cr"><b>1 · Cut into frames</b><div class="imgw"><img alt="the line" src="{img}" loading="lazy"><i class="fgrid" style="--T:{T}"></i></div>'
+        f'<p class="sm">Every 4 pixels of the 64-px-high line is one frame: {T} frames for this {C["w"]}-px line. The network reads left to right.</p></div>'
+        f'<div class="cr"><b>2 · What the model believes in each frame</b><div class="cells">{"".join(cells)}</div><div class="emr">{"".join(marks)}</div>'
+        f'<p class="sm">Each cell is one frame. Empty = blank ("nothing new here"). Coloured = a letter, brighter when more confident. '
+        f'Collapse repeated letters and drop blanks and the model reads: <span class="ar" dir="rtl" lang="ar">{e(C["greedy"])}</span> (truth: <span class="ar" dir="rtl" lang="ar">{e(C["label"])}</span>).</p></div>'
+        f'<div class="cr"><b>3 · Forced alignment: the best path that spells the true text</b><div class="imgw lab"><img alt="the line with letter spans" src="{img}" loading="lazy">{"".join(sp)}</div>'
+        '<p class="sm">Given the true text, the single most probable path through the frames gives every letter its own run of frames: its span.</p></div>'
+        "</div>")
+
+
+def pop_ctc() -> str:
+    widths = [sd["f1"] - sd["f0"] + 1 for sd in C["spans"]]
+    med = sorted(widths)[len(widths) // 2]
+    return (
+        "<p><b>CTC</b> (connectionist temporal classification) is how our recogniser learns to read a line without anyone drawing a box around each letter. "
+        "The network scans the line image from left to right in narrow vertical slices called frames. For each frame it gives a probability to every letter, plus a special <b>blank</b> meaning \"nothing new here\".</p>"
+        "<p><b>Reading a line:</b> take the most likely symbol in each frame, merge repeated letters, drop the blanks, and what is left is the text. "
+        "<b>Training:</b> all we have is the line and its text. CTC adds up the probability of every way the frames could line up with the text, and trains the model to make that total large, so it learns the alignment by itself.</p>"
+        '<p class="sm">Arabic is written right to left but the network scans left to right, so the target text is fed in reverse, in visual order.</p>'
+        '<h4>How the letter spans were made, on one real line</h4>' + ctc_viz() +
+        '<h4>Its role here: forced alignment</h4>'
+        "<p>We already know each line's true text, so instead of letting the model decide what it sees, we ask: among all paths through the frames that spell exactly this text, which is the most probable (a Viterbi search)? "
+        "That best path gives every letter a run of frames, a <b>span</b> on the image. We then compute a feature vector for each span and measure how far it is from the typical shape of the same letter: the novelty distance that the step relates to where errors fall.</p>"
+        '<h4>How far to trust the spans</h4>'
+        f'<p class="sm">They are the model\'s best guess, not drawn boxes. They are narrow (a median of {med} frames, {med * 4} px, on this line), so they say roughly <i>where</i> a letter is, not where its ink ends, especially where Arabic letters join. '
+        "The alignment is also less reliable on lines the model reads badly. The same spans were used to measure gaps between word parts and to check the dot detector.</p>")
+
+
+POPS["ctc"] = ("CTC and forced alignment", pop_ctc)
+
 EXTRA_CSS = """
 .tl{position:relative;margin-left:14px;border-left:2px solid var(--line);padding-left:22px}
 .tl .step{position:relative;margin:0 0 22px}
@@ -677,6 +733,15 @@ EXTRA_CSS = """
 .used>b{font:500 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-right:6px}
 .lc2{margin:4px 0 0;padding-left:16px}
 .pp{position:relative}
+.ctcv{display:flex;flex-direction:column;gap:14px;margin:8px 0}
+.cr>b{font:500 12px var(--f-mono);color:var(--accent);display:block;margin-bottom:4px}
+.imgw{position:relative}.imgw img{display:block;width:100%;height:auto;border-radius:3px;background:#fff}
+.fgrid{position:absolute;inset:0;background-image:repeating-linear-gradient(to right,rgba(40,110,230,.55) 0 1px,transparent 1px calc(100% / var(--T)));pointer-events:none}
+.cells{display:flex;height:24px;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:var(--bg)}.cells i{flex:1 1 0;min-width:0}.cells i.blank{background:transparent}
+.emr{position:relative;height:18px}.em{position:absolute;transform:translateX(-50%);font:700 13px var(--f-ar);color:var(--ink)}
+.imgw.lab{margin-top:22px}.sb{position:absolute;top:0;bottom:0;mix-blend-mode:multiply}
+.sb0{background:color-mix(in srgb,var(--accent) 32%,transparent)}.sb1{background:color-mix(in srgb,var(--mid) 40%,transparent)}
+.sl{position:absolute;top:-21px;transform:translateX(-50%);font:700 14px var(--f-ar);color:var(--ink)}
 @media (max-width:560px){.tl{margin-left:6px;padding-left:16px}.tl .step::before{left:-24px}.ph{margin-left:-6px}}
 """
 
