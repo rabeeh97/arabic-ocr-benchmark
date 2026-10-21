@@ -86,7 +86,7 @@ def main() -> None:
                     f"memorisation effect: {c['leak_effect'].get('decision', '–')}</td></tr>"
                     f"<tr><th>image profile</th><td>{'; '.join(f'{k} {v:.2f}' for k, v in ip.items())}<br>{'; '.join(f'{k} {v:.1%}' for k, v in c.get('image_flags', {}).items())}</td></tr>"
                     f"<tr><th>difficulty</th><td>best {best[1] if best else '–'} {best[0]*100:.1f} % CER; median system {df['median_system_cer']*100:.1f} % ({df['systems_full_coverage']} systems); "
-                    if best else f"<tr><th>difficulty</th><td>no system reads ≥ 80 % of the set; ")
+                    if best else "<tr><th>difficulty</th><td>no system reads ≥ 80 % of the set; ")
         html.append(f"IRT split-half ρ(b) {df['irt'].get('split_half_spearman_b', ['–'])[0] if df['irt'].get('split_half_spearman_b') else '–'}; "
                     f"{'; '.join(f'{n} {v:.1%}' for n, v in df['subset_shares'].items() if v)}; fragments a separate subset: {df['fragments_separate_subset']}</td></tr></table>")
         for k in pick[ds]:

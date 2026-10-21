@@ -35,6 +35,7 @@ import os
 import platform
 import shutil
 import queue
+import re
 import subprocess
 import sys
 import threading
@@ -324,6 +325,18 @@ def _run(dirs: dict, cmd: list[str], *, phase: str, env: dict | None = None) -> 
 # --------------------------------------------------------------------------- #
 # phases
 # --------------------------------------------------------------------------- #
+def _config_uses_qlora(spec: dict) -> bool:
+    """True when the experiment's training config sets `method: qlora`.
+
+    A line scan rather than a YAML load: bootstrap runs before the venv exists,
+    so PyYAML may not be importable yet.
+    """
+    cfg = REPO / spec["config"]
+    return cfg.is_file() and re.search(
+        r"^method:\s*qlora\b", cfg.read_text(encoding="utf-8"), re.MULTILINE
+    ) is not None
+
+
 def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
     # "done" is only trusted if the venv can actually import this package and
     # its core deps -- not just that a python.exe file exists (it may have
@@ -432,6 +445,7 @@ def phase_bootstrap(dirs: dict, state: dict, spec: dict, args) -> None:
         "print('pandas', pandas.__version__);"
         "print('pyarrow', pyarrow.__version__)"
     )
+    needs_qlora = _config_uses_qlora(spec)
     if needs_qlora:
         check += "import bitsandbytes;print('bitsandbytes', bitsandbytes.__version__)"
     else:

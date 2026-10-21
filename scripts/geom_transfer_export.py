@@ -61,6 +61,7 @@ def main() -> None:
     saved = pickle.load(open(a.run / "transfer_params.pkl", "rb"))
     params = {tuple(k.split(":")): v["P"] for k, v in saved.items()}
     rows = []
+    changed_n = 0
     for src in ("khatt", "nakba", "muharaf"):
         targets = [t for (s, t) in params if s == src]
         kept = 0
@@ -82,7 +83,7 @@ def main() -> None:
                             rows.append({"id": f"{TAG[src]}/{i:06d}", "dataset": f"{TAG[src]}__as_{t}_only_{part}", "role": "eval", "label": label, "img": o2})
             if src == "nakba":
                 nr, changed = remove_rules(img)
-                changed_n = changed_n + int(changed) if "changed_n" in dir() else int(changed)
+                changed_n += int(changed)
                 rows.append({"id": f"{TAG[src]}/{i:06d}", "dataset": f"{TAG[src]}__norules", "role": "eval", "label": label, "img": nr})
             kept += 1
             if kept >= a.n:

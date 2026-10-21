@@ -19,7 +19,7 @@ from pathlib import Path
 
 W = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(W / "scripts"))
-from change_gallery import b64, esc, marked  # noqa: E402
+from change_gallery import esc  # noqa: E402
 
 LEDGER = W / "docs/research/paper-ledger.html"
 GROUPS = [("exact", ["exact"]), ("≤ 5 % (≥ 95 % right)", ["≤2%", "≤5%"]), ("≤ 25 %", ["≤10%", "≤25%"]), ("≤ 50 %", ["≤50%"]), ("> 50 % (failing)", ["≤100%", ">100%"])]

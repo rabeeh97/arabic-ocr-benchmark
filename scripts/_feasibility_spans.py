@@ -5,7 +5,7 @@ import pickle
 from collections import defaultdict
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 W = "/Volumes/PortableSSD/repos/arabic_ocr/.claude/worktrees/xai-attribution-spike"
 J = json.load(open(f"{W}/results/panel/letters/aligner_run/letters.json", encoding="utf-8"))

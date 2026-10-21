@@ -12,7 +12,6 @@ Reads OPENAI_API_KEY_PAID and ANTHROPIC_API_KEY_PAID from the environment / .env
 from __future__ import annotations
 
 import os
-import re
 import sys
 
 import arabic_ocr_bench  # noqa: F401  -- side effect: loads .env

@@ -43,6 +43,7 @@ import subprocess
 import sys
 import threading
 import time
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -143,7 +144,7 @@ def _venv_python(root: Path) -> Path:
     return Path(sys.executable)
 
 
-def _run(logs: Path, cmd: list[str], *, step: str) -> int:
+def _run(logs: Path, cmd: list[str], *, step: str, on_heartbeat: Callable[[], None] | None = None) -> int:
     """Stream a child process's output to the suite log, with a heartbeat."""
     _log(logs, f"--- {step}: {' '.join(cmd)}")
     proc = subprocess.Popen(

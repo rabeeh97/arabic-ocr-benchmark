@@ -335,7 +335,7 @@ def cmd_selftest(a):
     print("tiny model + adapter in", tmp, flush=True)
     base = dict(pkg=a.pkg, lines=a.lines, dtype="float32", max_new_tokens=12, deadline_file=None, deadline_offset_h=0.0,
                 hf_id=str(mdir), units=None)
-    sel = [f"kitab_khatt:stored,h60_n8:2", "rasam2:stored:2"]
+    sel = ["kitab_khatt:stored,h60_n8:2", "rasam2:stored:2"]
     for name, adapter in (("tiny-adapter", str(tmp / "adapter")), ("tiny", None)):
         ns = argparse.Namespace(**base, model=name, adapter=adapter)
         cmd_gen(argparse.Namespace(**vars(ns), select=sel, out=str(tmp / f"gen_{name}.jsonl")))

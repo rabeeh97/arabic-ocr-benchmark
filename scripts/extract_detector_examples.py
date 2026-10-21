@@ -15,7 +15,6 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
-from scipy import ndimage as ndi
 from skimage.morphology import skeletonize
 
 sys.path.insert(0, "scripts")

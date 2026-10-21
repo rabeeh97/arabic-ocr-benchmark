@@ -14,7 +14,6 @@ import html
 import json
 import random
 import zlib
-from collections import defaultdict
 
 import numpy as np
 from camel_tools.morphology.analyzer import Analyzer

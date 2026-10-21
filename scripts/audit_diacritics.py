@@ -22,7 +22,6 @@ Outputs: OUT/diacritics.json, OUT/diacritics_gallery.html.
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import random
 import sys

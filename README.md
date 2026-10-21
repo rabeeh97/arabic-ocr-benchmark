@@ -23,7 +23,7 @@ model, raw + Arabic-normalized CER/WER, latency and cost.
 | [`docs/models.md`](docs/models.md) | How to access and call each model |
 | [`docs/datasets.md`](docs/datasets.md) | How to obtain and prepare each dataset |
 
-Background research: `OCR Research.md`, `Rabeeh _ Eyad (LLM Benchmarking).md`.
+Background research: `docs/background/ocr-research.md`, `docs/background/rabeeh-eyad-llm-benchmarking.md`.
 
 ## Quickstart (local)
 

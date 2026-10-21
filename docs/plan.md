@@ -3,14 +3,14 @@
 ## Context
 
 We are starting a new project from scratch. The goal of Phase 1 (per
-`Rabeeh | Eyad (LLM Benchmarking).md`) is to build a **reproducible benchmark** that
+`docs/background/rabeeh-eyad-llm-benchmarking.md`) is to build a **reproducible benchmark** that
 measures how well current LLMs / vision-language models transcribe **cursive
 handwritten Arabic**, and to compare them on the *same* data with the *same*
 metrics. The hypothesis driving the project: general multimodal LLMs are
 overtaking traditional HTR pipelines, and cheap fine-tuning (OpenAI, Vertex AI)
 could close the remaining gap if data is available.
 
-The background survey (`OCR Research.md`) establishes the domain challenges that
+The background survey (`docs/background/ocr-research.md`) establishes the domain challenges that
 the benchmark must respect: Arabic is inherently cursive with context-dependent
 letter forms and ligatures; letters are disambiguated by dots (i'jam); optional
 harakat diacritics change meaning; text is right-to-left; historical manuscripts

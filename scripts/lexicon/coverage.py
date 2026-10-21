@@ -24,7 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
-from build import OUT, key, load_checker, tokens, vkey  # noqa: E402
+from build import OUT, load_checker, tokens, vkey  # noqa: E402
 
 W = HERE.parents[1]
 COMMON = ("ayaspell", "aspell", "pecina", "arwiki")

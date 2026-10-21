@@ -27,7 +27,7 @@ from skimage.measure import find_contours
 from skimage.morphology import skeletonize
 
 sys.path.insert(0, str(Path(__file__).parent))
-from geom_data import SOURCES, load_lines  # noqa: E402
+from geom_data import load_lines  # noqa: E402
 
 TARGET_SW = 4.0
 NB_HINGE = 12

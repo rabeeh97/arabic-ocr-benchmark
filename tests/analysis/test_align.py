@@ -1,7 +1,6 @@
 # tests/analysis/test_align.py
 from arabic_ocr_bench.analysis.align import (
     LETTER_GROUPS,
-    RASM_MAP,
     AlignmentRecord,
     CharOp,
     build_record,

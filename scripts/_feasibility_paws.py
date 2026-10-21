@@ -51,7 +51,7 @@ for tag, n in (("muharaf_train", 400), ("khatt", 200), ("nakba", 400)):
     print(f"{tag:14s} lines {len(d)}  exact match {100 * np.mean(d == 0):.0f}%  within ±1 {100 * np.mean(abs(d) <= 1):.0f}%  "
           f"within ±2 {100 * np.mean(abs(d) <= 2):.0f}%  (image − label: median {np.median(d):+.0f})")
 
-import glob, pyarrow as pa  # noqa: E401,E402
+import glob  # noqa: E401,E402
 from geom_data import HF, _table  # noqa: E402
 for name in ("calfa-ai___rasam-1/*/*/*/rasam-1-test.arrow", "calfa-ai___rasam-2/*/*/*/rasam-2-test.arrow"):
     t = _table(sorted(glob.glob(str(HF / name)))[0])

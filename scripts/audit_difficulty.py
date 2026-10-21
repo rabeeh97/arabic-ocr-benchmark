@@ -313,7 +313,8 @@ def main() -> None:
                         f"<td>{r['split_half_spearman_consensus'][0]:.3f}</td><td>{r['spearman_b_vs_consensus']:.3f}</td><td>{r['negative_discrimination_lines']}</td><td>{r['adopt_irt_difficulty']}</td></tr>")
     html.append("</table><h2>R3.3 challenge subsets</h2><table><tr><th>subset</th><th>definition</th><th>lines</th><th>median CER gap vs rest, per set</th></tr>")
     for n, v in reg.items():
-        html.append(f"<tr><td>{n}</td><td>{v['definition']}</td><td>{v['count']}</td><td>{', '.join(f'{d} {x['median_cer_gap_vs_rest']*100:+.1f}' for d, x in v['cer_gap'].items())}</td></tr>")
+        gaps = ", ".join(f"{d} {x['median_cer_gap_vs_rest'] * 100:+.1f}" for d, x in v["cer_gap"].items())
+        html.append(f"<tr><td>{n}</td><td>{v['definition']}</td><td>{v['count']}</td><td>{gaps}</td></tr>")
     html.append("</table><h2>X5-len: CER by length band (no_diacritics)</h2>")
     for ds, rows in lb.items():
         html.append(f"<h3>{ds} — fragments {len_dec[ds]['fragment_share']:.1%} of lines; separate subset: {len_dec[ds]['separate_subset']}</h3><table><tr><th>system</th><th>micro</th>" +
