@@ -123,3 +123,44 @@ only: sending is the user's call.
 - A diacritics policy mismatch with the papers could shift CER by a few points either way; hence both variants everywhere.
 - Phoenix's licence is NC; fine for research, so keep outputs out of anything redistributed commercially.
 - The Kraken `.mlmodel` may not load in the newest Kraken; fall back to the version Phoenix states.
+
+## 6. Results so far (2026-10-22)
+
+**RS1 / RS3 (done).** All splits cached; counts in `results/rasam/rasam_split_check.json` (RASAM-1 5,864 / 733 / 734; RASAM-2
+2,976 / 372 / 372). The parquet carries `manuscript_name` and `image_name`, so no GitHub recovery was needed
+(`results/rasam/rasam_meta.json`). **The splits are random by line: every test page also occurs in train** (260 of 260 RASAM-1
+pages, 140 of 140 RASAM-2 pages); only 1.0 % / 0.5 % of test lines repeat a train line verbatim. RASAM-1 has 3 manuscripts, RASAM-2
+has 15 (all 15 in every split). Every in-domain RASAM score, ours and the papers', is therefore page-level in-domain. A
+manuscript-held-out test needs our own split by `manuscript_name` (RASAM-2 has 15 units).
+
+**RS2 (done for Phoenix and TariMa).** Kraken 7.0.3 + torch 2.4.1 in `~/.venvs/kraken-rasam` (internal disk: the SSD is exFAT with
+1 MB clusters, so a venv there costs about 15x its real size). Models: `phoenix/model.mlmodel` (SHA-256 matches the card),
+`tarima/model-manuscript_best.mlmodel`. Recognition only, whole image as one line box, `scripts/rasam_kraken_score.py`.
+
+| Input | Phoenix, RASAM-1 test, first 60 lines under 100 px tall |
+|---|---|
+| raw colour crop | 73.8 % CER |
+| grey | 73.8 % |
+| black mask filled with paper median | 71.7 % |
+| **Otsu-binarised (used)** | **13.6 %** |
+
+The HF crops carry black rotation masks and (for the tall ones) neighbouring-line ink; the models expect Kraken-extracted,
+binarised lines. The binarisation variant was chosen by looking at those 60 test lines (effect size makes selection bias
+negligible, but disclosed). Full test sets, binarised, CER (raw / light / diacritic-insensitive barely differ):
+
+| Model | RASAM-1 test (734) | RASAM-2 test (372) |
+|---|---|---|
+| Phoenix (RASAM is in its training data) | 23.1 % | 18.7 % |
+| – lines under 100 px tall (clean crops) | 14.7 % | 17.1 % |
+| – lines 100 px or taller (neighbour ink) | 37.1 % | 18.9 % |
+| TariMa manuscript model (RASAM unseen) | 42.6 % | 29.9 % |
+
+Verdicts: Phoenix's reported 7.67 % on a 1,789-line RASAM guard is **not reproduced** on the HF test crops (best case 14.7 % on the
+cleanest half); the guard lines are different and were presumably Kraken-extracted, so this is a protocol gap, not proof the claim
+is wrong. TariMa transfers to RASAM at 30–43 %, consistent with the RASAM paper's cross-manuscript numbers (31 % for a RASAM-1
+model on RASAM-2).
+
+**RS4 (in progress).** Data prep (`scripts/rasam_prepare_crnn_data.py`, raw labels, mask filled, height 64), test scorer
+(`scripts/rasam_crnn_eval.py`) and a `--train-sets` option in `xai_train_aligner.py` work end to end. Compute: the Mac has 8.6 GB
+RAM, MPS ran out of memory at batch 8 and 16 (about 6 GB "other allocations"), and the 3090 (`10.100.0.3`) timed out (VPN?). A1 at half
+width (2.4 M params) on CPU takes about 550 s per epoch, so 30 epochs is about 4.5 h. The full-width model and the sweep need the 3090.
