@@ -18,6 +18,15 @@ artefacts rather than script properties, and must be checked before anything
 is built on them. All block datasets are in the local HF cache, so everything
 below except E1 runs offline on CPU.
 
+**RASAM track (added 2026-10-22; design: [`designs/rasam-crnn-and-replication.md`](designs/rasam-crnn-and-replication.md))**
+- [ ] **RS1** Fetch missing RASAM splits (RASAM-2 train/val, RASAM-1 val) to the SSD; verify counts.
+- [ ] **RS2** Kraken venv on the SSD; re-score Phoenix and the TariMa manuscript model on full RASAM-1/2 test and on NAKBA (CPU).
+  *Done when:* each published claim has reproduced / not-reproduced with a reason.
+- [ ] **RS3** Recover RASAM manuscript/page IDs from `calfa-co/rasam-dataset` (part of R0.4).
+- [ ] **RS4** Our own char-CRNN on RASAM train splits: validation sweep, arms A1–A4, then data-scaling A5 and diversity A6.
+- [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
+- [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.
+
 **CPU track**
 1. [x] (2026-10-07) **R2.8 End-of-line check (D3).** The last tenth of the line is the worst
    in 9 of 10 blocks. Split the end-of-line excess into deletions
