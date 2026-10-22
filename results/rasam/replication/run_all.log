@@ -1,0 +1,51 @@
+100/734 68s
+200/734 140s
+300/734 230s
+400/734 345s
+500/734 469s
+600/734 803s
+700/734 889s
+phoenix RASAM-1 test n = 734
+  micro CER {'raw': 0.2311, 'light': 0.2314, 'diac_insensitive': 0.2264}
+  reversed first-50 micro CER {'raw': 0.7763, 'light': 0.777, 'diac_insensitive': 0.773}
+  wrote results/rasam/replication/phoenix__RASAM-1__test__bin.json
+100/734 86s
+200/734 139s
+300/734 195s
+400/734 252s
+500/734 314s
+600/734 384s
+700/734 446s
+tarima-manuscript RASAM-1 test n = 734
+  micro CER {'raw': 0.4258, 'light': 0.4261, 'diac_insensitive': 0.4185}
+  reversed first-50 micro CER {'raw': 0.7757, 'light': 0.7776, 'diac_insensitive': 0.7715}
+  wrote results/rasam/replication/tarima-manuscript__RASAM-1__test__bin.json
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+100/372 32s
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+200/372 63s
+300/372 84s
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+phoenix RASAM-2 test n = 372
+  micro CER {'raw': 0.1866, 'light': 0.1836, 'diac_insensitive': 0.1811}
+  reversed first-50 micro CER {'raw': 0.7922, 'light': 0.7904, 'diac_insensitive': 0.7872}
+  wrote results/rasam/replication/phoenix__RASAM-2__test__bin.json
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+100/372 33s
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+200/372 77s
+300/372 108s
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+  temp = temp * 1.0 / np.amax(temp)
+tarima-manuscript RASAM-2 test n = 372
+  micro CER {'raw': 0.3018, 'light': 0.2991, 'diac_insensitive': 0.2948}
+  reversed first-50 micro CER {'raw': 0.7908, 'light': 0.7893, 'diac_insensitive': 0.7858}
+  wrote results/rasam/replication/tarima-manuscript__RASAM-2__test__bin.json
+ALL DONE

@@ -1,0 +1,192 @@
+{
+ "RASAM-1": {
+  "manuscripts": {
+   "test": {
+    "BULAC_MS_ARA_1977": 353,
+    "BULAC_MS_ARA_609": 271,
+    "BULAC_MS_ARA_417": 110
+   },
+   "train": {
+    "BULAC_MS_ARA_417": 923,
+    "BULAC_MS_ARA_1977": 2719,
+    "BULAC_MS_ARA_609": 2222
+   },
+   "validation": {
+    "BULAC_MS_ARA_609": 278,
+    "BULAC_MS_ARA_1977": 322,
+    "BULAC_MS_ARA_417": 133
+   }
+  },
+  "pages": null,
+  "lines": {
+   "test": 734,
+   "train": 5864,
+   "validation": 733
+  },
+  "region_type": {
+   "test": {
+    "catchword": 10,
+    "MainText": 703,
+    "marginalia": 21
+   },
+   "train": {
+    "MainText": 5577,
+    "marginalia": 202,
+    "catchword": 85
+   },
+   "validation": {
+    "MainText": 698,
+    "marginalia": 28,
+    "catchword": 7
+   }
+  },
+  "support_type": {
+   "test": {
+    "manuscript": 734
+   },
+   "train": {
+    "manuscript": 5864
+   },
+   "validation": {
+    "manuscript": 733
+   }
+  },
+  "script": {
+   "test": {
+    "maghrebi": 734
+   },
+   "train": {
+    "maghrebi": 5864
+   },
+   "validation": {
+    "maghrebi": 733
+   }
+  },
+  "page_overlap": {
+   "test&train": 260,
+   "test&validation": 237,
+   "train&validation": 274
+  },
+  "n_pages": {
+   "test": 260,
+   "train": 299,
+   "validation": 274
+  },
+  "test_text_in_train": 0.009536784741144414
+ },
+ "RASAM-2": {
+  "manuscripts": {
+   "test": {
+    "BULAC_MS_ARA_23": 25,
+    "BULAC_MS_ARA_65": 30,
+    "BULAC_MS_ARA_45b": 25,
+    "BULAC_MS_ARA_1960": 26,
+    "BULAC_MS_ARA_1944": 27,
+    "BULAC_MS_ARA_1947": 25,
+    "BULAC_ARA_MS_1982": 25,
+    "BULAC_MS_ARA_1936": 22,
+    "BULAC_MS_ARA_1943": 29,
+    "BULAC_MS_ARA_1983": 24,
+    "BULAC_MS_ARA_1926": 31,
+    "BULAC_MS_ARA_24": 25,
+    "BULAC_MS_ARA_6": 20,
+    "BULAC_MS_ARA_9": 24,
+    "BULAC_MS_ARA_1946": 14
+   },
+   "train": {
+    "BULAC_ARA_MS_1982": 199,
+    "BULAC_MS_ARA_1926": 187,
+    "BULAC_MS_ARA_1944": 189,
+    "BULAC_MS_ARA_1946": 189,
+    "BULAC_MS_ARA_1943": 195,
+    "BULAC_MS_ARA_23": 197,
+    "BULAC_MS_ARA_45b": 196,
+    "BULAC_MS_ARA_6": 209,
+    "BULAC_MS_ARA_1960": 197,
+    "BULAC_MS_ARA_1983": 204,
+    "BULAC_MS_ARA_1936": 201,
+    "BULAC_MS_ARA_1947": 205,
+    "BULAC_MS_ARA_65": 202,
+    "BULAC_MS_ARA_9": 209,
+    "BULAC_MS_ARA_24": 197
+   },
+   "validation": {
+    "BULAC_MS_ARA_1947": 20,
+    "BULAC_MS_ARA_1943": 26,
+    "BULAC_MS_ARA_1936": 27,
+    "BULAC_MS_ARA_9": 17,
+    "BULAC_MS_ARA_1926": 22,
+    "BULAC_MS_ARA_1983": 22,
+    "BULAC_MS_ARA_1946": 27,
+    "BULAC_MS_ARA_1944": 34,
+    "BULAC_MS_ARA_45b": 29,
+    "BULAC_MS_ARA_1960": 27,
+    "BULAC_MS_ARA_24": 28,
+    "BULAC_MS_ARA_65": 18,
+    "BULAC_MS_ARA_23": 28,
+    "BULAC_MS_ARA_6": 21,
+    "BULAC_ARA_MS_1982": 26
+   }
+  },
+  "pages": null,
+  "lines": {
+   "test": 372,
+   "train": 2976,
+   "validation": 372
+  },
+  "region_type": {
+   "test": {
+    "MainZone": 336,
+    "TableZone": 12,
+    "MarginTextZone": 22,
+    "MarginTextZone:catchword": 2
+   },
+   "train": {
+    "MainZone": 2732,
+    "MarginTextZone:catchword": 27,
+    "MarginTextZone": 122,
+    "TableZone": 84,
+    "MainZone:title": 11
+   },
+   "validation": {
+    "MainZone": 337,
+    "MarginTextZone": 20,
+    "TableZone": 11,
+    "MarginTextZone:catchword": 4
+   }
+  },
+  "support_type": {
+   "test": {
+    "manuscript": 372
+   },
+   "train": {
+    "manuscript": 2976
+   },
+   "validation": {
+    "manuscript": 372
+   }
+  },
+  "script": {
+   "test": {
+    "maghrebi": 372
+   },
+   "train": {
+    "maghrebi": 2976
+   },
+   "validation": {
+    "maghrebi": 372
+   }
+  },
+  "page_overlap": {
+   "test&train": 140,
+   "test&validation": 120,
+   "train&validation": 136
+  },
+  "n_pages": {
+   "test": 140,
+   "train": 162,
+   "validation": 136
+  },
+  "test_text_in_train": 0.005376344086021506
+ }
+}

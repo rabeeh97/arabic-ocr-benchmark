@@ -1,0 +1,84 @@
+{
+ "RASAM-1": {
+  "test": {
+   "rows": 734,
+   "files": 1,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  },
+  "train": {
+   "rows": 5864,
+   "files": 5,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  },
+  "validation": {
+   "rows": 733,
+   "files": 1,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  }
+ },
+ "RASAM-2": {
+  "test": {
+   "rows": 372,
+   "files": 1,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  },
+  "train": {
+   "rows": 2976,
+   "files": 1,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  },
+  "validation": {
+   "rows": 372,
+   "files": 1,
+   "columns": [
+    "image",
+    "transcription",
+    "support_type",
+    "region_type",
+    "manuscript_name",
+    "image_name",
+    "script"
+   ]
+  }
+ }
+}

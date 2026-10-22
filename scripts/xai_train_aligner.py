@@ -144,7 +144,7 @@ def evaluate(model, rows, stoi, dev) -> dict:
     for k in range(0, len(rows), 32):
         chunk = rows[k : k + 32]
         x, lens, tgt = make_batch(chunk, stoi, False, dev)
-        with torch.autocast(dev, dtype=torch.float16, enabled=dev == "cuda"):
+        with torch.autocast("cuda" if dev == "cuda" else "cpu", dtype=torch.float16, enabled=dev == "cuda"):
             logits = model(x)
         for r, hyp, ref in zip(chunk, greedy(logits.float(), lens), tgt):
             e = errs.setdefault(r["dataset"], [0, 0])
@@ -168,6 +168,7 @@ def main() -> None:
     ap.add_argument("--repeat-file", type=Path, help="JSON {\"extra\": {row_index: n}}: add n extra copies of these rows (indices into the pickle's rows)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
+    ap.add_argument("--train-sets", nargs="+", help="only rows whose dataset tag is listed (train and heldout alike); default all")
     ap.add_argument("--seed", type=int, help="seed python, numpy and torch (unset = unseeded, as the runs before 2026-10-13)")
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     a = ap.parse_args()
@@ -188,6 +189,8 @@ def main() -> None:
     extra = {int(k): int(v) for k, v in json.loads(a.repeat_file.read_text())["extra"].items()} if a.repeat_file else {}
     for j, r in enumerate(rows):
         r["_extra"] = extra.get(j, 0)
+    if a.train_sets:  # RASAM arms (A1-A4): train and select on the named dataset tags only
+        rows = [r for r in rows if r["dataset"] in a.train_sets]
     train = [r for r in rows if r["role"] in ("train", "panel")]
     if a.max_train:
         random.Random(0).shuffle(train)
@@ -209,7 +212,7 @@ def main() -> None:
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
-    scaler = torch.amp.GradScaler(dev, enabled=dev == "cuda")
+    scaler = torch.amp.GradScaler("cuda", enabled=dev == "cuda")
     ctc = nn.CTCLoss(blank=0, zero_infinity=True)
     start, best = 0, 9.0
     resume_batches, resume_bi, resume_tot = None, 0, 0.0
@@ -245,7 +248,7 @@ def main() -> None:
             x, lens, tgt = make_batch([pool[i] for i in idx], stoi, True, dev)
             flat = torch.tensor([t for s in tgt for t in s], device=dev)
             tl = torch.tensor([len(s) for s in tgt], device=dev)
-            with torch.autocast(dev, dtype=torch.float16, enabled=dev == "cuda"):
+            with torch.autocast("cuda" if dev == "cuda" else "cpu", dtype=torch.float16, enabled=dev == "cuda"):
                 logits = model(x)
             lp = logits.float().log_softmax(-1)
             loss = ctc(lp, flat, torch.clamp(lens // 4, min=1), tl)
