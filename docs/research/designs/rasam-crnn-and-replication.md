@@ -192,3 +192,63 @@ How it compares, with the caveats that matter:
 - Phoenix (RASAM in its training data) re-scored at 23.1 % on the same test set, because the HF crops are not what it was trained on.
 
 Open before this is a result to quote: A2 (RASAM-2 train) and A3 (both), a second seed, and the recipe sweep (full width needs the 3090).
+
+## 7. Error analysis of A1 and what to change (2026-10-23)
+
+Scripts: `rasam_error_analysis.py` (Levenshtein alignment, edge whitespace stripped like the benchmark metric), `rasam_crop_analysis.py`,
+`rasam_lexicon_postedit.py`; outputs in `results/rasam/analysis/`. A1 on RASAM-1 test: 3,430 edits over 50,322 characters (6.82 %).
+
+**Why not 4.8 %.** (a) Not the same lines and probably not the same crops: the paper scored Kraken-style page extraction; we score the HF crops.
+(b) The aggregation is unspecified ("average CER"): on the same predictions we get micro 6.82 %, mean per page 7.57 %, median per page 5.71 %,
+mean per manuscript 6.24 %, so convention alone moves the number by about ±1 point. (c) The published model is word-based; our test says a
+naive lexicon does **not** replicate that benefit: 16.8 % of test words are out of the training lexicon, and snapping hypothesis words to the
+nearest training word within 1–2 edits makes CER **worse** (8.1–9.8 % vs 6.82 %; 276 fixes, 609 breakages). A soft character LM is the fair
+test (Phoenix's order-8 LM gained 0.7 points on RASAM). (d) Untuned: 2.4 M parameters, height 64 (median crop is 3.6× taller, so downscaled),
+one seed, no sweep.
+
+**What the errors are** (A1, RASAM-1 test; ops: 51 % substitutions, 31 % deletions, 19 % insertions):
+1. **Word spacing, 16 % of errors**: 285 merged words and 175 split words. In cursive script the gap between PAWs and the gap between words
+   are close; spaces are 18 % of reference characters and the model is wrong on 547 of them.
+2. **One-dot confusions, 24 % of substitutions (12 % of all errors)**, and the Maghrebi-specific pairs lead the list: **ب→ف 42 (+ ف→ب 17)**, **ن→ق 31**
+   (in Maghrebi script fā' takes its dot below, so it looks like bā', and qāf takes one dot above, so it looks like nūn), then ب↔ي, ت↔ن, ج↔ح.
+   These pairs are ambiguous in the image itself; only context (language) can separate them.
+3. **Thin letters lost or invented, about 12 % of errors**: ل ٥م ا are deleted 95 / 85 / 80 times and inserted 45 / 39 / 53 times. These are
+   thin vertical strokes, exactly what a 3.6× downscale and a 4× width reduction in the CNN erase.
+4. **Dense lines are harder**: crops 300 px or taller score 8.8 % against 6.0 % for short ones; the quartile with the least horizontal pixels per
+   character (at 64 px height) scores 8.4 % against 5.6 % in the loosest quartile. The last tenth of the line is worst (8.5 % vs about 5 %), as in
+   the VLM end-of-line finding.
+5. **Fragments**: catchwords 59.6 % (n = 10), marginalia 15.8 %, lines of at most 20 characters 17.5 % (n = 49); 8 of the 12 lines with CER above 0.5
+   are catchwords or one- and two-word lines. Only 1 of the 12 is a crop that shows a neighbouring line (test 185, whose reading is the reference
+   of test 587), so crop contamination is **not** a major cause.
+6. **Rare letters and marks**: ئ 28 %, غ 22 %, ء 15 %; fatha 73 % wrong but marks are 0.2 % of characters and 3 % of errors.
+
+**RASAM-2 (unseen manuscripts, 24.6 %)** has the same pattern (spaces 16 %, dots 17 % of substitutions) at a higher level, plus an annotation
+convention gap: أ is wrong 100 % of the time (n = 45) because RASAM-1 writes it 91 times against 437 in RASAM-2. But أ→ا and ي→ى together are
+about 3 % of RASAM-2 substitutions, so handwriting shift, not convention, is the main cost.
+
+**Label conventions differ between the two sets** (from the parquet, `/tmp`-free script in the job notes): diacritics in 11.9 % of RASAM-1 lines vs 0.3 %
+of RASAM-2 lines (RASAM-2 has no sukun); hamza: RASAM-1 uses bare ء 1,705 times and أ 91, RASAM-2 uses أ 437, إ 102, آ 43; final ى is 22 % of
+RASAM-1 yā' vs 16 % of RASAM-2; both use a `#` placeholder (100 and 121 times) and stray RLM / RLE controls (83 lines in RASAM-2).
+
+### Proposed dataset modifications (to be tested, each as a retraining arm)
+- **D1 splits:** page-disjoint (RASAM-1) and manuscript-disjoint (RASAM-2: for example 10 / 2 / 3 manuscripts, three fixed folds). Today every test page
+  also occurs in train, so in-domain numbers are optimistic; the cross cell (24.6 %) is the honest one.
+- **D2 crops:** re-extract lines from the PAGE-XML polygons and baselines on the original pages (XML downloaded, pages downloading), masked and
+  deskewed, tight to the ink band, at one fixed height. Aim is resolution and consistency, not neighbour removal (see item 5); it also makes the lines
+  match what the published Kraken models were trained on, so the Phoenix replication becomes fair.
+- **D3 label layers:** base text (diacritics stripped, hamza and ya normalised by a documented rule) for training and the headline CER, and a separate
+  diacritic layer scored on its own; map `#` to an explicit "illegible" tag and drop those characters from the loss; remove RLM / RLE controls.
+- **D4 tags:** region (main, marginalia, catchword), line-length class, crop height; report CER stratified and keep catchwords out of the headline.
+- **D5 larger, harmonised pool:** add TariMa (2.4 k lines) and the four Maghrebi AraMS books (about 8.9 k lines) under the same conventions, with
+  manuscript-held-out evaluation. The point is manuscript diversity, which is what the cross cell says is missing.
+
+### Retraining arms
+| ID | Change | Expected effect | Where |
+|---|---|---|---|
+| A2, A3 | RASAM-2 train; RASAM-1 + RASAM-2 train (running, half width, CPU) | A3 should fix the cross cell if diversity is the lever | Mac |
+| B1 | D3 labels (base layer) on A3 | removes convention noise; fewer wasted outputs | Mac |
+| B2 | D1 manuscript-disjoint RASAM-2 split | true generalisation gap, comparable across runs | Mac |
+| B3 | D2 crops | tests the crop/resolution effect | needs pages |
+| B4 | height 96 / 128, full width | thin letters, dense lines | 3090 |
+| B5 | + TariMa + AraMS Maghrebi (D5) | the data-diversity curve | 3090 |
+| B6 | soft character LM beam search (OpenITI text), tuned on validation | space and dot-convention errors that need context | CPU, offline |
