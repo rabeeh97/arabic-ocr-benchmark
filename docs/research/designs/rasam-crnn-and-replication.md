@@ -212,7 +212,7 @@ one seed, no sweep.
 2. **One-dot confusions, 24 % of substitutions (12 % of all errors)**, and the Maghrebi-specific pairs lead the list: **ب→ف 42 (+ ف→ب 17)**, **ن→ق 31**
    (in Maghrebi script fā' takes its dot below, so it looks like bā', and qāf takes one dot above, so it looks like nūn), then ب↔ي, ت↔ن, ج↔ح.
    These pairs are ambiguous in the image itself; only context (language) can separate them.
-3. **Thin letters lost or invented, about 12 % of errors**: ل ٥م ا are deleted 95 / 85 / 80 times and inserted 45 / 39 / 53 times. These are
+3. **Thin letters lost or invented, about 12 % of errors**: ل م ا are deleted 95 / 85 / 80 times and inserted 45 / 39 / 53 times. These are
    thin vertical strokes, exactly what a 3.6× downscale and a 4× width reduction in the CNN erase.
 4. **Dense lines are harder**: crops 300 px or taller score 8.8 % against 6.0 % for short ones; the quartile with the least horizontal pixels per
    character (at 64 px height) scores 8.4 % against 5.6 % in the loosest quartile. The last tenth of the line is worst (8.5 % vs about 5 %), as in
@@ -226,7 +226,7 @@ one seed, no sweep.
 convention gap: أ is wrong 100 % of the time (n = 45) because RASAM-1 writes it 91 times against 437 in RASAM-2. But أ→ا and ي→ى together are
 about 3 % of RASAM-2 substitutions, so handwriting shift, not convention, is the main cost.
 
-**Label conventions differ between the two sets** (from the parquet, `/tmp`-free script in the job notes): diacritics in 11.9 % of RASAM-1 lines vs 0.3 %
+**Label conventions differ between the two sets** (counted directly from the HF parquet transcriptions): diacritics in 11.9 % of RASAM-1 lines vs 0.3 %
 of RASAM-2 lines (RASAM-2 has no sukun); hamza: RASAM-1 uses bare ء 1,705 times and أ 91, RASAM-2 uses أ 437, إ 102, آ 43; final ى is 22 % of
 RASAM-1 yā' vs 16 % of RASAM-2; both use a `#` placeholder (100 and 121 times) and stray RLM / RLE controls (83 lines in RASAM-2).
 
