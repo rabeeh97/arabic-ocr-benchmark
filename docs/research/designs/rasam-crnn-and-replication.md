@@ -164,3 +164,31 @@ model on RASAM-2).
 (`scripts/rasam_crnn_eval.py`) and a `--train-sets` option in `xai_train_aligner.py` work end to end. Compute: the Mac has 8.6 GB
 RAM, MPS ran out of memory at batch 8 and 16 (about 6 GB "other allocations"), and the 3090 (`10.100.0.3`) timed out (VPN?). A1 at half
 width (2.4 M params) on CPU takes about 550 s per epoch, so 30 epochs is about 4.5 h. The full-width model and the sweep need the 3090.
+
+### A1 result (2026-10-23): a 2.4 M-parameter character CRNN trained on RASAM-1 train only
+
+Config: `xai_train_aligner.py` CRNN, `--width 0.5` (2.4 M params), height 64, mask filled, raw labels (diacritics kept), `--geom-aug`,
+30 epochs, bs 16, seed 0, CPU, `--train-sets r1` (5,860 train lines; 733 validation lines for model selection, never test).
+Checkpoint = lowest validation CER (epoch 28, 6.75 %). Scored with `rasam_crnn_eval.py` on the full published test sets, bootstrap by line
+(`scripts/rasam_result_summary.py`). One seed, so the interval covers lines, not training randomness.
+
+| Test set | micro CER raw | 95 % CI | light | diac-insensitive |
+|---|---|---|---|---|
+| RASAM-1 test (734, same 3 manuscripts) | **6.82 %** | 6.30–7.39 | 6.79 | 6.47 |
+| (final-epoch checkpoint) | 6.88 % | | | |
+| RASAM-2 test (372, 15 manuscripts, unseen) | **24.6 %** | 23.0–26.3 | 24.4 | 23.8 |
+
+RASAM-1 detail: manuscript 417 4.0 %, 1977 6.3 %, 609 8.4 %; main text 6.7 %, marginalia 15.8 %, catchwords 59.6 % (n = 10); lines of at
+most 20 characters 17.5 % (n = 49); exact-line match 9.4 %. RASAM-2 detail: easiest 13–15 % (MS 1960, 45b, 9), hardest MS 1936 79.7 % (the
+heavily vocalised manuscript the CHR paper also flags) and MS 1944 42 %; exact-line match 0.8 %.
+
+How it compares, with the caveats that matter:
+- Published word-based CRNN, RASAM-1 on RASAM-1: 4.8 % (their test lines, protocol unknown). Ours is 2 points higher with a *character* model a
+  fifth the size of the aligner's full-width variant; not the same lines, so no claim of parity.
+- Published RASAM-1 model on RASAM-2: 30.9 %; ours 24.6 %. Different lines and a different recogniser, directionally the same cliff: a
+  3-manuscript model loses 18 points on unseen manuscripts. This is the evidence that **diversity of manuscripts, not line count,** limits RASAM-1.
+- Our best VLM fine-tune on RASAM-1 was 11 % (Fanar-2-Oryx, CER-light, 200-line panel) and its RASAM-2 17 % is in-domain (it trained on 2k RASAM-2
+  lines), so it is not comparable to the 24.6 % cross cell above. On RASAM-1 the small CRNN is ahead of the VLM on a stricter, larger test.
+- Phoenix (RASAM in its training data) re-scored at 23.1 % on the same test set, because the HF crops are not what it was trained on.
+
+Open before this is a result to quote: A2 (RASAM-2 train) and A3 (both), a second seed, and the recipe sweep (full width needs the 3090).

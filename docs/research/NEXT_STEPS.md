@@ -23,7 +23,7 @@ below except E1 runs offline on CPU.
 - [x] (2026-10-22, Phoenix and TariMa; claim not reproduced, see design §6) **RS2** Kraken venv on the SSD; re-score Phoenix and the TariMa manuscript model on full RASAM-1/2 test and on NAKBA (CPU).
   *Done when:* each published claim has reproduced / not-reproduced with a reason.
 - [x] (2026-10-22, columns already in the HF parquet) **RS3** Recover RASAM manuscript/page IDs from `calfa-co/rasam-dataset` (part of R0.4).
-- [ ] **RS4** Our own char-CRNN on RASAM train splits: validation sweep, arms A1–A4, then data-scaling A5 and diversity A6.
+- [ ] **RS4** (A1 done 2026-10-23: 6.82 % RASAM-1 test, 24.6 % RASAM-2 test, half-width CPU, see design §6) Our own char-CRNN on RASAM train splits: validation sweep, arms A1–A4, then data-scaling A5 and diversity A6.
 - [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
 - [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.
 
