@@ -26,7 +26,9 @@ from PIL import Image
 
 H = 64
 MAX_W = 1536
-ROOT = "/Volumes/PortableSSD/huggingface/hub/datasets--calfa-ai--"
+import os
+
+ROOT = os.environ.get("RASAM_HF_ROOT", "/Volumes/PortableSSD/huggingface/hub/datasets--calfa-ai--")  # Colab: /content/hfcache/datasets--calfa-ai--
 BIDI = re.compile("[​-‏‪-‮⁦-⁩﻿؜]")
 HARAKAT = re.compile("[ً-ْٰـ]")
 TAGS = {"RASAM-1": "r1", "RASAM-2": "r2"}
