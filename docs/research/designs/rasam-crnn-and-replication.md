@@ -252,3 +252,16 @@ RASAM-1 yā' vs 16 % of RASAM-2; both use a `#` placeholder (100 and 121 times) 
 | B4 | height 96 / 128, full width | thin letters, dense lines | 3090 |
 | B5 | + TariMa + AraMS Maghrebi (D5) | the data-diversity curve | 3090 |
 | B6 | soft character LM beam search (OpenITI text), tuned on validation | space and dot-convention errors that need context | CPU, offline |
+
+### A2 result and a correction to the comparison (2026-10-24)
+
+A2 = same recipe as A1 (half-width char CRNN, 30 epochs, raw labels, geom-aug, seed 0) trained on RASAM-2 train only (2,923 lines), best checkpoint
+by RASAM-2 validation (18.8 %): **RASAM-2 test 18.47 % raw** (in-domain), **RASAM-1 test 24.86 %** (cross). With A1 (RASAM-1 train: 6.82 % on RASAM-1,
+24.6 % on RASAM-2) the cross cells are symmetric at about 25 %: a model trained on one set loses about 18 points on the other, in both directions.
+
+RASAM-2 in-domain is much worse than RASAM-1 in-domain (18.5 % vs 6.8 %) with the same model. RASAM-2 has 15 manuscripts with about 195 training lines each
+(RASAM-1: 3 manuscripts with 300 to 2,700 lines each), so the in-domain set is both smaller and far more varied.
+
+**Comparison correction.** The CHR 2024 table reports for the "RASAM 2" model 5.50 % on RASAM-1 and 6.79 % on RASAM-2, in-domain on both. That
+only makes sense if that model was trained on RASAM-1 and RASAM-2 together. The like-for-like arm for our model is therefore **A3 (train on both)**, not
+A1 or A2, and the published reference numbers for it are 5.50 % and 6.79 %. A1 vs 4.8 % and A2 vs 6.79 % were not matched comparisons.
