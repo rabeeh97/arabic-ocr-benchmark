@@ -265,3 +265,20 @@ RASAM-2 in-domain is much worse than RASAM-1 in-domain (18.5 % vs 6.8 %) with th
 **Comparison correction.** The CHR 2024 table reports for the "RASAM 2" model 5.50 % on RASAM-1 and 6.79 % on RASAM-2, in-domain on both. That
 only makes sense if that model was trained on RASAM-1 and RASAM-2 together. The like-for-like arm for our model is therefore **A3 (train on both)**, not
 A1 or A2, and the published reference numbers for it are 5.50 % and 6.79 %. A1 vs 4.8 % and A2 vs 6.79 % were not matched comparisons.
+
+### B6 first result (2026-10-24): a character n-gram LM in the beam search helps substantially
+
+`scripts/rasam_lm_decode.py`: CTC prefix beam search (beam 12) over A1's posteriors with a Witten-Bell character 6-gram trained on the RASAM-1 TRAIN
+labels only, weight alpha and per-character bonus beta tuned on 150 RASAM-1 VALIDATION lines (grid alpha 0.3 / 0.6 / 1.0, beta 0 / 0.5 / 1.0; validation greedy 7.01 %,
+best 5.66 % at alpha 0.3, beta 1.0). Model unchanged (A1 best checkpoint). Test, micro CER, raw profile:
+
+| Test set | greedy | with LM | diac-insensitive greedy → LM |
+|---|---|---|---|
+| RASAM-1 test (734) | 6.82 % | **5.50 %** | 6.47 → 5.13 |
+| RASAM-2 test (372, unseen manuscripts, RASAM-1 LM) | 24.59 % | **21.97 %** | 23.75 → 21.25 |
+
+So the LM removes about a fifth of the errors on the seen manuscripts and about a tenth on the unseen ones, with no retraining and seconds of decoding. It is
+much closer to the published 4.8 % than the greedy number, and, unlike the naive lexicon snapping (which hurt), it works because it weighs context
+against the image evidence instead of overriding it. The best setting sits on the grid edge (largest beta), so a finer grid and other orders
+are being tried (`A1_lm_fine`); the grid is chosen on validation only.
+Caveat: one seed of one model; the LM text is in-domain (same three manuscripts), which is part of why it helps most there.
