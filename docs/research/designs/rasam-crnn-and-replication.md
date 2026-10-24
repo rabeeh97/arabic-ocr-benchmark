@@ -282,3 +282,7 @@ much closer to the published 4.8 % than the greedy number, and, unlike the naive
 against the image evidence instead of overriding it. The best setting sits on the grid edge (largest beta), so a finer grid and other orders
 are being tried (`A1_lm_fine`); the grid is chosen on validation only.
 Caveat: one seed of one model; the LM text is in-domain (same three manuscripts), which is part of why it helps most there.
+
+Finer sweep (`A1_lm_fine`, order-8 LM, 300 validation lines, alpha 0.2 to 0.5 x beta 1.0 to 2.5): the optimum is interior, alpha 0.4 with beta 1.0 to 1.5
+(validation 5.41 % vs greedy 6.83 %). Test with the chosen alpha 0.4, beta 1.0: **RASAM-1 5.46 %** (greedy 6.82), **RASAM-2 21.59 %** (greedy 24.59). So tuning moved the
+result by under 0.1 point on RASAM-1 and 0.4 point on RASAM-2; the gain is robust to the LM order and settings and saturates near 5.5 % for this acoustic model.
