@@ -319,7 +319,8 @@ def leaderboard_html() -> str:
     lb = json.loads(f.read_text()) if f.exists() else {"published": [], "targets": {}}
     rows: dict[str, list] = {"RASAM-1": [], "RASAM-2": []}
     for p in lb.get("published", []):
-        rows.setdefault(p["test"], []).append((p["cer"], "published", p["system"], p["source"], p["comparable"]))
+        src = f'<a href="{html.escape(p["url"])}">{html.escape(p["source"])}</a>' if p.get("url") else html.escape(p["source"])
+        rows.setdefault(p["test"], []).append((p["cer"], "published", p["system"], src, p["comparable"], bool(p.get("hf_split"))))
     for d, kind in ((REPO / "results/rasam/crnn", "greedy"), (REPO / "results/rasam/lm", "with char LM")):
         for jf in sorted(d.glob("*__test.json")) if d.exists() else []:
             try:
@@ -329,18 +330,24 @@ def leaderboard_html() -> str:
             test = {"r1": "RASAM-1", "r2": "RASAM-2"}.get(j.get("dataset"))
             if not test or "smoke" in jf.stem:
                 continue
-            rows[test].append((j["micro_cer"]["raw"] * 100, "ours", f"{jf.stem.replace('__test', '')} ({kind})", "this project", f"official test split, n={j.get('n')}, micro CER raw"))
+            if j.get("n") not in (734, 372):  # full official test sets only
+                continue
+            rows[test].append((j["micro_cer"]["raw"] * 100, "ours", f"{jf.stem.replace('__test', '')} ({kind})", "this project", f"official test split, n={j.get('n')}, micro CER raw", True))
     s = f"<div class=dim>{html.escape(lb.get('note', ''))}</div>"
-    for test, items in rows.items():
-        if not items:
-            continue
-        tgt = lb.get("targets", {}).get(test)
-        s += f"<h3 style='margin-top:14px'>{test} test{f' · target to beat: {tgt} %' if tgt else ''}</h3><table><tr><th>#</th><th>CER</th><th>who</th><th>system</th><th>source</th><th>comparability</th></tr>"
-        for i, (cer, who, sysname, src, comp) in enumerate(sorted(items)):
-            badge = "<span class='b finished'>ours</span>" if who == "ours" else "<span class='b'>published</span>"
-            beat = " ★" if who == "ours" and tgt and cer < tgt else ""
-            s += f"<tr><td>{i + 1}</td><td><b>{cer:.2f} %</b>{beat}</td><td>{badge}</td><td>{html.escape(sysname)}</td><td>{html.escape(src)}</td><td class=dim>{html.escape(comp)}</td></tr>"
-        s += "</table>"
+    for view, keep in (("All reported results", lambda it: True), ("Official Hugging Face test split only (strictly comparable)", lambda it: it[5])):
+        s += f"<h2 style='margin-top:18px'>{view}</h2>"
+        for test, items in rows.items():
+            items = [it for it in items if keep(it)]
+            if not items:
+                continue
+            tgt = lb.get("targets", {}).get(test)
+            s += (f"<h3 style='margin-top:12px'>{test} test{f' · best published (own split): {tgt} %' if tgt else ''}</h3>"
+                  "<table><tr><th>#</th><th>CER</th><th>who</th><th>system</th><th>source</th><th>comparability</th></tr>")
+            for i, (cer, who, sysname, src, comp, _) in enumerate(sorted(items, key=lambda t: t[0])):
+                badge = "<span class='b finished'>ours</span>" if who == "ours" else "<span class='b'>published</span>"
+                beat = " ★" if who == "ours" and tgt and cer < tgt else ""
+                s += f"<tr><td>{i + 1}</td><td><b>{cer:.2f} %</b>{beat}</td><td>{badge}</td><td>{html.escape(sysname)}</td><td>{src}</td><td class=dim>{html.escape(comp)}</td></tr>"
+            s += "</table>"
     return s
 
 
