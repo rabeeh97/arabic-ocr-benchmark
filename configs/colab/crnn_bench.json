@@ -1,0 +1,21 @@
+{
+  "name": "crnn-bench",
+  "gpu": "T4",
+  "max_units": 1.5,
+  "max_minutes": 25,
+  "poll_s": 45,
+  "sync_every_s": 240,
+  "uploads": [
+    ["scripts/xai_train_aligner.py", "/content/xai_train_aligner.py"],
+    ["scripts/rasam_prepare_crnn_data.py", "/content/rasam_prepare_crnn_data.py"],
+    ["scripts/colab_remote_prepare.py", "/content/colab_remote_prepare.py"]
+  ],
+  "setup": ["python /content/colab_remote_prepare.py"],
+  "runs": [
+    {"label": "w05_bs16", "cmd": "python -u /content/xai_train_aligner.py --data /content/rasam_r1.pkl --out /content/crnn_out/w05_bs16 --epochs 3 --bs 16 --device cuda --width 0.5 --train-sets r1 --eval-every 3 --seed 0 --geom-aug"},
+    {"label": "w10_bs16", "cmd": "python -u /content/xai_train_aligner.py --data /content/rasam_r1.pkl --out /content/crnn_out/w10_bs16 --epochs 3 --bs 16 --device cuda --width 1.0 --train-sets r1 --eval-every 3 --seed 0 --geom-aug"},
+    {"label": "w05_bs64", "cmd": "python -u /content/xai_train_aligner.py --data /content/rasam_r1.pkl --out /content/crnn_out/w05_bs64 --epochs 3 --bs 64 --device cuda --width 0.5 --train-sets r1 --eval-every 3 --seed 0 --geom-aug"}
+  ],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}

@@ -1,0 +1,12 @@
+usage before:
+[colab] Warning: failed to fetch compute-unit info: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+could not read the compute-unit balance twice from `colab usage` (network to the Colab API unhealthy); not starting
+=== attempt 1 20:10:54
+usage before:
+Current balance: 199.64 compute units
+Usage rate: 0.00/hr
+Active assignments: 0
+budget: baseline 200.00, balance 199.64, spent 0.36 of 10.00, left 9.64
+colab new: rc=0 6s
+[colab] Creating session 'bench-t4-w0.5-bs16-10242010'...
+[colab] Session READY.

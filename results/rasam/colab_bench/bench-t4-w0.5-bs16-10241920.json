@@ -1,0 +1,18 @@
+{
+ "name": "bench-t4-w0.5-bs16-10241920",
+ "gpu_requested": "T4",
+ "epochs": 3,
+ "width": "0.5",
+ "bs": "16",
+ "steps": {
+  "new_s": 7.0,
+  "upload_s": 43.5,
+  "prepare_exec_s": 25.6,
+  "stop_s": 95.6
+ },
+ "usage_before": "Current balance: 200.00 compute units\nUsage rate: 0.00/hr\nActive assignments: 0",
+ "prepare_out": "           \u2502\n\u2502   783 \u2502   \u2502   # Send the request                                             \u2502\n\u2502 \u2771 784 \u2502   \u2502   r = adapter.send(request, **kwargs)                            \u2502\n\u2502   785 \u2502   \u2502                                                                  \u2502\n\u2502   786 \u2502   \u2502   # Total elapsed time of the request (approximately)            \u2502\n\u2502   787 \u2502   \u2502   elapsed = preferred_clock() - start                            \u2502\n\u2502                                                                              \u2502\n\u2502 /Users/rabeehjouni/.local/share/uv/tools/google-colab-cli/lib/python3.12/sit \u2502\n\u2502 e-packages/requests/adapters.py:711 in send                                  \u2502\n\u2502                                                                              \u2502\n\u2502   708 \u2502   \u2502   \u2502   )                                                          \u2502\n\u2502   709 \u2502   \u2502                                                                  \u2502\n\u2502   710 \u2502   \u2502   except (ProtocolError, OSError) as err:                        \u2502\n\u2502 \u2771 711 \u2502   \u2502   \u2502   raise ConnectionError(err, request=request)                \u2502\n\u2502   712 \u2502   \u2502                                                                  \u2502\n\u2502   713 \u2502   \u2502   except MaxRetryError as e:                                     \u2502\n\u2502   714 \u2502   \u2502   \u2502   if isinstance(e.reason, ConnectTimeoutError):              \u2502\n\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f\nConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed \nconnection without response'))",
+ "usage_after": "Current balance: 200.00 compute units\nUsage rate: 1.07/hr\nActive assignments: 1",
+ "units_used": 0.0,
+ "total_wall_s": 267.7
+}

@@ -286,3 +286,27 @@ Caveat: one seed of one model; the LM text is in-domain (same three manuscripts)
 Finer sweep (`A1_lm_fine`, order-8 LM, 300 validation lines, alpha 0.2 to 0.5 x beta 1.0 to 2.5): the optimum is interior, alpha 0.4 with beta 1.0 to 1.5
 (validation 5.41 % vs greedy 6.83 %). Test with the chosen alpha 0.4, beta 1.0: **RASAM-1 5.46 %** (greedy 6.82), **RASAM-2 21.59 %** (greedy 24.59). So tuning moved the
 result by under 0.1 point on RASAM-1 and 0.4 point on RASAM-2; the gain is robust to the LM order and settings and saturates near 5.5 % for this acoustic model.
+
+## 8. B2 result: a manuscript-disjoint RASAM-2 split (2026-10-25) — and a correction
+
+B2 = A2's recipe trained on 12 RASAM-2 manuscripts (2,357 train lines), with MS 1936, MS 1960 and MS 6 held out (every line of them is test; rule fixed in advance, see
+`rasam_make_msplit.py`). Single seed, half width, raw labels, no LM.
+
+| Test | n | CER (raw) |
+|---|---|---|
+| B2 on the 3 unseen manuscripts (all lines) | 703 | **31.07 %** (95 % CI 29.1 to 33.1); MS 1936 71.5 %, MS 1960 15.5 %, MS 6 21.3 % |
+| B2 on the published test lines of the 12 training manuscripts | 304 | 14.97 % |
+| Same-line comparison, unseen manuscripts: lines that are in A2's published test split | 68 | A2 (trained on those manuscripts) 32.76 % vs B2 (never saw them) **32.98 %** |
+| Same-line comparison, the other 12 manuscripts | 304 | A2 15.35 % vs B2 14.97 % |
+
+**Correction.** I said earlier that the random line split makes in-domain scores optimistic because every test page also occurs in train. For RASAM-2 and this
+recipe the evidence says it barely matters: a model that saw 195 lines of a manuscript is no better on that manuscript's test lines than one that never saw it
+(0.2 point difference on 68 lines, well inside the noise). Difficulty is intrinsic to the manuscript (MS 1936 is at 71 % either way), not leakage. The claim
+may still hold for RASAM-1 (3 manuscripts with up to 2,700 training lines each), which B2 does not test, and page-level overlap is not isolated here.
+Caveats: one seed, a small comparison set, a wide CI.
+
+## 9. Operations log (2026-10-25)
+- The SSD disconnected twice (2026-10-24 about 21:00 and 2026-10-25 overnight); the queue master was relaunched after each. B2 finished before the second drop; A3 was
+  at epoch 7 when it was cut. Everything the Colab supervisor needs now lives on the internal disk (`~/colab_staging`, small files) and is copied to the SSD afterwards.
+- Colab Pro on this account (balance 200 units on 2026-10-24): **2 GPU sessions can run at once** (the third allocation was refused), **4 CPU sessions** ran at once.
+  Measured billing: T4 1.07 units/hour, CPU 0.08 units/hour per session. Units spent on the Colab tests so far: 1.51 of the 10-unit budget.

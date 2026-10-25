@@ -1,0 +1,25 @@
+usage before:
+Current balance: 200.00 compute units
+Usage rate: 0.00/hr
+Active assignments: 0
+budget: baseline 200.00, balance 200.00, spent 0.00 of 10.00, left 10.00
+colab new: rc=0 7s
+[colab] Creating session 'bench-t4-w0.5-bs16-10241920'...
+[colab] Session READY.
+prepare:                           │
+│   714 │   │   │   if isinstance(e.reason, ConnectTimeoutError):              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed 
+connection without response'))
+colab stop: rc=1
+usage after:
+Current balance: 200.00 compute units
+Usage rate: 1.07/hr
+Active assignments: 1
+units used by this run: 0.0
+Traceback (most recent call last):
+  File "/Volumes/PortableSSD/repos/arabic_ocr/.claude/worktrees/xai-attribution-spike/scripts/colab_bench.py", line 123, in <module>
+    main()
+  File "/Volumes/PortableSSD/repos/arabic_ocr/.claude/worktrees/xai-attribution-spike/scripts/colab_bench.py", line 86, in main
+    raise RuntimeError("data prep failed")
+RuntimeError: data prep failed
