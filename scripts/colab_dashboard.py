@@ -317,7 +317,7 @@ def leaderboard_html() -> str:
     """Published RASAM numbers next to ours, per test set, best first. Ours are read from results/rasam/{crnn,lm}/*__test.json (official HF test splits)."""
     f = ST / "leaderboard.json"
     lb = json.loads(f.read_text()) if f.exists() else {"published": [], "targets": {}}
-    rows: dict[str, list] = {"RASAM-1": [], "RASAM-2": []}
+    rows: dict[str, list] = {"RASAM-1": [], "RASAM-2": [], "RASAM-2 repaired (7 broken MS 1936 crops re-cut)": [], "TariMa": []}
     for p in lb.get("published", []):
         src = f'<a href="{html.escape(p["url"])}">{html.escape(p["source"])}</a>' if p.get("url") else html.escape(p["source"])
         rows.setdefault(p["test"], []).append((p["cer"], "published", p["system"], src, p["comparable"], bool(p.get("hf_split"))))
@@ -327,10 +327,12 @@ def leaderboard_html() -> str:
                 j = json.loads(jf.read_text())
             except Exception:  # noqa: BLE001
                 continue
-            test = {"r1": "RASAM-1", "r2": "RASAM-2"}.get(j.get("dataset"))
+            test = {"r1": "RASAM-1", "r2": "RASAM-2", "tm": "TariMa"}.get(j.get("dataset"))
             if not test or "smoke" in jf.stem:
                 continue
-            if j.get("n") not in (734, 372):  # full official test sets only
+            if test == "RASAM-2" and "repaired" in jf.stem:  # never ranked with the official test: different images for 7 lines
+                test = "RASAM-2 repaired (7 broken MS 1936 crops re-cut)"
+            if j.get("n") not in (734, 372, 229):  # full test sets only
                 continue
             rows[test].append((j["micro_cer"]["raw"] * 100, "ours", f"{jf.stem.replace('__test', '')} ({kind})", "this project", f"official test split, n={j.get('n')}, micro CER raw", True))
     s = f"<div class=dim>{html.escape(lb.get('note', ''))}</div>"
