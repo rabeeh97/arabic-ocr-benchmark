@@ -33,7 +33,7 @@ def conv(cin: int, cout: int) -> list:
 class CRNN(nn.Module):
     """VGG-style CNN (height 64 -> 2, width / 4) + 3-layer BiLSTM + CTC head. T = W // 4."""
 
-    def __init__(self, n_classes: int, hidden: int = 256, width: float = 1.0) -> None:
+    def __init__(self, n_classes: int, hidden: int = 256, width: float = 1.0, height: int = 64) -> None:
         super().__init__()
         c = lambda v: max(8, int(round(v * width)))  # noqa: E731  width < 1 gives the small laptop replica
         hidden = c(hidden)
@@ -44,7 +44,7 @@ class CRNN(nn.Module):
             *conv(c(256), c(384)), *conv(c(384), c(384)), nn.MaxPool2d((2, 1), (2, 1)),
             *conv(c(384), c(512)), nn.MaxPool2d((2, 1), (2, 1)),
         )
-        self.proj = nn.Linear(c(512) * 2, hidden)
+        self.proj = nn.Linear(c(512) * (height // 32), hidden)  # the CNN divides height by 32: 64 px -> 2 rows, 96 -> 3, 128 -> 4
         self.rnn = nn.LSTM(hidden, hidden, num_layers=3, dropout=0.25, bidirectional=True)
         self.fc = nn.Linear(hidden * 2, n_classes)
 
@@ -185,6 +185,10 @@ def main() -> None:
     global GEOM_AUG
     GEOM_AUG = a.geom_aug
     blob = pickle.load(open(a.data, "rb"))
+    global H
+    H = int(blob.get("H", 64))  # line height is a property of the data pack (rasam_prepare_crnn_data.py --height)
+    if H % 32:
+        raise SystemExit(f"line height {H} must be a multiple of 32")
     rows = blob["rows"]
     extra = {int(k): int(v) for k, v in json.loads(a.repeat_file.read_text())["extra"].items()} if a.repeat_file else {}
     for j, r in enumerate(rows):
@@ -206,9 +210,9 @@ def main() -> None:
         pool += [r] * ((4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1) + r["_extra"])
     steps_per_epoch = math.ceil(len(pool) / a.bs)
     split = blob.get("split", "aligner")
-    (a.out / "config.json").write_text(json.dumps({"width": a.width, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
+    (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs}), encoding="utf-8")
-    model = CRNN(len(chars) + 1, width=a.width).to(dev)
+    model = CRNN(len(chars) + 1, width=a.width, height=H).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)

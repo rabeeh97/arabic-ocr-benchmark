@@ -57,7 +57,10 @@ def main() -> None:
     ap.add_argument("out", type=Path)
     ap.add_argument("--sets", nargs="+", default=["RASAM-1", "RASAM-2"], choices=list(TAGS))
     ap.add_argument("--labels", default="raw", choices=["raw", "stripped"])
+    ap.add_argument("--height", type=int, default=64, help="line height in px (multiple of 32); the width cap scales with it")
     a = ap.parse_args()
+    global H, MAX_W
+    H, MAX_W = a.height, 24 * a.height
     rows, dropped = [], {}
     for name in a.sets:
         for split, role in ROLES.items():

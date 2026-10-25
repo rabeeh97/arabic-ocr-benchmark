@@ -132,10 +132,12 @@ def main() -> None:
     cfg = json.loads((a.run / "config.json").read_text())
     chars = json.loads((a.run / "charset.json").read_text(encoding="utf-8"))["chars"]
     stoi = {c: i + 1 for i, c in enumerate(chars)}
-    model = T.CRNN(len(chars) + 1, width=cfg["width"])
+    blob = pickle.load(open(a.data, "rb"))
+    T.H = int(blob.get("H", 64))
+    model = T.CRNN(len(chars) + 1, width=cfg["width"], height=int(cfg.get("height", 64)))
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location="cpu"))
     model.eval()
-    rows = pickle.load(open(a.data, "rb"))["rows"]
+    rows = blob["rows"]
     train_txt = [r["label"][::-1] for r in rows if r["role"] == "train" and r["dataset"] in a.train_sets]
     lm = CharLM(train_txt, a.order)
     print(f"LM order {a.order} on {len(train_txt)} training labels (visual order), vocabulary {lm.v}", flush=True)

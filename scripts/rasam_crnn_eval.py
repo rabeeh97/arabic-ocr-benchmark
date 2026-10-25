@@ -46,10 +46,14 @@ def main() -> None:
     cfg = json.loads((a.run / "config.json").read_text())
     chars = json.loads((a.run / "charset.json").read_text(encoding="utf-8"))["chars"]
     itos = {i + 1: c for i, c in enumerate(chars)}
-    model = T.CRNN(len(chars) + 1, width=cfg["width"]).to(a.device)
+    blob = pickle.load(open(a.data, "rb"))
+    T.H = int(blob.get("H", 64))
+    if int(cfg.get("height", 64)) != T.H:
+        raise SystemExit(f"model trained at height {cfg.get('height', 64)} but the data pack is {T.H} px")
+    model = T.CRNN(len(chars) + 1, width=cfg["width"], height=T.H).to(a.device)
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location=a.device))
     model.eval()
-    rows = [r for r in pickle.load(open(a.data, "rb"))["rows"] if r["role"] == a.split]
+    rows = [r for r in blob["rows"] if r["role"] == a.split]
     out_dir = Path("results/rasam/crnn")
     out_dir.mkdir(parents=True, exist_ok=True)
     for tag in a.tags:
