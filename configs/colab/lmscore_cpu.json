@@ -8,12 +8,12 @@
   "final_sync_grace_min": 10,
   "uploads": [
     ["scripts/colab_remote_lmscore.py", "/content/colab_remote_lmscore.py"],
-    ["results/rasam/lm/NB_TM_r1__r1__test.json", "/content/nbest/NB_TM_r1__r1__test.json"],
-    ["results/rasam/lm/NB_TM_r1__r1__val_nbest.json", "/content/nbest/NB_TM_r1__r1__val_nbest.json"],
-    ["results/rasam/lm/NB_TM_r2__r2__test.json", "/content/nbest/NB_TM_r2__r2__test.json"],
-    ["results/rasam/lm/NB_TM_r2__r2__val_nbest.json", "/content/nbest/NB_TM_r2__r2__val_nbest.json"],
-    ["results/rasam/lm/NB_TM_r2rep__r2__test.json", "/content/nbest/NB_TM_r2rep__r2__test.json"],
-    ["results/rasam/lm/NB_TM_r2rep__r2__val_nbest.json", "/content/nbest/NB_TM_r2rep__r2__val_nbest.json"]
+    ["results/rasam/lm/NB_TM_r1__r1__test.json", "/content/NB_TM_r1__r1__test.json"],
+    ["results/rasam/lm/NB_TM_r1__r1__val_nbest.json", "/content/NB_TM_r1__r1__val_nbest.json"],
+    ["results/rasam/lm/NB_TM_r2__r2__test.json", "/content/NB_TM_r2__r2__test.json"],
+    ["results/rasam/lm/NB_TM_r2__r2__val_nbest.json", "/content/NB_TM_r2__r2__val_nbest.json"],
+    ["results/rasam/lm/NB_TM_r2rep__r2__test.json", "/content/NB_TM_r2rep__r2__test.json"],
+    ["results/rasam/lm/NB_TM_r2rep__r2__val_nbest.json", "/content/NB_TM_r2rep__r2__val_nbest.json"]
   ],
   "setup": ["python -c 'import transformers, torch; print(\"transformers\", transformers.__version__, \"torch\", torch.__version__)'"],
   "runs": [{"label": "lmscore_aragpt2_base", "cmd": "python -u /content/colab_remote_lmscore.py aubmindlab/aragpt2-base"}],

@@ -1,4 +1,4 @@
-# Runs INSIDE a Colab VM (a CPU session is enough). Scores every N-best candidate in /content/nbest/*.json with a pretrained Arabic causal LM and
+# Runs INSIDE a Colab VM (a CPU session is enough). Scores every N-best candidate in /content/NB_*.json with a pretrained Arabic causal LM and
 # writes /content/crnn_out/lmscore/preds_lmscore_<file>.json: per line, per candidate [total log-prob in nats, number of tokens].
 # Usage: python colab_remote_lmscore.py [MODEL]   (default aubmindlab/aragpt2-base)
 import glob
@@ -33,7 +33,7 @@ def score(texts):
 
 
 t0 = time.time()
-for f in sorted(glob.glob("/content/nbest/*.json")):
+for f in sorted(glob.glob("/content/NB_*.json")):
     d = json.load(open(f))
     out = [score([c[0] for c in line.get("nbest", [])]) for line in d["lines"]]
     base = os.path.basename(f)[:-5]
