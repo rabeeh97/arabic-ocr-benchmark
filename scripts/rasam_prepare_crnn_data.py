@@ -42,8 +42,14 @@ def clean(t: str, labels: str) -> str:
     return " ".join(t.split())
 
 
+CHANNEL = "grey"  # --channel darkest: per-pixel minimum of R, G, B, so red and blue rubrics stay as dark as black ink
+
+
 def prep(img: Image.Image) -> np.ndarray:
-    g = np.asarray(img.convert("L")).astype(np.float32)
+    if CHANNEL == "darkest":
+        g = np.asarray(img.convert("RGB")).min(axis=2).astype(np.float32)
+    else:
+        g = np.asarray(img.convert("L")).astype(np.float32)
     mask = g < 12
     if mask.any() and (~mask).any():
         g = np.where(mask, float(np.median(g[~mask])), g)
@@ -58,21 +64,36 @@ def main() -> None:
     ap.add_argument("--sets", nargs="+", default=["RASAM-1", "RASAM-2"], choices=list(TAGS))
     ap.add_argument("--labels", default="raw", choices=["raw", "stripped"])
     ap.add_argument("--height", type=int, default=64, help="line height in px (multiple of 32); the width cap scales with it")
+    ap.add_argument("--channel", default="grey", choices=["grey", "darkest"], help="grey (default) or the darkest of R, G, B per pixel")
+    ap.add_argument("--repair", type=Path, help="pickle from rasam_recut_broken.py: replacement images for degenerate crops, keyed by (set, split, index)")
+    ap.add_argument("--drop-broken", action="store_true", help="drop TRAIN/validation crops under 8 px tall that have no repair (test lines are always kept)")
     ap.add_argument("--all-train-sets", nargs="*", default=[], choices=list(TAGS),
                     help="sets whose validation AND test lines also become training lines (e.g. RASAM-1 when only RASAM-2 test is scored)")
     a = ap.parse_args()
-    global H, MAX_W
+    global H, MAX_W, CHANNEL
     H, MAX_W = a.height, 24 * a.height
+    CHANNEL = a.channel
     rows, dropped = [], {}
+    repairs = pickle.load(open(a.repair, "rb")) if a.repair else {}
+    n_repaired = 0
     for name in a.sets:
         for split, role in ROLES.items():
             if name in a.all_train_sets:
                 role = "train"
             n = 0
+            k = -1  # index in the split's parquet order (the key used by the repair file)
             for f in sorted(glob.glob(f"{ROOT}{name}/snapshots/*/data/{split}-*.parquet")):
                 for rec in pq.read_table(f).to_pylist():
+                    k += 1
                     label = clean(rec["transcription"], a.labels)
-                    arr = prep(Image.open(io.BytesIO(rec["image"]["bytes"])))
+                    raw = Image.open(io.BytesIO(rec["image"]["bytes"]))
+                    if (name, split, k) in repairs:
+                        raw = Image.open(io.BytesIO(repairs[(name, split, k)]["bytes"]))
+                        n_repaired += 1
+                    elif a.drop_broken and split != "test" and raw.size[1] < 8:
+                        dropped[(name, split)] = dropped.get((name, split), 0) + 1
+                        continue
+                    arr = prep(raw)
                     # CTC needs a frame per character; test lines are never dropped (scored as they are)
                     if role != "test" and (not label or arr.shape[1] // 4 < len(label) + 2):
                         dropped[(name, split)] = dropped.get((name, split), 0) + 1
@@ -81,7 +102,8 @@ def main() -> None:
                                  "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"]})
                     n += 1
             print(name, split, n, flush=True)
-    split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "")
+    split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "") + ("-repaired" if repairs else "")
+    print("repaired crops used:", n_repaired, flush=True)
     pickle.dump({"H": H, "split": split_name, "rows": rows}, open(a.out, "wb"), protocol=4)
     print("dropped (no CTC room / empty):", {f"{k[0]}/{k[1]}": v for k, v in dropped.items()}, "->", a.out, f"{a.out.stat().st_size / 1e6:.0f} MB")
 

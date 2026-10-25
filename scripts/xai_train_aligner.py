@@ -19,6 +19,7 @@ import time
 from pathlib import Path
 
 import numpy as np
+from PIL import Image
 import torch
 import torch.nn.functional as F
 from torch import nn
@@ -90,12 +91,33 @@ def geom_aug(x: torch.Tensor, lens: torch.Tensor):
     return x, lens
 
 
+NEIGHBOR_P = 0.0  # set by --neighbor-aug: probability of pasting ink strips of other lines above and below (tall RASAM crops contain neighbours)
+FADE_P = 0.0  # set by --fade-aug: probability of fading the ink towards the paper (faint RASAM-2 lines)
+DONORS: list = []  # training images that provide the neighbour strips
+
+
+def neighbor_aug(img: np.ndarray) -> np.ndarray:
+    """Paste the bottom part of one random training line above and the top part of another below, then shrink back to height H, so the
+    model learns to read the central line with foreign ink at the margins (as in the tall crops of the published RASAM test split)."""
+    h, w = img.shape
+    parts = []
+    a, b = random.choice(DONORS), random.choice(DONORS)
+    ha, hb = int(h * random.uniform(0.2, 0.45)), int(h * random.uniform(0.2, 0.45))
+    for donor, take_bottom, hh in ((a, True, ha), (b, False, hb)):
+        d = np.asarray(Image.fromarray(donor).resize((w, h)))
+        parts.append(d[h - hh:] if take_bottom else d[:hh])
+    comp = np.concatenate([parts[0], img, parts[1]], axis=0)
+    nw = max(16, int(round(w * h / comp.shape[0])))
+    return np.asarray(Image.fromarray(comp).resize((nw, h)), dtype=np.uint8)
+
+
 def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
-    ws = [r["img"].shape[1] for r in rows]
+    imgs = [neighbor_aug(r["img"]) if (train and NEIGHBOR_P and DONORS and random.random() < NEIGHBOR_P) else r["img"] for r in rows]
+    ws = [im.shape[1] for im in imgs]
     wmax = int(math.ceil(max(ws) / 4) * 4)
     x = np.ones((len(rows), 1, H, wmax), dtype=np.float32)
-    for i, r in enumerate(rows):
-        x[i, 0, :, : ws[i]] = normalise(r["img"])
+    for i, im in enumerate(imgs):
+        x[i, 0, :, : ws[i]] = normalise(im)
     x = torch.from_numpy(x).to(dev)
     lens = torch.tensor(ws, device=dev)
     if train and GEOM_AUG:
@@ -109,6 +131,10 @@ def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
         c = torch.empty(len(rows), 1, 1, 1, device=dev).uniform_(0.8, 1.2)
         b = torch.empty(len(rows), 1, 1, 1, device=dev).uniform_(-0.15, 0.15)
         x = (x * c + b + 0.03 * torch.randn_like(x)).clamp(-1.2, 1.2)
+        if FADE_P:  # pull the ink towards the paper level (+1) on some lines: faint and low-contrast lines are RASAM-2's hardest
+            sel = (torch.rand(len(rows), 1, 1, 1, device=dev) < FADE_P).float()
+            f = torch.empty(len(rows), 1, 1, 1, device=dev).uniform_(0.2, 0.6) * sel
+            x = x + f * (1.0 - x)
         x = torch.roll(x, shifts=random.randint(-3, 3), dims=2)
     tgt = [[stoi[ch] for ch in r["label"][::-1] if ch in stoi] for r in rows]  # visual order
     return x, lens, tgt
@@ -165,6 +191,8 @@ def main() -> None:
     ap.add_argument("--device", default="cuda", help="cuda (the 3090), mps or cpu (laptop replica; set PYTORCH_ENABLE_MPS_FALLBACK=1 for mps)")
     ap.add_argument("--eval-every", type=int, default=2)
     ap.add_argument("--geom-aug", action="store_true", help="add slant and stroke-width augmentation (geom_aug)")
+    ap.add_argument("--neighbor-aug", type=float, default=0.0, help="probability of pasting other lines' ink above/below a training line")
+    ap.add_argument("--fade-aug", type=float, default=0.0, help="probability of fading a training line's ink towards the paper")
     ap.add_argument("--repeat-file", type=Path, help="JSON {\"extra\": {row_index: n}}: add n extra copies of these rows (indices into the pickle's rows)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
@@ -182,8 +210,9 @@ def main() -> None:
         random.seed(a.seed)
         np.random.seed(a.seed)
         torch.manual_seed(a.seed)
-    global GEOM_AUG
+    global GEOM_AUG, NEIGHBOR_P, FADE_P
     GEOM_AUG = a.geom_aug
+    NEIGHBOR_P, FADE_P = a.neighbor_aug, a.fade_aug
     blob = pickle.load(open(a.data, "rb"))
     global H
     H = int(blob.get("H", 64))  # line height is a property of the data pack (rasam_prepare_crnn_data.py --height)
@@ -196,6 +225,7 @@ def main() -> None:
     if a.train_sets:  # RASAM arms (A1-A4): train and select on the named dataset tags only
         rows = [r for r in rows if r["dataset"] in a.train_sets]
     train = [r for r in rows if r["role"] in ("train", "panel")]
+    DONORS[:] = [r["img"] for r in train]
     if a.max_train:
         random.Random(0).shuffle(train)
         train = train[: a.max_train]
@@ -210,7 +240,7 @@ def main() -> None:
         pool += [r] * ((4 if r["dataset"].startswith("rasam") or r["role"] == "panel" else 1) + r["_extra"])
     steps_per_epoch = math.ceil(len(pool) / a.bs)
     split = blob.get("split", "aligner")
-    (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
+    (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width, height=H).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)

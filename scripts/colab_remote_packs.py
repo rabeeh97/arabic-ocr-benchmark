@@ -23,6 +23,10 @@ for p in packs:
     cmd = [sys.executable, "/content/rasam_prepare_crnn_data.py", p["out"], "--sets", *p["sets"], "--labels", "raw", "--height", str(p.get("height", 64))]
     if p.get("all_train"):
         cmd += ["--all-train-sets", *p["all_train"]]
+    if p.get("repair"):
+        cmd += ["--repair", p["repair"]]
+    if p.get("channel"):
+        cmd += ["--channel", p["channel"]]
     subprocess.run(cmd, check=True, env=env)
     timing[os.path.basename(p["out"])] = round(time.time() - t, 1)
 os.makedirs("/content/crnn_out", exist_ok=True)
