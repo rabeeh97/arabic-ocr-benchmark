@@ -144,13 +144,14 @@ def remote_script(spec: dict, job: str = "JOB") -> str:
         every = int(spec.get("hf_push_every_s", 300))
         lines += ["HFP=", "if [ -f /content/.hf_token ]; then chmod 600 /content/.hf_token; "
                   f"( while true; do sleep {every}; python /content/colab_hf_push.py {repo} {job} >> /content/run/hf_push.log 2>&1; done ) & HFP=$!; fi"]
-    lines += ["stamp setup_start"] + list(spec.get("setup", [])) + ["echo \"RC setup $?\"", "stamp setup_end"]
+    # FAILS counts failed steps; the script exits with it, so "exit code 0" really means every step succeeded
+    lines += ["FAILS=0", "stamp setup_start"] + list(spec.get("setup", [])) + ['rc=$?; echo "RC setup $rc"; [ $rc -ne 0 ] && FAILS=$((FAILS+1))', "stamp setup_end"]
     for i, r in enumerate(spec["runs"]):
         lab = re.sub(r"\W+", "_", r.get("label", f"run{i}"))
-        lines += [f"stamp {lab}_start", r["cmd"], f'echo "RC {lab} $?"', f"stamp {lab}_end"]
+        lines += [f"stamp {lab}_start", r["cmd"], f'rc=$?; echo "RC {lab} $rc"; [ $rc -ne 0 ] && FAILS=$((FAILS+1))', f"stamp {lab}_end"]
     if repo:
         lines += ['[ -n "$HFP" ] && kill $HFP', f"python /content/colab_hf_push.py {repo} {job} final >> /content/run/hf_push.log 2>&1", 'echo "RC hfpush $?"']
-    lines += ["echo ALLDONE"]
+    lines += ['echo "ALLDONE failed_steps=$FAILS"', "exit $FAILS"]
     return "\n".join(lines) + "\n"
 
 

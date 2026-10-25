@@ -37,13 +37,15 @@ def rows(repo, split, cols=None):
 
 t0 = time.time()
 tests = {"r1": rows("calfa-ai/RASAM-1", "test"), "r2": rows("calfa-ai/RASAM-2", "test")}
-test_txt = {k: {norm(r["transcription"]) for r in v} for k, v in tests.items()}
+test_txt = {k: {t for t in (norm(r["transcription"]) for r in v) if len(t) >= 12} for k, v in tests.items()}
 ov = {}
 for split in ("train", "val", "test"):
-    hb = [r for r in rows("mdnaseif/hafith-combined-benchmark", split, cols="noimage") if r.get("source") == "RASAM"]
+    # The published benchmark has only `image` and `text` (no `source` column, despite its README), so ALL its lines are compared:
+    # only RASAM lines can coincide with RASAM test lines. Lines shorter than 12 characters are ignored (common short phrases).
+    hb = rows("mdnaseif/hafith-combined-benchmark", split, cols="noimage")
     txt_col = next((c for c in ("text", "transcription", "label") if hb and c in hb[0]), None)
-    hset = {norm(r[txt_col]) for r in hb} if txt_col else set()
-    ov[split] = {"hafith_rasam_lines": len(hb), "text_column": txt_col,
+    hset = {t for t in (norm(r[txt_col]) for r in hb) if len(t) >= 12} if txt_col else set()
+    ov[split] = {"hafith_lines": len(hb), "text_column": txt_col,
                  "overlap_with_official_r1_test": len(hset & test_txt["r1"]), "overlap_with_official_r2_test": len(hset & test_txt["r2"])}
 json.dump(ov, open(f"{OUT}/hafith_overlap.json", "w"), ensure_ascii=False, indent=1)
 print("OVERLAP", json.dumps(ov), flush=True)
