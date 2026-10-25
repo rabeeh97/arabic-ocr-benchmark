@@ -1,0 +1,54 @@
+{
+ "r1": {
+  "HAFITH": {
+   "all": 6.27,
+   "n_all": 734,
+   "clean": 12.34,
+   "n_clean": 372
+  },
+  "R2_h96_w05_s0_best__r1": {
+   "all": 5.39,
+   "n_all": 734,
+   "clean": 6.75,
+   "n_clean": 372
+  },
+  "R2_h96_lm_r1__r1": {
+   "all": 4.58,
+   "n_all": 734,
+   "clean": 5.72,
+   "n_clean": 372
+  },
+  "A3colab_w05_s0_best__r1": {
+   "all": 6.55,
+   "n_all": 734,
+   "clean": 7.84,
+   "n_clean": 372
+  },
+  "A3colab_lm_r1__r1": {
+   "all": 5.35,
+   "n_all": 734,
+   "clean": 6.45,
+   "n_clean": 372
+  }
+ },
+ "r2": {
+  "HAFITH": {
+   "all": 17.56,
+   "n_all": 372,
+   "clean": 17.56,
+   "n_clean": 372
+  },
+  "R2_h96_w05_s0_best__r2": {
+   "all": 12.14,
+   "n_all": 372,
+   "clean": 12.14,
+   "n_clean": 372
+  },
+  "R2_h96_lm_r2__r2": {
+   "all": 9.66,
+   "n_all": 372,
+   "clean": 9.66,
+   "n_clean": 372
+  }
+ }
+}

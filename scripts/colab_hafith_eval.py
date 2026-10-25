@@ -39,15 +39,18 @@ t0 = time.time()
 tests = {"r1": rows("calfa-ai/RASAM-1", "test"), "r2": rows("calfa-ai/RASAM-2", "test")}
 test_txt = {k: {t for t in (norm(r["transcription"]) for r in v) if len(t) >= 12} for k, v in tests.items()}
 ov = {}
+overlap_lines = {}  # the normalised official-test texts that also occur in each HAFITH split (to score both systems on the clean remainder)
 for split in ("train", "val", "test"):
     # The published benchmark has only `image` and `text` (no `source` column, despite its README), so ALL its lines are compared:
     # only RASAM lines can coincide with RASAM test lines. Lines shorter than 12 characters are ignored (common short phrases).
     hb = rows("mdnaseif/hafith-combined-benchmark", split, cols="noimage")
     txt_col = next((c for c in ("text", "transcription", "label") if hb and c in hb[0]), None)
     hset = {t for t in (norm(r[txt_col]) for r in hb) if len(t) >= 12} if txt_col else set()
+    overlap_lines[split] = sorted((hset & test_txt["r1"]) | (hset & test_txt["r2"]))
     ov[split] = {"hafith_lines": len(hb), "text_column": txt_col,
                  "overlap_with_official_r1_test": len(hset & test_txt["r1"]), "overlap_with_official_r2_test": len(hset & test_txt["r2"])}
 json.dump(ov, open(f"{OUT}/hafith_overlap.json", "w"), ensure_ascii=False, indent=1)
+json.dump(overlap_lines, open(f"{OUT}/hafith_lines_overlap.json", "w"), ensure_ascii=False)
 print("OVERLAP", json.dumps(ov), flush=True)
 
 from PIL import Image  # noqa: E402

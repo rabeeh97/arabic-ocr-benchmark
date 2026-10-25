@@ -47,3 +47,17 @@ Three Springer papers that cite RASAM could not be read (paywall) and may hold f
 On this strict view we are first on both sets, but it holds few entries: the strongest published systems (Calfa's word-based CRNNs) are not public, so
 they cannot be re-scored. HAFITH is public and is the next candidate to re-score on the official split; its training lines must first be checked for
 overlap with the official test lines (any overlap would inflate its score).
+
+## HAFITH re-scored on the official split (2026-10-25)
+
+HAFITH (public, 642 M) run on a Colab T4 on all 1,106 official test lines (transformers 4.57, its own `HAFITHRecognizer`), scored on the Mac with the project
+metric (`scripts/rasam_score_preds.py`). Overlap check by normalised text (lines of at least 12 characters): **266 official RASAM-1 test lines are in HAFITH's
+training data and 96 in its validation data** (87 more in its own test split); none of the RASAM-2 test lines are, so HAFITH's "RASAM" is RASAM-1.
+
+| Official test | HAFITH | ours: 96 px greedy | ours: 96 px + LM |
+|---|---|---|---|
+| RASAM-1, all 734 lines | 6.27 % | 5.39 % | **4.58 %** |
+| RASAM-1, 372 clean lines (not in HAFITH train/val) | 12.34 % | 6.75 % | **5.72 %** |
+| RASAM-2, all 372 lines (no overlap) | 17.56 % | 12.14 % | **9.66 %** |
+
+On lines it never saw, HAFITH's error is twice its overall figure; its reported 4.95 % is on its own split and benefits from memorised lines.
