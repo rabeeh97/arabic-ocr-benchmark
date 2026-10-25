@@ -422,3 +422,19 @@ No consistent gain at 2.5x the compute: the final recipe keeps width 0.5 and spe
 
 Runner change the same day: when the HF copy already holds every weight and config file of the VM (sha256), the VM is stopped immediately and the Mac copy is
 fetched from HF (CPU self-test: early stop verified, 6/6 files verified). This removes the slow VM-to-Mac download from the billed time.
+
+## 15. Repaired data and augmentations (2026-10-25, Colab T4, verified; one seed each)
+
+RASAM-1 + RASAM-2 train at 96 px, half width, 30 epochs; RASAM-2 train/validation use the 80 re-cut MS 1936 crops. Augmentations from section 12:
+neighbour ink (p = 0.3: strips of other lines pasted above and below), fade (p = 0.3: ink pulled towards the paper), darkest RGB channel as input.
+
+| greedy -> LM | RASAM-1 test | RASAM-2 official | RASAM-2 repaired |
+|---|---|---|---|
+| published data, no extra aug (section 11) | 5.39 -> 4.58 % | 12.14 -> 9.66 % | 11.04 -> 8.94 % |
+| repaired data | 5.18 -> **4.33 %** | 12.30 -> 10.03 % | 11.13 -> 8.96 % |
+| repaired + neighbour + fade | 5.40 -> 4.43 % | 12.84 -> **9.65 %** | 11.69 -> **8.94 %** |
+| repaired + neighbour + fade + darkest channel | 6.44 -> 5.14 % | 13.05 -> 10.12 % | 11.99 -> 9.43 % |
+
+- The darkest channel is clearly worse (dropped).
+- Repairing the training data helps RASAM-1 a little and is neutral on RASAM-2; the neighbour/fade augmentation is mixed. Both effects are under half a point,
+  which is the size of the run-to-run noise we have not measured yet. **Next: several seeds of the leading recipes before any further recipe claim.**
