@@ -78,6 +78,26 @@ def hf_verify(repo: str, job: str, verified: dict[str, str], tok: str) -> tuple[
     return ok, len(verified)
 
 
+def fetch_from_hf(repo: str, job: str, manifest: dict[str, str], out: Path, tok: str) -> bool:
+    """Download every file of the VM manifest from the HF copy into the Mac staging folder and check its sha256 against the VM's. True if all match."""
+    from huggingface_hub import hf_hub_download
+
+    ok = True
+    for rpath, sha in manifest.items():
+        try:
+            p = hf_hub_download(repo, f"runs/{job}/" + rpath.removeprefix("/content/"), token=tok, cache_dir=str(STAGING / "hf_cache"))
+            data = Path(p).read_bytes()
+            if hashlib.sha256(data).hexdigest() != sha:
+                ok = False
+                continue
+            local = out / rpath.lstrip("/")
+            local.parent.mkdir(parents=True, exist_ok=True)
+            local.write_bytes(data)
+        except Exception:  # noqa: BLE001  e.g. a log file that changed after the push: counted as not verified
+            ok = False
+    return ok
+
+
 def copy_to_repo(src: Path, dst: Path) -> bool:
     """Copy a finished job directory to the SSD results folder if the SSD is mounted; True when copied (staging copy is kept either way)."""
     import shutil
@@ -441,12 +461,34 @@ def main() -> None:
             # The VM is NOT stopped until the weights and metrics are verified on the Mac (size and sha256), up to a grace period.
             hard = job.reason.startswith("overall budget floor")
             grace = 120.0 if hard else 60.0 * spec.get("final_sync_grace_min", 15)
+            hf_done = False
             if spec.get("hf_repo"):  # make sure the VM's last state is on the HF repo too (also when the job was cut by a cap); idempotent
                 q, _ = job.kexec(f"import subprocess\nprint(subprocess.run(['python', '/content/colab_hf_push.py', '{spec['hf_repo']}', '{name}', 'final'], "
                                  "capture_output=True, text=True, timeout=900).stdout)\n", 960, tries=2)
                 print("final HF push:", ((q.stdout or "") + (q.stderr or "")).strip()[-160:], flush=True)
-            ok = job.final_sync(grace)
-            print("final sync:", "ok, every kept file verified" if ok else "FAILED after the grace period: some files are NOT safe on the Mac", flush=True)
+                if tok:  # if HF already holds every weight and config file of the VM (sha256), the VM is not needed any more
+                    try:
+                        mq, _ = job.kexec(manifest_snippet(spec.get("artifacts", []), False), 180)
+                        mm = re.search(r"MANIFEST=(\[.*\])", (mq.stdout or "") + (mq.stderr or ""))
+                        if mm:
+                            man = {p: sha for p, _, sha in json.loads(mm.group(1))}
+                            essential = {p: s for p, s in man.items() if p.endswith((".pt", ".json"))}
+                            ev, en = hf_verify(spec["hf_repo"], name, essential, tok)
+                            hf_done = en > 0 and ev == en
+                            print(f"HF holds {ev}/{en} weight and config files of the VM", flush=True)
+                    except Exception as e:  # noqa: BLE001
+                        print("HF completeness check failed:", repr(e)[:160], flush=True)
+            if hf_done:
+                # cheaper: stop the VM now and fetch the Mac copy from HF (fast, no VM billing); the Mac copy is still verified by sha256
+                verified = job.stop()
+                print("stop verified:", verified, "(early: the HF copy is complete)", flush=True)
+                ok = fetch_from_hf(spec["hf_repo"], name, man, out, tok)
+                job.verified.update({p: s for p, s in man.items() if (out / p.lstrip("/")).exists()})
+                print("final sync from HF:", "ok, every kept file verified" if ok else "INCOMPLETE (the files are safe on HF)", flush=True)
+            else:
+                ok = job.final_sync(grace)
+                print("final sync:", "ok, every kept file verified" if ok else "FAILED after the grace period: some files are NOT safe on the Mac", flush=True)
+                verified = None
             if spec.get("hf_repo") and tok:
                 try:
                     hv, hn = hf_verify(spec["hf_repo"], name, job.verified, tok)
@@ -454,7 +496,8 @@ def main() -> None:
                     print(f"HF copy: {hv}/{hn} files match the VM (sha256 for weights) in {spec['hf_repo']}/runs/{name}", flush=True)
                 except Exception as e:  # noqa: BLE001
                     print("HF copy check failed:", repr(e)[:160], flush=True)
-            verified = job.stop()
+            if verified is None:
+                verified = job.stop()
             print("stop verified:", verified, flush=True)
             if not verified:
                 print(f"!!! SESSION MAY STILL BE RUNNING AND SPENDING UNITS: run `colab stop -s {name}`, then `colab usage`", flush=True)
