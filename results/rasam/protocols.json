@@ -1,0 +1,59 @@
+{
+ "96 px + TariMa + LM (best)": {
+  "RASAM-1": {
+   "official": 4.32,
+   "standardised labels": 3.95,
+   "no coloured lines": 4.05,
+   "main text only": 4.25,
+   "all adjustments": 3.65,
+   "lines kept (all adjustments)": 631
+  },
+  "RASAM-2": {
+   "official": 9.41,
+   "standardised labels": 8.91,
+   "no coloured lines": 9.48,
+   "main text only": 9.34,
+   "repaired crops": 8.42,
+   "all adjustments": 7.88,
+   "lines kept (all adjustments)": 313
+  }
+ },
+ "96 px + LM": {
+  "RASAM-1": {
+   "official": 4.58,
+   "standardised labels": 4.2,
+   "no coloured lines": 4.31,
+   "main text only": 4.52,
+   "all adjustments": 3.91,
+   "lines kept (all adjustments)": 631
+  },
+  "RASAM-2": {
+   "official": 9.66,
+   "standardised labels": 9.17,
+   "no coloured lines": 9.74,
+   "main text only": 9.61,
+   "repaired crops": 8.94,
+   "all adjustments": 8.39,
+   "lines kept (all adjustments)": 313
+  }
+ },
+ "96 px greedy": {
+  "RASAM-1": {
+   "official": 5.39,
+   "standardised labels": 5.02,
+   "no coloured lines": 5.14,
+   "main text only": 5.32,
+   "all adjustments": 4.75,
+   "lines kept (all adjustments)": 631
+  },
+  "RASAM-2": {
+   "official": 12.14,
+   "standardised labels": 11.63,
+   "no coloured lines": 12.24,
+   "main text only": 12.02,
+   "repaired crops": 11.04,
+   "all adjustments": 10.44,
+   "lines kept (all adjustments)": 313
+  }
+ }
+}

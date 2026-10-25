@@ -35,10 +35,22 @@ TAGS = {"RASAM-1": "r1", "RASAM-2": "r2", "tarima": "tm"}  # TariMa (calfa-ai/ta
 ROLES = {"train": "train", "validation": "heldout", "test": "test"}
 
 
+def _standardise(t: str) -> str:
+    """Lucas et al. 2022 standardised RASAM's character set (54 -> 38 classes). Our equivalent is the project's diac_insensitive profile:
+    diacritics and tatweel removed, alef / hamza / yaa / taa-marbuta variants and digits folded. On Colab the module is uploaded as /content/arabic_normalize.py."""
+    try:
+        from arabic_ocr_bench.normalize import normalize
+    except ImportError:
+        from arabic_normalize import normalize
+    return normalize(t, "diac_insensitive")
+
+
 def clean(t: str, labels: str) -> str:
     t = BIDI.sub("", unicodedata.normalize("NFC", t or ""))
     if labels == "stripped":
         t = HARAKAT.sub("", t)
+    elif labels == "standardised":
+        t = _standardise(t)
     return " ".join(t.split())
 
 
@@ -62,7 +74,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("out", type=Path)
     ap.add_argument("--sets", nargs="+", default=["RASAM-1", "RASAM-2"], choices=list(TAGS))
-    ap.add_argument("--labels", default="raw", choices=["raw", "stripped"])
+    ap.add_argument("--labels", default="raw", choices=["raw", "stripped", "standardised"])
     ap.add_argument("--height", type=int, default=64, help="line height in px (multiple of 32); the width cap scales with it")
     ap.add_argument("--channel", default="grey", choices=["grey", "darkest"], help="grey (default) or the darkest of R, G, B per pixel")
     ap.add_argument("--repair", type=Path, help="pickle from rasam_recut_broken.py: replacement images for degenerate crops, keyed by (set, split, index)")

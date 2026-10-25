@@ -42,3 +42,29 @@ No Timbuktu, Mauritanian, Moroccan or Tunisian line-level HTR set was found, and
 **Verdict.** RASAM (with TariMa) is still the only established Maghrebi line-level benchmark. The two datasets most worth adding are TariMa (same conventions,
 already in training) and the four Maghrebi AraMS books (a book-level split, so a leakage-free test of reading unseen books). The 50,000-line Springer dataset could
 change the picture if it is released; we could ask the authors.
+
+## 3. Known problems in the RASAM data, who found them, and our best model under each paper's adjustment (2026-10-25)
+
+| Problem | Found by | What they did |
+|---|---|---|
+| Red / blue ink lines have much higher CER (MS 1947 alternates blue and red lines) | [CHR 2024](https://ceur-ws.org/Vol-3834/paper35.pdf) | reported MS 1947 at 6.56 % without them |
+| Heavy vocalisation and interlinear notes in MS 1936 / MS 1957 | CHR 2024 | noted as the hardest manuscripts |
+| Transcription guidelines differ between datasets (e.g. dots the scribe omitted added or not) | CHR 2024 | explains cross-dataset gaps (RASM vs Iskandar) |
+| Inconsistent character set in the labels | [Lucas et al. 2022](https://arxiv.org/abs/2211.16147) | standardised it from 54 to 38 classes before training (3.23 %) |
+| Official splits not manuscript-independent | [Phoenix 2026](https://arxiv.org/abs/2608.19385) | own manuscript/page split |
+| 80 degenerate MS 1936 crops (1 to 7 px tall: 66 train, 7 val, 7 test) in the HF copy | this project | re-cut from the page images and PAGE-XML (`rasam_recut_broken.py`) |
+| Two swapped crops in RASAM-1 test (MS 609); some garbled references; every test page also in train; `#` placeholders; stray RLM / RLE marks; different hamza and diacritic habits in RASAM-1 vs RASAM-2 | this project | see designs/rasam-crnn-and-replication.md sections 7 and 12 |
+
+Our best model (96 px, half width, RASAM-1+2+TariMa, character LM) scored on the same predictions under each adjustment (`scripts/rasam_protocols.py`; micro CER):
+
+| | RASAM-1 test | RASAM-2 test |
+|---|---|---|
+| official | 4.32 % | 9.41 % |
+| standardised labels (Lucas-style, our diac-insensitive folding) | 3.95 % | 8.91 % |
+| without the most coloured lines (top 10 % red/blue ink, CHR-style) | 4.05 % | 9.48 % |
+| main text only | 4.25 % | 9.34 % |
+| repaired crops | - | 8.42 % |
+| **all adjustments** | **3.65 %** (631 lines) | **7.88 %** (313 lines) |
+
+These adjusted numbers are for understanding where the remaining error comes from, not for the headline (the headline stays the official test). The next
+training runs use the repaired data, and one variant trains on standardised labels (`rasam_prepare_crnn_data.py --labels standardised`).
