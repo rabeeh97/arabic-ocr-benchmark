@@ -407,3 +407,18 @@ the same; it was trained on the published, partly broken data). Character LM tra
   this is the strongest evidence so far for the "better (more diverse) data -> better results" argument.
 - RASAM-1 with TariMa and the LM: **4.32 %, below the best published 4.8 %** on the official test (one seed; the paper's own test lines are unknown).
 - TariMa test 7.33 % (published: 9.70 % for the RASAM-2 model applied out of domain, CHR 2024; Phoenix 10.72 % on its own TariMa split).
+
+## 14. Capacity: full width does not pay (2026-10-25)
+
+Same as the 96 px baseline but width 1.0 (about 9.4 M parameters instead of 2.4 M); 143 s/epoch on a T4 (2.5x the half-width model); cut by its 1.4-unit cap at
+about epoch 26 (best checkpoint), so slightly under-trained.
+
+| 96 px, greedy -> LM | RASAM-1 test | RASAM-2 official | RASAM-2 repaired |
+|---|---|---|---|
+| width 0.5 (baseline) | 5.39 -> 4.58 % | 12.14 -> 9.66 % | 11.04 -> 8.94 % |
+| width 1.0 (about 26 epochs) | 5.22 -> 4.47 % | 12.16 -> 10.18 % | 11.08 -> 9.21 % |
+
+No consistent gain at 2.5x the compute: the final recipe keeps width 0.5 and spends the units on data and seeds instead.
+
+Runner change the same day: when the HF copy already holds every weight and config file of the VM (sha256), the VM is stopped immediately and the Mac copy is
+fetched from HF (CPU self-test: early stop verified, 6/6 files verified). This removes the slow VM-to-Mac download from the billed time.
