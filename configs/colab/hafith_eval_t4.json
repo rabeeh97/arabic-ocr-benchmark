@@ -1,0 +1,14 @@
+{
+  "name": "hafith-eval",
+  "gpu": "T4",
+  "max_units": 0.8,
+  "max_minutes": 45,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 10,
+  "uploads": [["scripts/colab_hafith_eval.py", "/content/colab_hafith_eval.py"]],
+  "setup": ["git clone --depth 1 https://github.com/mdnaseif/hafith.git /content/hafith && pip install -q -e /content/hafith && echo HAFITH_INSTALLED"],
+  "runs": [{"label": "hafith_eval", "cmd": "cd /content/hafith && python -u /content/colab_hafith_eval.py"}],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}

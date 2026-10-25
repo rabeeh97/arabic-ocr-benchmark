@@ -195,7 +195,7 @@ def manifest_snippet(artifacts: list[str], all_files: bool) -> str:
         "for r in roots:\n"
         "    for d, _, fs in os.walk(r):\n"
         "        for n in fs:\n"
-        "            if n in names or (all_files and n == 'ckpt_last.pt'):\n"
+        "            if n in names or n.startswith('preds_') or n.endswith(('_metrics.json', '_overlap.json', '_timing.json')) or (all_files and n == 'ckpt_last.pt'):\n"
         "                p = os.path.join(d, n)\n"
         "                h = hashlib.sha256(open(p, 'rb').read()).hexdigest()\n"
         "                out.append([p, os.path.getsize(p), h])\n"

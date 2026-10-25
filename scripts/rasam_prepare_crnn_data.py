@@ -31,7 +31,7 @@ import os
 ROOT = os.environ.get("RASAM_HF_ROOT", "/Volumes/PortableSSD/huggingface/hub/datasets--calfa-ai--")  # Colab: /content/hfcache/datasets--calfa-ai--
 BIDI = re.compile("[​-‏‪-‮⁦-⁩﻿؜]")
 HARAKAT = re.compile("[ً-ْٰـ]")
-TAGS = {"RASAM-1": "r1", "RASAM-2": "r2"}
+TAGS = {"RASAM-1": "r1", "RASAM-2": "r2", "tarima": "tm"}  # TariMa (calfa-ai/tarima) has the same columns and Calfa's transcription guidelines
 ROLES = {"train": "train", "validation": "heldout", "test": "test"}
 
 
@@ -58,12 +58,16 @@ def main() -> None:
     ap.add_argument("--sets", nargs="+", default=["RASAM-1", "RASAM-2"], choices=list(TAGS))
     ap.add_argument("--labels", default="raw", choices=["raw", "stripped"])
     ap.add_argument("--height", type=int, default=64, help="line height in px (multiple of 32); the width cap scales with it")
+    ap.add_argument("--all-train-sets", nargs="*", default=[], choices=list(TAGS),
+                    help="sets whose validation AND test lines also become training lines (e.g. RASAM-1 when only RASAM-2 test is scored)")
     a = ap.parse_args()
     global H, MAX_W
     H, MAX_W = a.height, 24 * a.height
     rows, dropped = [], {}
     for name in a.sets:
         for split, role in ROLES.items():
+            if name in a.all_train_sets:
+                role = "train"
             n = 0
             for f in sorted(glob.glob(f"{ROOT}{name}/snapshots/*/data/{split}-*.parquet")):
                 for rec in pq.read_table(f).to_pylist():
@@ -77,7 +81,8 @@ def main() -> None:
                                  "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"]})
                     n += 1
             print(name, split, n, flush=True)
-    pickle.dump({"H": H, "split": f"rasam-published-{a.labels}", "rows": rows}, open(a.out, "wb"), protocol=4)
+    split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "")
+    pickle.dump({"H": H, "split": split_name, "rows": rows}, open(a.out, "wb"), protocol=4)
     print("dropped (no CTC room / empty):", {f"{k[0]}/{k[1]}": v for k, v in dropped.items()}, "->", a.out, f"{a.out.stat().st_size / 1e6:.0f} MB")
 
 

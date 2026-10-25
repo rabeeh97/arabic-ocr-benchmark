@@ -1,0 +1,21 @@
+{
+  "name": "data-h96",
+  "gpu": "T4",
+  "max_units": 2.2,
+  "max_minutes": 115,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    ["scripts/xai_train_aligner.py", "/content/xai_train_aligner.py"],
+    ["scripts/rasam_prepare_crnn_data.py", "/content/rasam_prepare_crnn_data.py"],
+    ["scripts/colab_remote_packs.py", "/content/colab_remote_packs.py"]
+  ],
+  "setup": ["PACKS='[{\"out\": \"/content/pack_r12tm_h96.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96}, {\"out\": \"/content/pack_r1all_h96.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\"], \"height\": 96, \"all_train\": [\"RASAM-1\"]}]' python /content/colab_remote_packs.py"],
+  "runs": [
+    {"label": "a3tm_h96_w05", "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_r12tm_h96.pkl --out /content/crnn_out/a3tm_h96_w05 --epochs 30 --bs 16 --device cuda --width 0.5 --train-sets r1 r2 tm --eval-every 2 --seed 0 --geom-aug"},
+    {"label": "r1all_h96_w05", "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_r1all_h96.pkl --out /content/crnn_out/r1all_h96_w05 --epochs 30 --bs 16 --device cuda --width 0.5 --train-sets r1 r2 --eval-every 2 --seed 0 --geom-aug"}
+  ],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}
