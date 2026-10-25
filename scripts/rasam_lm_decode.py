@@ -66,8 +66,9 @@ class CharLM:
         return r
 
 
-def prefix_beam(logp: np.ndarray, chars: list[str], lm: CharLM | None, alpha: float, beta: float, beam: int = 12, topk: int = 8) -> str:
-    """logp: (T, C) log posteriors, class 0 = blank, class k = chars[k - 1]. Returns the best prefix in the model's (visual) order."""
+def prefix_beam(logp: np.ndarray, chars: list[str], lm: CharLM | None, alpha: float, beta: float, beam: int = 12, topk: int = 8, nbest: int = 0):
+    """logp: (T, C) log posteriors, class 0 = blank, class k = chars[k - 1]. Returns the best prefix in the model's (visual) order,
+    or, with nbest > 0, the nbest (prefix, score) pairs best first (score = acoustic + alpha * char-LM + beta * length, incl. end of line)."""
     beams = {"": (0.0, NEG)}
     for t in range(logp.shape[0]):
         row = logp[t]
@@ -95,12 +96,11 @@ def prefix_beam(logp: np.ndarray, chars: list[str], lm: CharLM | None, alpha: fl
                     e[1] = logaddexp(e[1], ptot + p + bonus)
         scored = sorted(nxt.items(), key=lambda kv: -logaddexp(kv[1][0], kv[1][1]))[:beam]
         beams = {k: (v[0], v[1]) for k, v in scored}
-    best, best_s = "", NEG
-    for prefix, (pb, pnb) in beams.items():
-        s = logaddexp(pb, pnb) + (alpha * lm.logp(EOS, prefix) if lm is not None and alpha else 0.0)
-        if s > best_s:
-            best, best_s = prefix, s
-    return best
+    final = sorted(((logaddexp(pb, pnb) + (alpha * lm.logp(EOS, prefix) if lm is not None and alpha else 0.0), prefix)
+                    for prefix, (pb, pnb) in beams.items()), reverse=True)
+    if nbest:
+        return [(p, s) for s, p in final[:nbest]]
+    return final[0][1] if final else ""
 
 
 def main() -> None:
@@ -121,6 +121,8 @@ def main() -> None:
     ap.add_argument("--order", type=int, default=6)
     ap.add_argument("--val-n", type=int, default=150)
     ap.add_argument("--beam", type=int, default=12)
+    ap.add_argument("--nbest", type=int, default=0, help="also store the top-N readings with their scores (for rescoring with a stronger LM)")
+    ap.add_argument("--nbest-val", type=int, default=0, help="also write N-best lists for this many validation lines (to tune the rescoring weight)")
     ap.add_argument("--alphas", type=float, nargs="+", default=[0.3, 0.6, 1.0], help="LM weights to try on validation")
     ap.add_argument("--betas", type=float, nargs="+", default=[0.0, 0.5, 1.0], help="per-character bonuses to try on validation")
     ap.add_argument("--smoke", action="store_true", help="tiny run to check the code path (10 validation lines, 20 test lines)")
@@ -178,6 +180,14 @@ def main() -> None:
             best = (c, al, be)
     print(f"chosen on validation: alpha {best[1]} beta {best[2]} (CER {best[0]:.4f}, greedy {base:.4f})", flush=True)
     out_dir = Path("results/rasam/lm")
+    if a.nbest and a.nbest_val:  # N-best lists of validation lines (not the tuning subset's role here: they tune the rescoring weight)
+        allval = [r for r in rows if r["role"] == "heldout" and r["dataset"] == a.val_tag]
+        sel = allval[1::max(1, len(allval) // a.nbest_val)][: a.nbest_val]
+        vl = [{"id": r["id"], "ref": r["label"], "nbest": [[p[::-1], round(s, 4)] for p, s in prefix_beam(logits(r), chars, lm, best[1], best[2], a.beam, nbest=a.nbest)]}
+              for r in sel]
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / f"{a.name}__{a.val_tag}__val_nbest.json").write_text(json.dumps({"run": a.name, "alpha": best[1], "beta": best[2], "lines": vl}, ensure_ascii=False))
+        print(f"wrote {len(vl)} validation N-best lists", flush=True)
     out_dir.mkdir(parents=True, exist_ok=True)
     for tag in a.test_tags:
         test = [r for r in rows if r["role"] == "test" and r["dataset"] == tag]
@@ -187,10 +197,12 @@ def main() -> None:
         for r in test:
             lp = logits(r)
             g = greedy(lp)[::-1]
-            h = (prefix_beam(lp, chars, lm, best[1], best[2], a.beam) if best[1] or best[2] else greedy(lp))[::-1]
+            nb = prefix_beam(lp, chars, lm, best[1], best[2], a.beam, nbest=a.nbest) if a.nbest else None
+            h = (nb[0][0] if nb else (prefix_beam(lp, chars, lm, best[1], best[2], a.beam) if best[1] or best[2] else greedy(lp)))[::-1]
             g_sc.append(score_pair(r["label"], g, ("raw", "diac_insensitive")))
             l_sc.append(score_pair(r["label"], h, ("raw", "diac_insensitive")))
-            lines.append({"id": r["id"], "manuscript": r["manuscript"], "page": r["page"], "region": r["region"], "ref": r["label"], "hyp": h, "greedy": g})
+            lines.append({"id": r["id"], "manuscript": r["manuscript"], "page": r["page"], "region": r["region"], "ref": r["label"], "hyp": h, "greedy": g,
+                          **({"nbest": [[p[::-1], round(s, 4)] for p, s in nb]} if nb else {})})
         ga, la = aggregate(g_sc, ("raw", "diac_insensitive")), aggregate(l_sc, ("raw", "diac_insensitive"))
         print(f"{a.name} {tag} test n={len(test)}: greedy {ga['micro_cer']['raw']:.4f}  with LM {la['micro_cer']['raw']:.4f} "
               f"(diac-insensitive {ga['micro_cer']['diac_insensitive']:.4f} -> {la['micro_cer']['diac_insensitive']:.4f})", flush=True)
