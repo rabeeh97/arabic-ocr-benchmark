@@ -1,0 +1,22 @@
+{
+  "name": "reptm-std",
+  "gpu": "T4",
+  "max_units": 1.3,
+  "max_minutes": 70,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    ["scripts/xai_train_aligner.py", "/content/xai_train_aligner.py"],
+    ["scripts/rasam_prepare_crnn_data.py", "/content/rasam_prepare_crnn_data.py"],
+    ["scripts/colab_remote_packs.py", "/content/colab_remote_packs.py"],
+    ["src/arabic_ocr_bench/normalize.py", "/content/arabic_normalize.py"],
+    ["results/rasam/repairs/rasam2_recut.pkl", "/content/rasam2_recut.pkl"]
+  ],
+  "setup": ["cd /content && PACKS='[{\"out\": \"/content/pack_reptm_std_h96.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"labels\": \"standardised\"}]' PYTHONPATH=/content python /content/colab_remote_packs.py"],
+  "runs": [
+    {"label": "reptm_std_h96_w05", "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_reptm_std_h96.pkl --out /content/crnn_out/reptm_std_h96_w05 --epochs 30 --bs 16 --device cuda --width 0.5 --train-sets r1 r2 tm --eval-every 2 --seed 0 --geom-aug"}
+  ],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}

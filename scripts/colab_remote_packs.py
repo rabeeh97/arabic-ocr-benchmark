@@ -20,7 +20,7 @@ for p in packs:
     if os.path.exists(p["out"]):
         continue
     t = time.time()
-    cmd = [sys.executable, "/content/rasam_prepare_crnn_data.py", p["out"], "--sets", *p["sets"], "--labels", "raw", "--height", str(p.get("height", 64))]
+    cmd = [sys.executable, "/content/rasam_prepare_crnn_data.py", p["out"], "--sets", *p["sets"], "--labels", p.get("labels", "raw"), "--height", str(p.get("height", 64))]
     if p.get("all_train"):
         cmd += ["--all-train-sets", *p["all_train"]]
     if p.get("repair"):
