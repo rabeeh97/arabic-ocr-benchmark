@@ -95,6 +95,11 @@ def robust(cmd: list[str], timeout: int, tries: int = 3, ok=lambda p: p.returnco
     return last, total
 
 
+# Measured billing (units per hour, 2026-10-25). Per-job caps use runtime x rate (x 1.15 margin), so jobs running in parallel do not charge each
+# other's spending to their own cap; the account balance still guards the overall budget floor. Unknown hardware is assumed expensive.
+RATES = {"CPU": 0.08, "T4": 1.07, "L4": 2.0, "A100": 5.3, "G4": 6.0, "H100": 8.0}
+
+
 def balance() -> tuple[float | None, str]:
     p, _ = sh(["colab", "usage"], 90)
     txt = p.stdout + p.stderr
@@ -345,7 +350,7 @@ def main() -> None:
                     new_lines = [l for l in out_txt.splitlines() if not l.startswith(("EXIT=", "OFFSET=", "GPU="))]
                     job.log_progress("\n".join(new_lines) + ("\n" if new_lines else ""))
                     job.offset = int(mo.group(1))
-            spent = (job.start_balance - b) if b is not None else float("nan")
+            spent = (time.time() - job.t0) / 3600 * RATES.get(spec["gpu"].upper(), 8.0) * 1.15  # this job's own estimated spend
             m = re.search(r"EXIT=(\S+)", out_txt)
             tail = [l for l in out_txt.strip().splitlines() if not l.startswith(("EXIT=", "OFFSET="))][-2:]
             print(f"[{(time.time() - job.t0) / 60:5.1f} min] balance {b} spent {spent:.2f} | " + " | ".join(tail)[:230], flush=True)
@@ -355,7 +360,7 @@ def main() -> None:
             if b is not None and b <= job.floor:
                 job.reason = "overall budget floor reached"
                 break
-            if b is not None and spent >= spec["max_units"]:
+            if spent >= spec["max_units"]:
                 job.reason = f"job budget of {spec['max_units']} units reached"
                 break
             if time.time() - job.t0 > max_s:
@@ -381,8 +386,9 @@ def main() -> None:
             if not verified:
                 print(f"!!! SESSION MAY STILL BE RUNNING AND SPENDING UNITS: run `colab stop -s {name}`, then `colab usage`", flush=True)
         b, _ = balance()
-        used = round(job.start_balance - b, 2) if b is not None else None
-        rec = {"name": name, "reason": job.reason, "units_used": used, "minutes": round((time.time() - job.t0) / 60, 1), "syncs": job.syncs,
+        used = round(job.start_balance - b, 2) if b is not None else None  # account-wide: includes any job that ran in parallel
+        est = round((time.time() - job.t0) / 3600 * RATES.get(spec["gpu"].upper(), 8.0), 2)
+        rec = {"name": name, "reason": job.reason, "units_used": est, "units_account_delta": used, "minutes": round((time.time() - job.t0) / 60, 1), "syncs": job.syncs,
                "start_balance": job.start_balance, "end_balance": b, "spec": spec}
         (out / "job_record.json").write_text(json.dumps(rec, indent=1))
         dst = REPO / spec.get("local_out", "results/rasam/colab_runs") / name
