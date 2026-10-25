@@ -310,3 +310,24 @@ Caveats: one seed, a small comparison set, a wide CI.
   at epoch 7 when it was cut. Everything the Colab supervisor needs now lives on the internal disk (`~/colab_staging`, small files) and is copied to the SSD afterwards.
 - Colab Pro on this account (balance 200 units on 2026-10-24): **2 GPU sessions can run at once** (the third allocation was refused), **4 CPU sessions** ran at once.
   Measured billing: T4 1.07 units/hour, CPU 0.08 units/hour per session. Units spent on the Colab tests so far: 1.51 of the 10-unit budget.
+
+## 10. A3 result (2026-10-25): training on RASAM-1 + RASAM-2 together (Colab T4, weights verified)
+
+Same recipe as A1/A2 (half-width char CRNN, height 64, raw labels, geom-aug, 30 epochs, bs 16, seed 0), trained on both train splits (8,783 lines) on a
+Colab T4 in 30 x 29 s; best checkpoint by the mixed validation split. Scored on the Mac on the full published test sets; character LM (order 8, train labels of
+both sets) tuned on 300 validation lines of each set separately.
+
+| Model | RASAM-1 test: greedy -> LM | RASAM-2 test: greedy -> LM |
+|---|---|---|
+| A1, RASAM-1 train only | 6.82 % -> 5.46 % | 24.59 % -> 21.59 % |
+| A2, RASAM-2 train only | 24.86 % | 18.47 % |
+| **A3, both** | **6.55 % -> 5.35 %** | **12.84 % -> 10.45 %** |
+| published word-based CRNN trained on both (CHR 2024) | 5.50 % | 6.79 % |
+
+What it shows:
+- **More (and different) data helps the smaller set most:** adding RASAM-1's 5.9 k lines to RASAM-2's 2.9 k cuts RASAM-2 test CER from 18.5 % to 12.8 % (-5.7 points,
+  -31 % relative), although RASAM-1 comes from 3 other manuscripts. RASAM-1 also gains a little from RASAM-2 (6.82 -> 6.55 %). This is the clearest evidence so far for
+  the "more data gives better results" argument.
+- With the LM, RASAM-1 reaches 5.35 %, below the published 5.50 % (caveats: unknown aggregation and lines in the paper, one seed); RASAM-2 at 10.45 % is still well behind
+  the published 6.79 %, which is where the remaining levers (resolution R2, capacity, seeds) should be tested.
+- Diacritic-insensitive: 4.98 % (RASAM-1) and 9.95 % (RASAM-2) with the LM.
