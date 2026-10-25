@@ -1,0 +1,39 @@
+RASAM-2 test, best system R2_h96_lm_r2__r2__test: CER with LM 9.66 %, greedy 12.14 % (n=372)
+LM vs greedy: 233 lines better, 50 worse, 89 unchanged
+the worst 5% of lines hold 31% of all character errors
+the worst 10% of lines hold 46% of all character errors
+the worst 25% of lines hold 68% of all character errors
+
+CER by feature (quintiles of the feature; micro CER of the best system):
+  reference length (chars):  [1-39.2] 9.1% (n=75)  [39.2-50] 22.1% (n=69)  [50-67] 10.2% (n=78)  [67-84.8] 6.3% (n=75)  [84.8-135] 6.8% (n=75)
+  crop height px:  [1-75] 16.7% (n=73)  [75-101] 5.5% (n=71)  [101-117] 8.5% (n=77)  [117-138] 9.8% (n=76)  [138-250] 10.1% (n=75)
+  horizontal px per char at 96 px height:  [3.91-13.4] 11.8% (n=75)  [13.4-15.8] 8.0% (n=74)  [15.8-19] 6.4% (n=74)  [19-22.8] 6.7% (n=74)  [22.8-1.8e+03] 17.7% (n=75)
+  dark-ink fraction:  [0-0.0972] 17.5% (n=75)  [0.0972-0.13] 8.3% (n=74)  [0.13-0.152] 6.6% (n=74)  [0.152-0.176] 8.1% (n=74)  [0.176-0.327] 5.6% (n=75)
+  paper contrast (std):  [0-34.4] 14.0% (n=75)  [34.4-45] 8.9% (n=74)  [45-50.3] 11.9% (n=74)  [50.3-54.5] 6.0% (n=74)  [54.5-67.7] 5.8% (n=75)
+  red/blue ink fraction:  [0-0.000463] 11.1% (n=149)  [0.000463-0.00721] 8.9% (n=74)  [0.00721-0.0257] 7.4% (n=74)  [0.0257-0.428] 9.9% (n=75)
+  share of dotted letters:  [0-0.268] 11.2% (n=75)  [0.268-0.311] 7.7% (n=74)  [0.311-0.349] 7.8% (n=74)  [0.349-0.4] 10.0% (n=72)  [0.4-1] 12.4% (n=77)
+  diacritics in reference:  [0-1] 9.7% (n=372)
+  by region: MainZone: 9.6% (n=336), MarginTextZone: 12.2% (n=22), MarginTextZone:catchword: 40.0% (n=2), TableZone: 9.6% (n=12)
+  by manuscript: BULAC_ARA_MS_1982: 11.8% (n=25), BULAC_MS_ARA_1926: 8.5% (n=31), BULAC_MS_ARA_1936: 66.0% (n=22), BULAC_MS_ARA_1943: 4.6% (n=29), BULAC_MS_ARA_1944: 5.8% (n=27), BULAC_MS_ARA_1946: 3.5% (n=14), BULAC_MS_ARA_1947: 15.3% (n=25), BULAC_MS_ARA_1960: 5.0% (n=26), BULAC_MS_ARA_1983: 7.3% (n=24), BULAC_MS_ARA_23: 3.9% (n=25), BULAC_MS_ARA_24: 8.8% (n=25), BULAC_MS_ARA_45b: 4.3% (n=25), BULAC_MS_ARA_6: 9.9% (n=20), BULAC_MS_ARA_65: 6.0% (n=30), BULAC_MS_ARA_9: 5.3% (n=24)
+  contains '#' (illegible placeholder): 11.6% (n=7) vs others 9.6%
+
+lines with CER > 30 % for the best system: 33; of those hard (>30 %) for EVERY other system too: 24; read well (<15 %) by at least one other system: 3
+
+ensemble by consensus (medoid of 4 readings, no reference used): 9.57 %; oracle (best reading per line, uses the reference): 8.11 %; systems: best, R2_h128_lm_r2__r2, A3colab_lm_r2__r2, A2_w05_s0_best__r2
+
+worst 40 lines (CER, manuscript, region, crop h x w, red/blue ink, length):
+    200% BULAC_MS_ARA_1947 MarginTextZone 42x171 col=0.07 n=1 | REF ط | HYP كل
+    100% BULAC_MS_ARA_65 TableZone 85x142 col=0.43 n=3 | REF فيه | HYP قف
+    100% BULAC_MS_ARA_1947 MarginTextZone 57x151 col=0.06 n=1 | REF ط | HYP ف
+     96% BULAC_MS_ARA_1936 MainZone 74x387 col=0.00 n=50 | REF وسر عليه م لا يصلا صلاة مثلها اوليتس ويدن ام الحكم | HYP ان
+     95% BULAC_MS_ARA_1936 MainZone 125x857 col=0.00 n=44 | REF عن يسارها ميدنت اجن الصف ومن ورايها ميدنت سن | HYP ان
+     86% BULAC_MS_ARA_1936 MainZone 1x806 col=0.00 n=43 | REF ان رفع فيه رمق فاغسلوه ينسن وسر عليه السلام | HYP الا الا ان
+     83% BULAC_MS_ARA_1936 MainZone 1x360 col=0.00 n=54 | REF اقرن الرفرفن انفلى يمغربن اذ اتمر اجسرذانسن نثنين غرسن | HYP الا الا ان
+     83% BULAC_MS_ARA_1936 MainZone 1x310 col=0.00 n=41 | REF ندوكل نشينين اذون غفتنجر انييض ءاش سالحمد | HYP الا الا ان
+     83% BULAC_MS_ARA_1936 MainZone 1x398 col=0.00 n=52 | REF اترنان ما عجلوا الإفطار وما عجلت امتي الإفطار واخروا | HYP الا الا ان
+     81% BULAC_MS_ARA_1936 MainZone 116x389 col=0.00 n=47 | REF يلز دزن اسينو وسر عليه السلام الا وان تمام صلاة | HYP الا صلاة مثلها شي
+     80% BULAC_MS_ARA_1936 MainZone 1x413 col=0.00 n=45 | REF عماد الدين من ترك الصلاة فقد هدم الدين من ترك | HYP الا الا ان
+     80% BULAC_MS_ARA_1936 MainZone 1x434 col=0.00 n=49 | REF انتوثرون قال لا الا ان يكون خايفا يطلب العدو اذوس | HYP الا الا ان
+     79% BULAC_MS_ARA_1936 MainZone 1x315 col=0.00 n=42 | REF اذيمنس نشنين غرنغ وليل ءاس يغر الكول اسنين | HYP الا الا ان
+     77% BULAC_MS_ARA_1936 MainZone 118x320 col=0.00 n=48 | REF التكلتذين يوي ولدغ اتيري اسويديكن دجيذ ايتيسستنن | HYP به علم اي ولا ثم لا ينقا
+     75% BULAC_MS_ARA_1936 MainZone 188x891 col=0.00 n=48 | REF تلا دغرس العورث مك د العورث ولغرس يتل ورجز فيقمن | HYP اعني ان اما ان لا الا ان الا ان

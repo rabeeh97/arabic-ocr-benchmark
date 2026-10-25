@@ -1,0 +1,78 @@
+{
+ "RASAM-1": {
+  "train": {
+   "lines": 5864,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": null
+  },
+  "validation": {
+   "lines": 733,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": null
+  },
+  "test": {
+   "lines": 734,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": []
+  },
+  "best_system_cer_without_broken": 4.58
+ },
+ "RASAM-2": {
+  "train": {
+   "lines": 2976,
+   "broken": 66,
+   "by_manuscript": {
+    "BULAC_MS_ARA_1936": 66
+   },
+   "test_index": null
+  },
+  "validation": {
+   "lines": 372,
+   "broken": 7,
+   "by_manuscript": {
+    "BULAC_MS_ARA_1936": 7
+   },
+   "test_index": null
+  },
+  "test": {
+   "lines": 372,
+   "broken": 7,
+   "by_manuscript": {
+    "BULAC_MS_ARA_1936": 7
+   },
+   "test_index": [
+    20,
+    38,
+    154,
+    167,
+    307,
+    325,
+    364
+   ]
+  },
+  "best_system_cer_without_broken": 8.59
+ },
+ "tarima": {
+  "train": {
+   "lines": 1828,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": null
+  },
+  "validation": {
+   "lines": 228,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": null
+  },
+  "test": {
+   "lines": 229,
+   "broken": 0,
+   "by_manuscript": {},
+   "test_index": []
+  }
+ }
+}

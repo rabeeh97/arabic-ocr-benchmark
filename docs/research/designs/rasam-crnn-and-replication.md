@@ -346,3 +346,45 @@ epoch 21 (best checkpoint kept), so it is not a fair comparison. Scored on the M
 - 96 px removes about a sixth of the RASAM-1 errors (thin strokes and dense lines: section 7 found 12 % of errors were lost or invented thin letters).
 - **RASAM-1 with the LM at 4.58 % is below the best published 4.8 %**, on the official test split (one seed; the paper's own test lines are unknown).
 - RASAM-2 improves less (9.66 % vs the published 6.79 %); more training data (TariMa, all of RASAM-1) is the next lever, running now.
+
+## 12. Hard-line analysis of the best model (96 px + LM), 2026-10-25 (Mac CPU)
+
+Scripts: `rasam_hard_lines.py` (features, error concentration, hard-for-everyone check, consensus ensemble, image gallery in
+`results/rasam/hard_lines/hard_lines_{r1,r2}.html`), `rasam_broken_crops.py`.
+
+**Errors are concentrated.** RASAM-1: the worst 10 % of lines hold 41 % of the character errors (RASAM-2: 46 %). Lines that fail are hard for every model:
+of the 16 RASAM-1 lines above 30 % CER, 14 are above 30 % for all four of our systems (RASAM-2: 24 of 33), so they point at the data more than at the model.
+
+**What makes a line hard (best system, micro CER).**
+- RASAM-1: catchwords 51 % (n = 10), marginalia 8.1 % vs main text 4.5 %; lines with `#` (illegible placeholder) 13 %; the tallest crops (307 to 634 px,
+  neighbouring lines inside) 6.5 % vs 3.5 to 4.2 %; the most red/blue-ink lines 6.3 % vs about 4.2 %; MS 609 6.0 % vs 4.0 % / 3.5 %.
+- RASAM-2: faint lines (lowest dark-ink fifth) 17.5 % vs 5.6 %; low paper contrast 14 % vs 6 %; very short or very sparse lines worse; **MS 1936 66 %**.
+- Length, dotted-letter share and diacritics have little effect.
+
+**Data defects found.**
+- **80 RASAM-2 crops of MS 1936 are degenerate (1 to 7 px tall): 66 in train, 7 in validation, 7 in test.** No other set has any. The 7 test crops hold 12 % of our
+  RASAM-2 errors (9.66 % -> **8.59 %** without them); the 66 training crops teach the model to emit filler ("الا الا ان"). MS 1936 also contains Berber (Tamazight)
+  written in Arabic script, which neither our Arabic training data nor the Arabic LM covers.
+- RASAM-1 MS 609: two test crops show the neighbouring line (each reading is the other line's reference).
+- Some references look garbled where our reading is fluent Arabic (e.g. reference "لنه افتممما عليه فقالالطه طلع البلتتجبى…", ours "حتى اجتمعوا عليه فقال لهم طلع
+  الليلة…"): either label noise or a deliberately diplomatic transcription of scribal slips; needs a manual review.
+
+**LM effect.** RASAM-1: 327 lines better, 106 worse, 301 unchanged; RASAM-2: 233 better, 50 worse.
+
+**Free ensemble.** Taking, per line, the reading that agrees most with the other systems (medoid of 4 readings, no reference used): RASAM-1 **4.23 %** (best single
+4.58 %), RASAM-2 9.57 % (9.66 %). The per-line oracle (choosing with the reference) is 3.57 % / 8.11 %, so better selection or rescoring has room.
+
+### Recommendations
+Data (highest value, also a dataset contribution):
+1. Re-cut the 80 MS 1936 lines from the original pages and PAGE-XML (both on the SSD); train without the broken crops; report the official test and a
+   "repaired" test side by side.
+2. Manual label review of the hardest 60 lines (gallery ready): mark crop swaps, garbled references, diplomatic vs normalised transcriptions.
+Augmentation (each targets a measured weakness):
+3. Neighbour-ink augmentation: paste fragments of other lines above and below and jitter the vertical crop (tall crops 6.5 % vs 4 %).
+4. Colour and contrast: feed the darkest RGB channel instead of grey and add contrast/fading jitter (red/blue ink 6.3 %; faint RASAM-2 lines 17.5 %).
+5. Short lines: cut word-level sub-lines from long training lines using our CTC alignment (catchwords, marginalia, fragments).
+Models and decoding:
+6. N-best rescoring: export the beam's n-best and rescore with a stronger Arabic LM (a pretrained Arabic causal LM on a T4), restricted to the n-best so it cannot
+   hallucinate; plus the consensus ensemble. Cheap, and the oracle gap says it can pay.
+7. VLM fine-tuning (Qwen-VL / Fanar, as in suite_v1) is not worth the units now: our CRNN is far ahead of the old VLM fine-tunes (11 % / 17 %) and a full RASAM fine-tune on
+   an A100 would cost about 10 to 15 units.

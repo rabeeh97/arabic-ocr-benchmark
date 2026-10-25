@@ -1,0 +1,40 @@
+RASAM-1 test, best system R2_h96_lm_r1__r1__test: CER with LM 4.58 %, greedy 5.39 % (n=734)
+LM vs greedy: 327 lines better, 106 worse, 301 unchanged
+the worst 5% of lines hold 29% of all character errors
+the worst 10% of lines hold 41% of all character errors
+the worst 25% of lines hold 65% of all character errors
+
+CER by feature (quintiles of the feature; micro CER of the best system):
+  reference length (chars):  [2-33] 5.2% (n=140)  [33-66] 5.3% (n=152)  [66-81.8] 5.4% (n=148)  [81.8-97] 4.0% (n=132)  [97-142] 4.1% (n=162)
+  crop height px:  [17-57] 4.0% (n=141)  [57-67] 3.5% (n=151)  [67-278] 5.5% (n=145)  [278-307] 4.2% (n=146)  [307-634] 6.5% (n=151)
+  horizontal px per char at 96 px height:  [5.4-10.1] 5.2% (n=147)  [10.1-11.7] 4.7% (n=147)  [11.7-13.3] 3.9% (n=146)  [13.3-17.5] 4.6% (n=147)  [17.5-395] 3.8% (n=147)
+  dark-ink fraction:  [0.0329-0.0916] 4.9% (n=147)  [0.0916-0.116] 3.7% (n=147)  [0.116-0.129] 4.2% (n=146)  [0.129-0.143] 5.0% (n=147)  [0.143-0.233] 5.3% (n=147)
+  paper contrast (std):  [21.8-37.9] 5.0% (n=147)  [37.9-41.1] 5.0% (n=147)  [41.1-48.2] 5.6% (n=146)  [48.2-53.3] 3.8% (n=147)  [53.3-69.1] 4.2% (n=147)
+  red/blue ink fraction:  [0-4.07e-05] 4.3% (n=147)  [4.07e-05-0.000681] 4.2% (n=147)  [0.000681-0.00344] 4.5% (n=146)  [0.00344-0.0123] 3.9% (n=147)  [0.0123-0.199] 6.3% (n=147)
+  share of dotted letters:  [0-0.265] 4.2% (n=146)  [0.265-0.309] 4.3% (n=145)  [0.309-0.345] 4.9% (n=149)  [0.345-0.396] 4.4% (n=147)  [0.396-1] 5.3% (n=147)
+  diacritics in reference:  [0-5] 4.6% (n=734)
+  by region: MainText: 4.5% (n=703), catchword: 51.1% (n=10), marginalia: 8.1% (n=21)
+  by manuscript: BULAC_MS_ARA_1977: 4.0% (n=353), BULAC_MS_ARA_417: 3.5% (n=110), BULAC_MS_ARA_609: 6.0% (n=271)
+  contains '#' (illegible placeholder): 13.0% (n=9) vs others 4.5%
+  contains digits: 9.1% (n=3) vs others 4.6%
+
+lines with CER > 30 % for the best system: 16; of those hard (>30 %) for EVERY other system too: 14; read well (<15 %) by at least one other system: 0
+
+ensemble by consensus (medoid of 4 readings, no reference used): 4.23 %; oracle (best reading per line, uses the reference): 3.57 %; systems: best, R2_h128_lm_r1__r1, A3colab_lm_r1__r1, A1_lm_fine__r1
+
+worst 40 lines (CER, manuscript, region, crop h x w, red/blue ink, length):
+    100% BULAC_MS_ARA_609 catchword 226x208 col=0.00 n=2 | REF مع | HYP ف
+    100% BULAC_MS_ARA_609 MainText 217x108 col=0.00 n=3 | REF مرة | HYP ته
+     89% BULAC_MS_ARA_1977 catchword 81x81 col=0.00 n=9 | REF عليه وسلم | HYP ياده
+     83% BULAC_MS_ARA_609 marginalia 471x159 col=0.00 n=6 | REF السادس | HYP جمان
+     80% BULAC_MS_ARA_1977 catchword 83x74 col=0.00 n=5 | REF خافوه | HYP قائر
+     77% BULAC_MS_ARA_609 MainText 449x2753 col=0.04 n=64 | REF بدا اخذت منه ما تقدما فما بقي فهو الذي به اتبع وفي وجه ثالث  | HYP حضور جميعه والله سبحانه وتعلى اعلم ثم قال ص
+     73% BULAC_MS_ARA_609 MainText 364x2872 col=0.01 n=67 | REF اوتجمع التركتين واقسما على فريض# فما قد انتما فاضرب به لكل و | HYP بدا اخذت منه ما تقدما فما بقي فهو الذي به اتبع وفي وجه ثالث 
+     67% BULAC_MS_ARA_1977 catchword 67x68 col=0.01 n=3 | REF متى | HYP ثنى
+     60% BULAC_MS_ARA_609 catchword 634x626 col=0.00 n=10 | REF ثمانية عشر | HYP اليه عند
+     50% BULAC_MS_ARA_609 MainText 112x117 col=0.00 n=2 | REF هم | HYP ظم
+     50% BULAC_MS_ARA_609 MainText 274x2536 col=0.08 n=142 | REF فيه مدخل الا بعتق اوَجبر يعني ان ميراث الولاء انما هو للعصبة | HYP فيه مدخل الا بعتق او يجرء يعني ان ميراث الولاء انما هو للعصب
+     44% BULAC_MS_ARA_1977 marginalia 49x104 col=0.03 n=16 | REF الخر عمر بن لحمي | HYP الح عمرى نحي
+     38% BULAC_MS_ARA_1977 MainText 65x650 col=0.00 n=91 | REF لنه افتممما عليه فقالالطه طلع البلتتجبى اقهم اله يولهابه وقا | HYP حتى اجتمعوا عليه فقال لهم طلع الليلة نفم اقمر الذي يولد به و
+     38% BULAC_MS_ARA_1977 MainText 59x648 col=0.00 n=73 | REF كيف يزيلان صوف الغنم ووبر الابل وكيف يغزل وكيف ينسج وكيف يلب | HYP كيف يزيلان صوف الغتم ووبر الابل وكيف يقزل وكيف ينسح وكيف يلب
+     31% BULAC_MS_ARA_1977 MainText 49x641 col=0.00 n=93 | REF و اله لا بدلنك مره ياح قار تلظو نخاله سعيد لو عليت اث الجية  | HYP والله لا بد لنك من ويشئاك نار تلظى قال سعيد لو علمت ان الجنة
