@@ -331,3 +331,18 @@ What it shows:
 - With the LM, RASAM-1 reaches 5.35 %, below the published 5.50 % (caveats: unknown aggregation and lines in the paper, one seed); RASAM-2 at 10.45 % is still well behind
   the published 6.79 %, which is where the remaining levers (resolution R2, capacity, seeds) should be tested.
 - Diacritic-insensitive: 4.98 % (RASAM-1) and 9.95 % (RASAM-2) with the LM.
+
+## 11. R2 result (2026-10-25): input line height 96 px beats 64 px (Colab T4, verified weights)
+
+A3 recipe (RASAM-1+2 train, half width, 30 epochs, seed 0) with the line image at 96 and 128 px instead of 64. The 128 px run was cut by its unit cap at about
+epoch 21 (best checkpoint kept), so it is not a fair comparison. Scored on the Mac, full official test sets; character LM tuned on validation only.
+
+| Line height | RASAM-1 test greedy -> LM | RASAM-2 test greedy -> LM | s / epoch (T4) |
+|---|---|---|---|
+| 64 px (A3) | 6.55 % -> 5.35 % | 12.84 % -> 10.45 % | 29 |
+| **96 px** | **5.39 % -> 4.58 %** | **12.14 % -> 9.66 %** | 56 |
+| 128 px (partial, ~21 epochs) | 5.85 % -> 4.68 % | 13.51 % -> 10.49 % | 93 to 101 |
+
+- 96 px removes about a sixth of the RASAM-1 errors (thin strokes and dense lines: section 7 found 12 % of errors were lost or invented thin letters).
+- **RASAM-1 with the LM at 4.58 % is below the best published 4.8 %**, on the official test split (one seed; the paper's own test lines are unknown).
+- RASAM-2 improves less (9.66 % vs the published 6.79 %); more training data (TariMa, all of RASAM-1) is the next lever, running now.
