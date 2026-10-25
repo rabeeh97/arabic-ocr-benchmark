@@ -388,3 +388,22 @@ Models and decoding:
    hallucinate; plus the consensus ensemble. Cheap, and the oracle gap says it can pay.
 7. VLM fine-tuning (Qwen-VL / Fanar, as in suite_v1) is not worth the units now: our CRNN is far ahead of the old VLM fine-tunes (11 % / 17 %) and a full RASAM fine-tune on
    an A100 would cost about 10 to 15 units.
+
+## 13. More data at 96 px: TariMa helps, more of the same manuscripts does not (2026-10-25, Colab T4, verified)
+
+Same recipe (96 px, half width, 30 epochs, seed 0). "Repaired" = RASAM-2 test with the 7 broken MS 1936 crops re-cut from the page images (the model is
+the same; it was trained on the published, partly broken data). Character LM trained on each model's own training text, tuned on validation only.
+
+| Training data | RASAM-1 test | RASAM-2 official | RASAM-2 repaired | TariMa test |
+|---|---|---|---|---|
+| RASAM-1 + RASAM-2 train (baseline, section 11) | 5.39 -> 4.58 % | 12.14 -> 9.66 % | 11.04 -> 8.94 % | - |
+| + TariMa train (1,828 lines, 26 documents, manuscripts and lithographs) | 5.19 -> **4.32 %** | 11.92 -> **9.41 %** | 10.83 -> **8.42 %** | 8.76 -> **7.33 %** |
+| + RASAM-1 validation and test (all of RASAM-1; RASAM-2 scored only) | - | 12.32 -> 9.77 % | 11.25 -> 8.92 % | - |
+
+(greedy -> with LM; micro CER, raw profile)
+
+- **Diversity, not volume.** About 2,000 lines from 26 new documents (TariMa) improve every test set; about 1,470 more lines from the 3 RASAM-1 manuscripts the model
+  already knows do nothing for RASAM-2. Together with A1 -> A3 (adding RASAM-1 cut RASAM-2 error by a third) and the RASAM-2 paper's own cross-manuscript cliff,
+  this is the strongest evidence so far for the "better (more diverse) data -> better results" argument.
+- RASAM-1 with TariMa and the LM: **4.32 %, below the best published 4.8 %** on the official test (one seed; the paper's own test lines are unknown).
+- TariMa test 7.33 % (published: 9.70 % for the RASAM-2 model applied out of domain, CHR 2024; Phoenix 10.72 % on its own TariMa split).
