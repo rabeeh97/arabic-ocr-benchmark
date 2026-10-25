@@ -48,6 +48,36 @@ if not BUDGET_FILE.exists() and _REPO_BUDGET.exists():
     BUDGET_FILE.write_text(_REPO_BUDGET.read_text())
 
 
+# Second copy, written by the VM itself (does not depend on the Mac): a private Hugging Face repo, verified 2026-10-25.
+ENV_FILE = Path("/Volumes/PortableSSD/repos/arabic_ocr/.env")
+HF_REPO_DEFAULT = "SubSpring/arabic-ocr-colab-runs"
+
+
+def hf_token() -> str | None:
+    """HF_TOKEN from the repo .env (never printed)."""
+    try:
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"\s*(?:export\s+)?HF_TOKEN\s*=\s*(.+?)\s*$", line)
+            if m:
+                return m.group(1).strip().strip('"').strip("'")
+    except OSError:
+        pass
+    return None
+
+
+def hf_verify(repo: str, job: str, verified: dict[str, str], tok: str) -> tuple[int, int]:
+    """Compare the files verified on the Mac with what the VM pushed to the HF repo: sha256 for large (LFS) files, presence for small ones."""
+    from huggingface_hub import HfApi
+
+    tree = {f.path: f for f in HfApi(token=tok).list_repo_tree(repo, path_in_repo=f"runs/{job}", recursive=True) if hasattr(f, "size")}
+    ok = 0
+    for rpath, sha in verified.items():
+        f = tree.get(f"runs/{job}/" + rpath.removeprefix("/content/"))
+        if f is not None and (f.lfs is None or f.lfs.sha256 == sha):
+            ok += 1
+    return ok, len(verified)
+
+
 def copy_to_repo(src: Path, dst: Path) -> bool:
     """Copy a finished job directory to the SSD results folder if the SSD is mounted; True when copied (staging copy is kept either way)."""
     import shutil
@@ -107,12 +137,19 @@ def balance() -> tuple[float | None, str]:
     return (float(m.group(1)) if m else None), txt
 
 
-def remote_script(spec: dict) -> str:
+def remote_script(spec: dict, job: str = "JOB") -> str:
     lines = ["#!/bin/bash", "cd /content", "mkdir -p /content/run", 'stamp(){ echo "STAMP $1 $(date +%s)"; }', "stamp start", "nvidia-smi -L"]
+    repo = spec.get("hf_repo")
+    if repo:  # the VM pushes its own results to the HF repo every hf_push_every_s, independent of the Mac
+        every = int(spec.get("hf_push_every_s", 300))
+        lines += ["HFP=", "if [ -f /content/.hf_token ]; then chmod 600 /content/.hf_token; "
+                  f"( while true; do sleep {every}; python /content/colab_hf_push.py {repo} {job} >> /content/run/hf_push.log 2>&1; done ) & HFP=$!; fi"]
     lines += ["stamp setup_start"] + list(spec.get("setup", [])) + ["echo \"RC setup $?\"", "stamp setup_end"]
     for i, r in enumerate(spec["runs"]):
         lab = re.sub(r"\W+", "_", r.get("label", f"run{i}"))
         lines += [f"stamp {lab}_start", r["cmd"], f'echo "RC {lab} $?"', f"stamp {lab}_end"]
+    if repo:
+        lines += ['[ -n "$HFP" ] && kill $HFP', f"python /content/colab_hf_push.py {repo} {job} final >> /content/run/hf_push.log 2>&1", 'echo "RC hfpush $?"']
     lines += ["echo ALLDONE"]
     return "\n".join(lines) + "\n"
 
@@ -143,6 +180,7 @@ def status_snippet(offset: int) -> str:
         "print('\\n'.join(keep))\n"
         f"print('OFFSET=' + str({int(offset)} + len(text[:end].encode())))\n"
         "print('GPU=' + subprocess.run('nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader', shell=True, capture_output=True, text=True).stdout.strip())\n"
+        "print('HF=' + (open('/content/run/hf_push_status').read().strip() if os.path.exists('/content/run/hf_push_status') else 'no push yet'))\n"
     )
 
 
@@ -176,6 +214,7 @@ class Job:
         self.sync_lock = threading.Lock()
         self.sync_thread: threading.Thread | None = None
         self.offset = 0
+        self.hf_verified: tuple[int, int] | None = None
         self.t0 = time.time()
         out.mkdir(parents=True, exist_ok=True)
 
@@ -286,8 +325,9 @@ def main() -> None:
     spec.setdefault("sync_every_s", 300)
     spec.setdefault("max_units", 2.0)
     spec.setdefault("max_minutes", 30)
+    spec.setdefault("hf_repo", HF_REPO_DEFAULT)  # standard: every job also pushes to the private HF repo; set "hf_repo": null to opt out
     max_s = int(spec["max_minutes"] * 60)
-    script = remote_script(spec)
+    script = remote_script(spec, "DRYRUN")
     if a.dry_run:
         print(script)
         print(start_snippet(script, max_s)[:600])
@@ -313,6 +353,12 @@ def main() -> None:
         print("overall budget used up; not starting")
         sys.exit(1)
     name = a.adopt or f"job-{spec['name']}-{spec['gpu'].lower()}-{time.strftime('%m%d%H%M')}"
+    script = remote_script(spec, name)
+    tok = hf_token() if spec.get("hf_repo") else None
+    if spec.get("hf_repo") and not tok:
+        print("WARNING: no HF_TOKEN in .env: this job has the Mac copy only", flush=True)
+        spec["hf_repo"] = None
+        script = remote_script(spec, name)
     out = STAGING / "jobs" / name
     job = Job(spec, name, out, bal, floor)
 
@@ -335,6 +381,17 @@ def main() -> None:
                 if p.returncode != 0:
                     job.reason = f"upload failed: {src}"
                     return
+            if spec.get("hf_repo"):  # the push script and the token (a private temp file, removed locally right after the upload)
+                p, _ = robust(["colab", "upload", "-s", name, str(REPO / "scripts/colab_hf_push.py"), "/content/colab_hf_push.py"], 600)
+                tf = STAGING / f".hf_token_{name}"
+                tf.write_text(tok)
+                tf.chmod(0o600)
+                try:
+                    q, _ = robust(["colab", "upload", "-s", name, str(tf), "/content/.hf_token"], 300)
+                finally:
+                    tf.unlink(missing_ok=True)
+                if p.returncode != 0 or q.returncode != 0:
+                    print("WARNING: could not upload the HF push files: this job has the Mac copy only", flush=True)
             p, _ = job.kexec(start_snippet(script, max_s))
             if "STARTED" not in (p.stdout + p.stderr):
                 job.reason = "job did not start"
@@ -351,7 +408,7 @@ def main() -> None:
                 fails = 0
                 mo = re.search(r"OFFSET=(\d+)", out_txt)
                 if mo:  # the full training curve (every new filtered log line) is appended locally on every poll
-                    new_lines = [l for l in out_txt.splitlines() if not l.startswith(("EXIT=", "OFFSET=", "GPU="))]
+                    new_lines = [l for l in out_txt.splitlines() if not l.startswith(("EXIT=", "OFFSET=", "GPU=", "HF="))]
                     job.log_progress("\n".join(new_lines) + ("\n" if new_lines else ""))
                     job.offset = int(mo.group(1))
             spent = (time.time() - job.t0) / 3600 * RATES.get(spec["gpu"].upper(), 8.0) * 1.15  # this job's own estimated spend
@@ -383,8 +440,19 @@ def main() -> None:
             # The VM is NOT stopped until the weights and metrics are verified on the Mac (size and sha256), up to a grace period.
             hard = job.reason.startswith("overall budget floor")
             grace = 120.0 if hard else 60.0 * spec.get("final_sync_grace_min", 15)
+            if spec.get("hf_repo"):  # make sure the VM's last state is on the HF repo too (also when the job was cut by a cap); idempotent
+                q, _ = job.kexec(f"import subprocess\nprint(subprocess.run(['python', '/content/colab_hf_push.py', '{spec['hf_repo']}', '{name}', 'final'], "
+                                 "capture_output=True, text=True, timeout=900).stdout)\n", 960, tries=2)
+                print("final HF push:", ((q.stdout or "") + (q.stderr or "")).strip()[-160:], flush=True)
             ok = job.final_sync(grace)
             print("final sync:", "ok, every kept file verified" if ok else "FAILED after the grace period: some files are NOT safe on the Mac", flush=True)
+            if spec.get("hf_repo") and tok:
+                try:
+                    hv, hn = hf_verify(spec["hf_repo"], name, job.verified, tok)
+                    job.hf_verified = (hv, hn)
+                    print(f"HF copy: {hv}/{hn} files match the VM (sha256 for weights) in {spec['hf_repo']}/runs/{name}", flush=True)
+                except Exception as e:  # noqa: BLE001
+                    print("HF copy check failed:", repr(e)[:160], flush=True)
             verified = job.stop()
             print("stop verified:", verified, flush=True)
             if not verified:
@@ -393,6 +461,7 @@ def main() -> None:
         used = round(job.start_balance - b, 2) if b is not None else None  # account-wide: includes any job that ran in parallel
         est = round((time.time() - job.t0) / 3600 * RATES.get(spec["gpu"].upper(), 8.0), 2)
         rec = {"name": name, "reason": job.reason, "units_used": est, "units_account_delta": used, "minutes": round((time.time() - job.t0) / 60, 1), "syncs": job.syncs,
+               "hf_repo": spec.get("hf_repo"), "hf_files_verified": job.hf_verified, "mac_files_verified": len(job.verified),
                "start_balance": job.start_balance, "end_balance": b, "spec": spec}
         (out / "job_record.json").write_text(json.dumps(rec, indent=1))
         dst = REPO / spec.get("local_out", "results/rasam/colab_runs") / name

@@ -313,6 +313,37 @@ def plan_html() -> str:
     return s
 
 
+def leaderboard_html() -> str:
+    """Published RASAM numbers next to ours, per test set, best first. Ours are read from results/rasam/{crnn,lm}/*__test.json (official HF test splits)."""
+    f = ST / "leaderboard.json"
+    lb = json.loads(f.read_text()) if f.exists() else {"published": [], "targets": {}}
+    rows: dict[str, list] = {"RASAM-1": [], "RASAM-2": []}
+    for p in lb.get("published", []):
+        rows.setdefault(p["test"], []).append((p["cer"], "published", p["system"], p["source"], p["comparable"]))
+    for d, kind in ((REPO / "results/rasam/crnn", "greedy"), (REPO / "results/rasam/lm", "with char LM")):
+        for jf in sorted(d.glob("*__test.json")) if d.exists() else []:
+            try:
+                j = json.loads(jf.read_text())
+            except Exception:  # noqa: BLE001
+                continue
+            test = {"r1": "RASAM-1", "r2": "RASAM-2"}.get(j.get("dataset"))
+            if not test or "smoke" in jf.stem:
+                continue
+            rows[test].append((j["micro_cer"]["raw"] * 100, "ours", f"{jf.stem.replace('__test', '')} ({kind})", "this project", f"official test split, n={j.get('n')}, micro CER raw"))
+    s = f"<div class=dim>{html.escape(lb.get('note', ''))}</div>"
+    for test, items in rows.items():
+        if not items:
+            continue
+        tgt = lb.get("targets", {}).get(test)
+        s += f"<h3 style='margin-top:14px'>{test} test{f' · target to beat: {tgt} %' if tgt else ''}</h3><table><tr><th>#</th><th>CER</th><th>who</th><th>system</th><th>source</th><th>comparability</th></tr>"
+        for i, (cer, who, sysname, src, comp) in enumerate(sorted(items)):
+            badge = "<span class='b finished'>ours</span>" if who == "ours" else "<span class='b'>published</span>"
+            beat = " ★" if who == "ours" and tgt and cer < tgt else ""
+            s += f"<tr><td>{i + 1}</td><td><b>{cer:.2f} %</b>{beat}</td><td>{badge}</td><td>{html.escape(sysname)}</td><td>{html.escape(src)}</td><td class=dim>{html.escape(comp)}</td></tr>"
+        s += "</table>"
+    return s
+
+
 def build() -> str:
     lv = live()
     budget = json.loads((ST / "budget.json").read_text()) if (ST / "budget.json").exists() else {"baseline_balance": None, "budget_units": 10}
@@ -353,7 +384,7 @@ window.addEventListener('hashchange',()=>show((location.hash||'#colab').slice(1)
 setTimeout(()=>location.reload(),30000);</script>"""
     return f"""<!doctype html><html><head><meta charset=utf-8><title>Experiment dashboard</title><style>{css}{tabs_css}</style></head><body>
 <h1>Experiment dashboard</h1><div class=dim>updated {time.strftime('%a %d %b %H:%M:%S')} · reloads every 30 s (keeps the tab) · Colab reading at {lv.get('t', '?')}{stale}</div>
-<nav><a href="#colab">Colab ({lv.get('active', '?')} live)</a><a href="#local">Local ({n_local} CPU jobs, {n_dl} downloads)</a><a href="#plan">Plan, blocked and paused</a></nav>
+<nav><a href="#colab">Colab ({lv.get('active', '?')} live)</a><a href="#local">Local ({n_local} CPU jobs, {n_dl} downloads)</a><a href="#leaderboard">RASAM leaderboard</a><a href="#plan">Plan, blocked and paused</a></nav>
 <section id=colab>
 <div class=top style="margin-top:10px">
 <div class=card><span class=dim>compute-unit balance</span><b>{lv.get('balance', '-')}</b></div>
@@ -371,6 +402,9 @@ setTimeout(()=>location.reload(),30000);</script>"""
 <h2>Our processes running on this Mac</h2><table><tr><th>what</th><th>pid</th><th>running for</th><th>% CPU</th><th>% memory</th></tr>{ptable}</table>
 <h2>CPU experiments</h2>{cpu_experiments_html()}
 <h2>Downloads and datasets</h2>{downloads_html()}
+</section>
+<section id=leaderboard>
+<h2>RASAM leaderboard: published vs ours</h2>{leaderboard_html()}
 </section>
 <section id=plan>
 <h2>Plan, blocked and paused</h2>{plan_html()}

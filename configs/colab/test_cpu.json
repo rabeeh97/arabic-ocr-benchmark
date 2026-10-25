@@ -6,6 +6,7 @@
   "poll_s": 30,
   "sync_every_s": 60,
   "final_sync_grace_min": 6,
+  "hf_push_every_s": 60,
   "uploads": [["/Users/rabeehjouni/.claude/jobs/abb5a0e7/tmp/fake_train.py", "/content/fake_train.py"]],
   "setup": [],
   "runs": [{"label": "fake", "cmd": "python -u /content/fake_train.py"}],
