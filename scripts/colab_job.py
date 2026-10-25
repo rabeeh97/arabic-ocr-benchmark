@@ -245,11 +245,15 @@ class Job:
             f.write(text)
 
     def stop(self) -> bool:
+        """Stop this job's session and verify that THIS session is gone from `colab sessions` (account-wide "0 active" is impossible while other
+        jobs run in parallel, which made the old check report false alarms)."""
         for i in range(12):
             if i % 2 == 0:
                 sh(["colab", "stop", "-s", self.name], 180)
-            _, txt = balance()
-            if "Active assignments: 0" in txt:
+            p, _ = sh(["colab", "sessions"], 120)
+            txt = p.stdout + p.stderr
+            listed = "No active sessions found" in txt or "Hardware:" in txt  # a real answer, not a network error
+            if listed and f"[{self.name}]" not in txt:
                 return True
             time.sleep(15)
         return False
