@@ -26,12 +26,14 @@ Everything the VM prints between STAMP lines is timed on the VM clock, so networ
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import os
 import re
 import signal
 import subprocess
 import sys
-import tarfile
+import threading
 import time
 from pathlib import Path
 
@@ -62,11 +64,22 @@ def copy_to_repo(src: Path, dst: Path) -> bool:
 
 
 def sh(cmd: list[str], timeout: int) -> tuple[subprocess.CompletedProcess, float]:
+    """Run a command; on timeout kill its WHOLE process group (the colab CLI spawns children that keep the pipes open and made subprocess.run hang)."""
     t = time.time()
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
-    except subprocess.TimeoutExpired as e:  # a hung CLI call must not hang the supervisor
-        p = subprocess.CompletedProcess(cmd, 124, e.stdout or "", "timeout")
+        out, err = proc.communicate(timeout=timeout)
+        p = subprocess.CompletedProcess(cmd, proc.returncode, out, err)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except OSError:
+            pass
+        try:
+            out, err = proc.communicate(timeout=10)
+        except Exception:
+            out, err = "", ""
+        p = subprocess.CompletedProcess(cmd, 124, out or "", (err or "") + "timeout")
     return p, time.time() - t
 
 
@@ -110,23 +123,40 @@ def start_snippet(script: str, max_s: int) -> str:
     )
 
 
-STATUS = (
-    "import os, subprocess\n"
-    "ec = open('/content/run/exit_code').read().strip() if os.path.exists('/content/run/exit_code') else 'none'\n"
-    "print('EXIT=' + ec)\n"
-    "log = open('/content/run/job.log', errors='replace').read().splitlines() if os.path.exists('/content/run/job.log') else []\n"
-    "keep = [l for l in log if l.startswith(('STAMP', 'RC ', 'epoch', 'params', 'train ', 'ALLDONE', 'TIMING', 'Traceback')) or 'Error' in l]\n"
-    "print('\\n'.join(keep[-14:]))\n"
-    "print(subprocess.run('nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader', shell=True, capture_output=True, text=True).stdout.strip())\n"
-)
-
-
-def sync_snippet(artifacts: list[str]) -> str:
-    paths = " ".join(a.lstrip("/") for a in (["/content/run"] + artifacts))
+def status_snippet(offset: int) -> str:
+    """Print EXIT=, the NEW filtered job.log lines since byte `offset` (so the whole training curve reaches the Mac, not just the last lines), the new offset, and GPU use."""
     return (
-        "import subprocess\n"
-        f"print(subprocess.run('tar czf /content/run_sync.tgz -C / --exclude=*.pkl --exclude=hfcache --exclude=*.parquet {paths} 2>/dev/null; ls -l /content/run_sync.tgz', "
-        "shell=True, capture_output=True, text=True).stdout)\n"
+        "import os, subprocess\n"
+        "ec = open('/content/run/exit_code').read().strip() if os.path.exists('/content/run/exit_code') else 'none'\n"
+        "print('EXIT=' + ec)\n"
+        "data = b''\n"
+        "if os.path.exists('/content/run/job.log'):\n"
+        f"    f = open('/content/run/job.log', 'rb'); f.seek({int(offset)}); data = f.read()\n"
+        "text = data.decode(errors='replace')\n"
+        "end = text.rfind('\\n') + 1  # only whole lines; the offset moves just past them\n"
+        "keep = [l for l in text[:end].splitlines() if l.startswith(('STAMP', 'RC ', 'epoch', 'params', 'train ', 'ALLDONE', 'TIMING', 'Traceback')) or 'Error' in l]\n"
+        "print('\\n'.join(keep))\n"
+        f"print('OFFSET=' + str({int(offset)} + len(text[:end].encode())))\n"
+        "print('GPU=' + subprocess.run('nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader', shell=True, capture_output=True, text=True).stdout.strip())\n"
+    )
+
+
+def manifest_snippet(artifacts: list[str], all_files: bool) -> str:
+    """List the files worth keeping with size and sha256: weights, configs, metrics and the job log. ckpt_last.pt (optimizer state, 3x the size) only when all_files."""
+    return (
+        "import hashlib, json, os\n"
+        f"roots = {['/content/run'] + list(artifacts)!r}\n"
+        "names = ('model_best.pt', 'model_final.pt', 'config.json', 'charset.json', 'heldout_cer.json', 'job.log', 'job.sh', 'exit_code')\n"
+        f"all_files = {bool(all_files)!r}\n"
+        "out = []\n"
+        "for r in roots:\n"
+        "    for d, _, fs in os.walk(r):\n"
+        "        for n in fs:\n"
+        "            if n in names or (all_files and n == 'ckpt_last.pt'):\n"
+        "                p = os.path.join(d, n)\n"
+        "                h = hashlib.sha256(open(p, 'rb').read()).hexdigest()\n"
+        "                out.append([p, os.path.getsize(p), h])\n"
+        "print('MANIFEST=' + json.dumps(out))\n"
     )
 
 
@@ -137,6 +167,10 @@ class Job:
         self.reason = "unknown"
         self.last_sync = 0.0
         self.syncs = 0
+        self.verified: dict[str, str] = {}
+        self.sync_lock = threading.Lock()
+        self.sync_thread: threading.Thread | None = None
+        self.offset = 0
         self.t0 = time.time()
         out.mkdir(parents=True, exist_ok=True)
 
@@ -145,23 +179,65 @@ class Job:
         f.write_text(code)
         return robust(["colab", "exec", "-s", self.name, "-f", str(f)], timeout, tries)
 
-    def sync(self) -> bool:
-        p, _ = self.kexec(sync_snippet(self.spec.get("artifacts", [])), 180)
-        if p.returncode != 0:
-            return False
-        tgz = self.out / "sync.tgz"
-        p, _ = robust(["colab", "download", "-s", self.name, "/content/run_sync.tgz", str(tgz)], 600, tries=2)
-        if p.returncode != 0 or not tgz.exists():
-            return False
-        try:
-            with tarfile.open(tgz) as t:
-                t.extractall(self.out, filter="data")
-        except Exception as e:  # a half-downloaded archive is skipped, the next sync replaces it
-            print("sync extract failed:", e, flush=True)
-            return False
-        self.last_sync = time.time()
-        self.syncs += 1
-        return True
+    def sync(self, all_files: bool = False) -> bool:
+        """Fetch every kept file that is new or changed, ONE FILE AT A TIME, and verify size and sha256 against the VM. True only if all are verified.
+        A failed file is retried next time; files already verified are not downloaded again."""
+        with self.sync_lock:
+            p, _ = self.kexec(manifest_snippet(self.spec.get("artifacts", []), all_files), 180)
+            m = re.search(r"MANIFEST=(\[.*\])", p.stdout + p.stderr)
+            if p.returncode != 0 or not m:
+                return False
+            ok_all = True
+            for rpath, size, sha in json.loads(m.group(1)):
+                if self.verified.get(rpath) == sha:
+                    continue
+                local = self.out / rpath.lstrip("/")
+                local.parent.mkdir(parents=True, exist_ok=True)
+                good = False
+                for attempt in range(3):
+                    q, _ = sh(["colab", "download", "-s", self.name, rpath, str(local)], 900)
+                    if q.returncode == 0 and local.exists() and local.stat().st_size == size:
+                        h = hashlib.sha256()
+                        with open(local, "rb") as fh:
+                            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                                h.update(chunk)
+                        if h.hexdigest() == sha:
+                            good = True
+                            break
+                    time.sleep(5 * (attempt + 1))
+                if good:
+                    self.verified[rpath] = sha
+                else:
+                    ok_all = False
+            if ok_all:
+                self.last_sync = time.time()
+                self.syncs += 1
+            return ok_all
+
+    def sync_background(self) -> None:
+        """Start a periodic sync in a thread unless one is already running; polling and the budget checks never wait for transfers."""
+        if self.sync_thread is not None and self.sync_thread.is_alive():
+            return
+        self.last_sync = time.time()  # restart the interval now, a long transfer must not trigger back-to-back syncs
+        self.sync_thread = threading.Thread(target=lambda: print("  sync:", "ok" if self.sync() else "partial/failed", flush=True), daemon=True)
+        self.sync_thread.start()
+
+    def final_sync(self, grace_s: float) -> bool:
+        """The VM is not stopped until this succeeds or the grace period (seconds) is over."""
+        if self.sync_thread is not None:
+            self.sync_thread.join(timeout=grace_s)
+        end = time.time() + grace_s
+        while True:
+            if self.sync(all_files=bool(self.spec.get("sync_ckpt_last", False))):
+                return True
+            if time.time() > end:
+                return False
+            print("  final sync incomplete, retrying (the VM stays up until the files are safe)", flush=True)
+            time.sleep(20)
+
+    def log_progress(self, text: str) -> None:
+        with open(self.out / "job_progress.log", "a") as f:
+            f.write(text)
 
     def stop(self) -> bool:
         for i in range(12):
@@ -206,7 +282,8 @@ def main() -> None:
     if a.dry_run:
         print(script)
         print(start_snippet(script, max_s)[:600])
-        print(sync_snippet(spec.get("artifacts", [])))
+        print(manifest_snippet(spec.get("artifacts", []), False))
+        print(status_snippet(0))
         return
 
     bal, txt = balance()
@@ -257,15 +334,21 @@ def main() -> None:
         while True:
             time.sleep(spec["poll_s"])
             b, _ = balance()
-            p, _ = job.kexec(STATUS, 90, tries=1)
+            p, _ = job.kexec(status_snippet(job.offset), 90, tries=1)
             out_txt = p.stdout + p.stderr
             if b is None or "EXIT=" not in out_txt:
                 fails += 1
             else:
                 fails = 0
+                mo = re.search(r"OFFSET=(\d+)", out_txt)
+                if mo:  # the full training curve (every new filtered log line) is appended locally on every poll
+                    new_lines = [l for l in out_txt.splitlines() if not l.startswith(("EXIT=", "OFFSET=", "GPU="))]
+                    job.log_progress("\n".join(new_lines) + ("\n" if new_lines else ""))
+                    job.offset = int(mo.group(1))
             spent = (job.start_balance - b) if b is not None else float("nan")
             m = re.search(r"EXIT=(\S+)", out_txt)
-            print(f"[{(time.time() - job.t0) / 60:5.1f} min] balance {b} spent {spent:.2f} | " + " | ".join(out_txt.strip().splitlines()[-3:])[:230], flush=True)
+            tail = [l for l in out_txt.strip().splitlines() if not l.startswith(("EXIT=", "OFFSET="))][-2:]
+            print(f"[{(time.time() - job.t0) / 60:5.1f} min] balance {b} spent {spent:.2f} | " + " | ".join(tail)[:230], flush=True)
             if m and m.group(1) != "none":
                 job.reason = f"job finished (exit code {m.group(1)})"
                 break
@@ -282,16 +365,17 @@ def main() -> None:
                 job.reason = "lost contact 8 polls in a row"
                 break
             if time.time() - job.last_sync > spec["sync_every_s"] and m and m.group(1) == "none":
-                print("  sync:", "ok" if job.sync() else "failed", flush=True)
+                job.sync_background()  # in a thread: transfers never delay the polling or the budget checks
     except KeyboardInterrupt:
         job.reason = "interrupted"
     finally:
         print(f"ending: {job.reason}", flush=True)
         if created:
-            ok = job.sync()
-            if not ok:
-                ok = job.sync()
-            print("final sync:", "ok" if ok else "FAILED (last periodic sync is on disk)", flush=True)
+            # The VM is NOT stopped until the weights and metrics are verified on the Mac (size and sha256), up to a grace period.
+            hard = job.reason.startswith("overall budget floor")
+            grace = 120.0 if hard else 60.0 * spec.get("final_sync_grace_min", 15)
+            ok = job.final_sync(grace)
+            print("final sync:", "ok, every kept file verified" if ok else "FAILED after the grace period: some files are NOT safe on the Mac", flush=True)
             verified = job.stop()
             print("stop verified:", verified, flush=True)
             if not verified:

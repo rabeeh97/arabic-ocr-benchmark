@@ -1,0 +1,20 @@
+{
+  "name": "a3redo-t4",
+  "gpu": "T4",
+  "max_units": 1.0,
+  "max_minutes": 40,
+  "poll_s": 45,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    ["scripts/xai_train_aligner.py", "/content/xai_train_aligner.py"],
+    ["scripts/rasam_prepare_crnn_data.py", "/content/rasam_prepare_crnn_data.py"],
+    ["scripts/colab_remote_prepare_r12.py", "/content/colab_remote_prepare_r12.py"]
+  ],
+  "setup": ["python /content/colab_remote_prepare_r12.py"],
+  "runs": [
+    {"label": "a3_w05_bs16", "cmd": "python -u /content/xai_train_aligner.py --data /content/rasam_r12.pkl --out /content/crnn_out/a3_w05_bs16 --epochs 30 --bs 16 --device cuda --width 0.5 --train-sets r1 r2 --eval-every 2 --seed 0 --geom-aug"}
+  ],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}
