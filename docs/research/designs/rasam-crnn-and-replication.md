@@ -438,3 +438,37 @@ neighbour ink (p = 0.3: strips of other lines pasted above and below), fade (p =
 - The darkest channel is clearly worse (dropped).
 - Repairing the training data helps RASAM-1 a little and is neutral on RASAM-2; the neighbour/fade augmentation is mixed. Both effects are under half a point,
   which is the size of the run-to-run noise we have not measured yet. **Next: several seeds of the leading recipes before any further recipe claim.**
+
+## 16. Seeds, 60 epochs, weight averaging, label standardisation, pretrained-LM rescoring (2026-10-26, Colab T4 + Mac CPU, verified)
+
+Recipe: RASAM-1 + repaired RASAM-2 + TariMa train, 96 px, half width, geometric augmentation. Official HF test sets unless marked; micro CER, raw profile
+unless marked. Character 8-gram LM weights tuned on validation only.
+
+**Run-to-run noise (3 seeds, 30 epochs, raw labels).** Greedy: RASAM-1 5.32 / 5.18 / 5.23 % (mean 5.24), RASAM-2 11.83 / 11.79 / 11.74 % (11.79),
+TariMa 9.26 / 9.32 / 9.22 % (9.27), repaired RASAM-2 10.68 / 10.63 / 10.53 % (10.61). With the LM: 4.38 / 9.30 / 7.67 / 8.50 % (means; spread about
+0.1-0.2 points). Differences under about 0.2 points between single runs are noise.
+
+**Standardised labels do not make a better model.** The standardised-label recipe (3 seeds, LM) scores 4.04 / 8.82 / 7.02 / 7.88 % against standardised
+references. The raw-label models scored diacritic-insensitively (the same simplification) give 4.00 / 8.78 / 7.17 / 7.97 %. The earlier "gain" of
+standardised labels (section 15 follow-up) is the easier reference, not a better reader. Keep raw labels and report both profiles.
+
+**60 epochs instead of 30 (one run, seed 0).** The one-cycle schedule had flattened the 30-epoch curve only because the learning rate reaches zero.
+
+| test | 30 ep, 3-seed mean greedy -> LM | 60 ep best ckpt | 60 ep final | 60 ep EMA best (ep 48) | 60 ep EMA final | 60 ep avg of last 10 |
+|---|---|---|---|---|---|---|
+| RASAM-1 | 5.24 -> 4.38 | 4.74 -> 4.33 | 4.81 | 4.94 -> 4.28 | 4.77 | 4.79 -> **4.24** |
+| RASAM-2 | 11.79 -> 9.30 | 10.91 -> **9.13** | 10.74 | 11.30 -> 9.14 | 10.79 | 10.89 -> 9.19 |
+| TariMa | 9.27 -> 7.67 | 8.34 -> 7.35 | 8.37 | 8.74 -> 7.35 | 8.31 | 8.32 -> **7.19** |
+| RASAM-2 repaired | 10.61 -> 8.50 | 9.77 -> **8.05** | 9.61 | 10.14 -> 8.20 | 9.64 | 9.74 -> 8.13 |
+
+- 60 epochs cut greedy CER by 0.4-1.0 points (well beyond seed noise); after the LM the gain shrinks to 0.05-0.45 points. Validation flattens from
+  about epoch 46, so more than 60 epochs is unlikely to pay.
+- EMA (decay 0.999) and averaging the last 10 epochs give nothing consistent over the plain final weights: the one-cycle schedule already anneals to a
+  near-zero learning rate, which is what averaging would otherwise provide. Not worth adding to the recipe.
+
+**Pretrained-LM rescoring (AraGPT2-base on the char-LM 10-best; weights w, v tuned on validation).** For the +TariMa model of section 13:
+RASAM-1 4.32 -> **4.15 %**, RASAM-2 9.41 -> **9.02 %**, repaired RASAM-2 8.42 -> **8.04 %** (oracle in the 10-best 3.28 / 7.84 / 6.92 %).
+Gains 0.2-0.4 points, consistent on all three sets. The repaired list is tuned on the official RASAM-2 validation N-best (same lines except 7 re-cuts).
+
+**Next:** 60 epochs + AraGPT2 rescoring together (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); 3-seed
+60-epoch runs only if the combination is the headline number.

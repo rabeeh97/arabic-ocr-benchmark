@@ -24,6 +24,10 @@ below except E1 runs offline on CPU.
   *Done when:* each published claim has reproduced / not-reproduced with a reason.
 - [x] (2026-10-22, columns already in the HF parquet) **RS3** Recover RASAM manuscript/page IDs from `calfa-co/rasam-dataset` (part of R0.4).
 - [ ] **RS4** (A1 done 2026-10-23: 6.82 % RASAM-1 test, 24.6 % RASAM-2 test, half-width CPU, see design §6) Our own char-CRNN on RASAM train splits: validation sweep, arms A1–A4, then data-scaling A5 and diversity A6.
+  - [x] (2026-10-26, design §16) 3 seeds of the repaired + TariMa recipe (raw and standardised labels): seed noise about 0.1–0.2 points; standardised labels give no real gain once scored the same way.
+  - [x] (2026-10-26, design §16) 60 epochs vs 30: greedy −0.4 to −1.0 points, after the LM −0.05 to −0.45; EMA and last-10 averaging add nothing consistent (dropped).
+  - [x] (2026-10-26, design §16) AraGPT2 N-best rescoring: −0.2 to −0.4 points on RASAM-1, RASAM-2 and repaired RASAM-2.
+  - [ ] **RS4b** Combine 60 epochs + AraGPT2 rescoring (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); seeds only if it becomes the headline.
 - [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
 - [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.
 
