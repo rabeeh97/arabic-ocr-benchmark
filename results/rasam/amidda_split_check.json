@@ -1,0 +1,92 @@
+{
+ "RASAM-1 test": {
+  "n_img": 734,
+  "n_txt": 734,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 734,
+  "txt_in_test": 734
+ },
+ "RASAM-1 validation": {
+  "n_img": 733,
+  "n_txt": 732,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 0,
+  "txt_in_test": 0
+ },
+ "RASAM-1 train": {
+  "n_img": 5864,
+  "n_txt": 5859,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 0,
+  "txt_in_test": 3
+ },
+ "RASAM-2 test": {
+  "n_img": 372,
+  "n_txt": 371,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 372,
+  "txt_in_test": 371
+ },
+ "RASAM-2 validation": {
+  "n_img": 372,
+  "n_txt": 372,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 1,
+  "txt_in_test": 1
+ },
+ "RASAM-2 train": {
+  "n_img": 2970,
+  "n_txt": 2970,
+  "img_in_train": 2162,
+  "txt_in_train": 2158,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 2,
+  "txt_in_test": 0
+ },
+ "TariMa test": {
+  "n_img": 229,
+  "n_txt": 229,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 229,
+  "txt_in_test": 229
+ },
+ "TariMa validation": {
+  "n_img": 228,
+  "n_txt": 228,
+  "img_in_train": 0,
+  "txt_in_train": 0,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 0,
+  "txt_in_test": 0
+ },
+ "TariMa train": {
+  "n_img": 1828,
+  "n_txt": 1821,
+  "img_in_train": 1828,
+  "txt_in_train": 1821,
+  "img_in_validation": 0,
+  "txt_in_validation": 0,
+  "img_in_test": 0,
+  "txt_in_test": 0
+ }
+}

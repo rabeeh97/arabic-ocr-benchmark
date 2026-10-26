@@ -61,3 +61,24 @@ training data and 96 in its validation data** (87 more in its own test split); n
 | RASAM-2, all 372 lines (no overlap) | 17.56 % | 12.14 % | **9.66 %** |
 
 On lines it never saw, HAFITH's error is twice its overall figure; its reported 4.95 % is on its own split and benefits from memorised lines.
+
+## Calfa's AMIDDA reports on the official test lines (2026-10-26)
+
+Calfa's AMIDDA dataset ([HF](https://huggingface.co/datasets/calfa-ai/AMIDDA), created 2026-05-20 like the HF RASAM mirrors) has a test split that contains
+**exactly** the official test lines: all 734 RASAM-1, 372 RASAM-2 and 229 TariMa test images are identical by MD5 (`scripts/amidda_split_check.py`,
+`results/rasam/amidda_split_check.json`). So the per-corpus numbers on the [AMIDDA model card](https://huggingface.co/calfa-ai/amidda1.0Line4B)
+(paper: [HIP 2026 @ ICDAR 2026](https://enc.hal.science/hal-05693582)) are the first published results on the same lines as ours:
+
+| official test | Calfa CTC, one CRNN per corpus | ours (60 ep + char LM + AraGPT2) | AMIDDA 1.0 Line 4B (VLM) | Gemini 3 Flash 25-shot |
+|---|---|---|---|---|
+| RASAM-1 | **3.6 %** | 4.12 % | 25.0 % | 16.5 % |
+| RASAM-2 | **4.9 %** | 8.92 % | 27.6 % | 29.0 % |
+| TariMa | **3.9 %** | 7.04 % | 24.2 % | 25.6 % |
+
+The Calfa CTC baselines are not public and the card does not state their training data, line height or CER averaging (the paper PDF is behind a
+bot check from here), so this is "reported on the same lines", not reproduced. The gap is largest on RASAM-2 and TariMa. The AMIDDA VLM is public; re-running
+it needs a Colab GPU (pending budget). Note: our local AMIDDA copy is incomplete (no validation files, some train shards missing), so only the test
+comparison is established.
+
+The full local leaderboard (strict board, other splits, our ideas, why scores differ) is `docs/research/rasam_leaderboard.html`, built by
+`scripts/build_rasam_leaderboard.py`.
