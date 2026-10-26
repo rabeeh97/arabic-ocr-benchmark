@@ -41,10 +41,13 @@ def main() -> None:
     ap.add_argument("--scores-dir", type=Path, required=True)
     ap.add_argument("--name", required=True)
     ap.add_argument("--tag", required=True)
+    ap.add_argument("--val-name", help="tune w, v on this run's validation N-best instead (e.g. NB_TM_r2 for the repaired-test list NB_TM_r2rep: "
+                                       "the same validation lines except the 7 re-cut ones)")
     a = ap.parse_args()
-    val = json.loads((a.nbest_dir / f"{a.name}__{a.tag}__val_nbest.json").read_text())["lines"]
+    vname = a.val_name or a.name
+    val = json.loads((a.nbest_dir / f"{vname}__{a.tag}__val_nbest.json").read_text())["lines"]
     test = json.loads((a.nbest_dir / f"{a.name}__{a.tag}__test.json").read_text())["lines"]
-    sv = json.loads((a.scores_dir / f"preds_lmscore_{a.name}__{a.tag}__val_nbest.json").read_text())["scores"]
+    sv = json.loads((a.scores_dir / f"preds_lmscore_{vname}__{a.tag}__val_nbest.json").read_text())["scores"]
     st = json.loads((a.scores_dir / f"preds_lmscore_{a.name}__{a.tag}__test.json").read_text())["scores"]
     grid = [(w, v) for w in (0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 0.8) for v in (-1.0, -0.5, 0.0, 0.5, 1.0)]
     res = sorted((cer(pick(val, sv, w, v)), w, v) for w, v in grid)
