@@ -199,6 +199,9 @@ def main() -> None:
     ap.add_argument("--train-sets", nargs="+", help="only rows whose dataset tag is listed (train and heldout alike); default all")
     ap.add_argument("--seed", type=int, help="seed python, numpy and torch (unset = unseeded, as the runs before 2026-10-13)")
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
+    ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
+                    "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
+    ap.add_argument("--keep-last", type=int, default=0, help="save the weights after each of the last K epochs (model_ep<N>.pt) for checkpoint averaging")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
     dev = a.device
@@ -241,14 +244,17 @@ def main() -> None:
     steps_per_epoch = math.ceil(len(pool) / a.bs)
     split = blob.get("split", "aligner")
     (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
-                                                   "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs}), encoding="utf-8")
+                                                   "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs,
+                                                   "ema": a.ema, "keep_last": a.keep_last}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width, height=H).to(dev)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
     scaler = torch.amp.GradScaler("cuda", enabled=dev == "cuda")
     ctc = nn.CTCLoss(blank=0, zero_infinity=True)
-    start, best = 0, 9.0
+    # EMA of the weights (BatchNorm buffers averaged too, so the copy can be evaluated as is)
+    ema = torch.optim.swa_utils.AveragedModel(model, multi_avg_fn=torch.optim.swa_utils.get_ema_multi_avg_fn(a.ema), use_buffers=True) if a.ema else None
+    start, best, best_ema = 0, 9.0, 9.0
     resume_batches, resume_bi, resume_tot = None, 0, 0.0
     ck = a.out / "ckpt_last.pt"
     if ck.exists():  # resume: at an epoch boundary, or inside an epoch with the same batch order
@@ -256,7 +262,9 @@ def main() -> None:
         model.load_state_dict(st["model"]); opt.load_state_dict(st["opt"]); sched.load_state_dict(st["sched"])
         if "scaler" in st:
             scaler.load_state_dict(st["scaler"])
-        start, best = st["epoch"], st.get("best", 9.0)
+        if ema is not None and "ema" in st:
+            ema.load_state_dict(st["ema"])
+        start, best, best_ema = st["epoch"], st.get("best", 9.0), st.get("best_ema", 9.0)
         if st.get("batches") is not None:
             resume_batches, resume_bi, resume_tot = st["batches"], st["bi"], st.get("tot", 0.0)
         print("resumed at epoch", start, "step", resume_bi, flush=True)
@@ -264,7 +272,8 @@ def main() -> None:
     def save_ckpt(epoch, batches=None, bi=0, tot=0.0):
         tmp = ck.with_suffix(".tmp")
         torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "scaler": scaler.state_dict(),
-                    "epoch": epoch, "best": best, "batches": batches, "bi": bi, "tot": tot}, tmp)
+                    "epoch": epoch, "best": best, "best_ema": best_ema, "batches": batches, "bi": bi, "tot": tot,
+                    **({"ema": ema.state_dict()} if ema is not None else {})}, tmp)
         tmp.replace(ck)  # atomic, so a crash during the save keeps the previous checkpoint
 
     for ep in range(start, a.epochs):
@@ -291,6 +300,8 @@ def main() -> None:
             scaler.unscale_(opt)
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             scaler.step(opt); scaler.update(); sched.step()
+            if ema is not None:
+                ema.update_parameters(model)
             tot += float(loss)
             if a.ckpt_every and (bi + 1) % a.ckpt_every == 0 and bi + 1 < len(batches):
                 save_ckpt(ep, batches, bi + 1, tot)
@@ -302,10 +313,23 @@ def main() -> None:
             if mean < best:
                 best = mean
                 torch.save(model.state_dict(), a.out / "model_best.pt")
+            if ema is not None:
+                ecer = evaluate(ema.module, held, stoi, dev)
+                msg += f"  ema CER {ecer}"
+                emean = sum(ecer.values()) / max(1, len(ecer))
+                if emean < best_ema:
+                    best_ema = emean
+                    torch.save(ema.module.state_dict(), a.out / "model_ema_best.pt")
+        if a.keep_last and ep + 1 > a.epochs - a.keep_last:
+            torch.save(model.state_dict(), a.out / f"model_ep{ep + 1}.pt")
         print(msg, flush=True)
         save_ckpt(ep + 1)
     torch.save(model.state_dict(), a.out / "model_final.pt")
-    (a.out / "heldout_cer.json").write_text(json.dumps(evaluate(model, held, stoi, dev)), encoding="utf-8")
+    final = evaluate(model, held, stoi, dev)
+    if ema is not None:
+        torch.save(ema.module.state_dict(), a.out / "model_ema_final.pt")
+        final = {"raw": final, "ema": evaluate(ema.module, held, stoi, dev)}
+    (a.out / "heldout_cer.json").write_text(json.dumps(final), encoding="utf-8")
     print("done", flush=True)
 
 
