@@ -472,3 +472,16 @@ Gains 0.2-0.4 points, consistent on all three sets. The repaired list is tuned o
 
 **Next:** 60 epochs + AraGPT2 rescoring together (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); 3-seed
 60-epoch runs only if the combination is the headline number.
+
+**60 epochs + AraGPT2 rescoring (RS4b, 2026-10-26).** 10-best lists from the 60-epoch model (model_best), AraGPT2-base scores on two Colab CPU
+sessions (about 12 min per list on CPU; the TariMa lists went to a second session because of the 120-minute VM limit), w and v tuned on validation:
+
+| test | 60 ep + char LM | + AraGPT2 rescoring | oracle in the 10-best |
+|---|---|---|---|
+| RASAM-1 | 4.33 % | **4.12 %** | 3.18 % |
+| RASAM-2 | 9.13 % | **8.92 %** | 7.66 % |
+| TariMa | 7.35 % | **7.04 %** | 5.84 % |
+| RASAM-2 repaired | 8.05 % | **7.83 %** | 6.61 % |
+
+The two gains add up only partly: 60 epochs alone took RASAM-2 from 9.30 % (30-epoch mean) to 9.13 %, rescoring adds another 0.2-0.3 points everywhere.
+Our best single-model numbers on the official HF test splits: **RASAM-1 4.12 %, RASAM-2 8.92 %, TariMa 7.04 %** (one seed; seed noise about 0.1-0.2).
