@@ -1,0 +1,44 @@
+{
+  "name": "lomo-b",
+  "gpu": "T4",
+  "max_units": 2.0,
+  "max_minutes": 105,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    [
+      "scripts/xai_train_aligner.py",
+      "/content/xai_train_aligner.py"
+    ],
+    [
+      "scripts/rasam_prepare_crnn_data.py",
+      "/content/rasam_prepare_crnn_data.py"
+    ],
+    [
+      "scripts/colab_remote_packs.py",
+      "/content/colab_remote_packs.py"
+    ],
+    [
+      "results/rasam/repairs/rasam2_recut.pkl",
+      "/content/rasam2_recut.pkl"
+    ]
+  ],
+  "setup": [
+    "PACKS='[{\"out\": \"/content/pack_lomo4.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1943\", \"BULAC_MS_ARA_1983\", \"BULAC_MS_ARA_65\"]}, {\"out\": \"/content/pack_lomo5.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1944\", \"BULAC_MS_ARA_23\", \"BULAC_MS_ARA_9\"]}]' python /content/colab_remote_packs.py"
+  ],
+  "runs": [
+    {
+      "label": "lomo4",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_lomo4.pkl --out /content/crnn_out/lomo4 --width 0.5 --train-sets r1 r2 tm --epochs 30 --bs 16 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 6 && rm -f /content/pack_lomo4.pkl"
+    },
+    {
+      "label": "lomo5",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_lomo5.pkl --out /content/crnn_out/lomo5 --width 0.5 --train-sets r1 r2 tm --epochs 30 --bs 16 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 6 && rm -f /content/pack_lomo5.pkl"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}

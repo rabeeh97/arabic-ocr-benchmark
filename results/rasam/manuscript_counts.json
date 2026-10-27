@@ -1,0 +1,272 @@
+{
+ "RASAM-1": {
+  "BULAC_MS_ARA_1977": {
+   "train": 2719,
+   "validation": 322,
+   "test": 353,
+   "chars": 302896
+  },
+  "BULAC_MS_ARA_609": {
+   "train": 2222,
+   "validation": 278,
+   "test": 271,
+   "chars": 154883
+  },
+  "BULAC_MS_ARA_417": {
+   "train": 923,
+   "validation": 133,
+   "test": 110,
+   "chars": 34442
+  }
+ },
+ "RASAM-2": {
+  "BULAC_ARA_MS_1982": {
+   "train": 199,
+   "validation": 26,
+   "test": 25,
+   "chars": 22578
+  },
+  "BULAC_MS_ARA_1944": {
+   "train": 189,
+   "validation": 34,
+   "test": 27,
+   "chars": 11408
+  },
+  "BULAC_MS_ARA_1943": {
+   "train": 195,
+   "validation": 26,
+   "test": 29,
+   "chars": 25505
+  },
+  "BULAC_MS_ARA_23": {
+   "train": 197,
+   "validation": 28,
+   "test": 25,
+   "chars": 11439
+  },
+  "BULAC_MS_ARA_45b": {
+   "train": 196,
+   "validation": 29,
+   "test": 25,
+   "chars": 20352
+  },
+  "BULAC_MS_ARA_6": {
+   "train": 209,
+   "validation": 21,
+   "test": 20,
+   "chars": 18354
+  },
+  "BULAC_MS_ARA_1960": {
+   "train": 197,
+   "validation": 27,
+   "test": 26,
+   "chars": 13372
+  },
+  "BULAC_MS_ARA_1983": {
+   "train": 204,
+   "validation": 22,
+   "test": 24,
+   "chars": 17249
+  },
+  "BULAC_MS_ARA_1936": {
+   "train": 201,
+   "validation": 27,
+   "test": 22,
+   "chars": 11892
+  },
+  "BULAC_MS_ARA_1947": {
+   "train": 205,
+   "validation": 20,
+   "test": 25,
+   "chars": 8648
+  },
+  "BULAC_MS_ARA_65": {
+   "train": 202,
+   "validation": 18,
+   "test": 30,
+   "chars": 12845
+  },
+  "BULAC_MS_ARA_9": {
+   "train": 209,
+   "validation": 17,
+   "test": 24,
+   "chars": 20074
+  },
+  "BULAC_MS_ARA_24": {
+   "train": 197,
+   "validation": 28,
+   "test": 25,
+   "chars": 10539
+  },
+  "BULAC_MS_ARA_1926": {
+   "train": 187,
+   "validation": 22,
+   "test": 31,
+   "chars": 5621
+  },
+  "BULAC_MS_ARA_1946": {
+   "train": 189,
+   "validation": 27,
+   "test": 14,
+   "chars": 13550
+  }
+ },
+ "TariMa": {
+  "MMSH_IREMAM_ARA_MS_011": {
+   "train": 293,
+   "validation": 45,
+   "test": 38,
+   "chars": 29362
+  },
+  "BnF-4617_btv1b10030580s": {
+   "train": 132,
+   "validation": 21,
+   "test": 10,
+   "chars": 12067
+  },
+  "BULAC_MS_ARA_427": {
+   "train": 125,
+   "validation": 12,
+   "test": 8,
+   "chars": 7536
+  },
+  "BnF-6898_btv1b10030178f": {
+   "train": 112,
+   "validation": 15,
+   "test": 10,
+   "chars": 6154
+  },
+  "BnF-7024_btv1b10031132f": {
+   "train": 101,
+   "validation": 10,
+   "test": 10,
+   "chars": 5493
+  },
+  "BULAC_RES_MON_8_5336": {
+   "train": 79,
+   "validation": 14,
+   "test": 16,
+   "chars": 5724
+  },
+  "BULAC_RES_MON_8_5560": {
+   "train": 81,
+   "validation": 9,
+   "test": 15,
+   "chars": 6505
+  },
+  "BULAC_MS_ARA_410": {
+   "train": 76,
+   "validation": 10,
+   "test": 11,
+   "chars": 4710
+  },
+  "MMSH_MS_051_1": {
+   "train": 77,
+   "validation": 9,
+   "test": 8,
+   "chars": 5561
+  },
+  "BULAC_MS_ARA_436C": {
+   "train": 70,
+   "validation": 6,
+   "test": 13,
+   "chars": 6919
+  },
+  "MMSH_MS_050": {
+   "train": 69,
+   "validation": 9,
+   "test": 6,
+   "chars": 4587
+  },
+  "BnF-7214_btv1b10031231c": {
+   "train": 70,
+   "validation": 5,
+   "test": 8,
+   "chars": 5472
+  },
+  "BnF-2297_btv1b11001977p": {
+   "train": 62,
+   "validation": 6,
+   "test": 10,
+   "chars": 3681
+  },
+  "BULAC_RES_MON_8_7199": {
+   "train": 62,
+   "validation": 10,
+   "test": 6,
+   "chars": 4269
+  },
+  "BULAC_MS_ARA_794": {
+   "train": 56,
+   "validation": 4,
+   "test": 11,
+   "chars": 3155
+  },
+  "MMSH_MS_051_2": {
+   "train": 47,
+   "validation": 6,
+   "test": 4,
+   "chars": 3667
+  },
+  "BULAC_RES_MON_4_3416": {
+   "train": 43,
+   "validation": 4,
+   "test": 6,
+   "chars": 2820
+  },
+  "MMSH_MS_056": {
+   "train": 36,
+   "validation": 6,
+   "test": 10,
+   "chars": 3719
+  },
+  "BULAC_RES_MON_8_6212": {
+   "train": 43,
+   "validation": 4,
+   "test": 5,
+   "chars": 3639
+  },
+  "BULAC_RES_MON_8_4352": {
+   "train": 36,
+   "validation": 5,
+   "test": 2,
+   "chars": 2322
+  },
+  "BULAC_MS_ARA_453": {
+   "train": 32,
+   "validation": 2,
+   "test": 7,
+   "chars": 2614
+  },
+  "BULAC_RES_MON_4_3424": {
+   "train": 32,
+   "validation": 4,
+   "test": 4,
+   "chars": 2038
+  },
+  "BULAC_RES_MON_8_4734": {
+   "train": 26,
+   "validation": 5,
+   "test": 3,
+   "chars": 1888
+  },
+  "BULAC_RES_MON_4_3423": {
+   "train": 28,
+   "validation": 3,
+   "test": 2,
+   "chars": 2040
+  },
+  "BULAC_RES_MON_8_8967": {
+   "train": 25,
+   "validation": 2,
+   "test": 3,
+   "chars": 931
+  },
+  "BULAC_RES_MON_8_3955": {
+   "train": 15,
+   "validation": 2,
+   "test": 3,
+   "chars": 1128
+  }
+ }
+}

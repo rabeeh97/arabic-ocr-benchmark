@@ -27,6 +27,8 @@ for p in packs:
         cmd += ["--repair", p["repair"]]
     if p.get("channel"):
         cmd += ["--channel", p["channel"]]
+    if p.get("holdout"):
+        cmd += ["--holdout", *p["holdout"]]
     subprocess.run(cmd, check=True, env=env)
     timing[os.path.basename(p["out"])] = round(time.time() - t, 1)
 os.makedirs("/content/crnn_out", exist_ok=True)

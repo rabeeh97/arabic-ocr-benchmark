@@ -81,6 +81,8 @@ def main() -> None:
     ap.add_argument("--drop-broken", action="store_true", help="drop TRAIN/validation crops under 8 px tall that have no repair (test lines are always kept)")
     ap.add_argument("--all-train-sets", nargs="*", default=[], choices=list(TAGS),
                     help="sets whose validation AND test lines also become training lines (e.g. RASAM-1 when only RASAM-2 test is scored)")
+    ap.add_argument("--holdout", nargs="*", default=[], help="manuscript names held out entirely (leave-manuscript-out): ALL their lines "
+                    "(train, validation and test) become test lines with dataset tag <tag>ho (e.g. r2ho), so no page of them is seen in training")
     a = ap.parse_args()
     global H, MAX_W, CHANNEL
     H, MAX_W = a.height, 24 * a.height
@@ -106,15 +108,18 @@ def main() -> None:
                         dropped[(name, split)] = dropped.get((name, split), 0) + 1
                         continue
                     arr = prep(raw)
+                    held = rec["manuscript_name"] in a.holdout
+                    r_role, r_tag = ("test", TAGS[name] + "ho") if held else (role, TAGS[name])
                     # CTC needs a frame per character; test lines are never dropped (scored as they are)
-                    if role != "test" and (not label or arr.shape[1] // 4 < len(label) + 2):
+                    if r_role != "test" and (not label or arr.shape[1] // 4 < len(label) + 2):
                         dropped[(name, split)] = dropped.get((name, split), 0) + 1
                         continue
-                    rows.append({"id": f"{name}/{split}/{n:06d}", "dataset": TAGS[name], "role": role, "label": label, "img": arr,
-                                 "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"]})
+                    rows.append({"id": f"{name}/{split}/{n:06d}", "dataset": r_tag, "role": r_role, "label": label, "img": arr,
+                                 "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"], "orig_split": split})
                     n += 1
             print(name, split, n, flush=True)
-    split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "") + ("-repaired" if repairs else "")
+    split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "") + ("-repaired" if repairs else "") \
+        + (f"-holdout-{len(a.holdout)}ms" if a.holdout else "")
     print("repaired crops used:", n_repaired, flush=True)
     pickle.dump({"H": H, "split": split_name, "rows": rows}, open(a.out, "wb"), protocol=4)
     print("dropped (no CTC room / empty):", {f"{k[0]}/{k[1]}": v for k, v in dropped.items()}, "->", a.out, f"{a.out.stat().st_size / 1e6:.0f} MB")

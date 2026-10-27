@@ -1,0 +1,30 @@
+{
+ "folds": [
+  [
+   "BULAC_ARA_MS_1982",
+   "BULAC_MS_ARA_1946",
+   "BULAC_MS_ARA_24"
+  ],
+  [
+   "BULAC_MS_ARA_1926",
+   "BULAC_MS_ARA_1947",
+   "BULAC_MS_ARA_45b"
+  ],
+  [
+   "BULAC_MS_ARA_1936",
+   "BULAC_MS_ARA_1960",
+   "BULAC_MS_ARA_6"
+  ],
+  [
+   "BULAC_MS_ARA_1943",
+   "BULAC_MS_ARA_1983",
+   "BULAC_MS_ARA_65"
+  ],
+  [
+   "BULAC_MS_ARA_1944",
+   "BULAC_MS_ARA_23",
+   "BULAC_MS_ARA_9"
+  ]
+ ],
+ "rule": "sorted manuscript names, round-robin into 5 folds"
+}

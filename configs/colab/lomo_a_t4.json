@@ -1,0 +1,48 @@
+{
+  "name": "lomo-a",
+  "gpu": "T4",
+  "max_units": 2.85,
+  "max_minutes": 150,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    [
+      "scripts/xai_train_aligner.py",
+      "/content/xai_train_aligner.py"
+    ],
+    [
+      "scripts/rasam_prepare_crnn_data.py",
+      "/content/rasam_prepare_crnn_data.py"
+    ],
+    [
+      "scripts/colab_remote_packs.py",
+      "/content/colab_remote_packs.py"
+    ],
+    [
+      "results/rasam/repairs/rasam2_recut.pkl",
+      "/content/rasam2_recut.pkl"
+    ]
+  ],
+  "setup": [
+    "PACKS='[{\"out\": \"/content/pack_lomo1.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_ARA_MS_1982\", \"BULAC_MS_ARA_1946\", \"BULAC_MS_ARA_24\"]}, {\"out\": \"/content/pack_lomo2.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1926\", \"BULAC_MS_ARA_1947\", \"BULAC_MS_ARA_45b\"]}, {\"out\": \"/content/pack_lomo3.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1936\", \"BULAC_MS_ARA_1960\", \"BULAC_MS_ARA_6\"]}]' python /content/colab_remote_packs.py"
+  ],
+  "runs": [
+    {
+      "label": "lomo1",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_lomo1.pkl --out /content/crnn_out/lomo1 --width 0.5 --train-sets r1 r2 tm --epochs 30 --bs 16 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 6 && rm -f /content/pack_lomo1.pkl"
+    },
+    {
+      "label": "lomo2",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_lomo2.pkl --out /content/crnn_out/lomo2 --width 0.5 --train-sets r1 r2 tm --epochs 30 --bs 16 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 6 && rm -f /content/pack_lomo2.pkl"
+    },
+    {
+      "label": "lomo3",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_lomo3.pkl --out /content/crnn_out/lomo3 --width 0.5 --train-sets r1 r2 tm --epochs 30 --bs 16 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 6 && rm -f /content/pack_lomo3.pkl"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}
