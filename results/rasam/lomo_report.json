@@ -1,0 +1,144 @@
+{
+ "folds": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "per_manuscript": {
+  "BULAC_ARA_MS_1982": {
+   "lines": 250,
+   "lomo_greedy": 15.22,
+   "lomo_lm": 13.39,
+   "test_n": 25,
+   "test_lomo_lm": 14.02,
+   "test_insplit_lm_mean": 11.23
+  },
+  "BULAC_MS_ARA_1926": {
+   "lines": 240,
+   "lomo_greedy": 15.3,
+   "lomo_lm": 13.15,
+   "test_n": 31,
+   "test_lomo_lm": 10.38,
+   "test_insplit_lm_mean": 7.8
+  },
+  "BULAC_MS_ARA_1936": {
+   "lines": 250,
+   "lomo_greedy": 46.21,
+   "lomo_lm": 45.77,
+   "test_n": 22,
+   "test_lomo_lm": 55.12,
+   "test_insplit_lm_mean": 61.8
+  },
+  "BULAC_MS_ARA_1943": {
+   "lines": 250,
+   "lomo_greedy": 14.18,
+   "lomo_lm": 11.07,
+   "test_n": 29,
+   "test_lomo_lm": 11.18,
+   "test_insplit_lm_mean": 4.77
+  },
+  "BULAC_MS_ARA_1944": {
+   "lines": 250,
+   "lomo_greedy": 13.07,
+   "lomo_lm": 11.41,
+   "test_n": 27,
+   "test_lomo_lm": 12.22,
+   "test_insplit_lm_mean": 5.13
+  },
+  "BULAC_MS_ARA_1946": {
+   "lines": 230,
+   "lomo_greedy": 9.29,
+   "lomo_lm": 7.68,
+   "test_n": 14,
+   "test_lomo_lm": 5.13,
+   "test_insplit_lm_mean": 3.65
+  },
+  "BULAC_MS_ARA_1947": {
+   "lines": 250,
+   "lomo_greedy": 16.06,
+   "lomo_lm": 14.95,
+   "test_n": 25,
+   "test_lomo_lm": 16.24,
+   "test_insplit_lm_mean": 14.56
+  },
+  "BULAC_MS_ARA_1960": {
+   "lines": 250,
+   "lomo_greedy": 9.86,
+   "lomo_lm": 8.4,
+   "test_n": 26,
+   "test_lomo_lm": 5.44,
+   "test_insplit_lm_mean": 5.28
+  },
+  "BULAC_MS_ARA_1983": {
+   "lines": 250,
+   "lomo_greedy": 14.05,
+   "lomo_lm": 11.08,
+   "test_n": 24,
+   "test_lomo_lm": 11.02,
+   "test_insplit_lm_mean": 6.76
+  },
+  "BULAC_MS_ARA_23": {
+   "lines": 250,
+   "lomo_greedy": 9.24,
+   "lomo_lm": 7.71,
+   "test_n": 25,
+   "test_lomo_lm": 6.31,
+   "test_insplit_lm_mean": 3.39
+  },
+  "BULAC_MS_ARA_24": {
+   "lines": 250,
+   "lomo_greedy": 16.4,
+   "lomo_lm": 13.89,
+   "test_n": 25,
+   "test_lomo_lm": 12.68,
+   "test_insplit_lm_mean": 9.1
+  },
+  "BULAC_MS_ARA_45b": {
+   "lines": 250,
+   "lomo_greedy": 8.98,
+   "lomo_lm": 7.1,
+   "test_n": 25,
+   "test_lomo_lm": 7.0,
+   "test_insplit_lm_mean": 4.6
+  },
+  "BULAC_MS_ARA_6": {
+   "lines": 250,
+   "lomo_greedy": 13.28,
+   "lomo_lm": 11.06,
+   "test_n": 20,
+   "test_lomo_lm": 11.49,
+   "test_insplit_lm_mean": 9.11
+  },
+  "BULAC_MS_ARA_65": {
+   "lines": 250,
+   "lomo_greedy": 11.16,
+   "lomo_lm": 9.15,
+   "test_n": 30,
+   "test_lomo_lm": 8.17,
+   "test_insplit_lm_mean": 5.75
+  },
+  "BULAC_MS_ARA_9": {
+   "lines": 250,
+   "lomo_greedy": 9.37,
+   "lomo_lm": 7.76,
+   "test_n": 24,
+   "test_lomo_lm": 7.23,
+   "test_insplit_lm_mean": 5.56
+  }
+ },
+ "total": {
+  "lines": 3720,
+  "lomo_greedy": 14.17,
+  "lomo_lm": 12.2,
+  "test_n": 372,
+  "test_lomo_lm": 12.01,
+  "test_insplit_lm_seeds": [
+   9.29,
+   9.13,
+   9.47
+  ],
+  "test_insplit_lm_mean": 9.3
+ }
+}

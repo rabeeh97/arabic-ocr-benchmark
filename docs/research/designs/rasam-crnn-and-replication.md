@@ -514,3 +514,28 @@ Test CER with the char LM (raw):
   The draft request to Calfa (`docs/research/drafts/calfa-request.md`, not sent) asks exactly this.
 
 Budget: specialisation 1.63 units, tall CRNN 1.53, Calfa architecture 3.01 (+ about 0.9 for the two stopped attempts).
+
+## 18. Leave-manuscript-out on RASAM-2: how much the random line split flatters RASAM-2 (2026-10-27, Colab T4 + Mac CPU, verified)
+
+RASAM-2's 15 manuscripts (about 250 lines each) in 5 folds of 3 (`make_lomo_specs.py`, `results/rasam/lomo_folds.json`). Each fold trains our
+standard recipe (96 px, half width, 30 epochs, seed 0, repaired crops) on RASAM-1 + the other 12 RASAM-2 manuscripts + TariMa; every line of the
+3 held-out manuscripts (train, validation and test) is unseen. Scored with the char LM (tuned on the remaining RASAM-2 validation lines).
+Comparison on the SAME lines: each held-out manuscript's official test lines, read by the fold model vs the in-split models of the same recipe
+(3 seeds, random line split, so they saw other lines of the same pages). Report: `rasam_lomo_report.py` -> `results/rasam/lomo_report.json`.
+
+| | lines | unseen-manuscript model | in-split model (3 seeds) | gap |
+|---|---|---|---|---|
+| all 15 manuscripts, all lines (greedy / LM) | 3,720 | 14.17 / 12.20 % | - | - |
+| all 15, official test lines | 372 | 12.01 % | 9.30 % (9.29 / 9.13 / 9.47) | +2.71 |
+| without MS 1936 (broken crops), official test lines | 350 | **9.87 %** | **6.69 %** (6.69 / 6.58 / 6.80) | **+3.18 (+48 % relative)** |
+
+Per manuscript (official test lines, LM): the gap is positive for all 14 regular manuscripts, from +0.16 (MS 1960) to +7.09 points (MS 1944;
+MS 1943 +6.41, MS 1983 +4.26). MS 1936 is the outlier (46 % on all its lines even with the re-cut crops; its in-split figure is on the original
+broken crops).
+
+**Finding.** On RASAM-2, a model that has seen other lines of the same pages reads the official test lines about a third better than a model
+facing a new manuscript. Every published RASAM-2 number on a random or undocumented split (including ours on the official split, and Calfa's
+4.9 % if its training saw these pages) measures in-manuscript reading, not generalisation to a new manuscript. This is the gap Phoenix's
+manuscript-independent split was designed to expose; this is its first measurement on RASAM.
+
+Cost: two T4 jobs, about 3.5 units of their own (the supervisor's per-job figures include another project's sessions on the same account).
