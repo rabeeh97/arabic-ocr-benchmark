@@ -201,6 +201,8 @@ def main() -> None:
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
                     "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
+    ap.add_argument("--init", type=Path, help="start from these weights (a model_*.pt in a run dir) and keep that run's charset.json: fine-tuning, "
+                    "e.g. specialising a shared model on one corpus with --train-sets")
     ap.add_argument("--keep-last", type=int, default=0, help="save the weights after each of the last K epochs (model_ep<N>.pt) for checkpoint averaging")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
@@ -234,6 +236,8 @@ def main() -> None:
         train = train[: a.max_train]
     held = [r for r in rows if r["role"] == "heldout"]
     chars = sorted({ch for r in train for ch in r["label"]}, key=lambda c: (c == " ", c))
+    if a.init:  # the output layer must keep the parent model's classes
+        chars = json.loads((a.init.parent / "charset.json").read_text(encoding="utf-8"))["chars"]
     stoi = {ch: i + 1 for i, ch in enumerate(chars)}
     (a.out / "charset.json").write_text(json.dumps({"chars": chars}, ensure_ascii=False), encoding="utf-8")
     print(f"train {len(train)}  heldout {len(held)}  classes {len(chars) + 1}", flush=True)
@@ -245,8 +249,12 @@ def main() -> None:
     split = blob.get("split", "aligner")
     (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs,
-                                                   "ema": a.ema, "keep_last": a.keep_last}), encoding="utf-8")
+                                                   "ema": a.ema, "keep_last": a.keep_last, "init": str(a.init) if a.init else None,
+                                                   "train_sets": a.train_sets, "lr": a.lr}), encoding="utf-8")
     model = CRNN(len(chars) + 1, width=a.width, height=H).to(dev)
+    if a.init:
+        model.load_state_dict(torch.load(a.init, map_location=dev))
+        print("initialised from", a.init, flush=True)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
     sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)

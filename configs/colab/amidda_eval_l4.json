@@ -1,0 +1,19 @@
+{
+  "name": "amidda-eval",
+  "gpu": "L4",
+  "max_units": 1.5,
+  "max_minutes": 50,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 10,
+  "uploads": [
+    ["scripts/colab_amidda_eval.py", "/content/colab_amidda_eval.py"]
+  ],
+  "setup": [
+    "pip install -q -U 'transformers>=5.9' accelerate pyarrow && python -c 'import transformers, torch; print(\"transformers\", transformers.__version__, \"torch\", torch.__version__)'",
+    "pip install -q flash-linear-attention || echo 'fla not installed: slower fallback'"
+  ],
+  "runs": [{"label": "amidda_line4b", "cmd": "python -u /content/colab_amidda_eval.py r1 r2 tm"}],
+  "artifacts": ["/content/crnn_out"],
+  "local_out": "results/rasam/colab_runs"
+}
