@@ -9,11 +9,11 @@ export PYTHONPATH=src
 L=/Users/rabeehjouni/colab_staging/logs
 LOG=$L/mac_chain_lomo.log
 echo "chain start $(date)" >> $LOG
-until grep -q "CHAIN DONE" $L/mac_chain_spec_calfa.log 2>/dev/null || ! pgrep -f mac_chain_spec_calfa.sh > /dev/null; do sleep 60; done
-for i in 1 2 3 4 5; do
+# (the specialisation/architecture chain has finished)
+for i in 4 5 1 2 3; do
   [ $i -le 3 ] && JL=lomo_a || JL=lomo_b
   until grep -q "=== finished" $L/$JL.log 2>/dev/null; do sleep 60; done
-  R=$(ls -d /Users/rabeehjouni/colab_staging/jobs/job-$JL-* | tail -1)/content/crnn_out/lomo$i
+  R=$(ls -d /Users/rabeehjouni/colab_staging/jobs/job-${JL/_/-}-* | tail -1)/content/crnn_out/lomo$i
   if [ ! -f $R/model_final.pt ]; then echo "!!! fold $i: no model_final.pt in $R" >> $LOG; continue; fi
   HO=($($PY -c "import json; print(' '.join(json.load(open('results/rasam/lomo_folds.json'))['folds'][$i - 1]))"))
   P=$DD/rasam_lomo$i.pkl
