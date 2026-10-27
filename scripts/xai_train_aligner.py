@@ -249,6 +249,9 @@ def main() -> None:
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
                     "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
+    ap.add_argument("--sched", choices=["onecycle", "plateau"], default="onecycle", help="onecycle (default, fixed length) or plateau "
+                    "(constant --lr, halved after an evaluation without improvement; pair with --patience to stop when it no longer learns)")
+    ap.add_argument("--patience", type=int, default=0, help="stop after this many evaluations without a new best held-out CER (0 = never)")
     ap.add_argument("--abort-stuck", type=int, default=0, help="stop (exit 3) if the mean held-out CER is still above 0.95 at this epoch: "
                     "a CTC model stuck on blanks wastes the rest of the budget")
     ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
@@ -309,7 +312,11 @@ def main() -> None:
         print("initialised from", a.init, flush=True)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
     opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
-    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
+    if a.sched == "plateau":  # constant lr, halved when the mean held-out CER stops improving (train "as long as it learns", with --patience)
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, mode="min", factor=0.5, patience=1, min_lr=1e-5)
+    else:
+        sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
+    bad_evals = 0
     scaler = torch.amp.GradScaler("cuda", enabled=dev == "cuda")
     ctc = nn.CTCLoss(blank=0, zero_infinity=True)
     # EMA of the weights (BatchNorm buffers averaged too, so the copy can be evaluated as is)
@@ -325,6 +332,7 @@ def main() -> None:
         if ema is not None and "ema" in st:
             ema.load_state_dict(st["ema"])
         start, best, best_ema = st["epoch"], st.get("best", 9.0), st.get("best_ema", 9.0)
+        bad_evals = st.get("bad_evals", 0)
         if st.get("batches") is not None:
             resume_batches, resume_bi, resume_tot = st["batches"], st["bi"], st.get("tot", 0.0)
         print("resumed at epoch", start, "step", resume_bi, flush=True)
@@ -332,7 +340,7 @@ def main() -> None:
     def save_ckpt(epoch, batches=None, bi=0, tot=0.0):
         tmp = ck.with_suffix(".tmp")
         torch.save({"model": model.state_dict(), "opt": opt.state_dict(), "sched": sched.state_dict(), "scaler": scaler.state_dict(),
-                    "epoch": epoch, "best": best, "best_ema": best_ema, "batches": batches, "bi": bi, "tot": tot,
+                    "epoch": epoch, "best": best, "best_ema": best_ema, "bad_evals": bad_evals, "batches": batches, "bi": bi, "tot": tot,
                     **({"ema": ema.state_dict()} if ema is not None else {})}, tmp)
         tmp.replace(ck)  # atomic, so a crash during the save keeps the previous checkpoint
 
@@ -359,7 +367,9 @@ def main() -> None:
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)
-            scaler.step(opt); scaler.update(); sched.step()
+            scaler.step(opt); scaler.update()
+            if a.sched == "onecycle":
+                sched.step()
             if ema is not None:
                 ema.update_parameters(model)
             tot += float(loss)
@@ -375,8 +385,13 @@ def main() -> None:
                 print(f"ABORT: mean held-out CER {mean:.3f} at epoch {ep + 1}: stuck on blanks", flush=True)
                 raise SystemExit(3)
             if mean < best:
-                best = mean
+                best, bad_evals = mean, 0
                 torch.save(model.state_dict(), a.out / "model_best.pt")
+            else:
+                bad_evals += 1
+            if a.sched == "plateau":
+                sched.step(mean)
+                msg += f"  lr {opt.param_groups[0]['lr']:.2e}"
             if ema is not None:
                 ecer = evaluate(ema.module, held, stoi, dev)
                 msg += f"  ema CER {ecer}"
@@ -388,6 +403,9 @@ def main() -> None:
             torch.save(model.state_dict(), a.out / f"model_ep{ep + 1}.pt")
         print(msg, flush=True)
         save_ckpt(ep + 1)
+        if a.patience and bad_evals >= a.patience:
+            print(f"EARLY STOP: no held-out improvement in {bad_evals} evaluations (best mean CER {best:.4f})", flush=True)
+            break
     torch.save(model.state_dict(), a.out / "model_final.pt")
     final = evaluate(model, held, stoi, dev)
     if ema is not None:

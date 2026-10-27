@@ -1,0 +1,41 @@
+{
+  "name": "calfa-long",
+  "gpu": "L4",
+  "max_units": 6.0,
+  "max_minutes": 360,
+  "poll_s": 60,
+  "sync_every_s": 600,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    [
+      "scripts/xai_train_aligner.py",
+      "/content/xai_train_aligner.py"
+    ],
+    [
+      "scripts/rasam_prepare_crnn_data.py",
+      "/content/rasam_prepare_crnn_data.py"
+    ],
+    [
+      "scripts/colab_remote_packs.py",
+      "/content/colab_remote_packs.py"
+    ],
+    [
+      "results/rasam/repairs/rasam2_recut.pkl",
+      "/content/rasam2_recut.pkl"
+    ]
+  ],
+  "setup": [
+    "python -c \"from huggingface_hub import hf_hub_download as d; import shutil; t=open('/content/.hf_token').read().strip(); b='runs/job-calfa-lr3e4-t4-10271428/crnn_out/calfa_h120_lr3e4/'; shutil.copy(d('SubSpring/arabic-ocr-colab-runs', b+'model_final.pt', token=t), '/content/init_calfa.pt'); shutil.copy(d('SubSpring/arabic-ocr-colab-runs', b+'charset.json', token=t), '/content/charset.json'); print('init downloaded')\"",
+    "PACKS='[{\"out\": \"/content/pack_reptm_h120.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 120, \"repair\": \"/content/rasam2_recut.pkl\"}]' python /content/colab_remote_packs.py"
+  ],
+  "runs": [
+    {
+      "label": "calfa_long",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_reptm_h120.pkl --out /content/crnn_out/calfa_long --arch calfa --init /content/init_calfa.pt --train-sets r1 r2 tm --epochs 60 --bs 16 --lr 3e-4 --sched plateau --patience 4 --device cuda --eval-every 2 --seed 0 --geom-aug"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}
