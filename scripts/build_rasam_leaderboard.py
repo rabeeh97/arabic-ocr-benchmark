@@ -112,6 +112,9 @@ IDEAS = [
     ("EMA of weights / average of the last 10 epochs", "nothing consistent (the one-cycle schedule already anneals)", "dropped"),
     ("AraGPT2 rescoring of the 10-best", "-0.2 to -0.3 points on every set", "kept"),
     ("Consensus ensemble of seeds", "RASAM-1 4.23 % (older models)", "optional"),
+    ("Specialise per corpus (10 epochs on RASAM-2 only / TariMa only)", "RASAM-2 9.10 vs 9.00 % for the same epochs on all sets; TariMa 6.90 vs 7.34 %", "optional"),
+    ("Keep more vertical detail (our CRNN at height / 8)", "no gain (4.38 / 9.28 / 7.47 %)", "dropped"),
+    ("Calfa's architecture (3 conv blocks, 4 x BiLSTM 512, 120 px, 53 M)", "collapsed at lr 1e-3; at 3e-4, 15 epochs: 5.16 / 10.81 / 9.84 %", "dropped"),
 ]
 
 WHY_DIFFER = [

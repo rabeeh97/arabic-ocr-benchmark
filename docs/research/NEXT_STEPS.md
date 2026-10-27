@@ -27,6 +27,8 @@ below except E1 runs offline on CPU.
   - [x] (2026-10-26, design §16) 3 seeds of the repaired + TariMa recipe (raw and standardised labels): seed noise about 0.1–0.2 points; standardised labels give no real gain once scored the same way.
   - [x] (2026-10-26, design §16) 60 epochs vs 30: greedy −0.4 to −1.0 points, after the LM −0.05 to −0.45; EMA and last-10 averaging add nothing consistent (dropped).
   - [x] (2026-10-26, design §16) AraGPT2 N-best rescoring: −0.2 to −0.4 points on RASAM-1, RASAM-2 and repaired RASAM-2.
+  - [x] (2026-10-27, design §17) Why Calfa's CTC (3.6 / 4.9 / 3.9 % on the same lines) leads: per-corpus specialisation, taller CRNN and their architecture tested; none explains the gap. Draft question to Calfa in `drafts/calfa-request.md` (not sent).
+  - [ ] **RS4c** Leave-manuscript-out on RASAM-2 (5 folds x 3 manuscripts, `make_lomo_specs.py`, report `rasam_lomo_report.py`): running 2026-10-27.
   - [x] (2026-10-26, design §16: RASAM-1 4.12 %, RASAM-2 8.92 %, TariMa 7.04 %) **RS4b** Combine 60 epochs + AraGPT2 rescoring (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); seeds only if it becomes the headline.
 - [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
 - [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.

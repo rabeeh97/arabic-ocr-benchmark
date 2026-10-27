@@ -485,3 +485,32 @@ sessions (about 12 min per list on CPU; the TariMa lists went to a second sessio
 
 The two gains add up only partly: 60 epochs alone took RASAM-2 from 9.30 % (30-epoch mean) to 9.13 %, rescoring adds another 0.2-0.3 points everywhere.
 Our best single-model numbers on the official HF test splits: **RASAM-1 4.12 %, RASAM-2 8.92 %, TariMa 7.04 %** (one seed; seed noise about 0.1-0.2).
+
+## 17. Why is Calfa's per-corpus CRNN so much better? Specialisation and architecture tests (2026-10-27, Colab T4 + Mac CPU, verified)
+
+The AMIDDA paper (HIP 2026, read in full) describes its per-corpus CTC baselines (3.6 / 4.9 / 3.9 % on exactly our official test lines) as
+"pre-existing production models", one per corpus, "trained on the same material that AMIDDA inherits": greyscale lines at 120 px, three conv
+blocks (64/128/256, GroupNorm) that keep 30 rows (height / 4), four BiLSTM layers of 512 units, dropout 0.3, CTC; CER with jiwer, no
+normalisation (the same metric as ours). It does not say whether those models were trained before the current split existed.
+
+Test CER with the char LM (raw):
+
+| model | RASAM-1 | RASAM-2 | TariMa | RASAM-2 repaired |
+|---|---|---|---|---|
+| 60-epoch shared model (starting point, section 16) | 4.33 | 9.13 | 7.35 | 8.05 |
+| + 10 epochs on all three sets (control) | 4.24 | **9.00** | 7.34 | **7.97** |
+| + 10 epochs on RASAM-2 only (specialised) | - | 9.10 | - | 8.01 |
+| + 10 epochs on TariMa only (specialised) | - | - | **6.90** | - |
+| tall CRNN (our layers, height / 8: 12 rows), 30 epochs | 4.38 | 9.28 | 7.47 | 8.57 |
+| Calfa-architecture CRNN (52.9 M, 120 px), 15 epochs, lr 3e-4 | 5.16 | 10.81 | 9.84 | 10.14 |
+
+- **Specialisation does not explain the gap.** RASAM-2-only fine-tuning is no better than the same 10 epochs on all sets; TariMa-only gains
+  about 0.4 points (one seed). Calfa's lead is 4 points on RASAM-2 and 3 on TariMa.
+- **Vertical resolution alone does not either.** Keeping 12 rows instead of 3 in our model changes nothing beyond noise.
+- **Their architecture, as described, is worse in our budget.** At lr 1e-3 it collapsed (CTC blank plateau, stopped at epoch 4); at 3e-4 it
+  learns faster per epoch than ours early on but ends 15 epochs well behind (it is 22x larger and 6x slower per epoch). Their training
+  length, augmentation and stopping rule are not published.
+- What remains: longer training of the large model, unpublished training details, or training data that overlapped today's test lines.
+  The draft request to Calfa (`docs/research/drafts/calfa-request.md`, not sent) asks exactly this.
+
+Budget: specialisation 1.63 units, tall CRNN 1.53, Calfa architecture 3.01 (+ about 0.9 for the two stopped attempts).
