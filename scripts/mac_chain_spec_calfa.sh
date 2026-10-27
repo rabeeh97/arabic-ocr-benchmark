@@ -34,12 +34,20 @@ echo "== specialisation $(date)" >> $LOG
 [ -f $J/spec_tm/model_best.pt ] && score $J/spec_tm SPEC_tm rasam_tm_h96.pkl rasam_tm_h96_repaired.pkl tm
 [ -f $J/spec_all/model_best.pt ] && score $J/spec_all SPEC_all rasam_tm_h96.pkl rasam_tm_h96_repaired.pkl r1 r2 tm
 
-# 2. Calfa architecture (120 px packs built here once)
-[ -f $DD/rasam_tm_h120.pkl ] || $PY scripts/rasam_prepare_crnn_data.py $DD/rasam_tm_h120.pkl --sets RASAM-1 RASAM-2 tarima --labels raw --height 120 >> $LOG 2>&1
-[ -f $DD/rasam_tm_h120_repaired.pkl ] || $PY scripts/rasam_prepare_crnn_data.py $DD/rasam_tm_h120_repaired.pkl --sets RASAM-1 RASAM-2 tarima --labels raw \
-  --height 120 --repair results/rasam/repairs/rasam2_recut.pkl >> $LOG 2>&1
-until grep -q "=== finished" $L/calfa_arch.log 2>/dev/null; do sleep 60; done
-R=$(ls -d /Users/rabeehjouni/colab_staging/jobs/job-calfa-arch-* | tail -1)/content/crnn_out/calfa_h120_shared
-echo "== calfa architecture $(date)" >> $LOG
-[ -f $R/model_best.pt ] && score $R CALFA_h120 rasam_tm_h120.pkl rasam_tm_h120_repaired.pkl r1 r2 tm
+# 2. architecture tests: "tall" CRNN (96 px, height / 8) and the Calfa CRNN retry (120 px, lr 3e-4; skipped if it aborted stuck on blanks)
+until grep -q "=== finished" $L/tall_h96.log 2>/dev/null; do sleep 60; done
+R=$(ls -d /Users/rabeehjouni/colab_staging/jobs/job-tall-h96-* | tail -1)/content/crnn_out/tall_h96_w05
+echo "== tall CRNN $(date)" >> $LOG
+[ -f $R/model_final.pt ] && score $R TALL_h96 rasam_tm_h96.pkl rasam_tm_h96_repaired.pkl r1 r2 tm
+until grep -q "=== finished" $L/calfa_lr3e4.log 2>/dev/null; do sleep 60; done
+R=$(ls -d /Users/rabeehjouni/colab_staging/jobs/job-calfa-lr3e4-* | tail -1)/content/crnn_out/calfa_h120_lr3e4
+if [ -f $R/model_final.pt ]; then
+  [ -f $DD/rasam_tm_h120.pkl ] || $PY scripts/rasam_prepare_crnn_data.py $DD/rasam_tm_h120.pkl --sets RASAM-1 RASAM-2 tarima --labels raw --height 120 >> $LOG 2>&1
+  [ -f $DD/rasam_tm_h120_repaired.pkl ] || $PY scripts/rasam_prepare_crnn_data.py $DD/rasam_tm_h120_repaired.pkl --sets RASAM-1 RASAM-2 tarima --labels raw \
+    --height 120 --repair results/rasam/repairs/rasam2_recut.pkl >> $LOG 2>&1
+  echo "== calfa architecture $(date)" >> $LOG
+  score $R CALFA_h120 rasam_tm_h120.pkl rasam_tm_h120_repaired.pkl r1 r2 tm
+else
+  echo "!!! calfa retry has no model_final.pt (aborted or failed): not scored" >> $LOG
+fi
 echo "CHAIN DONE $(date)" >> $LOG

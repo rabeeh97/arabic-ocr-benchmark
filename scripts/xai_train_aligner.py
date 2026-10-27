@@ -79,10 +79,29 @@ class CalfaCRNN(nn.Module):
         return self.fc(self.drop(f))
 
 
+class TallCRNN(CRNN):
+    """CRNN with the same layers but only three height poolings (height / 8: 12 rows at 96 px instead of 3), so the BiLSTM sees the vertical
+    detail (dots, vocalisation) that CRNN pools away. Tests the main difference to Calfa's recogniser (height / 4) at our model's size and speed."""
+
+    def __init__(self, n_classes: int, hidden: int = 256, width: float = 1.0, height: int = 96) -> None:
+        super().__init__(n_classes, hidden=hidden, width=width, height=64)
+        c = lambda v: max(8, int(round(v * width)))  # noqa: E731
+        self.cnn = nn.Sequential(
+            *conv(1, c(64)), nn.MaxPool2d(2, 2),
+            *conv(c(64), c(128)), nn.MaxPool2d(2, 2),
+            *conv(c(128), c(256)), *conv(c(256), c(256)), nn.MaxPool2d((2, 1), (2, 1)),
+            *conv(c(256), c(384)), *conv(c(384), c(384)),
+            *conv(c(384), c(512)),
+        )
+        self.proj = nn.Linear(c(512) * (height // 8), c(hidden))
+
+
 def build_model(n_classes: int, cfg: dict) -> nn.Module:
     """The model a run's config.json describes (used by the trainer and the RASAM scoring scripts)."""
     if cfg.get("arch", "vgg") == "calfa":
         return CalfaCRNN(n_classes, height=int(cfg.get("height", 120)))
+    if cfg.get("arch") == "vgg_tall":
+        return TallCRNN(n_classes, width=cfg.get("width", 1.0), height=int(cfg.get("height", 96)))
     return CRNN(n_classes, width=cfg.get("width", 1.0), height=int(cfg.get("height", 64)))
 
 
@@ -230,7 +249,9 @@ def main() -> None:
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
                     "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
-    ap.add_argument("--arch", choices=["vgg", "calfa"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
+    ap.add_argument("--abort-stuck", type=int, default=0, help="stop (exit 3) if the mean held-out CER is still above 0.95 at this epoch: "
+                    "a CTC model stuck on blanks wastes the rest of the budget")
+    ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
                     "CRNN (3 conv blocks, height / 4, 4 x BiLSTM 512); --width does not apply to calfa")
     ap.add_argument("--init", type=Path, help="start from these weights (a model_*.pt in a run dir) and keep that run's charset.json: fine-tuning, "
                     "e.g. specialising a shared model on one corpus with --train-sets")
@@ -349,6 +370,10 @@ def main() -> None:
             cer = evaluate(model, held, stoi, dev)
             msg += f"  heldout CER {cer}"
             mean = sum(cer.values()) / max(1, len(cer))
+            if a.abort_stuck and ep + 1 >= a.abort_stuck and mean > 0.95:
+                print(msg, flush=True)
+                print(f"ABORT: mean held-out CER {mean:.3f} at epoch {ep + 1}: stuck on blanks", flush=True)
+                raise SystemExit(3)
             if mean < best:
                 best = mean
                 torch.save(model.state_dict(), a.out / "model_best.pt")

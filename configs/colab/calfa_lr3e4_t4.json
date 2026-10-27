@@ -1,0 +1,40 @@
+{
+  "name": "calfa-lr3e4",
+  "gpu": "T4",
+  "max_units": 2.2,
+  "max_minutes": 110,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    [
+      "scripts/xai_train_aligner.py",
+      "/content/xai_train_aligner.py"
+    ],
+    [
+      "scripts/rasam_prepare_crnn_data.py",
+      "/content/rasam_prepare_crnn_data.py"
+    ],
+    [
+      "scripts/colab_remote_packs.py",
+      "/content/colab_remote_packs.py"
+    ],
+    [
+      "results/rasam/repairs/rasam2_recut.pkl",
+      "/content/rasam2_recut.pkl"
+    ]
+  ],
+  "setup": [
+    "PACKS='[{\"out\": \"/content/pack_reptm_h120.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 120, \"repair\": \"/content/rasam2_recut.pkl\"}]' python /content/colab_remote_packs.py"
+  ],
+  "runs": [
+    {
+      "label": "calfa_h120_lr3e4",
+      "cmd": "python -u /content/xai_train_aligner.py --data /content/pack_reptm_h120.pkl --out /content/crnn_out/calfa_h120_lr3e4 --arch calfa --train-sets r1 r2 tm --epochs 15 --bs 16 --lr 3e-4 --device cuda --eval-every 2 --seed 0 --geom-aug --abort-stuck 4"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}
