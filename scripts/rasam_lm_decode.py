@@ -136,7 +136,7 @@ def main() -> None:
     stoi = {c: i + 1 for i, c in enumerate(chars)}
     blob = pickle.load(open(a.data, "rb"))
     T.H = int(blob.get("H", 64))
-    model = T.CRNN(len(chars) + 1, width=cfg["width"], height=int(cfg.get("height", 64)))
+    model = T.build_model(len(chars) + 1, cfg)
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location="cpu"))
     model.eval()
     rows = blob["rows"]

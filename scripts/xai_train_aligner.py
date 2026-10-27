@@ -57,6 +57,35 @@ class CRNN(nn.Module):
         return self.fc(f)
 
 
+class CalfaCRNN(nn.Module):
+    """Calfa's per-corpus CTC recogniser as described in the AMIDDA paper (HIP 2026, section 4 (vi)): greyscale line at 120 px, three conv blocks
+    (64, 128, 256 channels, GroupNorm) that reduce height to H/4 (30 rows at 120 px) and width by 4, four BiLSTM layers of 512 units with 0.3 dropout,
+    CTC head, no attention. Unlike CRNN above it keeps 30 rows of vertical detail (dots, vocalisation) for the recurrent layers. T = W // 4."""
+
+    def __init__(self, n_classes: int, height: int = 120, hidden: int = 512, layers: int = 4) -> None:
+        super().__init__()
+
+        def block(i, o):
+            return [nn.Conv2d(i, o, 3, padding=1), nn.GroupNorm(16, o), nn.ReLU(inplace=True)]
+        self.cnn = nn.Sequential(*block(1, 64), nn.MaxPool2d(2, 2), *block(64, 128), nn.MaxPool2d(2, 2), *block(128, 256))
+        self.rnn = nn.LSTM(256 * (height // 4), hidden, num_layers=layers, dropout=0.3, bidirectional=True)
+        self.drop = nn.Dropout(0.3)
+        self.fc = nn.Linear(hidden * 2, n_classes)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        f = self.cnn(x)  # B,256,H/4,T
+        b, c, h, t = f.shape
+        f, _ = self.rnn(f.permute(3, 0, 1, 2).reshape(t, b, c * h))
+        return self.fc(self.drop(f))
+
+
+def build_model(n_classes: int, cfg: dict) -> nn.Module:
+    """The model a run's config.json describes (used by the trainer and the RASAM scoring scripts)."""
+    if cfg.get("arch", "vgg") == "calfa":
+        return CalfaCRNN(n_classes, height=int(cfg.get("height", 120)))
+    return CRNN(n_classes, width=cfg.get("width", 1.0), height=int(cfg.get("height", 64)))
+
+
 def normalise(a: np.ndarray) -> np.ndarray:
     lo, hi = np.percentile(a, (2, 98))
     return np.clip((a.astype(np.float32) - lo) / (hi - lo + 1e-3), 0, 1) * 2 - 1
@@ -201,6 +230,8 @@ def main() -> None:
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
                     "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
+    ap.add_argument("--arch", choices=["vgg", "calfa"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
+                    "CRNN (3 conv blocks, height / 4, 4 x BiLSTM 512); --width does not apply to calfa")
     ap.add_argument("--init", type=Path, help="start from these weights (a model_*.pt in a run dir) and keep that run's charset.json: fine-tuning, "
                     "e.g. specialising a shared model on one corpus with --train-sets")
     ap.add_argument("--keep-last", type=int, default=0, help="save the weights after each of the last K epochs (model_ep<N>.pt) for checkpoint averaging")
@@ -221,8 +252,8 @@ def main() -> None:
     blob = pickle.load(open(a.data, "rb"))
     global H
     H = int(blob.get("H", 64))  # line height is a property of the data pack (rasam_prepare_crnn_data.py --height)
-    if H % 32:
-        raise SystemExit(f"line height {H} must be a multiple of 32")
+    if H % (4 if a.arch == "calfa" else 32):
+        raise SystemExit(f"line height {H} must be a multiple of {4 if a.arch == 'calfa' else 32} for --arch {a.arch}")
     rows = blob["rows"]
     extra = {int(k): int(v) for k, v in json.loads(a.repeat_file.read_text())["extra"].items()} if a.repeat_file else {}
     for j, r in enumerate(rows):
@@ -249,9 +280,9 @@ def main() -> None:
     split = blob.get("split", "aligner")
     (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs,
-                                                   "ema": a.ema, "keep_last": a.keep_last, "init": str(a.init) if a.init else None,
+                                                   "ema": a.ema, "keep_last": a.keep_last, "init": str(a.init) if a.init else None, "arch": a.arch,
                                                    "train_sets": a.train_sets, "lr": a.lr}), encoding="utf-8")
-    model = CRNN(len(chars) + 1, width=a.width, height=H).to(dev)
+    model = build_model(len(chars) + 1, {"arch": a.arch, "width": a.width, "height": H}).to(dev)
     if a.init:
         model.load_state_dict(torch.load(a.init, map_location=dev))
         print("initialised from", a.init, flush=True)

@@ -50,7 +50,7 @@ def main() -> None:
     T.H = int(blob.get("H", 64))
     if int(cfg.get("height", 64)) != T.H:
         raise SystemExit(f"model trained at height {cfg.get('height', 64)} but the data pack is {T.H} px")
-    model = T.CRNN(len(chars) + 1, width=cfg["width"], height=T.H).to(a.device)
+    model = T.build_model(len(chars) + 1, cfg).to(a.device)
     model.load_state_dict(torch.load(a.run / a.ckpt, map_location=a.device))
     model.eval()
     rows = [r for r in blob["rows"] if r["role"] == a.split]
