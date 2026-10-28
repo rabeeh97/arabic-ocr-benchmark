@@ -539,3 +539,11 @@ facing a new manuscript. Every published RASAM-2 number on a random or undocumen
 manuscript-independent split was designed to expose; this is its first measurement on RASAM.
 
 Cost: two T4 jobs, about 3.5 units of their own (the supervisor's per-job figures include another project's sessions on the same account).
+
+**Follow-up (2026-10-28): the Calfa architecture trained "as long as it learns".** Continued from the 15-epoch run on an L4 with a plateau
+schedule (lr 3e-4 halved after each evaluation without a new best, floor 1e-5, patience 4 evaluations); it never triggered the patience rule and
+stopped at its 6-unit cap around epoch 41 (about 56 epochs in total). Best validation at epoch 36: 4.79 / 10.85 / 9.32 % (ours, 60 epochs:
+4.68 / 11.14 / 8.41). Official test with char LM (greedy): RASAM-1 4.49 % (5.04), RASAM-2 9.61 % (11.38), TariMa 8.11 % (9.09), repaired RASAM-2
+8.75 % (10.25), all behind our 2.4 M-parameter 60-epoch model (4.33 / 9.13 / 7.35 / 8.05). Training loss fell to 0.04 (ours 0.13): the 53 M model
+fits the training lines far more closely without reading the test lines better. Calfa's 3.6 / 4.9 / 3.9 % are not explained by their published
+architecture; the remaining candidates are unpublished training details or training data that overlapped today's test lines.
