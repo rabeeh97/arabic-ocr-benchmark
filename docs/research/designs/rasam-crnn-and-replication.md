@@ -579,3 +579,30 @@ removed ("letters") and, to match the paper's gt_normalized, also with alef form
   decides. Their crops are also polygon cut-outs on white, unlike the rectangular RASAM crops (book_03 is rectangular).
 - The AraMS line images of the four books were extracted from the zip to `/Volumes/PortableSSD/data/arams_28k_htr/AraMs-28k-HTR/images/`
   for packing and then deleted (17 GB on the exFAT SSD); the pack keeps the preprocessed lines.
+
+
+## 20. Few-shot adaptation to an unseen manuscript (2026-10-28, Colab T4, verified)
+
+Question: §18 showed a RASAM-2 manuscript the model never saw costs about 3 points (9.87 % vs 6.69 % in-split, without MS 1936). How many
+transcribed lines of a new manuscript buy that back? Script: `scripts/rasam_fewshot_adapt.py` (spec: `scripts/make_fewshot_spec.py` ->
+`configs/colab/fewshot_t4.json`; summary: `scripts/fewshot_report.py` -> `results/rasam/fewshot_report.json`; per-fold readings in
+`results/rasam/fewshot/`). For each of the 5 leave-manuscript-out folds, each held-out manuscript's non-test lines (214-250) form the
+adaptation pool. K lines are drawn from it (seeds 0 and 1; K = all with one seed), and a copy of the fold model is fine-tuned on them plus
+max(32, K) replay lines from its own training data: 15 epochs, AdamW 3e-4, cosine schedule, the trainer's augmentation. Then the official
+test lines of that manuscript are read greedily and with the char 8-gram LM (alpha 0.4, beta 1.0 fixed). One T4 session, about 1.5 hours.
+
+| K lines of the new manuscript | 0 | 10 | 25 | 50 | 100 | all (~220) | in-split model (§18) |
+|---|---|---|---|---|---|---|---|
+| LM CER, 14 manuscripts (without MS 1936) | 9.87 | 8.79 | 8.35 | 7.79 | 7.38 | **6.63** | 6.69 |
+| LM CER, all 15 manuscripts | 12.01 | 10.88 | 10.47 | 9.83 | 9.46 | 8.52 | 9.30 |
+| greedy CER, all 15 | 13.89 | 12.71 | 12.31 | 11.41 | 10.67 | 10.02 | |
+
+- **10 lines (about one page) close a third of the unseen-manuscript gap, 100 lines close about 80 %, and the whole pool closes all of it**:
+  adapting a model that never saw the manuscript on its ~220 lines matches a model trained with those lines from the start.
+- Gains are uneven: MS 1943 / 1944 / 1983 drop from about 11 % to 5-6 % with 100 lines (hands far from the rest of RASAM-2), while MS 1926,
+  1947 and 1960 barely move. Seed spread at K = 10 is up to 2 points on one manuscript (which 10 lines you pick matters).
+- MS 1936 stays near 50 % (55.1 -> 46.6 % with all lines); it has degenerate 1-7 px crops and is hard for every model (§12, §18), so it is excluded from the headline.
+- Practical reading: for a new Maghrebi manuscript, transcribing one to four pages is the cheapest large gain we have found.
+- Caveat: K = 0 and the in-split numbers come from the same §18 runs, so the comparison is on identical test lines; the test sets are small
+  (14-31 lines per manuscript), so single-manuscript numbers are noisy.
+- The first launch failed in setup (shell-quoting bug in the generated download command, 0.9 units lost); fixed in `make_fewshot_spec.py`.

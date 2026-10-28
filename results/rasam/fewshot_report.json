@@ -1,0 +1,143 @@
+{
+ "0": {
+  "greedy": 13.89,
+  "lm": 12.01,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 14.02,
+   "BULAC_MS_ARA_1946": 5.13,
+   "BULAC_MS_ARA_24": 12.68,
+   "BULAC_MS_ARA_1926": 9.33,
+   "BULAC_MS_ARA_1947": 16.47,
+   "BULAC_MS_ARA_45b": 7.19,
+   "BULAC_MS_ARA_1936": 55.12,
+   "BULAC_MS_ARA_1960": 5.44,
+   "BULAC_MS_ARA_6": 11.49,
+   "BULAC_MS_ARA_1943": 11.14,
+   "BULAC_MS_ARA_1983": 11.32,
+   "BULAC_MS_ARA_65": 8.35,
+   "BULAC_MS_ARA_1944": 11.21,
+   "BULAC_MS_ARA_23": 6.31,
+   "BULAC_MS_ARA_9": 7.63
+  }
+ },
+ "10": {
+  "greedy": 12.71,
+  "lm": 10.88,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 14.92,
+   "BULAC_MS_ARA_1946": 4.26,
+   "BULAC_MS_ARA_24": 11.23,
+   "BULAC_MS_ARA_1926": 9.79,
+   "BULAC_MS_ARA_1947": 17.0,
+   "BULAC_MS_ARA_45b": 5.69,
+   "BULAC_MS_ARA_1936": 52.99,
+   "BULAC_MS_ARA_1960": 5.68,
+   "BULAC_MS_ARA_6": 10.56,
+   "BULAC_MS_ARA_1943": 7.98,
+   "BULAC_MS_ARA_1983": 9.63,
+   "BULAC_MS_ARA_65": 7.77,
+   "BULAC_MS_ARA_1944": 8.7,
+   "BULAC_MS_ARA_23": 4.96,
+   "BULAC_MS_ARA_9": 6.58
+  }
+ },
+ "25": {
+  "greedy": 12.31,
+  "lm": 10.47,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 14.64,
+   "BULAC_MS_ARA_1946": 4.03,
+   "BULAC_MS_ARA_24": 10.5,
+   "BULAC_MS_ARA_1926": 9.46,
+   "BULAC_MS_ARA_1947": 16.59,
+   "BULAC_MS_ARA_45b": 5.45,
+   "BULAC_MS_ARA_1936": 53.27,
+   "BULAC_MS_ARA_1960": 5.27,
+   "BULAC_MS_ARA_6": 10.3,
+   "BULAC_MS_ARA_1943": 7.05,
+   "BULAC_MS_ARA_1983": 8.91,
+   "BULAC_MS_ARA_65": 7.1,
+   "BULAC_MS_ARA_1944": 7.29,
+   "BULAC_MS_ARA_23": 5.22,
+   "BULAC_MS_ARA_9": 6.78
+  }
+ },
+ "50": {
+  "greedy": 11.41,
+  "lm": 9.83,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 13.77,
+   "BULAC_MS_ARA_1946": 3.91,
+   "BULAC_MS_ARA_24": 9.68,
+   "BULAC_MS_ARA_1926": 9.0,
+   "BULAC_MS_ARA_1947": 16.42,
+   "BULAC_MS_ARA_45b": 5.19,
+   "BULAC_MS_ARA_1936": 50.94,
+   "BULAC_MS_ARA_1960": 4.82,
+   "BULAC_MS_ARA_6": 9.9,
+   "BULAC_MS_ARA_1943": 6.53,
+   "BULAC_MS_ARA_1983": 8.13,
+   "BULAC_MS_ARA_65": 6.53,
+   "BULAC_MS_ARA_1944": 6.84,
+   "BULAC_MS_ARA_23": 4.17,
+   "BULAC_MS_ARA_9": 6.16
+  }
+ },
+ "100": {
+  "greedy": 10.67,
+  "lm": 9.46,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 13.32,
+   "BULAC_MS_ARA_1946": 3.44,
+   "BULAC_MS_ARA_24": 9.25,
+   "BULAC_MS_ARA_1926": 9.6,
+   "BULAC_MS_ARA_1947": 15.89,
+   "BULAC_MS_ARA_45b": 4.74,
+   "BULAC_MS_ARA_1936": 51.23,
+   "BULAC_MS_ARA_1960": 5.03,
+   "BULAC_MS_ARA_6": 9.63,
+   "BULAC_MS_ARA_1943": 5.67,
+   "BULAC_MS_ARA_1983": 7.46,
+   "BULAC_MS_ARA_65": 6.71,
+   "BULAC_MS_ARA_1944": 5.79,
+   "BULAC_MS_ARA_23": 3.74,
+   "BULAC_MS_ARA_9": 5.76
+  }
+ },
+ "-1": {
+  "greedy": 10.02,
+  "lm": 8.52,
+  "n_ms": 15,
+  "per_ms_lm": {
+   "BULAC_ARA_MS_1982": 11.86,
+   "BULAC_MS_ARA_1946": 3.38,
+   "BULAC_MS_ARA_24": 7.84,
+   "BULAC_MS_ARA_1926": 8.54,
+   "BULAC_MS_ARA_1947": 14.37,
+   "BULAC_MS_ARA_45b": 4.48,
+   "BULAC_MS_ARA_1936": 46.58,
+   "BULAC_MS_ARA_1960": 4.26,
+   "BULAC_MS_ARA_6": 9.17,
+   "BULAC_MS_ARA_1943": 5.08,
+   "BULAC_MS_ARA_1983": 6.56,
+   "BULAC_MS_ARA_65": 6.04,
+   "BULAC_MS_ARA_1944": 4.56,
+   "BULAC_MS_ARA_23": 3.45,
+   "BULAC_MS_ARA_9": 5.34
+  }
+ },
+ "without_1936_lm": {
+  "0": 9.87,
+  "10": 8.79,
+  "25": 8.35,
+  "50": 7.79,
+  "100": 7.38,
+  "-1": 6.63,
+  "insplit": 6.69
+ }
+}

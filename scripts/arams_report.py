@@ -90,7 +90,7 @@ def main() -> None:
     allL = [x for tag in TAGS for x in json.loads(Path(f"results/rasam/lm/{a.name}__{tag}__test.json").read_text())["lines"]]
     out["all"] = {p: {"greedy": micro([(x["ref"], x["greedy"]) for x in allL], f)[0], "lm": micro([(x["ref"], x["hyp"]) for x in allL], f)[0]}
                   for p, f in PROFILES.items()}
-    Path("results/rasam/arams_report.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
+    Path("results/rasam/arams_report.json" if a.name == "AM_E60" else f"results/rasam/arams_report_{a.name}.json").write_text(json.dumps(out, ensure_ascii=False, indent=1))
     print(f"{'book':22} {'lines':>6} | {'greedy':>7} {'LM':>6} (letters) | {'greedy':>7} {'LM':>6} (arams_norm) | page CER p10/med/p90 | seen 5-gram")
     for tag, r in out["books"].items():
         print(f"{r['label']:22} {r['n_lines']:6} | {r['greedy_letters']:7.2f} {r['lm_letters']:6.2f}           | {r['greedy_arams_norm']:7.2f} "
