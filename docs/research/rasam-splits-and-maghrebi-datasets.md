@@ -68,3 +68,13 @@ Our best model (96 px, half width, RASAM-1+2+TariMa, character LM) scored on the
 
 These adjusted numbers are for understanding where the remaining error comes from, not for the headline (the headline stays the official test). The next
 training runs use the repaired data, and one variant trains on standardised labels (`rasam_prepare_crnn_data.py --labels standardised`).
+
+## 4. Addendum (2026-10-28): RASM, Baybars, Iskandar
+
+- **RASM (ICFHR 2018 / ICDAR 2019) is not RASAM.** "Recognition of Historical Arabic Scientific Manuscripts": about 100 British Library
+  pages (Qatar Digital Library), mostly eastern Naskh, page-level PAGE XML (layout, line detection, OCR); DOI 10.23636/1135. Not Maghrebi;
+  only useful for a page track.
+- **Baybars** (calfa-ai/baybars, 15,567 lines, 3 notebooks, Etalab 2.0) and **Iskandar** (calfa-ai/iskandar, 5,221 lines, 5 manuscripts) are
+  Calfa line-level sets in Oriental script (Middle Arabic), both cached on the SSD. Not Maghrebi, but transcribed with Calfa's conventions, so
+  they are a clean "other script, same conventions" control.
+- **AraMS-28k Maghrebi books** scored as unseen manuscripts in design §19; books 20 and 24 are partly eastern in their fa / qaf dotting.

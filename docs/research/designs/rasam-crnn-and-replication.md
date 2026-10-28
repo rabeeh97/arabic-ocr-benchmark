@@ -547,3 +547,35 @@ stopped at its 6-unit cap around epoch 41 (about 56 epochs in total). Best valid
 8.75 % (10.25), all behind our 2.4 M-parameter 60-epoch model (4.33 / 9.13 / 7.35 / 8.05). Training loss fell to 0.04 (ours 0.13): the 53 M model
 fits the training lines far more closely without reading the test lines better. Calfa's 3.6 / 4.9 / 3.9 % are not explained by their published
 architecture; the remaining candidates are unpublished training details or training data that overlapped today's test lines.
+
+## 19. AraMS-28k Maghrebi books: our model on manuscripts from another collection (2026-10-28, Mac CPU, verified)
+
+AraMS-28k (arXiv 2608.26921, CC BY-NC-SA 4.0) labels 4 of its 14 books Maghrebi: book_03 (its official test book, 3,661 lines) and
+book_19 / 20 / 24 (its train books, 666 / 2,163 / 2,400 lines). None is in RASAM or TariMa, so all 8,890 lines are unseen manuscripts for us.
+Pack: `scripts/arams_prepare_crnn_pack.py` (RASAM preprocessing, 96 px; tags am03 / am19 / am20 / am24); decode: `scripts/chain_arams.sh`
+(our 60-epoch model, char 8-gram LM tuned on RASAM-2 validation: alpha 0.4, beta 1.0); score: `scripts/arams_report.py` ->
+`results/rasam/arams_report.json`. AraMS transcribes letters only (no harakat, punctuation or digits), so readings are scored with those
+removed ("letters") and, to match the paper's gt_normalized, also with alef forms and alef maqsura merged ("arams_norm"). Micro CER.
+
+| Book | Lines | Greedy (letters) | LM (letters) | Greedy (arams_norm) | LM (arams_norm) | Page CER p10 / median / p90 | Lines sharing a word 5-gram with our training text |
+|---|---|---|---|---|---|---|---|
+| book_03 (AraMS test) | 3,661 | 19.71 | 17.53 | 16.12 | **13.94** | 10.7 / 13.7 / 17.2 | 4.3 % |
+| book_19 | 666 | 11.46 | 9.99 | 7.68 | **6.21** | 2.8 / 5.7 / 10.3 | 30.3 % |
+| book_20 | 2,163 | 26.37 | 23.26 | 22.83 | **19.74** | 12.8 / 19.0 / 26.1 | 21.3 % |
+| book_24 | 2,400 | 27.16 | 24.89 | 23.06 | **20.87** | 14.8 / 20.1 / 28.1 | 13.0 % |
+| all 8,890 | | 22.92 | 20.54 | 19.18 | 16.82 | | |
+
+- **book_03: 13.94 % vs the paper's Kraken 32.71 % and HATFormer 37.88 %**, although those were trained on AraMS's own train books (three of
+  them Maghrebi-labelled) and ours never saw AraMS. Caveats: the paper does not say whether its CER is pooled or per-line averaged, and our
+  arams_norm only approximates its gt_normalized. The text overlap is 4.3 %, so the LM is not reciting known text. Reading Maghrebi needs
+  Maghrebi training data: RASAM + TariMa (about 11k lines) beats a larger mixed-script training set.
+- **Unseen manuscripts cost even more across collections.** In-split RASAM test: 4-9 %; unseen RASAM-2 manuscripts (§18): 12.2 %; AraMS
+  Maghrebi books: 6-21 %, 16.8 % pooled. Errors are spread over the books, not a few broken lines: lines above 50 % CER are 0.6-1.4 % of lines
+  and carry 2-9 % of the errors (a few look like image / text mismatches, e.g. book_03 page 152 line 12).
+- **Books 20 and 24 use eastern fa / qaf dotting.** Our model reads 19.2 % (book_20) and 15.4 % (book_24) of their fa as qaf, against
+  0.4-0.5 % in books 03 and 19; book_24 also has 296 qaf -> ta. A Maghrebi model takes a dot above for qaf (Maghrebi fa has its dot below),
+  so these two "Maghrebi" books are at least partly eastern in their dotting. The swaps themselves are only about 0.5 points of CER; the rest
+  of the gap is the hand. Books 19 and 20 are copies of the same text (the Muwatta) and score 6.2 vs 19.7 %, so the hand, not the text,
+  decides. Their crops are also polygon cut-outs on white, unlike the rectangular RASAM crops (book_03 is rectangular).
+- The AraMS line images of the four books were extracted from the zip to `/Volumes/PortableSSD/data/arams_28k_htr/AraMs-28k-HTR/images/`
+  for packing and then deleted (17 GB on the exFAT SSD); the pack keeps the preprocessed lines.

@@ -30,6 +30,7 @@ below except E1 runs offline on CPU.
   - [x] (2026-10-27, design §17) Why Calfa's CTC (3.6 / 4.9 / 3.9 % on the same lines) leads: per-corpus specialisation, taller CRNN and their architecture tested; none explains the gap. Draft question to Calfa in `drafts/calfa-request.md` (not sent).
   - [x] (2026-10-27, design §18) **RS4c** Leave-manuscript-out on RASAM-2: unseen-manuscript 9.87 % vs in-split 6.69 % on the same official test lines (without MS 1936); +3.2 points.
   - [x] (2026-10-26, design §16: RASAM-1 4.12 %, RASAM-2 8.92 %, TariMa 7.04 %) **RS4b** Combine 60 epochs + AraGPT2 rescoring (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); seeds only if it becomes the headline.
+- [x] (2026-10-28, design §19) **RS4d** AraMS-28k Maghrebi books as unseen manuscripts: book_03 13.94 % (paper: Kraken 32.71, HATFormer 37.88); books 20 / 24 use eastern fa / qaf dotting (15-19 % of fa read as qaf).
 - [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
 - [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.
 

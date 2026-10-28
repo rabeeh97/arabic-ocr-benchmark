@@ -82,3 +82,15 @@ comparison is established.
 
 The full local leaderboard (strict board, other splits, our ideas, why scores differ) is `docs/research/rasam_leaderboard.html`, built by
 `scripts/build_rasam_leaderboard.py`.
+
+## AraMS-28k Maghrebi books, unseen by our model (2026-10-28)
+
+book_03 is AraMS's official test book; CER against letters-only text with alef forms merged (the paper's gt_normalized, approximated).
+
+| System | Trained on | book_03 | Source |
+|---|---|---|---|
+| Ours, 60 epochs + char LM | RASAM-1/2 + TariMa (no AraMS) | **13.94** | design §19 |
+| Kraken | AraMS train books | 32.71 | AraMS paper, not re-run |
+| HATFormer | AraMS train books | 37.88 | AraMS paper (re-run on RASAM only, §AMIDDA) |
+
+Ours on the other Maghrebi books (AraMS train books, unseen by us): book_19 6.21, book_20 19.74, book_24 20.87.
