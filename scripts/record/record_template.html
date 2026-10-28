@@ -1,0 +1,439 @@
+<title>Maghrebi HTR Record</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Amiri:wght@400;700&display=swap">
+<style>
+/* Layout: a single reading column (about 72ch) with full-width tables that scroll inside their own frames; a sticky contents bar on wide screens. */
+:root {
+  --paper: #f6f7f4;
+  --sheet: #ffffff;
+  --ink: #1c2226;
+  --muted: #5d6870;
+  --rule: #d9dedb;
+  --accent: #1d5a78;       /* Maghrebi blue-ink rubric */
+  --rubric: #a8322b;       /* red-ink rubric, used for findings */
+  --ours: #1d5a78;
+  --ours-bg: #e3eef3;
+  --rescored: #6b5a14;
+  --rescored-bg: #f3eed9;
+  --reported: #5d6870;
+  --reported-bg: #eceeed;
+  --good: #2f6b3d;
+  --good-bg: #e2efe4;
+  --bad: #9a2f28;
+  --bad-bg: #f6e3e1;
+  --mid: #7a5a10;
+  --mid-bg: #f5ecd6;
+  --s1: #1d5a78;
+  --s2: #a8322b;
+  --display: "Spectral", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --arabic: "Amiri", "Geeza Pro", "Noto Naskh Arabic", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141a1d; --sheet: #1b2226; --ink: #e4e8e6; --muted: #9aa6ad; --rule: #2e383d;
+    --accent: #7fb6d3; --rubric: #e58a7f; --ours: #8cc3df; --ours-bg: #1d3340; --rescored: #d9c27a; --rescored-bg: #343020;
+    --reported: #a8b2b8; --reported-bg: #262e32; --good: #8fcf9c; --good-bg: #1e3324; --bad: #ef9a90; --bad-bg: #3a2220;
+    --mid: #e0c27c; --mid-bg: #352d1a; --s1: #7fb6d3; --s2: #e58a7f; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141a1d; --sheet: #1b2226; --ink: #e4e8e6; --muted: #9aa6ad; --rule: #2e383d;
+  --accent: #7fb6d3; --rubric: #e58a7f; --ours: #8cc3df; --ours-bg: #1d3340; --rescored: #d9c27a; --rescored-bg: #343020;
+  --reported: #a8b2b8; --reported-bg: #262e32; --good: #8fcf9c; --good-bg: #1e3324; --bad: #ef9a90; --bad-bg: #3a2220;
+  --mid: #e0c27c; --mid-bg: #352d1a; --s1: #7fb6d3; --s2: #e58a7f; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 15.5px; line-height: 1.6; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.01em; }
+h2 { font-size: 1.65rem; margin-top: 8px; }
+h3 { font-size: 1.15rem; margin-top: 26px; margin-bottom: 8px; }
+p { margin: 0 0 12px; max-width: 72ch; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, .mono { font-family: var(--mono); font-size: 0.86em; }
+.ar { font-family: var(--arabic); font-size: 1.15em; direction: rtl; unicode-bidi: isolate; }
+.eyebrow { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+header.top { display: grid; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
+header.top .lede { font-size: 1.08rem; color: var(--muted); max-width: 70ch; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+nav.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--rule); margin: 0 0 8px; padding: 10px 0; display: flex; gap: 6px 16px; flex-wrap: wrap; font-size: 0.82rem; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper); }
+nav.toc a { color: var(--muted); text-decoration: none; }
+nav.toc a:hover { color: var(--accent); }
+section { padding-top: 34px; display: grid; gap: 10px; }
+section > .eyebrow { margin-bottom: -4px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 8px; }
+.tile { background: var(--sheet); border: 1px solid var(--rule); padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.tile .n { font-family: var(--display); font-size: 1.9rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.tile .l { font-size: 0.85rem; color: var(--muted); }
+.tile .n small { font-size: 0.95rem; color: var(--muted); font-weight: 500; }
+ol.findings { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: f; }
+ol.findings li { counter-increment: f; background: var(--sheet); border: 1px solid var(--rule); padding: 14px 16px 14px 56px; position: relative; }
+ol.findings li::before { content: "F" counter(f); position: absolute; left: 14px; top: 14px; font-family: var(--mono); font-weight: 500; font-size: 0.85rem; color: var(--rubric); }
+ol.findings b.h { display: block; font-family: var(--display); font-size: 1.08rem; margin-bottom: 4px; }
+ol.findings p { margin: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; padding: 1px 7px; border-radius: 3px; white-space: nowrap; vertical-align: 1px; }
+.p-ours { background: var(--ours-bg); color: var(--ours); }
+.p-rescored { background: var(--rescored-bg); color: var(--rescored); }
+.p-reported { background: var(--reported-bg); color: var(--reported); }
+.p-kept { background: var(--good-bg); color: var(--good); }
+.p-dropped { background: var(--bad-bg); color: var(--bad); }
+.p-optional { background: var(--mid-bg); color: var(--mid); }
+.p-new { background: var(--bad-bg); color: var(--rubric); }
+.p-neg { background: var(--reported-bg); color: var(--muted); }
+.tbl { overflow-x: auto; background: var(--sheet); border: 1px solid var(--rule); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: 600; font-size: 0.78rem; letter-spacing: 0.03em; color: var(--muted); background: var(--paper); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 0.86rem; white-space: nowrap; }
+td.note { color: var(--muted); font-size: 0.84rem; min-width: 260px; }
+tr.ours td { background: color-mix(in srgb, var(--ours-bg) 55%, transparent); }
+td .bar { display: block; height: 4px; background: var(--rule); margin-top: 4px; min-width: 60px; }
+td .bar i { display: block; height: 100%; background: var(--muted); }
+tr.ours td .bar i { background: var(--ours); }
+td b.best { color: var(--good); }
+.chart { width: 100%; height: auto; display: block; }
+.chart .grid { stroke: var(--rule); stroke-width: 1; }
+.chart .tick, .chart .cat, .chart .key { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+.chart .cat { font-family: var(--body); font-size: 11.5px; fill: var(--ink); }
+.chart .val { fill: var(--ink); font-family: var(--mono); font-size: 11px; }
+.chart .line { stroke-width: 2.2; }
+.chart .line.s1 { stroke: var(--s1); } .chart .line.s2 { stroke: var(--s2); }
+.chart .dot.s1 { fill: var(--s1); } .chart .dot.s2 { fill: var(--s2); }
+.chart .val.s1, .chart .key.s1 { fill: var(--s1); } .chart .val.s2, .chart .key.s2 { fill: var(--s2); }
+.chart .bar { stroke: var(--muted); stroke-width: 2; opacity: 0.55; }
+figure { margin: 6px 0 0; background: var(--sheet); border: 1px solid var(--rule); padding: 14px; overflow-x: auto; }
+figure svg { min-width: 560px; }
+figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; max-width: 80ch; }
+ul.plain { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 78ch; }
+.callout { border-left: 3px solid var(--rubric); padding: 4px 0 4px 14px; max-width: 76ch; }
+.callout p:last-child { margin-bottom: 0; }
+details { background: var(--sheet); border: 1px solid var(--rule); padding: 10px 14px; }
+details > summary { cursor: pointer; font-weight: 600; }
+details[open] > summary { margin-bottom: 10px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.two > * { min-width: 0; }
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 0.82rem; color: var(--muted); display: grid; gap: 6px; }
+@media (max-width: 520px) { body { font-size: 15px; } ol.findings li { padding-left: 46px; } nav.toc { position: static; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Research record · Maghrebi handwritten text recognition · 22–28 Oct 2026</span>
+  <h1>Maghrebi HTR Record</h1>
+  <p class="lede">Everything we ran on RASAM-1, RASAM-2, TariMa and the AraMS-28k Maghrebi books: our own CTC line recogniser, re-runs of every public model we could get, a strict leaderboard on the official test lines, the data defects we found, and what the published numbers actually measure.</p>
+  <div class="meta">
+    <span>Metric: micro CER (all edits / all reference characters), raw profile unless marked</span>
+    <span>Official test: RASAM-1 734 lines · RASAM-2 372 · TariMa 229</span>
+    <span>Repo: <a href="https://github.com/rabeeh97/arabic-ocr-benchmark/tree/worktree-xai-attribution-spike">rabeeh97/arabic-ocr-benchmark</a></span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <a href="#summary">Summary</a><a href="#findings">Findings</a><a href="#leaderboard">Leaderboard</a><a href="#why">Why scores differ</a>
+  <a href="#progress">Our model</a><a href="#ideas">Ideas tried</a><a href="#lomo">Unseen manuscripts</a><a href="#arams">AraMS</a>
+  <a href="#calfa">Calfa gap</a><a href="#data">Data audit</a><a href="#external">External models</a><a href="#datasets">Datasets</a><a href="#next">Next</a>
+</nav>
+
+<section id="summary">
+  <span class="eyebrow">Summary</span>
+  <h2>Where we stand</h2>
+  <p>We set out to find the best achievable RASAM score and to test whether better data gives better results. We ended with a small, fully documented recogniser that is second only to Calfa's unpublished models on the official test lines, and with measurements showing that most published RASAM numbers describe reading inside known manuscripts, not new ones.</p>
+  <div class="tiles">
+    <div class="tile"><span class="n">4.12<small>%</small></span><span class="l">RASAM-1 official test, our best (Calfa reports 3.6)</span></div>
+    <div class="tile"><span class="n">8.92<small>%</small></span><span class="l">RASAM-2 official test, our best (Calfa reports 4.9)</span></div>
+    <div class="tile"><span class="n">7.04<small>%</small></span><span class="l">TariMa official test, our best (Calfa reports 3.9)</span></div>
+    <div class="tile"><span class="n">+48<small>%</small></span><span class="l">more errors on the same RASAM-2 test lines when the manuscript is unseen (9.87 vs 6.69 %)</span></div>
+    <div class="tile"><span class="n">13.94<small>%</small></span><span class="l">AraMS Maghrebi test book, never seen (published models trained on AraMS: 32.71 / 37.88 %)</span></div>
+    <div class="tile"><span class="n">2.4<small> M</small></span><span class="l">parameters in our CRNN; Calfa's described architecture is 52.9 M and did worse for us</span></div>
+  </div>
+</section>
+
+<section id="findings">
+  <span class="eyebrow">Findings</span>
+  <h2>What we found</h2>
+  <ol class="findings">
+    <li><b class="h">No two published RASAM numbers are on the same test lines <span class="pill p-new">new</span></b><p>Every paper before 2026 made its own split, and none is described well enough to reproduce. Only Calfa's AMIDDA paper scores on the official Hugging Face test lines: its test split contains all 734 / 372 / 229 official images, identical by MD5 (our check). That makes Calfa's per-corpus CTC numbers the only published ones directly comparable to ours.</p></li>
+    <li><b class="h">The random line split flatters RASAM-2 by about half again <span class="pill p-new">new</span></b><p>Leave-manuscript-out over all 15 RASAM-2 manuscripts (5 folds of 3): on the same official test lines a model that never saw the manuscript reads 9.87 % CER against 6.69 % for the same recipe trained on the random split (MS 1936 excluded). That is +3.2 points, +48 % relative. All 14 regular manuscripts get worse (+0.16 to +7.09 points). This is the first measurement of that gap on RASAM.</p></li>
+    <li><b class="h">The gap is larger across collections <span class="pill p-new">new</span></b><p>On the four AraMS-28k Maghrebi books, which no model of ours has seen, CER is 6.2 to 20.9 % (16.8 % pooled), against 4 to 9 % on RASAM's own test lines and 12.2 % on unseen RASAM-2 manuscripts.</p></li>
+    <li><b class="h">Maghrebi training data beats more mixed-script data <span class="pill p-new">new</span></b><p>On AraMS's own Maghrebi test book our model, trained only on about 11k RASAM and TariMa lines, reads 13.94 % CER. The AraMS paper reports 32.71 % (Kraken) and 37.88 % (HATFormer) for models trained on AraMS's 19.7k mixed-script training lines. Only 4.3 % of that book's lines share a five-word phrase with our training text, so the LM is not recalling known text.</p></li>
+    <li><b class="h">Two "Maghrebi" AraMS books use eastern fa / qaf dotting <span class="pill p-new">new</span></b><p>Our model reads 19.2 % (book_20) and 15.4 % (book_24) of their fa as qaf, against about 0.5 % in the other two books; book_24 also has 296 qaf read as ta. In Maghrebi script fa has its dot below and qaf one dot above, so a Maghrebi reader takes an eastern fa for qaf. Books 19 and 20 copy the same text (the Muwatta) and score 6.2 vs 19.7 %, so the hand decides, not the text.</p></li>
+    <li><b class="h">Public models are contaminated or crop-sensitive <span class="pill p-new">new</span></b><p>HAFITH has 362 of the 734 official RASAM-1 test lines in its training or validation data; on the 372 clean lines it scores 12.34 % (its overall 6.27 %, self-reported 4.95 %). Phoenix reports 7.67 % on its own split but reads the official crops at 23.1 %. Calfa's AMIDDA VLM reproduces close to its card (21.7 / 28.3 / 24.8 % vs 25.0 / 27.6 / 24.2 %).</p></li>
+    <li><b class="h">The data has defects that move scores <span class="pill p-new">new</span></b><p>80 RASAM-2 crops of MS 1936 are 1 to 7 px tall (66 train, 7 validation, 7 test); the 7 test crops alone hold 12 % of our RASAM-2 errors. Two RASAM-1 test crops are swapped with their neighbours, and the two RASAM sets use different conventions for hamza and diacritics.</p></li>
+    <li><b class="h">Diversity beats volume <span class="pill p-kept">verified</span></b><p>Adding RASAM-1 to RASAM-2 training cut RASAM-2 error by a third (18.47 → 12.84 % greedy). Adding about 1,800 lines from 26 new TariMa documents improved every test set. Adding about 1,470 more lines from the three RASAM-1 manuscripts the model already knew did nothing.</p></li>
+    <li><b class="h">Calfa's lead is not explained by anything they published <span class="pill p-neg">negative</span></b><p>Per-corpus specialisation, keeping more vertical detail, and Calfa's own described architecture (52.9 M parameters, trained as long as it kept improving) all ended at or behind our 2.4 M model. The remaining candidates are unpublished training details or training data that overlapped today's test pages. A question to Calfa is drafted and not yet sent.</p></li>
+    <li><b class="h">Cheap decoding gains are real; weight averaging is not <span class="pill p-kept">verified</span></b><p>A character 8-gram LM in the CTC beam search gives −0.4 to −2.5 points; AraGPT2 rescoring of the 10-best adds −0.2 to −0.3 on every set. EMA and checkpoint averaging give nothing over the one-cycle schedule. Seed noise is 0.1 to 0.2 points.</p></li>
+  </ol>
+</section>
+
+<section id="leaderboard">
+  <span class="eyebrow">Leaderboard</span>
+  <h2>Strict board: the official test lines only</h2>
+  <p>Every row is scored on exactly the official Hugging Face test lines. <span class="pill p-ours">ours</span> our runs; <span class="pill p-rescored">re-run by us</span> a public model we ran ourselves; <span class="pill p-reported">reported</span> the authors' number on these lines, not re-run. Bars are drawn to one scale, 0 to 45 %.</p>
+  {{STRICT}}
+
+  <h3>AraMS-28k Maghrebi test book (book_03)</h3>
+  <p>Letters-only reference with alef forms merged, approximating the paper's normalised text. The paper does not say how it averages CER.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>System</th><th>Trained on</th><th class="num">book_03 CER</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr class="ours"><td>Ours, 60 epochs + char LM <span class="pill p-ours">ours</span></td><td>RASAM-1/2 + TariMa, no AraMS</td><td class="num"><b class="best">13.94</b></td><td class="note">Design §19</td></tr>
+      <tr><td>Kraken <span class="pill p-reported">reported</span></td><td>AraMS train books (mixed scripts)</td><td class="num">32.71</td><td class="note"><a href="https://arxiv.org/abs/2608.26921">AraMS-28k paper</a></td></tr>
+      <tr><td>HATFormer <span class="pill p-reported">reported</span></td><td>AraMS train books (mixed scripts)</td><td class="num">37.88</td><td class="note">AraMS-28k paper; we re-ran it on RASAM only</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Published on other splits (not comparable line for line)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Set</th><th class="num">CER</th><th>System</th><th>Their split</th><th>What we could check</th></tr></thead>
+    <tbody>
+      <tr><td>RASAM-1</td><td class="num">3.23</td><td>Lucas et al. 2022, meta-word CRNN</td><td class="note">Own page-level split (32 test pages); labels standardised from 54 to 38 classes</td><td class="note">Not public. Our best under the same standardisation: 3.65 %</td></tr>
+      <tr><td>RASAM-1</td><td class="num">4.8</td><td>RASAM paper 2021, word-based CRNN</td><td class="note">Split not described; predates the HF split by 5 years</td><td class="note">Not public; test lines unknown</td></tr>
+      <tr><td>RASAM-1</td><td class="num">4.95</td><td>HAFITH, self-reported</td><td class="note">Own 906-line split overlapping half the official test lines</td><td class="note">Re-run on official lines: 6.27 % (12.34 % on clean lines)</td></tr>
+      <tr><td>RASAM-1</td><td class="num">5.50</td><td>CHR 2024, word-based CRNN on RASAM-1 + 2</td><td class="note">Own random sample</td><td class="note">Not public</td></tr>
+      <tr><td>RASAM-2</td><td class="num">6.79</td><td>CHR 2024, same model</td><td class="note">Own random sample</td><td class="note">Not public</td></tr>
+      <tr><td>RASAM (guard)</td><td class="num">7.67</td><td>Phoenix (Kraken)</td><td class="note">Own manuscript/page-independent 1,789-line guard</td><td class="note">Re-run on official crops: 23.1 / 18.7 %</td></tr>
+      <tr><td>TariMa</td><td class="num">9.7</td><td>CHR 2024 RASAM-2 model, out of domain</td><td class="note">Own TariMa sample</td><td class="note">Not public</td></tr>
+      <tr><td>TariMa</td><td class="num">10.72</td><td>Phoenix, own TariMa split</td><td class="note">Manuscript-independent</td><td class="note">Not re-run on TariMa</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="why">
+  <span class="eyebrow">Interpretation</span>
+  <h2>Why the scores differ, and why papers used their own splits</h2>
+  <div class="two">
+    <div>
+      <h3>Why scores differ</h3>
+      <ul class="plain">
+        <li><b>Different test lines.</b> Each paper scored its own sample. RASAM-2's 15 manuscripts vary widely in difficulty; 7 broken MS 1936 crops alone hold 12 % of our RASAM-2 errors.</li>
+        <li><b>Seen vs new manuscripts (measured).</b> On the same lines, an unseen manuscript costs +3.2 points on RASAM-2 (F2). Every random-split number measures reading inside known manuscripts.</li>
+        <li><b>Leakage.</b> The HF split is random by line: every test page also has lines in train. HAFITH's own split even holds half the official RASAM-1 test lines in training.</li>
+        <li><b>Different references.</b> Standardising the references alone moves our RASAM-1 score from 4.32 to 3.95 %.</li>
+        <li><b>Different averaging.</b> Micro, per-line and per-page CER differ by about 1 point on the same predictions (6.82 % micro vs 7.57 % mean per page vs 5.71 % median per page for one model). Most papers do not say which they use.</li>
+        <li><b>Different crops.</b> Kraken models expect their own binarised polygon crops: Phoenix reads 73.8 % on raw HF crops and 13.6 % on the same lines binarised.</li>
+        <li><b>Different training data.</b> Per-corpus specialised models beat generic multi-script models on RASAM by a wide margin.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Why papers used their own splits</h3>
+      <ul class="plain">
+        <li>The 2021, 2022 and 2024 RASAM papers predate the Hugging Face splits (created 2026-05-20). The GitHub release had no split, so each paper made one.</li>
+        <li>Phoenix chose a manuscript-independent split on purpose, arguing that random line splits overstate generalisation. Our leave-manuscript-out result confirms that argument with a number.</li>
+        <li>HAFITH built one combined benchmark across Muharaf, KHATT and RASAM with its own 60/20/20 split, which overlaps the official test lines.</li>
+        <li>Calfa's AMIDDA paper (2026) is the first to report on the official lines, which is why it is the only published entry on the strict board.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="progress">
+  <span class="eyebrow">Our model</span>
+  <h2>How our recogniser got here</h2>
+  <p>A character CRNN with CTC (VGG-style CNN, 3-layer BiLSTM, width 0.5, 2.4 M parameters), trained on the official train splits, chosen on validation, and decoded with a character 8-gram LM in a prefix beam search. The final recipe trains on RASAM-1, repaired RASAM-2 and TariMa at 96 px for 60 epochs and rescores the 10-best with AraGPT2.</p>
+  <figure>
+    {{PROGRESS}}
+    <figcaption>Official-test CER with the char LM after each kept step (one seed per step; seed noise 0.1–0.2 points). The first point is a RASAM-1-only model, so its RASAM-2 value is a cross-collection score.</figcaption>
+  </figure>
+
+  <details>
+    <summary>Every experiment, with numbers (design doc §6–§19)</summary>
+    <h3>Baselines and training data (64 px, 30 epochs)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Arm</th><th>Training data</th><th class="num">RASAM-1 greedy → LM</th><th class="num">RASAM-2 greedy → LM</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>A1</td><td>RASAM-1 only</td><td class="num">6.82 → 5.46</td><td class="num">24.59 → 21.59</td><td class="note">RASAM-2 is unseen manuscripts here</td></tr>
+        <tr><td>A2</td><td>RASAM-2 only</td><td class="num">24.86</td><td class="num">18.47</td><td class="note">Cross cells symmetric at about 25 %</td></tr>
+        <tr class="ours"><td>A3</td><td>Both</td><td class="num">6.55 → 5.35</td><td class="num">12.84 → 10.45</td><td class="note">Adding RASAM-1 cut RASAM-2 error by a third</td></tr>
+        <tr><td>B2</td><td>12 RASAM-2 manuscripts, 3 held out</td><td class="num">–</td><td class="num">31.07 on held-out</td><td class="note">A first, small leave-out test; superseded by the 5-fold run below</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Resolution, data, capacity (with LM)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Change</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th class="num">RASAM-2 repaired</th><th class="num">TariMa</th></tr></thead>
+      <tbody>
+        <tr><td>64 px (A3)</td><td class="num">5.35</td><td class="num">10.45</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr class="ours"><td>96 px</td><td class="num">4.58</td><td class="num">9.66</td><td class="num">8.94</td><td class="num">–</td></tr>
+        <tr><td>128 px (cut at ~21 epochs)</td><td class="num">4.68</td><td class="num">10.49</td><td class="num">–</td><td class="num">–</td></tr>
+        <tr class="ours"><td>96 px + TariMa</td><td class="num">4.32</td><td class="num">9.41</td><td class="num">8.42</td><td class="num">7.33</td></tr>
+        <tr><td>96 px + all of RASAM-1 (more of the same)</td><td class="num">–</td><td class="num">9.77</td><td class="num">8.92</td><td class="num">–</td></tr>
+        <tr><td>Width 1.0 (9.4 M params, ~26 epochs)</td><td class="num">4.47</td><td class="num">10.18</td><td class="num">9.21</td><td class="num">–</td></tr>
+        <tr><td>Repaired training crops</td><td class="num">4.33</td><td class="num">10.03</td><td class="num">8.96</td><td class="num">–</td></tr>
+        <tr><td>Repaired + neighbour ink + fade</td><td class="num">4.43</td><td class="num">9.65</td><td class="num">8.94</td><td class="num">–</td></tr>
+        <tr><td>… + darkest RGB channel</td><td class="num">5.14</td><td class="num">10.12</td><td class="num">9.43</td><td class="num">–</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Seeds, epochs, averaging, rescoring (RASAM-1 + repaired RASAM-2 + TariMa, 96 px)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Variant</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th class="num">TariMa</th><th class="num">RASAM-2 repaired</th></tr></thead>
+      <tbody>
+        <tr><td>30 epochs, greedy, 3-seed mean</td><td class="num">5.24</td><td class="num">11.79</td><td class="num">9.27</td><td class="num">10.61</td></tr>
+        <tr><td>30 epochs + LM, 3-seed mean</td><td class="num">4.38</td><td class="num">9.30</td><td class="num">7.67</td><td class="num">8.50</td></tr>
+        <tr><td>60 epochs + LM</td><td class="num">4.33</td><td class="num">9.13</td><td class="num">7.35</td><td class="num">8.05</td></tr>
+        <tr><td>60 epochs, EMA best + LM</td><td class="num">4.28</td><td class="num">9.14</td><td class="num">7.35</td><td class="num">8.20</td></tr>
+        <tr><td>60 epochs, average of last 10 + LM</td><td class="num">4.24</td><td class="num">9.19</td><td class="num">7.19</td><td class="num">8.13</td></tr>
+        <tr class="ours"><td><b>60 epochs + LM + AraGPT2 rescoring</b></td><td class="num"><b>4.12</b></td><td class="num"><b>8.92</b></td><td class="num"><b>7.04</b></td><td class="num"><b>7.83</b></td></tr>
+        <tr><td>Oracle in the 10-best (upper bound for rescoring)</td><td class="num">3.18</td><td class="num">7.66</td><td class="num">5.84</td><td class="num">6.61</td></tr>
+        <tr><td>Standardised labels, 3 seeds (vs raw labels scored the same way)</td><td class="num">4.04 (4.00)</td><td class="num">8.82 (8.78)</td><td class="num">7.02 (7.17)</td><td class="num">7.88 (7.97)</td></tr>
+      </tbody>
+    </table></div>
+  </details>
+</section>
+
+<section id="ideas">
+  <span class="eyebrow">Ideas tried</span>
+  <h2>What we kept and what we dropped</h2>
+  {{IDEAS}}
+</section>
+
+<section id="lomo">
+  <span class="eyebrow">Unseen manuscripts</span>
+  <h2>Leave-manuscript-out on RASAM-2</h2>
+  <p>The 15 RASAM-2 manuscripts were split into 5 folds of 3. Each fold model trained on RASAM-1, the other 12 manuscripts and TariMa, and never saw any line of its 3 held-out manuscripts. Each manuscript's official test lines were then read by its fold model and by the in-split models (same recipe, random line split, 3 seeds).</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Lines</th><th class="num">n</th><th class="num">Unseen manuscript</th><th class="num">In-split (3 seeds)</th><th class="num">Gap</th></tr></thead>
+    <tbody>
+      <tr><td>All 15 manuscripts, all lines (greedy / LM)</td><td class="num">3,720</td><td class="num">14.17 / 12.20</td><td class="num">–</td><td class="num">–</td></tr>
+      <tr><td>All 15, official test lines</td><td class="num">372</td><td class="num">12.01</td><td class="num">9.30</td><td class="num">+2.71</td></tr>
+      <tr class="ours"><td><b>Without MS 1936, official test lines</b></td><td class="num">350</td><td class="num"><b>9.87</b></td><td class="num"><b>6.69</b></td><td class="num"><b>+3.18 (+48 %)</b></td></tr>
+    </tbody>
+  </table></div>
+  <figure>
+    {{LOMO}}
+    <figcaption>Official test lines per manuscript (20–31 lines each), CER with char LM. All 14 regular manuscripts are worse when unseen. MS 1936 is left out of the chart: 55.1 % unseen vs 61.8 % in-split, both dominated by its broken crops and its Tamazight lines.</figcaption>
+  </figure>
+</section>
+
+<section id="arams">
+  <span class="eyebrow">Second collection</span>
+  <h2>AraMS-28k Maghrebi books</h2>
+  <p>AraMS-28k labels 4 of its 14 books Maghrebi. None is in RASAM or TariMa, so all 8,890 lines are unseen manuscripts for us. AraMS transcribes letters only, so our readings are scored with short vowels, punctuation and digits removed ("letters") and also with alef forms merged ("normalised", the paper's convention).</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Book</th><th class="num">Lines</th><th class="num">Greedy (letters)</th><th class="num">LM (letters)</th><th class="num">LM (normalised)</th><th class="num">Page CER p10 / median / p90</th><th class="num">Lines with a seen 5-word phrase</th><th class="num">fa read as qaf</th></tr></thead>
+    <tbody>
+      <tr class="ours"><td>book_03 (AraMS test)</td><td class="num">3,661</td><td class="num">19.71</td><td class="num">17.53</td><td class="num"><b>13.94</b></td><td class="num">10.7 / 13.7 / 17.2</td><td class="num">4.3 %</td><td class="num">0.5 %</td></tr>
+      <tr><td>book_19</td><td class="num">666</td><td class="num">11.46</td><td class="num">9.99</td><td class="num">6.21</td><td class="num">2.8 / 5.7 / 10.3</td><td class="num">30.3 %</td><td class="num">0.4 %</td></tr>
+      <tr><td>book_20</td><td class="num">2,163</td><td class="num">26.37</td><td class="num">23.26</td><td class="num">19.74</td><td class="num">12.8 / 19.0 / 26.1</td><td class="num">21.3 %</td><td class="num"><b>19.2 %</b></td></tr>
+      <tr><td>book_24</td><td class="num">2,400</td><td class="num">27.16</td><td class="num">24.89</td><td class="num">20.87</td><td class="num">14.8 / 20.1 / 28.1</td><td class="num">13.0 %</td><td class="num"><b>15.4 %</b></td></tr>
+      <tr><td>All four</td><td class="num">8,890</td><td class="num">22.92</td><td class="num">20.54</td><td class="num">16.82</td><td class="num">–</td><td class="num">–</td><td class="num">–</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout">
+    <p><b>Typical book_24 line, 17 % CER.</b> Reference <span class="ar">بن سعيد الرباطي وتابعه عليه يحيي بن معين وجماعة فالتشبيه بالقبة</span>, our reading <span class="ar">بن سعيد الربالي وتابعه عليه حي من معين رجاعه قال شبيه بالقته</span>. The errors are dot and stroke confusions typical of a hand the model has not seen.</p>
+  </div>
+  <ul class="plain">
+    <li>Errors are spread across each book: lines above 50 % CER are 0.6–1.4 % of lines and carry 2–9 % of errors. A few look like image/text mismatches (e.g. book_03 page 152 line 12).</li>
+    <li>Books 19, 20 and 24 are polygon cut-outs on white, unlike RASAM's rectangular crops; book_03 is rectangular. This is a second domain shift on top of the hand.</li>
+    <li>Caveat: the paper does not say whether its CER is pooled or per-line, and our normalisation only approximates its normalised text.</li>
+  </ul>
+</section>
+
+<section id="calfa">
+  <span class="eyebrow">The Calfa gap</span>
+  <h2>Why are Calfa's per-corpus models so much better?</h2>
+  <p>Calfa reports 3.6 / 4.9 / 3.9 % with one CRNN per corpus, described in the AMIDDA paper (HIP 2026 @ ICDAR 2026) as "pre-existing production models": greyscale lines at 120 px, three GroupNorm conv blocks keeping 30 rows, four BiLSTM layers of 512 units, dropout 0.3, CER with jiwer and no normalisation.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Test (with char LM)</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th class="num">TariMa</th><th class="num">RASAM-2 repaired</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr class="ours"><td>Our 60-epoch shared model</td><td class="num">4.33</td><td class="num">9.13</td><td class="num">7.35</td><td class="num">8.05</td><td class="note">Starting point</td></tr>
+      <tr><td>+10 epochs on all sets (control)</td><td class="num">4.24</td><td class="num">9.00</td><td class="num">7.34</td><td class="num">7.97</td><td class="note">–</td></tr>
+      <tr><td>+10 epochs on RASAM-2 only</td><td class="num">–</td><td class="num">9.10</td><td class="num">–</td><td class="num">8.01</td><td class="note">Specialisation does not help</td></tr>
+      <tr><td>+10 epochs on TariMa only</td><td class="num">–</td><td class="num">–</td><td class="num">6.90</td><td class="num">–</td><td class="note">−0.4 points; Calfa leads by 3</td></tr>
+      <tr><td>Tall CRNN (12 rows kept)</td><td class="num">4.38</td><td class="num">9.28</td><td class="num">7.47</td><td class="num">8.57</td><td class="note">Vertical detail does not help</td></tr>
+      <tr><td>Calfa architecture, 15 epochs (lr 3e-4)</td><td class="num">5.16</td><td class="num">10.81</td><td class="num">9.84</td><td class="num">10.14</td><td class="note">Collapsed at lr 1e-3</td></tr>
+      <tr><td>Calfa architecture, ~56 epochs, trained while improving</td><td class="num">4.49</td><td class="num">9.61</td><td class="num">8.11</td><td class="num">8.75</td><td class="note">Training loss 0.04 vs ours 0.13: fits training lines better, reads test lines worse</td></tr>
+      <tr><td>Calfa, reported</td><td class="num">3.6</td><td class="num">4.9</td><td class="num">3.9</td><td class="num">–</td><td class="note">Not reproducible from the paper</td></tr>
+    </tbody>
+  </table></div>
+  <p>Remaining explanations: unpublished training details, or training data that included today's test pages (the "pre-existing" models may predate the split). Given the leave-manuscript-out result, the second would be enough to explain much of a 4-point RASAM-2 gap. The question is drafted in <code>docs/research/drafts/calfa-request.md</code>, for you to send.</p>
+</section>
+
+<section id="data">
+  <span class="eyebrow">Data audit</span>
+  <h2>Defects and conventions in the data</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Finding</th><th>Where</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>80 degenerate crops, 1 to 7 px tall (66 train / 7 val / 7 test), re-cut by us from the page images</td><td>RASAM-2, MS 1936</td><td class="note">7 test crops hold 12 % of our RASAM-2 errors (9.66 → 8.59 % without them); training crops teach filler output</td></tr>
+      <tr><td>MS 1936 contains Tamazight (Berber) written in Arabic script</td><td>RASAM-2</td><td class="note">Neither Arabic training data nor an Arabic LM covers it; 46 % CER even unseen-but-repaired</td></tr>
+      <tr><td>Two test crops show the neighbouring line (each reading is the other's reference)</td><td>RASAM-1, MS 609</td><td class="note">Small, but every system pays for it</td></tr>
+      <tr><td>Some references look garbled where models read fluent Arabic</td><td>RASAM-1</td><td class="note">Label noise or diplomatic transcription; needs manual review</td></tr>
+      <tr><td>Different conventions: diacritics in 11.9 % of RASAM-1 lines vs 0.3 % of RASAM-2; RASAM-1 writes bare ء 1,705× and أ 91×, RASAM-2 أ 437×</td><td>RASAM-1 vs RASAM-2</td><td class="note">أ wrong 100 % of the time for a RASAM-1 model on RASAM-2; about 3 % of substitutions</td></tr>
+      <tr><td>Random line split: every test page also has lines in train</td><td>All HF splits</td><td class="note">Measured cost: +48 % errors on unseen RASAM-2 manuscripts</td></tr>
+      <tr><td>Black rotation masks and neighbour ink in the HF crops</td><td>RASAM-1/2</td><td class="note">Kraken models need binarisation (73.8 → 13.6 % for Phoenix); we fill masks with paper tone</td></tr>
+      <tr><td>Error concentration: the worst 10 % of lines hold 41 % (RASAM-1) / 46 % (RASAM-2) of errors, and are hard for every model</td><td>Both</td><td class="note">Points at data, not models</td></tr>
+    </tbody>
+  </table></div>
+  <h3>What the errors are (RASAM-1, early model)</h3>
+  <ul class="plain">
+    <li><b>Word spacing, 16 % of errors.</b> Gaps between letter groups and between words look alike in cursive script.</li>
+    <li><b>One-dot confusions, 12 % of errors.</b> The Maghrebi pairs lead: <span class="ar">ب</span>→<span class="ar">ف</span> and <span class="ar">ن</span>→<span class="ar">ق</span>, because Maghrebi fa has its dot below (like ba) and qaf one dot above (like nun).</li>
+    <li><b>Thin letters lost or invented, about 12 %.</b> <span class="ar">ل م ا</span> at 64 px; the move to 96 px removed about a sixth of RASAM-1 errors.</li>
+    <li><b>Fragments.</b> Catchwords 51–60 %, marginalia about 8–16 %, very short lines worst.</li>
+  </ul>
+</section>
+
+<section id="external">
+  <span class="eyebrow">External models</span>
+  <h2>Re-runs of public models</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th>How we ran it</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th class="num">TariMa</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Phoenix (Kraken, 5 M)</td><td class="note">Kraken 7.0.3, binarised HF crops, whole image as one line</td><td class="num">23.1</td><td class="num">18.7</td><td class="num">–</td><td class="note">7.67 % claim not reproduced; protocol gap (its own crops and split)</td></tr>
+      <tr><td>TariMa Kraken model</td><td class="note">Same</td><td class="num">42.6</td><td class="num">29.9</td><td class="num">–</td><td class="note">Clean cross-corpus reference</td></tr>
+      <tr><td>HAFITH (642 M)</td><td class="note">Colab T4, its own recogniser</td><td class="num">6.27</td><td class="num">17.56</td><td class="num">–</td><td class="note">362 RASAM-1 test lines in its training/validation; 12.34 % on clean lines</td></tr>
+      <tr><td>AMIDDA 1.0 Line 4B (VLM)</td><td class="note">Colab L4, batched generation</td><td class="num">21.73</td><td class="num">28.25</td><td class="num">24.84</td><td class="note">Card reports 25.0 / 27.6 / 24.2: reproduced</td></tr>
+      <tr><td>HATFormer (AraMS-28k, 334 M)</td><td class="note">Mac CPU, card preprocessing</td><td class="num">34.68</td><td class="num">37.54</td><td class="num">31.63</td><td class="note">Zero-shot on RASAM, consistent with its 37.9 % on AraMS's Maghrebi book</td></tr>
+      <tr><td>Calfa CTC per-corpus CRNNs</td><td class="note">Not public</td><td class="num">3.6</td><td class="num">4.9</td><td class="num">3.9</td><td class="note">Reported on the same lines; not reproducible</td></tr>
+      <tr><td>Gemini 3 Flash, 25-shot</td><td class="note">Not run (paid API)</td><td class="num">16.5</td><td class="num">29.0</td><td class="num">25.6</td><td class="note">Reported by Calfa on the same lines</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="datasets">
+  <span class="eyebrow">Datasets</span>
+  <h2>The Maghrebi data landscape</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Dataset</th><th>Script</th><th class="num">Lines</th><th>Status here</th></tr></thead>
+    <tbody>
+      <tr><td>RASAM-1 (Calfa, 2021)</td><td>Maghrebi, 3 manuscripts</td><td class="num">7,331</td><td class="note">Used: train / validation / official test</td></tr>
+      <tr><td>RASAM-2 (Calfa, 2024)</td><td>Maghrebi, 15 manuscripts</td><td class="num">3,720</td><td class="note">Used; 80 crops repaired; leave-manuscript-out folds</td></tr>
+      <tr><td>TariMa (Calfa)</td><td>Maghrebi manuscripts and lithographs, 26 documents</td><td class="num">2,285</td><td class="note">Used in training and as a test set</td></tr>
+      <tr><td>AraMS-28k, Maghrebi books</td><td>Maghrebi-labelled (two books partly eastern dotting)</td><td class="num">8,890</td><td class="note">Used as an unseen test (this week)</td></tr>
+      <tr><td>Baybars, Iskandar (Calfa)</td><td>Oriental (Middle Arabic)</td><td class="num">15,567 / 5,221</td><td class="note">Cached; same conventions, a possible other-script control</td></tr>
+      <tr><td>RASM 2018/2019 (ICFHR / ICDAR)</td><td>Mostly eastern Naskh scientific manuscripts</td><td class="num">~100 pages</td><td class="note">Not RASAM; page-level only</td></tr>
+      <tr><td>Maouloud &amp; Ba (Springer 2026)</td><td>Maghrebi, 5 books</td><td class="num">50,000+</td><td class="note">Not released; ask the authors</td></tr>
+      <tr><td>IRHAS</td><td>Aljamiado (Spanish in Arabic script)</td><td class="num">10,825</td><td class="note">Different language</td></tr>
+    </tbody>
+  </table></div>
+  <p>No public line-level set from Timbuktu, Mauritania, Morocco or Tunisia was found.</p>
+</section>
+
+<section id="next">
+  <span class="eyebrow">Next</span>
+  <h2>Open questions and next steps</h2>
+  <ul class="plain">
+    <li><b>Send the Calfa question</b> (drafted, yours to send): how their per-corpus models were trained, and whether their training data included today's test pages.</li>
+    <li><b>Train with AraMS's Maghrebi books 19, 20 and 24 added</b>, then re-read book_03 (about 2 units): does a more varied set of hands close the unseen-manuscript gap?</li>
+    <li><b>Leave-manuscript-out on RASAM-1 and TariMa</b> (about 3–4 units), to turn one dataset's finding into a pattern across three.</li>
+    <li><b>Confidence intervals</b> (Mac, no units): bootstrap over lines and a sign test over manuscripts for the headline claims.</li>
+    <li><b>Three seeds of the final recipe</b> (about 3 units), so the best numbers have error bars.</li>
+    <li><b>Paper:</b> a benchmark and reproducibility paper. Working title: "What do RASAM numbers measure? Split leakage, contamination and a strict benchmark for Maghrebi HTR."</li>
+  </ul>
+  <p class="mono" style="color:var(--muted)">Colab: balance 149.70 units on 28 Oct, floor 140. All Colab runs saved on the Mac, the SSD and the Hugging Face run mirror.</p>
+</section>
+
+<footer>
+  <span>Sources: design doc <code>docs/research/designs/rasam-crnn-and-replication.md</code> §6–§19, <code>docs/research/rasam-leaderboard.md</code>, <code>results/rasam/*.json</code>; branch <code>worktree-xai-attribution-spike</code>.</span>
+  <span>Built 28 October 2026. CER figures are micro CER on the official Hugging Face test lines unless stated; one seed unless stated.</span>
+</footer>
+</div>
