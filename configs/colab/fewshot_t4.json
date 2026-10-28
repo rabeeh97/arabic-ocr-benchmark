@@ -1,0 +1,64 @@
+{
+  "name": "fewshot",
+  "gpu": "T4",
+  "max_units": 3.0,
+  "max_minutes": 170,
+  "poll_s": 60,
+  "sync_every_s": 300,
+  "final_sync_grace_min": 15,
+  "uploads": [
+    [
+      "scripts/xai_train_aligner.py",
+      "/content/xai_train_aligner.py"
+    ],
+    [
+      "scripts/rasam_lm_decode.py",
+      "/content/rasam_lm_decode.py"
+    ],
+    [
+      "scripts/rasam_fewshot_adapt.py",
+      "/content/rasam_fewshot_adapt.py"
+    ],
+    [
+      "scripts/rasam_prepare_crnn_data.py",
+      "/content/rasam_prepare_crnn_data.py"
+    ],
+    [
+      "scripts/colab_remote_packs.py",
+      "/content/colab_remote_packs.py"
+    ],
+    [
+      "results/rasam/repairs/rasam2_recut.pkl",
+      "/content/rasam2_recut.pkl"
+    ]
+  ],
+  "setup": [
+    "python -c \"from huggingface_hub import hf_hub_download as d; import shutil, os; t=open('/content/.hf_token').read().strip()\nfor f, j in {1: 'job-lomo-a-t4-10271738', 2: 'job-lomo-a-t4-10271738', 3: 'job-lomo-a-t4-10271738', 4: 'job-lomo-b-t4-10271738', 5: 'job-lomo-b-t4-10271738'}.items():\n    o=f'/content/folds/lomo{f}'; os.makedirs(o, exist_ok=True)\n    for n in ('model_best.pt', 'config.json', 'charset.json'): shutil.copy(d('SubSpring/arabic-ocr-colab-runs', f'runs/{j}/crnn_out/lomo{f}/'+n, token=t), o+'/'+n)\nprint('fold models downloaded')\""
+  ],
+  "runs": [
+    {
+      "label": "fewshot1",
+      "cmd": "PACKS='[{\"out\": \"/content/pack_lomo1.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_ARA_MS_1982\", \"BULAC_MS_ARA_1946\", \"BULAC_MS_ARA_24\"]}]' python /content/colab_remote_packs.py && python -u /content/rasam_fewshot_adapt.py --pack /content/pack_lomo1.pkl --run /content/folds/lomo1 --out /content/crnn_out/fewshot/fewshot_lomo1.json --ks 0 10 25 50 100 -1 --seeds 0 1 --epochs 15 --device cuda && rm -f /content/pack_lomo1.pkl"
+    },
+    {
+      "label": "fewshot2",
+      "cmd": "PACKS='[{\"out\": \"/content/pack_lomo2.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1926\", \"BULAC_MS_ARA_1947\", \"BULAC_MS_ARA_45b\"]}]' python /content/colab_remote_packs.py && python -u /content/rasam_fewshot_adapt.py --pack /content/pack_lomo2.pkl --run /content/folds/lomo2 --out /content/crnn_out/fewshot/fewshot_lomo2.json --ks 0 10 25 50 100 -1 --seeds 0 1 --epochs 15 --device cuda && rm -f /content/pack_lomo2.pkl"
+    },
+    {
+      "label": "fewshot3",
+      "cmd": "PACKS='[{\"out\": \"/content/pack_lomo3.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1936\", \"BULAC_MS_ARA_1960\", \"BULAC_MS_ARA_6\"]}]' python /content/colab_remote_packs.py && python -u /content/rasam_fewshot_adapt.py --pack /content/pack_lomo3.pkl --run /content/folds/lomo3 --out /content/crnn_out/fewshot/fewshot_lomo3.json --ks 0 10 25 50 100 -1 --seeds 0 1 --epochs 15 --device cuda && rm -f /content/pack_lomo3.pkl"
+    },
+    {
+      "label": "fewshot4",
+      "cmd": "PACKS='[{\"out\": \"/content/pack_lomo4.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1943\", \"BULAC_MS_ARA_1983\", \"BULAC_MS_ARA_65\"]}]' python /content/colab_remote_packs.py && python -u /content/rasam_fewshot_adapt.py --pack /content/pack_lomo4.pkl --run /content/folds/lomo4 --out /content/crnn_out/fewshot/fewshot_lomo4.json --ks 0 10 25 50 100 -1 --seeds 0 1 --epochs 15 --device cuda && rm -f /content/pack_lomo4.pkl"
+    },
+    {
+      "label": "fewshot5",
+      "cmd": "PACKS='[{\"out\": \"/content/pack_lomo5.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam2_recut.pkl\", \"holdout\": [\"BULAC_MS_ARA_1944\", \"BULAC_MS_ARA_23\", \"BULAC_MS_ARA_9\"]}]' python /content/colab_remote_packs.py && python -u /content/rasam_fewshot_adapt.py --pack /content/pack_lomo5.pkl --run /content/folds/lomo5 --out /content/crnn_out/fewshot/fewshot_lomo5.json --ks 0 10 25 50 100 -1 --seeds 0 1 --epochs 15 --device cuda && rm -f /content/pack_lomo5.pkl"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}

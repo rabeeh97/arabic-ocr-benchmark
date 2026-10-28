@@ -125,6 +125,8 @@ def main() -> None:
     ap.add_argument("--nbest-val", type=int, default=0, help="also write N-best lists for this many validation lines (to tune the rescoring weight)")
     ap.add_argument("--alphas", type=float, nargs="+", default=[0.3, 0.6, 1.0], help="LM weights to try on validation")
     ap.add_argument("--betas", type=float, nargs="+", default=[0.0, 0.5, 1.0], help="per-character bonuses to try on validation")
+    ap.add_argument("--big-lm", type=Path, help="also interpolate a big_char_lm.py LM (e.g. OpenITI); its weight 1 - lambda is tuned on validation")
+    ap.add_argument("--lambdas", type=float, nargs="+", default=[0.3, 0.5, 0.7], help="in-domain LM share in the mix (with --big-lm)")
     ap.add_argument("--smoke", action="store_true", help="tiny run to check the code path (10 validation lines, 20 test lines)")
     a = ap.parse_args()
 
@@ -142,6 +144,14 @@ def main() -> None:
     rows = blob["rows"]
     train_txt = [r["label"][::-1] for r in rows if r["role"] == "train" and r["dataset"] in a.train_sets]
     lm = CharLM(train_txt, a.order)
+    small = lm
+    lms = {None: small}
+    if a.big_lm:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from big_char_lm import BigCharLM, MixLM
+        big = BigCharLM(a.big_lm)
+        lms = {lam: MixLM(small, big, lam) for lam in a.lambdas}
+        print(f"big LM {a.big_lm.name} (order {big.order}); mixing weights to try {a.lambdas}", flush=True)
     print(f"LM order {a.order} on {len(train_txt)} training labels (visual order), vocabulary {lm.v}", flush=True)
 
     def logits(r):
@@ -172,13 +182,16 @@ def main() -> None:
     base = cer_of(vsel, lambda r, lp: greedy(lp))
     print(f"validation subset n={len(vsel)}: greedy CER {base:.4f}", flush=True)
     best = (base, 0.0, 0.0)
+    best_lam = None
     grid = [(0.3, 0.0)] if a.smoke else [(al, be) for al in a.alphas for be in a.betas]
-    for al, be in grid:
-        c = cer_of(vsel, lambda r, lp, al=al, be=be: prefix_beam(lp, chars, lm, al, be, a.beam))
+    for (lam, mlm), (al, be) in ((x, g) for x in lms.items() for g in grid):
+        c = cer_of(vsel, lambda r, lp, al=al, be=be, mlm=mlm: prefix_beam(lp, chars, mlm, al, be, a.beam))
+        if lam is not None:
+            print(f"  lambda {lam}:", end="")
         print(f"  alpha {al} beta {be}: validation CER {c:.4f}  ({time.time() - t0:.0f}s)", flush=True)
         if c < best[0]:
-            best = (c, al, be)
-    print(f"chosen on validation: alpha {best[1]} beta {best[2]} (CER {best[0]:.4f}, greedy {base:.4f})", flush=True)
+            best, best_lam, lm = (c, al, be), lam, mlm
+    print(f"chosen on validation: lambda {best_lam} alpha {best[1]} beta {best[2]} (CER {best[0]:.4f}, greedy {base:.4f})", flush=True)
     out_dir = Path("results/rasam/lm")
     if a.nbest and a.nbest_val:  # N-best lists of validation lines (not the tuning subset's role here: they tune the rescoring weight)
         allval = [r for r in rows if r["role"] == "heldout" and r["dataset"] == a.val_tag]
@@ -207,7 +220,8 @@ def main() -> None:
         print(f"{a.name} {tag} test n={len(test)}: greedy {ga['micro_cer']['raw']:.4f}  with LM {la['micro_cer']['raw']:.4f} "
               f"(diac-insensitive {ga['micro_cer']['diac_insensitive']:.4f} -> {la['micro_cer']['diac_insensitive']:.4f})", flush=True)
         (out_dir / f"{a.name}__{tag}__test.json").write_text(json.dumps({
-            "run": a.name, "run_dir": str(a.run), "dataset": tag, "split": "test", "n": len(test), "order": a.order, "alpha": best[1], "beta": best[2],
+            "run": a.name, "run_dir": str(a.run), "dataset": tag, "split": "test", "n": len(test), "order": a.order, "alpha": best[1], "beta": best[2], "lambda": best_lam,
+            "big_lm": str(a.big_lm) if a.big_lm else None,
             "micro_cer": la["micro_cer"], "greedy_micro_cer": ga["micro_cer"], "lines": lines}, ensure_ascii=False, indent=1))
 
 
