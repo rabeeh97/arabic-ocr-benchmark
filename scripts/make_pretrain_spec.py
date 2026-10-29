@@ -25,4 +25,13 @@ spec = {"name": "pretrain", "gpu": "T4", "max_units": 3.5, "max_minutes": 210, "
         + [["results/rasam/repairs/rasam2_recut.pkl", "/content/rasam2_recut.pkl"], [E60, "/content/e60_charset.json"]],
         "setup": ["mkdir -p /content/crnn_out"], "runs": runs, "artifacts": ["/content/crnn_out"], "local_out": "results/rasam/colab_runs"}
 json.dump(spec, open("configs/colab/pretrain_t4.json", "w"), indent=2)
+
+# Resume (2026-10-29): the first session was lost after stage-A epoch 4 (the Mac's SSD disconnected); the trainer resumes from
+# ckpt_last.pt in its output dir, so upload the partial stage A (copied from HF) and run the same steps.
+PART = "/Users/rabeehjouni/colab_staging/jobs/job-pretrain-t4-10282207/content/crnn_out/pre_A"
+spec["name"] = "pretrain-resume"
+spec["max_units"] = 2.5
+spec["uploads"] = spec["uploads"] + [[f"{PART}/{n}", f"/content/crnn_out/pre_A/{n}"] for n in ("ckpt_last.pt", "model_best.pt", "config.json", "charset.json")]
+spec["setup"] = ["mkdir -p /content/crnn_out/pre_A"]
+json.dump(spec, open("configs/colab/pretrain_resume_t4.json", "w"), indent=2)
 print(json.dumps(spec, indent=1)[:1500])
