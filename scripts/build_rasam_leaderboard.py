@@ -61,6 +61,9 @@ STRICT = [
     {"sys": "Calfa CTC, one CRNN per corpus (AMIDDA paper baseline)", "kind": "reported-same-lines", "r1": 3.6, "r2": 4.9, "tm": 3.9,
      "src": "AMIDDA card", "note": "The AMIDDA test split contains exactly the official test lines (all 734 / 372 / 229 images identical by hash, our check). "
      "Not reproduced: weights not public; training data, line height and CER averaging not stated on the card (the paper PDF is behind a bot check)."},
+    {"sys": "Ours: 2-model hypothesis ensemble (60-epoch EMA + pretrained) + char LM + AraGPT2", "kind": "ours", "r1": 3.72, "r2": 7.71,
+     "tm": 5.67, "src": "", "note": "Union of both models' 10-best lists scored by both models' CTC, the in-domain + OpenITI char LM mix and AraGPT2; "
+     "weights tuned on validation (design §22)."},
     {"sys": "Ours: char-CRNN, 60 epochs + char LM + AraGPT2 rescoring", "kind": "ours", "r1": 4.12, "r2": 8.92, "tm": 7.04,
      "src": "", "note": "RASAM-1 + repaired RASAM-2 + TariMa train, 96 px, 2.4 M params; LM and rescoring weights tuned on validation only. One seed (seed noise 0.1-0.2)."},
     {"sys": "Ours: same, 60 epochs + char LM", "kind": "ours", "r1": 4.33, "r2": 9.13, "tm": 7.35, "src": "", "note": ""},

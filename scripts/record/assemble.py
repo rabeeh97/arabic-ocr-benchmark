@@ -30,8 +30,9 @@ ideas = ("<div class='tbl'><table><thead><tr><th>Idea</th><th>Effect</th><th>Dec
                    for i, e, v in B.IDEAS)
          + "<tr><td>Train on AraMS-style unseen hands (AraMS Maghrebi books)</td><td class='note'>not yet run; proposed next step</td>"
            "<td><span class='pill p-optional'>optional</span></td></tr></tbody></table></div>")
-page = open(T + "record_template.html").read()
+page = open("scripts/record/record_template.html").read()
 page = page.replace("{{STRICT}}", strict).replace("{{IDEAS}}", ideas)
+page = page.replace("{{GALLERY}}", open("results/rasam/clean/record_gallery.html").read())  # scripts/record/data_gallery.py
 page = page.replace("{{PROGRESS}}", open(T + "chart_progress.svg").read()).replace("{{LOMO}}", open(T + "chart_lomo.svg").read())
 assert "{{" not in page
 open("docs/research/maghrebi_htr_record.html", "w").write(page)

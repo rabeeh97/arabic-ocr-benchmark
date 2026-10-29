@@ -1,0 +1,708 @@
+{
+ "rules": "see scripts/rasam_clean_lists.py",
+ "lines": {
+  "r1/train": 5861,
+  "r1/validation": 733,
+  "r1/test": 734,
+  "r2/train": 2973,
+  "r2/validation": 371,
+  "r2/test": 372,
+  "tm/train": 1828,
+  "tm/validation": 228,
+  "tm/test": 229
+ },
+ "dropped": {
+  "r1/test": {
+   "external": 9,
+   "ANY": 17,
+   "garbled": 3,
+   "garbled_page": 2,
+   "shifted": 2,
+   "truncated": 2,
+   "vertical": 2
+  },
+  "r1/train": {
+   "garbled_page": 41,
+   "ANY": 127,
+   "garbled": 41,
+   "external": 53,
+   "vertical": 3,
+   "shifted": 2,
+   "truncated": 2,
+   "blank": 2
+  },
+  "r1/validation": {
+   "garbled": 3,
+   "ANY": 13,
+   "external": 9,
+   "garbled_page": 2
+  },
+  "r2/test": {
+   "blank": 2,
+   "ANY": 2
+  },
+  "r2/train": {
+   "shifted": 5,
+   "ANY": 21,
+   "vertical": 2,
+   "blank": 12,
+   "garbled": 2
+  },
+  "r2/validation": {
+   "garbled": 2,
+   "ANY": 6,
+   "shifted": 3,
+   "blank": 1
+  },
+  "tm/test": {
+   "garbled": 2,
+   "ANY": 2
+  },
+  "tm/train": {
+   "garbled": 12,
+   "ANY": 13,
+   "blank": 1
+  },
+  "tm/validation": {
+   "garbled": 1,
+   "ANY": 1
+  }
+ },
+ "agreement_with_manual_check": {
+  "manual_lines_matched": 4553,
+  "manual_invalid": 71,
+  "auto_flagged_in_matched": 88,
+  "both": 21,
+  "auto_precision_vs_manual": 0.239,
+  "auto_recall_vs_manual": 0.296
+ },
+ "reasons": {
+  "RASAM-1/train/000014": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000033": [
+   "garbled"
+  ],
+  "RASAM-1/train/000037": [
+   "external"
+  ],
+  "RASAM-1/train/000074": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/000179": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/000256": [
+   "garbled"
+  ],
+  "RASAM-1/train/000306": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000380": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000393": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000430": [
+   "garbled"
+  ],
+  "RASAM-1/train/000451": [
+   "external"
+  ],
+  "RASAM-1/train/000511": [
+   "garbled"
+  ],
+  "RASAM-1/train/000555": [
+   "vertical"
+  ],
+  "RASAM-1/train/000709": [
+   "garbled"
+  ],
+  "RASAM-1/train/000714": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000756": [
+   "vertical"
+  ],
+  "RASAM-1/train/000781": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000867": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/000906": [
+   "external"
+  ],
+  "RASAM-1/train/001032": [
+   "shifted"
+  ],
+  "RASAM-1/train/001172": [
+   "garbled"
+  ],
+  "RASAM-1/train/001199": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/001259": [
+   "truncated"
+  ],
+  "RASAM-1/train/001276": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/001279": [
+   "external"
+  ],
+  "RASAM-1/train/001349": [
+   "external"
+  ],
+  "RASAM-1/train/001412": [
+   "garbled"
+  ],
+  "RASAM-1/train/001437": [
+   "external"
+  ],
+  "RASAM-1/train/001454": [
+   "external"
+  ],
+  "RASAM-1/train/001504": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/001529": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/001538": [
+   "external"
+  ],
+  "RASAM-1/train/001547": [
+   "garbled"
+  ],
+  "RASAM-1/train/001555": [
+   "external"
+  ],
+  "RASAM-1/train/001558": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/001608": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/001711": [
+   "external"
+  ],
+  "RASAM-1/train/001743": [
+   "external"
+  ],
+  "RASAM-1/train/001779": [
+   "garbled"
+  ],
+  "RASAM-1/train/001863": [
+   "external"
+  ],
+  "RASAM-1/train/001990": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/002004": [
+   "blank"
+  ],
+  "RASAM-1/train/002055": [
+   "external"
+  ],
+  "RASAM-1/train/002098": [
+   "external"
+  ],
+  "RASAM-1/train/002104": [
+   "garbled"
+  ],
+  "RASAM-1/train/002173": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/002296": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/002361": [
+   "garbled"
+  ],
+  "RASAM-1/train/002388": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/002463": [
+   "garbled"
+  ],
+  "RASAM-1/train/002470": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/002526": [
+   "garbled"
+  ],
+  "RASAM-1/train/002562": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/002587": [
+   "garbled"
+  ],
+  "RASAM-1/train/002643": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/002661": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/002740": [
+   "garbled"
+  ],
+  "RASAM-1/train/002761": [
+   "shifted"
+  ],
+  "RASAM-1/train/002782": [
+   "garbled"
+  ],
+  "RASAM-1/train/002816": [
+   "external"
+  ],
+  "RASAM-1/train/002886": [
+   "garbled"
+  ],
+  "RASAM-1/train/002905": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/002917": [
+   "external"
+  ],
+  "RASAM-1/train/003007": [
+   "external"
+  ],
+  "RASAM-1/train/003020": [
+   "external"
+  ],
+  "RASAM-1/train/003029": [
+   "garbled"
+  ],
+  "RASAM-1/train/003034": [
+   "external"
+  ],
+  "RASAM-1/train/003052": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/003091": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/003140": [
+   "external"
+  ],
+  "RASAM-1/train/003168": [
+   "external"
+  ],
+  "RASAM-1/train/003278": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/003299": [
+   "garbled"
+  ],
+  "RASAM-1/train/003430": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/003470": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/003540": [
+   "external"
+  ],
+  "RASAM-1/train/003615": [
+   "external"
+  ],
+  "RASAM-1/train/003648": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/003678": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/003770": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/003883": [
+   "garbled"
+  ],
+  "RASAM-1/train/003971": [
+   "garbled"
+  ],
+  "RASAM-1/train/004004": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/004026": [
+   "external"
+  ],
+  "RASAM-1/train/004124": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004135": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004222": [
+   "external"
+  ],
+  "RASAM-1/train/004292": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004354": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/004358": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004399": [
+   "external"
+  ],
+  "RASAM-1/train/004404": [
+   "garbled"
+  ],
+  "RASAM-1/train/004405": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004479": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004514": [
+   "garbled"
+  ],
+  "RASAM-1/train/004521": [
+   "garbled"
+  ],
+  "RASAM-1/train/004601": [
+   "external"
+  ],
+  "RASAM-1/train/004723": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004734": [
+   "vertical"
+  ],
+  "RASAM-1/train/004762": [
+   "external"
+  ],
+  "RASAM-1/train/004784": [
+   "garbled"
+  ],
+  "RASAM-1/train/004803": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004912": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004963": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/004979": [
+   "garbled"
+  ],
+  "RASAM-1/train/004980": [
+   "garbled"
+  ],
+  "RASAM-1/train/004982": [
+   "blank"
+  ],
+  "RASAM-1/train/005155": [
+   "garbled"
+  ],
+  "RASAM-1/train/005158": [
+   "garbled"
+  ],
+  "RASAM-1/train/005189": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/train/005212": [
+   "garbled"
+  ],
+  "RASAM-1/train/005223": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/005247": [
+   "truncated"
+  ],
+  "RASAM-1/train/005315": [
+   "garbled"
+  ],
+  "RASAM-1/train/005344": [
+   "external"
+  ],
+  "RASAM-1/train/005353": [
+   "external"
+  ],
+  "RASAM-1/train/005370": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/005425": [
+   "external"
+  ],
+  "RASAM-1/train/005435": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/005438": [
+   "garbled_page"
+  ],
+  "RASAM-1/train/005442": [
+   "external"
+  ],
+  "RASAM-1/train/005482": [
+   "garbled"
+  ],
+  "RASAM-1/train/005487": [
+   "external"
+  ],
+  "RASAM-1/train/005526": [
+   "external"
+  ],
+  "RASAM-1/train/005536": [
+   "external"
+  ],
+  "RASAM-1/train/005700": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/train/005818": [
+   "external"
+  ],
+  "RASAM-1/validation/000036": [
+   "garbled"
+  ],
+  "RASAM-1/validation/000069": [
+   "garbled"
+  ],
+  "RASAM-1/validation/000119": [
+   "external"
+  ],
+  "RASAM-1/validation/000122": [
+   "external"
+  ],
+  "RASAM-1/validation/000153": [
+   "garbled_page"
+  ],
+  "RASAM-1/validation/000158": [
+   "external"
+  ],
+  "RASAM-1/validation/000315": [
+   "external"
+  ],
+  "RASAM-1/validation/000436": [
+   "external"
+  ],
+  "RASAM-1/validation/000450": [
+   "garbled_page"
+  ],
+  "RASAM-1/validation/000451": [
+   "external"
+  ],
+  "RASAM-1/validation/000464": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/validation/000513": [
+   "external"
+  ],
+  "RASAM-1/validation/000516": [
+   "external"
+  ],
+  "RASAM-1/test/000000": [
+   "external"
+  ],
+  "RASAM-1/test/000018": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/test/000037": [
+   "external",
+   "garbled_page"
+  ],
+  "RASAM-1/test/000132": [
+   "garbled_page"
+  ],
+  "RASAM-1/test/000156": [
+   "external"
+  ],
+  "RASAM-1/test/000185": [
+   "shifted"
+  ],
+  "RASAM-1/test/000200": [
+   "truncated"
+  ],
+  "RASAM-1/test/000214": [
+   "external",
+   "garbled"
+  ],
+  "RASAM-1/test/000369": [
+   "external"
+  ],
+  "RASAM-1/test/000378": [
+   "external"
+  ],
+  "RASAM-1/test/000430": [
+   "external"
+  ],
+  "RASAM-1/test/000478": [
+   "external"
+  ],
+  "RASAM-1/test/000587": [
+   "shifted"
+  ],
+  "RASAM-1/test/000656": [
+   "vertical"
+  ],
+  "RASAM-1/test/000677": [
+   "garbled"
+  ],
+  "RASAM-1/test/000709": [
+   "truncated"
+  ],
+  "RASAM-1/test/000710": [
+   "vertical"
+  ],
+  "RASAM-2/train/000153": [
+   "shifted"
+  ],
+  "RASAM-2/train/000168": [
+   "vertical"
+  ],
+  "RASAM-2/train/000190": [
+   "blank"
+  ],
+  "RASAM-2/train/000352": [
+   "blank"
+  ],
+  "RASAM-2/train/000463": [
+   "blank"
+  ],
+  "RASAM-2/train/000469": [
+   "garbled"
+  ],
+  "RASAM-2/train/000684": [
+   "shifted"
+  ],
+  "RASAM-2/train/000750": [
+   "garbled"
+  ],
+  "RASAM-2/train/001051": [
+   "blank"
+  ],
+  "RASAM-2/train/001532": [
+   "blank"
+  ],
+  "RASAM-2/train/001831": [
+   "blank"
+  ],
+  "RASAM-2/train/001858": [
+   "blank"
+  ],
+  "RASAM-2/train/001974": [
+   "shifted"
+  ],
+  "RASAM-2/train/002117": [
+   "blank"
+  ],
+  "RASAM-2/train/002162": [
+   "shifted"
+  ],
+  "RASAM-2/train/002337": [
+   "blank"
+  ],
+  "RASAM-2/train/002802": [
+   "blank"
+  ],
+  "RASAM-2/train/002819": [
+   "vertical"
+  ],
+  "RASAM-2/train/002913": [
+   "blank"
+  ],
+  "RASAM-2/train/002951": [
+   "blank"
+  ],
+  "RASAM-2/train/002956": [
+   "shifted"
+  ],
+  "RASAM-2/validation/000092": [
+   "garbled"
+  ],
+  "RASAM-2/validation/000150": [
+   "shifted"
+  ],
+  "RASAM-2/validation/000193": [
+   "blank"
+  ],
+  "RASAM-2/validation/000233": [
+   "garbled"
+  ],
+  "RASAM-2/validation/000235": [
+   "shifted"
+  ],
+  "RASAM-2/validation/000255": [
+   "shifted"
+  ],
+  "RASAM-2/test/000117": [
+   "blank"
+  ],
+  "RASAM-2/test/000306": [
+   "blank"
+  ],
+  "tarima/train/000093": [
+   "garbled"
+  ],
+  "tarima/train/000184": [
+   "garbled"
+  ],
+  "tarima/train/001162": [
+   "garbled"
+  ],
+  "tarima/train/001187": [
+   "garbled"
+  ],
+  "tarima/train/001288": [
+   "garbled"
+  ],
+  "tarima/train/001291": [
+   "garbled"
+  ],
+  "tarima/train/001301": [
+   "garbled"
+  ],
+  "tarima/train/001392": [
+   "blank"
+  ],
+  "tarima/train/001486": [
+   "garbled"
+  ],
+  "tarima/train/001536": [
+   "garbled"
+  ],
+  "tarima/train/001684": [
+   "garbled"
+  ],
+  "tarima/train/001697": [
+   "garbled"
+  ],
+  "tarima/train/001747": [
+   "garbled"
+  ],
+  "tarima/validation/000005": [
+   "garbled"
+  ],
+  "tarima/test/000042": [
+   "garbled"
+  ],
+  "tarima/test/000166": [
+   "garbled"
+  ]
+ }
+}

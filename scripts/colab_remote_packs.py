@@ -29,6 +29,10 @@ for p in packs:
         cmd += ["--channel", p["channel"]]
     if p.get("holdout"):
         cmd += ["--holdout", *p["holdout"]]
+    if p.get("drop"):
+        cmd += ["--drop", p["drop"]]
+    if p.get("fold"):
+        cmd += ["--fold", p["fold"], "--fold-index", str(p.get("fold_index", 0))]
     subprocess.run(cmd, check=True, env=env)
     timing[os.path.basename(p["out"])] = round(time.time() - t, 1)
 os.makedirs("/content/crnn_out", exist_ok=True)

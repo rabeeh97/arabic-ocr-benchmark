@@ -14,6 +14,7 @@ import base64
 import glob
 import html
 import io
+import json
 import pickle
 import re
 import unicodedata
@@ -48,31 +49,40 @@ def xml_lines(xml_path: Path) -> tuple[list[dict], int]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="results/rasam/repairs/rasam2_recut.pkl")
+    ap.add_argument("--crop-check", type=Path, help="also re-cut every RASAM-1/2 crop that rasam_crop_check.py scores below --thr "
+                    "(published crop shows another place of the page), not only the degenerate ones")
+    ap.add_argument("--thr", type=float, default=0.2)
     a = ap.parse_args()
+    flagged = set()
+    if a.crop_check:
+        flagged = {r["id"] for r in json.loads(a.crop_check.read_text())["lines"] if r["status"] == "ok" and r["corr"] < a.thr}
     repairs, cards, unmatched = {}, [], []
     page_cache: dict = {}
-    for split in ("train", "validation", "test"):
+    for name, sub in (("RASAM-1", "rasam1"), ("RASAM-2", "rasam2")) if a.crop_check else (("RASAM-2", "rasam2"),):
+      for split in ("train", "validation", "test"):
         idx = 0
-        for f in sorted(glob.glob(f"{ROOT}/snapshots/*/data/{split}-*.parquet")):
+        for f in sorted(glob.glob(f"{ROOT.rsplit('--', 1)[0]}--{name}/snapshots/*/data/{split}-*.parquet")):
             for r in pq.read_table(f, columns=["image", "transcription", "manuscript_name", "image_name"]).to_pylist():
                 i = idx
                 idx += 1
                 old = Image.open(io.BytesIO(r["image"]["bytes"]))
-                if old.size[1] >= 8:
+                if old.size[1] >= 8 and f"{name}/{split}/{i:06d}" not in flagged:
                     continue
                 stem = f"{r['manuscript_name']}_{r['image_name']}"
-                xp = PAGES / "rasam-dataset-main/page/rasam2" / f"{stem}.xml"
+                xp = PAGES / "rasam-dataset-main/page" / sub / f"{stem}.xml"
                 ip = PAGES / "images" / f"{stem}.jpg"
                 if not (xp.exists() and ip.exists()):
-                    unmatched.append((split, i, stem, "page files missing"))
+                    unmatched.append((name, split, i, stem, "page files missing"))
                     continue
                 if stem not in page_cache:
+                    if len(page_cache) >= 8:  # pages can be 20 Mpx: keep a few
+                        page_cache.pop(next(iter(page_cache)))
                     page_cache[stem] = (xml_lines(xp), Image.open(ip).convert("RGB"))
                 (lines, xml_w), page = page_cache[stem]
                 t = norm(r["transcription"])
                 cand = [L for L in lines if L["text"] == t] or sorted(lines, key=lambda L: -fuzz.ratio(L["text"], t))[:1]
                 if not cand or fuzz.ratio(cand[0]["text"], t) < 90:
-                    unmatched.append((split, i, stem, "no matching XML line"))
+                    unmatched.append((name, split, i, stem, "no matching XML line"))
                     continue
                 s = page.size[0] / xml_w
                 poly = [(x * s, y * s) for x, y in cand[0]["poly"]]
@@ -85,12 +95,12 @@ def main() -> None:
                 new = Image.composite(crop, black, m)
                 buf = io.BytesIO()
                 new.save(buf, "PNG")
-                repairs[("RASAM-2", split, i)] = {"bytes": buf.getvalue(), "xml_line": cand[0]["id"], "page": stem, "match": fuzz.ratio(cand[0]["text"], t)}
+                repairs[(name, split, i)] ={"bytes": buf.getvalue(), "xml_line": cand[0]["id"], "page": stem, "match": fuzz.ratio(cand[0]["text"], t)}
                 th = new.copy()
                 th.thumbnail((900, 120))
                 tb = io.BytesIO()
                 th.save(tb, "JPEG", quality=70)
-                cards.append(f"<div class=c><div class=m>{split} #{i} · {html.escape(stem)} · XML {cand[0]['id']} · old crop {old.size[0]}x{old.size[1]} px → new {new.size[0]}x{new.size[1]} px</div>"
+                cards.append(f"<div class=c><div class=m>{name} {split} #{i} · {html.escape(stem)} · XML {cand[0]['id']} · old crop {old.size[0]}x{old.size[1]} px → new {new.size[0]}x{new.size[1]} px</div>"
                              f"<img src='data:image/jpeg;base64,{base64.b64encode(tb.getvalue()).decode()}'><div dir=rtl class=t>{html.escape(r['transcription'])}</div></div>")
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     pickle.dump(repairs, open(a.out, "wb"))
@@ -98,7 +108,8 @@ def main() -> None:
                  ".c{border:1px solid #8884;border-radius:8px;padding:8px;margin:8px 0}img{max-width:100%;display:block}.m{font-size:12px;opacity:.75}.t{font-size:17px}</style>"
                  f"<h1>RASAM-2: {len(repairs)} degenerate crops re-cut from the original pages</h1><p>unmatched: {len(unmatched)} {html.escape(str(unmatched[:10]))}</p>{''.join(cards)}")
     Path(a.out).with_suffix(".html").write_text(page_html)
-    (Path.home() / "colab_staging/dashboard/rasam2_recut.html").write_text(page_html)
+    if not a.crop_check:
+        (Path.home() / "colab_staging/dashboard/rasam2_recut.html").write_text(page_html)
     print(f"re-cut {len(repairs)} lines; unmatched {len(unmatched)}: {unmatched[:5]}")
     print("by split:", {sp: sum(1 for k in repairs if k[1] == sp) for sp in ("train", "validation", "test")})
 

@@ -1,0 +1,32 @@
+{
+ "name": "clean-folds",
+ "gpu": "T4",
+ "max_units": 1.2,
+ "max_minutes": 75,
+ "poll_s": 60,
+ "sync_every_s": 600,
+ "final_sync_grace_min": 15,
+ "uploads": [
+  ["scripts/xai_train_aligner.py", "/content/xai_train_aligner.py"],
+  ["scripts/rasam_prepare_crnn_data.py", "/content/rasam_prepare_crnn_data.py"],
+  ["scripts/colab_remote_packs.py", "/content/colab_remote_packs.py"],
+  ["scripts/colab_remote_readcf.py", "/content/colab_remote_readcf.py"],
+  ["results/rasam/repairs/rasam_recut_v2.pkl", "/content/rasam_recut_v2.pkl"],
+  ["results/rasam/clean/folds.json", "/content/folds.json"]
+ ],
+ "setup": [
+  "PACKS='[{\"out\": \"/content/pack_f0.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam_recut_v2.pkl\", \"fold\": \"/content/folds.json\", \"fold_index\": 0}, {\"out\": \"/content/pack_f1.pkl\", \"sets\": [\"RASAM-1\", \"RASAM-2\", \"tarima\"], \"height\": 96, \"repair\": \"/content/rasam_recut_v2.pkl\", \"fold\": \"/content/folds.json\", \"fold_index\": 1}]' python /content/colab_remote_packs.py"
+ ],
+ "runs": [
+  {
+   "label": "folds_train",
+   "cmd": "mkdir -p /content/crnn_out; for f in 0 1; do python -u /content/xai_train_aligner.py --data /content/pack_f$f.pkl --out /content/crnn_out/fold$f --epochs 15 --bs 16 --device cuda --width 0.5 --train-sets r1 r2 tm --eval-every 3 --seed 0 --geom-aug > /content/crnn_out/fold$f.log 2>&1 & done; wait; tail -3 /content/crnn_out/fold0.log /content/crnn_out/fold1.log"
+  },
+  {
+   "label": "folds_read",
+   "cmd": "python /content/colab_remote_readcf.py /content/pack_f0.pkl /content/crnn_out/fold0 /content/crnn_out/read_f0.json && python /content/colab_remote_readcf.py /content/pack_f1.pkl /content/crnn_out/fold1 /content/crnn_out/read_f1.json"
+  }
+ ],
+ "artifacts": ["/content/crnn_out"],
+ "local_out": "results/rasam/colab_runs"
+}

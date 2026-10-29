@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import glob
 import io
+import json
 import pickle
 import re
 import unicodedata
@@ -83,7 +84,13 @@ def main() -> None:
                     help="sets whose validation AND test lines also become training lines (e.g. RASAM-1 when only RASAM-2 test is scored)")
     ap.add_argument("--holdout", nargs="*", default=[], help="manuscript names held out entirely (leave-manuscript-out): ALL their lines "
                     "(train, validation and test) become test lines with dataset tag <tag>ho (e.g. r2ho), so no page of them is seen in training")
+    ap.add_argument("--drop", type=Path, help="JSON list of line keys '<set>/<split>/<parquet index>' to leave out (data cleaning; any split)")
+    ap.add_argument("--fold", type=Path, help="JSON {'<manuscript>|<page>': fold}: cross-fitting. With --fold-index i, train/validation lines on "
+                    "fold-i pages keep their roles, those on other pages become test lines tagged <tag>cf; the official test lines are left out")
+    ap.add_argument("--fold-index", type=int, default=0)
     a = ap.parse_args()
+    drop = set(json.loads(a.drop.read_text())) if a.drop else set()
+    fold = json.loads(a.fold.read_text()) if a.fold else None
     global H, MAX_W, CHANNEL
     H, MAX_W = a.height, 24 * a.height
     CHANNEL = a.channel
@@ -99,6 +106,13 @@ def main() -> None:
             for f in sorted(glob.glob(f"{ROOT}{name}/snapshots/*/data/{split}-*.parquet")):
                 for rec in pq.read_table(f).to_pylist():
                     k += 1
+                    key = f"{name}/{split}/{k:06d}"
+                    pk = f"{rec['manuscript_name']}|{rec['image_name']}"
+                    if key in drop:
+                        dropped[(name, split, "drop list")] = dropped.get((name, split, "drop list"), 0) + 1
+                        continue
+                    if fold is not None and (split == "test" or pk not in fold):
+                        continue
                     label = clean(rec["transcription"], a.labels)
                     raw = Image.open(io.BytesIO(rec["image"]["bytes"]))
                     if (name, split, k) in repairs:
@@ -110,19 +124,21 @@ def main() -> None:
                     arr = prep(raw)
                     held = rec["manuscript_name"] in a.holdout
                     r_role, r_tag = ("test", TAGS[name] + "ho") if held else (role, TAGS[name])
+                    if fold is not None and fold[pk] != a.fold_index:
+                        r_role, r_tag = "test", TAGS[name] + "cf"
                     # CTC needs a frame per character; test lines are never dropped (scored as they are)
                     if r_role != "test" and (not label or arr.shape[1] // 4 < len(label) + 2):
                         dropped[(name, split)] = dropped.get((name, split), 0) + 1
                         continue
                     rows.append({"id": f"{name}/{split}/{n:06d}", "dataset": r_tag, "role": r_role, "label": label, "img": arr,
-                                 "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"], "orig_split": split})
+                                 "manuscript": rec["manuscript_name"], "page": rec["image_name"], "region": rec["region_type"], "orig_split": split, "key": key})
                     n += 1
             print(name, split, n, flush=True)
     split_name = f"rasam-published-{a.labels}" + (f"-alltrain-{'-'.join(a.all_train_sets)}" if a.all_train_sets else "") + ("-repaired" if repairs else "") \
         + (f"-holdout-{len(a.holdout)}ms" if a.holdout else "")
     print("repaired crops used:", n_repaired, flush=True)
     pickle.dump({"H": H, "split": split_name, "rows": rows}, open(a.out, "wb"), protocol=4)
-    print("dropped (no CTC room / empty):", {f"{k[0]}/{k[1]}": v for k, v in dropped.items()}, "->", a.out, f"{a.out.stat().st_size / 1e6:.0f} MB")
+    print("dropped:", {"/".join(map(str, k)): v for k, v in dropped.items()}, "->", a.out, f"{a.out.stat().st_size / 1e6:.0f} MB")
 
 
 if __name__ == "__main__":

@@ -124,11 +124,23 @@ footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule);
 @media (max-width: 520px) { body { font-size: 15px; } ol.findings li { padding-left: 46px; } nav.toc { position: static; } }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 html { scroll-behavior: smooth; }
+.gallery { display: grid; gap: 10px; }
+details.cat > summary { font-family: var(--display); font-size: 1.05rem; }
+.card { border-top: 1px solid var(--rule); padding: 12px 0 6px; display: grid; gap: 6px; min-width: 0; }
+.card img { display: block; max-width: 100%; height: auto; background: #fff; border: 1px solid var(--rule); }
+.card details { padding: 6px 10px; }
+.cmeta { font-size: 0.8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.cnote { margin: 0; font-size: 0.88rem; }
+.lab { font-size: 0.74rem; color: var(--muted); font-family: var(--mono); }
+.rd { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: baseline; font-size: 0.8rem; }
+.rd .txt { font-size: 1.12rem; line-height: 1.7; overflow-wrap: anywhere; }
+.rd .bad { color: var(--bad); background: var(--bad-bg); }
+.rd .miss { color: var(--muted); text-decoration: line-through; }
 </style>
 
 <div class="wrap">
 <header class="top">
-  <span class="eyebrow">Research record · Maghrebi handwritten text recognition · 22–28 Oct 2026</span>
+  <span class="eyebrow">Research record · Maghrebi handwritten text recognition · 22–29 Oct 2026</span>
   <h1>Maghrebi HTR Record</h1>
   <p class="lede">Everything we ran on RASAM-1, RASAM-2, TariMa and the AraMS-28k Maghrebi books: our own CTC line recogniser, re-runs of every public model we could get, a strict leaderboard on the official test lines, the data defects we found, and what the published numbers actually measure.</p>
   <div class="meta">
@@ -141,7 +153,7 @@ html { scroll-behavior: smooth; }
 <nav class="toc" aria-label="Contents">
   <a href="#summary">Summary</a><a href="#findings">Findings</a><a href="#leaderboard">Leaderboard</a><a href="#why">Why scores differ</a>
   <a href="#progress">Our model</a><a href="#ideas">Ideas tried</a><a href="#lomo">Unseen manuscripts</a><a href="#arams">AraMS</a>
-  <a href="#calfa">Calfa gap</a><a href="#data">Data audit</a><a href="#external">External models</a><a href="#datasets">Datasets</a><a href="#next">Next</a>
+  <a href="#calfa">Calfa gap</a><a href="#data">Data audit</a><a href="#clean">Cleaning</a><a href="#vlm">VLMs</a><a href="#external">External models</a><a href="#datasets">Datasets</a><a href="#next">Next</a>
 </nav>
 
 <section id="summary">
@@ -149,9 +161,9 @@ html { scroll-behavior: smooth; }
   <h2>Where we stand</h2>
   <p>We set out to find the best achievable RASAM score and to test whether better data gives better results. We ended with a small, fully documented recogniser that is second only to Calfa's unpublished models on the official test lines, and with measurements showing that most published RASAM numbers describe reading inside known manuscripts, not new ones.</p>
   <div class="tiles">
-    <div class="tile"><span class="n">4.12<small>%</small></span><span class="l">RASAM-1 official test, our best (Calfa reports 3.6)</span></div>
-    <div class="tile"><span class="n">8.92<small>%</small></span><span class="l">RASAM-2 official test, our best (Calfa reports 4.9)</span></div>
-    <div class="tile"><span class="n">7.04<small>%</small></span><span class="l">TariMa official test, our best (Calfa reports 3.9)</span></div>
+    <div class="tile"><span class="n">3.72<small>%</small></span><span class="l">RASAM-1 official test, our best (Calfa reports 3.6)</span></div>
+    <div class="tile"><span class="n">7.71<small>%</small></span><span class="l">RASAM-2 official test, our best (Calfa reports 4.9)</span></div>
+    <div class="tile"><span class="n">5.67<small>%</small></span><span class="l">TariMa official test, our best (Calfa reports 3.9)</span></div>
     <div class="tile"><span class="n">+48<small>%</small></span><span class="l">more errors on the same RASAM-2 test lines when the manuscript is unseen (9.87 vs 6.69 %)</span></div>
     <div class="tile"><span class="n">13.94<small>%</small></span><span class="l">AraMS Maghrebi test book, never seen (published models trained on AraMS: 32.71 / 37.88 %)</span></div>
     <div class="tile"><span class="n">2.4<small> M</small></span><span class="l">parameters in our CRNN; Calfa's described architecture is 52.9 M and did worse for us</span></div>
@@ -168,10 +180,12 @@ html { scroll-behavior: smooth; }
     <li><b class="h">Maghrebi training data beats more mixed-script data <span class="pill p-new">new</span></b><p>On AraMS's own Maghrebi test book our model, trained only on about 11k RASAM and TariMa lines, reads 13.94 % CER. The AraMS paper reports 32.71 % (Kraken) and 37.88 % (HATFormer) for models trained on AraMS's 19.7k mixed-script training lines. Only 4.3 % of that book's lines share a five-word phrase with our training text, so the LM is not recalling known text.</p></li>
     <li><b class="h">Two "Maghrebi" AraMS books use eastern fa / qaf dotting <span class="pill p-new">new</span></b><p>Our model reads 19.2 % (book_20) and 15.4 % (book_24) of their fa as qaf, against about 0.5 % in the other two books; book_24 also has 296 qaf read as ta. In Maghrebi script fa has its dot below and qaf one dot above, so a Maghrebi reader takes an eastern fa for qaf. Books 19 and 20 copy the same text (the Muwatta) and score 6.2 vs 19.7 %, so the hand decides, not the text.</p></li>
     <li><b class="h">Public models are contaminated or crop-sensitive <span class="pill p-new">new</span></b><p>HAFITH has 362 of the 734 official RASAM-1 test lines in its training or validation data; on the 372 clean lines it scores 12.34 % (its overall 6.27 %, self-reported 4.95 %). Phoenix reports 7.67 % on its own split but reads the official crops at 23.1 %. Calfa's AMIDDA VLM reproduces close to its card (21.7 / 28.3 / 24.8 % vs 25.0 / 27.6 / 24.2 %).</p></li>
-    <li><b class="h">The data has defects that move scores <span class="pill p-new">new</span></b><p>80 RASAM-2 crops of MS 1936 are 1 to 7 px tall (66 train, 7 validation, 7 test); the 7 test crops alone hold 12 % of our RASAM-2 errors. Two RASAM-1 test crops are swapped with their neighbours, and the two RASAM sets use different conventions for hamza and diacritics.</p></li>
+    <li><b class="h">The data has defects that move scores <span class="pill p-new">new</span></b><p>183 of the 250 published MS 1936 crops (RASAM-2) are broken: 80 are 1 to 7 px tall and 103 were cut from the wrong place on the page (other lines, the library stamp, bare paper), although the PAGE-XML polygons are right. Only 3 of its 22 test crops are correct. Re-cutting them from the pages takes RASAM-2 test CER from 10.79 to 7.81 % (greedy, same model). Some RASAM-1 references are uncorrected HTR output: MS 1977 pages 0017, 0071 and 0158 were reported in 2021 (calfa-co/rasam-dataset#2) and never fixed. Others are shifted by one line, repeat text, or miss the end of the line.</p></li>
     <li><b class="h">Diversity beats volume <span class="pill p-kept">verified</span></b><p>Adding RASAM-1 to RASAM-2 training cut RASAM-2 error by a third (18.47 → 12.84 % greedy). Adding about 1,800 lines from 26 new TariMa documents improved every test set. Adding about 1,470 more lines from the three RASAM-1 manuscripts the model already knew did nothing.</p></li>
     <li><b class="h">Calfa's lead is not explained by anything they published <span class="pill p-neg">negative</span></b><p>Per-corpus specialisation, keeping more vertical detail, and Calfa's own described architecture (52.9 M parameters, trained as long as it kept improving) all ended at or behind our 2.4 M model. The remaining candidates are unpublished training details or training data that overlapped today's test pages. A question to Calfa is drafted and not yet sent.</p></li>
-    <li><b class="h">Cheap decoding gains are real; weight averaging is not <span class="pill p-kept">verified</span></b><p>A character 8-gram LM in the CTC beam search gives −0.4 to −2.5 points; AraGPT2 rescoring of the 10-best adds −0.2 to −0.3 on every set. EMA and checkpoint averaging give nothing over the one-cycle schedule. Seed noise is 0.1 to 0.2 points.</p></li>
+    <li><b class="h">Cheap decoding gains are real; weight averaging is not <span class="pill p-kept">verified</span></b><p>A character 8-gram LM in the CTC beam search gives −0.4 to −2.5 points; AraGPT2 rescoring of the 10-best adds −0.2 to −0.3 on every set. EMA and checkpoint averaging give nothing over the one-cycle schedule. Seed noise is 0.1 to 0.2 points. A two-model ensemble at the hypothesis level (pool both models' 10-best lists and score them with both models and the LMs) is the best system so far: 3.72 / 7.71 / 5.67 %. Averaging the two models' frame outputs instead makes things worse.</p></li>
+    <li><b class="h">Cleaning the training data did not help; cleaning the test data did <span class="pill p-neg">negative</span></b><p>We re-cut 250 crops from the page images and dropped 202 lines (161 train, 20 validation, 21 test) by automatic rules plus the manual check proposed in calfa-co/rasam-dataset PR #7. The same 60-epoch recipe retrained on the clean training set is within seed noise of the original on every test view (clean test: 4.19 / 7.65 / 8.39 % vs 4.24 / 7.79 / 8.24 %). About 2 % bad training references do not hurt a CTC model measurably. The fixes to the test set do change the scores: RASAM-2 10.8 → 7.8 %, RASAM-1 4.8 → 4.2 % (greedy).</p></li>
+    <li><b class="h">A 7B Arabic VLM fine-tune halves AMIDDA's error <span class="pill p-new">new</span></b><p>On the same 200 official test lines per set, our light LoRA fine-tune of Fanar-2-Oryx 7B (1 epoch, vision frozen, about 5k RASAM lines in a 22k mixed set) reads 11.2 / 17.2 % against 22.7 / 28.8 % for Calfa's AMIDDA 1.0 Line 4B. Our same-size Qwen3-VL-4B fine-tune trails AMIDDA (27.3 / 32.1 %). Every VLM is still far behind the 2.4 M-parameter CRNN.</p></li>
   </ol>
 </section>
 
@@ -363,7 +377,10 @@ html { scroll-behavior: smooth; }
   <div class="tbl"><table>
     <thead><tr><th>Finding</th><th>Where</th><th>Effect</th></tr></thead>
     <tbody>
-      <tr><td>80 degenerate crops, 1 to 7 px tall (66 train / 7 val / 7 test), re-cut by us from the page images</td><td>RASAM-2, MS 1936</td><td class="note">7 test crops hold 12 % of our RASAM-2 errors (9.66 → 8.59 % without them); training crops teach filler output</td></tr>
+      <tr><td>183 of 250 crops broken: 80 degenerate (1 to 7 px tall) and 103 cut from the wrong place on the page; only 3 of 22 test crops right. PAGE-XML polygons are correct, so we re-cut all of them</td><td>RASAM-2, MS 1936</td><td class="note">Re-cut test: RASAM-2 10.79 → 7.81 % (greedy, same model); broken training crops teach filler output</td></tr>
+      <tr><td>Uncorrected HTR references: whole pages of model-like garble (reported 2021 in <a href="https://github.com/calfa-co/rasam-dataset/issues/2">issue #2</a>, closed without a fix; <a href="https://github.com/calfa-co/rasam-dataset/issues/6">issue #6</a>, 2025, open)</td><td>RASAM-1 MS 1977 p. 0017 / 0071 / 0158; TariMa RES_MON_8_5560 p. 0169</td><td class="note">Models read fluent Arabic and are scored wrong; the RASAM papers say references were HTR pre-transcriptions proofread by volunteers</td></tr>
+      <tr><td>References shifted by one line, repeated, or missing the end of the line</td><td>RASAM-1 MS 609 p. 00203, MS 1977</td><td class="note">Found by cross-fitted readings (each line read by a model that never saw its page)</td></tr>
+      <tr><td>A manual validation of 4,649 RASAM-1 lines marks 165 invalid (<a href="https://github.com/calfa-co/rasam-dataset/pull/7">PR #7</a>, open)</td><td>RASAM-1 MS 1977, MS 417</td><td class="note">Used as a drop source in our cleaning; our automatic rules find 30 % of its invalid lines</td></tr>
       <tr><td>MS 1936 contains Tamazight (Berber) written in Arabic script</td><td>RASAM-2</td><td class="note">Neither Arabic training data nor an Arabic LM covers it; 46 % CER even unseen-but-repaired</td></tr>
       <tr><td>Two test crops show the neighbouring line (each reading is the other's reference)</td><td>RASAM-1, MS 609</td><td class="note">Small, but every system pays for it</td></tr>
       <tr><td>Some references look garbled where models read fluent Arabic</td><td>RASAM-1</td><td class="note">Label noise or diplomatic transcription; needs manual review</td></tr>
@@ -380,6 +397,59 @@ html { scroll-behavior: smooth; }
     <li><b>Thin letters lost or invented, about 12 %.</b> <span class="ar">ل م ا</span> at 64 px; the move to 96 px removed about a sixth of RASAM-1 errors.</li>
     <li><b>Fragments.</b> Catchwords 51–60 %, marginalia about 8–16 %, very short lines worst.</li>
   </ul>
+  <h3>Sample cases, by defect</h3>
+  <div class="callout"><p><b>These are samples, not a complete list.</b> Each line was checked by eye on 29 October; many more lines have the same problems, in the training data too. Each card shows the crop the models see, our re-cut where we made one, the line in its page (PAGE-XML polygon in red), the reference (GT), and the reading of our best system (red = differs from GT, struck = missing). The tag says what our automatic cleaning did with the line.</p></div>
+  <div class="gallery">{{GALLERY}}</div>
+</section>
+
+<section id="clean">
+  <span class="eyebrow">Cleaning</span>
+  <h2>Fix what can be fixed, drop the rest, retrain</h2>
+  <p>No hand edits. <b>Fixed:</b> 250 crops re-cut from the page images, wherever the published crop is degenerate or does not match the page region its PAGE-XML polygon outlines (masked correlation &lt; 0.2, calibrated on test). <b>Dropped:</b> lines whose reference is wrong. Wrong references were found by reading every line with a model trained on the other half of the pages (2 page folds per manuscript), plus the lines marked invalid in PR #7's manual check.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Rule</th><th class="num">Lines</th><th>What fires it</th></tr></thead>
+    <tbody>
+      <tr><td>Invalid in the manual check (PR #7)</td><td class="num">71</td><td class="note">Matched to our lines by page and text; 71 of its 165 invalid lines matched</td></tr>
+      <tr><td>Garbled reference</td><td class="num">66</td><td class="note">≥ 1 bit/char less plausible than the reading under the OpenITI char LM, ≥ 25 % CER apart (not MS 1936, which is partly Berber)</td></tr>
+      <tr><td>Garbled page</td><td class="num">45</td><td class="note">Pages where the median line is ≥ 0.6 bit/char less plausible than its reading; finds exactly MS 1977 p. 0017 / 0071 / 0158</td></tr>
+      <tr><td>Blank crop</td><td class="num">18</td><td class="note">&lt; 1 % ink while the reference has text</td></tr>
+      <tr><td>Reference of another line</td><td class="num">12</td><td class="note">Another line's reading on the page matches the reference much better</td></tr>
+      <tr><td>Vertical crop</td><td class="num">7</td><td class="note">Crop ≥ 1.8× taller than wide (vertical margin notes)</td></tr>
+      <tr><td>Reference misses text</td><td class="num">4</td><td class="note">The reading covers the reference and adds ≥ 15 % + 5 characters</td></tr>
+      <tr><td><b>Any rule</b></td><td class="num"><b>202</b></td><td class="note">161 train, 20 validation, 21 test (17 RASAM-1, 2 RASAM-2, 2 TariMa). Catches 10 of the 15 bad test lines checked by eye</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Retrained on the clean training set (60 epochs, same recipe and seed), greedy CER %</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Test view</th><th>Model</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th class="num">TariMa</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="2">Official (as published)</td><td>original training data</td><td class="num">4.77</td><td class="num">10.79</td><td class="num">8.31</td></tr>
+      <tr class="ours"><td>clean training data</td><td class="num">4.73</td><td class="num">10.97</td><td class="num">8.45</td></tr>
+      <tr><td rowspan="2">Crops re-cut</td><td>original training data</td><td class="num">4.77</td><td class="num">7.81</td><td class="num">8.31</td></tr>
+      <tr class="ours"><td>clean training data</td><td class="num">4.73</td><td class="num">7.70</td><td class="num">8.45</td></tr>
+      <tr><td rowspan="2">Clean (re-cut, bad references dropped; 717 / 370 / 227 lines)</td><td>original training data</td><td class="num">4.24</td><td class="num">7.79</td><td class="num">8.24</td></tr>
+      <tr class="ours"><td>clean training data</td><td class="num">4.19</td><td class="num">7.65</td><td class="num">8.39</td></tr>
+    </tbody>
+  </table></div>
+  <p>Every difference between the two models is within seed noise (0.1 to 0.2 points). The original model was already trained on the 80 re-cut degenerate crops, so the main new training fix (103 misplaced crops, about 1 % of the data) is small. The fixes to the test set are what move the numbers. One seed; with the char LM to follow.</p>
+</section>
+
+<section id="vlm">
+  <span class="eyebrow">Vision-language models</span>
+  <h2>Our VLM fine-tunes against AMIDDA</h2>
+  <p>Same lines for every row: official test lines 0–199 of each set (the references match AMIDDA's line for line). Our fine-tunes are one LoRA recipe (rank 16, 1 epoch, vision encoder frozen) on a 22k-line mix of Muharaf, AraMS, about 3k RASAM-1 and 2k RASAM-2 training lines, with no TariMa. They have not yet been scored on the full test sets or on TariMa.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th>Base / size</th><th class="num">RASAM-1</th><th class="num">RASAM-2</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr class="ours"><td>Fanar-2-Oryx fine-tune (ours)</td><td class="note">7B, Qwen2.5-VL architecture</td><td class="num"><b class="best">11.17</b></td><td class="num"><b class="best">17.18</b></td><td class="note">Best VLM; base alone reads 65.7 / 68.6</td></tr>
+      <tr class="ours"><td>AIN-7B fine-tune (ours)</td><td class="note">7B, Qwen2-VL</td><td class="num">18.04</td><td class="num">24.04</td><td class="note">Base alone 39.5 / 39.7</td></tr>
+      <tr><td>AMIDDA 1.0 Line 4B (Calfa, our re-run)</td><td class="note">4B, Qwen3.5 LoRA on all AMIDDA data</td><td class="num">22.65</td><td class="num">28.80</td><td class="note">Full test 21.73 / 28.25 / 24.84 (TariMa)</td></tr>
+      <tr class="ours"><td>Qwen3-VL-8B fine-tune (ours)</td><td class="note">8B</td><td class="num">25.41</td><td class="num">32.15</td><td class="note">Base alone 89.1 / 86.8</td></tr>
+      <tr class="ours"><td>Qwen3-VL-4B fine-tune (ours)</td><td class="note">4B, same size as AMIDDA</td><td class="num">27.25</td><td class="num">32.07</td><td class="note">Full RASAM-1 test 26.62; base alone over 140</td></tr>
+      <tr><td>Our CRNN, 60 epochs, greedy (for scale)</td><td class="note">2.4 M</td><td class="num">5.26</td><td class="num">10.10</td><td class="note">Best system on these lines is lower still</td></tr>
+    </tbody>
+  </table></div>
+  <p>Scaling Qwen from 4B to 8B barely helps; an Arabic-adapted 7B base is what makes the difference. At equal size AMIDDA is ahead of our Qwen3-VL-4B, as expected from its newer base and much larger all-Maghrebi training set.</p>
 </section>
 
 <section id="external">
@@ -429,11 +499,11 @@ html { scroll-behavior: smooth; }
     <li><b>Three seeds of the final recipe</b> (about 3 units), so the best numbers have error bars.</li>
     <li><b>Paper:</b> a benchmark and reproducibility paper. Working title: "What do RASAM numbers measure? Split leakage, contamination and a strict benchmark for Maghrebi HTR."</li>
   </ul>
-  <p class="mono" style="color:var(--muted)">Colab: balance 149.70 units on 28 Oct, floor 140. All Colab runs saved on the Mac, the SSD and the Hugging Face run mirror.</p>
+  <p class="mono" style="color:var(--muted)">Colab: balance 106.9 units on 29 Oct, floor 100. All Colab runs saved on the Mac, the SSD and the Hugging Face run mirror.</p>
 </section>
 
 <footer>
   <span>Sources: design doc <code>docs/research/designs/rasam-crnn-and-replication.md</code> §6–§19, <code>docs/research/rasam-leaderboard.md</code>, <code>results/rasam/*.json</code>; branch <code>worktree-xai-attribution-spike</code>.</span>
-  <span>Built 28 October 2026. CER figures are micro CER on the official Hugging Face test lines unless stated; one seed unless stated.</span>
+  <span>Built 29 October 2026. CER figures are micro CER on the official Hugging Face test lines unless stated; one seed unless stated.</span>
 </footer>
 </div>

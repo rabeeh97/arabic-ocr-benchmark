@@ -1,0 +1,1 @@
+Source: https://github.com/calfa-co/rasam-dataset/pull/7 (open PR by GitHub user khiro45, 2025-07-31): manual validation of RASAM-1 lines (MS 1977, MS 417), 'valid' False = corrupted image or wrong/missing label. Downloaded 2026-10-29 from khiro45/rasam-dataset main.
