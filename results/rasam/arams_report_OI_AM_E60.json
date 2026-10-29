@@ -1,0 +1,75 @@
+{
+ "name": "OI_AM_E60",
+ "books": {
+  "am03": {
+   "label": "book_03 (AraMS test)",
+   "n_lines": 3661,
+   "alpha": 0.4,
+   "beta": 1.5,
+   "greedy_letters": 19.708622387746423,
+   "ref_chars": 185807,
+   "lm_letters": 16.629082865554043,
+   "greedy_arams_norm": 16.115108688047275,
+   "lm_arams_norm": 13.08293013718536,
+   "page_cer_median": 12.77,
+   "page_cer_p10": 10.18,
+   "page_cer_p90": 16.26,
+   "lines_with_seen_5gram_pct": 4.3
+  },
+  "am19": {
+   "label": "book_19",
+   "n_lines": 666,
+   "alpha": 0.4,
+   "beta": 1.5,
+   "greedy_letters": 11.4635177011926,
+   "ref_chars": 42596,
+   "lm_letters": 8.942154192881961,
+   "greedy_arams_norm": 7.681472438726641,
+   "lm_arams_norm": 5.270447929383041,
+   "page_cer_median": 4.7,
+   "page_cer_p10": 2.24,
+   "page_cer_p90": 9.09,
+   "lines_with_seen_5gram_pct": 30.3
+  },
+  "am20": {
+   "label": "book_20",
+   "n_lines": 2163,
+   "alpha": 0.4,
+   "beta": 1.5,
+   "greedy_letters": 26.367796725939755,
+   "ref_chars": 131763,
+   "lm_letters": 22.120777456493855,
+   "greedy_arams_norm": 22.831143796058075,
+   "lm_arams_norm": 18.6167588776819,
+   "page_cer_median": 17.77,
+   "page_cer_p10": 11.31,
+   "page_cer_p90": 25.0,
+   "lines_with_seen_5gram_pct": 21.3
+  },
+  "am24": {
+   "label": "book_24",
+   "n_lines": 2400,
+   "alpha": 0.4,
+   "beta": 1.5,
+   "greedy_letters": 27.16407900472821,
+   "ref_chars": 149105,
+   "lm_letters": 23.25207068844103,
+   "greedy_arams_norm": 23.058247543677275,
+   "lm_arams_norm": 19.277019549981556,
+   "page_cer_median": 18.95,
+   "page_cer_p10": 13.33,
+   "page_cer_p90": 26.54,
+   "lines_with_seen_5gram_pct": 13.0
+  }
+ },
+ "all": {
+  "letters": {
+   "greedy": 22.924729662596143,
+   "lm": 19.346084893897356
+  },
+  "arams_norm": {
+   "greedy": 19.180161446459742,
+   "lm": 15.674758625564778
+  }
+ }
+}

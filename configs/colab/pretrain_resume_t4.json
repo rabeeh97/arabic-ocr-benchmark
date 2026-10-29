@@ -33,23 +33,23 @@
     ],
     [
       "/Users/rabeehjouni/colab_staging/jobs/job-pretrain-t4-10282207/content/crnn_out/pre_A/ckpt_last.pt",
-      "/content/crnn_out/pre_A/ckpt_last.pt"
+      "/content/preA_ckpt_last.pt"
     ],
     [
       "/Users/rabeehjouni/colab_staging/jobs/job-pretrain-t4-10282207/content/crnn_out/pre_A/model_best.pt",
-      "/content/crnn_out/pre_A/model_best.pt"
+      "/content/preA_model_best.pt"
     ],
     [
       "/Users/rabeehjouni/colab_staging/jobs/job-pretrain-t4-10282207/content/crnn_out/pre_A/config.json",
-      "/content/crnn_out/pre_A/config.json"
+      "/content/preA_config.json"
     ],
     [
       "/Users/rabeehjouni/colab_staging/jobs/job-pretrain-t4-10282207/content/crnn_out/pre_A/charset.json",
-      "/content/crnn_out/pre_A/charset.json"
+      "/content/preA_charset.json"
     ]
   ],
   "setup": [
-    "mkdir -p /content/crnn_out/pre_A"
+    "mkdir -p /content/crnn_out/pre_A && for n in ckpt_last.pt model_best.pt config.json charset.json; do mv /content/preA_$n /content/crnn_out/pre_A/$n; done && ls -la /content/crnn_out/pre_A"
   ],
   "runs": [
     {

@@ -606,3 +606,35 @@ test lines of that manuscript are read greedily and with the char 8-gram LM (alp
 - Caveat: K = 0 and the in-split numbers come from the same §18 runs, so the comparison is on identical test lines; the test sets are small
   (14-31 lines per manuscript), so single-manuscript numbers are noisy.
 - The first launch failed in setup (shell-quoting bug in the generated download command, 0.9 units lost); fixed in `make_fewshot_spec.py`.
+
+
+## 21. A classical-Arabic character LM from OpenITI in the CTC decoder (2026-10-28/29, Mac CPU, verified)
+
+Our char 8-gram LM is trained on the RASAM / TariMa training text only. `scripts/big_char_lm.py` builds the
+same Witten-Bell 8-gram from OpenITI classical Arabic (AbderrahmanSkiredj1/MLM_classical_arabic_openiti: 831,886 passages, 106.5 M
+characters after keeping only our charset; `/Volumes/PortableSSD/models/rasam-replication/lm/openiti_o8.npz`, 624 MB, numpy sorted keys).
+`rasam_lm_decode.py --big-lm ... --lambdas ...` interpolates it with the in-domain LM, p = lam * p_in + (1 - lam) * p_openiti, and tunes lam
+(1.0 = in-domain only) with alpha and beta on 200 validation lines per set (AraMS books: RASAM-2 validation). Chain: `scripts/chain_openiti_lm.sh`.
+Model: the 60-epoch baseline (reptm_h96_w05_e60_ema). Results: `results/rasam/lm/OI_*`, `results/rasam/arams_report_OI_AM_E60.json`.
+
+Bits per character on held-out text (200 lines each): RASAM-2 validation 3.17 (in-domain) / 3.92 (OpenITI) / **2.81** (mix 0.5); TariMa
+validation 3.43 / 4.00 / **3.00**; AraMS book_03 3.64 / 2.67 / **2.45**. Neither LM alone wins everywhere; the mix wins everywhere.
+
+| Test set (raw CER unless noted) | Greedy | In-domain LM | + OpenITI | Change | lam chosen |
+|---|---|---|---|---|---|
+| RASAM-1 | 4.74 | 4.33 | **4.07** | -0.26 | 0.7 |
+| RASAM-2 | 10.91 | 9.13 | **8.82** | -0.31 | 0.5 |
+| RASAM-2, repaired crops | 9.77 | 8.05 | **7.88** | -0.17 | 0.5 |
+| TariMa | 8.34 | 7.35 | **6.95** | -0.40 | 0.3 |
+| AraMS book_03 (arams_norm) | 16.12 | 13.94 | **13.08** | -0.86 | 0.5 |
+| AraMS book_19 (arams_norm) | 7.68 | 6.21 | **5.27** | -0.94 | 0.5 |
+| AraMS book_20 (arams_norm) | 22.83 | 19.74 | **18.62** | -1.12 | 0.5 |
+| AraMS book_24 (arams_norm) | 23.06 | 20.87 | **19.28** | -1.59 | 0.5 |
+| AraMS all four (arams_norm) | 19.18 | 16.82 | **15.67** | -1.15 | |
+
+- **The general LM helps everywhere, and three to four times more on manuscripts from another collection** (about -1 point on AraMS vs
+  -0.2 to -0.4 on the in-split RASAM / TariMa test sets): the in-domain LM knows RASAM's texts, the OpenITI LM knows classical Arabic.
+- Validation chose a smaller in-domain share where the in-domain text is small (TariMa 0.3) and a larger one for RASAM-1 (0.7).
+- These are char-LM numbers before AraGPT2 N-best rescoring (§16, which gave a further -0.2 to -0.4); the two have not been stacked yet.
+- Cost: the 624 MB model loads in seconds and runs on the Mac CPU; no GPU needed.
+- The first book_24 decode was cut off when the SSD disconnected (2026-10-29 night); it was rerun with the same chosen settings.

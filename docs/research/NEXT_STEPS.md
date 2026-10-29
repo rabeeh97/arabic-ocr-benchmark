@@ -31,7 +31,11 @@ below except E1 runs offline on CPU.
   - [x] (2026-10-27, design §18) **RS4c** Leave-manuscript-out on RASAM-2: unseen-manuscript 9.87 % vs in-split 6.69 % on the same official test lines (without MS 1936); +3.2 points.
   - [x] (2026-10-26, design §16: RASAM-1 4.12 %, RASAM-2 8.92 %, TariMa 7.04 %) **RS4b** Combine 60 epochs + AraGPT2 rescoring (N-best from the 60-epoch model, LM scoring on a Colab CPU session, about 0.1 units); seeds only if it becomes the headline.
 - [x] (2026-10-28, design §19) **RS4d** AraMS-28k Maghrebi books as unseen manuscripts: book_03 13.94 % (paper: Kraken 32.71, HATFormer 37.88); books 20 / 24 use eastern fa / qaf dotting (15-19 % of fa read as qaf).
-- [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel).
+- [x] (2026-10-28, design §20) **RS4e** Few-shot adaptation to an unseen RASAM-2 manuscript: 10 lines close a third of the unseen-manuscript gap, 100 lines about 80 %, the whole pool (~220 lines) all of it (9.87 -> 6.63 % vs in-split 6.69 %).
+- [x] (2026-10-29, design §21) **RS4f** OpenITI classical-Arabic char 8-gram mixed into the decoder: -0.2 to -0.4 points in-split, about -1.1 on the AraMS Maghrebi books (16.82 -> 15.67 %). Next: stack with AraGPT2 rescoring.
+- [ ] **RS4g** Pretrain our CRNN on ~40k extra Arabic lines (Muharaf, KHATT, Baybars, Iskandar), then fine-tune on RASAM / TariMa (`scripts/make_pretrain_spec.py`; first session lost at stage-A epoch 4, resumed 2026-10-29).
+- [ ] **RS4h** Fine-tune HATFormer on RASAM / TariMa (idea 3, later).
+- [ ] **RS5** Re-score our VLM fine-tunes on the full RASAM test sets (not the 200-line panel). AMIDDA 1.0 Line 4B (25.0 / 27.6 / 24.2 %) sits where our suite_v1 Qwen3-VL-4B LoRA was (27 / 33 %); Fanar (11 / 17 %) and AIN are only scored on the 200-line panel.
 - [ ] **RS6** Draft (do not send) a request to the RASAM authors for the word-based CRNN weights or test line lists.
 
 **CPU track**
