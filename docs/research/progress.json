@@ -237,6 +237,11 @@
  ],
  "updates": [
   {
+   "date": "2026-10-29",
+   "kind": "finding",
+   "text": "Maghrebi HTR push: a CRNN pretrained on 40k extra lines is no better alone, but a hypothesis-level ensemble with our E60 CRNN plus an OpenITI char LM reaches 3.72 / 7.92 / 5.91 CER (RASAM-1 / RASAM-2 / TariMa), down from 4.12 / 8.92 / 7.04. 5 % of test lines fail for both models and carry 26 % of errors; 13 of them have wrong references (MS 1977, MS 609, RES_MON_8_5560)."
+  },
+  {
    "date": "2026-10-07",
    "kind": "finding",
    "text": "The end-of-line error rise is a pipeline artefact. Gemini 3.6 Flash spends its default 256-token output budget on hidden reasoning and truncates 74 % of lines; four more models pile up at their caps. No line end is cropped in the images."

@@ -1,0 +1,100 @@
+{
+  "name": "lmscore-push",
+  "gpu": "CPU",
+  "max_units": 0.7,
+  "max_minutes": 420,
+  "poll_s": 60,
+  "sync_every_s": 600,
+  "final_sync_grace_min": 10,
+  "uploads": [
+    [
+      "scripts/colab_remote_lmscore.py",
+      "/content/colab_remote_lmscore.py"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_r1__r1__test.json",
+      "/content/NB_PX_E60_r1__r1__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_r1__r1__val_nbest.json",
+      "/content/NB_PX_E60_r1__r1__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_r2__r2__test.json",
+      "/content/NB_PX_E60_r2__r2__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_r2__r2__val_nbest.json",
+      "/content/NB_PX_E60_r2__r2__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_tm__tm__test.json",
+      "/content/NB_PX_E60_tm__tm__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_E60_tm__tm__val_nbest.json",
+      "/content/NB_PX_E60_tm__tm__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_r1__r1__test.json",
+      "/content/NB_PX_PT_r1__r1__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_r1__r1__val_nbest.json",
+      "/content/NB_PX_PT_r1__r1__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_r2__r2__test.json",
+      "/content/NB_PX_PT_r2__r2__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_r2__r2__val_nbest.json",
+      "/content/NB_PX_PT_r2__r2__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_tm__tm__test.json",
+      "/content/NB_PX_PT_tm__tm__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_PT_tm__tm__val_nbest.json",
+      "/content/NB_PX_PT_tm__tm__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_r1__r1__test.json",
+      "/content/NB_PX_ENS_r1__r1__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_r1__r1__val_nbest.json",
+      "/content/NB_PX_ENS_r1__r1__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_r2__r2__test.json",
+      "/content/NB_PX_ENS_r2__r2__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_r2__r2__val_nbest.json",
+      "/content/NB_PX_ENS_r2__r2__val_nbest.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_tm__tm__test.json",
+      "/content/NB_PX_ENS_tm__tm__test.json"
+    ],
+    [
+      "results/rasam/lm/NB_PX_ENS_tm__tm__val_nbest.json",
+      "/content/NB_PX_ENS_tm__tm__val_nbest.json"
+    ]
+  ],
+  "setup": [
+    "python -c 'import transformers, torch; print(\"transformers\", transformers.__version__, \"torch\", torch.__version__)'"
+  ],
+  "runs": [
+    {
+      "label": "lmscore_aragpt2_base",
+      "cmd": "python -u /content/colab_remote_lmscore.py aubmindlab/aragpt2-base"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}

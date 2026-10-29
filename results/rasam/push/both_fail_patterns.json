@@ -1,0 +1,311 @@
+{
+ "threshold_cer": 20.0,
+ "sources": {
+  "E60_r1": "char-LM 1-best",
+  "PT_r1": "char-LM 1-best",
+  "ENS_r1": "char-LM 1-best",
+  "E60_r2": "char-LM 1-best",
+  "PT_r2": "char-LM 1-best",
+  "ENS_r2": "char-LM 1-best",
+  "E60_tm": "char-LM 1-best",
+  "PT_tm": "char-LM 1-best",
+  "ENS_tm": "char-LM 1-best"
+ },
+ "n_lines": 1335,
+ "n_both_fail": 68,
+ "n_only_one_fails": 29,
+ "share_of_errors": {
+  "E60": 26.2,
+  "PT": 25.2,
+  "ENS": 27.4
+ },
+ "per_set": {
+  "r1": {
+   "lines": 734,
+   "both_fail": 23
+  },
+  "r2": {
+   "lines": 372,
+   "both_fail": 38
+  },
+  "tm": {
+   "lines": 229,
+   "both_fail": 7
+  }
+ },
+ "manuscripts": [
+  [
+   "BULAC_MS_ARA_1936",
+   19,
+   22,
+   86.4
+  ],
+  [
+   "BULAC_MS_ARA_1977",
+   14,
+   353,
+   4.0
+  ],
+  [
+   "BULAC_MS_ARA_609",
+   8,
+   271,
+   3.0
+  ],
+  [
+   "BULAC_MS_ARA_1947",
+   6,
+   25,
+   24.0
+  ],
+  [
+   "BULAC_MS_ARA_24",
+   3,
+   25,
+   12.0
+  ],
+  [
+   "BULAC_RES_MON_8_5560",
+   3,
+   15,
+   20.0
+  ],
+  [
+   "BULAC_RES_MON_8_7199",
+   3,
+   6,
+   50.0
+  ],
+  [
+   "BULAC_MS_ARA_1926",
+   2,
+   31,
+   6.5
+  ],
+  [
+   "BULAC_MS_ARA_65",
+   2,
+   30,
+   6.7
+  ],
+  [
+   "BULAC_MS_ARA_417",
+   1,
+   110,
+   0.9
+  ],
+  [
+   "BULAC_MS_ARA_1960",
+   1,
+   26,
+   3.8
+  ],
+  [
+   "BULAC_MS_ARA_1944",
+   1,
+   27,
+   3.7
+  ],
+  [
+   "BULAC_MS_ARA_1943",
+   1,
+   29,
+   3.4
+  ],
+  [
+   "BULAC_MS_ARA_1983",
+   1,
+   24,
+   4.2
+  ],
+  [
+   "BULAC_MS_ARA_6",
+   1,
+   20,
+   5.0
+  ]
+ ],
+ "base_rate_pct": 5.1,
+ "categories": {
+  "models agree, reference differs (label?)": {
+   "lines": 20,
+   "share_of_E60_errors_pct": 9.3
+  },
+  "MS 1936 (degenerate crops)": {
+   "lines": 19,
+   "share_of_E60_errors_pct": 13.3
+  },
+  "catchword / short line": {
+   "lines": 15,
+   "share_of_E60_errors_pct": 0.9
+  },
+  "other hard line": {
+   "lines": 10,
+   "share_of_E60_errors_pct": 2.3
+  },
+  "margin text": {
+   "lines": 4,
+   "share_of_E60_errors_pct": 0.3
+  }
+ },
+ "median": {
+  "chars": {
+   "both_fail": 43.5,
+   "all": 67
+  },
+  "px_per_char": {
+   "both_fail": 15.87,
+   "all": 14.27
+  },
+  "contrast": {
+   "both_fail": 144.5,
+   "all": 165.0
+  }
+ },
+ "rate": {
+  "digits_punct": {
+   "both_fail": 2.9,
+   "all": 2.5
+  },
+  "models_agree": {
+   "both_fail": 29.4,
+   "all": 88.8
+  }
+ },
+ "short_lines_lt15": {
+  "lines": 56,
+  "both_fail_pct": 32.1
+ },
+ "lowest_contrast_fifth": {
+  "both_fail_pct": 9.4
+ },
+ "edit_types_E60_pct": {
+  "replace": 39.4,
+  "insert": 15.1,
+  "delete": 45.5
+ },
+ "error_position_tenths_pct": [
+  21.3,
+  10.1,
+  8.1,
+  13.5,
+  5.6,
+  15.5,
+  8.9,
+  7.8,
+  3.3,
+  5.9
+ ],
+ "top_substitutions_E60": [
+  [
+   "ر->د",
+   6
+  ],
+  [
+   "ب->م",
+   4
+  ],
+  [
+   "ه->د",
+   3
+  ],
+  [
+   "ف->ب",
+   3
+  ],
+  [
+   "غ->ع",
+   3
+  ],
+  [
+   "ل->ا",
+   3
+  ],
+  [
+   "ه->ة",
+   3
+  ],
+  [
+   "م->ح",
+   2
+  ],
+  [
+   "ص->ه",
+   2
+  ],
+  [
+   "ه->م",
+   2
+  ],
+  [
+   "و->ن",
+   2
+  ],
+  [
+   "ط->ك",
+   2
+  ],
+  [
+   "ت->ث",
+   2
+  ],
+  [
+   "ف->م",
+   2
+  ],
+  [
+   "ه->ى",
+   2
+  ],
+  [
+   "م->ع",
+   2
+  ],
+  [
+   "ة->ه",
+   2
+  ],
+  [
+   "ن->ت",
+   2
+  ],
+  [
+   "ا-> ",
+   2
+  ],
+  [
+   "ح->ك",
+   2
+  ]
+ ],
+ "regions": {
+  "catchword": [
+   8,
+   10
+  ],
+  "MainText": [
+   13,
+   703
+  ],
+  "marginalia": [
+   2,
+   21
+  ],
+  "MainZone": [
+   34,
+   565
+  ],
+  "TableZone": [
+   2,
+   12
+  ],
+  "MarginTextZone": [
+   8,
+   22
+  ],
+  "MarginTextZone:catchword": [
+   1,
+   2
+  ]
+ }
+}

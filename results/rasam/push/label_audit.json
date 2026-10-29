@@ -1,0 +1,25 @@
+{
+ "note": "Manual check (2026-10-29) of the 20 official test lines where E60 and PT both have line CER >= 20 % but agree with each other (<= 10 % apart). Verdict from reading the reference against both readings (and the image in both_fail.html). 'label' = the reference is wrong; 'unclear' = could be the models.",
+ "lines": {
+  "RASAM-1/test/000018": ["label", "garbled reference (uncorrected-HTR-like); both readings are fluent, correct text"],
+  "RASAM-1/test/000037": ["label", "garbled reference"],
+  "RASAM-1/test/000132": ["label", "garbled reference"],
+  "RASAM-1/test/000214": ["label", "garbled reference"],
+  "RASAM-1/test/000677": ["label", "garbled reference"],
+  "RASAM-1/test/000200": ["label", "reference omits a phrase that is in the image (fa-alqahu lahu fa-lamma shariba)"],
+  "RASAM-1/test/000709": ["label", "reference stops before the end of the written line"],
+  "RASAM-1/test/000185": ["label", "reference is another line's text (shifted)"],
+  "RASAM-1/test/000587": ["label", "reference is the text of line 000185's image (shifted)"],
+  "RASAM-1/test/000475": ["label", "reference repeats part of itself"],
+  "tarima/test/000017": ["label", "garbled reference"],
+  "tarima/test/000042": ["label", "garbled reference"],
+  "tarima/test/000194": ["label", "garbled reference"],
+  "RASAM-1/test/000199": ["unclear", "two-letter word"],
+  "RASAM-2/test/000258": ["unclear", "single-letter margin siglum"],
+  "RASAM-2/test/000306": ["unclear", "single-letter margin siglum"],
+  "RASAM-2/test/000300": ["unclear", "first word missed by the models, other differences small"],
+  "RASAM-2/test/000319": ["unclear", "hard margin line"],
+  "RASAM-2/test/000331": ["unclear", "readings stop early: crop or model"],
+  "RASAM-2/test/000353": ["unclear", "mixed model errors"]
+ }
+}

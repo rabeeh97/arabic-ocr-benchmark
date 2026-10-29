@@ -638,3 +638,90 @@ validation 3.43 / 4.00 / **3.00**; AraMS book_03 3.64 / 2.67 / **2.45**. Neither
 - These are char-LM numbers before AraGPT2 N-best rescoring (§16, which gave a further -0.2 to -0.4); the two have not been stacked yet.
 - Cost: the 624 MB model loads in seconds and runs on the Mac CPU; no GPU needed.
 - The first book_24 decode was cut off when the SSD disconnected (2026-10-29 night); it was rerun with the same chosen settings.
+
+## 22. Pretraining on 40k external lines, and pushing the decoder with combined tricks (2026-10-29, Colab T4/CPU + Mac CPU, verified)
+
+**Pretrained model (PT).** Same CRNN (width 0.5, 96 px) trained first on 39,746 in-charset
+external lines (Muharaf 18,955, Baybars 12,197, KHATT 4,444, Iskandar 4,150) together with the
+RASAM/TariMa train lines (stage A, 12 epochs), then fine-tuned on RASAM-1/2 + TariMa only (stage B,
+30 epochs, lr 1e-3, EMA). Packing: `scripts/pretrain_external_pack.py`; spec:
+`scripts/make_pretrain_spec.py`; run `results/rasam/colab_runs/job-pretrain-resume-t4-10291211`.
+Greedy test CER: PT 5.21 / 11.58 / 8.29 vs E60 4.74 / 10.91 / 8.34 (RASAM-1 / RASAM-2 / TariMa).
+**Pretraining does not make a better single model** here — it helps TariMa slightly and hurts
+RASAM — but its errors differ from E60's, which the ensemble below uses.
+
+**Tricks tried together** (`scripts/push_combo.py`, summary `results/rasam/push/push_summary.json`;
+every weight chosen on validation, test read once):
+
+| step | RASAM-1 | RASAM-2 | TariMa |
+|---|---|---|---|
+| E60 greedy | 4.74 | 10.91 | 8.34 |
+| best of 4 other E60 checkpoints (EMA, final, avg of last 10) | 4.77 | 10.75 | 8.31 |
+| frame-level logit average E60+PT | 5.41 | 13.06 | 10.35 |
+| E60 + OpenITI-mixed char LM (§21) | 4.07 | 8.82 | 6.95 |
+| PT + OpenITI-mixed char LM | 4.19 | 8.82 | 6.47 |
+| previous best (E60 + LM + AraGPT2, §21) | 4.12 | 8.92 | 7.04 |
+| **hypothesis ensemble** E60+PT + LM | **3.72** | **7.92** | **5.91** |
+| oracle of the union of both 10-best lists | 2.73 | 6.49 | 4.43 |
+
+- Checkpoint averaging/EMA: nothing (all variants of one run sit within noise).
+- Averaging the two models' frame posteriors *hurts* a lot: two separately trained CTC models fire
+  their spikes at different frames, so the averaged posterior blurs both.
+- What works is combining at the **hypothesis** level: take the union of both models' 10-best
+  lists, score each candidate by w·log P_CTC(E60) + (1−w)·log P_CTC(PT) + α·log P_LM + β·length
+  (exact CTC likelihood under each model), pick the best. w = 0.5 won on all three sets.
+  Gain over the better single model with LM: −0.35 / −0.90 / −0.56 CER.
+- AraGPT2 N-best rescoring of the ensemble lists: see the addendum below.
+
+**Where both models still fail** (`scripts/push_failures.py`, `results/rasam/push/both_fail_patterns.json`,
+visual page `results/rasam/push/both_fail.html`, local only). "Both fail" = line CER ≥ 20 % for
+E60 and for PT (char-LM readings). 68 of 1,335 test lines (5.1 %) — but they carry 26 % of all
+errors; only 29 lines fail for just one model, so the hard lines are shared.
+
+| category | lines | share of all E60 errors |
+|---|---|---|
+| MS 1936 (degenerate 1–7 px crops, §12) | 19 | 13.3 % |
+| both models agree, reference differs | 20 | 9.3 % |
+| other hard line | 10 | 2.3 % |
+| catchword / short line (< 15 chars) | 15 | 0.9 % |
+| margin text | 4 | 0.3 % |
+
+- **Reference errors in the test set.** A manual check of the 20 "models agree" lines
+  (`results/rasam/push/label_audit.json`) found 13 whose reference is wrong: MS 1977 (RASAM-1)
+  references are garbled, uncorrected-HTR-like text (000018, 037, 132, 214, 677) while both models
+  read fluent Arabic; in MS 609 references are shifted between lines (000185 holds another line's
+  text, 000587 holds 000185's) or duplicated (000475); two references omit text present in the
+  image (000200, 000709); TariMa RES_MON_8_5560 has 3 garbled references (000017, 042, 194).
+  The other 7 are unclear (single-letter sigla, a margin line, crop issues).
+  Post hoc and **diagnostic only**: dropping the 13 lines moves the ensemble to
+  3.07 / 7.92 / 5.71 (E60 + LM 3.42 / 8.82 / 6.76) — about 0.65 CER points of RASAM-1 is
+  reference noise. Official numbers stay on the full test set.
+- **Short and peripheral lines.** Catchwords fail 8 of 10 times; lines < 15 chars fail 32 % of the
+  time (vs 5 % overall); margin zones 8/22. These are few characters, so they matter little for CER
+  but a lot for line accuracy.
+- **Error shape.** 45 % of edits are deletions (the models drop characters rather than invent
+  them); 21 % of errors fall in the first tenth of the line (line starts — often a crop/indent
+  issue); failing lines have lower ink contrast (median 144 vs 165). Top substitutions are
+  dot/stroke confusions: ر→د, ب→م, ه→د, ف→ب, غ→ع, ه→ة.
+- Per set: RASAM-2 38/372 lines both-fail (10 %), RASAM-1 23/734, TariMa 7/229.
+
+**Data defects behind the shared failures (2026-10-29, verified by eye on the examples; counts from screens).**
+Examples tab in `results/rasam/push/both_fail.html` (`scripts/rasam_data_issues.py`, list in
+`results/rasam/push/data_issues_curated.json`); screens `scripts/rasam_crop_check.py` → `crop_check.json`,
+`scripts/rasam_data_audit.py` → `data_audit.json`; page view `scripts/rasam_line_context.py`.
+- **MS 1936 crops are mostly broken, not only 1 px tall.** Comparing each published crop with the region its PAGE-XML polygon
+  outlines (masked correlation, calibrated on test lines the models read well): 103 MS 1936 crops show another place of the page
+  (other lines, the BULAC stamp, bare paper), on top of the 80 degenerate ones — 183 of 250 lines; 19 of its 22 test lines. Every
+  other manuscript has at most a few low scores (mostly faint, correct MS 1943 lines). §12 put part of MS 1936's 66 % CER on its
+  Berber text; most of it is the crops. Fix: re-cut from the polygons (the XML is right).
+- **Uncorrected-HTR references come in whole pages.** Ranking RASAM-1 pages by OpenITI char-LM bits/char of the reference puts
+  MS 1977 pages 0017, 0071, 0158 on top — the pages reported as "uncorrected HTR" in calfa-co/rasam-dataset#2 (2021, closed in 2022
+  without a fix). TariMa RES_MON_8_5560 p. 0169 is the same. The references were made by HTR pre-transcription + volunteer
+  proofreading (RASAM papers), which explains pages that were never proofread. High-scoring TariMa pages that are fine: malhun poetry,
+  tables of contents. GitHub XML text = Hugging Face text on every line checked: neither copy was corrected.
+- **Other reference errors:** MS 609 p. 00203 transcriptions shifted one line against the polygons (000185, 000587); doubled text
+  (000475, 000099); text missing at the end or middle (000709, 000200).
+- **Other crop issues:** MS 609 crops hold large parts of neighbouring lines (generous polygons, tall ascenders/descenders);
+  vertical margin notes (000710).
+- The same defects are in train/validation (e.g. 144 broken MS 1936 training crops, which teach the filler "الا الا ان"), so the
+  next step is a clean-data retrain (NEXT_STEPS RS4j, planned).

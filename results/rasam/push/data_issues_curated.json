@@ -1,0 +1,177 @@
+{
+ "note": "Each line below was checked by eye (image, page view, reference, readings) on 2026-10-29. Many more lines have the same problems, including in the training data; the screen tables above give the scale. Official scores are still computed on the published test set as it is.",
+ "evidence": [
+  "<a href=\"https://github.com/calfa-co/rasam-dataset/issues/2\">calfa-co/rasam-dataset#2</a> (2021): MS 1977 pages 0017, 0061, 0062, 0071, 0158 “seem to be uncorrected HTR”. Maintainers asked for a pull request; closed in 2022 without a fix. Our garbled MS 1977 test lines are on pages 0071 and 0158.",
+  "<a href=\"https://github.com/calfa-co/rasam-dataset/issues/6\">calfa-co/rasam-dataset#6</a> (2025, open): RASAM-1 samples that are “corrupted or invalid or missing label”, with screenshots; no fix.",
+  "How the references were made: pages were pre-transcribed by an HTR model and proofread by volunteers during the hackathons (RASAM-1 paper; RASAM-2 paper, CHR 2024). Pages that were never fully proofread keep model-like garble.",
+  "Our own earlier finding (design §12): 80 MS 1936 crops are 1–7 px tall in the Hugging Face copy. The GitHub PAGE-XML text is identical to the Hugging Face text for every line we checked, so neither copy has been corrected.",
+  "Our screens agree with issue #2 independently: ranking RASAM-1 pages by how implausible their references are as Arabic (OpenITI char LM) puts MS 1977 pages 0017, 0071 and 0158 at the top — the three pages the issue calls uncorrected HTR. (High-scoring TariMa pages are mostly dialect poetry and tables of contents, which are fine.)",
+  "Crop check (all splits): 183 of the 250 MS 1936 lines have a broken crop — 80 degenerate and 103 cut from another place of the page (144 of them in train, 20 in validation, 19 of the 22 test lines). Every other manuscript has at most a handful of low scores, mostly faint but correct lines."
+ ],
+ "categories": [
+  {
+   "key": "degenerate",
+   "title": "Crop is empty (1 px tall)",
+   "what": "MS 1936 (RASAM-2): the published crop is 1 px tall, so the model gets a black image. The page view shows the real line.",
+   "fix": "Re-cut from the page image and PAGE-XML (done for the 7 test lines in design §13: the 'repaired' test). Drop or re-cut the 66 training and 7 validation crops.",
+   "examples": [
+    {
+     "id": "RASAM-2/test/000325",
+     "note": "1-px crop; the models output filler (الا الا ان) learned from the 66 broken training crops."
+    },
+    {
+     "id": "RASAM-2/test/000038",
+     "note": "1-px crop."
+    },
+    {
+     "id": "RASAM-2/test/000307",
+     "note": "1-px crop; the reference is ordinary Arabic, so a re-cut line would be readable."
+    }
+   ]
+  },
+  {
+   "key": "wrong-place",
+   "title": "Crop shows another place of the page",
+   "what": "MS 1936 (RASAM-2): the PAGE-XML polygon outlines the right line (page view), but the published crop was cut elsewhere: other lines, the library stamp, or bare paper. 103 of the 250 MS 1936 crops are like this (plus 80 empty ones); only 3 of its 22 test crops are right. So MS 1936's very high error rate is mostly broken crops, not only its Berber text.",
+   "fix": "Re-cut from the PAGE-XML polygon; the crop-check table above lists how many crops are affected per manuscript.",
+   "examples": [
+    {
+     "id": "RASAM-2/test/000276",
+     "note": "The crop shows three other lines; the referenced line (red in the page view) is elsewhere on the page."
+    },
+    {
+     "id": "RASAM-2/test/000330",
+     "note": "The crop shows the BULAC library stamp; the referenced line is an ordinary text line."
+    },
+    {
+     "id": "RASAM-2/test/000122",
+     "note": "The crop is bare paper."
+    },
+    {
+     "id": "RASAM-2/test/000203",
+     "note": "The crop is bare paper with a trace of ink."
+    }
+   ]
+  },
+  {
+   "key": "neighbours",
+   "title": "Crop contains neighbouring lines",
+   "what": "MS 609 (RASAM-1) polygons are generous and the script has tall ascenders and long descenders, so many crops hold large parts of the lines above and below. The model has to guess which line is meant.",
+   "fix": "Tighter crops (polygon mask, or baseline-centred band) for training; report these lines separately.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000587",
+     "note": "Two full lines in one crop; the models read the upper one, which is the line the polygon outlines (the reference is another line, see 'shifted')."
+    },
+    {
+     "id": "RASAM-1/test/000185",
+     "note": "Parts of the lines above and below are inside the crop."
+    },
+    {
+     "id": "RASAM-1/test/000014",
+     "note": "590 px tall crop (median for MS 609 ≈ 300 px)."
+    }
+   ]
+  },
+  {
+   "key": "vertical",
+   "title": "Vertical line",
+   "what": "A marginal note written vertically. The crop is right, but a horizontal-line recogniser cannot read it.",
+   "fix": "Rotate crops taller than wide before recognition, or score them separately.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000710",
+     "note": "Vertical margin note (159 × 471 px)."
+    }
+   ]
+  },
+  {
+   "key": "shifted",
+   "title": "Reference belongs to another line",
+   "what": "MS 609 page 00203: the transcriptions are shifted against the polygons. Each crop carries the text of a neighbouring line; both models read what the crop shows.",
+   "fix": "Re-align the transcriptions of the page (needs a human check), or drop the page.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000185",
+     "note": "The crop shows 'بدا اخذت منه ما تقدما…' (what the models read); the reference is the text of another line on the page."
+    },
+    {
+     "id": "RASAM-1/test/000587",
+     "note": "The reference 'بدا اخذت منه…' is the text that 000185's crop shows; this crop shows 'حضور جميعه والله سبحانه…'."
+    }
+   ]
+  },
+  {
+   "key": "doubled",
+   "title": "Reference repeats itself",
+   "what": "Part of the reference is typed twice.",
+   "fix": "Remove the repeated span.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000475",
+     "note": "The whole line is written twice in the reference."
+    },
+    {
+     "id": "RASAM-1/test/000099",
+     "note": "'فبينما هي نا فبينما هي' — a restart left in the reference."
+    }
+   ]
+  },
+  {
+   "key": "truncated",
+   "title": "Reference is missing text that is in the image",
+   "what": "Both models read more text than the reference has, and the extra text is visible in the crop.",
+   "fix": "Complete the reference.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000709",
+     "note": "The reference stops at 'فاتقوا بذلك'; the image continues 'الحر والبرد وياتيان كل', which both models read."
+    },
+    {
+     "id": "RASAM-1/test/000200",
+     "note": "The reference skips 'فالقاه له فلما شربه' in the middle of the line."
+    }
+   ]
+  },
+  {
+   "key": "garbled",
+   "title": "Reference is garbled (uncorrected HTR)",
+   "what": "The reference is not sensible Arabic, while both models read fluent, correct text. These cluster on whole pages (MS 1977 pages 0071 and 0158; TariMa RES_MON_8_5560 page 0169), which fits pages that were pre-transcribed by HTR and never proofread.",
+   "fix": "Re-transcribe the affected pages (needs someone who reads Maghrebi script); until then drop them from training and report them separately.",
+   "examples": [
+    {
+     "id": "RASAM-1/test/000677",
+     "note": "The image reads 'قال سعيد لو علمت…'; the reference has 'نخاله سعيد لو عليت اث'."
+    },
+    {
+     "id": "RASAM-1/test/000037",
+     "note": "MS 1977 page 0071."
+    },
+    {
+     "id": "RASAM-1/test/000214",
+     "note": "MS 1977 page 0071; almost every word differs from the image."
+    },
+    {
+     "id": "RASAM-1/test/000018",
+     "note": "MS 1977 page 0071, line 1: the exact line reported in issue #2."
+    },
+    {
+     "id": "RASAM-1/test/000132",
+     "note": "MS 1977 page 0158 (also reported in issue #2)."
+    },
+    {
+     "id": "tarima/test/000080",
+     "note": "TariMa MS ARA 410: 'كشفه الله عنا والحمد لله' in the image, 'كنت فه الله عنا والححلم' in the reference."
+    },
+    {
+     "id": "tarima/test/000017",
+     "note": "TariMa RES_MON_8_5560 page 0169."
+    },
+    {
+     "id": "tarima/test/000194",
+     "note": "TariMa RES_MON_8_5560 page 0169."
+    }
+   ]
+  }
+ ]
+}

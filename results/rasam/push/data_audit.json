@@ -1,0 +1,5676 @@
+{
+ "note": "Screens give candidates, not verdicts. bits/char = OpenITI char-LM cross-entropy of the text (lower = more plausible Arabic). MS 1936 contains Berber in Arabic script, so its references score high without being wrong.",
+ "p95_bpc_ref": 5.938,
+ "median_bpc_test_reference": 3.744,
+ "median_bpc_test_reading": 3.6,
+ "counts": {
+  "r1/test": {
+   "tall crop (neighbour lines)": 2,
+   "garbled reference?": 6,
+   "truncated reference?": 2,
+   "shifted reference?": 1,
+   "vertical line": 2
+  },
+  "r1/train": {
+   "repeated text in reference?": 89,
+   "vertical line": 6,
+   "tall crop (neighbour lines)": 2
+  },
+  "r1/validation": {
+   "repeated text in reference?": 7
+  },
+  "r2/test": {
+   "degenerate crop": 7,
+   "tall crop (neighbour lines)": 1,
+   "blank crop (no text where the reference has some)": 4,
+   "repeated text in reference?": 2
+  },
+  "r2/train": {
+   "tall crop (neighbour lines)": 33,
+   "degenerate crop": 66,
+   "repeated text in reference?": 40,
+   "vertical line": 4
+  },
+  "r2/validation": {
+   "degenerate crop": 7,
+   "repeated text in reference?": 9,
+   "vertical line": 1,
+   "tall crop (neighbour lines)": 3
+  },
+  "tm/train": {
+   "tall crop (neighbour lines)": 2,
+   "repeated text in reference?": 13
+  },
+  "tm/validation": {
+   "repeated text in reference?": 1
+  }
+ },
+ "per_manuscript": [
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "lines": 250,
+   "median_bpc": 6.07,
+   "share_above_p95": 52.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_8967",
+   "lines": 30,
+   "median_bpc": 5.17,
+   "share_above_p95": 46.7
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_7199",
+   "lines": 78,
+   "median_bpc": 5.51,
+   "share_above_p95": 35.9
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_3955",
+   "lines": 20,
+   "median_bpc": 5.63,
+   "share_above_p95": 35.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_5560",
+   "lines": 105,
+   "median_bpc": 4.0,
+   "share_above_p95": 16.2
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_4_3424",
+   "lines": 40,
+   "median_bpc": 4.63,
+   "share_above_p95": 15.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "lines": 250,
+   "median_bpc": 4.69,
+   "share_above_p95": 14.0
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-2297_btv1b11001977p",
+   "lines": 78,
+   "median_bpc": 3.99,
+   "share_above_p95": 9.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1926",
+   "lines": 240,
+   "median_bpc": 3.54,
+   "share_above_p95": 7.1
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-4617_btv1b10030580s",
+   "lines": 163,
+   "median_bpc": 4.17,
+   "share_above_p95": 6.7
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_427",
+   "lines": 145,
+   "median_bpc": 4.4,
+   "share_above_p95": 6.2
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_5336",
+   "lines": 109,
+   "median_bpc": 3.9,
+   "share_above_p95": 5.5
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "lines": 1166,
+   "median_bpc": 4.25,
+   "share_above_p95": 5.2
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_410",
+   "lines": 97,
+   "median_bpc": 3.74,
+   "share_above_p95": 5.2
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_65",
+   "lines": 250,
+   "median_bpc": 3.98,
+   "share_above_p95": 4.4
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-6898_btv1b10030178f",
+   "lines": 137,
+   "median_bpc": 4.11,
+   "share_above_p95": 4.4
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_1977",
+   "lines": 3394,
+   "median_bpc": 3.56,
+   "share_above_p95": 4.0
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_609",
+   "lines": 2771,
+   "median_bpc": 3.96,
+   "share_above_p95": 4.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1944",
+   "lines": 250,
+   "median_bpc": 3.59,
+   "share_above_p95": 4.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_4_3416",
+   "lines": 53,
+   "median_bpc": 4.17,
+   "share_above_p95": 3.8
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_4_3423",
+   "lines": 33,
+   "median_bpc": 4.57,
+   "share_above_p95": 3.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_794",
+   "lines": 71,
+   "median_bpc": 3.83,
+   "share_above_p95": 2.8
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-7214_btv1b10031231c",
+   "lines": 83,
+   "median_bpc": 3.94,
+   "share_above_p95": 2.4
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_453",
+   "lines": 41,
+   "median_bpc": 3.83,
+   "share_above_p95": 2.4
+  },
+  {
+   "set": "tm",
+   "ms": "MMSH_MS_050",
+   "lines": 84,
+   "median_bpc": 3.82,
+   "share_above_p95": 2.4
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1943",
+   "lines": 250,
+   "median_bpc": 3.46,
+   "share_above_p95": 2.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_6",
+   "lines": 250,
+   "median_bpc": 3.94,
+   "share_above_p95": 2.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_9",
+   "lines": 250,
+   "median_bpc": 3.94,
+   "share_above_p95": 2.0
+  },
+  {
+   "set": "tm",
+   "ms": "MMSH_MS_056",
+   "lines": 52,
+   "median_bpc": 3.97,
+   "share_above_p95": 1.9
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1960",
+   "lines": 250,
+   "median_bpc": 3.64,
+   "share_above_p95": 1.6
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_24",
+   "lines": 250,
+   "median_bpc": 3.55,
+   "share_above_p95": 1.6
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1946",
+   "lines": 230,
+   "median_bpc": 3.48,
+   "share_above_p95": 0.9
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-7024_btv1b10031132f",
+   "lines": 121,
+   "median_bpc": 3.77,
+   "share_above_p95": 0.8
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_23",
+   "lines": 250,
+   "median_bpc": 3.38,
+   "share_above_p95": 0.4
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_45b",
+   "lines": 250,
+   "median_bpc": 3.72,
+   "share_above_p95": 0.4
+  },
+  {
+   "set": "tm",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "lines": 376,
+   "median_bpc": 3.47,
+   "share_above_p95": 0.3
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_ARA_MS_1982",
+   "lines": 250,
+   "median_bpc": 3.56,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1983",
+   "lines": 250,
+   "median_bpc": 3.21,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_436C",
+   "lines": 89,
+   "median_bpc": 3.88,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "MMSH_MS_051_1",
+   "lines": 94,
+   "median_bpc": 3.72,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "MMSH_MS_051_2",
+   "lines": 57,
+   "median_bpc": 3.38,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_4734",
+   "lines": 34,
+   "median_bpc": 3.52,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_6212",
+   "lines": 52,
+   "median_bpc": 3.04,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_4352",
+   "lines": 43,
+   "median_bpc": 3.86,
+   "share_above_p95": 0.0
+  }
+ ],
+ "per_page_top40": [
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174492",
+   "lines": 22,
+   "median_bpc": 7.65,
+   "share_above_p95": 77.3
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "lines": 22,
+   "median_bpc": 7.38,
+   "share_above_p95": 81.8
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_8967",
+   "page": "0028",
+   "lines": 17,
+   "median_bpc": 7.15,
+   "share_above_p95": 70.6
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0017",
+   "lines": 31,
+   "median_bpc": 6.92,
+   "share_above_p95": 83.9
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "lines": 22,
+   "median_bpc": 6.89,
+   "share_above_p95": 59.1
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0071",
+   "lines": 31,
+   "median_bpc": 6.82,
+   "share_above_p95": 83.9
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174479",
+   "lines": 22,
+   "median_bpc": 6.69,
+   "share_above_p95": 50.0
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0158",
+   "lines": 32,
+   "median_bpc": 6.49,
+   "share_above_p95": 75.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "lines": 22,
+   "median_bpc": 6.38,
+   "share_above_p95": 59.1
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "lines": 22,
+   "median_bpc": 6.34,
+   "share_above_p95": 54.5
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_5560",
+   "page": "0169",
+   "lines": 26,
+   "median_bpc": 6.34,
+   "share_above_p95": 57.7
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_7199",
+   "page": "0118",
+   "lines": 26,
+   "median_bpc": 6.31,
+   "share_above_p95": 57.7
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "lines": 22,
+   "median_bpc": 6.3,
+   "share_above_p95": 54.5
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174569",
+   "lines": 8,
+   "median_bpc": 6.25,
+   "share_above_p95": 62.5
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_7199",
+   "page": "0124",
+   "lines": 26,
+   "median_bpc": 5.91,
+   "share_above_p95": 46.2
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "lines": 22,
+   "median_bpc": 5.77,
+   "share_above_p95": 36.4
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_RES_MON_8_3955",
+   "page": "0209",
+   "lines": 20,
+   "median_bpc": 5.63,
+   "share_above_p95": 35.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "lines": 22,
+   "median_bpc": 5.21,
+   "share_above_p95": 40.9
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-4617_btv1b10030580s",
+   "page": "66",
+   "lines": 39,
+   "median_bpc": 5.17,
+   "share_above_p95": 17.9
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0074",
+   "lines": 12,
+   "median_bpc": 5.09,
+   "share_above_p95": 33.3
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-6898_btv1b10030178f",
+   "page": "112",
+   "lines": 36,
+   "median_bpc": 5.03,
+   "share_above_p95": 13.9
+  },
+  {
+   "set": "tm",
+   "ms": "BULAC_MS_ARA_427",
+   "page": "0291",
+   "lines": 31,
+   "median_bpc": 5.02,
+   "share_above_p95": 12.9
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178593",
+   "lines": 15,
+   "median_bpc": 4.96,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178606",
+   "lines": 27,
+   "median_bpc": 4.92,
+   "share_above_p95": 25.9
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178723",
+   "lines": 20,
+   "median_bpc": 4.9,
+   "share_above_p95": 20.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "0392",
+   "lines": 15,
+   "median_bpc": 4.89,
+   "share_above_p95": 26.7
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0081",
+   "lines": 12,
+   "median_bpc": 4.88,
+   "share_above_p95": 8.3
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178710",
+   "lines": 16,
+   "median_bpc": 4.88,
+   "share_above_p95": 6.2
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1926",
+   "page": "0172",
+   "lines": 10,
+   "median_bpc": 4.86,
+   "share_above_p95": 10.0
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "0393",
+   "lines": 16,
+   "median_bpc": 4.86,
+   "share_above_p95": 18.8
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0076",
+   "lines": 12,
+   "median_bpc": 4.85,
+   "share_above_p95": 8.3
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178658",
+   "lines": 24,
+   "median_bpc": 4.82,
+   "share_above_p95": 16.7
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00171",
+   "lines": 27,
+   "median_bpc": 4.8,
+   "share_above_p95": 22.2
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0012",
+   "lines": 12,
+   "median_bpc": 4.8,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0042",
+   "lines": 12,
+   "median_bpc": 4.76,
+   "share_above_p95": 8.3
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "lines": 22,
+   "median_bpc": 4.76,
+   "share_above_p95": 31.8
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0093",
+   "lines": 12,
+   "median_bpc": 4.75,
+   "share_above_p95": 16.7
+  },
+  {
+   "set": "r2",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178749",
+   "lines": 13,
+   "median_bpc": 4.75,
+   "share_above_p95": 7.7
+  },
+  {
+   "set": "r1",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0069",
+   "lines": 12,
+   "median_bpc": 4.74,
+   "share_above_p95": 0.0
+  },
+  {
+   "set": "tm",
+   "ms": "BnF-2297_btv1b11001977p",
+   "page": "94",
+   "lines": 31,
+   "median_bpc": 4.74,
+   "share_above_p95": 22.6
+  }
+ ],
+ "flagged": [
+  {
+   "id": "RASAM-1/train/000099",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00048",
+   "region": "MainText",
+   "w": 2633,
+   "h": 266,
+   "ink": 0.1438,
+   "ref": "والشد في تعيين المستحق والشد في ترتب الموت والشد في غير",
+   "bpc_ref": 4.112,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000163",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00005",
+   "region": "MainText",
+   "w": 2791,
+   "h": 339,
+   "ink": 0.1342,
+   "ref": "ُاعم من الشكر باعتبار المتعلق واخص باعتبار المورد والشكر بالعكس قَوله",
+   "bpc_ref": 4.06,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000177",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0015",
+   "region": "MainText",
+   "w": 653,
+   "h": 50,
+   "ink": 0.168,
+   "ref": "اني قد عبدت الله الف سنة في كل سماء والف سنة في كل ارض ولم يبق لى في ملك الله موطئ قدم الا",
+   "bpc_ref": 3.498,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000202",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0075",
+   "region": "MainText",
+   "w": 656,
+   "h": 59,
+   "ink": 0.1126,
+   "ref": "والعيان فمن اراد الله سعادته شرح الله صدره للاسلام ومن اراد شقاوته رحص اراد شقاوته حسد ومجد",
+   "bpc_ref": 4.151,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000208",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0046",
+   "region": "MainText",
+   "w": 652,
+   "h": 54,
+   "ink": 0.1327,
+   "ref": "ان اهل جابلصا يخرجون من اهل جابلقا وكذلك يحرصون الاخرون منهم واما قوله تعلى حتى اذا بلغ بين السدين",
+   "bpc_ref": 4.345,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000315",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0147",
+   "region": "MainText",
+   "w": 647,
+   "h": 60,
+   "ink": 0.1425,
+   "ref": "بالذرية فادخلوا دار نسايه وكان اذا خضر غداوه دعا بعلى بن الحسين وعمر بن الحسين فاكلوا معه ثم وجه",
+   "bpc_ref": 3.871,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000409",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0128",
+   "region": "MainText",
+   "w": 634,
+   "h": 52,
+   "ink": 0.115,
+   "ref": "الى الله واحمد الطايعين واحمد العارفين واحمد المحبين واحمد المقدسين واحمد المفضلين وما اشبه ذلك",
+   "bpc_ref": 3.778,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000496",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0131",
+   "region": "MainText",
+   "w": 641,
+   "h": 57,
+   "ink": 0.1299,
+   "ref": "برىء من المشركين ورسوله بكسر الام بكسر الام فسمعه رجل فقال اتبرا من المشركين ومن الرسول ثم حمله الى عمر",
+   "bpc_ref": 2.763,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000555",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00096",
+   "region": "marginalia",
+   "w": 165,
+   "h": 322,
+   "ink": 0.0557,
+   "ref": "مَا",
+   "bpc_ref": 16.236,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000618",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00135",
+   "region": "MainText",
+   "w": 172,
+   "h": 509,
+   "ink": 0.1406,
+   "ref": "فهذه صورتها",
+   "bpc_ref": 2.504,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000704",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0085",
+   "region": "MainText",
+   "w": 656,
+   "h": 57,
+   "ink": 0.1369,
+   "ref": "ولم تزل الكعبة معظمة في الجاهلية غير انهم كانوا ينصبون فيها الاصنام وينحرون فيها الجزور حتى جاء الله بالاسلام",
+   "bpc_ref": 2.521,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000756",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00119",
+   "region": "MainText",
+   "w": 191,
+   "h": 372,
+   "ink": 0.1154,
+   "ref": "ذلك هاكذا",
+   "bpc_ref": 3.623,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000803",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00024",
+   "region": "MainText",
+   "w": 2616,
+   "h": 350,
+   "ink": 0.1812,
+   "ref": "فله الثمن واما ان له الربع فلان كل ما له الربع الثمن لهُ الربع والله اعْلم",
+   "bpc_ref": 4.301,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000971",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0013",
+   "region": "MainText",
+   "w": 653,
+   "h": 57,
+   "ink": 0.196,
+   "ref": "الدرجات ولا فخر يا عمر اتدرى من انا انا الذي بعثنى الحق بالحق فنصرت الحق بالحق",
+   "bpc_ref": 3.493,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/000999",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0176",
+   "region": "MainText",
+   "w": 653,
+   "h": 56,
+   "ink": 0.1112,
+   "ref": "بن محمد بن الحسين واليه ذهبت السمطية وفي هاذه السنة ظهر بالمدينة الحسن بن الحسين بن على بن الحسين",
+   "bpc_ref": 2.011,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001037",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0111",
+   "region": "MainText",
+   "w": 651,
+   "h": 51,
+   "ink": 0.1477,
+   "ref": "قد فقال الملك الله اكبر الله اكبر فاذا النداء صدق عبدى انا اكبر انا اكبر ثم قال الملك اشهد ان لا اله الا الله اشهد",
+   "bpc_ref": 2.7,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001038",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00048",
+   "region": "MainText",
+   "w": 2614,
+   "h": 342,
+   "ink": 0.1375,
+   "ref": "في استمرار الحياة والشد في العدد كالحمل والشد في الذكورية والانوثة",
+   "bpc_ref": 3.51,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001042",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0148",
+   "region": "MainText",
+   "w": 657,
+   "h": 54,
+   "ink": 0.1338,
+   "ref": "في وقته ادين منه ولا اعلم منه ولا افصح بويع صغير السن في نحو العشرين سنة رغما على انفه فمكث ي الخلافة",
+   "bpc_ref": 4.316,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001165",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_417",
+   "page": "0031",
+   "region": "MainText",
+   "w": 2075,
+   "h": 296,
+   "ink": 0.0658,
+   "ref": "حزب الشيطان الا ان حزب الشيطان",
+   "bpc_ref": 1.991,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001227",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0123",
+   "region": "MainText",
+   "w": 648,
+   "h": 52,
+   "ink": 0.1271,
+   "ref": "الوالد بولده واجعل له بها نورا في قبره ونورا في القيمة ونورا في الميزان ونورا على الصراط يا موسى من لم يومن بمحمد #",
+   "bpc_ref": 3.015,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001424",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00043",
+   "region": "MainText",
+   "w": 2624,
+   "h": 292,
+   "ink": 0.0987,
+   "ref": "من يرث بالسنة ومنهم من يرث بالاجماع وقوله وغير من ذكرته البيت اشارة",
+   "bpc_ref": 2.846,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001436",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00087",
+   "region": "marginalia",
+   "w": 220,
+   "h": 2395,
+   "ink": 0.0677,
+   "ref": "ووجود ذكر من الاشقا فصعدا وسميت مشتركة المشاركة الاشقا الاخوة للام صح",
+   "bpc_ref": 4.377,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001442",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0061",
+   "region": "MainText",
+   "w": 637,
+   "h": 61,
+   "ink": 0.1189,
+   "ref": "فابعث الينا براسه فاذا جاءك الكتاب بعث ياذن الكتاب الى رسول الله و كتب اليه رسول الله صلى الله عليه",
+   "bpc_ref": 3.07,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001583",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00038",
+   "region": "MainText",
+   "w": 2538,
+   "h": 294,
+   "ink": 0.1433,
+   "ref": "الضرب الرابع ضرب الصّحيح و الكسر في الصحيح و الكسر و مثاله",
+   "bpc_ref": 3.681,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001717",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0136",
+   "region": "MainText",
+   "w": 662,
+   "h": 63,
+   "ink": 0.1125,
+   "ref": "ظننت انه يغشى عليه منها ثم قال يا ابن حيّان مات ابوك حيان ويوشك ان تمووت فاما الى الجنة واما الى النار",
+   "bpc_ref": 3.444,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001761",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00022",
+   "region": "MainText",
+   "w": 2829,
+   "h": 295,
+   "ink": 0.1338,
+   "ref": "على الامام الاصغر ثم على الامام الاعظم ثانيا وكذلك على الترتيب ما",
+   "bpc_ref": 3.191,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001762",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00048",
+   "region": "MainText",
+   "w": 2523,
+   "h": 240,
+   "ink": 0.1424,
+   "ref": "الشد في وجود الشرط والشد في وجود المانع فمنعوأ الميراث في الاول",
+   "bpc_ref": 4.15,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001830",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00070",
+   "region": "MainText",
+   "w": 2602,
+   "h": 294,
+   "ink": 0.1543,
+   "ref": "النظم فالحكم مسْتفاد من التشبيه لان التشبيه راجع الى رد الام الى السدس",
+   "bpc_ref": 3.5,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001837",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00038",
+   "region": "MainText",
+   "w": 1874,
+   "h": 317,
+   "ink": 0.1137,
+   "ref": "اضرب اربعة و نصفا في اربعة و نصف فتنزله هاكذا",
+   "bpc_ref": 5.216,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001878",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00125",
+   "region": "MainText",
+   "w": 2636,
+   "h": 349,
+   "ink": 0.1653,
+   "ref": "بثلثي مالي قال لا قلت فالشطر قال لا قلت فالثلث قال الثلث والثلث كثير انتى",
+   "bpc_ref": 2.071,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/001901",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0016",
+   "region": "MainText",
+   "w": 666,
+   "h": 52,
+   "ink": 0.1627,
+   "ref": "الى الجبل نظرت الى الجبل وتركت النظر الى الله تعلى لو تركت النظر الى المخلوق لشاهدت الخالق يا موسى",
+   "bpc_ref": 3.198,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002094",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00104",
+   "region": "MainText",
+   "w": 2548,
+   "h": 272,
+   "ink": 0.1328,
+   "ref": "فالاب ثم الاخ الشقيق ثم الاخ للاب ثم ابن الشقيق ثم ابن الاخ للاب ثم الجد",
+   "bpc_ref": 4.47,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002138",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00085",
+   "region": "MainText",
+   "w": 2528,
+   "h": 318,
+   "ink": 0.1231,
+   "ref": "ذكرن في هاذين البيتين مسْئلتين من الشواذ مسْئلتين مشْهورتين بالغراوين",
+   "bpc_ref": 5.407,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002327",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0038",
+   "region": "MainText",
+   "w": 669,
+   "h": 54,
+   "ink": 0.1159,
+   "ref": "واتيني ببنته الجدجاد فلما قتله طلب الجدجاد فخرجت له بالقيس وقتلته ثم صنعت مدية وفي يدها ياقوتة",
+   "bpc_ref": 5.012,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002449",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0029",
+   "region": "MainText",
+   "w": 657,
+   "h": 59,
+   "ink": 0.1098,
+   "ref": "من التبابعة ومن التبابعة شمر بن ملك وبه سميت سمر قند ومن التبابعة امريقس بن",
+   "bpc_ref": 4.106,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002487",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00156",
+   "region": "MainText",
+   "w": 2619,
+   "h": 365,
+   "ink": 0.1505,
+   "ref": "الاوّل وان كان من ام فلا يصح وان كان من زوجة او زوج قبل عند مالك",
+   "bpc_ref": 4.49,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002529",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0015",
+   "region": "MainText",
+   "w": 662,
+   "h": 55,
+   "ink": 0.1797,
+   "ref": "اهل العلم لما استوى الروح في جثة ءادم قام قايما بين يدى الله تعلى فامر الله تعلى الملائكة بالسجود",
+   "bpc_ref": 3.418,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002576",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00044",
+   "region": "MainText",
+   "w": 2776,
+   "h": 345,
+   "ink": 0.1121,
+   "ref": "الى الجد للام والجد للاب المنفصل بانثى وابن البنت وابن الاخت مطلقا وابن الاخ",
+   "bpc_ref": 4.28,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002584",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0092",
+   "region": "MainText",
+   "w": 656,
+   "h": 64,
+   "ink": 0.1545,
+   "ref": "ليست على قواعد البيت ومن صلا في الحجر فكانما صلا في البيت لانه منه بلا خلاف ولم يكسى بالدباج الامن زمان الحجاج الى",
+   "bpc_ref": 3.499,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002679",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0168",
+   "region": "MainText",
+   "w": 642,
+   "h": 45,
+   "ink": 0.1228,
+   "ref": "لنزارية فنفحش في مدحه ففخروا بذلك على اليمانية فنقض عبد الله بن معاوية بن عبد الله بن جعفر بن",
+   "bpc_ref": 3.116,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002772",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0145",
+   "region": "MainText",
+   "w": 632,
+   "h": 64,
+   "ink": 0.1586,
+   "ref": "الله صلى عليه وسلم بقوله ان هذا الامر بدى نبوة ورحمة ثم يكون رحمة وخلافة ثم يكون ملكا عضودا ثم يكون عتوا وجرا",
+   "bpc_ref": 2.566,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002802",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00106",
+   "region": "MainText",
+   "w": 2571,
+   "h": 318,
+   "ink": 0.1689,
+   "ref": "الباب الاوَّل في تصحيح الفرائض ومعنى تصحيح الفرائض الانتهاء",
+   "bpc_ref": 3.913,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002865",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0168",
+   "region": "MainText",
+   "w": 654,
+   "h": 44,
+   "ink": 0.1589,
+   "ref": "ابي طالب وجعل يدور في بنى هاشم ويقول يا بنى هاشم هذا المكيت قال فيكم الشعر حين صمت الناس عن ذكركم",
+   "bpc_ref": 3.288,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002871",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00114",
+   "region": "MainText",
+   "w": 2551,
+   "h": 372,
+   "ink": 0.1746,
+   "ref": "بعضها كذا وبعضها كذا وذلك في ست صور المجموع عشر صور اربعة في اجتماعها",
+   "bpc_ref": 4.047,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002954",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00202",
+   "region": "catchword",
+   "w": 751,
+   "h": 661,
+   "ink": 0.1069,
+   "ref": "في التشكيل",
+   "bpc_ref": 4.417,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002974",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00073",
+   "region": "MainText",
+   "w": 2519,
+   "h": 298,
+   "ink": 0.1573,
+   "ref": "يعني ان الجدتين وهما التي من قبل الام والتي من قبل الاب اما ان تنفرد احداهما او",
+   "bpc_ref": 3.021,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/002983",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0058",
+   "region": "MainText",
+   "w": 657,
+   "h": 68,
+   "ink": 0.1254,
+   "ref": "البلد ونحن لا نجاوربك ولا نمنعك وانما اتيتك بابلى فقال ابرهة تكلمنى في ابل ولا تكلمنى في البيت الذي جئت اهدمه وهو",
+   "bpc_ref": 3.853,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003002",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00012",
+   "region": "MainText",
+   "w": 2521,
+   "h": 382,
+   "ink": 0.1597,
+   "ref": "ميون الالاف ءالاف الالاف ثم ءالاف الالاف احاد بالنسبة الى ما بعدها",
+   "bpc_ref": 6.234,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003011",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00012",
+   "region": "MainText",
+   "w": 2513,
+   "h": 245,
+   "ink": 0.1839,
+   "ref": "مرتبة الالاف ثم تعود مرتبة الالاف اولى بالنسبة الى ما بعدها ءاحادا",
+   "bpc_ref": 4.648,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003024",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00085",
+   "region": "MainText",
+   "w": 2524,
+   "h": 295,
+   "ink": 0.1345,
+   "ref": "ولا يوجد الا في البنين وبني البنين والاخوة والجد مع الاخوة في المقاسمة والحكم",
+   "bpc_ref": 2.341,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003221",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0127",
+   "region": "MainText",
+   "w": 642,
+   "h": 48,
+   "ink": 0.1589,
+   "ref": "صلى الاله ومن يحيط بعرشه الطيبون على المبارك احمد وقال سفيان بن عبد الحارث بن عبد المطلب",
+   "bpc_ref": 3.05,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003306",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00082",
+   "region": "MainText",
+   "w": 2577,
+   "h": 298,
+   "ink": 0.1177,
+   "ref": "فيحجب فصول الظهر الاقرب فصول الظهر الابعد مطلقا اي سواء كانوا كان",
+   "bpc_ref": 4.725,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003342",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0176",
+   "region": "MainText",
+   "w": 647,
+   "h": 48,
+   "ink": 0.1253,
+   "ref": "الابواب الى جديانة الى نهر الهرس وفي هذه السنة مات الواقدى وابو العتاهية قال ابو العتاهية ولقد",
+   "bpc_ref": 3.121,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003346",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00103",
+   "region": "MainText",
+   "w": 2598,
+   "h": 336,
+   "ink": 0.1662,
+   "ref": "في القرب يوم موت العبد لا يوم موت السيد وهو معنى قولنا وهو",
+   "bpc_ref": 2.44,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003368",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00101",
+   "region": "MainText",
+   "w": 2454,
+   "h": 257,
+   "ink": 0.164,
+   "ref": "يرث منه البنات ولا الاخوات ولا الازواج ولا غيرهم من اهل الفروض ذكورا",
+   "bpc_ref": 3.205,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003388",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0119",
+   "region": "MainText",
+   "w": 640,
+   "h": 68,
+   "ink": 0.1606,
+   "ref": "شيت سيتهم لكم بنى فلان وبنى فلان واخبر صلى الله عليه وسلم بقتل اهل موته وذلك انه صلى الله عليه",
+   "bpc_ref": 2.806,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003389",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0100",
+   "region": "MainText",
+   "w": 655,
+   "h": 67,
+   "ink": 0.142,
+   "ref": "عبده ورسوله وان عيسى عبده ورسوله وروحه القاها الى مريم ثم جعله في منكبه الايمن في صرره وخرج الى الحبشة",
+   "bpc_ref": 3.187,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003391",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0127",
+   "region": "MainText",
+   "w": 665,
+   "h": 70,
+   "ink": 0.1502,
+   "ref": "الله ويستغفرون لمن يصلى على ما دام يصلى على وعن ابن عباس رضي الله عنه قال قال رسول الله صلى",
+   "bpc_ref": 1.238,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003620",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0127",
+   "region": "MainText",
+   "w": 646,
+   "h": 57,
+   "ink": 0.1536,
+   "ref": "اخرى يا اختاه هذا محمد المصطفى وعلي المرتضى فجزناهما واذ بنخلة اخرى تنادى بنخلة اخرى",
+   "bpc_ref": 4.441,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003621",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00070",
+   "region": "marginalia",
+   "w": 160,
+   "h": 594,
+   "ink": 0.1428,
+   "ref": "يعني تعزيل بالزاء",
+   "bpc_ref": 6.149,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003694",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0022",
+   "region": "MainText",
+   "w": 646,
+   "h": 68,
+   "ink": 0.116,
+   "ref": "قال له كبيت له بابان دخلت على باب خرجت على باب قال وهب ولم تزل صحيفة نوح عند سام الى زمان عابر",
+   "bpc_ref": 3.953,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003797",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0131",
+   "region": "MainText",
+   "w": 639,
+   "h": 66,
+   "ink": 0.1508,
+   "ref": "سلام ومن اوتى رفع القرءان اوتى ربع النبوءة ومن اوتى نصف القرءان فقد اوتى نصف النبوءة ومن اوتى",
+   "bpc_ref": 5.242,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003860",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00199",
+   "region": "MainText",
+   "w": 2712,
+   "h": 458,
+   "ink": 0.167,
+   "ref": "واخت كاينة لام واخت كاينة لاب وقوله والمهر عشر خمسة للاجنبي",
+   "bpc_ref": 5.938,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003908",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00075",
+   "region": "MainText",
+   "w": 2613,
+   "h": 318,
+   "ink": 0.1055,
+   "ref": "لك ارْبع فقل ام ام ام الام وام ام ام الاب وام ام اب الاب وام ابي ابي الاب وقس على",
+   "bpc_ref": 6.544,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003946",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0131",
+   "region": "MainText",
+   "w": 636,
+   "h": 52,
+   "ink": 0.1236,
+   "ref": "وقال انما يكتب محمد ما شاء فسبحان من يهدى من يشاء ويضل من يشاء واما زيد رضي الله عنه فكان ءاية من ءايات",
+   "bpc_ref": 3.06,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/003966",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00038",
+   "region": "MainText",
+   "w": 2568,
+   "h": 309,
+   "ink": 0.1262,
+   "ref": "ثم يقسم خارج المقسوم عن خارج المقسوم عليه و اليه اشار بقوله",
+   "bpc_ref": 3.64,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004035",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0153",
+   "region": "MainText",
+   "w": 653,
+   "h": 56,
+   "ink": 0.1392,
+   "ref": "وهو يقول له ابعث لى ثلاثين جارية عشرا من النجايب وعشرا من عقد النكاح وعشرا من ذوات الاحلام فقال الحجاج من يفسر",
+   "bpc_ref": 3.32,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004089",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00114",
+   "region": "MainText",
+   "w": 2574,
+   "h": 366,
+   "ink": 0.1363,
+   "ref": "كلها او تتدال كلها او تباين كلها او تتوافق كلها او تختلف احوالها بان يوجد",
+   "bpc_ref": 4.685,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004173",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0195",
+   "region": "MainText",
+   "w": 638,
+   "h": 64,
+   "ink": 0.1149,
+   "ref": "العزيز ثم اخوه العاضد ثم صلاح الدين ثم العادل ثم الكامل ثم العادل الصغير خلعه ارباب دولته",
+   "bpc_ref": 3.473,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004177",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0100",
+   "region": "MainText",
+   "w": 651,
+   "h": 62,
+   "ink": 0.1471,
+   "ref": "بقتل النجاشى فارسل النجاشى الى جعفر واصحابه وهيا لهم سفونا وقال لهم اركبوا فيها وكونوا كما انتم فان",
+   "bpc_ref": 3.355,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004283",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0021",
+   "region": "MainText",
+   "w": 651,
+   "h": 58,
+   "ink": 0.119,
+   "ref": "الله بالااء والاهواء كيف شاء وفمنهم من ينكر البعث ومنهم من ينكر خالفه فبقيت الفترة بين ادريس",
+   "bpc_ref": 3.842,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004296",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0176",
+   "region": "MainText",
+   "w": 648,
+   "h": 48,
+   "ink": 0.1347,
+   "ref": "ابراهيم بن اسماعيل بن ابراهيم بن الحسن بن الحين بن على رضي الله عنه قام الشيبانى بالعراق وقام بالبصرة مخالفا",
+   "bpc_ref": 1.906,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004362",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0013",
+   "region": "MainText",
+   "w": 651,
+   "h": 50,
+   "ink": 0.1695,
+   "ref": "احمد الحامدين واحمد المطيعين واحمد العارفين واحمد المشتاقين واحمد المقربين",
+   "bpc_ref": 3.384,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004427",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00011",
+   "region": "MainText",
+   "w": 2581,
+   "h": 268,
+   "ink": 0.1874,
+   "ref": "العشرات والثالثة الميين كما ياتي بيانه الباب الثاني في الجمع الباب الثالث",
+   "bpc_ref": 2.826,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004431",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00080",
+   "region": "MainText",
+   "w": 2622,
+   "h": 262,
+   "ink": 0.1168,
+   "ref": "بنت الابن العليا مع توريث السفلا كما لوترك بنتين وبنت ابن وابن ابن ابن وبنت ابن",
+   "bpc_ref": 3.673,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004453",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00119",
+   "region": "MainText",
+   "w": 2519,
+   "h": 301,
+   "ink": 0.1305,
+   "ref": "وَخذ في القهقرة الخ واصل القهقرة المشي ءالى خلف والمراد بها هنا تحويل العدد",
+   "bpc_ref": 4.958,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004454",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0097",
+   "region": "MainText",
+   "w": 660,
+   "h": 57,
+   "ink": 0.1461,
+   "ref": "فجعل يمشى مرة امامى ومرة خلفى ومرة عن يمينى ومرة عن شمالى بل يساري فقلت مالك يا با بكر فقال يا رسول",
+   "bpc_ref": 2.864,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004524",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0111",
+   "region": "MainText",
+   "w": 640,
+   "h": 58,
+   "ink": 0.1379,
+   "ref": "عليه السلام فوكزنى بين كتفي فقمت الى شجرة مثل وكر الطير فقعد في واحدة وقعدت في واحدة فنمت حتى سدت",
+   "bpc_ref": 3.121,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004534",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0062",
+   "region": "MainText",
+   "w": 660,
+   "h": 70,
+   "ink": 0.1204,
+   "ref": "بعض اخبار الانبياء و بعض اخبار الملوك و سنذكر ان شاء الله بعض اخبار العرب كل ذلك توطية لمولد رسول الله",
+   "bpc_ref": 3.469,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004552",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0195",
+   "region": "MainText",
+   "w": 639,
+   "h": 64,
+   "ink": 0.116,
+   "ref": "الطاهر ثم المستنصر ثم المستعلا ثم الامر ثم الحافظ ثم الظاهر و هو السادس فخلع و قتل ثم ولى ابنه",
+   "bpc_ref": 3.093,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004583",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0056",
+   "region": "MainText",
+   "w": 649,
+   "h": 52,
+   "ink": 0.1381,
+   "ref": "صلى الله عليه وسلم سالهم عن قيس ابن ساعدة فقالوا مات يا رسول الله فقال رسول الله لقد شهدته في موسم",
+   "bpc_ref": 2.221,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004714",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00175",
+   "region": "MainText",
+   "w": 2580,
+   "h": 362,
+   "ink": 0.1494,
+   "ref": "اربعة وللاخر ثلاثة وثلث وللاخر خمسة وسدس وللاخر خمسان على غريم",
+   "bpc_ref": 4.619,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004728",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00057",
+   "region": "MainText",
+   "w": 2580,
+   "h": 287,
+   "ink": 0.1385,
+   "ref": "كوصية بثلث اوحض زوجة على اقل وجوهه و يوقف ما شك فيه و يوقف ميراث",
+   "bpc_ref": 5.882,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004734",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00109",
+   "region": "marginalia",
+   "w": 159,
+   "h": 292,
+   "ink": 0.0583,
+   "ref": "ثلث",
+   "bpc_ref": 4.874,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004894",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0176",
+   "region": "MainText",
+   "w": 654,
+   "h": 56,
+   "ink": 0.1149,
+   "ref": "لابن طباطبا فمات ابن طباطبا ودعيا لا نفسهما وفي هذه السنة قام في الحجاز بمكة محمد بن جعفر بن محمد بن على",
+   "bpc_ref": 2.574,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/004915",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00040",
+   "region": "MainText",
+   "w": 2449,
+   "h": 261,
+   "ink": 0.1309,
+   "ref": "المقسوم على باقي المقسوم عليْه وتسمى باقي المسمى من باقي المسمى",
+   "bpc_ref": 2.983,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005168",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00053",
+   "region": "MainText",
+   "w": 2616,
+   "h": 325,
+   "ink": 0.1931,
+   "ref": "فيهما حدو لحق به و كانا شقيقين بلا اشكال ف و الانواع و الانواع التي وقع الخلاف",
+   "bpc_ref": 3.777,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005171",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0034",
+   "region": "MainText",
+   "w": 661,
+   "h": 63,
+   "ink": 0.109,
+   "ref": "تعلى لا ينجى ثم احياهم الله تعلى بعدما ولدا ولادهم وقيل بعد اربعين يوما وقيل بعد ثمانية ايام وكانوا ثلاثون الفا",
+   "bpc_ref": 3.754,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005399",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00135",
+   "region": "MainText",
+   "w": 2560,
+   "h": 306,
+   "ink": 0.1317,
+   "ref": "ثلاثة وبقي من المقام سبعة تخالف الفريضة فضربنا الفريضة في المقام وقولنا",
+   "bpc_ref": 3.14,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005401",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0039",
+   "region": "MainText",
+   "w": 665,
+   "h": 72,
+   "ink": 0.145,
+   "ref": "بذلك فكتب له القلمس يا ابن رسول الله لا تدع الناس يمرجون في دين الله فيضيع دين الله وتصل",
+   "bpc_ref": 2.934,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005480",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0041",
+   "region": "MainText",
+   "w": 657,
+   "h": 60,
+   "ink": 0.121,
+   "ref": "ابتر قال نعم وقال اهو ازور قال نعم وقال الاخر اهو شدود قال نعم فقالوا له اتبع اثره ما راينا الا اثره",
+   "bpc_ref": 4.359,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005518",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0136",
+   "region": "MainText",
+   "w": 646,
+   "h": 58,
+   "ink": 0.1062,
+   "ref": "خزوا انتما من هاهنا حتى اخذ انا من هاهنا فولى عمر وعلي في ناحية مكة وساق اويس ابله حتى وافا بها القوم",
+   "bpc_ref": 3.858,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005552",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0103",
+   "region": "MainText",
+   "w": 653,
+   "h": 56,
+   "ink": 0.1519,
+   "ref": "به وفتحوا الكعبة فوجدوها قد اكلتها الارضية وكانت الكعبة لا تفتح الا من راس الحول لراس الحول ولم",
+   "bpc_ref": 3.418,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005643",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00178",
+   "region": "catchword",
+   "w": 577,
+   "h": 597,
+   "ink": 0.0743,
+   "ref": "من البنين",
+   "bpc_ref": 2.38,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005772",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0173",
+   "region": "MainText",
+   "w": 641,
+   "h": 35,
+   "ink": 0.1551,
+   "ref": "وقال له هارون عظنى فقال يا امير المومنين ان لك بين يدي الله منصرف اما الى الجنة واما الى النار",
+   "bpc_ref": 3.112,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005811",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0172",
+   "region": "MainText",
+   "w": 645,
+   "h": 50,
+   "ink": 0.1247,
+   "ref": "من الله كثير الحلم كثير الصبر كثير العلم كثير العقل قرأ على مالك بن انس ختمات من القرءان وقطع في زمانه",
+   "bpc_ref": 3.088,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/train/005816",
+   "set": "r1",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0016",
+   "region": "MainText",
+   "w": 665,
+   "h": 56,
+   "ink": 0.1417,
+   "ref": "وان وقفت مع الحكمة اختبرت بالقدرة وان قنعت بالقدرة احاطت بى المعلومات والازليات ووراء الجميع",
+   "bpc_ref": 3.799,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000055",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0118",
+   "region": "MainText",
+   "w": 651,
+   "h": 63,
+   "ink": 0.1355,
+   "ref": "يمينك فقال لا استطيع فقال لا استطعت فما رقعها لنفسه بعد وقال لعتبة ابن ابى لهب",
+   "bpc_ref": 3.136,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000207",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0021",
+   "region": "MainText",
+   "w": 645,
+   "h": 55,
+   "ink": 0.123,
+   "ref": "حواء عند مقتل ولده هابل ومعنى تابل ومعنى تابل اليه توحش من عظيم ما وقع فلما مات ءادم تهدة الكعبة فجدد",
+   "bpc_ref": 4.848,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000268",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00133",
+   "region": "MainText",
+   "w": 1584,
+   "h": 243,
+   "ink": 0.1335,
+   "ref": "فاخذن منها الاجزاء وجمعنا الاجزاء بعضها",
+   "bpc_ref": 4.201,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000295",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00079",
+   "region": "MainText",
+   "w": 2489,
+   "h": 282,
+   "ink": 0.1445,
+   "ref": "ثلاث مسائل اذا تعددت او كانت مع بنت فاكثر او كانت مع الجد وانما",
+   "bpc_ref": 4.08,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000474",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00166",
+   "region": "MainText",
+   "w": 2593,
+   "h": 343,
+   "ink": 0.1863,
+   "ref": "فصحح الانكار البيت اي فصحح ولا فريضة الانكار ثم فريضة الاقرار",
+   "bpc_ref": 3.871,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000565",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00012",
+   "region": "MainText",
+   "w": 2497,
+   "h": 324,
+   "ink": 0.1474,
+   "ref": "فتقول بالابتداء بها ءاحاد ءالاف الالاف عشرات ءالاف الالاف ميون",
+   "bpc_ref": 7.064,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/validation/000695",
+   "set": "r1",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0114",
+   "region": "MainText",
+   "w": 645,
+   "h": 57,
+   "ink": 0.1455,
+   "ref": "عطاه ابو أيوب لرجل كان من الانصار يقال له ابو ليلا فاخفاه ابو ليلا في راحلته ومضى ليلتقى به رسول الله صلى الله",
+   "bpc_ref": 3.132,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-1/test/000014",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00186",
+   "region": "MainText",
+   "w": 2920,
+   "h": 590,
+   "ink": 0.1906,
+   "ref": "لهم الاثمان في ذمة المشتري فان هولاء لا شركة بيْنهم في الدين الذي لهم على الرجل",
+   "bpc_ref": 3.403,
+   "bpc_read": 3.288,
+   "cer_ref_read": 13.9,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ],
+   "read_ENS": "لهم الا كان في عه المشتري فان هولاء لا شركة بينهم في الدين النزولهم على رجل"
+  },
+  {
+   "id": "RASAM-1/test/000018",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0071",
+   "region": "MainText",
+   "w": 647,
+   "h": 55,
+   "ink": 0.1529,
+   "ref": "اصل النل ري شرله يلبث عبل الله بو عبد الطله و الدا اله ابه مات وتركحه في بصر املم فيله مو بتة التعر",
+   "bpc_ref": 6.896,
+   "bpc_read": 2.658,
+   "cer_ref_read": 30.3,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "اهل التاريخ ثم لم يلبث عبد الله بن عبد المطلب والده الى ان مات وتركه في بطن امه قيل من ستة اشهر"
+  },
+  {
+   "id": "RASAM-1/test/000037",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0071",
+   "region": "MainText",
+   "w": 649,
+   "h": 57,
+   "ink": 0.1418,
+   "ref": "وارج الثام طلصاحا صتحت تعدت هاراته فلها بعت رسوله الله صلى الله عليه ولا قال انارويا افه صالا",
+   "bpc_ref": 5.548,
+   "bpc_read": 3.017,
+   "cer_ref_read": 25.8,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "وارض الشام كلها فأصتحت تحدث بما رات فلما بعث رسول الله صلى الله عليه وسلم قال انا رؤيا امى قال"
+  },
+  {
+   "id": "RASAM-1/test/000135",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0053",
+   "region": "marginalia",
+   "w": 104,
+   "h": 49,
+   "ink": 0.0776,
+   "ref": "الخر عمر بن لحمي",
+   "bpc_ref": 5.915,
+   "bpc_read": 3.101,
+   "cer_ref_read": 25.0,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "الح عمر بن يحي"
+  },
+  {
+   "id": "RASAM-1/test/000178",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00157",
+   "region": "catchword",
+   "w": 626,
+   "h": 634,
+   "ink": 0.0898,
+   "ref": "ثمانية عشر",
+   "bpc_ref": 1.894,
+   "bpc_read": 2.964,
+   "cer_ref_read": 50.0,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ],
+   "read_ENS": "عليه عشر"
+  },
+  {
+   "id": "RASAM-1/test/000185",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00203",
+   "region": "MainText",
+   "w": 2872,
+   "h": 364,
+   "ink": 0.16,
+   "ref": "اوتجمع التركتين واقسما على فريض# فما قد انتما فاضرب به لكل وارث فما",
+   "bpc_ref": 5.017,
+   "bpc_read": 3.085,
+   "cer_ref_read": 73.1,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "بدا اخذت منه ما تقدما فما بقي فهو الذي به اتبع وفي وجه ثالث ايضا"
+  },
+  {
+   "id": "RASAM-1/test/000200",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0162",
+   "region": "MainText",
+   "w": 653,
+   "h": 61,
+   "ink": 0.1371,
+   "ref": "ان يلقى السم في اكله او شربه واستقر في جوفه قال للخديم ما الذي حملك على هذا قال الف دينار اعطيتها",
+   "bpc_ref": 3.47,
+   "bpc_read": 3.622,
+   "cer_ref_read": 21.6,
+   "flags": [
+    "truncated reference?"
+   ],
+   "read_ENS": "ان يلقى السم في اكله او شربه فالقاه له فلما شر به واستقر في جوفه قال للخديم ما الذي حملك على هذا قال الف دينار اعطيتها"
+  },
+  {
+   "id": "RASAM-1/test/000214",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0071",
+   "region": "MainText",
+   "w": 650,
+   "h": 65,
+   "ink": 0.1073,
+   "ref": "لنه افتممما عليه فقالالطه طلع البلتتجبى اقهم اله يولهابه وقاله افوتعيا للخرل سمت الا ثالثان",
+   "bpc_ref": 7.175,
+   "bpc_read": 3.042,
+   "cer_ref_read": 38.5,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "حتى اجتمعوا عليه فقال لهم طلع الليلة نجم اقمر الذي يولد به وقال ابو سعيد الخرر سمعت ابا مالك بن"
+  },
+  {
+   "id": "RASAM-1/test/000587",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00203",
+   "region": "MainText",
+   "w": 2753,
+   "h": 449,
+   "ink": 0.1949,
+   "ref": "بدا اخذت منه ما تقدما فما بقي فهو الذي به اتبع وفي وجه ثالث ايضا",
+   "bpc_ref": 3.085,
+   "bpc_read": 3.603,
+   "cer_ref_read": 76.6,
+   "matches_reading_of": "RASAM-1/test/000185",
+   "flags": [
+    "shifted reference?"
+   ],
+   "read_ENS": "حضور جميعه والله سبحانه وتعلى اعلم ثم قال ص"
+  },
+  {
+   "id": "RASAM-1/test/000656",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00087",
+   "region": "MainText",
+   "w": 108,
+   "h": 217,
+   "ink": 0.0698,
+   "ref": "مرة",
+   "bpc_ref": 3.471,
+   "bpc_read": 5.949,
+   "cer_ref_read": 66.7,
+   "flags": [
+    "vertical line"
+   ],
+   "read_ENS": "تر"
+  },
+  {
+   "id": "RASAM-1/test/000677",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0158",
+   "region": "MainText",
+   "w": 641,
+   "h": 49,
+   "ink": 0.1341,
+   "ref": "و اله لا بدلنك مره ياح قار تلظو نخاله سعيد لو عليت اث الجية والنارفنذ صحه لا اتمخذت الصماغيرح",
+   "bpc_ref": 7.791,
+   "bpc_read": 3.625,
+   "cer_ref_read": 30.1,
+   "flags": [
+    "garbled reference?"
+   ],
+   "read_ENS": "والله لا بد لنك من ديناك نار تلظى قال سعيد لو علمت ان الجنة والنار بيدك لا اتخذت الها غيرك"
+  },
+  {
+   "id": "RASAM-1/test/000709",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1977",
+   "page": "0020",
+   "region": "MainText",
+   "w": 648,
+   "h": 59,
+   "ink": 0.1444,
+   "ref": "كيف يزيلان صوف الغنم ووبر الابل وكيف يغزل وكيف ينسج وكيف يلبس فاتقوا بذلك",
+   "bpc_ref": 4.949,
+   "bpc_read": 4.61,
+   "cer_ref_read": 37.0,
+   "flags": [
+    "truncated reference?"
+   ],
+   "read_ENS": "كيف يزيلان صوف الغنم ووحد الابل وكيف يغزل وكيف ينسب وكيف يلبس فاتقوا فذلك الحر والبرد وياتيان كل"
+  },
+  {
+   "id": "RASAM-1/test/000710",
+   "set": "r1",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_609",
+   "page": "00022",
+   "region": "marginalia",
+   "w": 159,
+   "h": 471,
+   "ink": 0.0804,
+   "ref": "السادس",
+   "bpc_ref": 2.611,
+   "bpc_read": 2.993,
+   "cer_ref_read": 83.3,
+   "flags": [
+    "vertical line"
+   ],
+   "read_ENS": "له"
+  },
+  {
+   "id": "RASAM-2/train/000012",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42100",
+   "region": "MarginTextZone",
+   "w": 364,
+   "h": 321,
+   "ink": 0.1224,
+   "ref": "قدر ورقة هنا",
+   "bpc_ref": 5.04,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000037",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 363,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اجن وسر عليه السلام ستحشر امتي غدا يوم القيامة",
+   "bpc_ref": 3.238,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000051",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 428,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يجذ ايشغل ايتزلث ايتوض نغ الا ان يكون خايفا يطلب العدو",
+   "bpc_ref": 6.944,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000067",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42178",
+   "region": "MainZone",
+   "w": 1372,
+   "h": 114,
+   "ink": 0.1532,
+   "ref": "بقوله و ان غالبا اي و تهمل ان غالبا و انما اهملت في",
+   "bpc_ref": 5.327,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000089",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 783,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "تيذتس اسويديكن ديفلس اسيمن اسن دتشوا",
+   "bpc_ref": 10.172,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000117",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 415,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انو يكوزن ظهروا انفيللن ارنن نغ ظهروا سي د مشركن",
+   "bpc_ref": 8.449,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000126",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 435,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "وعلى سن عيسى وعلى جمال يوسف وعلى نغمة داوود وعلى",
+   "bpc_ref": 4.124,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000168",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0077",
+   "region": "MarginTextZone",
+   "w": 40,
+   "h": 109,
+   "ink": 0.1523,
+   "ref": "مسئلة",
+   "bpc_ref": 6.631,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000219",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 712,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يس ا بلس اوسنجيس اولا يبزير او فسس اقرنت تفو",
+   "bpc_ref": 8.737,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000239",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 306,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "فهي خداجة مخدجة ناقصة لم تتم اسويديكن دغ",
+   "bpc_ref": 5.382,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000242",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 403,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "غلسنت اينفل اسنت متزع اقز ايصلي الرجل التطوع وهو",
+   "bpc_ref": 6.538,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000262",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 392,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "تسحرق ولو لجصوة من الماء انوان اسنينو بفلقة من",
+   "bpc_ref": 6.849,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000278",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 398,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "السحور اتتن تسكرت فصل بين صيام المسلمين وصيام",
+   "bpc_ref": 4.033,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000293",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 819,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اذ ونان لا يغسل ولا يصلا عليه ولا قضا عليه فيما لم",
+   "bpc_ref": 4.308,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000352",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178645",
+   "region": "MarginTextZone",
+   "w": 217,
+   "h": 206,
+   "ink": 0.0472,
+   "ref": "حس النفر",
+   "bpc_ref": 5.015,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000389",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36412",
+   "region": "MainZone",
+   "w": 1466,
+   "h": 90,
+   "ink": 0.1853,
+   "ref": "نحو برق نحره و نحو ذلك و يخرج بقوله بالوضع التفسير الاول بالوضع العربي ما ليس بعربي",
+   "bpc_ref": 3.149,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000405",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42113",
+   "region": "MarginTextZone:catchword",
+   "w": 306,
+   "h": 283,
+   "ink": 0.0803,
+   "ref": "انشقت",
+   "bpc_ref": 3.133,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000429",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178645",
+   "region": "MarginTextZone",
+   "w": 279,
+   "h": 255,
+   "ink": 0.097,
+   "ref": "والرعد وجمعها مراعد",
+   "bpc_ref": 4.549,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000484",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "181985",
+   "region": "MainZone:title",
+   "w": 1130,
+   "h": 296,
+   "ink": 0.2346,
+   "ref": "ميمون الانتهاء",
+   "bpc_ref": 2.819,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000487",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 779,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "د المستحم انوح عليه ونغ ان كان رطبة من بلل فعليه",
+   "bpc_ref": 5.052,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000493",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 390,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اهل الكتاب انوان اسنينو فضل بين صيام المسلمين",
+   "bpc_ref": 4.308,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000504",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1983",
+   "page": "177823",
+   "region": "MainZone",
+   "w": 1249,
+   "h": 109,
+   "ink": 0.1203,
+   "ref": "من المسجد فيحكم خارجا من المسجد وكذلك اذا اراد ان يحافر اذا لم تكن للمدعي",
+   "bpc_ref": 3.024,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000520",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1926",
+   "page": "0145",
+   "region": "MainZone",
+   "w": 514,
+   "h": 193,
+   "ink": 0.1882,
+   "ref": "عميق الحجاج و أفضل",
+   "bpc_ref": 3.721,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000526",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 296,
+   "h": 223,
+   "ink": 0.1178,
+   "ref": "وادفع الشك باليقين اليقين د جلوم انوشوا ينو يس داغ اذا",
+   "bpc_ref": 6.202,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000543",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 389,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "آي يل ويتنتيتزل تسنتنن يزلنث وليل يثمذ غفتغزن يزل",
+   "bpc_ref": 10.026,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000545",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 355,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ثم تبدا بصلاة الهاجرة ولصحنث تغزن اوملزرنت تزرنن",
+   "bpc_ref": 6.914,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000554",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1983",
+   "page": "177816",
+   "region": "MainZone:title",
+   "w": 607,
+   "h": 194,
+   "ink": 0.1347,
+   "ref": "المشايخ رضي الله عنهم",
+   "bpc_ref": 2.492,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000561",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150071",
+   "region": "MainZone",
+   "w": 1693,
+   "h": 112,
+   "ink": 0.1874,
+   "ref": "و اغترس و هو حي و ثبت و هو حي و نمى بتلك الحياة فهو كالصغير يغصب ثم يكبر فصاحبه",
+   "bpc_ref": 5.055,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000562",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1983",
+   "page": "177820",
+   "region": "MainZone",
+   "w": 1260,
+   "h": 112,
+   "ink": 0.0981,
+   "ref": "اليه امورهم وان لم يكن امام المسلمين فجماعة المسلمين بمقامه يفعلون",
+   "bpc_ref": 3.202,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000577",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 260,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ولايقرأ في الاخرتين شيء اولتيذذنت تمزورن اتنجر ت",
+   "bpc_ref": 6.96,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000632",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 749,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اديلي سجسوف نغ اوث فلس ونزار اجين زديث",
+   "bpc_ref": 8.563,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000675",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150084",
+   "region": "MarginTextZone",
+   "w": 145,
+   "h": 448,
+   "ink": 0.1369,
+   "ref": "الاخر فالامر البين الخ",
+   "bpc_ref": 4.049,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000696",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49803",
+   "region": "MainZone",
+   "w": 1506,
+   "h": 185,
+   "ink": 0.2049,
+   "ref": "و رايت زيد الفرس اردت ان تقول الفرس فغلطت فابدلت زيدا منه اي فجعلت زيدا منه مكانه و",
+   "bpc_ref": 4.196,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000709",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "149902",
+   "region": "MarginTextZone",
+   "w": 555,
+   "h": 254,
+   "ink": 0.0481,
+   "ref": "رب مفعولن ثمانية المضارع مفاعيلن فاعلاتن",
+   "bpc_ref": 4.441,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000739",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 866,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يدرك اجتل القضا اتزل اجل الركوع اذ السجود ام تود انوافل",
+   "bpc_ref": 6.741,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000748",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49817",
+   "region": "MainZone",
+   "w": 1396,
+   "h": 181,
+   "ink": 0.1605,
+   "ref": "عمرا و عمرو و حاشى زيد و زيدا فقوله قام القوم فعل و فاعل خلا فعل و فاعل",
+   "bpc_ref": 4.397,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000756",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 367,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انوان من باب الضوء فلاسنث الدكرن اثالجتث ازشا",
+   "bpc_ref": 7.914,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000800",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0077",
+   "region": "MainZone",
+   "w": 611,
+   "h": 67,
+   "ink": 0.148,
+   "ref": "والقصاص جزء وكتاب النكاح جزء وكتاب الطلاق جزء وكتاب",
+   "bpc_ref": 4.372,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000803",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 404,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يجذ ايشغل ايتزلث افلس يسمرول او يطلبه العدو يجذ",
+   "bpc_ref": 7.635,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000848",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 773,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يليد سجسوف اسواوث فلس وانزار اجين امصنث",
+   "bpc_ref": 9.164,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000864",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 326,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اجيجر سد اذ يمنس اذون احكاند غفسر عليه السلام",
+   "bpc_ref": 6.898,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000881",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1983",
+   "page": "177824",
+   "region": "MarginTextZone:catchword",
+   "w": 260,
+   "h": 225,
+   "ink": 0.0779,
+   "ref": "الطفل بالبالغ",
+   "bpc_ref": 3.589,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000883",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49789",
+   "region": "MainZone",
+   "w": 1516,
+   "h": 102,
+   "ink": 0.1381,
+   "ref": "اذا قيل من معك فتقول زيد بخير اى انا بخير فالاول علم فيه الخبر وهذا علم فيه المبتدا و كثيرا من يحذف الخبر بعد لولا",
+   "bpc_ref": 3.452,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000893",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 311,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "تمزورن ايغر تنجر وليقر شيء ام تزل انييض تمزورن",
+   "bpc_ref": 8.395,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000899",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178645",
+   "region": "MarginTextZone",
+   "w": 377,
+   "h": 351,
+   "ink": 0.0495,
+   "ref": "وقد سعى الرجل اذا اصابته الط",
+   "bpc_ref": 3.571,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000956",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_9",
+   "page": "47051",
+   "region": "MainZone",
+   "w": 2100,
+   "h": 414,
+   "ink": 0.0796,
+   "ref": "لقيت و عن الضرب حيث تنازعا في قوله مسمعا بكسر الاول اسم رجل فالاول فعل و الثاني اسم",
+   "bpc_ref": 4.069,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/000996",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 773,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "إعادة الوضوء دمك نيت وليفرن امنس اينجان اج",
+   "bpc_ref": 6.64,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001016",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 426,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انتوش وليقصد غلسنت ينفل اسنت تزغ شرض اتزلت",
+   "bpc_ref": 8.702,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001026",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "182025",
+   "region": "MainZone",
+   "w": 2125,
+   "h": 140,
+   "ink": 0.1584,
+   "ref": "وحدهما و على وحديهما و جلسوا على وحديهم و حكى ابو زيد قلنا هذا الامر وحدينا و قالت وحذيهما و الحاكم",
+   "bpc_ref": 3.952,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001029",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49803",
+   "region": "MainZone",
+   "w": 1550,
+   "h": 116,
+   "ink": 0.222,
+   "ref": "من المعرف و النكرة من النكرة و المعرفة من المعرفة و النكرة من المعرف فالاول لله رب",
+   "bpc_ref": 3.061,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001038",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1943",
+   "page": "180499",
+   "region": "MainZone",
+   "w": 2251,
+   "h": 233,
+   "ink": 0.0201,
+   "ref": "مدة فغاب ايضا عنها ثم انها علمت بعد غياب الثاني مكان زوجها الاول وكان في غير ذلك البلد الذي كانت هي فيه",
+   "bpc_ref": 3.235,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001086",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 382,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "التمر ينويسن دغ بورك لامتي في سحورها وبكورها",
+   "bpc_ref": 4.893,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001098",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 411,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يش اذرمس يجذ اذجشغل ايتزلت اتفث او يطلب العدو",
+   "bpc_ref": 7.466,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001158",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0005",
+   "region": "MainZone",
+   "w": 619,
+   "h": 123,
+   "ink": 0.118,
+   "ref": "بسم الله الرحمن الرحيم صلى الله على سيدنا محمد و ءاله وصحبه وسلم و تسليما",
+   "bpc_ref": 2.343,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001168",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0059",
+   "region": "MainZone",
+   "w": 612,
+   "h": 67,
+   "ink": 0.159,
+   "ref": "عند من له العقاب وليس عليه العقاب وانما علمنا بالثواب من جهة",
+   "bpc_ref": 2.746,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001182",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 312,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "رفعة وافقك بالظن الذي هو كاذب مجتج اوعباس",
+   "bpc_ref": 5.937,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001184",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36422",
+   "region": "MainZone",
+   "w": 1465,
+   "h": 128,
+   "ink": 0.174,
+   "ref": "صالحا و بعد الاستفهام نحو هل زيد في الدار فامضي اليه او و امضي اليه و بعد النفي",
+   "bpc_ref": 3.368,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001208",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 356,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "كحلا مردا غرا محجلين من اثر الوضوء كلهم على فداء ادم",
+   "bpc_ref": 3.848,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001227",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42035",
+   "region": "MarginTextZone:catchword",
+   "w": 268,
+   "h": 259,
+   "ink": 0.0892,
+   "ref": "وشربت",
+   "bpc_ref": 5.74,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001235",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 377,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اسين وسر عليه السلام من نسا صلاة او نام عنها فليصلها",
+   "bpc_ref": 3.68,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001261",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 846,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "وسلفا اتزور اجرا دروز نغ قرضا فرضا اتزور انا افرض لكم",
+   "bpc_ref": 6.835,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001262",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1943",
+   "page": "180478",
+   "region": "MainZone",
+   "w": 1387,
+   "h": 84,
+   "ink": 0.0808,
+   "ref": "بالبلوغ ورجعنا إلى تصفح الرسوم وجدناها متعارضة ولا يمكن الجمع بينها لتأخر شهادة البينة النافية عن البينة المثبتة",
+   "bpc_ref": 3.386,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001263",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "181985",
+   "region": "MainZone:title",
+   "w": 1059,
+   "h": 248,
+   "ink": 0.2419,
+   "ref": "مبارك الابتداء",
+   "bpc_ref": 2.358,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001349",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 388,
+   "h": 231,
+   "ink": 0.0147,
+   "ref": "اج ميدنت اجن وقر اتيسرس غفتمرت يزل اجدين ممك اسن يزل",
+   "bpc_ref": 8.906,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001360",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 387,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اذ وببي ايزل يزدي ا يجرس اذوببي ايجلم تزلث يغرس",
+   "bpc_ref": 9.387,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001370",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 772,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "رطبا من بلل فعليه إعادة الوضوء ممك تل المسئلت اسو",
+   "bpc_ref": 5.075,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001383",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 362,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "تزرنن يزل تغزين اسدفر ويدين و أي صلاة نسا فليفعل",
+   "bpc_ref": 6.314,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001399",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1943",
+   "page": "180671",
+   "region": "MainZone",
+   "w": 2136,
+   "h": 231,
+   "ink": 0.0008,
+   "ref": "وظن انها تحرم عليه فلا يلزمه الا واحدة الا ان عرف ان له الرجعة فنوى بهما البتة وأما من ظن ذلك فلا يضره",
+   "bpc_ref": 2.756,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001431",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49796",
+   "region": "MarginTextZone:catchword",
+   "w": 338,
+   "h": 307,
+   "ink": 0.1072,
+   "ref": "و قالوا فى عيسى",
+   "bpc_ref": 3.358,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001446",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 344,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "به علم اي ولا تمض ينو اوسرغين توريك وجوه الناس بمكر",
+   "bpc_ref": 5.778,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001448",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 401,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "وهو ظهر دابة قال نعم اسويديكن تزن تنوفل والحكم",
+   "bpc_ref": 5.374,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001480",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42204",
+   "region": "MainZone",
+   "w": 1451,
+   "h": 238,
+   "ink": 0.1728,
+   "ref": "اطلاق اسمه عليه والى ذلك اشار بقوله في نحو خاتم حريد",
+   "bpc_ref": 3.395,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001492",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 425,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انيسرغنن اغفيتجز اتسنن اغلييل اضوضن الاية -",
+   "bpc_ref": 8.888,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001546",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 279,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ايضفص يسنفيلل تغرس تنجر ءاس الحمد اجيجرس",
+   "bpc_ref": 8.802,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001559",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1960",
+   "page": "181031",
+   "region": "MarginTextZone:catchword",
+   "w": 261,
+   "h": 265,
+   "ink": 0.1019,
+   "ref": "عن رسم",
+   "bpc_ref": 4.66,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001576",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "181992",
+   "region": "MainZone",
+   "w": 2007,
+   "h": 81,
+   "ink": 0.0695,
+   "ref": "بيودء الى احد محذورين انه يستحق التثنية باعتبار مدلوله فلوثني باعتبار مدلوله ايضا",
+   "bpc_ref": 3.946,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001609",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 435,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انتفصكون اولديكس اليمام وليقصد غرسنت اينفل",
+   "bpc_ref": 7.842,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001621",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1943",
+   "page": "180478",
+   "region": "MainZone",
+   "w": 1390,
+   "h": 88,
+   "ink": 0.0848,
+   "ref": "يحهم بالبلوغ انما هو على وجه الحكاية لا على وجه الشهادة قلت الحكاية المجردة جرت عادتهم بالتبري منها فيقولون قبل",
+   "bpc_ref": 2.538,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001622",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49803",
+   "region": "MainZone",
+   "w": 1574,
+   "h": 133,
+   "ink": 0.2183,
+   "ref": "الكل و بدل الاشتمال و بدل الغلط و يقال لمعاذا الرافع بدل الاضراب و المبدا اذا قصده ثم مثل",
+   "bpc_ref": 4.097,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001680",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 878,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اجرا دروز وهو حي ثم يموت بعد ذالك اج اتذغن يدر اتسردن",
+   "bpc_ref": 6.022,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001739",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0014",
+   "region": "MainZone",
+   "w": 610,
+   "h": 74,
+   "ink": 0.1795,
+   "ref": "يقول و كلوا و اشربوا حتى يتبين لكم الخيط الابيض من الخيط الاسود من",
+   "bpc_ref": 2.573,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001766",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0119",
+   "region": "MainZone",
+   "w": 602,
+   "h": 57,
+   "ink": 0.2134,
+   "ref": "التكلم في الروح قل ويسئلونك عن الروح قل الروح من امر ربي فا",
+   "bpc_ref": 2.335,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001778",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 846,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "او يبنا عليه او يغطا او يوطا لاغطا ولا وطا ينس وسر عليه م",
+   "bpc_ref": 6.389,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001796",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 360,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "تشتكي منه الرعاوي اذين ينو فرفع يده من الطعام",
+   "bpc_ref": 4.49,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001806",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 326,
+   "h": 124,
+   "ink": 0.1624,
+   "ref": "بأم القرءان وحدها ميسيتن ام القرءان ام القرءان",
+   "bpc_ref": 4.612,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001821",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0033",
+   "region": "MainZone",
+   "w": 621,
+   "h": 54,
+   "ink": 0.1603,
+   "ref": "ما استحال فيه الحدوث استحال فيها الفنا فان قال الله شيء فقل نعم",
+   "bpc_ref": 3.03,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001836",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 337,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اسنينو صلاة النهار على نصف صلاة الليل انونسن ث",
+   "bpc_ref": 5.207,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001853",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1947",
+   "page": "178645",
+   "region": "MarginTextZone",
+   "w": 262,
+   "h": 288,
+   "ink": 0.0765,
+   "ref": "عقة وضعف اذا مات",
+   "bpc_ref": 4.724,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001925",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 859,
+   "h": 228,
+   "ink": 0.1107,
+   "ref": "العذر وليل اكجن ديسن اويض يل ونان يلا د اكجن ديسن",
+   "bpc_ref": 9.394,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001941",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 330,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اكان اتيوي يملنغ فلس ااسويديكن دغ دجيذ ايتيسستنن",
+   "bpc_ref": 9.079,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001947",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 835,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يل ونان يغسل ويصلا عليه اذ ونان يغسل ولا يصلا عليه",
+   "bpc_ref": 5.794,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001963",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 851,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ام توثرون اذز اد يكس ييدات ويكره ان يجصص القبر",
+   "bpc_ref": 6.368,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001985",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 378,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "الصلاة لانها صلة ما بين العبد و الرب دزد دجيجر يشمج",
+   "bpc_ref": 5.317,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/001996",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49789",
+   "region": "MainZone",
+   "w": 1537,
+   "h": 92,
+   "ink": 0.1576,
+   "ref": "نحو لولا انتم لكنا مومنين و كقولك لولا فلان لاكرمتك اي لولا فلان موجود و فى اليمين كقولك لعمرك اى لعمرك",
+   "bpc_ref": 4.562,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002032",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "182025",
+   "region": "MainZone",
+   "w": 2149,
+   "h": 110,
+   "ink": 0.139,
+   "ref": "بهما بعد المذكورين وهم نسجوا وبعدهم وهي نسيحة وحدها وهما نسيحة وحدها وهن نسايح وحدهن قال الخليل",
+   "bpc_ref": 4.492,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002036",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 341,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "دمك اتشن الابوال اقرن ابزجن اتزلن د حلشت الغايط",
+   "bpc_ref": 8.844,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002047",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1960",
+   "page": "181005",
+   "region": "MarginTextZone:catchword",
+   "w": 250,
+   "h": 240,
+   "ink": 0.1325,
+   "ref": "تكون معه",
+   "bpc_ref": 2.689,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002059",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 302,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "الحالدين ايتيزن يتت ايسنسن يتت د اغنفلن اينيجان",
+   "bpc_ref": 8.909,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002066",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150032",
+   "region": "MainZone",
+   "w": 1703,
+   "h": 100,
+   "ink": 0.1577,
+   "ref": "و ابقارهم و ذكر ابن وهب الحديث عن يونس عن ابن شهاب عن ابن المسيب و ذكر قول ابن المسيب في",
+   "bpc_ref": 2.952,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002068",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1943",
+   "page": "180479",
+   "region": "MainZone",
+   "w": 2246,
+   "h": 217,
+   "ink": 0.0726,
+   "ref": "مستحسنة فاجملوا المعاملة وبالله التوفيق وسئل المجيب اولا القاضي السيد أبو علي الحسن بن عطية الوانشريسي رحمه الله",
+   "bpc_ref": 3.272,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002079",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36416",
+   "region": "MainZone",
+   "w": 1480,
+   "h": 93,
+   "ink": 0.1237,
+   "ref": "و الافعال المعربة من ذلك المذكورة الرفع نحو يقوم و النصب نحو لن يقوم و الجزم نحو لم يفهم و لا",
+   "bpc_ref": 3.101,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002129",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "149902",
+   "region": "MarginTextZone",
+   "w": 454,
+   "h": 294,
+   "ink": 0.0746,
+   "ref": "خير الدين الكافيجي و اللام",
+   "bpc_ref": 2.23,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002144",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 372,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "الاحتلام اقرن الابوال ابزجن نشنين غرنغ الابوال اقرن",
+   "bpc_ref": 7.03,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002157",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "182025",
+   "region": "MainZone",
+   "w": 2118,
+   "h": 145,
+   "ink": 0.1475,
+   "ref": "انه جعله اسما و مكنه اي جعله اسما غير مصدر و يحتمل انه فاسد ومنها اي و من الاسماء اللازمة للاضافة لفظ",
+   "bpc_ref": 3.864,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002168",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 427,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "على الشمال في الصلاة السب استجن اذين القرءان د اللغت",
+   "bpc_ref": 4.632,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002198",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1960",
+   "page": "180888",
+   "region": "MainZone",
+   "w": 1421,
+   "h": 225,
+   "ink": 0.1365,
+   "ref": "العبد المعتق خلف تركت فان التركة تكون للسيد او لبني",
+   "bpc_ref": 4.164,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002224",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42100",
+   "region": "MarginTextZone",
+   "w": 331,
+   "h": 299,
+   "ink": 0.11,
+   "ref": "محله لمن عثر عليه",
+   "bpc_ref": 4.787,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002232",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174492",
+   "region": "MainZone",
+   "w": 604,
+   "h": 87,
+   "ink": 0.1765,
+   "ref": "اولا د النوافل انييض اولا د النوافل انواس ممك يثف نت",
+   "bpc_ref": 7.593,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002263",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 330,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "فكب ابن عباس على طعامه مليا يثمذا اوعباس الكب",
+   "bpc_ref": 6.463,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002272",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 366,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "دالتمادي ينو اوسرغين وحيدر فوق الاجزة مكبا والاطلس",
+   "bpc_ref": 6.329,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002296",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49789",
+   "region": "MainZone",
+   "w": 1580,
+   "h": 122,
+   "ink": 0.1452,
+   "ref": "كقام ابوه اذا جعلته خبرا عن زيد و المبتدا مع خبره كقولك قل هو الله احد فقولنا الله احد جملة اسمية صغرى",
+   "bpc_ref": 3.854,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002317",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36436",
+   "region": "MainZone",
+   "w": 1446,
+   "h": 120,
+   "ink": 0.1076,
+   "ref": "الذي فيه الالف و اللام للتعريف نحو الرجل و المراة و الرجلة و الغلام و الجارية و الغلامة",
+   "bpc_ref": 3.461,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002331",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 304,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "وسر عليه السلام كل صلاة لم يقرا فيها بام القرءان",
+   "bpc_ref": 2.661,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002349",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 361,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "لغة محمد صلى الله عليه وسلم ميسيتن ايالصلاة",
+   "bpc_ref": 4.053,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002352",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36411",
+   "region": "MainZone",
+   "w": 1455,
+   "h": 99,
+   "ink": 0.1736,
+   "ref": "و التركيب و الافادة و الوضع مثال اجتماعها زيد قايم فيصدق على زيد قايم انه لفظ لانه",
+   "bpc_ref": 4.647,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002359",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 299,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ينويسن صلاة السر على نصف صلاة الجهر انوان",
+   "bpc_ref": 4.589,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002364",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150032",
+   "region": "MainZone",
+   "w": 1701,
+   "h": 192,
+   "ink": 0.1539,
+   "ref": "ابن المسيب و ذكر ابن المسيب في بير العادية و بير البدا مثل ما تقدم من قول ابن شهاب",
+   "bpc_ref": 3.412,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002387",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49810",
+   "region": "MainZone",
+   "w": 1337,
+   "h": 228,
+   "ink": 0.1908,
+   "ref": "و تفضل تفضلا و من نحو استعاذ استعاذه قال و غير ذي ثلاثة مقيس",
+   "bpc_ref": 4.461,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002440",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 414,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "السحر كله بركة السحر كله مبارك والاخذ باليمين",
+   "bpc_ref": 3.326,
+   "flags": [
+    "degenerate crop",
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002528",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 332,
+   "h": 125,
+   "ink": 0.1384,
+   "ref": "دجرزرن دجلمود دجزرن ايتغرا دجزرن ايتزلث",
+   "bpc_ref": 10.321,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002587",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36422",
+   "region": "MainZone",
+   "w": 1454,
+   "h": 111,
+   "ink": 0.1803,
+   "ref": "و بعد التمني ليت لي مالا فاتصدق منه او و اتصدق منه و بعد الترجي نحو لعلي اراجع",
+   "bpc_ref": 4.122,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002595",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 396,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اسنت متزغ اقز امتزلث نالجمعة اولديكس اليمام وليقصد",
+   "bpc_ref": 7.833,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002612",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 319,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ينو يس افاكل يا بن عباس ينو يس كل ما لا تشك حتى تشك",
+   "bpc_ref": 5.818,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002629",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1960",
+   "page": "180927",
+   "region": "MarginTextZone:catchword",
+   "w": 255,
+   "h": 279,
+   "ink": 0.112,
+   "ref": "في الوجهين",
+   "bpc_ref": 2.015,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002637",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 396,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ايجرس اذ وببي اجن وسر عليه السلام مابين",
+   "bpc_ref": 5.492,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002643",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 838,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "الحوض بلا فخر ينسن وسر عليه السلام نغ فرضا د رطال",
+   "bpc_ref": 5.936,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002669",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_ARA_MS_1982",
+   "page": "181985",
+   "region": "MainZone",
+   "w": 2106,
+   "h": 149,
+   "ink": 0.0416,
+   "ref": "لازم ولكنها ليست على معنى الثبوت بل على معنى الحدوث ولذلك اذا قصد بالصفة الحدوث ردت",
+   "bpc_ref": 2.913,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002670",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 354,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "نحو هذا اجن بابنغ واقم الصلاة لذكري اي لذكرك الصلاة",
+   "bpc_ref": 4.159,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002673",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 311,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "مان الشك يوثين ايواجن بابنغ وكلوا واشربوا حتى",
+   "bpc_ref": 4.615,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002675",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 373,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "حيث ذكرها ولم نعلم له كفارة غير ذلك انوان ايزل يزرنن",
+   "bpc_ref": 4.927,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002686",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150032",
+   "region": "MarginTextZone:catchword",
+   "w": 260,
+   "h": 284,
+   "ink": 0.0953,
+   "ref": "اليه سقيت",
+   "bpc_ref": 5.904,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002692",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36436",
+   "region": "MainZone",
+   "w": 1465,
+   "h": 115,
+   "ink": 0.1654,
+   "ref": "و ينعت بها اقسام الاول المضمر لا ينعت و لا ينعت به الثاني العلم ينعت به الثالث و الرابع",
+   "bpc_ref": 2.92,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002760",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_9",
+   "page": "47038",
+   "region": "MainZone",
+   "w": 1646,
+   "h": 129,
+   "ink": 0.0792,
+   "ref": "بها حيث لم يقل اودت بها لان تانيث الحوادث مجاز لأنه جمع الجمع و اسم الجمع و اسم الجنس",
+   "bpc_ref": 3.619,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002770",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42061",
+   "region": "MarginTextZone",
+   "w": 255,
+   "h": 239,
+   "ink": 0.1032,
+   "ref": "ثم قدرت",
+   "bpc_ref": 4.65,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002809",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36422",
+   "region": "MainZone",
+   "w": 1444,
+   "h": 120,
+   "ink": 0.187,
+   "ref": "للسببية و الواو المفيدة للمعية بعد الامر نحو اقبل فاحسن اليك او و احسن اليك و",
+   "bpc_ref": 4.076,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002819",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0033",
+   "region": "MarginTextZone",
+   "w": 50,
+   "h": 112,
+   "ink": 0.1838,
+   "ref": "وجل عنده",
+   "bpc_ref": 3.528,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002841",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0077",
+   "region": "MarginTextZone",
+   "w": 53,
+   "h": 362,
+   "ink": 0.1742,
+   "ref": "العباد في ثلاثة اجزاء وجامعه وهو ابو",
+   "bpc_ref": 4.453,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002851",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42100",
+   "region": "MarginTextZone",
+   "w": 423,
+   "h": 401,
+   "ink": 0.1339,
+   "ref": "سقط من هذا المحل",
+   "bpc_ref": 2.474,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002877",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 857,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اللحد بالاجور وقال ابو عبيدة ولي الجنانرة احق بالصلات",
+   "bpc_ref": 4.816,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002893",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_9",
+   "page": "46960",
+   "region": "MainZone",
+   "w": 1705,
+   "h": 160,
+   "ink": 0.1451,
+   "ref": "استسلامكم اعداءكم عليكم لاجل فشلكم و هو معلل الاستسلام لان الاستسلام الانقياد و الخضوع",
+   "bpc_ref": 4.256,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002920",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 735,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انونمثر اولا يقر اوفسس ابزينث تفو انونمثر",
+   "bpc_ref": 9.736,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/train/002974",
+   "set": "r2",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 335,
+   "h": 174,
+   "ink": 0.1163,
+   "ref": "اذمن اديقمش يسرذ الاحتلام نغ ان الاحتلام في الثوب",
+   "bpc_ref": 6.034,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000039",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 778,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اما الجنب فلا يعيد منه الوضوء واما ظهر الكلب فان كان",
+   "bpc_ref": 3.1,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000054",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_24",
+   "page": "41491",
+   "region": "MainZone",
+   "w": 994,
+   "h": 108,
+   "ink": 0.1096,
+   "ref": "مقام ابراهيم فمقام ابراهيم بدل لا عطف بيان خلا",
+   "bpc_ref": 3.651,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000075",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49817",
+   "region": "MainZone",
+   "w": 1325,
+   "h": 153,
+   "ink": 0.2005,
+   "ref": "ناقصا لانه لم يذكر فيه المستثنى منه قوله و المستثنى بغير و سوى",
+   "bpc_ref": 2.771,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000093",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36412",
+   "region": "MainZone",
+   "w": 1421,
+   "h": 122,
+   "ink": 0.1445,
+   "ref": "و اللام الزائدتين عليه في اوله نحو الرجل و الغلام فالرجل و الغلام اسمان لدخول الاف و اللام في",
+   "bpc_ref": 3.179,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000097",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1946",
+   "page": "0033",
+   "region": "MarginTextZone",
+   "w": 58,
+   "h": 188,
+   "ink": 0.2044,
+   "ref": "و هو الذي فاق كل شيء",
+   "bpc_ref": 3.136,
+   "flags": [
+    "vertical line"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000100",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42139",
+   "region": "MarginTextZone:catchword",
+   "w": 298,
+   "h": 247,
+   "ink": 0.1159,
+   "ref": "في الفاعل",
+   "bpc_ref": 2.372,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000111",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174582",
+   "region": "MainZone",
+   "w": 315,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "يتبين لكم الخيط الابيض من الخيط الاسود من الفجر اذين ينو",
+   "bpc_ref": 2.905,
+   "flags": [
+    "degenerate crop",
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000129",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_45b",
+   "page": "36436",
+   "region": "MainZone",
+   "w": 1452,
+   "h": 87,
+   "ink": 0.1807,
+   "ref": "المذكر و هذه للمفردة المونثة و هذان للمثنى المذكر و هاتان للمثنى المؤنث بالالف رفعاه",
+   "bpc_ref": 3.881,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000130",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 383,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "العبد والكفر الا تركه الصلاة ينويسن دغ الصلاة",
+   "bpc_ref": 3.743,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000199",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 393,
+   "h": 139,
+   "ink": 0.1167,
+   "ref": "اسويديكن تزن ننوافل سنت ايسلم سنت ايسلم امتزلث",
+   "bpc_ref": 8.478,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000206",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_9",
+   "page": "47129",
+   "region": "MainZone",
+   "w": 1768,
+   "h": 302,
+   "ink": 0.1679,
+   "ref": "اوبأت بعملت اليدين حضار من خالد اهل السماحة والندى",
+   "bpc_ref": 4.857,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000207",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 394,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "وصيام اهل الكتاب اسويديكن يمر اسس وسر عليه م",
+   "bpc_ref": 5.564,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000211",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 458,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ايشغل ايتزلث اتضيوض يل ونان ان كان خايفا يطلب",
+   "bpc_ref": 8.175,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000280",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174465",
+   "region": "MainZone",
+   "w": 732,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انيمدصن انوان د الغايط اذ البول اسجينث انوان",
+   "bpc_ref": 8.85,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000293",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_6",
+   "page": "49817",
+   "region": "MainZone",
+   "w": 1387,
+   "h": 133,
+   "ink": 0.2185,
+   "ref": "المفرغ نحو ما جاء غير زيد و ما رايت غير زيد و ما مررت بغير زيد و كذا قل فى سوى و سوى",
+   "bpc_ref": 3.349,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000305",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1926",
+   "page": "0139",
+   "region": "MainZone",
+   "w": 519,
+   "h": 108,
+   "ink": 0.2024,
+   "ref": "سيدنا محمد و على ءال سيدنا محمد",
+   "bpc_ref": 3.737,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000326",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1944",
+   "page": "0007",
+   "region": "MainZone",
+   "w": 566,
+   "h": 51,
+   "ink": 0.1738,
+   "ref": "مكيث ومحمد بن سليمان بن عبد الله بن ملوتات وعبد الله بن عبد",
+   "bpc_ref": 2.614,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000329",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_23",
+   "page": "42087",
+   "region": "MarginTextZone:catchword",
+   "w": 316,
+   "h": 264,
+   "ink": 0.0302,
+   "ref": "المذكوره",
+   "bpc_ref": 4.274,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "RASAM-2/validation/000368",
+   "set": "r2",
+   "split": "validation",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 353,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "دغنث اسردانسن الاحتلام ازجن دمك اتشن اذمن ابزلن",
+   "bpc_ref": 9.002,
+   "flags": [
+    "degenerate crop"
+   ]
+  },
+  {
+   "id": "RASAM-2/test/000020",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 806,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ان رفع فيه رمق فاغسلوه ينسن وسر عليه السلام",
+   "bpc_ref": 4.118,
+   "bpc_read": 2.587,
+   "cer_ref_read": 67.4,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000034",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1960",
+   "page": "180979",
+   "region": "MarginTextZone:catchword",
+   "w": 233,
+   "h": 250,
+   "ink": 0.1318,
+   "ref": "ويجعلون",
+   "bpc_ref": 2.8,
+   "bpc_read": 7.672,
+   "cer_ref_read": 42.9,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ],
+   "read_ENS": "ويجوان"
+  },
+  {
+   "id": "RASAM-2/test/000038",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 310,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "ندوكل نشينين اذون غفتنجر انييض ءاش سالحمد",
+   "bpc_ref": 9.261,
+   "bpc_read": 2.587,
+   "cer_ref_read": 75.6,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000122",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174543",
+   "region": "MainZone",
+   "w": 857,
+   "h": 125,
+   "ink": 0.0001,
+   "ref": "عن يسارها ميدنت اجن الصف ومن ورايها ميدنت سن",
+   "bpc_ref": 6.554,
+   "bpc_read": 6.237,
+   "cer_ref_read": 70.5,
+   "flags": [
+    "blank crop (no text where the reference has some)"
+   ],
+   "read_ENS": "الا من انا ان ا"
+  },
+  {
+   "id": "RASAM-2/test/000154",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 434,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "انتوثرون قال لا الا ان يكون خايفا يطلب العدو اذوس",
+   "bpc_ref": 5.262,
+   "bpc_read": 2.587,
+   "cer_ref_read": 55.1,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000167",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174608",
+   "region": "MainZone",
+   "w": 398,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اترنان ما عجلوا الإفطار وما عجلت امتي الإفطار واخروا",
+   "bpc_ref": 3.882,
+   "bpc_read": 2.587,
+   "cer_ref_read": 63.5,
+   "flags": [
+    "degenerate crop",
+    "repeated text in reference?"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000203",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 387,
+   "h": 74,
+   "ink": 0.0074,
+   "ref": "وسر عليه م لا يصلا صلاة مثلها اوليتس ويدن ام الحكم",
+   "bpc_ref": 5.421,
+   "bpc_read": 3.464,
+   "cer_ref_read": 68.0,
+   "flags": [
+    "blank crop (no text where the reference has some)"
+   ],
+   "read_ENS": "لا من انا انا انا انا انا ان"
+  },
+  {
+   "id": "RASAM-2/test/000213",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 357,
+   "h": 126,
+   "ink": 0.0001,
+   "ref": "ام القرءان ولتل ءاس جالقرءان قالوا جميعا نعم ذالك احب",
+   "bpc_ref": 5.609,
+   "bpc_read": 4.06,
+   "cer_ref_read": 62.3,
+   "flags": [
+    "blank crop (no text where the reference has some)"
+   ],
+   "read_ENS": "الالا و من انا ان الا ان ان"
+  },
+  {
+   "id": "RASAM-2/test/000289",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_65",
+   "page": "150071",
+   "region": "MainZone",
+   "w": 1701,
+   "h": 144,
+   "ink": 0.1495,
+   "ref": "و العقوبة على الغاصب و لا عقوبة على الدال قال المؤلف والفرق بين الشجر",
+   "bpc_ref": 2.493,
+   "bpc_read": 3.447,
+   "cer_ref_read": 7.2,
+   "flags": [
+    "repeated text in reference?"
+   ],
+   "read_ENS": "والعقوية على الغاصب ولا عقوية على الدال قال المؤلف و الفرق بين الشجر"
+  },
+  {
+   "id": "RASAM-2/test/000307",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174452",
+   "region": "MainZone",
+   "w": 413,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "عماد الدين من ترك الصلاة فقد هدم الدين من ترك",
+   "bpc_ref": 2.278,
+   "bpc_read": 2.587,
+   "cer_ref_read": 68.9,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000325",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174504",
+   "region": "MainZone",
+   "w": 360,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اقرن الرفرفن انفلى يمغربن اذ اتمر اجسرذانسن نثنين غرسن",
+   "bpc_ref": 8.631,
+   "bpc_read": 2.587,
+   "cer_ref_read": 72.2,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "RASAM-2/test/000330",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174530",
+   "region": "MainZone",
+   "w": 385,
+   "h": 169,
+   "ink": 0.0081,
+   "ref": "انو نرزوف سنت الركعات اسين وسر عليه السلام لا",
+   "bpc_ref": 5.47,
+   "bpc_read": 3.103,
+   "cer_ref_read": 64.4,
+   "flags": [
+    "blank crop (no text where the reference has some)"
+   ],
+   "read_ENS": "ان الا ان لا الا ان الا الين"
+  },
+  {
+   "id": "RASAM-2/test/000364",
+   "set": "r2",
+   "split": "test",
+   "ms": "BULAC_MS_ARA_1936",
+   "page": "174478",
+   "region": "MainZone",
+   "w": 315,
+   "h": 1,
+   "ink": 0.0,
+   "ref": "اذيمنس نشنين غرنغ وليل ءاس يغر الكول اسنين",
+   "bpc_ref": 9.087,
+   "bpc_read": 2.587,
+   "cer_ref_read": 69.0,
+   "flags": [
+    "degenerate crop"
+   ],
+   "read_ENS": "الا الا الا ان الان قال لا قال الاسلا"
+  },
+  {
+   "id": "tarima/train/000001",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000117",
+   "region": "MainZone",
+   "w": 1508,
+   "h": 245,
+   "ink": 0.1301,
+   "ref": "للموت انتهى حضرت درسه وانتفعت به في مختصري الفروع لابن الحاجب والشيخ خليل",
+   "bpc_ref": 3.736,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "tarima/train/000018",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_MS_056",
+   "page": "0052",
+   "region": "MainZone",
+   "w": 491,
+   "h": 46,
+   "ink": 0.1588,
+   "ref": "المولى اسماعيل ثم استولى على بلاد ورغة وجبال غماوة ثم على بلادءازغارتم على بلاد الهنبط",
+   "bpc_ref": 4.832,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000028",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000205",
+   "region": "MainZone",
+   "w": 1559,
+   "h": 122,
+   "ink": 0.0788,
+   "ref": "منه فلما عزمت على الرحيل ارسل اليها يلاطفها في الجلوس فقالت للرسول فقالت للرسول قل له لا بد من رحيلي ولا بد من",
+   "bpc_ref": 2.967,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000121",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000045",
+   "region": "MainZone",
+   "w": 1514,
+   "h": 240,
+   "ink": 0.1552,
+   "ref": "ذا حزم وعزم وجد وعبادة ودين متين وتصوف صحيح وتحقيق وتدقيق صحب المشائخ وخدمهم",
+   "bpc_ref": 4.006,
+   "flags": [
+    "tall crop (neighbour lines)"
+   ]
+  },
+  {
+   "id": "tarima/train/000153",
+   "set": "tm",
+   "split": "train",
+   "ms": "BnF-4617_btv1b10030580s",
+   "page": "111",
+   "region": "MainZone",
+   "w": 2695,
+   "h": 311,
+   "ink": 0.1021,
+   "ref": "اهل الاندلس وكان اهل الاندلس اعلموا النصارى بان محلة سيدي محمد النازلة في محاصرة الحلق ليس له اقامة فبلغ ذلك",
+   "bpc_ref": 3.056,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000220",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000162",
+   "region": "MainZone",
+   "w": 1556,
+   "h": 149,
+   "ink": 0.0711,
+   "ref": "عبد الرحمن بن عبد الوارث محمد بن عبد العظيم بن يحيى بن يعقوب بن يحيى بن عيسى بن شعبان بن عيسى",
+   "bpc_ref": 1.43,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000252",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_MS_051_2",
+   "page": "0281",
+   "region": "MainZone",
+   "w": 551,
+   "h": 51,
+   "ink": 0.1198,
+   "ref": "والعشاء حتى رجعنا انا ابو عبد الله شعيب بن عبد الله بن المنهال انا",
+   "bpc_ref": 2.516,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000536",
+   "set": "tm",
+   "split": "train",
+   "ms": "BnF-6898_btv1b10030178f",
+   "page": "33",
+   "region": "MainZone",
+   "w": 1113,
+   "h": 158,
+   "ink": 0.1671,
+   "ref": "يامر مع البين لا كان الرحيل فان كان الرحيل فانى غير صبار",
+   "bpc_ref": 4.325,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000618",
+   "set": "tm",
+   "split": "train",
+   "ms": "BULAC_RES_MON_8_7199",
+   "page": "0140",
+   "region": "MainZone",
+   "w": 627,
+   "h": 48,
+   "ink": 0.1869,
+   "ref": "ما بين موت سيدي عبد الرحمن وسيدي عبد الله نحو الستة اشهر وكان الشيخ صاحب الرحمة",
+   "bpc_ref": 2.207,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000637",
+   "set": "tm",
+   "split": "train",
+   "ms": "BULAC_RES_MON_8_5336",
+   "page": "0061",
+   "region": "MainZone",
+   "w": 631,
+   "h": 46,
+   "ink": 0.2038,
+   "ref": "الى عبد الملك وكان عبد الملك يكاتب دائرة مولاى محمد وبطائته ورءوس اجناده",
+   "bpc_ref": 4.142,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000902",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000162",
+   "region": "MainZone",
+   "w": 1542,
+   "h": 128,
+   "ink": 0.1016,
+   "ref": "والفقيه الولي سليمان بن الحسن وعلي بن محمد وعلي بن موسى والامام النقاوسي فاخذ عنهم ثم",
+   "bpc_ref": 2.931,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/000982",
+   "set": "tm",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_436C",
+   "page": "0006",
+   "region": "MainZone",
+   "w": 541,
+   "h": 48,
+   "ink": 0.1522,
+   "ref": "وتولى بعده ولده الحسن هو ابو محمد الحسن بن محمد بن الحسن بن المسعود بن يحيى عمثان بويع بعد",
+   "bpc_ref": 2.714,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/001169",
+   "set": "tm",
+   "split": "train",
+   "ms": "BULAC_MS_ARA_794",
+   "page": "0009",
+   "region": "MainZone",
+   "w": 578,
+   "h": 64,
+   "ink": 0.1236,
+   "ref": "ثم ولى من بعده السلطان مراد ثم السلطان محمد فكانت",
+   "bpc_ref": 2.316,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/001388",
+   "set": "tm",
+   "split": "train",
+   "ms": "BnF-6898_btv1b10030178f",
+   "page": "84",
+   "region": "MainZone",
+   "w": 1352,
+   "h": 126,
+   "ink": 0.1556,
+   "ref": "قد اخذ لهم ميثاق النصر والظفر اولئك حزب الله الا ان حزب الله هم",
+   "bpc_ref": 3.145,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/train/001716",
+   "set": "tm",
+   "split": "train",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000289",
+   "region": "MainZone",
+   "w": 1509,
+   "h": 117,
+   "ink": 0.1764,
+   "ref": "غيرك وكف اذاك وتحمل اذى غيرك وعليك بهذا الدعاء اللهم استرني اللهم اعصمني اللهم انصرني",
+   "bpc_ref": 3.394,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  },
+  {
+   "id": "tarima/validation/000117",
+   "set": "tm",
+   "split": "validation",
+   "ms": "MMSH_IREMAM_ARA_MS_011",
+   "page": "000205",
+   "region": "MainZone",
+   "w": 1589,
+   "h": 155,
+   "ink": 0.0906,
+   "ref": "اسم والدي سيدي عبد الله االغزواني هكذا عنده وفي المرءات في ترجمة سيدي عبد الله انه عبد الله بن محم",
+   "bpc_ref": 3.652,
+   "flags": [
+    "repeated text in reference?"
+   ]
+  }
+ ]
+}

@@ -60,7 +60,8 @@ def main() -> None:
                   for l in test])
     print(f"{a.name} {a.tag}: validation {base_val:.2f} -> {vbest:.2f} % with w={w}, v={v};  TEST 1-best {one_best:.2f} %  rescored {resc:.2f} %  (oracle in the 10-best {oracle:.2f} %)")
     Path("results/rasam/lm").joinpath(f"{a.name}__{a.tag}__rescored.json").write_text(json.dumps(
-        {"name": a.name, "tag": a.tag, "w": w, "v": v, "val_before": base_val, "val_after": vbest, "test_1best": one_best, "test_rescored": resc, "test_oracle_10best": oracle}, indent=1))
+        {"name": a.name, "tag": a.tag, "w": w, "v": v, "val_before": base_val, "val_after": vbest, "test_1best": one_best, "test_rescored": resc, "test_oracle_10best": oracle,
+         "lines": [{"id": l["id"], "hyp": h} for l, (_, h) in zip(test, pick(test, st, w, v))]}, indent=1, ensure_ascii=False))
 
 
 if __name__ == "__main__":
