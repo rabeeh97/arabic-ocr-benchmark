@@ -1,0 +1,1728 @@
+{
+ "views": {
+  "official": {
+   "r1": 734,
+   "r2": 372,
+   "tm": 229
+  },
+  "drop-only": {
+   "r1": 717,
+   "r2": 370,
+   "tm": 227
+  },
+  "clean": {
+   "r1": 717,
+   "r2": 370,
+   "tm": 227
+  },
+  "clean-indep": {
+   "r1": 715,
+   "r2": 372,
+   "tm": 226
+  }
+ },
+ "systems": {
+  "Ours: 2-model ensemble + char LM + AraGPT2": {
+   "kind": "ours",
+   "note": "best system",
+   "official/r1": {
+    "cer": 3.72,
+    "ci95": [
+     3.12,
+     4.43
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 7.71,
+    "ci95": [
+     5.61,
+     9.92
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 5.67,
+    "ci95": [
+     4.79,
+     6.65
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 3.17,
+    "ci95": [
+     2.8,
+     3.6
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 7.69,
+    "ci95": [
+     5.72,
+     9.78
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 5.59,
+    "ci95": [
+     4.65,
+     6.53
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ],
+   "clean/tm": {
+    "cer": 5.59,
+    "ci95": [
+     4.77,
+     6.51
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/tm": {
+    "cer": 5.48,
+    "ci95": [
+     4.65,
+     6.37
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Ours: 2-model ensemble + char LM": {
+   "kind": "ours",
+   "note": "",
+   "official/r1": {
+    "cer": 3.72,
+    "ci95": [
+     3.16,
+     4.44
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 7.92,
+    "ci95": [
+     5.99,
+     10.43
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 5.91,
+    "ci95": [
+     4.94,
+     6.91
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 3.17,
+    "ci95": [
+     2.85,
+     3.66
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 7.9,
+    "ci95": [
+     6.07,
+     10.34
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 5.82,
+    "ci95": [
+     4.9,
+     6.68
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ],
+   "clean/tm": {
+    "cer": 5.82,
+    "ci95": [
+     5.0,
+     6.73
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/tm": {
+    "cer": 5.71,
+    "ci95": [
+     4.83,
+     6.63
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2": {
+   "kind": "ours",
+   "note": "single model",
+   "official/r1": {
+    "cer": 3.97,
+    "ci95": [
+     3.37,
+     4.69
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 8.54,
+    "ci95": [
+     6.39,
+     11.21
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 6.67,
+    "ci95": [
+     5.81,
+     7.72
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 3.41,
+    "ci95": [
+     3.06,
+     3.89
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 8.52,
+    "ci95": [
+     6.45,
+     11.2
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 6.59,
+    "ci95": [
+     5.73,
+     7.55
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ],
+   "clean/tm": {
+    "cer": 6.59,
+    "ci95": [
+     5.59,
+     7.61
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/tm": {
+    "cer": 6.48,
+    "ci95": [
+     5.64,
+     7.39
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Ours: pretrained CRNN + char LM + AraGPT2": {
+   "kind": "ours",
+   "note": "~40k extra pretraining lines",
+   "official/r1": {
+    "cer": 4.16,
+    "ci95": [
+     3.55,
+     4.91
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 8.7,
+    "ci95": [
+     6.86,
+     11.07
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 6.37,
+    "ci95": [
+     5.51,
+     7.27
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 3.6,
+    "ci95": [
+     3.21,
+     4.0
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 8.68,
+    "ci95": [
+     6.92,
+     11.32
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 6.29,
+    "ci95": [
+     5.48,
+     7.32
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ],
+   "clean/tm": {
+    "cer": 6.29,
+    "ci95": [
+     5.42,
+     7.33
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/tm": {
+    "cer": 6.18,
+    "ci95": [
+     5.31,
+     7.02
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Ours: 60-epoch CRNN, greedy": {
+   "kind": "ours",
+   "note": "no LM",
+   "official/r1": {
+    "cer": 4.77,
+    "ci95": [
+     4.24,
+     5.39
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 10.79,
+    "ci95": [
+     8.21,
+     13.66
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 8.31,
+    "ci95": [
+     7.22,
+     9.33
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 4.24,
+    "ci95": [
+     3.85,
+     4.65
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 10.77,
+    "ci95": [
+     8.32,
+     13.97
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 8.24,
+    "ci95": [
+     7.22,
+     9.16
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean/r1": {
+    "cer": 4.24,
+    "ci95": [
+     3.85,
+     4.7
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "clean/r2": {
+    "cer": 7.79,
+    "ci95": [
+     6.94,
+     8.75
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean/tm": {
+    "cer": 8.24,
+    "ci95": [
+     7.24,
+     9.26
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/r1": {
+    "cer": 4.06,
+    "ci95": [
+     3.76,
+     4.36
+    ],
+    "n_lines": 715,
+    "n_pages": 257
+   },
+   "clean-indep/r2": {
+    "cer": 7.81,
+    "ci95": [
+     6.93,
+     8.78
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "clean-indep/tm": {
+    "cer": 8.13,
+    "ci95": [
+     7.08,
+     9.13
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy": {
+   "kind": "ours",
+   "note": "same recipe, 202 bad lines dropped / 250 crops re-cut in training",
+   "official/r1": {
+    "cer": 4.73,
+    "ci95": [
+     4.13,
+     5.56
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 10.97,
+    "ci95": [
+     8.5,
+     14.22
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 8.45,
+    "ci95": [
+     7.4,
+     9.4
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 4.19,
+    "ci95": [
+     3.77,
+     4.65
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 10.93,
+    "ci95": [
+     8.49,
+     14.42
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 8.39,
+    "ci95": [
+     7.43,
+     9.43
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean/r1": {
+    "cer": 4.19,
+    "ci95": [
+     3.83,
+     4.61
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "clean/r2": {
+    "cer": 7.65,
+    "ci95": [
+     6.78,
+     8.57
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean/tm": {
+    "cer": 8.39,
+    "ci95": [
+     7.37,
+     9.45
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/r1": {
+    "cer": 4.01,
+    "ci95": [
+     3.72,
+     4.31
+    ],
+    "n_lines": 715,
+    "n_pages": 257
+   },
+   "clean-indep/r2": {
+    "cer": 7.7,
+    "ci95": [
+     6.88,
+     8.62
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "clean-indep/tm": {
+    "cer": 8.27,
+    "ci95": [
+     7.31,
+     9.23
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM)": {
+   "kind": "rescored",
+   "note": "Colab, card settings",
+   "official/r1": {
+    "cer": 21.69,
+    "ci95": [
+     20.16,
+     23.6
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 28.17,
+    "ci95": [
+     24.98,
+     31.77
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 24.83,
+    "ci95": [
+     22.52,
+     26.98
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 21.31,
+    "ci95": [
+     19.78,
+     23.2
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 28.16,
+    "ci95": [
+     25.16,
+     31.56
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 24.78,
+    "ci95": [
+     22.76,
+     27.08
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ],
+   "clean/tm": {
+    "cer": 24.78,
+    "ci95": [
+     22.52,
+     27.1
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/tm": {
+    "cer": 24.6,
+    "ci95": [
+     22.44,
+     26.75
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "HAFITH (642 M)": {
+   "kind": "rescored",
+   "note": "362 RASAM-1 test lines in its training data",
+   "official/r1": {
+    "cer": 6.21,
+    "ci95": [
+     5.25,
+     7.2
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 17.45,
+    "ci95": [
+     14.56,
+     20.53
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "drop-only/r1": {
+    "cer": 5.79,
+    "ci95": [
+     4.9,
+     6.74
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 17.44,
+    "ci95": [
+     14.81,
+     20.52
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "missing_recut": [
+    "clean/r1",
+    "clean/r2",
+    "clean-indep/r1",
+    "clean-indep/r2"
+   ]
+  },
+  "HATFormer (AraMS-28k, 334 M)": {
+   "kind": "rescored",
+   "note": "zero-shot",
+   "official/r1": {
+    "cer": 34.65,
+    "ci95": [
+     33.23,
+     36.28
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 37.49,
+    "ci95": [
+     34.74,
+     40.14
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "official/tm": {
+    "cer": 31.64,
+    "ci95": [
+     28.52,
+     34.81
+    ],
+    "n_lines": 229,
+    "n_pages": 94
+   },
+   "drop-only/r1": {
+    "cer": 34.45,
+    "ci95": [
+     32.96,
+     36.17
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 37.45,
+    "ci95": [
+     34.17,
+     40.32
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "drop-only/tm": {
+    "cer": 31.54,
+    "ci95": [
+     28.59,
+     34.69
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean/r1": {
+    "cer": 34.48,
+    "ci95": [
+     33.06,
+     35.97
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "clean/r2": {
+    "cer": 36.93,
+    "ci95": [
+     34.56,
+     39.31
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean/tm": {
+    "cer": 31.54,
+    "ci95": [
+     28.53,
+     34.71
+    ],
+    "n_lines": 227,
+    "n_pages": 94
+   },
+   "clean-indep/r1": {
+    "cer": 34.36,
+    "ci95": [
+     32.75,
+     35.95
+    ],
+    "n_lines": 715,
+    "n_pages": 257
+   },
+   "clean-indep/r2": {
+    "cer": 36.97,
+    "ci95": [
+     34.5,
+     39.44
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "clean-indep/tm": {
+    "cer": 31.52,
+    "ci95": [
+     28.22,
+     34.73
+    ],
+    "n_lines": 226,
+    "n_pages": 94
+   }
+  },
+  "Phoenix (Kraken)": {
+   "kind": "rescored",
+   "note": "binarised crops",
+   "official/r1": {
+    "cer": 23.06,
+    "ci95": [
+     20.58,
+     25.63
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 18.54,
+    "ci95": [
+     15.63,
+     21.93
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "drop-only/r1": {
+    "cer": 22.8,
+    "ci95": [
+     20.54,
+     25.11
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 18.47,
+    "ci95": [
+     15.81,
+     21.78
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean/r1": {
+    "cer": 22.69,
+    "ci95": [
+     20.42,
+     25.3
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "clean/r2": {
+    "cer": 14.96,
+    "ci95": [
+     13.5,
+     16.73
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean-indep/r1": {
+    "cer": 22.46,
+    "ci95": [
+     20.04,
+     24.84
+    ],
+    "n_lines": 715,
+    "n_pages": 257
+   },
+   "clean-indep/r2": {
+    "cer": 15.04,
+    "ci95": [
+     13.49,
+     16.73
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   }
+  },
+  "TariMa manuscript model (Kraken)": {
+   "kind": "rescored",
+   "note": "binarised crops",
+   "official/r1": {
+    "cer": 42.54,
+    "ci95": [
+     39.97,
+     45.09
+    ],
+    "n_lines": 734,
+    "n_pages": 260
+   },
+   "official/r2": {
+    "cer": 30.09,
+    "ci95": [
+     26.99,
+     33.39
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   },
+   "drop-only/r1": {
+    "cer": 42.39,
+    "ci95": [
+     39.74,
+     45.42
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "drop-only/r2": {
+    "cer": 30.04,
+    "ci95": [
+     27.25,
+     33.15
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean/r1": {
+    "cer": 42.29,
+    "ci95": [
+     39.66,
+     44.64
+    ],
+    "n_lines": 717,
+    "n_pages": 257
+   },
+   "clean/r2": {
+    "cer": 27.11,
+    "ci95": [
+     25.03,
+     29.4
+    ],
+    "n_lines": 370,
+    "n_pages": 140
+   },
+   "clean-indep/r1": {
+    "cer": 42.13,
+    "ci95": [
+     39.73,
+     44.69
+    ],
+    "n_lines": 715,
+    "n_pages": 257
+   },
+   "clean-indep/r2": {
+    "cer": 27.16,
+    "ci95": [
+     25.29,
+     29.19
+    ],
+    "n_lines": 372,
+    "n_pages": 140
+   }
+  }
+ },
+ "paired": {
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | official/r1": {
+   "diff": -0.03,
+   "ci95": [
+    -0.2,
+    0.12
+   ],
+   "p_le_0": 0.642
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | official/r2": {
+   "diff": 0.19,
+   "ci95": [
+    -0.11,
+    0.45
+   ],
+   "p_le_0": 0.128
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | official/tm": {
+   "diff": 0.14,
+   "ci95": [
+    -0.27,
+    0.58
+   ],
+   "p_le_0": 0.268
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | drop-only/r1": {
+   "diff": -0.05,
+   "ci95": [
+    -0.21,
+    0.13
+   ],
+   "p_le_0": 0.702
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | drop-only/r2": {
+   "diff": 0.16,
+   "ci95": [
+    -0.16,
+    0.46
+   ],
+   "p_le_0": 0.142
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | drop-only/tm": {
+   "diff": 0.15,
+   "ci95": [
+    -0.25,
+    0.58
+   ],
+   "p_le_0": 0.256
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean/r1": {
+   "diff": -0.05,
+   "ci95": [
+    -0.21,
+    0.11
+   ],
+   "p_le_0": 0.74
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean/r2": {
+   "diff": -0.14,
+   "ci95": [
+    -0.45,
+    0.15
+   ],
+   "p_le_0": 0.822
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean/tm": {
+   "diff": 0.15,
+   "ci95": [
+    -0.25,
+    0.61
+   ],
+   "p_le_0": 0.246
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean-indep/r1": {
+   "diff": -0.06,
+   "ci95": [
+    -0.22,
+    0.11
+   ],
+   "p_le_0": 0.758
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean-indep/r2": {
+   "diff": -0.12,
+   "ci95": [
+    -0.43,
+    0.2
+   ],
+   "p_le_0": 0.784
+  },
+  "Ours: 60-epoch CRNN on cleaned training data, greedy − Ours: 60-epoch CRNN, greedy | clean-indep/tm": {
+   "diff": 0.13,
+   "ci95": [
+    -0.35,
+    0.61
+   ],
+   "p_le_0": 0.288
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | official/r1": {
+   "diff": 17.97,
+   "ci95": [
+    16.55,
+    19.59
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | official/r2": {
+   "diff": 20.45,
+   "ci95": [
+    17.99,
+    23.23
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | official/tm": {
+   "diff": 19.15,
+   "ci95": [
+    17.35,
+    21.07
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r1": {
+   "diff": 18.14,
+   "ci95": [
+    16.81,
+    20.05
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r2": {
+   "diff": 20.47,
+   "ci95": [
+    18.18,
+    23.32
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/tm": {
+   "diff": 19.19,
+   "ci95": [
+    17.09,
+    21.01
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | clean/tm": {
+   "diff": 19.19,
+   "ci95": [
+    17.25,
+    21.36
+   ],
+   "p_le_0": 0.0
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM) − Ours: 2-model ensemble + char LM + AraGPT2 | clean-indep/tm": {
+   "diff": 19.12,
+   "ci95": [
+    17.13,
+    21.04
+   ],
+   "p_le_0": 0.0
+  },
+  "HAFITH (642 M) − Ours: 2-model ensemble + char LM + AraGPT2 | official/r1": {
+   "diff": 2.49,
+   "ci95": [
+    1.64,
+    3.38
+   ],
+   "p_le_0": 0.0
+  },
+  "HAFITH (642 M) − Ours: 2-model ensemble + char LM + AraGPT2 | official/r2": {
+   "diff": 9.74,
+   "ci95": [
+    8.21,
+    11.53
+   ],
+   "p_le_0": 0.0
+  },
+  "HAFITH (642 M) − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r1": {
+   "diff": 2.62,
+   "ci95": [
+    1.88,
+    3.42
+   ],
+   "p_le_0": 0.0
+  },
+  "HAFITH (642 M) − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r2": {
+   "diff": 9.75,
+   "ci95": [
+    8.06,
+    11.53
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | official/r1": {
+   "diff": 0.25,
+   "ci95": [
+    0.15,
+    0.35
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | official/r2": {
+   "diff": 0.83,
+   "ci95": [
+    0.55,
+    1.18
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | official/tm": {
+   "diff": 0.99,
+   "ci95": [
+    0.67,
+    1.38
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r1": {
+   "diff": 0.24,
+   "ci95": [
+    0.14,
+    0.35
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/r2": {
+   "diff": 0.83,
+   "ci95": [
+    0.57,
+    1.14
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | drop-only/tm": {
+   "diff": 1.0,
+   "ci95": [
+    0.61,
+    1.33
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | clean/tm": {
+   "diff": 1.0,
+   "ci95": [
+    0.65,
+    1.32
+   ],
+   "p_le_0": 0.0
+  },
+  "Ours: 60-epoch CRNN + char LM + AraGPT2 − Ours: 2-model ensemble + char LM + AraGPT2 | clean-indep/tm": {
+   "diff": 1.01,
+   "ci95": [
+    0.68,
+    1.33
+   ],
+   "p_le_0": 0.0
+  }
+ },
+ "panel": {
+  "VLM fine-tune: ain-7b-bf16": {
+   "official/r1": {
+    "cer": 39.45,
+    "ci95": [
+     37.91,
+     41.06
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 39.66,
+    "ci95": [
+     36.05,
+     43.51
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 39.03,
+    "ci95": [
+     37.49,
+     40.58
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 39.52,
+    "ci95": [
+     35.92,
+     43.3
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "VLM fine-tune: suite-v1-ain7b-ft-bf16": {
+   "official/r1": {
+    "cer": 17.98,
+    "ci95": [
+     16.49,
+     19.58
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 23.99,
+    "ci95": [
+     21.46,
+     26.84
+    ],
+    "n_lines": 199,
+    "n_pages": 114
+   },
+   "drop-only/r1": {
+    "cer": 17.35,
+    "ci95": [
+     15.9,
+     18.71
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 23.95,
+    "ci95": [
+     21.21,
+     26.98
+    ],
+    "n_lines": 198,
+    "n_pages": 114
+   }
+  },
+  "VLM fine-tune: fanar-oryx-7b-bf16": {
+   "official/r1": {
+    "cer": 65.73,
+    "ci95": [
+     62.3,
+     69.57
+    ],
+    "n_lines": 199,
+    "n_pages": 142
+   },
+   "official/r2": {
+    "cer": 68.65,
+    "ci95": [
+     63.34,
+     73.93
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 65.69,
+    "ci95": [
+     62.23,
+     69.14
+    ],
+    "n_lines": 193,
+    "n_pages": 138
+   },
+   "drop-only/r2": {
+    "cer": 68.6,
+    "ci95": [
+     62.46,
+     74.11
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "VLM fine-tune: suite-v1-fanar2-oryx-ft-bf16": {
+   "official/r1": {
+    "cer": 11.12,
+    "ci95": [
+     9.75,
+     12.59
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 17.11,
+    "ci95": [
+     14.69,
+     19.78
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 10.42,
+    "ci95": [
+     9.45,
+     11.46
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 17.01,
+    "ci95": [
+     14.49,
+     19.94
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "VLM fine-tune: arabic-paddleocr-v5": {
+   "official/r1": {
+    "cer": 90.43,
+    "ci95": [
+     89.84,
+     91.06
+    ],
+    "n_lines": 180,
+    "n_pages": 133
+   },
+   "official/r2": {
+    "cer": 90.76,
+    "ci95": [
+     89.27,
+     92.09
+    ],
+    "n_lines": 180,
+    "n_pages": 113
+   },
+   "drop-only/r1": {
+    "cer": 90.31,
+    "ci95": [
+     89.58,
+     90.96
+    ],
+    "n_lines": 176,
+    "n_pages": 130
+   },
+   "drop-only/r2": {
+    "cer": 90.76,
+    "ci95": [
+     89.23,
+     91.96
+    ],
+    "n_lines": 179,
+    "n_pages": 113
+   }
+  },
+  "VLM fine-tune: qwen3-vl-4b-bf16": {
+   "official/r1": {
+    "cer": 141.33,
+    "ci95": [
+     118.46,
+     170.01
+    ],
+    "n_lines": 180,
+    "n_pages": 133
+   },
+   "official/r2": {
+    "cer": 148.65,
+    "ci95": [
+     117.68,
+     190.78
+    ],
+    "n_lines": 180,
+    "n_pages": 113
+   },
+   "drop-only/r1": {
+    "cer": 142.26,
+    "ci95": [
+     117.91,
+     168.96
+    ],
+    "n_lines": 176,
+    "n_pages": 130
+   },
+   "drop-only/r2": {
+    "cer": 148.75,
+    "ci95": [
+     115.78,
+     189.73
+    ],
+    "n_lines": 179,
+    "n_pages": 113
+   }
+  },
+  "VLM fine-tune: suite-v1-qwen3vl4b-ft-bf16": {
+   "official/r1": {
+    "cer": 27.2,
+    "ci95": [
+     24.78,
+     29.43
+    ],
+    "n_lines": 179,
+    "n_pages": 132
+   },
+   "official/r2": {
+    "cer": 32.03,
+    "ci95": [
+     29.21,
+     34.99
+    ],
+    "n_lines": 180,
+    "n_pages": 113
+   },
+   "drop-only/r1": {
+    "cer": 26.83,
+    "ci95": [
+     24.85,
+     29.27
+    ],
+    "n_lines": 175,
+    "n_pages": 129
+   },
+   "drop-only/r2": {
+    "cer": 31.97,
+    "ci95": [
+     29.1,
+     35.04
+    ],
+    "n_lines": 179,
+    "n_pages": 113
+   }
+  },
+  "VLM fine-tune: qwen3-vl-8b-bf16": {
+   "official/r1": {
+    "cer": 89.14,
+    "ci95": [
+     84.43,
+     93.63
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 86.9,
+    "ci95": [
+     81.6,
+     92.5
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 88.97,
+    "ci95": [
+     84.4,
+     93.57
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 86.78,
+    "ci95": [
+     80.07,
+     93.42
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "VLM fine-tune: suite-v1-qwen3vl8b-ft-bf16": {
+   "official/r1": {
+    "cer": 25.36,
+    "ci95": [
+     23.62,
+     27.45
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 32.11,
+    "ci95": [
+     29.42,
+     35.3
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 25.0,
+    "ci95": [
+     23.26,
+     27.24
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 32.06,
+    "ci95": [
+     29.3,
+     34.88
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "Ours: 2-model ensemble + char LM + AraGPT2": {
+   "official/r1": {
+    "cer": 4.18,
+    "ci95": [
+     3.17,
+     5.25
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 6.99,
+    "ci95": [
+     5.34,
+     9.42
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 3.32,
+    "ci95": [
+     2.82,
+     3.88
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 6.95,
+    "ci95": [
+     5.12,
+     9.32
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "Ours: 60-epoch CRNN, greedy": {
+   "official/r1": {
+    "cer": 5.26,
+    "ci95": [
+     4.22,
+     6.52
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 10.1,
+    "ci95": [
+     7.68,
+     12.82
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 4.43,
+    "ci95": [
+     3.83,
+     5.01
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 10.06,
+    "ci95": [
+     7.62,
+     13.12
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "AMIDDA 1.0 Line 4B (Calfa VLM)": {
+   "official/r1": {
+    "cer": 22.62,
+    "ci95": [
+     19.67,
+     26.43
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 28.75,
+    "ci95": [
+     25.06,
+     33.51
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 22.24,
+    "ci95": [
+     19.38,
+     27.01
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 28.74,
+    "ci95": [
+     24.67,
+     33.95
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  },
+  "HAFITH (642 M)": {
+   "official/r1": {
+    "cer": 6.88,
+    "ci95": [
+     5.41,
+     8.4
+    ],
+    "n_lines": 200,
+    "n_pages": 143
+   },
+   "official/r2": {
+    "cer": 15.69,
+    "ci95": [
+     13.23,
+     18.69
+    ],
+    "n_lines": 200,
+    "n_pages": 115
+   },
+   "drop-only/r1": {
+    "cer": 6.43,
+    "ci95": [
+     5.12,
+     7.73
+    ],
+    "n_lines": 194,
+    "n_pages": 139
+   },
+   "drop-only/r2": {
+    "cer": 15.66,
+    "ci95": [
+     13.08,
+     18.83
+    ],
+    "n_lines": 199,
+    "n_pages": 115
+   }
+  }
+ },
+ "drop_independent": {
+  "lines": 84,
+  "test_lines": 22
+ }
+}

@@ -107,6 +107,7 @@ IDEAS = [
     ("Add TariMa (another Maghrebi corpus) to training", "RASAM-1 4.58 -> 4.32 %, RASAM-2 9.66 -> 9.41 %", "kept"),
     ("Add all of RASAM-1 (more lines of the same manuscripts)", "no gain: diversity beats volume", "dropped"),
     ("Full-width model (4x the parameters)", "no consistent gain", "dropped"),
+    ("Automatic data cleaning: 250 crops re-cut, 202 bad lines dropped from training (RS4j)", "no measurable gain: greedy 4.73 / 10.97 / 8.45 vs 4.77 / 10.79 / 8.31 %, paired differences within ±0.6", "dropped"),
     ("Re-cut the 80 broken MS 1936 crops (data repair)", "repaired RASAM-2 test 8.94 -> 8.42 %; small, mixed effect in training", "kept"),
     ("Neighbour-ink + fading augmentation", "mixed, under seed noise", "dropped"),
     ("Darkest RGB channel as input", "worse (RASAM-1 4.33 -> 5.14 %)", "dropped"),
@@ -138,6 +139,55 @@ WHY_SPLITS = [
 ]
 
 KIND = {"ours": ("ours", "Ours"), "rescored": ("rescored", "Re-scored by us"), "reported-same-lines": ("reported", "Reported on these lines")}
+BENCH = Path("results/rasam/clean/bench.json")
+VIEWS = (("official", "official"), ("drop-only", "drop only"), ("clean", "clean"), ("clean-indep", "clean, people-found drops only"))
+
+
+def ci_cell(x):
+    if not x:
+        return '<td class="na">-</td>'
+    return f'<td>{x["cer"]:.2f}<span class="ci"> {x["ci95"][0]:.1f}–{x["ci95"][1]:.1f}</span></td>'
+
+
+def clean_section() -> str:
+    """Section 1b from results/rasam/clean/bench.json (scripts/clean_bench.py): every re-runnable system on the official, drop-only, clean and
+    clean-indep views with page-bootstrap 95 % intervals, plus the 200-line VLM panel."""
+    if not BENCH.exists():
+        return ""
+    b = json.loads(BENCH.read_text())
+    n = b["views"]
+    head = "".join(f'<th colspan="3">{html.escape(lab)}<br><span class="ci">{n[v]["r1"]} / {n[v]["r2"]} / {n[v]["tm"]} lines</span></th>' for v, lab in VIEWS)
+    sub = "".join("<th>R-1</th><th>R-2</th><th>TM</th>" for _ in VIEWS)
+    rows = []
+    order = sorted(b["systems"].items(), key=lambda kv: kv[1].get("official/r2", {}).get("cer", 999))
+    for name, r in order:
+        cls, lab = KIND[r["kind"]] if r["kind"] in KIND else ("rescored", r["kind"])
+        cells = "".join(ci_cell(r.get(f"{v}/{t}")) for v, _ in VIEWS for t in ("r1", "r2", "tm"))
+        rows.append(f'<tr class="{cls}"><td><span class="tag {cls}">{lab}</span> {html.escape(name)}'
+                    f'<div class="note">{html.escape(r.get("note", ""))}</div></td>{cells}</tr>')
+    panel = []
+    pn = sorted(b.get("panel", {}).items(), key=lambda kv: kv[1].get("official/r1", {}).get("cer", 999))
+    for name, r in pn:
+        if "ft" not in name and not name.startswith(("Ours", "AMIDDA", "HAFITH")):
+            continue  # base (not fine-tuned) VLMs: 40-150 % CER, listed in the record, not here
+        panel.append(f"<tr><td>{html.escape(name.replace('VLM fine-tune: ', ''))}</td>"
+                     + "".join(ci_cell(r.get(f"{v}/{t}")) for v in ("official", "drop-only") for t in ("r1", "r2")) + "</tr>")
+    pairs = "".join(f"<li>{html.escape(k)}: <b>{v['diff']:+.2f}</b> points (95 % {v['ci95'][0]:+.2f} to {v['ci95'][1]:+.2f})</li>"
+                    for k, v in b["paired"].items() if "| clean/" in k)
+    return f"""<h2>1b. Clean test view, with error bars</h2>
+<p class="lead">The same official test lines, three ways. <b>Drop only</b> removes the {n['official']['r1'] - n['drop-only']['r1']} / {n['official']['r2'] - n['drop-only']['r2']} / {n['official']['tm'] - n['drop-only']['tm']}
+test lines whose reference does not match the image. <b>Clean</b> also replaces the 25 broken crops (23 RASAM-2, 2 RASAM-1) with crops re-cut from the page, re-read
+by every system. <b>People-found drops only</b> removes only the lines found by people (PR #7 of the dataset repo, our by-eye list), in case the automatic rules favour
+CRNN-like readers. Small grey numbers: 95 % interval from resampling pages. The corrected lists and crops are released in
+<code>release/rasam-clean/</code>. Systems we cannot re-run (Calfa CTC, Gemini) have no clean number.</p>
+<div class="wrap"><table><thead><tr><th rowspan="2">System</th>{head}</tr><tr>{sub}</tr></thead><tbody>{''.join(rows)}</tbody></table></div>
+<p class="lead">Paired differences on the clean view (same resampled pages for both systems):</p><ul>{pairs}</ul>
+<h3>200-line panel: fine-tuned vision-language models</h3>
+<p class="lead">Our suite_v1 VLM fine-tunes (LoRA r16, 1 epoch, vision tower frozen; 22k mixed lines) were only run on test lines 0–199 of RASAM-1 / RASAM-2, so they
+are compared there. They have no re-cut readings, so this panel shows the official and drop-only views. A few VLM lines errored out; those cells use the lines that
+were read (at least 150 of 200).</p>
+<div class="wrap"><table><thead><tr><th rowspan="2">System</th><th colspan="2">official</th><th colspan="2">drop only</th></tr>
+<tr><th>R-1</th><th>R-2</th><th>R-1</th><th>R-2</th></tr></thead><tbody>{''.join(panel)}</tbody></table></div>"""
 
 
 def cell(v):
@@ -181,7 +231,7 @@ th{{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut
 td.best{{background:var(--best);color:var(--bestfg);font-weight:600}} td.na{{color:var(--mut)}} td.note{{color:var(--mut);font-size:13px;min-width:260px}} td.src a{{color:inherit}}
 .tag{{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:99px;border:1px solid currentColor;margin-right:6px;white-space:nowrap}}
 .tag.ours,.tag.kept{{color:var(--ours)}} .tag.rescored{{color:var(--resc)}} .tag.reported,.tag.optional{{color:var(--rep)}} .tag.dropped{{color:var(--mut)}}
-tr.ours td:first-child{{font-weight:600}} ul{{max-width:80ch;padding-left:20px}} li{{margin:6px 0}}
+tr.ours td:first-child{{font-weight:600}} .ci{{color:var(--mut);font-size:11px;font-weight:400}} div.note{{color:var(--mut);font-size:12px;font-weight:400}} h3{{font-size:16px;margin:24px 0 6px}} ul{{max-width:80ch;padding-left:20px}} li{{margin:6px 0}}
 </style></head><body><main>
 <h1>RASAM leaderboard</h1>
 <p class="lead">Character error rate (CER, %, micro-averaged, diacritics kept; lower is better) on Maghrebi Arabic manuscript lines. The strict board only holds
@@ -191,6 +241,7 @@ systems scored on the exact official Hugging Face test lines: RASAM-1 (734 lines
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="lead"><span class="tag ours">Ours</span> our models. <span class="tag rescored">Re-scored by us</span> a public model we ran on these lines with the
 same metric. <span class="tag reported">Reported on these lines</span> the authors' own number on the same lines; not re-run by us (reason in the notes).</p>
+{clean_section()}
 <h2>2. Published on other splits (not comparable)</h2>
 <div class="wrap"><table><thead><tr><th>Test</th><th>CER</th><th>System</th><th>Source</th><th>Why not comparable</th><th>Reproduction</th></tr></thead>
 <tbody>{other}</tbody></table></div>

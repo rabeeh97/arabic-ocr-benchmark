@@ -1,0 +1,37 @@
+{
+ "by_split_action": {
+  "test|drop": 21,
+  "test|recut": 25,
+  "train|drop": 156,
+  "train|recut": 191,
+  "train|recut+drop": 5,
+  "validation|drop": 20,
+  "validation|recut": 29
+ },
+ "drop_by_rule": {
+  "external": 71,
+  "garbled": 66,
+  "garbled_page": 45,
+  "shifted": 12,
+  "truncated": 4,
+  "vertical": 7,
+  "blank": 18
+ },
+ "test_by_config_action": {
+  "RASAM-1|drop": 17,
+  "RASAM-1|recut": 2,
+  "RASAM-2|recut": 23,
+  "RASAM-2|drop": 2,
+  "tarima|drop": 2
+ },
+ "rules": {
+  "external": "marked invalid (corrupted image or wrong/missing label) in the manual check of calfa-co/rasam-dataset PR #7 (RASAM-1 only)",
+  "garbled": "reference far less probable under a character LM than what two cross-fitted readers read (reference text does not match the image)",
+  "garbled_page": "on a page whose references are, as a whole, much less probable than the readings (MS 1977 pages 0017, 0071, 0158)",
+  "blank": "crop contains no ink, or reference is empty",
+  "shifted": "reference belongs to a neighbouring line (another line of the page reads it)",
+  "vertical": "crop is a vertical / marginal strip that cannot be read as the reference",
+  "truncated": "crop is cut short; the page image does not hold the full reference either",
+  "doubled": "crop holds two lines"
+ }
+}

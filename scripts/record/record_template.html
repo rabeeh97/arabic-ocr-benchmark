@@ -136,6 +136,31 @@ details.cat > summary { font-family: var(--display); font-size: 1.05rem; }
 .rd .txt { font-size: 1.12rem; line-height: 1.7; overflow-wrap: anywhere; }
 .rd .bad { color: var(--bad); background: var(--bad-bg); }
 .rd .miss { color: var(--muted); text-decoration: line-through; }
+.rd .add { color: var(--good); background: var(--good-bg); }
+.rd .none { display: none; }
+.rd.wide { grid-template-columns: 150px 1fr; }
+.rd .cer { unicode-bidi: isolate; display: inline-block; margin: 0 12px; white-space: nowrap; }
+@media (max-width: 520px) { .rd.wide { grid-template-columns: 1fr; gap: 2px; } }
+.card p.err { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.etag { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--bad); background: var(--bad-bg); padding: 1px 7px; margin-right: 6px; }
+.vx, .vok { font-size: 0.72rem; font-weight: 700; padding: 1px 6px; border: 1px solid currentColor; }
+.vx { color: var(--bad); } .vok { color: var(--good); }
+figure.crop { margin: 0; padding: 0; border: 0; background: none; overflow-x: auto; }
+figure.crop figcaption { margin: 0 0 3px; font-size: 0.76rem; }
+figure.crop img { border: 1px solid var(--rule); }
+figure.crop.bad img { border: 2px solid var(--bad); }
+figure.crop.ok img { border: 2px solid var(--good); }
+.kr { color: #e60000; font-weight: 700; } .kb { color: #5080ff; font-weight: 700; }
+.ovs { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin: 4px 0 12px; }
+a.ov { display: grid; gap: 5px; align-content: start; padding: 10px; background: var(--sheet); border: 1px solid var(--rule); color: inherit; text-decoration: none; min-width: 0; }
+a.ov:hover { border-color: var(--bad); }
+a.ov img { max-width: 100%; height: 36px; object-fit: cover; object-position: right; background: #fff; border: 1px solid var(--rule); }
+.ovt { font-size: 0.84rem; }
+td .ci { display: block; font-size: 0.7rem; color: var(--muted); }
+.sub { display: block; font-size: 0.74rem; color: var(--muted); font-weight: 400; letter-spacing: 0; white-space: normal; }
+table.cb th.grp { text-align: center; border-left: 1px solid var(--rule); }
+table.cb td:nth-child(3n+2) { border-left: 1px solid var(--rule); }
+table.cb td:first-child { min-width: 220px; }
 </style>
 
 <div class="wrap">
@@ -151,7 +176,7 @@ details.cat > summary { font-family: var(--display); font-size: 1.05rem; }
 </header>
 
 <nav class="toc" aria-label="Contents">
-  <a href="#summary">Summary</a><a href="#findings">Findings</a><a href="#leaderboard">Leaderboard</a><a href="#why">Why scores differ</a>
+  <a href="#summary">Summary</a><a href="#findings">Findings</a><a href="#leaderboard">Leaderboard</a><a href="#cleanbench">Clean benchmark</a><a href="#why">Why scores differ</a>
   <a href="#progress">Our model</a><a href="#ideas">Ideas tried</a><a href="#lomo">Unseen manuscripts</a><a href="#arams">AraMS</a>
   <a href="#calfa">Calfa gap</a><a href="#data">Data audit</a><a href="#clean">Cleaning</a><a href="#vlm">VLMs</a><a href="#external">External models</a><a href="#datasets">Datasets</a><a href="#next">Next</a>
 </nav>
@@ -398,7 +423,13 @@ details.cat > summary { font-family: var(--display); font-size: 1.05rem; }
     <li><b>Fragments.</b> Catchwords 51–60 %, marginalia about 8–16 %, very short lines worst.</li>
   </ul>
   <h3>Sample cases, by defect</h3>
-  <div class="callout"><p><b>These are samples, not a complete list.</b> Each line was checked by eye on 29 October; many more lines have the same problems, in the training data too. Each card shows the crop the models see, our re-cut where we made one, the line in its page (PAGE-XML polygon in red), the reference (GT), and the reading of our best system (red = differs from GT, struck = missing). The tag says what our automatic cleaning did with the line.</p></div>
+  <div class="callout"><p><b>These are samples, not a complete list.</b> Each line was checked by eye on 29 October, and many more lines have the same problems, in the training data too.</p>
+  <p>Every card begins with the error in words and says which side is wrong.</p>
+  <ul>
+    <li><b>Crop defects (the image is wrong).</b> The card shows the published crop (red frame), our re-cut from the page (green frame) and what our best system reads from each, compared with the correct reference.</li>
+    <li><b>Reference defects (the reference is wrong).</b> The card shows the reference, with the text the image does not contain in red, and what the image actually shows, with the text the reference leaves out in green. "What the image shows" is our best system's reading, checked by eye.</li>
+  </ul>
+  <p>The page view outlines the line the reference belongs to in red. The tag says what the automatic cleaning did with the line. Click a tile to jump to its examples.</p></div>
   <div class="gallery">{{GALLERY}}</div>
 </section>
 
@@ -504,6 +535,6 @@ details.cat > summary { font-family: var(--display); font-size: 1.05rem; }
 
 <footer>
   <span>Sources: design doc <code>docs/research/designs/rasam-crnn-and-replication.md</code> §6–§19, <code>docs/research/rasam-leaderboard.md</code>, <code>results/rasam/*.json</code>; branch <code>worktree-xai-attribution-spike</code>.</span>
-  <span>Built 29 October 2026. CER figures are micro CER on the official Hugging Face test lines unless stated; one seed unless stated.</span>
+  <span>Built 31 October 2026. CER figures are micro CER on the official Hugging Face test lines unless stated; one seed unless stated.</span>
 </footer>
 </div>

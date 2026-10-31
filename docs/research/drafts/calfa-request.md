@@ -19,9 +19,13 @@ against them properly. Could you tell us:
    language model or lexicon is used at decoding.
 3. Whether the models, or their predictions on the test lines, could be shared for research comparison.
 
-For context, our current open baseline (a 2.4 M-parameter character CRNN with a character n-gram LM, trained on RASAM-1 + RASAM-2 + TARIMA)
-reaches 4.12 / 8.92 / 7.04 % on the same lines. We also found 80 degenerate MS 1936 crops (1-7 px tall; 7 of them in the RASAM-2 test
-split) that we re-cut from the page images; we would be glad to share the list and the re-cut crops.
+For context, our current open system is an ensemble of two 2.4 M-parameter character CRNNs with a character n-gram LM and AraGPT2
+rescoring, trained on RASAM-1 + RASAM-2 + TARIMA. It reaches 3.72 / 7.71 / 5.67 % on the same lines.
+
+We also found 250 broken crops (25 of them in the test split, mostly 1–7 px tall MS 1936 crops in RASAM-2), which we re-cut from the page
+images, and 202 lines whose reference does not match the image. The list, the crops and a scorer are here:
+https://github.com/rabeeh97/arabic-ocr-benchmark/tree/worktree-xai-attribution-spike/release/rasam-clean
+(we are also opening an issue on calfa-co/rasam-dataset).
 
 With thanks and best regards,
 [name, affiliation]

@@ -1,0 +1,448 @@
+config,split,index,manuscript,page,action,reasons,xml_line,recut_png,reference
+RASAM-1,test,0,BULAC_MS_ARA_1977,0058,drop,external,,,متى
+RASAM-1,test,18,BULAC_MS_ARA_1977,0071,drop,external;garbled,,,اصل النل ري شرله يلبث عبل الله بو عبد الطله و الدا اله ابه مات وتركحه في بصر املم فيله مو بتة التعر
+RASAM-1,test,37,BULAC_MS_ARA_1977,0071,drop,external;garbled_page,,,وارج الثام طلصاحا صتحت تعدت هاراته فلها بعت رسوله الله صلى الله عليه ولا قال انارويا افه صالا
+RASAM-1,test,82,BULAC_MS_ARA_609,00070,recut,,l_a-26,recut/RASAM-1/test/000082.png,الابن
+RASAM-1,test,132,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,الله اظصر الجور ف مدود الله واجترات ببعصيته ملى قثل او لياه الهم ثكصى نفسك امور اتريه بطا
+RASAM-1,test,156,BULAC_MS_ARA_1977,0094,drop,external,,,ولو دعاه مسلم في جوف اليل شعير مجاءه وخرج صلى الله عليه وسلم الى قفا على حمار عمري وابو هريرة رضي الله عنه معه فقال يا ابا
+RASAM-1,test,185,BULAC_MS_ARA_609,00203,drop,shifted,,,اوتجمع التركتين واقسما على فريض# فما قد انتما فاضرب به لكل وارث فما
+RASAM-1,test,200,BULAC_MS_ARA_1977,0162,drop,truncated,,,ان يلقى السم في اكله او شربه واستقر في جوفه قال للخديم ما الذي حملك على هذا قال الف دينار اعطيتها
+RASAM-1,test,214,BULAC_MS_ARA_1977,0071,drop,external;garbled,,,لنه افتممما عليه فقالالطه طلع البلتتجبى اقهم اله يولهابه وقاله افوتعيا للخرل سمت الا ثالثان
+RASAM-1,test,369,BULAC_MS_ARA_1977,0178,drop,external,,,خافوه
+RASAM-1,test,378,BULAC_MS_ARA_1977,0192,drop,external,,,قط
+RASAM-1,test,430,BULAC_MS_ARA_1977,0118,drop,external,,,عليه وسلم
+RASAM-1,test,478,BULAC_MS_ARA_1977,0100,drop,external,,,الذي صبا معه من قد ابتى قال اختك فاطمة بنت الخطاب وزوجها ابن عمك سعيد ابن زيد وغيرهم فانهم قد اسلموا معه
+RASAM-1,test,566,BULAC_MS_ARA_1977,0074,recut,,l_a-7,recut/RASAM-1/test/000566.png,انا مومن بهما فسمعته قريش وطلبوه فلم يوجد بعد ذلك ولم تزل الكهنة تجبر برسول الله صلى الله عليه وسلم
+RASAM-1,test,587,BULAC_MS_ARA_609,00203,drop,shifted,,,بدا اخذت منه ما تقدما فما بقي فهو الذي به اتبع وفي وجه ثالث ايضا
+RASAM-1,test,656,BULAC_MS_ARA_609,00087,drop,vertical,,,مرة
+RASAM-1,test,677,BULAC_MS_ARA_1977,0158,drop,garbled,,,و اله لا بدلنك مره ياح قار تلظو نخاله سعيد لو عليت اث الجية والنارفنذ صحه لا اتمخذت الصماغيرح
+RASAM-1,test,709,BULAC_MS_ARA_1977,0020,drop,truncated,,,كيف يزيلان صوف الغنم ووبر الابل وكيف يغزل وكيف ينسج وكيف يلبس فاتقوا بذلك
+RASAM-1,test,710,BULAC_MS_ARA_609,00022,drop,vertical,,,السادس
+RASAM-1,train,14,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,تزله مع الجنة لاه تحته المجمر فبق فيه اثره وعليه تنبه البروء ابع الاينقطع ف عله وبت وفيه مي الياقق تنوج
+RASAM-1,train,33,BULAC_MS_ARA_1977,0071,drop,garbled,,,الم الماصنا محلهما الغرق ثقله م صلب الى رصم اذ ايل اعالى فيذ اصبو
+RASAM-1,train,37,BULAC_MS_ARA_1977,0058,drop,external,,,وما اشبههم في ذلك العام الحبشة واظهر حرمة بيت الله الحرام للخلق اخذت الشعراء في ذلك فقال عبد الله
+RASAM-1,train,74,BULAC_MS_ARA_1977,0017,drop,external;garbled_page,,,قال له اعصى مصرها وصه لك قال بارب ومامطر ماقاله اخ الستصا تقوله بس الله ليلا تعفله مو خالقك
+RASAM-1,train,179,BULAC_MS_ARA_1977,0071,drop,external;garbled,,,كة فيما بير زجم والجره منات الشرواصر بضر بلاحكم بحة غامره السعام لا الصركه ذحر لصل للحلى
+RASAM-1,train,256,BULAC_MS_ARA_1977,0017,drop,garbled,,,بعنة وينضرفء اوم وزوجته فيها يتتعناه وغاتت فيهما المحية فلم يزله بلاصفصا حتر د ضاه في جوفما وابه
+RASAM-1,train,298,BULAC_MS_ARA_1977,0126,recut,,l_a-33,recut/RASAM-1/train/000298.png,واما
+RASAM-1,train,306,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,بو متل و عليا متتصا النظو وانت لنا ولدت الشرقت الار ضر وضاات بنورك الافق
+RASAM-1,train,380,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,لابية ونيف وستور ميلاوعمجا يبه وغوافيه الر موام تحصح وليس علىم وجه الارض اعضر منه ومه جبل الرد
+RASAM-1,train,393,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,بعد سبع وخمسين ستة في الدنيا فلناره ضله على الجاج قال له المياج ما الست قالا سفيد به جييد قال له بله
+RASAM-1,train,397,BULAC_MS_ARA_1977,0162,recut,,l_b-33,recut/RASAM-1/train/000397.png,اليوم
+RASAM-1,train,430,BULAC_MS_ARA_1977,0017,drop,garbled,,,مرارض العتع ببوضع منه فسم جيله فود او اصبصت صواه فجده بساعله فج مكة واصبهمه الفيس فالاماةو
+RASAM-1,train,451,BULAC_MS_ARA_417,0099,drop,external,,,يوم الاربعه # في جماد الثانى سنة
+RASAM-1,train,511,BULAC_MS_ARA_1977,0017,drop,garbled,,,كاذ بافا بتدرت حواهء واكلتث قبلادم فلم يصيصاشه فظ الح انه مثلها وصارت تر او ولا صد لا علا فيال
+RASAM-1,train,555,BULAC_MS_ARA_609,00096,drop,vertical,,,مَا
+RASAM-1,train,709,BULAC_MS_ARA_609,00005,drop,garbled,,,َّمما به فضلنا وَخَص
+RASAM-1,train,714,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,خام الصوله والثبور فان رايتنولا خذ والحضك منه ترشد وافللسا فق اليه فضلا لانه خاة النبيي واماف
+RASAM-1,train,756,BULAC_MS_ARA_609,00119,drop,vertical,,,ذلك هاكذا
+RASAM-1,train,781,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,الهلسر الغر يتقيه اللولو او العقيق وفيه العوب والفلفل ودواب النسك ودوابب الزيلدة وصوحيل طمول
+RASAM-1,train,867,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,الصبية وصي تقسك العلاكو ستده تدافتعلم فقال الحمام ما لله لاقتلتك قثلة لى اقتلها اصد
+RASAM-1,train,906,BULAC_MS_ARA_1977,0085,drop,external,,,للذي ببكة مباركا سببها ان الله تعلى لما قال للملايكة انى جاعل في الارض خليفة اعترضوا عليهم تقولهم اتجعل فيها من يفسد
+RASAM-1,train,1032,BULAC_MS_ARA_609,00203,drop,shifted,,,حضور جميعه والله سبحانه وتعلى اعلم ثم قال ص
+RASAM-1,train,1172,BULAC_MS_ARA_1977,0071,drop,garbled,,,يهع زلاوله عنلد الفر وبهو افقته الناسع عشرم مارس مه عام اتنيو وثانين وثهانناية عام لع القرنيو بالسين
+RASAM-1,train,1199,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,فما تقولف الي فكر قاله ثانه اثنين اذ صبافي القار اعد الله فه الديو وجبع به بي الفرفة عاشر سعيدل ومات
+RASAM-1,train,1208,BULAC_MS_ARA_609,00082,recut,,l_a-29,recut/RASAM-1/train/001208.png,بل يحجبهم
+RASAM-1,train,1225,BULAC_MS_ARA_1977,0136,recut,,l_a-18,recut/RASAM-1/train/001225.png,طرفة عين ما بقيت في الدنيا وانصح جميع الناس واياك ان تفارق الجماعة وادعوا الله لى لنفسك ثم قال اللهم
+RASAM-1,train,1259,BULAC_MS_ARA_609,00178,drop,truncated,,,من سائرهم على قدر سِهامهم لكان العمل في ذلك مثل ما
+RASAM-1,train,1276,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,ينيعني قال له تسمجد لغير اع لعله الله فقيلك فقاله ما سمجدت له حياا فاسمجد له ينا ووه مى فن
+RASAM-1,train,1279,BULAC_MS_ARA_1977,0097,drop,external,,,في ال##ر والعلانية ناصحا للخلق حتى اظهر الدين وامتا زمان معه من المومنين فاول من ءامن به ابو بكر الصديق
+RASAM-1,train,1349,BULAC_MS_ARA_1977,0103,drop,external,,,في يده الى النبي صلى الله عليه وسلم وقال له اتزعم ان الله يبعث هذا كما كان ثم فتته في يده ونفخ فيه في الريح ####
+RASAM-1,train,1412,BULAC_MS_ARA_1977,0071,drop,garbled,,,قال العلبه محتبت لى سول اليه صل الله عليه ملم قوالخمسمائة ام كهر يقع لو احد لا نصن لبعام محاصاهف الجاصية
+RASAM-1,train,1437,BULAC_MS_ARA_1977,0094,drop,external,,,تعلى خذا لعفو وامر بالعرف واعرض عن الجاهلين وقوله تعلى واصبر على ما اصابك ان ذلك من عزم الا مورو قوله تعلى فاعف عنهم
+RASAM-1,train,1454,BULAC_MS_ARA_1977,0061,drop,external,,,الذي قال رسول الله صلى الله عليه و سلم على يد ابيه المعروف بشيروية و فيه قال قايلهم و كسرى
+RASAM-1,train,1484,BULAC_MS_ARA_1977,0042,recut,,l_a-32,recut/RASAM-1/train/001484.png,ثم
+RASAM-1,train,1504,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,الع اليصا فارقع اليه ف تفيسه الشّصوة فالحمال النضراليها فقاله الله ياه لاءم مخَلنصا عيتك قالانعه بارب
+RASAM-1,train,1529,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,واصيص الحية بيبسائه مل ارض ساره في ذلك تلك البلاد اكثر فلاك الله ميات صله النقاش ومن
+RASAM-1,train,1538,BULAC_MS_ARA_1977,0170,drop,external,,,وهان
+RASAM-1,train,1547,BULAC_MS_ARA_1977,0158,drop,garbled,,,فصر السوت والارخى حنيعا وما لثامى اليثة حمين قاله اقلبواضع الى الكعبذ فله الغبلة قال سعيل
+RASAM-1,train,1555,BULAC_MS_ARA_1977,0012,drop,external,,,انا
+RASAM-1,train,1558,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,معا اى يكوه هذا الر سولا الببعو ولساحضرت اوس بعمه صارتة الغشاة الوفات اصتمع عليه قوم من
+RASAM-1,train,1608,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,واسع رضو السعنه انه قال لقيت الشياه في صريو السمبد فقاله له يابوه واسع عَلها اردتع وجج ك
+RASAM-1,train,1708,BULAC_MS_ARA_609,00026,recut,,l_b-5,recut/RASAM-1/train/001708.png,وان
+RASAM-1,train,1711,BULAC_MS_ARA_417,0047,drop,external,,,ان ال#رغلية اهل تلمسان ضاق عليهم الحال
+RASAM-1,train,1743,BULAC_MS_ARA_1977,0094,drop,external,,,غشا ولا عبيا ولا شينا الا حذرنا منه ونهانا عنه كما علمه الله تعلى واد به به كقو له تعلى ان الله يامر بالعرن والاحسان وقوله
+RASAM-1,train,1757,BULAC_MS_ARA_609,00022,recut,,l_a-31,recut/RASAM-1/train/001757.png,الى انميها
+RASAM-1,train,1779,BULAC_MS_ARA_1977,0071,drop,garbled,,,اخصاذ فها مذ منا الدام نزلنا على غدير موماه فيه ببجد اي وبغربه6 في راصب وبحنانتكاف شوتا فسع
+RASAM-1,train,1863,BULAC_MS_ARA_1977,0192,drop,external,,,تقلد عبد الكريم الخلافة في سن الخمسين سنة و لم يلى الخلافة من العباسيين اكبر منه سنا ثم اصابه داء الفا###
+RASAM-1,train,1990,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,وتصلكتلتلهسا الشبات تلها تشه ان ثلا تث القث لتت
+RASAM-1,train,2004,BULAC_MS_ARA_609,00116,recut+drop,blank,l_b-26,recut/RASAM-1/train/002004.png,ذكرن
+RASAM-1,train,2055,BULAC_MS_ARA_417,0023,drop,external,,,في اسره و ويله شعر
+RASAM-1,train,2098,BULAC_MS_ARA_1977,0095,drop,external,,,قط ولا ياخذ مماء اتيه الله الا القوت وكان صلى الله عليه وسلم يعطى عياله قوتما مهم من الشعير او التمر فيوترون منه حتى ربما
+RASAM-1,train,2104,BULAC_MS_ARA_1977,0071,drop,garbled,,,قدفت في هار الخليل منا فيعا ولست باليّْرار مزوه صنم احتوبه بيتك البصيو
+RASAM-1,train,2173,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,ليمة ثى قال لعم والذراحد جنكم عليه اه رسولا كريها اسمه عمى قد قرب صضصورا ف لا يسبقنكم اصل اله اصابته
+RASAM-1,train,2224,BULAC_MS_ARA_1977,0052,recut,,l_a-12,recut/RASAM-1/train/002224.png,الله الا هلك ولاكن ان وصلت الى ذلك البيت فطف به وعظمه كما فعل ءادم وابراهيم ومن مضا من الانبياء واكرم
+RASAM-1,train,2296,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,رسوله الله السشت حفظكم بصاذه الشصادلة الى يوم القيامة قاله المجاج اقثلوه فضمك سعيكقا
+RASAM-1,train,2361,BULAC_MS_ARA_1977,0017,drop,garbled,,,اليها والحله فلذلك ابتلبية بالميضن واخرع الله حعع مه الجنة واصبطوا اله الارض فنذله ادم يجمه م قدي
+RASAM-1,train,2388,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,اقاله المام ما تقوله في رسوله اليه صى الله عليه ولم قال سيد ولك لاده نبي مصصفر ضير م مضاومر بقى قال
+RASAM-1,train,2463,BULAC_MS_ARA_1977,0071,drop,garbled,,,محصلح فييو لسى مل اقبله رهو له اله صل اله عليه ولم طمه اليكونه صونسله محمد بسعد بر سواة
+RASAM-1,train,2470,BULAC_MS_ARA_1977,0071,drop,external;garbled_page,,,السسية التامة وفاه باللدينة محاصى عارف بالجموم فصعد اصلا اللدينة وصاح باعلاصوته يامعثر البصوة
+RASAM-1,train,2471,BULAC_MS_ARA_609,00104,recut,,l_a-26,recut/RASAM-1/train/002471.png,وان كان
+RASAM-1,train,2526,BULAC_MS_ARA_1977,0158,drop,garbled,,,قار العلا بطامته وبن فه يصمع اله فليس بقذاعي وارعند نسيف وثلاوتك وعان رني اله منه من غز
+RASAM-1,train,2562,BULAC_MS_ARA_1977,0071,drop,external;garbled,,,بوجعة عيعه ساك ابوص فكار او لر يسبق هذا الادهم قبل ذلك قال سالت اي عن ذلك قالضرفت رابعة
+RASAM-1,train,2587,BULAC_MS_ARA_1977,0017,drop,garbled,,,وتسعوه جبلا اعميصا جبلا سر نديب وامجب س تدفيه حبله فوثا فلا فحالح بعجليه ولا انتصاه لعد انيه محَال
+RASAM-1,train,2643,BULAC_MS_ARA_1977,0071,drop,external;garbled_page,,,انشدصم نصيدة منها هذا مخال الاتات خوم اب اله صواه يعوربها اصلا السعادة والبره الاببت الى سول بى كال غالفا
+RASAM-1,train,2661,BULAC_MS_ARA_1977,0071,drop,external;garbled_page,,,ولا الهم اتباعه على ملة الاسلام فانه واله سجد الاولي والاخر يج ثر نعته لطم يصفاته علها صل اله صليه ولم تص
+RASAM-1,train,2733,BULAC_MS_ARA_417,0027,recut,,l_b-13,recut/RASAM-1/train/002733.png,محمد المقلش
+RASAM-1,train,2740,BULAC_MS_ARA_1977,0158,drop,garbled,,,جيثر العشرة ومفر ب زومة واشروه من اليه بببته صبته صصرصوله الله صلى لله صليه ملم على ابنت زوفه
+RASAM-1,train,2761,BULAC_MS_ARA_609,00026,drop,shifted,,,انه اصم فان لم ينقسم فهو مركب من ذلك الجزء ومن الخارج وان لم ينقسم عليه
+RASAM-1,train,2782,BULAC_MS_ARA_1977,0017,drop,garbled,,,قير حص ابب منْه ساحاد ل ابلي البلايكة لبراليه فقزوجه م المينة فاخرع منما وصاريد ون
+RASAM-1,train,2816,BULAC_MS_ARA_1977,0029,drop,external,,,مدينة الرسول صل الله
+RASAM-1,train,2886,BULAC_MS_ARA_609,00171,drop,garbled,,,واثنين قسمنا عليْها الخارجات ### اسباع
+RASAM-1,train,2905,BULAC_MS_ARA_1977,0017,drop,external;garbled_page,,,ولذالك حوم المخ وايتلابه بنواه لاعم وقيله تجمة البر وقيله تجعة التيو والستصور الاوله فكاها افليكر بصور
+RASAM-1,train,2917,BULAC_MS_ARA_1977,0094,drop,external,,,اذا كان راكبا والا يقول له تقدم وكان صلى الله عليه وسلم ربما مازح ولا يقول الاحقا ولم ينتصر لنفسه قط ما لم ينتهك شىء من
+RASAM-1,train,3007,BULAC_MS_ARA_1977,0174,drop,external,,,وثمرة
+RASAM-1,train,3020,BULAC_MS_ARA_1977,0195,drop,external,,,العادل تبقاوخاخ ثم المنصور ### بن المظفر ثم المنصور ابن الناصر ثم اخوه الاشرف و هو السادس
+RASAM-1,train,3029,BULAC_MS_ARA_1977,0158,drop,garbled,,,تضع الله صراخك فلم يصوة بعك ذلك وهان صيوابه يعاوله سعيد فغا ل له بابنه ما بيسكيكب ما بقاه انيكه
+RASAM-1,train,3034,BULAC_MS_ARA_1977,0092,drop,external,,,لكونه
+RASAM-1,train,3052,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,ايتماتو لوابثم وجه الله قال كبوه على وفصه الى الارض قال سعيك منصا خلقتكم و فيممانفيه
+RASAM-1,train,3091,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,ة امنة ام رسول الله صل اله عليه ولم لناصملت به راث في تومصا نور اقك ضوح مما اضات به قصور بصه
+RASAM-1,train,3140,BULAC_MS_ARA_1977,0186,drop,external,,,وكانت
+RASAM-1,train,3168,BULAC_MS_ARA_417,0003,drop,external,,,ت جى
+RASAM-1,train,3278,BULAC_MS_ARA_1977,0158,drop,external;garbled,,,وعانه ما ملا لبنه امية ولا البين فد ير معاوية عليها فلها اصذه بعث به الكحم المياج وصورحي لا صحيب التفسر
+RASAM-1,train,3299,BULAC_MS_ARA_1977,0017,drop,garbled,,,فتدخله انة فقاه ياحمدا الله تعلىنهه دل وع الاكلب الثمرة واراه ذلك منه فزلت قذمه عر صا و امرن
+RASAM-1,train,3430,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,بحلا منا الراصب فباشوف علينا مر راس الكديد وقال لان هاذ الغة ما هى لاصل صذا البلاد قلنانعم تحن قوم من
+RASAM-1,train,3470,BULAC_MS_ARA_1977,0017,drop,external;garbled_page,,,اب يخرج منصافك خلت به الى الجنة فصار يكلهما مو بطنها ويقهم لهما باليه ولم يكن واجه اب اصد يقسهم بانه
+RASAM-1,train,3540,BULAC_MS_ARA_1977,0172,drop,external,,,تسكنه
+RASAM-1,train,3615,BULAC_MS_ARA_1977,0094,drop,external,,,الله عليه وسلم فقال يابا هريرة احملك فقال في والذي بعثك بالحق لا صرعتك ثانية وكان عادته صلى الله عليه وسلم يحمل من مشا معه
+RASAM-1,train,3648,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,تققل في صبل الهلك بن مر ولانك قال ان يكق حجمسنا فعتد الله ثوابه احسانه واب يكن مسكا فلى يعمعجز اللله
+RASAM-1,train,3678,BULAC_MS_ARA_1977,0158,drop,external;garbled_page,,,وان بحكم اله لى تتغير له باصنتة فقيله له انك مقتوله فقالا قد سالت الله الشصد ا ولعله قبله د عاه و حان رضي
+RASAM-1,train,3707,BULAC_MS_ARA_1977,0090,recut,,l_a-32,recut/RASAM-1/train/003707.png,الاولين
+RASAM-1,train,3770,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,حبيك اعلى منطام رسوله الله صى اله عليه ولم لريغير ولم يبعله قاله فبا تقولفي عمريز الخطاب قاله عمر الفارون
+RASAM-1,train,3883,BULAC_MS_ARA_1977,0071,drop,garbled,,,ركم صليق يسوقه المخلافق الىرصنه عليه صلوات اليه وعلى صيبع النبيهين النح حمار تهدضل جير ولم يض
+RASAM-1,train,3971,BULAC_MS_ARA_1977,0017,drop,garbled,,,ورلياهء واهمدولا وعماعنه اليه تعلى فقال له وبهوا للله حدل لهه عليه ولا لقدا حصي وعينا فماه لاتوب
+RASAM-1,train,4004,BULAC_MS_ARA_1977,0071,drop,external;garbled,,,بج فمدزيررجزي ريرعدد زبنار يهم اه باسر نيع يي صوح اله فقار قا لا يفضذ
+RASAM-1,train,4026,BULAC_MS_ARA_1977,0158,drop,external,,,مهسا
+RASAM-1,train,4124,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,اع القتراء لقاله الجمجاج وحضريوم الجباجي فلهاقته اببه الاشعت اختفا صوالى اب اخذه خالك القسب بنطة
+RASAM-1,train,4135,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,الله صى اله عليه وع واول من السلم وزرج فاصنة بنت رسول الله صى اله عليه ولم الت صواصب بناثه البيه
+RASAM-1,train,4222,BULAC_MS_ARA_417,0017,drop,external,,,اهل ن#اد بالسنة الثانية من ولايته فهزموه
+RASAM-1,train,4292,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,قبلك ولا اقتلصا اصع بعد ع قاله اذل تفسدعلى نيائ وافسع عليك وكلغخ تك والقصاح ابمامك
+RASAM-1,train,4354,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,وخالقصا خاله نعم قالله اسكم انت و زوجك المجنة وبلا منصار عد احي يتما ولا تقر فاصانه التجة حَال
+RASAM-1,train,4358,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,قك خلقصا الله صر ضلعه الايسر فقاله يارب ما صذا قاله ياه ادم الغ ينام ففتقد الك انيض مه جنسمفنظر
+RASAM-1,train,4399,BULAC_MS_ARA_1977,0094,drop,external,,,ولن ص## ان الله يحب المحسنين وقوله تعلى فليعفرا وليصفحوا لال تحبون ان يغفر الله لكم وقوله تعلى ادفع بالتى هى احسن
+RASAM-1,train,4404,BULAC_MS_ARA_1977,0017,drop,garbled,,,بيته وببنك جما بافبا ذلك المجماب قاله لاذا قول علا اصحت اللم انك سلطت علينا الثيصاه وجعلت
+RASAM-1,train,4405,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,بعر خال مه اي مع قلنام ختدف اما انه سببعت فيعم وشيكانببا يكور وسطاف مومه يسفك الدما
+RASAM-1,train,4479,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,وصين ق الله وخيرة رسوله اصب الحم الله لن يعد الهيوه باصد الرجين فكاعم الحقصا بالخيرات والفضيلة عا ثر
+RASAM-1,train,4514,BULAC_MS_ARA_1977,0017,drop,garbled,,,بالسمجود ولم يردله منه فثبت قدمه صوعا وقه اوصالك فذالك فقال ونوبثله رفع يجاعم اب الله تعال
+RASAM-1,train,4521,BULAC_MS_ARA_1977,0158,drop,garbled,,,وادخله النار قال اضربول عنه قال سعيا شصع كم حكىاة الثصع ابالالله الاالله وابحه
+RASAM-1,train,4561,BULAC_MS_ARA_417,0008,recut,,l_b-14,recut/RASAM-1/train/004561.png,عثمان بن محمد بن عثمان
+RASAM-1,train,4601,BULAC_MS_ARA_1977,0120,drop,external,,,والصرات يُجبى خزاين الارض ثم يخسف الله بها اعنى بغداد وقال صلى الله عليه وسلم يكون في هذه الامة رجل
+RASAM-1,train,4723,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,له الماج ما ضمكك قال مو روتع على الله تحال المجاج اضمعوه للذكحم فقال وصصت وصصى للذ
+RASAM-1,train,4734,BULAC_MS_ARA_609,00109,drop,vertical,,,ثلث
+RASAM-1,train,4762,BULAC_MS_ARA_417,0046,drop,external,,,فبه مؤلفه مانصه
+RASAM-1,train,4784,BULAC_MS_ARA_1977,0071,drop,garbled,,,ثمرانهصى اله عليه ملى ولد ما الفيلا بعديو الفي لا ظبه وسيب يوما وذلك لبلة لاتين لاثنى مشرليلة خلت م
+RASAM-1,train,4803,BULAC_MS_ARA_1977,0017,drop,garbled_page,,,باصوارصاو لا بقدر على العقول اليصا شر اب الله تعلى القح النوم على اصم جنام فلنا استيقظ وفه حوا حوله
+RASAM-1,train,4912,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,مخال فيا تقوله في قال اثت اعلم بنفبك منه قال بث في عليك قال الرذَل اسولك ولا اسدتح قال الايد
+RASAM-1,train,4927,BULAC_MS_ARA_609,00150,recut,,l_b-31,recut/RASAM-1/train/004927.png,تضرب
+RASAM-1,train,4963,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,قال الويل لك لاقطفنك قطعا وافرثن عضونح عوا عضواقله بسعيد الويل كينز جزم عن الجنق
+RASAM-1,train,4979,BULAC_MS_ARA_609,00179,drop,garbled,,,ثمانين وارْبعماية
+RASAM-1,train,4980,BULAC_MS_ARA_1977,0158,drop,garbled,,,على بنصاح صاصيبه ولم يدل ولى يغير خاله فما تقولفي عثمان بوزعفات ثال المقول طلاجصة
+RASAM-1,train,4982,BULAC_MS_ARA_609,00136,recut+drop,blank,l_b-35,recut/RASAM-1/train/004982.png,هكذا
+RASAM-1,train,5155,BULAC_MS_ARA_1977,0158,drop,garbled,,,البوصل السعليه وع بوهي من اليه قاله فيا تقولهف علي فبن عنه سوله الله صلى الله غلبي وع قال ابرعم رسوله
+RASAM-1,train,5158,BULAC_MS_ARA_1977,0017,drop,garbled,,,فد وامب اعد ابنا مطلعا على عورتتايك وناصووقيله مر صيث لا تنوتصر اللصر ايس مناخنا ابسته من رتكحمك
+RASAM-1,train,5189,BULAC_MS_ARA_1977,0017,drop,external;garbled_page,,,ويحفو وقنصه منا عنا قتطه م حمنك وفاعحد بينتا وبينه كما باعدت بينه وفيو جنتك انص على كَل ه
+RASAM-1,train,5212,BULAC_MS_ARA_1977,0017,drop,garbled,,,العلناولنا اصي الله لد الى الارخ عليه الاسمام علها لا بتكليم تلصر واننا القر في قلبه قور او خلق
+RASAM-1,train,5223,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,ويسي الدرار والنساء وتعتك الامواله لا تلخذلا في اله لومة لاهى مجخرع مده اللحرم النصووه بالنورمو اتبعه
+RASAM-1,train,5247,BULAC_MS_ARA_1977,0131,drop,truncated,,,بن الخطاب فامر عمر بالنداء ان الا من يدرى اللغة ثم امر الاسود ان يضع كتاب النحو باملاء على
+RASAM-1,train,5315,BULAC_MS_ARA_1977,0017,drop,garbled,,,لك الوقت بقهم اثره اه وف حيله مس تديب وهوصبله كوله مائية ونبع وستور ميلا وفيه اترفذءا3و لن
+RASAM-1,train,5342,BULAC_MS_ARA_1977,0176,recut,,l_b-32,recut/RASAM-1/train/005342.png,له
+RASAM-1,train,5344,BULAC_MS_ARA_1977,0047,drop,external,,,الخضر هو الذي ###ل
+RASAM-1,train,5353,BULAC_MS_ARA_1977,0195,drop,external,,,و ### وافقت الخلافة على هذا المعنى و في هذه ه الامة في جميع البلاد و لما مات العزيز قتلته اخته و ولت ابنها
+RASAM-1,train,5370,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,اله منه فماب الوموات منيانه حا بله 9ي اذا صرح قام سعيع لصلانه فلم يصرة ليلة فقاله له سعيع مالك
+RASAM-1,train,5425,BULAC_MS_ARA_417,0057,drop,external,,,ابن المجاهد وكان بطلا شخاعا # قل
+RASAM-1,train,5435,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,ع فوالله ما بقا بعض منام لمريقع كلامه في قليه بلهارجعنامر سفر نا خلق لكل واحد مناغللام فهما اممذ
+RASAM-1,train,5438,BULAC_MS_ARA_1977,0071,drop,garbled_page,,,قيل اكختر وبحه واية من الزصم انه صلى اله عليه ولم وبر صيا ل ابيه عبد السصلب الله وهوقول ضعيب
+RASAM-1,train,5442,BULAC_MS_ARA_1977,0094,drop,external,,,جلساؤه كانما على رءوسهم الطير فاذا صمت تكلموا ولا يتكلم حتى يفرغ حديثهم فيضحك مما يضحكون ويتعجب
+RASAM-1,train,5482,BULAC_MS_ARA_1977,0017,drop,garbled,,,وهو الغه بنامنهة والقدنيو السدالو البم الا عظى المحيك بالدنيا والغه عفمو جبال الارض علصاماية وثانية
+RASAM-1,train,5487,BULAC_MS_ARA_1977,0162,drop,external,,,ولاكنى اشهد ان لا اله الا الله وان محمدا رسول الله ولما كان فبل موته بايام كان قد بعث وفدا الى ملك الروم فلما اتوه تلقاهم بالجميل
+RASAM-1,train,5526,BULAC_MS_ARA_1977,0198,drop,external,,,ونفرة
+RASAM-1,train,5536,BULAC_MS_ARA_1977,0029,drop,external,,,على
+RASAM-1,train,5700,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,لماخلو المجتة خلها لصالصلا ولها خلو النار خلع الصااصلا فلا مبع له لكلهاته للاو دلنه على تبب وافعله
+RASAM-1,train,5734,BULAC_MS_ARA_609,00203,recut,,l_b-26,recut/RASAM-1/train/005734.png,للجميع
+RASAM-1,train,5798,BULAC_MS_ARA_609,00032,recut,,l_a-29,recut/RASAM-1/train/005798.png,او تطرح
+RASAM-1,train,5818,BULAC_MS_ARA_1977,0046,drop,external,,,قف
+RASAM-1,train,5825,BULAC_MS_ARA_1977,0069,recut,,l_a-2,recut/RASAM-1/train/005825.png,وشرف وكوم ومجد وعظم وبارك وانعم
+RASAM-1,validation,36,BULAC_MS_ARA_1977,0158,drop,garbled,,,لا ثبت في علح قال ارا ثمنته شثرك قال لا كثمنته الله ارالمّتت قاله له سعيكد الط لمالف لكتاب
+RASAM-1,validation,69,BULAC_MS_ARA_1977,0071,drop,garbled,,,ل يفت م مكت مم بني توهم انا اصد معم وسفيار بر مشاجع ويز يدا بهم واهامة ابب مالك خاصدف بر عنفة
+RASAM-1,validation,119,BULAC_MS_ARA_1977,0016,drop,external,,,والحيا
+RASAM-1,validation,122,BULAC_MS_ARA_1977,0050,drop,external,,,قف
+RASAM-1,validation,153,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,تقذلا في الملعاد بعده الى الان قال سيجزوة باعالصم فيس ور ومشور ولست عليه فولحيله قاله فيا
+RASAM-1,validation,158,BULAC_MS_ARA_417,0054,drop,external,,,بينهم وبين ال#رغلية الف بينهم تاليف
+RASAM-1,validation,292,BULAC_MS_ARA_1977,0190,recut,,l_b-34,recut/RASAM-1/validation/000292.png,بكر
+RASAM-1,validation,315,BULAC_MS_ARA_1977,0095,drop,external,,,وهو في ذلك كله اشدا الناس حياء لا يثبت بصره في وجه احد يقبل الهرية ولو انها جرعة لبن او بخص ارنب ويكافى عليهما وياكلها
+RASAM-1,validation,436,BULAC_MS_ARA_1977,0093,drop,external,,,ويقول انما انا لكم بمترلة الوالد الشفيق قال اين عياس رضي الله عنه كان رسول الله صلى الله عليه وسلم اجود الناس بالخير اجود
+RASAM-1,validation,450,BULAC_MS_ARA_1977,0158,drop,garbled_page,,,شغى من عسير قال سعيد ليه لسبت ضلك خال الحجم ام شقيت بعد سعيك لا يعلم القيب الا الله قال الجمجاج
+RASAM-1,validation,451,BULAC_MS_ARA_417,0082,drop,external,,,ما نصه
+RASAM-1,validation,464,BULAC_MS_ARA_1977,0017,drop,external;garbled,,,الس وابوضبع البرور يكلبه وعمر بوه عبك العذية وعبك الىلك ومحتير مب المفسريه انصاشمة القن
+RASAM-1,validation,513,BULAC_MS_ARA_417,0037,drop,external,,,الا باكل الصبر المرء شعر
+RASAM-1,validation,516,BULAC_MS_ARA_417,0087,drop,external,,,ان#ليز على الجزائر ودخلوا
+RASAM-1,validation,547,BULAC_MS_ARA_609,00075,recut,,l_a-31,recut/RASAM-1/validation/000547.png,اي الخيبة
+RASAM-1,validation,657,BULAC_MS_ARA_417,0005,recut,,l_b-13,recut/RASAM-1/validation/000657.png,قف
+RASAM-2,test,13,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D10,recut/RASAM-2/test/000013.png,تلا دغرس العورث مك د العورث ولغرس يتل ورجز فيقمن
+RASAM-2,test,20,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D17,recut/RASAM-2/test/000020.png,ان رفع فيه رمق فاغسلوه ينسن وسر عليه السلام
+RASAM-2,test,21,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D12,recut/RASAM-2/test/000021.png,موت أبيه لم ينفد انتهت اليه عبارة بن الحاجب وهي ارشق من عبارة ابن شاس فان عبارة بن شاس فيها عي
+RASAM-2,test,38,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D21,recut/RASAM-2/test/000038.png,ندوكل نشينين اذون غفتنجر انييض ءاش سالحمد
+RASAM-2,test,74,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D8,recut/RASAM-2/test/000074.png,دغ الغسل قبل الطعام ينقي الفقر وبعده ينقي الالم
+RASAM-2,test,80,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D18,recut/RASAM-2/test/000080.png,المؤجل انما ينجز بتقدير صحته عند الاجل فالمعتبر انما هي احوال المطلق عند الاجل كما قال بن الحاجب
+RASAM-2,test,102,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D6,recut/RASAM-2/test/000102.png,التباعد د سججتذن يسجج امص انجانن ابحرين ايلل انجانن
+RASAM-2,test,117,BULAC_MS_ARA_1943,180494,drop,blank,,,عمها من رجل وبقيت مدة
+RASAM-2,test,122,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D12,recut/RASAM-2/test/000122.png,عن يسارها ميدنت اجن الصف ومن ورايها ميدنت سن
+RASAM-2,test,133,BULAC_MS_ARA_1983,177816,recut,,l_b-A03D21,recut/RASAM-2/test/000133.png,دفعه في مهوات اربعين فى يفل وذلك اذا كدت يحكم وذكروا عن رسول الله صلى الله عليه وسلم
+RASAM-2,test,140,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D24,recut/RASAM-2/test/000140.png,او بيع الامة او قبل موته كما تقدم لكم في استشكال تزويجه امة ابيه ولهذا قيد شيخنا بن عرفة المسئلة
+RASAM-2,test,154,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D18,recut/RASAM-2/test/000154.png,انتوثرون قال لا الا ان يكون خايفا يطلب العدو اذوس
+RASAM-2,test,167,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D14,recut/RASAM-2/test/000167.png,اترنان ما عجلوا الإفطار وما عجلت امتي الإفطار واخروا
+RASAM-2,test,175,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D4,recut/RASAM-2/test/000175.png,يلز دزن اسينو وسر عليه السلام الا وان تمام صلاة
+RASAM-2,test,203,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D12,recut/RASAM-2/test/000203.png,وسر عليه م لا يصلا صلاة مثلها اوليتس ويدن ام الحكم
+RASAM-2,test,205,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D5,recut/RASAM-2/test/000205.png,اهون من الدم الن غرس سن انيلشتين اولاحتلام اذويدمن
+RASAM-2,test,213,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D13,recut/RASAM-2/test/000213.png,ام القرءان ولتل ءاس جالقرءان قالوا جميعا نعم ذالك احب
+RASAM-2,test,260,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D5,recut/RASAM-2/test/000260.png,الضيق اتسست اجتل الحالدين اج اتذغن يدر اتسردن ان
+RASAM-2,test,264,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D8,recut/RASAM-2/test/000264.png,التكلتذين يوي ولدغ اتيري اسويديكن دجيذ ايتيسستنن
+RASAM-2,test,276,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D2,recut/RASAM-2/test/000276.png,وعرضه فقد مات فهو شهيد انوان اذوس يمر بالمعروف
+RASAM-2,test,306,BULAC_MS_ARA_1947,178606,drop,blank,,,ط
+RASAM-2,test,307,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D22,recut/RASAM-2/test/000307.png,عماد الدين من ترك الصلاة فقد هدم الدين من ترك
+RASAM-2,test,325,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D15,recut/RASAM-2/test/000325.png,اقرن الرفرفن انفلى يمغربن اذ اتمر اجسرذانسن نثنين غرسن
+RASAM-2,test,330,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D10,recut/RASAM-2/test/000330.png,انو نرزوف سنت الركعات اسين وسر عليه السلام لا
+RASAM-2,test,364,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D18,recut/RASAM-2/test/000364.png,اذيمنس نشنين غرنغ وليل ءاس يغر الكول اسنين
+RASAM-2,train,12,BULAC_MS_ARA_23,42100,recut,,l_b-A03D4,recut/RASAM-2/train/000012.png,قدر ورقة هنا
+RASAM-2,train,37,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D14,recut/RASAM-2/train/000037.png,اجن وسر عليه السلام ستحشر امتي غدا يوم القيامة
+RASAM-2,train,51,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D20,recut/RASAM-2/train/000051.png,يجذ ايشغل ايتزلث ايتوض نغ الا ان يكون خايفا يطلب العدو
+RASAM-2,train,78,BULAC_MS_ARA_65,149902,recut,,l_b-A03D92,recut/RASAM-2/train/000078.png,التظمن
+RASAM-2,train,86,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D4,recut/RASAM-2/train/000086.png,لما يشهد له من كرامة الله غدا يوم القيامة انوان من غايص
+RASAM-2,train,89,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D16,recut/RASAM-2/train/000089.png,تيذتس اسويديكن ديفلس اسيمن اسن دتشوا
+RASAM-2,train,117,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D13,recut/RASAM-2/train/000117.png,انو يكوزن ظهروا انفيللن ارنن نغ ظهروا سي د مشركن
+RASAM-2,train,122,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D20,recut/RASAM-2/train/000122.png,المعتبر بالعبد في المسئلة التي ذكرتم انما نجزنا عليه الطلقتين اللتين تصحان منه عند موت السيد وهما
+RASAM-2,train,126,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D16,recut/RASAM-2/train/000126.png,وعلى سن عيسى وعلى جمال يوسف وعلى نغمة داوود وعلى
+RASAM-2,train,153,BULAC_ARA_MS_1982,182053,drop,shifted,,,يجمع كاسدا لغاب مرد ان وشيب وقول ابن حيان ان الجمع مفرد بدليل يوم التقى الجمعان مردود بنحو
+RASAM-2,train,168,BULAC_MS_ARA_1946,0077,drop,vertical,,,مسئلة
+RASAM-2,train,187,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D19,recut/RASAM-2/train/000187.png,والمعتبر في حال النفوذ وان ادعا بعضهم انها عبارة فيها قلق فما اسفرت العاقبة عنه عند الاجل هو
+RASAM-2,train,190,BULAC_MS_ARA_1943,180494,drop,blank,,,سنين فوقع بينهما
+RASAM-2,train,219,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D21,recut/RASAM-2/train/000219.png,يس ا بلس اوسنجيس اولا يبزير او فسس اقرنت تفو
+RASAM-2,train,232,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D11,recut/RASAM-2/train/000232.png,انوان اسنينو باشتباك النجوم ينويسن دغ لم يزل الذين
+RASAM-2,train,239,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D20,recut/RASAM-2/train/000239.png,فهي خداجة مخدجة ناقصة لم تتم اسويديكن دغ
+RASAM-2,train,242,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D16,recut/RASAM-2/train/000242.png,غلسنت اينفل اسنت متزع اقز ايصلي الرجل التطوع وهو
+RASAM-2,train,247,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D9,recut/RASAM-2/train/000247.png,اوابا ينويسن دغ لم تزل امتي بخير ما عجلوا الإفطار ولم تزل
+RASAM-2,train,254,BULAC_MS_ARA_1943,180483,recut,,l_b-A03D5,recut/RASAM-2/train/000254.png,العمدة في بناء حكمكم التقدم الى والد البنت المذكورة في انكاحها هو و الا زوجتموها عليه اذ لا ترتفع ولاية الاب وعضل ابنته البكر
+RASAM-2,train,262,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D18,recut/RASAM-2/train/000262.png,تسحرق ولو لجصوة من الماء انوان اسنينو بفلقة من
+RASAM-2,train,278,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D15,recut/RASAM-2/train/000278.png,السحور اتتن تسكرت فصل بين صيام المسلمين وصيام
+RASAM-2,train,279,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D12,recut/RASAM-2/train/000279.png,#الحلال بين والحرام بين وبين ذالك امور متشابهات لو
+RASAM-2,train,292,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D29,recut/RASAM-2/train/000292.png,المسألتين لم ينفد طلاق الابن وبقيت واحدة للعبد وان اعتبرتم حال التنجيز لم يبق للعبد شيء ونجز
+RASAM-2,train,293,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D19,recut/RASAM-2/train/000293.png,اذ ونان لا يغسل ولا يصلا عليه ولا قضا عليه فيما لم
+RASAM-2,train,313,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D5,recut/RASAM-2/train/000313.png,ينو اوسرغين رايت الدهر بالاحرار يكب ويرفع رايت القوم
+RASAM-2,train,340,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D6,recut/RASAM-2/train/000340.png,اللئيم اسويديكن اذين ينو حتى حشي ان يكون قد طلع الفجر
+RASAM-2,train,352,BULAC_MS_ARA_1947,178645,recut+drop,blank,l_b-A03D19,recut/RASAM-2/train/000352.png,حس النفر
+RASAM-2,train,390,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D3,recut/RASAM-2/train/000390.png,ينها ابالمنكر يتوكر سراجيدن مسيتن ايالشهيد الشهيد
+RASAM-2,train,418,BULAC_MS_ARA_9,47025,recut,,l_b-A03D10,recut/RASAM-2/train/000418.png,و هذا مما ركب فيه صدر بيت على عجر ءاخر و قد اورده سيبويه و الجرمي و ابو علي و ابن الناظم و غيرهم
+RASAM-2,train,443,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D9,recut/RASAM-2/train/000443.png,السنجث د عدلدن تعدل ايتوزن ميسيتن ايا الوضوء
+RASAM-2,train,446,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D10,recut/RASAM-2/train/000446.png,امتي بخيرما لم تنتظر به الى صلاة المغرب باستباك النجوم
+RASAM-2,train,448,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D6,recut/RASAM-2/train/000448.png,# وسيين اديكن اذون اثن تفيت ولين امركذ انوزوم
+RASAM-2,train,449,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D1,recut/RASAM-2/train/000449.png,اسنينو وسر عليه السلام خالفوا اهل الكتاب في ثلاثة
+RASAM-2,train,463,BULAC_MS_ARA_1936,174465,drop,blank,,,الرجل وضوءه اذا مس الجنب اوظهر الكلب قال الربيع
+RASAM-2,train,469,BULAC_MS_ARA_1926,0172,drop,garbled,,,فادعوك تعظيمالامرك
+RASAM-2,train,487,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D18,recut/RASAM-2/train/000487.png,د المستحم انوح عليه ونغ ان كان رطبة من بلل فعليه
+RASAM-2,train,493,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D16,recut/RASAM-2/train/000493.png,اهل الكتاب انوان اسنينو فضل بين صيام المسلمين
+RASAM-2,train,511,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D7,recut/RASAM-2/train/000511.png,تمام ليس فيهن تقصيرين ابو عبيدة ايتطوع الرجل وهو
+RASAM-2,train,514,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D8,recut/RASAM-2/train/000514.png,الام ميتزار يضفرتث او ممي ميسيتن الابن الابن
+RASAM-2,train,526,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D10,recut/RASAM-2/train/000526.png,وادفع الشك باليقين اليقين د جلوم انوشوا ينو يس داغ اذا
+RASAM-2,train,543,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D18,recut/RASAM-2/train/000543.png,آي يل ويتنتيتزل تسنتنن يزلنث وليل يثمذ غفتغزن يزل
+RASAM-2,train,545,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D17,recut/RASAM-2/train/000545.png,ثم تبدا بصلاة الهاجرة ولصحنث تغزن اوملزرنت تزرنن
+RASAM-2,train,570,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D14,recut/RASAM-2/train/000570.png,الينا وبه ناخذ وقد قال بعض الفقهاء يقرأ في الاولتين
+RASAM-2,train,577,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D15,recut/RASAM-2/train/000577.png,ولايقرأ في الاخرتين شيء اولتيذذنت تمزورن اتنجر ت
+RASAM-2,train,622,BULAC_MS_ARA_9,47025,recut,,l_b-A03D5,recut/RASAM-2/train/000622.png,الذهب و تخليصه من تراب المعدن و هذا وهم فاحش منشاه من عدم الاطلاع على البيت الثاني و كذا وهم
+RASAM-2,train,632,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D20,recut/RASAM-2/train/000632.png,اديلي سجسوف نغ اوث فلس ونزار اجين زديث
+RASAM-2,train,659,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D7,recut/RASAM-2/train/000659.png,انيفسن بورك في الطعام غسل اليه وغسل منه ينويسن
+RASAM-2,train,668,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D12,recut/RASAM-2/train/000668.png,كفروا ظهروا سي د ثمير تنفيللنغد اسيسن الخصلة
+RASAM-2,train,684,BULAC_MS_ARA_1936,174479,drop,shifted,,,انونسن ايموسنون انغ دمك اتسنث دزجن
+RASAM-2,train,713,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D11,recut/RASAM-2/train/000713.png,ايجبريذ اي لزمه السبيل ام القرا ينيس امكث منها دحيت
+RASAM-2,train,717,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D10,recut/RASAM-2/train/000717.png,الوضوء لانه في الضوء يكون د جنفيلل اذ جتس مجسرذ
+RASAM-2,train,734,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D2,recut/RASAM-2/train/000734.png,ين بابنغ انوان يذن اسدر تفسر الني انتسجم ولتوحيل اييد
+RASAM-2,train,739,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D20,recut/RASAM-2/train/000739.png,يدرك اجتل القضا اتزل اجل الركوع اذ السجود ام تود انوافل
+RASAM-2,train,750,BULAC_MS_ARA_1947,178658,drop,garbled,,,كلملا تهدير و معناها
+RASAM-2,train,756,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D13,recut/RASAM-2/train/000756.png,انوان من باب الضوء فلاسنث الدكرن اثالجتث ازشا
+RASAM-2,train,765,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D10,recut/RASAM-2/train/000765.png,امي صغيرا اذا انتشيت اعترق رجال وابن السبيل ين بابنغ
+RASAM-2,train,803,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D21,recut/RASAM-2/train/000803.png,يجذ ايشغل ايتزلث افلس يسمرول او يطلبه العدو يجذ
+RASAM-2,train,810,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D12,recut/RASAM-2/train/000810.png,الارض ميتنويذ فاتحة الكتاب تل ديتر اقزين ميتنويذ
+RASAM-2,train,848,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D15,recut/RASAM-2/train/000848.png,يليد سجسوف اسواوث فلس وانزار اجين امصنث
+RASAM-2,train,864,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D22,recut/RASAM-2/train/000864.png,اجيجر سد اذ يمنس اذون احكاند غفسر عليه السلام
+RASAM-2,train,869,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D7,recut/RASAM-2/train/000869.png,اسنينو وسر عليه السلام اذا قبل اليل من ها هنا وادير
+RASAM-2,train,885,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D4,recut/RASAM-2/train/000885.png,انو سر عليه السلام ينويسن توضوا من ماء مسته
+RASAM-2,train,893,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D16,recut/RASAM-2/train/000893.png,تمزورن ايغر تنجر وليقر شيء ام تزل انييض تمزورن
+RASAM-2,train,954,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D8,recut/RASAM-2/train/000954.png,ءاسلثنيسرذ يس ايزل اسويدمن والبول اشد من هذا كله
+RASAM-2,train,956,BULAC_MS_ARA_9,47051,recut,,l_b-A03D2,recut/RASAM-2/train/000956.png,لقيت و عن الضرب حيث تنازعا في قوله مسمعا بكسر الاول اسم رجل فالاول فعل و الثاني اسم
+RASAM-2,train,963,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D3,recut/RASAM-2/train/000963.png,بعد العتق الا واحدة لانه طلق النصف على ما نص عليه بن المواز من قول بن القاسم واشهب ونص عليه
+RASAM-2,train,973,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D11,recut/RASAM-2/train/000973.png,ينجيك من قدر لابد مما قضا في اللوح بالقلم قلت ايعيد
+RASAM-2,train,975,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D4,recut/RASAM-2/train/000975.png,وتحليلها التسليم قلت ايقرأ في الاربع ركعات كلهن
+RASAM-2,train,996,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D19,recut/RASAM-2/train/000996.png,إعادة الوضوء دمك نيت وليفرن امنس اينجان اج
+RASAM-2,train,999,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D31,recut/RASAM-2/train/000999.png,ونقله غير واحد قال بن القاسم ولو طلقها طلقتين ثم ثبت انه عتق قبل طلاقه فله الرجعة ان لم تنقض
+RASAM-2,train,1016,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D13,recut/RASAM-2/train/001016.png,انتوش وليقصد غلسنت ينفل اسنت تزغ شرض اتزلت
+RASAM-2,train,1024,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D10,recut/RASAM-2/train/001024.png,على من تابعه فيها فتقولون ولقد احسن بن الحاجب في عدم ذكره هذه المسئلة ولم يحسن في متابعته
+RASAM-2,train,1051,BULAC_MS_ARA_1943,180494,drop,blank,,,عن امراة ظهر بزوجها جذام
+RASAM-2,train,1081,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D7,recut/RASAM-2/train/001081.png,من البول الزغرس سن انيلنستين او يدمن اذ ولابوال ولن ومان
+RASAM-2,train,1086,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D19,recut/RASAM-2/train/001086.png,التمر ينويسن دغ بورك لامتي في سحورها وبكورها
+RASAM-2,train,1095,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D1,recut/RASAM-2/train/001095.png,الاصغر تن المسنون اذاراسسن يجور وجيضن افسنج
+RASAM-2,train,1098,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D19,recut/RASAM-2/train/001098.png,يش اذرمس يجذ اذجشغل ايتزلت اتفث او يطلب العدو
+RASAM-2,train,1112,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D3,recut/RASAM-2/train/001112.png,مين ولتتيروس شرا مان بطو انرمضان اتمزيلتيس رمضان
+RASAM-2,train,1118,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D13,recut/RASAM-2/train/001118.png,الاصفوف اللهم اجعله لنا قرضا وسلفا واجرا قرضا د رطال
+RASAM-2,train,1170,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D1,recut/RASAM-2/train/001170.png,مسيتن الاستنجا الاستنجا لانه في النجوا يكون
+RASAM-2,train,1173,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D3,recut/RASAM-2/train/001173.png,ينويسن دغ الصلاة افتتاحها الطهور وتحريمها التكبير
+RASAM-2,train,1179,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D25,recut/RASAM-2/train/001179.png,بان لا يموت الاب مرتدا قلت وفي معناه ان يموت مديانا بحيث يستغرق الدين الامة الا ان يقال لا تتعين
+RASAM-2,train,1182,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D17,recut/RASAM-2/train/001182.png,رفعة وافقك بالظن الذي هو كاذب مجتج اوعباس
+RASAM-2,train,1208,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D15,recut/RASAM-2/train/001208.png,كحلا مردا غرا محجلين من اثر الوضوء كلهم على فداء ادم
+RASAM-2,train,1214,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D9,recut/RASAM-2/train/001214.png,ينو يس إناكل يا بن عباس ينو يس كل ما لا تشك حتى تشك
+RASAM-2,train,1235,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D21,recut/RASAM-2/train/001235.png,اسين وسر عليه السلام من نسا صلاة او نام عنها فليصلها
+RASAM-2,train,1242,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D7,recut/RASAM-2/train/001242.png,مدن اوو لغسن اثنيضفر انوان من باب الاعتدال
+RASAM-2,train,1247,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D27,recut/RASAM-2/train/001247.png,الميراث مطلقا لا بالردة خاصة فاذا كان الاعتبار بحالته عند الاجل بقيت للعبد المذكور في زوجه واحدة
+RASAM-2,train,1253,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D10,recut/RASAM-2/train/001253.png,للمرا فيه الغنا وبعده حذر من الجذم واحذر ولاحذرت
+RASAM-2,train,1261,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D14,recut/RASAM-2/train/001261.png,وسلفا اتزور اجرا دروز نغ قرضا فرضا اتزور انا افرض لكم
+RASAM-2,train,1264,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D16,recut/RASAM-2/train/001264.png,أركان الطلاق انما هو بعد زوال العصمة لأنه لا ينجز من الطلاق المعلق على احد الا ما يقدر صحة وقوعه
+RASAM-2,train,1286,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D14,recut/RASAM-2/train/001286.png,هذه من نوع حكم المسئلة التي قبلها فإن قلت الفرق بينهما ان الاخيرة علق الطلاق فيها
+RASAM-2,train,1349,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D10,recut/RASAM-2/train/001349.png,اج ميدنت اجن وقر اتيسرس غفتمرت يزل اجدين ممك اسن يزل
+RASAM-2,train,1360,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D19,recut/RASAM-2/train/001360.png,اذ وببي ايزل يزدي ا يجرس اذوببي ايجلم تزلث يغرس
+RASAM-2,train,1370,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D14,recut/RASAM-2/train/001370.png,رطبا من بلل فعليه إعادة الوضوء ممك تل المسئلت اسو
+RASAM-2,train,1381,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D15,recut/RASAM-2/train/001381.png,اجموض اجني وليل تموسن اجن بابنغ ولا تقف ما ليس لك
+RASAM-2,train,1383,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D19,recut/RASAM-2/train/001383.png,تزرنن يزل تغزين اسدفر ويدين و أي صلاة نسا فليفعل
+RASAM-2,train,1398,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D12,recut/RASAM-2/train/001398.png,اترذنث تاج تمدث ولتتينطض اولا ا نجان اولا اشر
+RASAM-2,train,1399,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D33,recut/RASAM-2/train/001399.png,وظن انها تحرم عليه فلا يلزمه الا واحدة الا ان عرف ان له الرجعة فنوى بهما البتة وأما من ظن ذلك فلا يضره
+RASAM-2,train,1421,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D4,recut/RASAM-2/train/001421.png,دسان منون ييرنين تمز لتيس لذ دسان منون ييرنين اذوني
+RASAM-2,train,1446,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D16,recut/RASAM-2/train/001446.png,به علم اي ولا تمض ينو اوسرغين توريك وجوه الناس بمكر
+RASAM-2,train,1448,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D17,recut/RASAM-2/train/001448.png,وهو ظهر دابة قال نعم اسويديكن تزن تنوفل والحكم
+RASAM-2,train,1451,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D1,recut/RASAM-2/train/001451.png,عليه السلام نغ ان الاحتلام في الثوب اهون من الدم و الدم اهون من
+RASAM-2,train,1464,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D13,recut/RASAM-2/train/001464.png,علمت ما انك من صدقة لاكلتك ينس وسر عليه السلام
+RASAM-2,train,1471,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D6,recut/RASAM-2/train/001471.png,ونقصانها ركعتان الزايد في الشيء كالناقص منه وهما
+RASAM-2,train,1492,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D22,recut/RASAM-2/train/001492.png,انيسرغنن اغفيتجز اتسنن اغلييل اضوضن الاية -
+RASAM-2,train,1516,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D11,recut/RASAM-2/train/001516.png,يصلا صلاة مثلها نشنين غرنغ يتزل وليوحيل اذن اسنينو
+RASAM-2,train,1532,BULAC_MS_ARA_1947,178645,drop,blank,,,فارتسل مع البرق
+RASAM-2,train,1546,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D17,recut/RASAM-2/train/001546.png,ايضفص يسنفيلل تغرس تنجر ءاس الحمد اجيجرس
+RASAM-2,train,1559,BULAC_MS_ARA_1960,181031,recut,,l_b-A03D35,recut/RASAM-2/train/001559.png,عن رسم
+RASAM-2,train,1594,BULAC_MS_ARA_1943,180499,recut,,l_b-A03D4,recut/RASAM-2/train/001594.png,فيما اشترطته انما هو ان لا يحال بينها وبين من يانس بها وترجو الانتفاع برؤيتها وقد علم بمستقر العادة ان الحاضنة احق من
+RASAM-2,train,1603,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D6,recut/RASAM-2/train/001603.png,ولن ومن اسلثنيسرذ يس ايزل اسنالاحتلام والدم اهون
+RASAM-2,train,1606,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D7,recut/RASAM-2/train/001606.png,يغسلها احد من قرابتها سالعذر يلا د اكجن ديسن اويض ابلا
+RASAM-2,train,1609,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D14,recut/RASAM-2/train/001609.png,انتفصكون اولديكس اليمام وليقصد غرسنت اينفل
+RASAM-2,train,1626,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D7,recut/RASAM-2/train/001626.png,تمغلط ايالقضا اجن الدفتر وقضا رمضان عندنا بمنزلة رمضان
+RASAM-2,train,1675,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D6,recut/RASAM-2/train/001675.png,رمضان عندنا بمنزلة رمضان اجطون اذوسنضفر انوان يتروس
+RASAM-2,train,1680,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D16,recut/RASAM-2/train/001680.png,اجرا دروز وهو حي ثم يموت بعد ذالك اج اتذغن يدر اتسردن
+RASAM-2,train,1689,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D4,recut/RASAM-2/train/001689.png,ربه يزلج تمجت ارب العالمين انوان لانه ينجي من النار
+RASAM-2,train,1690,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D14,recut/RASAM-2/train/001690.png,اوزجار اتنين يكد فلس نسن استييلم د الشك اذ ونى وليل
+RASAM-2,train,1719,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D3,recut/RASAM-2/train/001719.png,هو رابعهم ولا خمسة الا هو سادسهم انوان لانه يناجي
+RASAM-2,train,1720,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D5,recut/RASAM-2/train/001720.png,ولا يساكنونهن ميتك اذوبريذ انتسيفسر اغذ اوليل
+RASAM-2,train,1778,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D22,recut/RASAM-2/train/001778.png,او يبنا عليه او يغطا او يوطا لاغطا ولا وطا ينس وسر عليه م
+RASAM-2,train,1796,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D23,recut/RASAM-2/train/001796.png,تشتكي منه الرعاوي اذين ينو فرفع يده من الطعام
+RASAM-2,train,1806,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D5,recut/RASAM-2/train/001806.png,بأم القرءان وحدها ميسيتن ام القرءان ام القرءان
+RASAM-2,train,1831,BULAC_MS_ARA_1943,180483,drop,blank,,,تصدق
+RASAM-2,train,1836,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D24,recut/RASAM-2/train/001836.png,اسنينو صلاة النهار على نصف صلاة الليل انونسن ث
+RASAM-2,train,1853,BULAC_MS_ARA_1947,178645,recut,,l_b-A03D30,recut/RASAM-2/train/001853.png,عقة وضعف اذا مات
+RASAM-2,train,1858,BULAC_MS_ARA_1943,180494,drop,blank,,,عمن تزوج بنتا يتيمة مهملة
+RASAM-2,train,1883,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D2,recut/RASAM-2/train/001883.png,الامور التي يعذر الله بها العباد يترواس تمغلط ايالقضا
+RASAM-2,train,1904,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D7,recut/RASAM-2/train/001904.png,اذين ينو فرفع يده من الطعام دوي ذا ولتير اول يتويت يترت
+RASAM-2,train,1925,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D8,recut/RASAM-2/train/001925.png,العذر وليل اكجن ديسن اويض يل ونان يلا د اكجن ديسن
+RASAM-2,train,1941,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D24,recut/RASAM-2/train/001941.png,اكان اتيوي يملنغ فلس ااسويديكن دغ دجيذ ايتيسستنن
+RASAM-2,train,1947,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D18,recut/RASAM-2/train/001947.png,يل ونان يغسل ويصلا عليه اذ ونان يغسل ولا يصلا عليه
+RASAM-2,train,1961,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D11,recut/RASAM-2/train/001961.png,جميعا عن يسارها من ورايها زلمضس يفغتنت افرنغ
+RASAM-2,train,1963,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D21,recut/RASAM-2/train/001963.png,ام توثرون اذز اد يكس ييدات ويكره ان يجصص القبر
+RASAM-2,train,1970,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D5,recut/RASAM-2/train/001970.png,الاستعظام انرمضان غفيسلذس اذين ينو الدفتر وقضا
+RASAM-2,train,1974,BULAC_MS_ARA_1936,174479,drop,shifted,,,ميديسنث يغر الكول تمزورن ايضفص يسنفيلل
+RASAM-2,train,1985,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D18,recut/RASAM-2/train/001985.png,الصلاة لانها صلة ما بين العبد و الرب دزد دجيجر يشمج
+RASAM-2,train,2036,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D14,recut/RASAM-2/train/002036.png,دمك اتشن الابوال اقرن ابزجن اتزلن د حلشت الغايط
+RASAM-2,train,2059,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D18,recut/RASAM-2/train/002059.png,الحالدين ايتيزن يتت ايسنسن يتت د اغنفلن اينيجان
+RASAM-2,train,2071,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D1,recut/RASAM-2/train/002071.png,قطعه ولا تفريقه الا بما يجوز به قطع رمضان وتفريقه من
+RASAM-2,train,2086,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D11,recut/RASAM-2/train/002086.png,اتهمت فدع دع ما يريبك الى ما لا يريبك وكل مشتكل حرام
+RASAM-2,train,2116,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D9,recut/RASAM-2/train/002116.png,ميتزار تيجيت يضفرتث ينوا اوسرغين انا ابن الحرب ربتني
+RASAM-2,train,2117,BULAC_MS_ARA_1943,180494,drop,blank,,,عن بكر بالغ يتيمة مهملة
+RASAM-2,train,2129,BULAC_MS_ARA_65,149902,recut,,l_b-A03D114,recut/RASAM-2/train/002129.png,خير الدين الكافيجي و اللام
+RASAM-2,train,2144,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D16,recut/RASAM-2/train/002144.png,الاحتلام اقرن الابوال ابزجن نشنين غرنغ الابوال اقرن
+RASAM-2,train,2162,BULAC_MS_ARA_24,41439,drop,shifted,,,رة كغلام زيد ضرب عمرو وضارب بكر امس وز
+RASAM-2,train,2168,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D21,recut/RASAM-2/train/002168.png,على الشمال في الصلاة السب استجن اذين القرءان د اللغت
+RASAM-2,train,2198,BULAC_MS_ARA_1960,180888,recut,,l_b-A03D24,recut/RASAM-2/train/002198.png,العبد المعتق خلف تركت فان التركة تكون للسيد او لبني
+RASAM-2,train,2224,BULAC_MS_ARA_23,42100,recut,,l_b-A03D5,recut/RASAM-2/train/002224.png,محله لمن عثر عليه
+RASAM-2,train,2263,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D21,recut/RASAM-2/train/002263.png,فكب ابن عباس على طعامه مليا يثمذا اوعباس الكب
+RASAM-2,train,2269,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D6,recut/RASAM-2/train/002269.png,ممك النزه تمل غفسر عليه السلام ايتنمثر اجسر ذ ت
+RASAM-2,train,2272,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D22,recut/RASAM-2/train/002272.png,دالتمادي ينو اوسرغين وحيدر فوق الاجزة مكبا والاطلس
+RASAM-2,train,2295,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D11,recut/RASAM-2/train/002295.png,اجذري يسنج د جنفيلل انوان اتفوت اتنفو ذن غفسلذ سنث
+RASAM-2,train,2331,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D19,recut/RASAM-2/train/002331.png,وسر عليه السلام كل صلاة لم يقرا فيها بام القرءان
+RASAM-2,train,2337,BULAC_MS_ARA_1943,180494,drop,blank,,,عن رجل زوج ابنته ودخل بها
+RASAM-2,train,2349,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D17,recut/RASAM-2/train/002349.png,لغة محمد صلى الله عليه وسلم ميسيتن ايالصلاة
+RASAM-2,train,2359,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D23,recut/RASAM-2/train/002359.png,ينويسن صلاة السر على نصف صلاة الجهر انوان
+RASAM-2,train,2367,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D9,recut/RASAM-2/train/002367.png,اويض اولا سالعذر اولا بلا العذر اذونان مك درجز اجمان
+RASAM-2,train,2375,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D2,recut/RASAM-2/train/002375.png,تعجيل الإفطار وتاخير السحور ومضاجعة الحايض تعجيل
+RASAM-2,train,2380,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D5,recut/RASAM-2/train/002380.png,النار نشنين ولغر نغ ايصح ويدين غفسر عليه السلام
+RASAM-2,train,2388,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D7,recut/RASAM-2/train/002388.png,دجزرن ايتزلث دجزرن ايتر نالمصاحف ميسيتن الام
+RASAM-2,train,2408,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D15,recut/RASAM-2/train/002408.png,بوقت لا يملك فيها عصمة المطلقة لانه يملكها أو بعضها بموت أبيه فينفسخ النكاح فيفوت ركن من
+RASAM-2,train,2439,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D4,recut/RASAM-2/train/002439.png,هم والغاوون ين بابنغ فكبت وجوههم في النار ين دجمكان اضن
+RASAM-2,train,2440,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D20,recut/RASAM-2/train/002440.png,السحر كله بركة السحر كله مبارك والاخذ باليمين
+RASAM-2,train,2463,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D5,recut/RASAM-2/train/002463.png,بذلك واما على ما في كتاب بن شاس من ان فرض المسألة فانت طالق طلقتين بزيادة طلقتين وهو يردكم
+RASAM-2,train,2478,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D11,recut/RASAM-2/train/002478.png,يزف اتمرت انيسغرن يسترا منس اسيسغرن
+RASAM-2,train,2493,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D2,recut/RASAM-2/train/002493.png,البول والبول اشد من هذا كله الند غرس ايرضن اجلشت اذروس
+RASAM-2,train,2503,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D22,recut/RASAM-2/train/002503.png,من حالها عند موت السيد حكمنا عليه الان بجميع طلاقه قلت لو كان الاعتبار بجهل حال المطلق عند
+RASAM-2,train,2528,BULAC_MS_ARA_1936,174478,recut,,l_b-A03D6,recut/RASAM-2/train/002528.png,دجرزرن دجلمود دجزرن ايتغرا دجزرن ايتزلث
+RASAM-2,train,2544,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D9,recut/RASAM-2/train/002544.png,يتزل يزف اولا اسيسن يزل ايوافسن اغن الشت الكومى
+RASAM-2,train,2555,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D5,recut/RASAM-2/train/002555.png,المسافر ركعتان ونقصانها اربع الا وان صلاة المقيم اربع
+RASAM-2,train,2595,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D15,recut/RASAM-2/train/002595.png,اسنت متزغ اقز امتزلث نالجمعة اولديكس اليمام وليقصد
+RASAM-2,train,2612,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D25,recut/RASAM-2/train/002612.png,ينو يس افاكل يا بن عباس ينو يس كل ما لا تشك حتى تشك
+RASAM-2,train,2637,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D20,recut/RASAM-2/train/002637.png,ايجرس اذ وببي اجن وسر عليه السلام مابين
+RASAM-2,train,2643,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D15,recut/RASAM-2/train/002643.png,الحوض بلا فخر ينسن وسر عليه السلام نغ فرضا د رطال
+RASAM-2,train,2670,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D20,recut/RASAM-2/train/002670.png,نحو هذا اجن بابنغ واقم الصلاة لذكري اي لذكرك الصلاة
+RASAM-2,train,2673,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D19,recut/RASAM-2/train/002673.png,مان الشك يوثين ايواجن بابنغ وكلوا واشربوا حتى
+RASAM-2,train,2674,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D26,recut/RASAM-2/train/002674.png,الامة للدين لجواز ان يؤديه الورثة من اموالهم ويرثون الورثة نعم يجب تقييدها ان صح حكمها بانتفاء مانع
+RASAM-2,train,2675,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D22,recut/RASAM-2/train/002675.png,حيث ذكرها ولم نعلم له كفارة غير ذلك انوان ايزل يزرنن
+RASAM-2,train,2758,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D5,recut/RASAM-2/train/002758.png,كل ما يقوم على الشيء يسما به انوان من باب
+RASAM-2,train,2786,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D28,recut/RASAM-2/train/002786.png,لانه حين ايقاع الطلقتين في التقريرين حر وان كان حين ايقاعها حكما عبدا فان اعتبرتم حال الاجل في
+RASAM-2,train,2790,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D32,recut/RASAM-2/train/002790.png,العدة وان انقضت بقيت له طلقة ان تزوجها على ان طلاقه طلقتان او لان لم ينو البتات كمن طلق طلقة
+RASAM-2,train,2802,BULAC_MS_ARA_1943,180494,recut+drop,blank,l_b-A03D4,recut/RASAM-2/train/002802.png,من شهرين او نحوهما
+RASAM-2,train,2819,BULAC_MS_ARA_1946,0033,drop,vertical,,,وجل عنده
+RASAM-2,train,2830,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D4,recut/RASAM-2/train/002830.png,تسكرت ومضاجعة الحايض لا يواكلونهن ولا يشاربونهن
+RASAM-2,train,2864,BULAC_MS_ARA_1947,178658,recut,,l_b-A03D14,recut/RASAM-2/train/002864.png,بناء حولها بيوت يسكنها
+RASAM-2,train,2873,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D6,recut/RASAM-2/train/002873.png,رفع فيه رمق فاغسلوه ينسن وسر عليه السلام ولا
+RASAM-2,train,2877,BULAC_MS_ARA_1936,174543,recut,,l_b-A03D23,recut/RASAM-2/train/002877.png,اللحد بالاجور وقال ابو عبيدة ولي الجنانرة احق بالصلات
+RASAM-2,train,2889,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D3,recut/RASAM-2/train/002889.png,امان استنيسرذ يس ا يسرذ اول اذالابوال اديقمش يسرذ
+RASAM-2,train,2913,BULAC_MS_ARA_1943,180494,drop,blank,,,كان زوجها وليها وهو ابن
+RASAM-2,train,2920,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D22,recut/RASAM-2/train/002920.png,انونمثر اولا يقر اوفسس ابزينث تفو انونمثر
+RASAM-2,train,2951,BULAC_MS_ARA_1947,178645,recut+drop,blank,l_b-A03D22,recut/RASAM-2/train/002951.png,تنضر
+RASAM-2,train,2956,BULAC_MS_ARA_1947,178632,drop,shifted,,,لولا خداع فيك واني لك من المنذرين و عليك من الحذرين
+RASAM-2,train,2974,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D4,recut/RASAM-2/train/002974.png,اذمن اديقمش يسرذ الاحتلام نغ ان الاحتلام في الثوب
+RASAM-2,validation,9,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D4,recut/RASAM-2/validation/000009.png,ايضا بن الحاجب في فصل محل الطلاق وقول بن شاس على حكم يوم الحنث على هذا اراد يوم الحنث يوم نطقه
+RASAM-2,validation,15,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D23,recut/RASAM-2/validation/000015.png,الاجل لطلق على الابن في المسئلة المذكورة فانا لا نتحقق ان اباه يسبقه بالموت ولعل الامر بالعكس
+RASAM-2,validation,25,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D8,recut/RASAM-2/validation/000025.png,مسافر قال نعم يتطوع يل ونان وليتزل انوافل ايترز فتس
+RASAM-2,validation,39,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D13,recut/RASAM-2/validation/000039.png,اما الجنب فلا يعيد منه الوضوء واما ظهر الكلب فان كان
+RASAM-2,validation,41,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D8,recut/RASAM-2/validation/000041.png,د عدلدن اعدل امنس اليسرذ ميسيتن ايا لسنجث
+RASAM-2,validation,48,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D3,recut/RASAM-2/validation/000048.png,الإفطار اونسولولن اير انوزوم وتاخير السحور اولتتن
+RASAM-2,validation,78,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D6,recut/RASAM-2/validation/000078.png,انتم الا انه سقط من قلمكم طلقتم ودل على ذلك قولكم وهلا قال كذا الى ءاخره فاظنكم انكم انما قلتم
+RASAM-2,validation,88,BULAC_MS_ARA_1936,174569,recut,,l_b-A03D8,recut/RASAM-2/validation/000088.png,لا يجوز قطعه ولا تفريقه الا بما يجوز به قطع رمضان وتفريقه
+RASAM-2,validation,92,BULAC_MS_ARA_6,49796,drop,garbled,,,وسبو حرف جراو ظرف كما ٠٠٠ بى انت مقيا اجازالعلما
+RASAM-2,validation,111,BULAC_MS_ARA_1936,174582,recut,,l_b-A03D20,recut/RASAM-2/validation/000111.png,يتبين لكم الخيط الابيض من الخيط الاسود من الفجر اذين ينو
+RASAM-2,validation,130,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D21,recut/RASAM-2/validation/000130.png,العبد والكفر الا تركه الصلاة ينويسن دغ الصلاة
+RASAM-2,validation,150,BULAC_ARA_MS_1982,182152,drop,shifted,,,فمثناة تحتية ساكنة فزاي مكسورة اجيز وحيز بضبط الذقبله الا انه بحاء مهملة اوله ويجوز فتح الزاي في كل
+RASAM-2,validation,193,BULAC_MS_ARA_1943,180494,drop,blank,,,الزوج المذكور لزوج امها
+RASAM-2,validation,199,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D9,recut/RASAM-2/validation/000199.png,اسويديكن تزن ننوافل سنت ايسلم سنت ايسلم امتزلث
+RASAM-2,validation,207,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D17,recut/RASAM-2/validation/000207.png,وصيام اهل الكتاب اسويديكن يمر اسس وسر عليه م
+RASAM-2,validation,210,BULAC_MS_ARA_1936,174608,recut,,l_b-A03D8,recut/RASAM-2/validation/000210.png,النهار من ها هنا وغربت الشمس افطر الصايم ان شاء
+RASAM-2,validation,211,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D22,recut/RASAM-2/validation/000211.png,ايشغل ايتزلث اتضيوض يل ونان ان كان خايفا يطلب
+RASAM-2,validation,212,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D13,recut/RASAM-2/validation/000212.png,واظنهما نقلا المسئلة من وجيز الغزالي وعبارة بن شاس كعبارته وزاد في الوجيز وقيل ينفد والحكم الذي ذكر في
+RASAM-2,validation,213,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D12,recut/RASAM-2/validation/000213.png,يزل ابد اتمرت انوشال يسترا منس سوشال يزل يقم ممك
+RASAM-2,validation,233,BULAC_MS_ARA_23,42165,drop,garbled,,,التجب للتميز الللااجح للابهام النسبة هة المسد
+RASAM-2,validation,235,BULAC_ARA_MS_1982,182053,drop,shifted,,,قوله بين رماحى مالك وقوله عند التفرقفي الهيجا جمالين بالعطف متعلق بقوله يفرق ولا يكون
+RASAM-2,validation,251,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D2,recut/RASAM-2/validation/000251.png,سيندغ الكول انوان امتذ يوش دنك انووال انيذ ين ينوات
+RASAM-2,validation,255,BULAC_ARA_MS_1982,182152,drop,shifted,,,ووح بواو مفتوحة فحاء مهملة ساكنة للبقر وعز بعين مهملة مفتوحة فزاي ساكنة وغير بعين مفتوحة مهملة
+RASAM-2,validation,280,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D17,recut/RASAM-2/validation/000280.png,انيمدصن انوان د الغايط اذ البول اسجينث انوان
+RASAM-2,validation,294,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D3,recut/RASAM-2/validation/000294.png,يجن ايمرا ورليحيل انونسن ايمسنون انغ يذن ديفلسن
+RASAM-2,validation,300,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D9,recut/RASAM-2/validation/000300.png,ينويسن دغ ويصح البصر ينو اوسرغين الغسل قبل الطعام
+RASAM-2,validation,318,BULAC_MS_ARA_1936,174465,recut,,l_b-A03D3,recut/RASAM-2/validation/000318.png,ايتش اجزغلن ايلس او سنجس حكاند غفيدين اتزن
+RASAM-2,validation,321,BULAC_MS_ARA_1943,180671,recut,,l_b-A03D21,recut/RASAM-2/validation/000321.png,وهما حينئذ ليستا جميع طلاقه بل تبقى له واحدة كما قال بن شاس فان قلت لما لم يعلم ما يكون
+RASAM-2,validation,329,BULAC_MS_ARA_23,42087,recut,,l_b-A03D25,recut/RASAM-2/validation/000329.png,المذكوره
+RASAM-2,validation,340,BULAC_MS_ARA_1936,174452,recut,,l_b-A03D2,recut/RASAM-2/validation/000340.png,د جدري اجتس اجن بابنغ ما يكون من نجوى ثلاثة الا
+RASAM-2,validation,351,BULAC_MS_ARA_1936,174530,recut,,l_b-A03D1,recut/RASAM-2/validation/000351.png,يمر ايبد يجن اسن الان خفف الله عنكم وعلم ان فيكم ضعفا
+RASAM-2,validation,368,BULAC_MS_ARA_1936,174504,recut,,l_b-A03D13,recut/RASAM-2/validation/000368.png,دغنث اسردانسن الاحتلام ازجن دمك اتشن اذمن ابزلن
+tarima,test,42,BULAC_RES_MON_8_5560,0169,drop,garbled,,,الخلافة مدايتم از يوم الدين وذالك ان سيب ننوض مذلاى النز بن
+tarima,test,166,BnF-2297_btv1b11001977p,94,drop,garbled,,,فاحرزه من #### لتمامه
+tarima,train,93,BULAC_RES_MON_8_5560,0169,drop,garbled,,,انرب عنه سطن احره مذلان الهيد ليقضيم ففس الباقي فوجد الايسا
+tarima,train,184,BULAC_RES_MON_8_8967,0028,drop,garbled,,,١٠٢ / حصار مراكش
+tarima,train,1162,BULAC_RES_MON_8_5560,0169,drop,garbled,,,ون فال وبان بد لان الشرب مدان به سحبةه كايب بنها ثم ان اخل نا بومهمت
+tarima,train,1187,BULAC_RES_MON_8_7199,0118,drop,garbled,,,الول حيليي محند/ ما كان عزش ولا كن سي
+tarima,train,1288,BULAC_RES_MON_8_8967,0028,drop,garbled,,,٩٣ / سياسة الحروب
+tarima,train,1291,BULAC_RES_MON_8_8967,0028,drop,garbled,,,١١٤ / احترام عبد المومن العلماء
+tarima,train,1301,BULAC_RES_MON_8_7199,0118,drop,garbled,,,ومنه / اخب منااهوى/ وانت الخبيب ابي نموى
+tarima,train,1392,BnF-7214_btv1b10031231c,9,drop,blank,,,صلى الله على نبيه محمد وءاله وصحبه
+tarima,train,1486,BULAC_RES_MON_8_7199,0118,drop,garbled,,,ومنه يخذزن يجبوى نزغو / ساكنفي ارض اعالى
+tarima,train,1536,BULAC_RES_MON_8_7199,0124,drop,garbled,,,كاب ونع لذاباري جاب سدي يريف الباسى سب كلام بلمة عنة عل هدغ
+tarima,train,1684,BULAC_RES_MON_8_5560,0169,drop,garbled,,,وماروا باحرن اسر ينون ها اكنابه وابظمافر بكان البازووعز قواهل
+tarima,train,1697,BULAC_RES_MON_8_5560,0169,drop,garbled,,,لقاءه جمعه بندا ثم ان ابابداهيح ريضا وبعت ان مؤلاى الشريف ان امزاكى
+tarima,train,1747,BULAC_RES_MON_8_5560,0169,drop,garbled,,,بذلان النرب يقض عند ابن كبو بن بادة اغراه ثم ان زلان يخززيزلان
+tarima,validation,5,BULAC_RES_MON_8_5560,0169,drop,garbled,,,لان اريك مال الدايك علي ثن من را كذانيم مريضا فكم يستر مذلان النبريس

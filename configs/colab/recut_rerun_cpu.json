@@ -1,0 +1,30 @@
+{
+ "name": "recut-rerun",
+ "gpu": "CPU",
+ "max_units": 0.4,
+ "max_minutes": 200,
+ "poll_s": 60,
+ "sync_every_s": 600,
+ "final_sync_grace_min": 10,
+ "uploads": [
+  ["scripts/colab_recut_rerun.py", "/content/colab_recut_rerun.py"],
+  ["scripts/colab_remote_lmscore.py", "/content/colab_remote_lmscore.py"],
+  ["results/rasam/clean/rerun/recut_test.json", "/content/recut_test.json"],
+  ["results/rasam/clean/rerun/NB_RC_E60_r1.json", "/content/NB_RC_E60_r1.json"],
+  ["results/rasam/clean/rerun/NB_RC_E60_r2.json", "/content/NB_RC_E60_r2.json"],
+  ["results/rasam/clean/rerun/NB_RC_PT_r1.json", "/content/NB_RC_PT_r1.json"],
+  ["results/rasam/clean/rerun/NB_RC_PT_r2.json", "/content/NB_RC_PT_r2.json"],
+  ["results/rasam/clean/rerun/NB_RC_ENS_r1.json", "/content/NB_RC_ENS_r1.json"],
+  ["results/rasam/clean/rerun/NB_RC_ENS_r2.json", "/content/NB_RC_ENS_r2.json"]
+ ],
+ "setup": [
+  "git clone --depth 1 https://github.com/mdnaseif/hafith.git /content/hafith_src && pip install -q -e /content/hafith_src && pip install -q 'transformers>=4.45,<5' && echo HAFITH_INSTALLED"
+ ],
+ "runs": [
+  {"label": "aragpt2_scores", "cmd": "cd /tmp && python -u /content/colab_remote_lmscore.py aubmindlab/aragpt2-base"},
+  {"label": "hafith_recut", "cmd": "cd /tmp && python -u /content/colab_recut_rerun.py hafith"},
+  {"label": "amidda_recut", "cmd": "pip install -q -U 'transformers>=5.9' accelerate && cd /tmp && python -u /content/colab_recut_rerun.py amidda"}
+ ],
+ "artifacts": ["/content/crnn_out"],
+ "local_out": "results/rasam/colab_runs"
+}
