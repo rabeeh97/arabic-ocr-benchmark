@@ -237,6 +237,16 @@
  ],
  "updates": [
   {
+   "date": "2026-10-31",
+   "kind": "done",
+   "text": "RASAM clean benchmark with page-bootstrap 95% intervals: best system 3.17 / 5.47 / 5.59 on the clean test view (official 3.72 / 7.71 / 5.67); no ranking changes. Released release/rasam-clean (447-line manifest, 250 re-cut crops, drop list, scorer); dataset issue drafted, not sent."
+  },
+  {
+   "date": "2026-10-31",
+   "kind": "done",
+   "text": "Record defect gallery rebuilt: every sample states its error and which side (image or reference) is wrong, with colour page views."
+  },
+  {
    "date": "2026-10-29",
    "kind": "finding",
    "text": "Maghrebi HTR push: a CRNN pretrained on 40k extra lines is no better alone, but a hypothesis-level ensemble with our E60 CRNN plus an OpenITI char LM reaches 3.72 / 7.92 / 5.91 CER (RASAM-1 / RASAM-2 / TariMa), down from 4.12 / 8.92 / 7.04. 5 % of test lines fail for both models and carry 26 % of errors; 13 of them have wrong references (MS 1977, MS 609, RES_MON_8_5560)."

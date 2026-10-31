@@ -1,0 +1,13 @@
+STAMP start 1793462256
+STAMP setup_start 1793462256
+RC setup 0
+STAMP setup_end 1793462277
+STAMP hafith_recut_start 1793462277
+RC hafith_recut 0
+STAMP hafith_recut_end 1793462376
+STAMP amidda_recut_start 1793462376
+
+RC amidda_recut 0
+STAMP amidda_recut_end 1793462540
+RC hfpush 0
+ALLDONE failed_steps=0

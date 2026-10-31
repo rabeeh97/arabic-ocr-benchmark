@@ -1,0 +1,120 @@
+STAMP start 1793462256
+GPU 0: NVIDIA L4 (UUID: GPU-490b6cb4-018d-a302-82ee-8b74770ed773)
+STAMP setup_start 1793462256
+Cloning into '/content/hafith_src'...
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+gradio-client 2.7.2 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.
+diffusers 0.42.1 requires huggingface-hub<3.0,>=1.32.0, but you have huggingface-hub 0.36.2 which is incompatible.
+gradio 6.30.0 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.
+HAFITH_INSTALLED
+RC setup 0
+STAMP setup_end 1793462277
+STAMP hafith_recut_start 1793462277
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793462290.613712    3491 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1793462290.683648    3491 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1793462293.202841    3491 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 00:00:1793462293.203506    3491 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+📥 Downloading model from HuggingFace Hub: mdnaseif/hafith
+Fetching 18 files:   0%|          | 0/18 [00:00<?, ?it/s]Fetching 18 files:   6%|▌         | 1/18 [00:00<00:11,  1.47it/s]Fetching 18 files:  39%|███▉      | 7/18 [00:28<00:46,  4.25s/it]Fetching 18 files: 100%|██████████| 18/18 [00:28<00:00,  1.59s/it]
+This processor does not use the `size` parameter. It will be ignored.
+This processor does not use the `do_center_crop` parameter. It will be ignored.
+This processor does not use the `crop_size` parameter. It will be ignored.
+
+======================================================================
+BUILDING HAFITH MODEL
+======================================================================
+
+📦 Creating TrOCR decoder FROM SCRATCH (same architecture, random weights)...
+Some weights of VisionEncoderDecoderModel were not initialized from the model checkpoint at microsoft/trocr-large-handwritten and are newly initialized: ['encoder.pooler.dense.bias', 'encoder.pooler.dense.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+   ✅ Decoder created from scratch | vocab=64,000
+
+📦 Initializing SigLIP2 NaFlex encoder...
+   📦 Loading PRETRAINED SigLIP2 encoder
+   ✅ SigLIP2 Vision Encoder initialized
+      Encoder hidden: 1152 → Decoder hidden: 1024
+      Max patches: 512, From scratch: False
+The following generation flags are not valid and may be ignored: ['early_stopping', 'length_penalty']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+
+✅ HAFITH ready — 698.3M parameters total
+   ✅  All keys matched perfectly!
+✅ Model loaded from /root/.cache/huggingface/hub/models--mdnaseif--hafith/snapshots/ea8c97592f188136a81b2320c8e45d14fe78ef81
+/usr/local/lib/python3.13/dist-packages/transformers/generation/utils.py:1733: UserWarning: You have modified the pretrained model configuration to control generation. This is a deprecated strategy to control generation and will be removed in v5. Please use and modify the model generation configuration (see https://huggingface.co/docs/transformers/generation_strategies#default-text-generation-configuration )
+  warnings.warn(
+   Processed 8/25
+   Processed 16/25
+   Processed 24/25
+   Processed 25/25
+DONE hafith 25 lines 95s
+RC hafith_recut 0
+STAMP hafith_recut_end 1793462376
+STAMP amidda_recut_start 1793462376
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+datasets 4.8.5 requires huggingface-hub<2.0,>=0.25.0, but you have huggingface-hub 2.4.0 which is incompatible.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 498/723 [00:00<00:00, 4965.89it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 4936.32it/s]
+loaded in 53s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+/usr/local/lib/python3.13/dist-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+amidda 1/25 99s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+/usr/local/lib/python3.13/dist-packages/transformers/models/qwen2_vl/image_processing_qwen2_vl.py:129: FutureWarning: Passing `min_pixels` and `max_pixels` to a processor call is deprecated and will be removed in v5.23. Pass in `size={'longest_edge': xxx, 'shortest_edge': xxx} to override the target size.`
+  warnings.warn(
+amidda 2/25 101s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 3/25 103s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 4/25 104s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 5/25 108s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 6/25 109s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 7/25 110s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 8/25 113s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 9/25 115s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 10/25 117s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 11/25 119s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 12/25 122s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 13/25 123s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 14/25 125s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 15/25 127s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 16/25 128s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 17/25 130s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 18/25 132s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 19/25 134s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 20/25 136s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 21/25 137s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 22/25 139s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 23/25 141s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 24/25 143s
+[transformers] Kwargs passed to `processor.__call__` have to be in `processor_kwargs` dict, not in `**kwargs`
+amidda 25/25 144s
+DONE amidda 25 lines 144s
+RC amidda_recut 0
+STAMP amidda_recut_end 1793462540
+RC hfpush 0
+ALLDONE failed_steps=0

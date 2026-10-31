@@ -94,3 +94,23 @@ book_03 is AraMS's official test book; CER against letters-only text with alef f
 | HATFormer | AraMS train books | 37.88 | AraMS paper (re-run on RASAM only, §AMIDDA) |
 
 Ours on the other Maghrebi books (AraMS train books, unseen by us): book_19 6.21, book_20 19.74, book_24 20.87.
+
+## Clean test view with error bars (2026-10-31)
+
+The official test lines with the 25 broken crops re-cut from the pages (every system re-read them) and the 21 lines with wrong references
+removed (717 / 370 / 227 lines). Micro CER %, raw profile. The ranges are 95 % page-bootstrap intervals. Built by `scripts/clean_bench.py`
+→ `results/rasam/clean/bench.json`; the corrected lists and crops are in `release/rasam-clean/`.
+
+| System | RASAM-1 | RASAM-2 | TariMa |
+|---|---|---|---|
+| Ours: 2-model ensemble + char LM + AraGPT2 | **3.17** (2.8–3.6) | **5.47** (4.7–6.4) | **5.59** (4.7–6.5) |
+| Ours: 60-epoch CRNN + char LM + AraGPT2 | 3.41 | 6.01 | 6.59 |
+| Ours: 60-epoch CRNN, greedy | 4.24 | 7.79 | 8.24 |
+| HAFITH (642 M) | 5.79 (4.9–6.8) | 14.76 (13.1–16.4) | – |
+| Phoenix (Kraken) | 22.69 | 14.96 | – |
+| AMIDDA 1.0 Line 4B | 21.29 (19.8–23.0) | 25.88 (23.5–28.7) | 24.78 (22.4–27.1) |
+| HATFormer (AraMS-28k) | 34.48 | 36.93 | 31.54 |
+
+Official numbers for the same systems: 3.72 / 7.71 / 5.67 (ours), 21.69 / 28.17 / 24.83 (AMIDDA). The ranking is unchanged on the clean view
+and on a view that drops only people-found lines (PR #7 plus our by-eye list). The paired page-bootstrap gaps to our best system exclude zero:
+AMIDDA +18 to +20 points, HAFITH +2.6 / +9.3.

@@ -44,8 +44,9 @@ A line is dropped when its reference does not describe its image and the crop ca
 Test lines dropped: 17 in RASAM-1, 2 in RASAM-2 and 2 in TariMa. The test view therefore has 717 / 370 / 227 lines.
 
 **Caveat.** The automatic rules come from CRNN readings. They could favour readers that make CRNN-like errors. To check this, we also
-score a view that drops only the lines found by people (PR #7 plus our own by-eye list). System rankings are the same on both views
-(see the benchmark repo, `results/rasam/clean/bench.json`).
+score a view that drops only the lines found by people (PR #7 plus our own by-eye list). Both views give the same numbers within
+about 0.2 points, and the ranking of the 11 systems we score is unchanged. The only swap is between two of our own models that
+are within noise of each other (see `results/rasam/clean/bench.json` in the benchmark repo).
 
 Agreement with PR #7 on RASAM-1 is low: precision 0.24, recall 0.30. The two methods catch largely different defects, so neither
 list is complete.

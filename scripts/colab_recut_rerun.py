@@ -16,7 +16,7 @@ OUT = "/content/crnn_out/recut"
 os.makedirs(OUT, exist_ok=True)
 lines = json.load(open("/content/recut_test.json"))
 which = sys.argv[1]
-fo = f"{OUT}/{which}.json"
+fo = f"{OUT}/preds_recut_{which}.json"  # colab_job.py only syncs preds_* / named files
 done = json.load(open(fo)) if os.path.exists(fo) else {}
 t0 = time.time()
 
@@ -41,7 +41,8 @@ elif which == "amidda":
     PROMPT = "Transcribe the handwritten text in this line image. Output ONLY the transcription."
     torch.set_num_threads(os.cpu_count() or 2)
     processor = AutoProcessor.from_pretrained(MODEL, max_pixels=401408)
-    model = AutoModelForImageTextToText.from_pretrained(MODEL, dtype=torch.bfloat16).eval()
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    model = AutoModelForImageTextToText.from_pretrained(MODEL, dtype=torch.bfloat16).to(dev).eval()
     print(f"loaded in {time.time() - t0:.0f}s", flush=True)
     for d in lines:
         if d["key"] in done:
@@ -54,7 +55,7 @@ elif which == "amidda":
             im = c
         msgs = [[{"role": "user", "content": [{"type": "image", "image": im}, {"type": "text", "text": PROMPT}]}]]
         inputs = processor.apply_chat_template(msgs, tokenize=True, add_generation_prompt=True, return_dict=True, return_tensors="pt",
-                                               padding=True, enable_thinking=False)
+                                               padding=True, enable_thinking=False).to(dev)
         with torch.no_grad():
             gen = model.generate(**inputs, max_new_tokens=128, do_sample=False)
         done[d["key"]] = processor.batch_decode(gen[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0].strip()

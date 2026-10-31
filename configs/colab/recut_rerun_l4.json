@@ -1,0 +1,22 @@
+{
+ "name": "recut-rerun-l4",
+ "gpu": "L4",
+ "max_units": 0.8,
+ "max_minutes": 40,
+ "poll_s": 60,
+ "sync_every_s": 180,
+ "final_sync_grace_min": 10,
+ "uploads": [
+  ["scripts/colab_recut_rerun.py", "/content/colab_recut_rerun.py"],
+  ["results/rasam/clean/rerun/recut_test.json", "/content/recut_test.json"]
+ ],
+ "setup": [
+  "git clone --depth 1 https://github.com/mdnaseif/hafith.git /content/hafith_src && pip install -q -e /content/hafith_src && pip install -q 'transformers>=4.45,<5' && echo HAFITH_INSTALLED"
+ ],
+ "runs": [
+  {"label": "hafith_recut", "cmd": "cd /tmp && python -u /content/colab_recut_rerun.py hafith"},
+  {"label": "amidda_recut", "cmd": "pip install -q -U 'transformers>=5.9' accelerate && (pip install -q flash-linear-attention || true) && cd /tmp && python -u /content/colab_recut_rerun.py amidda"}
+ ],
+ "artifacts": ["/content/crnn_out"],
+ "local_out": "results/rasam/colab_runs"
+}

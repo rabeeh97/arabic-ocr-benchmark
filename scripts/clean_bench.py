@@ -76,9 +76,9 @@ def systems():
     S["Ours: 60-epoch CRNN, greedy"] = (by_id(str(CR / "E60_dirty__{t}__test.json")), by_id(str(CR / "E60_recut__{t}__test.json")), "ours", "no LM")
     S["Ours: 60-epoch CRNN on cleaned training data, greedy"] = (by_id(str(CR / "CE60_dirty__{t}__test.json")), by_id(str(CR / "CE60_recut__{t}__test.json")), "ours",
                                                                  "same recipe, 202 bad lines dropped / 250 crops re-cut in training")
-    S["AMIDDA 1.0 Line 4B (Calfa VLM)"] = (by_index("results/rasam/external/amidda_{t}__test.json"), load_rerun("colab/amidda.json"), "rescored", "Colab, card settings")
+    S["AMIDDA 1.0 Line 4B (Calfa VLM)"] = (by_index("results/rasam/external/amidda_{t}__test.json"), load_rerun("colab/preds_recut_amidda.json"), "rescored", "Colab, card settings")
     S["HAFITH (642 M)"] = (by_index("results/rasam/colab_runs/job-hafith-eval-t4-10251632/content/crnn_out/hafith/preds_{t}.json", ("r1", "r2"), key=None),
-                           load_rerun("colab/hafith.json"), "rescored", "362 RASAM-1 test lines in its training data")
+                           load_rerun("colab/preds_recut_hafith.json"), "rescored", "362 RASAM-1 test lines in its training data")
     S["HATFormer (AraMS-28k, 334 M)"] = (by_index("results/rasam/external/hatformer_{t}__test.json"), load_rerun("hatformer.json"), "rescored", "zero-shot")
     S["Phoenix (Kraken)"] = (by_id_named("phoenix"), load_rerun("phoenix.json"), "rescored", "binarised crops")
     S["TariMa manuscript model (Kraken)"] = (by_id_named("tarima-manuscript"), load_rerun("tarima-manuscript.json"), "rescored", "binarised crops")

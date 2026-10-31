@@ -210,6 +210,7 @@ table.cb td:first-child { min-width: 220px; }
     <li><b class="h">Calfa's lead is not explained by anything they published <span class="pill p-neg">negative</span></b><p>Per-corpus specialisation, keeping more vertical detail, and Calfa's own described architecture (52.9 M parameters, trained as long as it kept improving) all ended at or behind our 2.4 M model. The remaining candidates are unpublished training details or training data that overlapped today's test pages. A question to Calfa is drafted and not yet sent.</p></li>
     <li><b class="h">Cheap decoding gains are real; weight averaging is not <span class="pill p-kept">verified</span></b><p>A character 8-gram LM in the CTC beam search gives −0.4 to −2.5 points; AraGPT2 rescoring of the 10-best adds −0.2 to −0.3 on every set. EMA and checkpoint averaging give nothing over the one-cycle schedule. Seed noise is 0.1 to 0.2 points. A two-model ensemble at the hypothesis level (pool both models' 10-best lists and score them with both models and the LMs) is the best system so far: 3.72 / 7.71 / 5.67 %. Averaging the two models' frame outputs instead makes things worse.</p></li>
     <li><b class="h">Cleaning the training data did not help; cleaning the test data did <span class="pill p-neg">negative</span></b><p>We re-cut 250 crops from the page images and dropped 202 lines (161 train, 20 validation, 21 test) by automatic rules plus the manual check proposed in calfa-co/rasam-dataset PR #7. The same 60-epoch recipe retrained on the clean training set is within seed noise of the original on every test view (clean test: 4.19 / 7.65 / 8.39 % vs 4.24 / 7.79 / 8.24 %). About 2 % bad training references do not hurt a CTC model measurably. The fixes to the test set do change the scores: RASAM-2 10.8 → 7.8 %, RASAM-1 4.8 → 4.2 % (greedy).</p></li>
+    <li><b class="h">On the cleaned test lines our best system reads 3.17 / 5.47 / 5.59 % <span class="pill p-new">new</span></b><p>Re-cutting the 25 broken test crops and removing the 21 lines with wrong references (see Clean benchmark) lowers every system. The RASAM-2 gap to Calfa's reported 4.9 % shrinks from 2.8 to 0.6 points, and the ranking does not change. Page-bootstrap 95 % intervals and paired differences are given for every system we can run.</p></li>
     <li><b class="h">A 7B Arabic VLM fine-tune halves AMIDDA's error <span class="pill p-new">new</span></b><p>On the same 200 official test lines per set, our light LoRA fine-tune of Fanar-2-Oryx 7B (1 epoch, vision frozen, about 5k RASAM lines in a 22k mixed set) reads 11.2 / 17.2 % against 22.7 / 28.8 % for Calfa's AMIDDA 1.0 Line 4B. Our same-size Qwen3-VL-4B fine-tune trails AMIDDA (27.3 / 32.1 %). Every VLM is still far behind the 2.4 M-parameter CRNN.</p></li>
   </ol>
 </section>
@@ -245,6 +246,44 @@ table.cb td:first-child { min-width: 220px; }
       <tr><td>TariMa</td><td class="num">10.72</td><td>Phoenix, own TariMa split</td><td class="note">Manuscript-independent</td><td class="note">Not re-run on TariMa</td></tr>
     </tbody>
   </table></div>
+</section>
+
+<section id="cleanbench">
+  <span class="eyebrow">Clean benchmark</span>
+  <h2>The official test lines, cleaned, with error bars</h2>
+  <p>The same official test lines, scored three ways for every system we can run:</p>
+  <ul class="plain">
+    <li><b>Official:</b> the lines as published.</li>
+    <li><b>Clean:</b> the 25 broken test crops (23 RASAM-2, 2 RASAM-1) are replaced by crops re-cut from the page, and every system re-reads them. The 21 test lines whose reference does not match the image are removed.</li>
+    <li><b>People-found drops only:</b> the same re-cuts, but only lines flagged by people are removed (the manual check in PR #7 and our by-eye list). This guards against our automatic rules, which come from CRNN readings, favouring CRNN-like readers.</li>
+  </ul>
+  <p>Small grey numbers are 95 % intervals from resampling whole pages, because lines on one page share a hand and are not independent. Systems we cannot run (Calfa CTC, Gemini) have no clean number.</p>
+  {{CLEANBENCH}}
+  <div class="callout">
+    <p><b>What changes:</b></p>
+    <ul>
+      <li>Our best system goes from 3.72 / 7.71 / 5.67 % to <b>3.17 / 5.47 / 5.59 %</b>.</li>
+      <li>On RASAM-2, the re-cuts alone remove more than 2 points and shrink the interval from 5.8–10.0 to 4.7–6.4: the broken MS 1936 crops were the main source of uncertainty.</li>
+      <li>Removing the bad references lowers every system by 0–0.6 points.</li>
+      <li>The people-found-drops-only view gives the same numbers within about 0.2 points for every system, so the result does not depend on our automatic rules.</li>
+    </ul>
+    <p><b>What does not change:</b> the ranking. The only swap is between our two greedy 60-epoch models (original vs cleaned training data) on RASAM-2, which are within noise of each other anyway. The paired intervals below exclude zero for every comparison except that retraining one.</p>
+  </div>
+  <h3>Paired differences on the clean view</h3>
+  <p>The same resampled pages for both systems. A positive difference means system A has more errors.</p>
+  {{PAIRED}}
+  <h3>200-line panel: our fine-tuned VLMs</h3>
+  <p>The suite_v1 VLM fine-tunes were only run on test lines 0–199 of RASAM-1 and RASAM-2, and have no re-cut readings, so they are compared there on the official and drop-only views. A few VLM lines errored out; those cells use the lines that were read (at least 150 of 200).</p>
+  {{PANEL}}
+  <h3>Released: the corrected lists and crops</h3>
+  <p><code>release/rasam-clean/</code> in the <a href="https://github.com/rabeeh97/arabic-ocr-benchmark/tree/worktree-xai-attribution-spike/release/rasam-clean">benchmark repository</a> holds:</p>
+  <ul class="plain">
+    <li>a manifest of the 447 lines we act on, with the Hugging Face index, the action and the reasons;</li>
+    <li>the 250 re-cut crops (Apache-2.0, like RASAM);</li>
+    <li>the drop list;</li>
+    <li>a standard-library scorer that gives the official, drop-only and clean CER from a predictions file. It reproduces the numbers above exactly.</li>
+  </ul>
+  <p>An issue for the dataset repository, referencing #2, #6 and PR #7, is drafted for you to send.</p>
 </section>
 
 <section id="why">
@@ -526,7 +565,8 @@ table.cb td:first-child { min-width: 220px; }
     <li><b>Send the Calfa question</b> (drafted, yours to send): how their per-corpus models were trained, and whether their training data included today's test pages.</li>
     <li><b>Train with AraMS's Maghrebi books 19, 20 and 24 added</b>, then re-read book_03 (about 2 units): does a more varied set of hands close the unseen-manuscript gap?</li>
     <li><b>Leave-manuscript-out on RASAM-1 and TariMa</b> (about 3–4 units), to turn one dataset's finding into a pattern across three.</li>
-    <li><b>Confidence intervals</b> (Mac, no units): bootstrap over lines and a sign test over manuscripts for the headline claims.</li>
+    <li><b>Send the RASAM dataset issue</b> (drafted, yours to send), pointing to the released fix list.</li>
+    <li><b>Sign test over manuscripts</b> (Mac, no units) for the unseen-manuscript claim; page-bootstrap intervals for the board are done (clean benchmark).</li>
     <li><b>Three seeds of the final recipe</b> (about 3 units), so the best numbers have error bars.</li>
     <li><b>Paper:</b> a benchmark and reproducibility paper. Working title: "What do RASAM numbers measure? Split leakage, contamination and a strict benchmark for Maghrebi HTR."</li>
   </ul>
