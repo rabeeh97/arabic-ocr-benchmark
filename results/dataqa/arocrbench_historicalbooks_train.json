@@ -1,0 +1,407 @@
+{
+ "n": 10,
+ "n_read": 0,
+ "counts": {
+  "neighbour_clip": 9
+ },
+ "any": 9,
+ "flags": {
+  "arocrbench_historicalbooks/train/000000": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 9,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      },
+      {
+       "y": 95,
+       "rel": 0.9,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 163,
+       "rel": 0.83,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 229,
+       "rel": 0.8,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000001": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 34,
+       "rel": 0.8,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 78,
+       "rel": 1.0,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 122,
+       "rel": 0.87,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 187,
+       "rel": 0.9,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 231,
+       "rel": 1.0,
+       "H": 244,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000002": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      },
+      {
+       "y": 56,
+       "rel": 0.82,
+       "H": 246,
+       "edge": false
+      },
+      {
+       "y": 101,
+       "rel": 0.94,
+       "H": 246,
+       "edge": false
+      },
+      {
+       "y": 147,
+       "rel": 0.88,
+       "H": 246,
+       "edge": false
+      },
+      {
+       "y": 213,
+       "rel": 0.9,
+       "H": 246,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000003": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 0.95,
+       "H": 244,
+       "edge": true
+      },
+      {
+       "y": 197,
+       "rel": 1.0,
+       "H": 244,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000004": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 0.81,
+       "H": 244,
+       "edge": true
+      },
+      {
+       "y": 55,
+       "rel": 0.91,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 121,
+       "rel": 0.97,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 164,
+       "rel": 0.81,
+       "H": 244,
+       "edge": false
+      },
+      {
+       "y": 208,
+       "rel": 1.0,
+       "H": 244,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000005": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      },
+      {
+       "y": 76,
+       "rel": 0.64,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 211,
+       "rel": 0.56,
+       "H": 240,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000006": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 244,
+       "edge": true
+      },
+      {
+       "y": 219,
+       "rel": 0.7,
+       "H": 244,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000008": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 0.97,
+       "H": 246,
+       "edge": true
+      },
+      {
+       "y": 99,
+       "rel": 0.56,
+       "H": 246,
+       "edge": false
+      },
+      {
+       "y": 162,
+       "rel": 0.96,
+       "H": 246,
+       "edge": false
+      },
+      {
+       "y": 231,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "arocrbench_historicalbooks/train/000009": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 243,
+       "edge": true
+      },
+      {
+       "y": 87,
+       "rel": 0.49,
+       "H": 243,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "arocrbench_historicalbooks",
+ "split": "train",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

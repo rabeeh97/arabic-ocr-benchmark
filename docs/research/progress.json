@@ -237,6 +237,11 @@
  ],
  "updates": [
   {
+   "date": "2026-11-01",
+   "kind": "done",
+   "text": "Automatic data-QA toolkit for any line dataset (17 checks: text, image, joint, reader, dataset tiers; docs/research/dataqa.md). Validated on RASAM test (13/17 by-eye defects caught, one new doubled reference) and scanned 9 local datasets; AMIDDA test is the union of the RASAM-1/2/TariMa tests (its train shares none of them), and KHATT test shares 67 % of its GTs with train."
+  },
+  {
    "date": "2026-10-31",
    "kind": "done",
    "text": "RASAM clean benchmark with page-bootstrap 95% intervals: best system 3.17 / 5.47 / 5.59 on the clean test view (official 3.72 / 7.71 / 5.67); no ranking changes. Released release/rasam-clean (447-line manifest, 250 re-cut crops, drop list, scorer); dataset issue drafted, not sent."

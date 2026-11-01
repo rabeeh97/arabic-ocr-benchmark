@@ -1,0 +1,739 @@
+{
+ "n": 229,
+ "n_read": 229,
+ "counts": {
+  "multi_line": 6,
+  "neighbour_clip": 20
+ },
+ "any": 26,
+ "flags": {
+  "tarima/test/000001": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 160,
+       "edge": true
+      },
+      {
+       "y": 86,
+       "rel": 0.71,
+       "H": 160,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000002": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [94, 154] of 176)",
+    "extra": {
+     "bands": [
+      {
+       "y": 94,
+       "rel": 0.46,
+       "H": 176,
+       "edge": false
+      },
+      {
+       "y": 154,
+       "rel": 1.0,
+       "H": 176,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000004": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 68,
+       "rel": 0.8,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 113,
+       "rel": 1.0,
+       "H": 117,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000031": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 65,
+       "rel": 0.86,
+       "H": 128,
+       "edge": false
+      },
+      {
+       "y": 124,
+       "rel": 1.0,
+       "H": 128,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000032": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 102,
+       "edge": true
+      },
+      {
+       "y": 50,
+       "rel": 0.71,
+       "H": 102,
+       "edge": false
+      },
+      {
+       "y": 99,
+       "rel": 0.68,
+       "H": 102,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000055": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [91, 142] of 163)",
+    "extra": {
+     "bands": [
+      {
+       "y": 91,
+       "rel": 0.66,
+       "H": 163,
+       "edge": false
+      },
+      {
+       "y": 142,
+       "rel": 1.0,
+       "H": 163,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000079": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [109, 162] of 187)",
+    "extra": {
+     "bands": [
+      {
+       "y": 109,
+       "rel": 0.61,
+       "H": 187,
+       "edge": false
+      },
+      {
+       "y": 162,
+       "rel": 1.0,
+       "H": 187,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000080": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.83,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000083": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [13, 39] of 72)",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 72,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 0.81,
+       "H": 72,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000102": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      },
+      {
+       "y": 33,
+       "rel": 0.8,
+       "H": 59,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000108": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 119,
+       "edge": true
+      },
+      {
+       "y": 72,
+       "rel": 0.83,
+       "H": 119,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000122": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 182,
+       "edge": true
+      },
+      {
+       "y": 96,
+       "rel": 0.53,
+       "H": 182,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000132": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.86,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000141": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 142,
+       "edge": true
+      },
+      {
+       "y": 90,
+       "rel": 0.55,
+       "H": 142,
+       "edge": false
+      },
+      {
+       "y": 137,
+       "rel": 0.95,
+       "H": 142,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000149": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [50, 78] of 117)",
+    "extra": {
+     "bands": [
+      {
+       "y": 50,
+       "rel": 0.62,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 78,
+       "rel": 1.0,
+       "H": 117,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000150": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 112,
+       "edge": true
+      },
+      {
+       "y": 66,
+       "rel": 0.83,
+       "H": 112,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000152": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 117,
+       "edge": true
+      },
+      {
+       "y": 62,
+       "rel": 0.66,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 113,
+       "rel": 0.93,
+       "H": 117,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000159": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 129,
+       "edge": true
+      },
+      {
+       "y": 63,
+       "rel": 0.91,
+       "H": 129,
+       "edge": false
+      },
+      {
+       "y": 125,
+       "rel": 0.75,
+       "H": 129,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000166": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 75,
+       "rel": 0.78,
+       "H": 146,
+       "edge": false
+      },
+      {
+       "y": 137,
+       "rel": 1.0,
+       "H": 146,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000169": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 111,
+       "rel": 0.59,
+       "H": 179,
+       "edge": false
+      },
+      {
+       "y": 173,
+       "rel": 1.0,
+       "H": 179,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000173": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.77,
+       "H": 42,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000191": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 89,
+       "rel": 0.57,
+       "H": 145,
+       "edge": false
+      },
+      {
+       "y": 140,
+       "rel": 1.0,
+       "H": 145,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000195": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 141,
+       "edge": true
+      },
+      {
+       "y": 74,
+       "rel": 0.63,
+       "H": 141,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000200": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      },
+      {
+       "y": 30,
+       "rel": 0.99,
+       "H": 53,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000201": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [102, 175] of 203)",
+    "extra": {
+     "bands": [
+      {
+       "y": 102,
+       "rel": 0.49,
+       "H": 203,
+       "edge": false
+      },
+      {
+       "y": 175,
+       "rel": 1.0,
+       "H": 203,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "tarima/test/000226": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 67,
+       "rel": 0.6,
+       "H": 140,
+       "edge": false
+      },
+      {
+       "y": 135,
+       "rel": 1.0,
+       "H": 140,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "tarima",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

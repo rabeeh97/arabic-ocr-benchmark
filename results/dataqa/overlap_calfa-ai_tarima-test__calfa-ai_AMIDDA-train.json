@@ -1,0 +1,12 @@
+{
+ "probe": "calfa-ai/tarima:test",
+ "against": [
+  "calfa-ai/AMIDDA:train"
+ ],
+ "probe_lines": 229,
+ "eligible_ge20": 223,
+ "shared_gt": 0,
+ "shared_frac": 0.0,
+ "short_shared_excluded": 0,
+ "indices": []
+}

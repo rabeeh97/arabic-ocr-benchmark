@@ -1,0 +1,272 @@
+{
+ "n_test_lines": 1335,
+ "earlier_flagged": 46,
+ "qa_flagged": 88,
+ "both": 22,
+ "by_earlier_reason": {
+  "blank": {
+   "lines": 2,
+   "flagged": 0,
+   "by_check": {}
+  },
+  "external": {
+   "lines": 9,
+   "flagged": 1,
+   "by_check": {
+    "length_mismatch": 1
+   }
+  },
+  "garbled": {
+   "lines": 5,
+   "flagged": 0,
+   "by_check": {}
+  },
+  "garbled_page": {
+   "lines": 2,
+   "flagged": 0,
+   "by_check": {}
+  },
+  "recut": {
+   "lines": 25,
+   "flagged": 15,
+   "by_check": {
+    "multi_line": 8,
+    "degenerate": 7
+   }
+  },
+  "shifted": {
+   "lines": 2,
+   "flagged": 2,
+   "by_check": {
+    "unreadable": 1,
+    "multi_line": 1,
+    "shifted": 1
+   }
+  },
+  "truncated": {
+   "lines": 2,
+   "flagged": 2,
+   "by_check": {
+    "gt_truncated": 2
+   }
+  },
+  "vertical": {
+   "lines": 2,
+   "flagged": 2,
+   "by_check": {
+    "vertical": 2,
+    "length_mismatch": 1
+   }
+  }
+ },
+ "by_check": {
+  "degenerate": {
+   "lines": 7,
+   "in_earlier_lists": 7
+  },
+  "doubled_gt": {
+   "lines": 2,
+   "in_earlier_lists": 0
+  },
+  "gt_truncated": {
+   "lines": 2,
+   "in_earlier_lists": 2
+  },
+  "image_truncated": {
+   "lines": 1,
+   "in_earlier_lists": 0
+  },
+  "length_mismatch": {
+   "lines": 30,
+   "in_earlier_lists": 2
+  },
+  "multi_line": {
+   "lines": 44,
+   "in_earlier_lists": 9
+  },
+  "repeated_gt": {
+   "lines": 1,
+   "in_earlier_lists": 0
+  },
+  "shifted": {
+   "lines": 1,
+   "in_earlier_lists": 1
+  },
+  "unreadable": {
+   "lines": 2,
+   "in_earlier_lists": 1
+  },
+  "vertical": {
+   "lines": 2,
+   "in_earlier_lists": 2
+  }
+ },
+ "curated": [
+  {
+   "kind": "degenerate",
+   "id": "RASAM-2/test/000325",
+   "flags": [
+    "degenerate"
+   ]
+  },
+  {
+   "kind": "degenerate",
+   "id": "RASAM-2/test/000038",
+   "flags": [
+    "degenerate"
+   ]
+  },
+  {
+   "kind": "degenerate",
+   "id": "RASAM-2/test/000307",
+   "flags": [
+    "degenerate"
+   ]
+  },
+  {
+   "kind": "wrong-place",
+   "id": "RASAM-2/test/000276",
+   "flags": [
+    "multi_line"
+   ]
+  },
+  {
+   "kind": "wrong-place",
+   "id": "RASAM-2/test/000330",
+   "flags": [
+    "multi_line"
+   ]
+  },
+  {
+   "kind": "wrong-place",
+   "id": "RASAM-2/test/000122",
+   "flags": []
+  },
+  {
+   "kind": "wrong-place",
+   "id": "RASAM-2/test/000203",
+   "flags": []
+  },
+  {
+   "kind": "neighbours",
+   "id": "RASAM-1/test/000587",
+   "flags": [
+    "multi_line",
+    "shifted"
+   ]
+  },
+  {
+   "kind": "neighbours",
+   "id": "RASAM-1/test/000185",
+   "flags": [
+    "neighbour_clip",
+    "unreadable"
+   ]
+  },
+  {
+   "kind": "neighbours",
+   "id": "RASAM-1/test/000014",
+   "flags": []
+  },
+  {
+   "kind": "vertical",
+   "id": "RASAM-1/test/000710",
+   "flags": [
+    "length_mismatch",
+    "vertical"
+   ]
+  },
+  {
+   "kind": "shifted",
+   "id": "RASAM-1/test/000185",
+   "flags": [
+    "neighbour_clip",
+    "unreadable"
+   ]
+  },
+  {
+   "kind": "shifted",
+   "id": "RASAM-1/test/000587",
+   "flags": [
+    "multi_line",
+    "shifted"
+   ]
+  },
+  {
+   "kind": "doubled",
+   "id": "RASAM-1/test/000475",
+   "flags": [
+    "doubled_gt",
+    "image_truncated",
+    "repeated_gt"
+   ]
+  },
+  {
+   "kind": "doubled",
+   "id": "RASAM-1/test/000099",
+   "flags": []
+  },
+  {
+   "kind": "truncated",
+   "id": "RASAM-1/test/000709",
+   "flags": [
+    "gt_truncated"
+   ]
+  },
+  {
+   "kind": "truncated",
+   "id": "RASAM-1/test/000200",
+   "flags": [
+    "gt_truncated"
+   ]
+  },
+  {
+   "kind": "garbled",
+   "id": "RASAM-1/test/000677",
+   "flags": []
+  },
+  {
+   "kind": "garbled",
+   "id": "RASAM-1/test/000037",
+   "flags": [
+    "neighbour_clip"
+   ]
+  },
+  {
+   "kind": "garbled",
+   "id": "RASAM-1/test/000214",
+   "flags": []
+  },
+  {
+   "kind": "garbled",
+   "id": "RASAM-1/test/000018",
+   "flags": [
+    "neighbour_clip"
+   ]
+  },
+  {
+   "kind": "garbled",
+   "id": "RASAM-1/test/000132",
+   "flags": []
+  },
+  {
+   "kind": "garbled",
+   "id": "tarima/test/000080",
+   "flags": [
+    "neighbour_clip"
+   ]
+  },
+  {
+   "kind": "garbled",
+   "id": "tarima/test/000017",
+   "flags": []
+  },
+  {
+   "kind": "garbled",
+   "id": "tarima/test/000194",
+   "flags": []
+  }
+ ],
+ "curated_caught": 13,
+ "curated_n": 25
+}

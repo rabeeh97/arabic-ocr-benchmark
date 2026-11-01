@@ -1,0 +1,6214 @@
+{
+ "n": 1500,
+ "n_read": 0,
+ "counts": {
+  "degenerate": 7,
+  "length_mismatch": 35,
+  "multi_line": 45,
+  "neighbour_clip": 200,
+  "repeated_gt": 1,
+  "vertical": 2
+ },
+ "any": 264,
+ "flags": {
+  "AMIDDA/test/000003": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.54,
+       "H": 54,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000005": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 62,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.5,
+       "H": 62,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000006": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.62,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000007": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.63,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000008": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.87,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000009": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.82,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000010": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.68,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 0.77,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000015": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3799430311980663,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.799430311980663
+    }
+   }
+  ],
+  "AMIDDA/test/000021": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 29,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000024": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      },
+      {
+       "y": 53,
+       "rel": 0.77,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000030": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.5,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000031": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.65,
+       "H": 54,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000033": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.58,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000034": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.47,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000037": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [47, 77] of 114)",
+    "extra": {
+     "bands": [
+      {
+       "y": 47,
+       "rel": 1.0,
+       "H": 114,
+       "edge": false
+      },
+      {
+       "y": 77,
+       "rel": 0.95,
+       "H": 114,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000038": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.87,
+       "H": 50,
+       "edge": false
+      },
+      {
+       "y": 48,
+       "rel": 1.0,
+       "H": 50,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000046": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000047": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 20,
+       "rel": 1.0,
+       "H": 35,
+       "edge": false
+      },
+      {
+       "y": 31,
+       "rel": 0.47,
+       "H": 35,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000048": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [14, 27] of 52)",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 0.5,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 52,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000052": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 0,
+       "rel": 1.0,
+       "H": 24,
+       "edge": true
+      },
+      {
+       "y": 11,
+       "rel": 0.54,
+       "H": 24,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000055": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000057": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 24,
+       "rel": 0.73,
+       "H": 50,
+       "edge": false
+      },
+      {
+       "y": 48,
+       "rel": 1.0,
+       "H": 50,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000059": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.54,
+       "H": 59,
+       "edge": false
+      },
+      {
+       "y": 57,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000090": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 43,
+       "edge": true
+      },
+      {
+       "y": 24,
+       "rel": 0.5,
+       "H": 43,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000098": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [20, 39] of 48)",
+    "extra": {
+     "bands": [
+      {
+       "y": 20,
+       "rel": 0.81,
+       "H": 48,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 1.0,
+       "H": 48,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000102": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 0.48,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000114": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.99,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 0.64,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000122": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000127": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 0.78,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000128": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.97,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 0.57,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000137": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 64,
+       "rel": 1.0,
+       "H": 66,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000139": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.51,
+       "H": 59,
+       "edge": false
+      },
+      {
+       "y": 57,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000143": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [37, 63] of 79)",
+    "extra": {
+     "bands": [
+      {
+       "y": 37,
+       "rel": 1.0,
+       "H": 79,
+       "edge": false
+      },
+      {
+       "y": 63,
+       "rel": 0.6,
+       "H": 79,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000175": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.82,
+       "H": 49,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000181": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 48,
+       "edge": true
+      },
+      {
+       "y": 23,
+       "rel": 0.7,
+       "H": 48,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000185": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [12, 42] of 94)",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 1.0,
+       "H": 94,
+       "edge": false
+      },
+      {
+       "y": 42,
+       "rel": 0.55,
+       "H": 94,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000187": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000193": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.9,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 0.58,
+       "H": 51,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000195": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.59,
+       "H": 59,
+       "edge": false
+      },
+      {
+       "y": 57,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000205": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 0.68,
+       "H": 58,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000207": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.74,
+       "H": 58,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000208": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000210": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.64,
+       "H": 57,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000213": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4188013229242936,
+    "detail": "z=+4.2: GT too long for the image",
+    "extra": {
+     "z": 4.188013229242936
+    }
+   }
+  ],
+  "AMIDDA/test/000218": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.47,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 0.81,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000219": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.53,
+       "H": 59,
+       "edge": false
+      },
+      {
+       "y": 57,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000232": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.7,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 0.7,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000239": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.85,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000257": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.45,
+       "H": 55,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000258": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.58,
+       "H": 54,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000261": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.75,
+       "H": 54,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000262": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.92,
+       "H": 49,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 0.7,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000263": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 34,
+       "rel": 0.68,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000266": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.48,
+       "H": 58,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000277": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 33,
+       "rel": 0.56,
+       "H": 58,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000291": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.64,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000335": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.46,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000345": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.55,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000346": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      },
+      {
+       "y": 33,
+       "rel": 0.63,
+       "H": 57,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000353": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.75,
+       "H": 268,
+       "edge": true
+      },
+      {
+       "y": 109,
+       "rel": 1.0,
+       "H": 268,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000360": [
+   {
+    "check": "length_mismatch",
+    "score": 0.40227384053546345,
+    "detail": "z=-4.0: GT too short for the image",
+    "extra": {
+     "z": -4.022738405354635
+    }
+   }
+  ],
+  "AMIDDA/test/000435": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4357665731203119,
+    "detail": "z=-4.4: GT too short for the image",
+    "extra": {
+     "z": -4.357665731203119
+    }
+   }
+  ],
+  "AMIDDA/test/000437": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4148247274268887,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.148247274268887
+    }
+   }
+  ],
+  "AMIDDA/test/000457": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3508697166658647,
+    "detail": "z=-3.5: GT too short for the image",
+    "extra": {
+     "z": -3.508697166658647
+    }
+   }
+  ],
+  "AMIDDA/test/000470": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 86,
+       "rel": 1.0,
+       "H": 171,
+       "edge": false
+      },
+      {
+       "y": 165,
+       "rel": 0.78,
+       "H": 171,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000475": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.97,
+       "H": 181,
+       "edge": true
+      },
+      {
+       "y": 85,
+       "rel": 0.7,
+       "H": 181,
+       "edge": false
+      },
+      {
+       "y": 175,
+       "rel": 1.0,
+       "H": 181,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000477": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [120, 200] of 255)",
+    "extra": {
+     "bands": [
+      {
+       "y": 120,
+       "rel": 1.0,
+       "H": 255,
+       "edge": false
+      },
+      {
+       "y": 200,
+       "rel": 0.48,
+       "H": 255,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000482": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 111,
+       "rel": 0.75,
+       "H": 197,
+       "edge": false
+      },
+      {
+       "y": 190,
+       "rel": 1.0,
+       "H": 197,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000483": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 152,
+       "edge": true
+      },
+      {
+       "y": 73,
+       "rel": 0.8,
+       "H": 152,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000489": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.67,
+       "H": 172,
+       "edge": true
+      },
+      {
+       "y": 83,
+       "rel": 0.96,
+       "H": 172,
+       "edge": false
+      },
+      {
+       "y": 166,
+       "rel": 1.0,
+       "H": 172,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000490": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 108,
+       "rel": 1.0,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 232,
+       "rel": 0.84,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000499": [
+   {
+    "check": "vertical",
+    "score": 0.7405660377358491,
+    "detail": "159x471 px (h/w 3.0)",
+    "extra": {}
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4061780955231691,
+    "detail": "z=+4.1: GT too long for the image",
+    "extra": {
+     "z": 4.061780955231691
+    }
+   }
+  ],
+  "AMIDDA/test/000500": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 107,
+       "rel": 1.0,
+       "H": 200,
+       "edge": false
+      },
+      {
+       "y": 181,
+       "rel": 0.47,
+       "H": 200,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000503": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 0.9,
+       "H": 239,
+       "edge": true
+      },
+      {
+       "y": 102,
+       "rel": 0.56,
+       "H": 239,
+       "edge": false
+      },
+      {
+       "y": 231,
+       "rel": 1.0,
+       "H": 239,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000510": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 110,
+       "rel": 0.6,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 232,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000520": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [104, 189] of 228)",
+    "extra": {
+     "bands": [
+      {
+       "y": 104,
+       "rel": 1.0,
+       "H": 228,
+       "edge": false
+      },
+      {
+       "y": 189,
+       "rel": 0.57,
+       "H": 228,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000529": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 92,
+       "rel": 0.53,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 232,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000530": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 70,
+       "rel": 0.74,
+       "H": 187,
+       "edge": false
+      },
+      {
+       "y": 181,
+       "rel": 1.0,
+       "H": 187,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000532": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [95, 182] of 232)",
+    "extra": {
+     "bands": [
+      {
+       "y": 95,
+       "rel": 0.88,
+       "H": 232,
+       "edge": false
+      },
+      {
+       "y": 182,
+       "rel": 1.0,
+       "H": 232,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000533": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 67,
+       "rel": 1.0,
+       "H": 168,
+       "edge": false
+      },
+      {
+       "y": 162,
+       "rel": 0.96,
+       "H": 168,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000538": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [103, 198] of 238)",
+    "extra": {
+     "bands": [
+      {
+       "y": 103,
+       "rel": 1.0,
+       "H": 238,
+       "edge": false
+      },
+      {
+       "y": 198,
+       "rel": 0.79,
+       "H": 238,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000544": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [126, 201] of 263)",
+    "extra": {
+     "bands": [
+      {
+       "y": 126,
+       "rel": 1.0,
+       "H": 263,
+       "edge": false
+      },
+      {
+       "y": 201,
+       "rel": 0.56,
+       "H": 263,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000546": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 196,
+       "edge": true
+      },
+      {
+       "y": 92,
+       "rel": 0.94,
+       "H": 196,
+       "edge": false
+      },
+      {
+       "y": 189,
+       "rel": 0.91,
+       "H": 196,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000548": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 79,
+       "rel": 0.87,
+       "H": 174,
+       "edge": false
+      },
+      {
+       "y": 168,
+       "rel": 1.0,
+       "H": 174,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000550": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 195,
+       "edge": true
+      },
+      {
+       "y": 94,
+       "rel": 0.49,
+       "H": 195,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000551": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.76,
+       "H": 185,
+       "edge": true
+      },
+      {
+       "y": 81,
+       "rel": 0.69,
+       "H": 185,
+       "edge": false
+      },
+      {
+       "y": 179,
+       "rel": 1.0,
+       "H": 185,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000553": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 85,
+       "rel": 0.81,
+       "H": 159,
+       "edge": false
+      },
+      {
+       "y": 154,
+       "rel": 1.0,
+       "H": 159,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000555": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 86,
+       "rel": 1.0,
+       "H": 172,
+       "edge": false
+      },
+      {
+       "y": 166,
+       "rel": 0.69,
+       "H": 172,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000561": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 164,
+       "edge": true
+      },
+      {
+       "y": 86,
+       "rel": 0.69,
+       "H": 164,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000562": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 169,
+       "edge": true
+      },
+      {
+       "y": 85,
+       "rel": 0.96,
+       "H": 169,
+       "edge": false
+      },
+      {
+       "y": 163,
+       "rel": 0.96,
+       "H": 169,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000567": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 89,
+       "rel": 0.79,
+       "H": 198,
+       "edge": false
+      },
+      {
+       "y": 191,
+       "rel": 1.0,
+       "H": 198,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000568": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 86,
+       "rel": 0.54,
+       "H": 181,
+       "edge": false
+      },
+      {
+       "y": 175,
+       "rel": 1.0,
+       "H": 181,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000573": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.73,
+       "H": 153,
+       "edge": false
+      },
+      {
+       "y": 148,
+       "rel": 1.0,
+       "H": 153,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000578": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 90,
+       "rel": 0.64,
+       "H": 185,
+       "edge": false
+      },
+      {
+       "y": 179,
+       "rel": 1.0,
+       "H": 185,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000582": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.58,
+       "H": 173,
+       "edge": false
+      },
+      {
+       "y": 167,
+       "rel": 1.0,
+       "H": 173,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000585": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 92,
+       "rel": 0.52,
+       "H": 180,
+       "edge": false
+      },
+      {
+       "y": 174,
+       "rel": 1.0,
+       "H": 180,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000589": [
+   {
+    "check": "vertical",
+    "score": 0.5023148148148148,
+    "detail": "108x217 px (h/w 2.0)",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000595": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 192,
+       "edge": true
+      },
+      {
+       "y": 91,
+       "rel": 0.64,
+       "H": 192,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000596": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [118, 211] of 267)",
+    "extra": {
+     "bands": [
+      {
+       "y": 118,
+       "rel": 1.0,
+       "H": 267,
+       "edge": false
+      },
+      {
+       "y": 211,
+       "rel": 0.59,
+       "H": 267,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000605": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 86,
+       "rel": 0.84,
+       "H": 209,
+       "edge": false
+      },
+      {
+       "y": 202,
+       "rel": 1.0,
+       "H": 209,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000609": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 81,
+       "rel": 0.64,
+       "H": 180,
+       "edge": false
+      },
+      {
+       "y": 174,
+       "rel": 1.0,
+       "H": 180,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000611": [
+   {
+    "check": "repeated_gt",
+    "score": 1.0,
+    "detail": "span of 58 chars repeats",
+    "extra": {
+     "span": "فيهمدخلالابعتقاوَجبريعنيانميراثالولاءانماهوللعصبةالذكورفلا"
+    }
+   }
+  ],
+  "AMIDDA/test/000612": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 89,
+       "rel": 0.66,
+       "H": 204,
+       "edge": false
+      },
+      {
+       "y": 197,
+       "rel": 1.0,
+       "H": 204,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000613": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 175,
+       "edge": true
+      },
+      {
+       "y": 98,
+       "rel": 0.62,
+       "H": 175,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000615": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 18,
+       "rel": 0.46,
+       "H": 204,
+       "edge": true
+      },
+      {
+       "y": 109,
+       "rel": 1.0,
+       "H": 204,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000616": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 71,
+       "rel": 1.0,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 161,
+       "rel": 0.73,
+       "H": 167,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000617": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 64,
+       "rel": 1.0,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 161,
+       "rel": 0.98,
+       "H": 167,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000619": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.7,
+       "H": 167,
+       "edge": true
+      },
+      {
+       "y": 72,
+       "rel": 0.99,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 161,
+       "rel": 1.0,
+       "H": 167,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000620": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 186,
+       "edge": true
+      },
+      {
+       "y": 88,
+       "rel": 0.46,
+       "H": 186,
+       "edge": false
+      },
+      {
+       "y": 180,
+       "rel": 0.99,
+       "H": 186,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000621": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 199,
+       "edge": true
+      },
+      {
+       "y": 103,
+       "rel": 0.67,
+       "H": 199,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000622": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [40, 129] of 258)",
+    "extra": {
+     "bands": [
+      {
+       "y": 40,
+       "rel": 0.55,
+       "H": 258,
+       "edge": false
+      },
+      {
+       "y": 129,
+       "rel": 1.0,
+       "H": 258,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000623": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 204,
+       "edge": true
+      },
+      {
+       "y": 94,
+       "rel": 0.7,
+       "H": 204,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000624": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 83,
+       "rel": 1.0,
+       "H": 176,
+       "edge": false
+      },
+      {
+       "y": 168,
+       "rel": 0.74,
+       "H": 176,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000626": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 83,
+       "rel": 1.0,
+       "H": 186,
+       "edge": false
+      },
+      {
+       "y": 180,
+       "rel": 0.97,
+       "H": 186,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000643": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.82,
+       "H": 182,
+       "edge": true
+      },
+      {
+       "y": 89,
+       "rel": 0.86,
+       "H": 182,
+       "edge": false
+      },
+      {
+       "y": 176,
+       "rel": 1.0,
+       "H": 182,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000645": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 191,
+       "edge": true
+      },
+      {
+       "y": 185,
+       "rel": 1.0,
+       "H": 191,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000650": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [96, 195] of 222)",
+    "extra": {
+     "bands": [
+      {
+       "y": 96,
+       "rel": 1.0,
+       "H": 222,
+       "edge": false
+      },
+      {
+       "y": 195,
+       "rel": 0.64,
+       "H": 222,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000656": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 124,
+       "rel": 0.96,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 232,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000659": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 120,
+       "rel": 0.83,
+       "H": 240,
+       "edge": false
+      },
+      {
+       "y": 232,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000660": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 84,
+       "rel": 0.47,
+       "H": 182,
+       "edge": false
+      },
+      {
+       "y": 176,
+       "rel": 1.0,
+       "H": 182,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000661": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [145, 234] of 302)",
+    "extra": {
+     "bands": [
+      {
+       "y": 145,
+       "rel": 1.0,
+       "H": 302,
+       "edge": false
+      },
+      {
+       "y": 234,
+       "rel": 0.46,
+       "H": 302,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000665": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [142, 211] of 276)",
+    "extra": {
+     "bands": [
+      {
+       "y": 142,
+       "rel": 1.0,
+       "H": 276,
+       "edge": false
+      },
+      {
+       "y": 211,
+       "rel": 0.55,
+       "H": 276,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000666": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.93,
+       "H": 167,
+       "edge": true
+      },
+      {
+       "y": 90,
+       "rel": 0.63,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 161,
+       "rel": 1.0,
+       "H": 167,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000668": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 67,
+       "rel": 1.0,
+       "H": 164,
+       "edge": false
+      },
+      {
+       "y": 157,
+       "rel": 0.74,
+       "H": 164,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000671": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [103, 183] of 220)",
+    "extra": {
+     "bands": [
+      {
+       "y": 103,
+       "rel": 1.0,
+       "H": 220,
+       "edge": false
+      },
+      {
+       "y": 183,
+       "rel": 0.68,
+       "H": 220,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000675": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 75,
+       "rel": 0.88,
+       "H": 175,
+       "edge": false
+      },
+      {
+       "y": 169,
+       "rel": 1.0,
+       "H": 175,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000677": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [101, 187] of 219)",
+    "extra": {
+     "bands": [
+      {
+       "y": 101,
+       "rel": 1.0,
+       "H": 219,
+       "edge": false
+      },
+      {
+       "y": 187,
+       "rel": 0.51,
+       "H": 219,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000678": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 95,
+       "rel": 1.0,
+       "H": 198,
+       "edge": false
+      },
+      {
+       "y": 179,
+       "rel": 0.66,
+       "H": 198,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000680": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [46, 149] of 262)",
+    "extra": {
+     "bands": [
+      {
+       "y": 46,
+       "rel": 0.74,
+       "H": 262,
+       "edge": false
+      },
+      {
+       "y": 149,
+       "rel": 1.0,
+       "H": 262,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000684": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [7, 139, 200] of 238)",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 0.88,
+       "H": 238,
+       "edge": true
+      },
+      {
+       "y": 139,
+       "rel": 1.0,
+       "H": 238,
+       "edge": false
+      },
+      {
+       "y": 200,
+       "rel": 0.5,
+       "H": 238,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000686": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 96,
+       "rel": 1.0,
+       "H": 204,
+       "edge": false
+      },
+      {
+       "y": 181,
+       "rel": 0.67,
+       "H": 204,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000688": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [112, 205] of 239)",
+    "extra": {
+     "bands": [
+      {
+       "y": 112,
+       "rel": 1.0,
+       "H": 239,
+       "edge": false
+      },
+      {
+       "y": 205,
+       "rel": 0.72,
+       "H": 239,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000689": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 85,
+       "rel": 0.98,
+       "H": 195,
+       "edge": false
+      },
+      {
+       "y": 188,
+       "rel": 1.0,
+       "H": 195,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000690": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.96,
+       "H": 163,
+       "edge": true
+      },
+      {
+       "y": 78,
+       "rel": 1.0,
+       "H": 163,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000691": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 82,
+       "rel": 0.81,
+       "H": 177,
+       "edge": false
+      },
+      {
+       "y": 171,
+       "rel": 1.0,
+       "H": 177,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000692": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [105, 179] of 213)",
+    "extra": {
+     "bands": [
+      {
+       "y": 105,
+       "rel": 1.0,
+       "H": 213,
+       "edge": false
+      },
+      {
+       "y": 179,
+       "rel": 0.53,
+       "H": 213,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000696": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 85,
+       "rel": 1.0,
+       "H": 175,
+       "edge": false
+      },
+      {
+       "y": 169,
+       "rel": 0.98,
+       "H": 175,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000706": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 173,
+       "edge": true
+      },
+      {
+       "y": 80,
+       "rel": 0.73,
+       "H": 173,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3572216864698895,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.5722168646988948
+    }
+   }
+  ],
+  "AMIDDA/test/000709": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 88,
+       "rel": 0.67,
+       "H": 197,
+       "edge": false
+      },
+      {
+       "y": 190,
+       "rel": 1.0,
+       "H": 197,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000710": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 93,
+       "rel": 0.73,
+       "H": 189,
+       "edge": false
+      },
+      {
+       "y": 183,
+       "rel": 1.0,
+       "H": 189,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000711": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 1.0,
+       "H": 223,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000713": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 8,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      },
+      {
+       "y": 157,
+       "rel": 0.84,
+       "H": 240,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5088493831097443,
+    "detail": "z=-5.1: GT too short for the image",
+    "extra": {
+     "z": -5.088493831097442
+    }
+   }
+  ],
+  "AMIDDA/test/000715": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 1.0,
+       "H": 239,
+       "edge": true
+      },
+      {
+       "y": 231,
+       "rel": 0.99,
+       "H": 239,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000717": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.92,
+       "H": 172,
+       "edge": true
+      },
+      {
+       "y": 77,
+       "rel": 0.96,
+       "H": 172,
+       "edge": false
+      },
+      {
+       "y": 166,
+       "rel": 1.0,
+       "H": 172,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000720": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [145, 230] of 321)",
+    "extra": {
+     "bands": [
+      {
+       "y": 145,
+       "rel": 1.0,
+       "H": 321,
+       "edge": false
+      },
+      {
+       "y": 230,
+       "rel": 0.58,
+       "H": 321,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000721": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 0.74,
+       "H": 219,
+       "edge": true
+      },
+      {
+       "y": 105,
+       "rel": 0.62,
+       "H": 219,
+       "edge": false
+      },
+      {
+       "y": 212,
+       "rel": 1.0,
+       "H": 219,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000725": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 1.0,
+       "H": 228,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000726": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 1.0,
+       "H": 188,
+       "edge": true
+      },
+      {
+       "y": 82,
+       "rel": 0.48,
+       "H": 188,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000727": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 67,
+       "rel": 0.99,
+       "H": 173,
+       "edge": false
+      },
+      {
+       "y": 166,
+       "rel": 1.0,
+       "H": 173,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000732": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.92,
+       "H": 202,
+       "edge": true
+      },
+      {
+       "y": 101,
+       "rel": 0.77,
+       "H": 202,
+       "edge": false
+      },
+      {
+       "y": 195,
+       "rel": 1.0,
+       "H": 202,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000733": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [108, 209] of 266)",
+    "extra": {
+     "bands": [
+      {
+       "y": 108,
+       "rel": 1.0,
+       "H": 266,
+       "edge": false
+      },
+      {
+       "y": 209,
+       "rel": 0.9,
+       "H": 266,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000741": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [32, 65] of 121)",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.66,
+       "H": 121,
+       "edge": false
+      },
+      {
+       "y": 65,
+       "rel": 1.0,
+       "H": 121,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000762": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 81,
+       "edge": true
+      },
+      {
+       "y": 42,
+       "rel": 0.83,
+       "H": 81,
+       "edge": false
+      },
+      {
+       "y": 78,
+       "rel": 0.9,
+       "H": 81,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.40846455774395923,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.084645577439592
+    }
+   }
+  ],
+  "AMIDDA/test/000764": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 50,
+       "rel": 0.85,
+       "H": 93,
+       "edge": false
+      },
+      {
+       "y": 90,
+       "rel": 1.0,
+       "H": 93,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000765": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 66,
+       "rel": 0.61,
+       "H": 106,
+       "edge": false
+      },
+      {
+       "y": 102,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000767": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [32, 77] of 150)",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 150,
+       "edge": false
+      },
+      {
+       "y": 77,
+       "rel": 0.61,
+       "H": 150,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000769": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000770": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 83,
+       "edge": true
+      },
+      {
+       "y": 32,
+       "rel": 0.54,
+       "H": 83,
+       "edge": false
+      },
+      {
+       "y": 80,
+       "rel": 0.9,
+       "H": 83,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000772": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 54,
+       "rel": 0.46,
+       "H": 107,
+       "edge": false
+      },
+      {
+       "y": 103,
+       "rel": 1.0,
+       "H": 107,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000774": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 118] of 148)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.75,
+       "H": 148,
+       "edge": false
+      },
+      {
+       "y": 118,
+       "rel": 1.0,
+       "H": 148,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000776": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5658278920442131,
+    "detail": "z=-5.7: GT too short for the image",
+    "extra": {
+     "z": -5.6582789204421315
+    }
+   }
+  ],
+  "AMIDDA/test/000777": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 48,
+       "rel": 0.47,
+       "H": 99,
+       "edge": false
+      },
+      {
+       "y": 96,
+       "rel": 1.0,
+       "H": 99,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000778": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [16, 72, 104] of 120)",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 72,
+       "rel": 0.75,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 104,
+       "rel": 0.97,
+       "H": 120,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000780": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 109,
+       "edge": true
+      },
+      {
+       "y": 60,
+       "rel": 0.68,
+       "H": 109,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000789": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 85,
+       "rel": 1.0,
+       "H": 88,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000790": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 150,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000791": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "413x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000794": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [55, 94, 136] of 167)",
+    "extra": {
+     "bands": [
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 94,
+       "rel": 0.78,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 136,
+       "rel": 0.72,
+       "H": 167,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000796": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "315x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000797": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "310x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000799": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [40, 84] of 188)",
+    "extra": {
+     "bands": [
+      {
+       "y": 40,
+       "rel": 0.9,
+       "H": 188,
+       "edge": false
+      },
+      {
+       "y": 84,
+       "rel": 1.0,
+       "H": 188,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000800": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "360x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000801": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [37, 79] of 138)",
+    "extra": {
+     "bands": [
+      {
+       "y": 37,
+       "rel": 0.8,
+       "H": 138,
+       "edge": false
+      },
+      {
+       "y": 79,
+       "rel": 1.0,
+       "H": 138,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000802": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [30, 60] of 197)",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 197,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 0.63,
+       "H": 197,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000804": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "434x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000805": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [36, 75, 117] of 152)",
+    "extra": {
+     "bands": [
+      {
+       "y": 36,
+       "rel": 0.82,
+       "H": 152,
+       "edge": false
+      },
+      {
+       "y": 75,
+       "rel": 1.0,
+       "H": 152,
+       "edge": false
+      },
+      {
+       "y": 117,
+       "rel": 0.8,
+       "H": 152,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000806": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [51, 90] of 168)",
+    "extra": {
+     "bands": [
+      {
+       "y": 51,
+       "rel": 0.91,
+       "H": 168,
+       "edge": false
+      },
+      {
+       "y": 90,
+       "rel": 1.0,
+       "H": 168,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000809": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "806x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000810": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [30, 70] of 142)",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 142,
+       "edge": false
+      },
+      {
+       "y": 70,
+       "rel": 0.93,
+       "H": 142,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000811": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "398x1 px",
+    "extra": {}
+   }
+  ],
+  "AMIDDA/test/000841": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.74,
+       "H": 47,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000843": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.78,
+       "H": 49,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 0.51,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000846": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 36,
+       "rel": 0.64,
+       "H": 76,
+       "edge": false
+      },
+      {
+       "y": 73,
+       "rel": 1.0,
+       "H": 76,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000849": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.91,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 0.51,
+       "H": 51,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000850": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.71,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000851": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.96,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4975145303954216,
+    "detail": "z=-5.0: GT too short for the image",
+    "extra": {
+     "z": -4.975145303954216
+    }
+   }
+  ],
+  "AMIDDA/test/000852": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 23,
+       "rel": 0.52,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 0.64,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000855": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 0.68,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000856": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.71,
+       "H": 47,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.40513718083710837,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.0513718083710835
+    }
+   }
+  ],
+  "AMIDDA/test/000861": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.74,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 0.8,
+       "H": 51,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000867": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.75,
+       "H": 48,
+       "edge": false
+      },
+      {
+       "y": 46,
+       "rel": 1.0,
+       "H": 48,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000875": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 73,
+       "edge": true
+      },
+      {
+       "y": 31,
+       "rel": 0.93,
+       "H": 73,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3835701415130658,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.835701415130658
+    }
+   }
+  ],
+  "AMIDDA/test/000886": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 0.69,
+       "H": 62,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 1.0,
+       "H": 62,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000894": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 77,
+       "rel": 0.6,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 116,
+       "rel": 1.0,
+       "H": 120,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000896": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 47,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000901": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 124] of 143)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.59,
+       "H": 143,
+       "edge": false
+      },
+      {
+       "y": 124,
+       "rel": 1.0,
+       "H": 143,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000917": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 63,
+       "rel": 0.68,
+       "H": 102,
+       "edge": false
+      },
+      {
+       "y": 99,
+       "rel": 1.0,
+       "H": 102,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000918": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 131,
+       "edge": true
+      },
+      {
+       "y": 73,
+       "rel": 0.6,
+       "H": 131,
+       "edge": false
+      },
+      {
+       "y": 127,
+       "rel": 0.91,
+       "H": 131,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000919": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 109,
+       "edge": true
+      },
+      {
+       "y": 53,
+       "rel": 0.58,
+       "H": 109,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000921": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 120,
+       "edge": true
+      },
+      {
+       "y": 71,
+       "rel": 0.71,
+       "H": 120,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000925": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 96,
+       "edge": true
+      },
+      {
+       "y": 56,
+       "rel": 0.77,
+       "H": 96,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.35819543082484234,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.5819543082484233
+    }
+   }
+  ],
+  "AMIDDA/test/000928": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 63,
+       "rel": 0.63,
+       "H": 106,
+       "edge": false
+      },
+      {
+       "y": 102,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000936": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [56, 122] of 214)",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.81,
+       "H": 214,
+       "edge": false
+      },
+      {
+       "y": 122,
+       "rel": 1.0,
+       "H": 214,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/000966": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 62,
+       "rel": 0.98,
+       "H": 130,
+       "edge": false
+      },
+      {
+       "y": 126,
+       "rel": 1.0,
+       "H": 130,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4124260513330854,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.124260513330854
+    }
+   }
+  ],
+  "AMIDDA/test/001080": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [56, 129] of 226)",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.69,
+       "H": 226,
+       "edge": false
+      },
+      {
+       "y": 129,
+       "rel": 1.0,
+       "H": 226,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001084": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3764866539914296,
+    "detail": "z=+3.8: GT too long for the image",
+    "extra": {
+     "z": 3.764866539914296
+    }
+   }
+  ],
+  "AMIDDA/test/001087": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 61,
+       "rel": 1.0,
+       "H": 133,
+       "edge": false
+      },
+      {
+       "y": 121,
+       "rel": 0.67,
+       "H": 133,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001088": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 134] of 274)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.56,
+       "H": 274,
+       "edge": false
+      },
+      {
+       "y": 134,
+       "rel": 1.0,
+       "H": 274,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001091": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 118,
+       "edge": false
+      },
+      {
+       "y": 112,
+       "rel": 0.71,
+       "H": 118,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001133": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [50, 78] of 117)",
+    "extra": {
+     "bands": [
+      {
+       "y": 50,
+       "rel": 0.62,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 78,
+       "rel": 1.0,
+       "H": 117,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001164": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [13, 39] of 72)",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 72,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 0.81,
+       "H": 72,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001172": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      },
+      {
+       "y": 30,
+       "rel": 0.99,
+       "H": 53,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001180": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.83,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3661976783361129,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.661976783361129
+    }
+   }
+  ],
+  "AMIDDA/test/001222": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 119,
+       "edge": true
+      },
+      {
+       "y": 72,
+       "rel": 0.83,
+       "H": 119,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3572834557496608,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.572834557496608
+    }
+   }
+  ],
+  "AMIDDA/test/001223": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 89,
+       "rel": 0.57,
+       "H": 145,
+       "edge": false
+      },
+      {
+       "y": 140,
+       "rel": 1.0,
+       "H": 145,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001224": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 142,
+       "edge": true
+      },
+      {
+       "y": 90,
+       "rel": 0.55,
+       "H": 142,
+       "edge": false
+      },
+      {
+       "y": 137,
+       "rel": 0.95,
+       "H": 142,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001225": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [109, 162] of 187)",
+    "extra": {
+     "bands": [
+      {
+       "y": 109,
+       "rel": 0.61,
+       "H": 187,
+       "edge": false
+      },
+      {
+       "y": 162,
+       "rel": 1.0,
+       "H": 187,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001226": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 160,
+       "edge": true
+      },
+      {
+       "y": 86,
+       "rel": 0.71,
+       "H": 160,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001228": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 75,
+       "rel": 0.78,
+       "H": 146,
+       "edge": false
+      },
+      {
+       "y": 137,
+       "rel": 1.0,
+       "H": 146,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001229": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 112,
+       "edge": true
+      },
+      {
+       "y": 66,
+       "rel": 0.83,
+       "H": 112,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001231": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 67,
+       "rel": 0.6,
+       "H": 140,
+       "edge": false
+      },
+      {
+       "y": 135,
+       "rel": 1.0,
+       "H": 140,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001232": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [102, 175] of 203)",
+    "extra": {
+     "bands": [
+      {
+       "y": 102,
+       "rel": 0.49,
+       "H": 203,
+       "edge": false
+      },
+      {
+       "y": 175,
+       "rel": 1.0,
+       "H": 203,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001242": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 117,
+       "edge": true
+      },
+      {
+       "y": 62,
+       "rel": 0.66,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 113,
+       "rel": 0.93,
+       "H": 117,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.367658110055756,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.6765811005575597
+    }
+   }
+  ],
+  "AMIDDA/test/001245": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [91, 142] of 163)",
+    "extra": {
+     "bands": [
+      {
+       "y": 91,
+       "rel": 0.66,
+       "H": 163,
+       "edge": false
+      },
+      {
+       "y": 142,
+       "rel": 1.0,
+       "H": 163,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001248": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 65,
+       "rel": 0.86,
+       "H": 128,
+       "edge": false
+      },
+      {
+       "y": 124,
+       "rel": 1.0,
+       "H": 128,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3984189023496688,
+    "detail": "z=-4.0: GT too short for the image",
+    "extra": {
+     "z": -3.984189023496688
+    }
+   }
+  ],
+  "AMIDDA/test/001258": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 111,
+       "rel": 0.59,
+       "H": 179,
+       "edge": false
+      },
+      {
+       "y": 173,
+       "rel": 1.0,
+       "H": 179,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001262": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 68,
+       "rel": 0.8,
+       "H": 117,
+       "edge": false
+      },
+      {
+       "y": 113,
+       "rel": 1.0,
+       "H": 117,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001263": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 129,
+       "edge": true
+      },
+      {
+       "y": 63,
+       "rel": 0.91,
+       "H": 129,
+       "edge": false
+      },
+      {
+       "y": 125,
+       "rel": 0.75,
+       "H": 129,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001264": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 141,
+       "edge": true
+      },
+      {
+       "y": 74,
+       "rel": 0.63,
+       "H": 141,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001265": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 182,
+       "edge": true
+      },
+      {
+       "y": 96,
+       "rel": 0.53,
+       "H": 182,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001267": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [94, 154] of 176)",
+    "extra": {
+     "bands": [
+      {
+       "y": 94,
+       "rel": 0.46,
+       "H": 176,
+       "edge": false
+      },
+      {
+       "y": 154,
+       "rel": 1.0,
+       "H": 176,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001273": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 102,
+       "edge": true
+      },
+      {
+       "y": 50,
+       "rel": 0.71,
+       "H": 102,
+       "edge": false
+      },
+      {
+       "y": 99,
+       "rel": 0.68,
+       "H": 102,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001313": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.86,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001319": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      },
+      {
+       "y": 33,
+       "rel": 0.8,
+       "H": 59,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3526951985329817,
+    "detail": "z=-3.5: GT too short for the image",
+    "extra": {
+     "z": -3.526951985329817
+    }
+   }
+  ],
+  "AMIDDA/test/001328": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.77,
+       "H": 42,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001336": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      },
+      {
+       "y": 77,
+       "rel": 0.66,
+       "H": 106,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.575274928051886,
+    "detail": "z=-5.8: GT too short for the image",
+    "extra": {
+     "z": -5.752749280518859
+    }
+   }
+  ],
+  "AMIDDA/test/001344": [
+   {
+    "check": "length_mismatch",
+    "score": 0.39152901061946865,
+    "detail": "z=+3.9: GT too long for the image",
+    "extra": {
+     "z": 3.9152901061946865
+    }
+   }
+  ],
+  "AMIDDA/test/001355": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.55,
+       "H": 100,
+       "edge": false
+      },
+      {
+       "y": 97,
+       "rel": 1.0,
+       "H": 100,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3992130394578729,
+    "detail": "z=-4.0: GT too short for the image",
+    "extra": {
+     "z": -3.992130394578729
+    }
+   }
+  ],
+  "AMIDDA/test/001366": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 126,
+       "rel": 1.0,
+       "H": 130,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001367": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 109,
+       "rel": 1.0,
+       "H": 113,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.416891284494289,
+    "detail": "z=-4.2: GT too short for the image",
+    "extra": {
+     "z": -4.1689128449428905
+    }
+   }
+  ],
+  "AMIDDA/test/001398": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 73,
+       "rel": 0.45,
+       "H": 135,
+       "edge": false
+      },
+      {
+       "y": 130,
+       "rel": 1.0,
+       "H": 135,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001399": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 97,
+       "edge": true
+      },
+      {
+       "y": 61,
+       "rel": 0.53,
+       "H": 97,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5250221581520176,
+    "detail": "z=-5.3: GT too short for the image",
+    "extra": {
+     "z": -5.250221581520176
+    }
+   }
+  ],
+  "AMIDDA/test/001409": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 92,
+       "edge": true
+      },
+      {
+       "y": 60,
+       "rel": 0.85,
+       "H": 92,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4589508144773241,
+    "detail": "z=-4.6: GT too short for the image",
+    "extra": {
+     "z": -4.589508144773241
+    }
+   }
+  ],
+  "AMIDDA/test/001413": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 115,
+       "rel": 1.0,
+       "H": 119,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001414": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 88,
+       "edge": true
+      },
+      {
+       "y": 54,
+       "rel": 0.92,
+       "H": 88,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.6429238226798739,
+    "detail": "z=-6.4: GT too short for the image",
+    "extra": {
+     "z": -6.42923822679874
+    }
+   }
+  ],
+  "AMIDDA/test/001417": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 66,
+       "rel": 0.81,
+       "H": 90,
+       "edge": false
+      },
+      {
+       "y": 87,
+       "rel": 1.0,
+       "H": 90,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.548957517515155,
+    "detail": "z=-5.5: GT too short for the image",
+    "extra": {
+     "z": -5.48957517515155
+    }
+   }
+  ],
+  "AMIDDA/test/001419": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 112,
+       "edge": true
+      },
+      {
+       "y": 108,
+       "rel": 0.87,
+       "H": 112,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5184533684290102,
+    "detail": "z=-5.2: GT too short for the image",
+    "extra": {
+     "z": -5.184533684290102
+    }
+   }
+  ],
+  "AMIDDA/test/001435": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.58,
+       "H": 109,
+       "edge": false
+      },
+      {
+       "y": 105,
+       "rel": 1.0,
+       "H": 109,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001441": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 119,
+       "edge": true
+      },
+      {
+       "y": 115,
+       "rel": 0.97,
+       "H": 119,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001442": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 84,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001443": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 89,
+       "edge": true
+      },
+      {
+       "y": 61,
+       "rel": 0.46,
+       "H": 89,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.6118639391566935,
+    "detail": "z=-6.1: GT too short for the image",
+    "extra": {
+     "z": -6.118639391566934
+    }
+   }
+  ],
+  "AMIDDA/test/001450": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 116,
+       "edge": true
+      },
+      {
+       "y": 66,
+       "rel": 0.51,
+       "H": 116,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001461": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.6,
+       "H": 113,
+       "edge": false
+      },
+      {
+       "y": 109,
+       "rel": 1.0,
+       "H": 113,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.37079355015167326,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.7079355015167326
+    }
+   }
+  ],
+  "AMIDDA/test/001462": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 112,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001467": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 92,
+       "edge": true
+      },
+      {
+       "y": 57,
+       "rel": 0.97,
+       "H": 92,
+       "edge": false
+      },
+      {
+       "y": 89,
+       "rel": 0.89,
+       "H": 92,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5112131428959502,
+    "detail": "z=-5.1: GT too short for the image",
+    "extra": {
+     "z": -5.112131428959502
+    }
+   }
+  ],
+  "AMIDDA/test/001469": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 109,
+       "rel": 1.0,
+       "H": 113,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001472": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      },
+      {
+       "y": 72,
+       "rel": 0.5,
+       "H": 106,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.48918451852572115,
+    "detail": "z=-4.9: GT too short for the image",
+    "extra": {
+     "z": -4.891845185257211
+    }
+   }
+  ],
+  "AMIDDA/test/001478": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 118,
+       "edge": true
+      },
+      {
+       "y": 114,
+       "rel": 0.96,
+       "H": 118,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001479": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 129,
+       "rel": 1.0,
+       "H": 133,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001480": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 141,
+       "rel": 1.0,
+       "H": 146,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001483": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [94, 148] of 178)",
+    "extra": {
+     "bands": [
+      {
+       "y": 94,
+       "rel": 0.49,
+       "H": 178,
+       "edge": false
+      },
+      {
+       "y": 148,
+       "rel": 1.0,
+       "H": 178,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001485": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 146,
+       "rel": 1.0,
+       "H": 151,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001489": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 116,
+       "rel": 1.0,
+       "H": 120,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "AMIDDA/test/001490": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 121,
+       "edge": true
+      },
+      {
+       "y": 117,
+       "rel": 0.97,
+       "H": 121,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "AMIDDA",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

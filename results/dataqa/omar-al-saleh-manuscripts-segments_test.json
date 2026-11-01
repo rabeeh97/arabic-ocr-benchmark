@@ -1,0 +1,3421 @@
+{
+ "n": 2095,
+ "n_read": 0,
+ "counts": {
+  "duplicate_gt": 10,
+  "length_mismatch": 45,
+  "multi_line": 31,
+  "neighbour_clip": 66,
+  "off_script": 68
+ },
+ "any": 201,
+ "flags": {
+  "omar-al-saleh-manuscripts-segments/test/000004": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 36,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000005": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000013": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000052": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 37,
+       "edge": true
+      },
+      {
+       "y": 23,
+       "rel": 0.45,
+       "H": 37,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000067": [
+   {
+    "check": "length_mismatch",
+    "score": 0.49026250237976515,
+    "detail": "z=-4.9: GT too short for the image",
+    "extra": {
+     "z": -4.902625023797651
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000068": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [2, 29, 50] of 65)",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.63,
+       "H": 65,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 1.0,
+       "H": 65,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 0.53,
+       "H": 65,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000070": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [26, 68, 92] of 101)",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.5,
+       "H": 101,
+       "edge": false
+      },
+      {
+       "y": 68,
+       "rel": 1.0,
+       "H": 101,
+       "edge": false
+      },
+      {
+       "y": 92,
+       "rel": 0.79,
+       "H": 101,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000076": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000077": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 39] of 53)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 0.85,
+       "H": 53,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4198792095517917,
+    "detail": "z=-4.2: GT too short for the image",
+    "extra": {
+     "z": -4.198792095517917
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000087": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000095": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000098": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000123": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000124": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.63,
+       "H": 63,
+       "edge": true
+      },
+      {
+       "y": 40,
+       "rel": 1.0,
+       "H": 63,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000138": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [16, 44] of 69)",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 0.76,
+       "H": 69,
+       "edge": false
+      },
+      {
+       "y": 44,
+       "rel": 1.0,
+       "H": 69,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000185": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000228": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000230": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 26] of 33)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 33,
+       "edge": false
+      },
+      {
+       "y": 26,
+       "rel": 0.65,
+       "H": 33,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000239": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000240": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000252": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000268": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000285": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000301": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.73,
+       "H": 46,
+       "edge": false
+      },
+      {
+       "y": 43,
+       "rel": 1.0,
+       "H": 46,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000303": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 0.95,
+       "H": 46,
+       "edge": false
+      },
+      {
+       "y": 43,
+       "rel": 1.0,
+       "H": 46,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000315": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3615119919588981,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.615119919588981
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000323": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000328": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000338": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000344": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000347": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000354": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 30] of 51)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 0.84,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 51,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000356": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4148297640293254,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.148297640293254
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000369": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000371": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000383": [
+   {
+    "check": "length_mismatch",
+    "score": 1.0,
+    "detail": "z=+11.2: GT too long for the image",
+    "extra": {
+     "z": 11.195596223416496
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000404": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.99,
+       "H": 80,
+       "edge": true
+      },
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 80,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000420": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5944089954363541,
+    "detail": "z=-5.9: GT too short for the image",
+    "extra": {
+     "z": -5.944089954363541
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000424": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.94,
+       "H": 65,
+       "edge": false
+      },
+      {
+       "y": 63,
+       "rel": 1.0,
+       "H": 65,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000457": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 63,
+       "edge": true
+      },
+      {
+       "y": 42,
+       "rel": 0.58,
+       "H": 63,
+       "edge": false
+      },
+      {
+       "y": 61,
+       "rel": 1.0,
+       "H": 63,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000462": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3761194972082634,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.7611949720826336
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000469": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 46,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.58,
+       "H": 46,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000524": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000550": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.63,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3915853264871546,
+    "detail": "z=-3.9: GT too short for the image",
+    "extra": {
+     "z": -3.915853264871546
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000557": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4164109454484124,
+    "detail": "z=+4.2: GT too long for the image",
+    "extra": {
+     "z": 4.164109454484124
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000574": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000586": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000616": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      },
+      {
+       "y": 34,
+       "rel": 0.61,
+       "H": 58,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000630": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 81,
+       "edge": true
+      },
+      {
+       "y": 35,
+       "rel": 0.79,
+       "H": 81,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000634": [
+   {
+    "check": "length_mismatch",
+    "score": 0.36255380261197845,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.6255380261197847
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000652": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000654": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000676": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 59,
+       "edge": true
+      },
+      {
+       "y": 34,
+       "rel": 0.72,
+       "H": 59,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3744086237677898,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.744086237677898
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000680": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3621895257217259,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.621895257217259
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000724": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000731": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000736": [
+   {
+    "check": "length_mismatch",
+    "score": 0.39386086676927606,
+    "detail": "z=-3.9: GT too short for the image",
+    "extra": {
+     "z": -3.9386086676927605
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000751": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [23, 32] of 53)",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 0.98,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 53,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000778": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000782": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000791": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 0.56,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 35,
+       "rel": 0.75,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 44,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000799": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000800": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 33,
+       "rel": 0.96,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 51,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000802": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 39,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000821": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [21, 63, 87] of 95)",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 0.52,
+       "H": 95,
+       "edge": false
+      },
+      {
+       "y": 63,
+       "rel": 1.0,
+       "H": 95,
+       "edge": false
+      },
+      {
+       "y": 87,
+       "rel": 0.8,
+       "H": 95,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000832": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 0.64,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 44,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000835": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000841": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 90,
+       "edge": false
+      },
+      {
+       "y": 82,
+       "rel": 0.8,
+       "H": 90,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000845": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000846": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000860": [
+   {
+    "check": "length_mismatch",
+    "score": 0.37077721225198335,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.7077721225198332
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000863": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4464057203609177,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.464057203609177
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000868": [
+   {
+    "check": "length_mismatch",
+    "score": 0.46080371722449776,
+    "detail": "z=-4.6: GT too short for the image",
+    "extra": {
+     "z": -4.608037172244978
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000871": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 0.61,
+       "H": 34,
+       "edge": false
+      },
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 34,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000877": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 36,
+       "rel": 0.66,
+       "H": 63,
+       "edge": false
+      },
+      {
+       "y": 61,
+       "rel": 1.0,
+       "H": 63,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5009711959885588,
+    "detail": "z=-5.0: GT too short for the image",
+    "extra": {
+     "z": -5.009711959885588
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000884": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000894": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [13, 57] of 82)",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 82,
+       "edge": false
+      },
+      {
+       "y": 57,
+       "rel": 0.79,
+       "H": 82,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000914": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000941": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [11, 56] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 11,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 0.88,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.35585328291792206,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.558532829179221
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000966": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 82,
+       "edge": true
+      },
+      {
+       "y": 60,
+       "rel": 0.89,
+       "H": 82,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.591514577915387,
+    "detail": "z=-5.9: GT too short for the image",
+    "extra": {
+     "z": -5.915145779153869
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000982": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [16, 45] of 66)",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 0.95,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3601968539663706,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.6019685396637056
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000985": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 37,
+       "rel": 0.62,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.6088051367108618,
+    "detail": "z=-6.1: GT too short for the image",
+    "extra": {
+     "z": -6.088051367108617
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000987": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      },
+      {
+       "y": 30,
+       "rel": 0.87,
+       "H": 52,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/000999": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001012": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [1, 18, 33, 56] of 58)",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 0.84,
+       "H": 58,
+       "edge": true
+      },
+      {
+       "y": 18,
+       "rel": 0.56,
+       "H": 58,
+       "edge": false
+      },
+      {
+       "y": 33,
+       "rel": 0.98,
+       "H": 58,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 58,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001020": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001024": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001046": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001050": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [22, 41] of 54)",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 0.88,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 54,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001060": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001061": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001074": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001078": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001085": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001097": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 31,
+       "rel": 0.75,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.7,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001101": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 0.64,
+       "H": 46,
+       "edge": true
+      },
+      {
+       "y": 24,
+       "rel": 1.0,
+       "H": 46,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001112": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001119": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 29] of 43)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 43,
+       "edge": false
+      },
+      {
+       "y": 29,
+       "rel": 0.91,
+       "H": 43,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001132": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001578"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001172": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.97,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 1.0,
+       "H": 68,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.42551419271875607,
+    "detail": "z=-4.3: GT too short for the image",
+    "extra": {
+     "z": -4.255141927187561
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001186": [
+   {
+    "check": "length_mismatch",
+    "score": 0.35118642293367397,
+    "detail": "z=-3.5: GT too short for the image",
+    "extra": {
+     "z": -3.51186422933674
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001187": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.99,
+       "H": 64,
+       "edge": true
+      },
+      {
+       "y": 42,
+       "rel": 1.0,
+       "H": 64,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001196": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001205": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.78,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001206": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.78,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 51,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001210": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001221": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 24,
+       "rel": 0.63,
+       "H": 51,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001228": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 70,
+       "edge": true
+      },
+      {
+       "y": 39,
+       "rel": 0.94,
+       "H": 70,
+       "edge": false
+      },
+      {
+       "y": 68,
+       "rel": 1.0,
+       "H": 70,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001243": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001251": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001255": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001258": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001269": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 37,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001274": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [16, 59] of 73)",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 73,
+       "edge": false
+      },
+      {
+       "y": 59,
+       "rel": 0.57,
+       "H": 73,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001287": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 0.66,
+       "H": 44,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 1.0,
+       "H": 44,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001295": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [2, 14, 50] of 74)",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.92,
+       "H": 74,
+       "edge": true
+      },
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 74,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 0.87,
+       "H": 74,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001311": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 41,
+       "edge": true
+      },
+      {
+       "y": 24,
+       "rel": 0.47,
+       "H": 41,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001313": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 37,
+       "rel": 1.0,
+       "H": 69,
+       "edge": false
+      },
+      {
+       "y": 65,
+       "rel": 0.51,
+       "H": 69,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001318": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [18, 52, 70] of 73)",
+    "extra": {
+     "bands": [
+      {
+       "y": 18,
+       "rel": 1.0,
+       "H": 73,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 0.51,
+       "H": 73,
+       "edge": false
+      },
+      {
+       "y": 70,
+       "rel": 0.9,
+       "H": 73,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001327": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [20, 62] of 82)",
+    "extra": {
+     "bands": [
+      {
+       "y": 20,
+       "rel": 1.0,
+       "H": 82,
+       "edge": false
+      },
+      {
+       "y": 62,
+       "rel": 0.65,
+       "H": 82,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.39943625268357036,
+    "detail": "z=-4.0: GT too short for the image",
+    "extra": {
+     "z": -3.9943625268357037
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001350": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.68,
+       "H": 86,
+       "edge": true
+      },
+      {
+       "y": 49,
+       "rel": 1.0,
+       "H": 86,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001354": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 43,
+       "rel": 1.0,
+       "H": 46,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001355": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.48,
+       "H": 42,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001356": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [14, 52] of 73)",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 73,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 0.52,
+       "H": 73,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001360": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 34,
+       "rel": 0.53,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 51,
+       "rel": 1.0,
+       "H": 53,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4533005840597072,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.533005840597072
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001374": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 0.73,
+       "H": 67,
+       "edge": true
+      },
+      {
+       "y": 46,
+       "rel": 1.0,
+       "H": 67,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001379": [
+   {
+    "check": "length_mismatch",
+    "score": 0.36447918820192726,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.644791882019273
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001396": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [15, 58] of 77)",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 1.0,
+       "H": 77,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.78,
+       "H": 77,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001399": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [13, 58] of 69)",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 69,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.6,
+       "H": 69,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001410": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      },
+      {
+       "y": 19,
+       "rel": 0.51,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 0.71,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4533005840597072,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.533005840597072
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001415": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4893264236613949,
+    "detail": "z=-4.9: GT too short for the image",
+    "extra": {
+     "z": -4.893264236613949
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001426": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001435": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 0.46,
+       "H": 49,
+       "edge": true
+      },
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 49,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5341034932750305,
+    "detail": "z=-5.3: GT too short for the image",
+    "extra": {
+     "z": -5.341034932750305
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001436": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      },
+      {
+       "y": 32,
+       "rel": 0.51,
+       "H": 52,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001442": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 62,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 0.97,
+       "H": 62,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001446": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4107364514593964,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.107364514593964
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001450": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      },
+      {
+       "y": 23,
+       "rel": 0.46,
+       "H": 42,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001451": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001455": [
+   {
+    "check": "length_mismatch",
+    "score": 0.40659411601711215,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.065941160171121
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001458": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001471": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5040079220387188,
+    "detail": "z=-5.0: GT too short for the image",
+    "extra": {
+     "z": -5.040079220387188
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001473": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001487": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001516": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 0.6,
+       "H": 55,
+       "edge": false
+      },
+      {
+       "y": 53,
+       "rel": 1.0,
+       "H": 55,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001526": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 45,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001531": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001532": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001598"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001542": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001546": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001554": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 0.55,
+       "H": 42,
+       "edge": false
+      },
+      {
+       "y": 40,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001561": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001569"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001563": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001571"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001569": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001561"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001571": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001563"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001578": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001132"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001589": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3668954605641312,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.668954605641312
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001590": [
+   {
+    "check": "length_mismatch",
+    "score": 0.6884656669779183,
+    "detail": "z=-6.9: GT too short for the image",
+    "extra": {
+     "z": -6.884656669779184
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001592": [
+   {
+    "check": "length_mismatch",
+    "score": 0.597165032929341,
+    "detail": "z=-6.0: GT too short for the image",
+    "extra": {
+     "z": -5.97165032929341
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001596": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [30, 42] of 57)",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 42,
+       "rel": 0.56,
+       "H": 57,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.41381096837278164,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.138109683727817
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001598": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001532"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001600": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001625": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [54, 73] of 97)",
+    "extra": {
+     "bands": [
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 97,
+       "edge": false
+      },
+      {
+       "y": 73,
+       "rel": 0.56,
+       "H": 97,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001633": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.82,
+       "H": 54,
+       "edge": false
+      },
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 54,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001653": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [12, 55] of 92)",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 0.61,
+       "H": 92,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 92,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001657": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 36,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001670": [
+   {
+    "check": "length_mismatch",
+    "score": 0.37481674284207134,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.748167428420713
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001673": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 50,
+       "edge": true
+      },
+      {
+       "y": 22,
+       "rel": 0.97,
+       "H": 50,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001684": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [22, 65] of 93)",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 1.0,
+       "H": 93,
+       "edge": false
+      },
+      {
+       "y": 65,
+       "rel": 0.82,
+       "H": 93,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001697": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 42,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001704": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 87,
+       "rel": 1.0,
+       "H": 90,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001705": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [55, 74] of 96)",
+    "extra": {
+     "bands": [
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 96,
+       "edge": false
+      },
+      {
+       "y": 74,
+       "rel": 0.57,
+       "H": 96,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001742": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 91,
+       "rel": 1.0,
+       "H": 94,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001750": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 99,
+       "rel": 1.0,
+       "H": 104,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001754"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001754": [
+   {
+    "check": "length_mismatch",
+    "score": 0.37505385740901465,
+    "detail": "z=+3.8: GT too long for the image",
+    "extra": {
+     "z": 3.7505385740901467
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "omar-al-saleh-manuscripts-segments/test/001750"
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001766": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 61,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.6,
+       "H": 61,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 0.75,
+       "H": 61,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001785": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001787": [
+   {
+    "check": "length_mismatch",
+    "score": 0.7591292901267812,
+    "detail": "z=-7.6: GT too short for the image",
+    "extra": {
+     "z": -7.591292901267812
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001788": [
+   {
+    "check": "length_mismatch",
+    "score": 0.35420115967232124,
+    "detail": "z=-3.5: GT too short for the image",
+    "extra": {
+     "z": -3.542011596723212
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001801": [
+   {
+    "check": "length_mismatch",
+    "score": 0.8171413842586253,
+    "detail": "z=-8.2: GT too short for the image",
+    "extra": {
+     "z": -8.171413842586253
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001851": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.59,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3884138112762229,
+    "detail": "z=-3.9: GT too short for the image",
+    "extra": {
+     "z": -3.884138112762229
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001861": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001869": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 0.58,
+       "H": 103,
+       "edge": true
+      },
+      {
+       "y": 72,
+       "rel": 1.0,
+       "H": 103,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001870": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001871": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001908": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [20, 27] of 39)",
+    "extra": {
+     "bands": [
+      {
+       "y": 20,
+       "rel": 1.0,
+       "H": 39,
+       "edge": false
+      },
+      {
+       "y": 27,
+       "rel": 0.56,
+       "H": 39,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001921": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001931": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001934": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 36,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001938": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001950": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001961": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001962": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [26, 43] of 70)",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.53,
+       "H": 70,
+       "edge": false
+      },
+      {
+       "y": 43,
+       "rel": 1.0,
+       "H": 70,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001963": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001965": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [24, 42] of 53)",
+    "extra": {
+     "bands": [
+      {
+       "y": 24,
+       "rel": 0.76,
+       "H": 53,
+       "edge": false
+      },
+      {
+       "y": 42,
+       "rel": 1.0,
+       "H": 53,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001970": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 0.66,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 44,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001972": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 24] of 33)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 33,
+       "edge": false
+      },
+      {
+       "y": 24,
+       "rel": 0.51,
+       "H": 33,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001974": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [15, 34] of 52)",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 1.0,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 34,
+       "rel": 0.76,
+       "H": 52,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/001977": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 57,
+       "edge": true
+      },
+      {
+       "y": 19,
+       "rel": 0.7,
+       "H": 57,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 0.82,
+       "H": 57,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/002011": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3985796422136663,
+    "detail": "z=-4.0: GT too short for the image",
+    "extra": {
+     "z": -3.985796422136663
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/002067": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3686438090651353,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.686438090651353
+    }
+   }
+  ],
+  "omar-al-saleh-manuscripts-segments/test/002077": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5980645935802833,
+    "detail": "z=-6.0: GT too short for the image",
+    "extra": {
+     "z": -5.9806459358028325
+    }
+   }
+  ]
+ },
+ "dataset": "omar-al-saleh-manuscripts-segments",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

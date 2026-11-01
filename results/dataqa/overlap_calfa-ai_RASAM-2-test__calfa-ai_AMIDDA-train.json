@@ -1,0 +1,14 @@
+{
+ "probe": "calfa-ai/RASAM-2:test",
+ "against": [
+  "calfa-ai/AMIDDA:train"
+ ],
+ "probe_lines": 372,
+ "eligible_ge20": 336,
+ "shared_gt": 1,
+ "shared_frac": 0.003,
+ "short_shared_excluded": 3,
+ "indices": [
+  317
+ ]
+}

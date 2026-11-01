@@ -1,0 +1,35 @@
+{
+ "probe": "aamijar/muharaf-public:test",
+ "against": [
+  "aamijar/muharaf-public:train",
+  "aamijar/muharaf-public:validation"
+ ],
+ "probe_lines": 1334,
+ "eligible_ge20": 1074,
+ "shared_gt": 21,
+ "shared_frac": 0.0196,
+ "short_shared_excluded": 81,
+ "indices": [
+  167,
+  185,
+  188,
+  228,
+  545,
+  570,
+  581,
+  774,
+  809,
+  862,
+  979,
+  980,
+  1120,
+  1121,
+  1123,
+  1124,
+  1140,
+  1142,
+  1219,
+  1232,
+  1233
+ ]
+}

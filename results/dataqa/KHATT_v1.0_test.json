@@ -1,0 +1,6110 @@
+{
+ "n": 1038,
+ "n_read": 0,
+ "counts": {
+  "blank": 4,
+  "duplicate_gt": 319,
+  "length_mismatch": 22,
+  "neighbour_clip": 76,
+  "vertical": 3
+ },
+ "any": 395,
+ "flags": {
+  "KHATT_v1.0/test/000001": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576",
+      "KHATT_v1.0/test/000657"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000008": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148",
+      "KHATT_v1.0/test/000152"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000010": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000448"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000012": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183",
+      "KHATT_v1.0/test/000197"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000013": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000015": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000626",
+      "KHATT_v1.0/test/000818",
+      "KHATT_v1.0/test/001012"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000022": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000518",
+      "KHATT_v1.0/test/000772"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000023": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000024": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000366"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000028": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000031": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000034": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000035": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000091",
+      "KHATT_v1.0/test/000270",
+      "KHATT_v1.0/test/000877",
+      "KHATT_v1.0/test/000942"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000036": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241",
+      "KHATT_v1.0/test/000261"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000039": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183",
+      "KHATT_v1.0/test/000197"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000040": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241",
+      "KHATT_v1.0/test/000261"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000042": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000056"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000048": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000774",
+      "KHATT_v1.0/test/000990"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000051": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576",
+      "KHATT_v1.0/test/000657"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000053": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000216"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000054": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000247",
+      "KHATT_v1.0/test/000343",
+      "KHATT_v1.0/test/000704",
+      "KHATT_v1.0/test/000899"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000055": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148",
+      "KHATT_v1.0/test/000152"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000056": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000042"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000057": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000989"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000061": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000812"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000064": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000067": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000227",
+      "KHATT_v1.0/test/000451",
+      "KHATT_v1.0/test/000572"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000070": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000462"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000072": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000377",
+      "KHATT_v1.0/test/000482"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000075": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183",
+      "KHATT_v1.0/test/000197"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000076": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000467"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000077": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000988",
+      "KHATT_v1.0/test/001005"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000080": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000211",
+      "KHATT_v1.0/test/000501",
+      "KHATT_v1.0/test/000503",
+      "KHATT_v1.0/test/000993"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000086": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000168",
+      "KHATT_v1.0/test/000471"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000091": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000035",
+      "KHATT_v1.0/test/000270",
+      "KHATT_v1.0/test/000877",
+      "KHATT_v1.0/test/000942"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000092": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241",
+      "KHATT_v1.0/test/000261"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000098": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576",
+      "KHATT_v1.0/test/000657"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000100": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 258,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000102": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000183",
+      "KHATT_v1.0/test/000197"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000104": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000506"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000105": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000107": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000402",
+      "KHATT_v1.0/test/000681"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000108": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000476",
+      "KHATT_v1.0/test/000708",
+      "KHATT_v1.0/test/000962"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000109": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000580"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000111": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000576",
+      "KHATT_v1.0/test/000657"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000113": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148",
+      "KHATT_v1.0/test/000152"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000119": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000120",
+      "KHATT_v1.0/test/000659",
+      "KHATT_v1.0/test/000924"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000120": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000119",
+      "KHATT_v1.0/test/000659",
+      "KHATT_v1.0/test/000924"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000122": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000123": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000349"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000127": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 18,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000132": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000362",
+      "KHATT_v1.0/test/000630"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000133": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000148",
+      "KHATT_v1.0/test/000152"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000135": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 18,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000143": [
+   {
+    "check": "blank",
+    "score": 1.0,
+    "detail": "ink 0.23% of pixels",
+    "extra": {}
+   }
+  ],
+  "KHATT_v1.0/test/000145": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000254",
+      "KHATT_v1.0/test/000279",
+      "KHATT_v1.0/test/000522",
+      "KHATT_v1.0/test/000614",
+      "KHATT_v1.0/test/000706"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000148": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000152"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000152": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000154": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4367073773175627,
+    "detail": "z=-4.4: GT too short for the image",
+    "extra": {
+     "z": -4.367073773175627
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000156": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000263",
+      "KHATT_v1.0/test/000480"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000158": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000274"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000164": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000178",
+      "KHATT_v1.0/test/000372",
+      "KHATT_v1.0/test/000745"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000166": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000787"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000167": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 20,
+       "rel": 1.0,
+       "H": 256,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000168": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000086",
+      "KHATT_v1.0/test/000471"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000169": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000241",
+      "KHATT_v1.0/test/000261"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000178": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000164",
+      "KHATT_v1.0/test/000372",
+      "KHATT_v1.0/test/000745"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000180": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000627"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000183": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000197"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000184": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 261,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000191",
+      "KHATT_v1.0/test/000292",
+      "KHATT_v1.0/test/000347",
+      "KHATT_v1.0/test/000740"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000185": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000434"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000186": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000187": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000188": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000920"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000190": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000242"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000191": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000184",
+      "KHATT_v1.0/test/000292",
+      "KHATT_v1.0/test/000347",
+      "KHATT_v1.0/test/000740"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000192": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000555",
+      "KHATT_v1.0/test/000785"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000197": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000203": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000422",
+      "KHATT_v1.0/test/000602",
+      "KHATT_v1.0/test/000974"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000204": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000788",
+      "KHATT_v1.0/test/000817"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000208": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346",
+      "KHATT_v1.0/test/000374"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000211": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000080",
+      "KHATT_v1.0/test/000501",
+      "KHATT_v1.0/test/000503",
+      "KHATT_v1.0/test/000993"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000213": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000339"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000216": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000053"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000217": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000664",
+      "KHATT_v1.0/test/000751"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000220": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000664",
+      "KHATT_v1.0/test/000751"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000223": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3818690373289168,
+    "detail": "z=+3.8: GT too long for the image",
+    "extra": {
+     "z": 3.818690373289168
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000225": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000293",
+      "KHATT_v1.0/test/000474",
+      "KHATT_v1.0/test/000508",
+      "KHATT_v1.0/test/000549",
+      "KHATT_v1.0/test/000700"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000226": [
+   {
+    "check": "length_mismatch",
+    "score": 0.7184640371125297,
+    "detail": "z=-7.2: GT too short for the image",
+    "extra": {
+     "z": -7.1846403711252975
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000227": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000067",
+      "KHATT_v1.0/test/000451",
+      "KHATT_v1.0/test/000572"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000232": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000234": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 22,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000239": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000325"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000241": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000261"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000242": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000190"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000244": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000435"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000246": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000275",
+      "KHATT_v1.0/test/000563"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000247": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000054",
+      "KHATT_v1.0/test/000343",
+      "KHATT_v1.0/test/000704",
+      "KHATT_v1.0/test/000899"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000253": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000254": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000145",
+      "KHATT_v1.0/test/000279",
+      "KHATT_v1.0/test/000522",
+      "KHATT_v1.0/test/000614",
+      "KHATT_v1.0/test/000706"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000259": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3753418338515631,
+    "detail": "z=+3.8: GT too long for the image",
+    "extra": {
+     "z": 3.753418338515631
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000261": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000262": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000263": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000156",
+      "KHATT_v1.0/test/000480"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000270": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000035",
+      "KHATT_v1.0/test/000091",
+      "KHATT_v1.0/test/000877",
+      "KHATT_v1.0/test/000942"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000271": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000274": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000158"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000275": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000246",
+      "KHATT_v1.0/test/000563"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000278": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000699"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000279": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000145",
+      "KHATT_v1.0/test/000254",
+      "KHATT_v1.0/test/000522",
+      "KHATT_v1.0/test/000614",
+      "KHATT_v1.0/test/000706"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000282": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000421",
+      "KHATT_v1.0/test/000682",
+      "KHATT_v1.0/test/000882",
+      "KHATT_v1.0/test/001033"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000283": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000287": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000291": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000966"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000292": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000184",
+      "KHATT_v1.0/test/000191",
+      "KHATT_v1.0/test/000347",
+      "KHATT_v1.0/test/000740"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000293": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000225",
+      "KHATT_v1.0/test/000474",
+      "KHATT_v1.0/test/000508",
+      "KHATT_v1.0/test/000549",
+      "KHATT_v1.0/test/000700"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000303": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000304": [
+   {
+    "check": "length_mismatch",
+    "score": 0.6162438865762206,
+    "detail": "z=-6.2: GT too short for the image",
+    "extra": {
+     "z": -6.162438865762207
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000310": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000312": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000313": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000314": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000315": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000430"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000317": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346",
+      "KHATT_v1.0/test/000374"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000318": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346",
+      "KHATT_v1.0/test/000374"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000320": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000353"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000323": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000324": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000426",
+      "KHATT_v1.0/test/000454",
+      "KHATT_v1.0/test/000574",
+      "KHATT_v1.0/test/000891"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000325": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000239"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000328": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000664",
+      "KHATT_v1.0/test/000751"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000329": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4899994019554944,
+    "detail": "z=-4.9: GT too short for the image",
+    "extra": {
+     "z": -4.899994019554944
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000330": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000870"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000334": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000664",
+      "KHATT_v1.0/test/000751"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000337": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000346",
+      "KHATT_v1.0/test/000374"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000339": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000213"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000343": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000054",
+      "KHATT_v1.0/test/000247",
+      "KHATT_v1.0/test/000704",
+      "KHATT_v1.0/test/000899"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000346": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000374"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000347": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 239,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000184",
+      "KHATT_v1.0/test/000191",
+      "KHATT_v1.0/test/000292",
+      "KHATT_v1.0/test/000740"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000348": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 258,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000349": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000123"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000353": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000320"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000355": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000845"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000358": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000773"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000362": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000132",
+      "KHATT_v1.0/test/000630"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000363": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4376643586875855,
+    "detail": "z=+4.4: GT too long for the image",
+    "extra": {
+     "z": 4.376643586875855
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000366": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000024"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000369": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000371": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000372": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000164",
+      "KHATT_v1.0/test/000178",
+      "KHATT_v1.0/test/000745"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000374": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000375": [
+   {
+    "check": "length_mismatch",
+    "score": 0.9018202514262967,
+    "detail": "z=-9.0: GT too short for the image",
+    "extra": {
+     "z": -9.018202514262967
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000377": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000072",
+      "KHATT_v1.0/test/000482"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000378": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000379": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000886",
+      "KHATT_v1.0/test/000888"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000382": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000386": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000387": [
+   {
+    "check": "vertical",
+    "score": 0.6799568965517241,
+    "detail": "464x1262 px (h/w 2.7)",
+    "extra": {}
+   },
+   {
+    "check": "blank",
+    "score": 1.0,
+    "detail": "ink 0.23% of pixels",
+    "extra": {}
+   }
+  ],
+  "KHATT_v1.0/test/000391": [
+   {
+    "check": "blank",
+    "score": 1.0,
+    "detail": "ink 0.08% of pixels",
+    "extra": {}
+   }
+  ],
+  "KHATT_v1.0/test/000393": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000394": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.406902787074341,
+    "detail": "z=+4.1: GT too long for the image",
+    "extra": {
+     "z": 4.06902787074341
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000398": [
+   {
+    "check": "length_mismatch",
+    "score": 0.37411165069966557,
+    "detail": "z=+3.7: GT too long for the image",
+    "extra": {
+     "z": 3.7411165069966557
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000401": [
+   {
+    "check": "blank",
+    "score": 1.0,
+    "detail": "ink 0.05% of pixels",
+    "extra": {}
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.9313835481385236,
+    "detail": "z=-9.3: GT too short for the image",
+    "extra": {
+     "z": -9.313835481385237
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000402": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000107",
+      "KHATT_v1.0/test/000681"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000406": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000408": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000415": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000419": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000420": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000777"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000421": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000282",
+      "KHATT_v1.0/test/000682",
+      "KHATT_v1.0/test/000882",
+      "KHATT_v1.0/test/001033"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000422": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000203",
+      "KHATT_v1.0/test/000602",
+      "KHATT_v1.0/test/000974"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000426": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000324",
+      "KHATT_v1.0/test/000454",
+      "KHATT_v1.0/test/000574",
+      "KHATT_v1.0/test/000891"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000429": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000456"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000430": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000315"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000433": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000434": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000185"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000435": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000244"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000436": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000907",
+      "KHATT_v1.0/test/000917"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000437": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000442": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 81,
+       "edge": true
+      },
+      {
+       "y": 44,
+       "rel": 0.79,
+       "H": 81,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.8314173627269932,
+    "detail": "z=-8.3: GT too short for the image",
+    "extra": {
+     "z": -8.314173627269932
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000446": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000910"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000448": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000010"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000451": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000067",
+      "KHATT_v1.0/test/000227",
+      "KHATT_v1.0/test/000572"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000452": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000486"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000453": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000454": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000324",
+      "KHATT_v1.0/test/000426",
+      "KHATT_v1.0/test/000574",
+      "KHATT_v1.0/test/000891"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000456": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000429"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000461": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/001030"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000462": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000070"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000465": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000467": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000076"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000471": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000086",
+      "KHATT_v1.0/test/000168"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000474": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000225",
+      "KHATT_v1.0/test/000293",
+      "KHATT_v1.0/test/000508",
+      "KHATT_v1.0/test/000549",
+      "KHATT_v1.0/test/000700"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000476": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000108",
+      "KHATT_v1.0/test/000708",
+      "KHATT_v1.0/test/000962"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000477": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000959"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000478": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000480": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000156",
+      "KHATT_v1.0/test/000263"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000482": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000072",
+      "KHATT_v1.0/test/000377"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000486": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000452"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000487": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000628"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000490": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000494": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000495": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000721"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000500": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000501": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000080",
+      "KHATT_v1.0/test/000211",
+      "KHATT_v1.0/test/000503",
+      "KHATT_v1.0/test/000993"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000502": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000503": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000080",
+      "KHATT_v1.0/test/000211",
+      "KHATT_v1.0/test/000501",
+      "KHATT_v1.0/test/000993"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000505": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000506": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000104"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000508": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000225",
+      "KHATT_v1.0/test/000293",
+      "KHATT_v1.0/test/000474",
+      "KHATT_v1.0/test/000549",
+      "KHATT_v1.0/test/000700"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000511": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000513": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000514": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000798",
+      "KHATT_v1.0/test/000809"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000518": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000022",
+      "KHATT_v1.0/test/000772"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000522": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000145",
+      "KHATT_v1.0/test/000254",
+      "KHATT_v1.0/test/000279",
+      "KHATT_v1.0/test/000614",
+      "KHATT_v1.0/test/000706"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000526": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000527": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000530": [
+   {
+    "check": "length_mismatch",
+    "score": 0.6125281441881667,
+    "detail": "z=-6.1: GT too short for the image",
+    "extra": {
+     "z": -6.125281441881667
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000535": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.6412844507920601,
+    "detail": "z=-6.4: GT too short for the image",
+    "extra": {
+     "z": -6.4128445079206005
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000539": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000986"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000540": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000549": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000225",
+      "KHATT_v1.0/test/000293",
+      "KHATT_v1.0/test/000474",
+      "KHATT_v1.0/test/000508",
+      "KHATT_v1.0/test/000700"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000550": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000848"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000552": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000554": [
+   {
+    "check": "length_mismatch",
+    "score": 0.41672294080813665,
+    "detail": "z=-4.2: GT too short for the image",
+    "extra": {
+     "z": -4.167229408081367
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000555": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000192",
+      "KHATT_v1.0/test/000785"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000556": [
+   {
+    "check": "vertical",
+    "score": 0.5110364683301344,
+    "detail": "521x1065 px (h/w 2.0)",
+    "extra": {}
+   },
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000557": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000559": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000563": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000246",
+      "KHATT_v1.0/test/000275"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000566": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/001007"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000568": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000572": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000067",
+      "KHATT_v1.0/test/000227",
+      "KHATT_v1.0/test/000451"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000574": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000324",
+      "KHATT_v1.0/test/000426",
+      "KHATT_v1.0/test/000454",
+      "KHATT_v1.0/test/000891"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000576": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000657"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000580": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000109"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000583": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000762"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000587": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 11,
+       "rel": 1.0,
+       "H": 243,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000593": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000595": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000715",
+      "KHATT_v1.0/test/001001"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000596": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000598": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000599": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 7,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000602": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000203",
+      "KHATT_v1.0/test/000422",
+      "KHATT_v1.0/test/000974"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000603": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 1.0,
+       "H": 258,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000954"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000604": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000907",
+      "KHATT_v1.0/test/000917"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000605": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 1.0,
+       "H": 256,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.39756992175120254,
+    "detail": "z=+4.0: GT too long for the image",
+    "extra": {
+     "z": 3.9756992175120254
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000607": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000614": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000145",
+      "KHATT_v1.0/test/000254",
+      "KHATT_v1.0/test/000279",
+      "KHATT_v1.0/test/000522",
+      "KHATT_v1.0/test/000706"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000622": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000625": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000670"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000626": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000015",
+      "KHATT_v1.0/test/000818",
+      "KHATT_v1.0/test/001012"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000627": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000180"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000628": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000487"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000630": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000132",
+      "KHATT_v1.0/test/000362"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000646": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000931"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000647": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/001016"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000656": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/001002"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000657": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000659": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000119",
+      "KHATT_v1.0/test/000120",
+      "KHATT_v1.0/test/000924"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000664": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000751"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000667": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000945"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000670": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000625"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000679": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000681": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000107",
+      "KHATT_v1.0/test/000402"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000682": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000282",
+      "KHATT_v1.0/test/000421",
+      "KHATT_v1.0/test/000882",
+      "KHATT_v1.0/test/001033"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000684": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000720",
+      "KHATT_v1.0/test/001031"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000687": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000688": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000693": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000694": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000695": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000699": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000278"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000700": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000225",
+      "KHATT_v1.0/test/000293",
+      "KHATT_v1.0/test/000474",
+      "KHATT_v1.0/test/000508",
+      "KHATT_v1.0/test/000549"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000704": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000054",
+      "KHATT_v1.0/test/000247",
+      "KHATT_v1.0/test/000343",
+      "KHATT_v1.0/test/000899"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000706": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "6 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000145",
+      "KHATT_v1.0/test/000254",
+      "KHATT_v1.0/test/000279",
+      "KHATT_v1.0/test/000522",
+      "KHATT_v1.0/test/000614"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000707": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000708": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000108",
+      "KHATT_v1.0/test/000476",
+      "KHATT_v1.0/test/000962"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000714": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000715": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000595",
+      "KHATT_v1.0/test/001001"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000720": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000684",
+      "KHATT_v1.0/test/001031"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000721": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000495"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000732": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000737": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000740": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000184",
+      "KHATT_v1.0/test/000191",
+      "KHATT_v1.0/test/000292",
+      "KHATT_v1.0/test/000347"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000745": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000164",
+      "KHATT_v1.0/test/000178",
+      "KHATT_v1.0/test/000372"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000747": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000827"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000749": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000751": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000664"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000758": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000760": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 33,
+       "rel": 1.0,
+       "H": 280,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000761": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 262,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4148585026024881,
+    "detail": "z=+4.1: GT too long for the image",
+    "extra": {
+     "z": 4.148585026024881
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000762": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000583"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000770": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 1.0,
+       "H": 248,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000772": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000022",
+      "KHATT_v1.0/test/000518"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000773": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000358"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000774": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000048",
+      "KHATT_v1.0/test/000990"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000777": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000420"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000779": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000949"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000785": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000192",
+      "KHATT_v1.0/test/000555"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000786": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 254,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000787": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000166"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000788": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000204",
+      "KHATT_v1.0/test/000817"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000795": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000839"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000796": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000907",
+      "KHATT_v1.0/test/000917"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000798": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000514",
+      "KHATT_v1.0/test/000809"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000799": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 255,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000800": [
+   {
+    "check": "length_mismatch",
+    "score": 0.7047825241598739,
+    "detail": "z=-7.0: GT too short for the image",
+    "extra": {
+     "z": -7.047825241598739
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000808": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 13,
+       "rel": 1.0,
+       "H": 244,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000809": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000514",
+      "KHATT_v1.0/test/000798"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000810": [
+   {
+    "check": "length_mismatch",
+    "score": 0.6266928152881213,
+    "detail": "z=-6.3: GT too short for the image",
+    "extra": {
+     "z": -6.266928152881213
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000812": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000061"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000814": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000816": [
+   {
+    "check": "length_mismatch",
+    "score": 0.58158555302144,
+    "detail": "z=-5.8: GT too short for the image",
+    "extra": {
+     "z": -5.8158555302144
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000817": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000204",
+      "KHATT_v1.0/test/000788"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000818": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000015",
+      "KHATT_v1.0/test/000626",
+      "KHATT_v1.0/test/001012"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000821": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000822": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 15,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000827": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000747"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000828": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000907",
+      "KHATT_v1.0/test/000917"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000839": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000795"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000845": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000355"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000847": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000217",
+      "KHATT_v1.0/test/000220",
+      "KHATT_v1.0/test/000328",
+      "KHATT_v1.0/test/000334",
+      "KHATT_v1.0/test/000664"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000848": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000550"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000854": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000855": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000941"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000858": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000859": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000862": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000867": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 272,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000870": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000330"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000875": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000900"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000876": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000896"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000877": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000035",
+      "KHATT_v1.0/test/000091",
+      "KHATT_v1.0/test/000270",
+      "KHATT_v1.0/test/000942"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000878": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000880": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "12 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000208",
+      "KHATT_v1.0/test/000317",
+      "KHATT_v1.0/test/000318",
+      "KHATT_v1.0/test/000337",
+      "KHATT_v1.0/test/000346"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000882": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000282",
+      "KHATT_v1.0/test/000421",
+      "KHATT_v1.0/test/000682",
+      "KHATT_v1.0/test/001033"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000886": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000379",
+      "KHATT_v1.0/test/000888"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000887": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000888": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000379",
+      "KHATT_v1.0/test/000886"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000891": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000324",
+      "KHATT_v1.0/test/000426",
+      "KHATT_v1.0/test/000454",
+      "KHATT_v1.0/test/000574"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000894": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000896": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000876"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000898": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 244,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000899": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000054",
+      "KHATT_v1.0/test/000247",
+      "KHATT_v1.0/test/000343",
+      "KHATT_v1.0/test/000704"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000900": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000875"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000906": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 252,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000907": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000917"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000910": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000446"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000913": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/001009",
+      "KHATT_v1.0/test/001021"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000917": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000907"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000920": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000188"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000921": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000924": [
+   {
+    "check": "vertical",
+    "score": 0.6069391634980988,
+    "detail": "526x1277 px (h/w 2.4)",
+    "extra": {}
+   },
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 242,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 1.0,
+    "detail": "z=+11.6: GT too long for the image",
+    "extra": {
+     "z": 11.58578872899331
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000119",
+      "KHATT_v1.0/test/000120",
+      "KHATT_v1.0/test/000659"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000926": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000931": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000646"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000936": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000941": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000855"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000942": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000035",
+      "KHATT_v1.0/test/000091",
+      "KHATT_v1.0/test/000270",
+      "KHATT_v1.0/test/000877"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000945": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000667"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000947": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 1.0,
+       "H": 258,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000949": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000779"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000951": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 256,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000954": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 264,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000603"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000955": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000959": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000477"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000960": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000962": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000108",
+      "KHATT_v1.0/test/000476",
+      "KHATT_v1.0/test/000708"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000966": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000291"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000970": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 18,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000971": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "19 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000008",
+      "KHATT_v1.0/test/000055",
+      "KHATT_v1.0/test/000113",
+      "KHATT_v1.0/test/000133",
+      "KHATT_v1.0/test/000148"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000974": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000203",
+      "KHATT_v1.0/test/000422",
+      "KHATT_v1.0/test/000602"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000986": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000539"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000988": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 1.0,
+       "H": 246,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000077",
+      "KHATT_v1.0/test/001005"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000989": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000057"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000990": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000048",
+      "KHATT_v1.0/test/000774"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/000993": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000080",
+      "KHATT_v1.0/test/000211",
+      "KHATT_v1.0/test/000501",
+      "KHATT_v1.0/test/000503"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001001": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000595",
+      "KHATT_v1.0/test/000715"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001002": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000656"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001003": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "7 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000436",
+      "KHATT_v1.0/test/000604",
+      "KHATT_v1.0/test/000796",
+      "KHATT_v1.0/test/000828",
+      "KHATT_v1.0/test/000907"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001004": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "11 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000001",
+      "KHATT_v1.0/test/000051",
+      "KHATT_v1.0/test/000098",
+      "KHATT_v1.0/test/000111",
+      "KHATT_v1.0/test/000576"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001005": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000077",
+      "KHATT_v1.0/test/000988"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001007": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000566"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001008": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 256,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001009": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000913",
+      "KHATT_v1.0/test/001021"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001010": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "20 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000036",
+      "KHATT_v1.0/test/000040",
+      "KHATT_v1.0/test/000092",
+      "KHATT_v1.0/test/000169",
+      "KHATT_v1.0/test/000241"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001012": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "4 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000015",
+      "KHATT_v1.0/test/000626",
+      "KHATT_v1.0/test/000818"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001014": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001016": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000647"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001019": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 21,
+       "rel": 1.0,
+       "H": 250,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.35727229403112104,
+    "detail": "z=+3.6: GT too long for the image",
+    "extra": {
+     "z": 3.5727229403112104
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001021": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000913",
+      "KHATT_v1.0/test/001009"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001029": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "27 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000012",
+      "KHATT_v1.0/test/000039",
+      "KHATT_v1.0/test/000075",
+      "KHATT_v1.0/test/000102",
+      "KHATT_v1.0/test/000183"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001030": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000461"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001031": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 9,
+       "rel": 1.0,
+       "H": 240,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "3 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000684",
+      "KHATT_v1.0/test/000720"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001033": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "5 lines share this GT",
+    "extra": {
+     "others": [
+      "KHATT_v1.0/test/000282",
+      "KHATT_v1.0/test/000421",
+      "KHATT_v1.0/test/000682",
+      "KHATT_v1.0/test/000882"
+     ]
+    }
+   }
+  ],
+  "KHATT_v1.0/test/001037": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 1.0,
+       "H": 256,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "KHATT_v1.0",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

@@ -1,0 +1,1496 @@
+{
+ "n": 372,
+ "n_read": 372,
+ "counts": {
+  "degenerate": 7,
+  "length_mismatch": 19,
+  "multi_line": 15,
+  "neighbour_clip": 34
+ },
+ "any": 59,
+ "flags": {
+  "RASAM-2/test/000010": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 47,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000020": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "806x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000023": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 118] of 148)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.75,
+       "H": 148,
+       "edge": false
+      },
+      {
+       "y": 118,
+       "rel": 1.0,
+       "H": 148,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000031": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 63,
+       "rel": 0.68,
+       "H": 102,
+       "edge": false
+      },
+      {
+       "y": 99,
+       "rel": 1.0,
+       "H": 102,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4473267013609804,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.473267013609804
+    }
+   }
+  ],
+  "RASAM-2/test/000032": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [32, 77] of 150)",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 150,
+       "edge": false
+      },
+      {
+       "y": 77,
+       "rel": 0.61,
+       "H": 150,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000034": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4011290433686031,
+    "detail": "z=+4.0: GT too long for the image",
+    "extra": {
+     "z": 4.011290433686031
+    }
+   }
+  ],
+  "RASAM-2/test/000038": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "310x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000039": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 131,
+       "edge": true
+      },
+      {
+       "y": 73,
+       "rel": 0.6,
+       "H": 131,
+       "edge": false
+      },
+      {
+       "y": 127,
+       "rel": 0.91,
+       "H": 131,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000043": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 36,
+       "rel": 0.64,
+       "H": 76,
+       "edge": false
+      },
+      {
+       "y": 73,
+       "rel": 1.0,
+       "H": 76,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000050": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 1.0,
+       "H": 109,
+       "edge": true
+      },
+      {
+       "y": 60,
+       "rel": 0.68,
+       "H": 109,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000056": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 63,
+       "rel": 0.63,
+       "H": 106,
+       "edge": false
+      },
+      {
+       "y": 102,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000062": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [16, 72, 104] of 120)",
+    "extra": {
+     "bands": [
+      {
+       "y": 16,
+       "rel": 1.0,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 72,
+       "rel": 0.75,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 104,
+       "rel": 0.97,
+       "H": 120,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000063": [
+   {
+    "check": "length_mismatch",
+    "score": 0.7216707970291344,
+    "detail": "z=-7.2: GT too short for the image",
+    "extra": {
+     "z": -7.216707970291344
+    }
+   }
+  ],
+  "RASAM-2/test/000069": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.74,
+       "H": 47,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.38262108114150783,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.8262108114150783
+    }
+   }
+  ],
+  "RASAM-2/test/000074": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [55, 94, 136] of 167)",
+    "extra": {
+     "bands": [
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 94,
+       "rel": 0.78,
+       "H": 167,
+       "edge": false
+      },
+      {
+       "y": 136,
+       "rel": 0.72,
+       "H": 167,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000085": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 81,
+       "edge": true
+      },
+      {
+       "y": 42,
+       "rel": 0.83,
+       "H": 81,
+       "edge": false
+      },
+      {
+       "y": 78,
+       "rel": 0.9,
+       "H": 81,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.524756244673291,
+    "detail": "z=-5.2: GT too short for the image",
+    "extra": {
+     "z": -5.24756244673291
+    }
+   }
+  ],
+  "RASAM-2/test/000090": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 66,
+       "rel": 0.61,
+       "H": 106,
+       "edge": false
+      },
+      {
+       "y": 102,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3656180378157516,
+    "detail": "z=-3.7: GT too short for the image",
+    "extra": {
+     "z": -3.656180378157516
+    }
+   }
+  ],
+  "RASAM-2/test/000102": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 150,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000133": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [56, 122] of 214)",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.81,
+       "H": 214,
+       "edge": false
+      },
+      {
+       "y": 122,
+       "rel": 1.0,
+       "H": 214,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000135": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 83,
+       "edge": true
+      },
+      {
+       "y": 32,
+       "rel": 0.54,
+       "H": 83,
+       "edge": false
+      },
+      {
+       "y": 80,
+       "rel": 0.9,
+       "H": 83,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3574627422822366,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.5746274228223665
+    }
+   }
+  ],
+  "RASAM-2/test/000137": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 52,
+       "rel": 1.0,
+       "H": 118,
+       "edge": false
+      },
+      {
+       "y": 112,
+       "rel": 0.71,
+       "H": 118,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000146": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [32, 65] of 121)",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.66,
+       "H": 121,
+       "edge": false
+      },
+      {
+       "y": 65,
+       "rel": 1.0,
+       "H": 121,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000154": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "434x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000160": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4574821984009388,
+    "detail": "z=+4.6: GT too long for the image",
+    "extra": {
+     "z": 4.574821984009388
+    }
+   }
+  ],
+  "RASAM-2/test/000163": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 0.75,
+       "H": 48,
+       "edge": false
+      },
+      {
+       "y": 46,
+       "rel": 1.0,
+       "H": 48,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4468542120016755,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.468542120016755
+    }
+   }
+  ],
+  "RASAM-2/test/000167": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "398x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000170": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.71,
+       "H": 56,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 56,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000175": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [37, 79] of 138)",
+    "extra": {
+     "bands": [
+      {
+       "y": 37,
+       "rel": 0.8,
+       "H": 138,
+       "edge": false
+      },
+      {
+       "y": 79,
+       "rel": 1.0,
+       "H": 138,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000182": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 0.68,
+       "H": 52,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 52,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.37527137958264534,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.7527137958264536
+    }
+   }
+  ],
+  "RASAM-2/test/000186": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 85,
+       "rel": 1.0,
+       "H": 88,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000196": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 77,
+       "rel": 0.6,
+       "H": 120,
+       "edge": false
+      },
+      {
+       "y": 116,
+       "rel": 1.0,
+       "H": 120,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.36227685718973573,
+    "detail": "z=-3.6: GT too short for the image",
+    "extra": {
+     "z": -3.6227685718973572
+    }
+   }
+  ],
+  "RASAM-2/test/000205": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [40, 84] of 188)",
+    "extra": {
+     "bands": [
+      {
+       "y": 40,
+       "rel": 0.9,
+       "H": 188,
+       "edge": false
+      },
+      {
+       "y": 84,
+       "rel": 1.0,
+       "H": 188,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000210": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 54,
+       "rel": 0.46,
+       "H": 107,
+       "edge": false
+      },
+      {
+       "y": 103,
+       "rel": 1.0,
+       "H": 107,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000221": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.91,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 0.51,
+       "H": 51,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000227": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 23,
+       "rel": 0.52,
+       "H": 47,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 0.64,
+       "H": 47,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4383081819055573,
+    "detail": "z=-4.4: GT too short for the image",
+    "extra": {
+     "z": -4.383081819055573
+    }
+   }
+  ],
+  "RASAM-2/test/000241": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 124] of 143)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.59,
+       "H": 143,
+       "edge": false
+      },
+      {
+       "y": 124,
+       "rel": 1.0,
+       "H": 143,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000250": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [56, 129] of 226)",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 0.69,
+       "H": 226,
+       "edge": false
+      },
+      {
+       "y": 129,
+       "rel": 1.0,
+       "H": 226,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000260": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [51, 90] of 168)",
+    "extra": {
+     "bands": [
+      {
+       "y": 51,
+       "rel": 0.91,
+       "H": 168,
+       "edge": false
+      },
+      {
+       "y": 90,
+       "rel": 1.0,
+       "H": 168,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000264": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [30, 70] of 142)",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 142,
+       "edge": false
+      },
+      {
+       "y": 70,
+       "rel": 0.93,
+       "H": 142,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000271": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 47,
+       "edge": true
+      },
+      {
+       "y": 25,
+       "rel": 0.71,
+       "H": 47,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5205925750545375,
+    "detail": "z=-5.2: GT too short for the image",
+    "extra": {
+     "z": -5.205925750545375
+    }
+   }
+  ],
+  "RASAM-2/test/000276": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [36, 75, 117] of 152)",
+    "extra": {
+     "bands": [
+      {
+       "y": 36,
+       "rel": 0.82,
+       "H": 152,
+       "edge": false
+      },
+      {
+       "y": 75,
+       "rel": 1.0,
+       "H": 152,
+       "edge": false
+      },
+      {
+       "y": 117,
+       "rel": 0.8,
+       "H": 152,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000277": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 0.69,
+       "H": 62,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 1.0,
+       "H": 62,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000280": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 120,
+       "edge": true
+      },
+      {
+       "y": 71,
+       "rel": 0.71,
+       "H": 120,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000284": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [72, 134] of 274)",
+    "extra": {
+     "bands": [
+      {
+       "y": 72,
+       "rel": 0.56,
+       "H": 274,
+       "edge": false
+      },
+      {
+       "y": 134,
+       "rel": 1.0,
+       "H": 274,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000287": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 106,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000293": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 50,
+       "rel": 0.85,
+       "H": 93,
+       "edge": false
+      },
+      {
+       "y": 90,
+       "rel": 1.0,
+       "H": 93,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4417745086422714,
+    "detail": "z=-4.4: GT too short for the image",
+    "extra": {
+     "z": -4.417745086422714
+    }
+   }
+  ],
+  "RASAM-2/test/000298": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 61,
+       "rel": 1.0,
+       "H": 133,
+       "edge": false
+      },
+      {
+       "y": 121,
+       "rel": 0.67,
+       "H": 133,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000307": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "413x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000309": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 96,
+       "edge": true
+      },
+      {
+       "y": 56,
+       "rel": 0.77,
+       "H": 96,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.46185262949118044,
+    "detail": "z=-4.6: GT too short for the image",
+    "extra": {
+     "z": -4.618526294911804
+    }
+   }
+  ],
+  "RASAM-2/test/000313": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.96,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.6361877644738632,
+    "detail": "z=-6.4: GT too short for the image",
+    "extra": {
+     "z": -6.361877644738632
+    }
+   }
+  ],
+  "RASAM-2/test/000318": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 48,
+       "rel": 0.47,
+       "H": 99,
+       "edge": false
+      },
+      {
+       "y": 96,
+       "rel": 1.0,
+       "H": 99,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000322": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 73,
+       "edge": true
+      },
+      {
+       "y": 31,
+       "rel": 0.93,
+       "H": 73,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.49360494217919715,
+    "detail": "z=-4.9: GT too short for the image",
+    "extra": {
+     "z": -4.936049421791972
+    }
+   }
+  ],
+  "RASAM-2/test/000325": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "360x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000330": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [30, 60] of 197)",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 197,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 0.63,
+       "H": 197,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000336": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 51,
+       "edge": true
+      },
+      {
+       "y": 29,
+       "rel": 0.74,
+       "H": 51,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 0.8,
+       "H": 51,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "RASAM-2/test/000338": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 1.0,
+       "H": 109,
+       "edge": true
+      },
+      {
+       "y": 53,
+       "rel": 0.58,
+       "H": 109,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.4346901262122307,
+    "detail": "z=-4.3: GT too short for the image",
+    "extra": {
+     "z": -4.346901262122307
+    }
+   }
+  ],
+  "RASAM-2/test/000346": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 62,
+       "rel": 0.98,
+       "H": 130,
+       "edge": false
+      },
+      {
+       "y": 126,
+       "rel": 1.0,
+       "H": 130,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5297134079173978,
+    "detail": "z=-5.3: GT too short for the image",
+    "extra": {
+     "z": -5.297134079173978
+    }
+   }
+  ],
+  "RASAM-2/test/000364": [
+   {
+    "check": "degenerate",
+    "score": 1.0,
+    "detail": "315x1 px",
+    "extra": {}
+   }
+  ],
+  "RASAM-2/test/000366": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 1,
+       "rel": 1.0,
+       "H": 49,
+       "edge": true
+      },
+      {
+       "y": 26,
+       "rel": 0.78,
+       "H": 49,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 0.51,
+       "H": 49,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "RASAM-2",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

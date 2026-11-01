@@ -1,0 +1,2281 @@
+{
+ "n": 1334,
+ "n_read": 0,
+ "counts": {
+  "blank": 1,
+  "duplicate_gt": 8,
+  "empty_gt": 6,
+  "length_mismatch": 20,
+  "multi_line": 27,
+  "neighbour_clip": 46,
+  "off_script": 25
+ },
+ "any": 121,
+ "flags": {
+  "muharaf-public/test/000017": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000121": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [8, 41] of 60)",
+    "extra": {
+     "bands": [
+      {
+       "y": 8,
+       "rel": 0.84,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000123": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.92,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000141": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000186": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000207": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 8,
+       "rel": 1.0,
+       "H": 78,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000248": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 8,
+       "rel": 1.0,
+       "H": 68,
+       "edge": true
+      },
+      {
+       "y": 27,
+       "rel": 0.74,
+       "H": 68,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000271": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 68,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000287": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.72,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000291": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/000318"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000294": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/000319"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000311": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000313": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000314": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000318": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/000291"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000319": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/000294"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000324": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.48,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000331": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [12, 41] of 72)",
+    "extra": {
+     "bands": [
+      {
+       "y": 12,
+       "rel": 0.47,
+       "H": 72,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 1.0,
+       "H": 72,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000397": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5369352463894497,
+    "detail": "z=-5.4: GT too short for the image",
+    "extra": {
+     "z": -5.369352463894497
+    }
+   }
+  ],
+  "muharaf-public/test/000406": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [34, 60] of 76)",
+    "extra": {
+     "bands": [
+      {
+       "y": 34,
+       "rel": 0.7,
+       "H": 76,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 1.0,
+       "H": 76,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000435": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.79,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 45,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000440": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [28, 50] of 60)",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 0.82,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000443": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 0.78,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 36,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000445": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.58,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000447": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [10, 36] of 68)",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 0.98,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 36,
+       "rel": 1.0,
+       "H": 68,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000448": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 70,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000481": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 64,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000489": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000499": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000501": [
+   {
+    "check": "empty_gt",
+    "score": 1.0,
+    "detail": "GT has no letters or digits",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000513": [
+   {
+    "check": "length_mismatch",
+    "score": 0.42362205052663615,
+    "detail": "z=+4.2: GT too long for the image",
+    "extra": {
+     "z": 4.2362205052663615
+    }
+   }
+  ],
+  "muharaf-public/test/000519": [
+   {
+    "check": "length_mismatch",
+    "score": 0.3863291315708656,
+    "detail": "z=+3.9: GT too long for the image",
+    "extra": {
+     "z": 3.8632913157086564
+    }
+   }
+  ],
+  "muharaf-public/test/000525": [
+   {
+    "check": "length_mismatch",
+    "score": 0.42806317150321743,
+    "detail": "z=+4.3: GT too long for the image",
+    "extra": {
+     "z": 4.280631715032174
+    }
+   }
+  ],
+  "muharaf-public/test/000528": [
+   {
+    "check": "length_mismatch",
+    "score": 0.5361876422476206,
+    "detail": "z=+5.4: GT too long for the image",
+    "extra": {
+     "z": 5.3618764224762065
+    }
+   }
+  ],
+  "muharaf-public/test/000558": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [35, 55] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 0.63,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000595": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [25, 37] of 64)",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 0.45,
+       "H": 64,
+       "edge": false
+      },
+      {
+       "y": 37,
+       "rel": 1.0,
+       "H": 64,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.43695295440649184,
+    "detail": "z=-4.4: GT too short for the image",
+    "extra": {
+     "z": -4.3695295440649184
+    }
+   }
+  ],
+  "muharaf-public/test/000596": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [39, 50] of 68)",
+    "extra": {
+     "bands": [
+      {
+       "y": 39,
+       "rel": 0.58,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 68,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000600": [
+   {
+    "check": "blank",
+    "score": 1.0,
+    "detail": "ink 0.00% of pixels",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000616": [
+   {
+    "check": "length_mismatch",
+    "score": 0.535239976275859,
+    "detail": "z=+5.4: GT too long for the image",
+    "extra": {
+     "z": 5.35239976275859
+    }
+   }
+  ],
+  "muharaf-public/test/000618": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 61,
+       "rel": 1.0,
+       "H": 68,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000619": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [14, 30, 41] of 68)",
+    "extra": {
+     "bands": [
+      {
+       "y": 14,
+       "rel": 0.84,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 0.59,
+       "H": 68,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.40555920400905476,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.055592040090548
+    }
+   }
+  ],
+  "muharaf-public/test/000664": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000666": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000667": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000668": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000669": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000731": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.76,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000746": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [28, 49] of 82)",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 82,
+       "edge": false
+      },
+      {
+       "y": 49,
+       "rel": 1.0,
+       "H": 82,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000757": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 0.95,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 40,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000781": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [24, 39] of 74)",
+    "extra": {
+     "bands": [
+      {
+       "y": 24,
+       "rel": 1.0,
+       "H": 74,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 0.55,
+       "H": 74,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.41610945219356266,
+    "detail": "z=-4.2: GT too short for the image",
+    "extra": {
+     "z": -4.161094521935627
+    }
+   }
+  ],
+  "muharaf-public/test/000783": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [33, 60] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 33,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 0.77,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000784": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [28, 45, 61] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 0.86,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 61,
+       "rel": 0.86,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000786": [
+   {
+    "check": "multi_line",
+    "score": 1.0,
+    "detail": "3 whole text lines (peaks at rows [28, 42, 60] of 76)",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 76,
+       "edge": false
+      },
+      {
+       "y": 42,
+       "rel": 0.93,
+       "H": 76,
+       "edge": false
+      },
+      {
+       "y": 60,
+       "rel": 0.61,
+       "H": 76,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000787": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [31, 45] of 66)",
+    "extra": {
+     "bands": [
+      {
+       "y": 31,
+       "rel": 0.76,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000793": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.7,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 33,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000794": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.64,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000809": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [19, 48] of 66)",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 48,
+       "rel": 0.79,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000811": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [32, 55] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 0.66,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000888": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000909": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [19, 45] of 74)",
+    "extra": {
+     "bands": [
+      {
+       "y": 19,
+       "rel": 0.65,
+       "H": 74,
+       "edge": false
+      },
+      {
+       "y": 45,
+       "rel": 1.0,
+       "H": 74,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000910": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [45, 66] of 78)",
+    "extra": {
+     "bands": [
+      {
+       "y": 45,
+       "rel": 0.89,
+       "H": 78,
+       "edge": false
+      },
+      {
+       "y": 66,
+       "rel": 1.0,
+       "H": 78,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000951": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 66,
+       "edge": true
+      },
+      {
+       "y": 18,
+       "rel": 0.93,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 44,
+       "rel": 0.79,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/000969": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4495213519063673,
+    "detail": "z=-4.5: GT too short for the image",
+    "extra": {
+     "z": -4.495213519063673
+    }
+   }
+  ],
+  "muharaf-public/test/000979": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4895931722871138,
+    "detail": "z=+4.9: GT too long for the image",
+    "extra": {
+     "z": 4.895931722871138
+    }
+   }
+  ],
+  "muharaf-public/test/000980": [
+   {
+    "check": "length_mismatch",
+    "score": 0.41052802287958184,
+    "detail": "z=+4.1: GT too long for the image",
+    "extra": {
+     "z": 4.105280228795818
+    }
+   }
+  ],
+  "muharaf-public/test/000981": [
+   {
+    "check": "length_mismatch",
+    "score": 0.41661961426143845,
+    "detail": "z=+4.2: GT too long for the image",
+    "extra": {
+     "z": 4.1661961426143845
+    }
+   }
+  ],
+  "muharaf-public/test/000982": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4229275510278144,
+    "detail": "z=+4.2: GT too long for the image",
+    "extra": {
+     "z": 4.229275510278144
+    }
+   }
+  ],
+  "muharaf-public/test/000987": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/000989": [
+   {
+    "check": "length_mismatch",
+    "score": 0.4487526539350002,
+    "detail": "z=+4.5: GT too long for the image",
+    "extra": {
+     "z": 4.487526539350002
+    }
+   }
+  ],
+  "muharaf-public/test/000998": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001006": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 6,
+       "rel": 0.56,
+       "H": 62,
+       "edge": true
+      },
+      {
+       "y": 44,
+       "rel": 1.0,
+       "H": 62,
+       "edge": false
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.44036567272316385,
+    "detail": "z=+4.4: GT too long for the image",
+    "extra": {
+     "z": 4.403656727231638
+    }
+   }
+  ],
+  "muharaf-public/test/001046": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [11, 47] of 80)",
+    "extra": {
+     "bands": [
+      {
+       "y": 11,
+       "rel": 0.54,
+       "H": 80,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 1.0,
+       "H": 80,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001047": [
+   {
+    "check": "length_mismatch",
+    "score": 0.40501793415500015,
+    "detail": "z=-4.1: GT too short for the image",
+    "extra": {
+     "z": -4.050179341550002
+    }
+   }
+  ],
+  "muharaf-public/test/001055": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001058": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "2 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 3,
+       "rel": 0.97,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 31,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.75,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001060": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 0.79,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 36,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001063": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.83,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 31,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001066": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 27,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.95,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001072": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 39] of 70)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 0.61,
+       "H": 70,
+       "edge": false
+      },
+      {
+       "y": 39,
+       "rel": 1.0,
+       "H": 70,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001077": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 0.77,
+       "H": 66,
+       "edge": true
+      },
+      {
+       "y": 38,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001078": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.98,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001080": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 55,
+       "rel": 0.99,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001087": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.99,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001096": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001098": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001099": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001100": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 4,
+       "rel": 1.0,
+       "H": 66,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001101": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 34,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.63,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001102": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [2, 24, 47] of 60)",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.75,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 24,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 47,
+       "rel": 0.85,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001104": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 26,
+       "rel": 0.89,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001105": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [23, 51] of 60)",
+    "extra": {
+     "bands": [
+      {
+       "y": 23,
+       "rel": 0.85,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 51,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001107": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 24,
+       "rel": 0.94,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001108": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 5,
+       "rel": 1.0,
+       "H": 70,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.3788800707008602,
+    "detail": "z=-3.8: GT too short for the image",
+    "extra": {
+     "z": -3.788800707008602
+    }
+   }
+  ],
+  "muharaf-public/test/001114": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [8, 42] of 66)",
+    "extra": {
+     "bands": [
+      {
+       "y": 8,
+       "rel": 0.55,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 42,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001116": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [10, 50] of 66)",
+    "extra": {
+     "bands": [
+      {
+       "y": 10,
+       "rel": 0.62,
+       "H": 66,
+       "edge": false
+      },
+      {
+       "y": 50,
+       "rel": 1.0,
+       "H": 66,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001120": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/001140"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001121": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/001142"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001122": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001131": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 0.86,
+       "H": 60,
+       "edge": true
+      },
+      {
+       "y": 32,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001133": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 30,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.81,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001140": [
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/001120"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001142": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   },
+   {
+    "check": "duplicate_gt",
+    "score": 0.5,
+    "detail": "2 lines share this GT",
+    "extra": {
+     "others": [
+      "muharaf-public/test/001121"
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001143": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001147": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 35,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.81,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001148": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 25,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 54,
+       "rel": 0.65,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001151": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.41817872342739754,
+    "detail": "z=-4.2: GT too short for the image",
+    "extra": {
+     "z": -4.181787234273975
+    }
+   }
+  ],
+  "muharaf-public/test/001167": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   },
+   {
+    "check": "length_mismatch",
+    "score": 0.5797832998098609,
+    "detail": "z=-5.8: GT too short for the image",
+    "extra": {
+     "z": -5.797832998098609
+    }
+   }
+  ],
+  "muharaf-public/test/001171": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 56,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001176": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 28,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.63,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001204": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [17, 41] of 68)",
+    "extra": {
+     "bands": [
+      {
+       "y": 17,
+       "rel": 1.0,
+       "H": 68,
+       "edge": false
+      },
+      {
+       "y": 41,
+       "rel": 0.6,
+       "H": 68,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001223": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 1.0,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 0.75,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001228": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001229": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001231": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001232": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001233": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001234": [
+   {
+    "check": "off_script",
+    "score": 1.0,
+    "detail": "0% of letters are Arabic",
+    "extra": {}
+   }
+  ],
+  "muharaf-public/test/001254": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001262": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 2,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001320": [
+   {
+    "check": "multi_line",
+    "score": 0.5,
+    "detail": "2 whole text lines (peaks at rows [38, 62] of 74)",
+    "extra": {
+     "bands": [
+      {
+       "y": 38,
+       "rel": 0.57,
+       "H": 74,
+       "edge": false
+      },
+      {
+       "y": 62,
+       "rel": 1.0,
+       "H": 74,
+       "edge": false
+      }
+     ]
+    }
+   }
+  ],
+  "muharaf-public/test/001325": [
+   {
+    "check": "neighbour_clip",
+    "score": 0.3,
+    "detail": "1 neighbour line(s) cut at the edge",
+    "extra": {
+     "bands": [
+      {
+       "y": 29,
+       "rel": 0.48,
+       "H": 60,
+       "edge": false
+      },
+      {
+       "y": 58,
+       "rel": 1.0,
+       "H": 60,
+       "edge": true
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "dataset": "muharaf-public",
+ "split": "test",
+ "definitions": {
+  "empty_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "GT has no letters and no digits after removing whitespace, punctuation and format characters.",
+   "fix": "Drop, or re-transcribe."
+  },
+  "repeated_gt": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Spaces removed, some span of >= 15 characters appears again within 12 characters of its end (the GT, or part of it, was pasted twice). Also fires when the GT is a whole-line repeat X+X.",
+   "fix": "Confirm with a reader (reader tier: doubled_gt); then cut the copy."
+  },
+  "char_run": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "The same non-space, non-tatweel character repeated >= 6 times in a row.",
+   "fix": "Look: usually a keyboard or HTR artefact."
+  },
+  "off_script": {
+   "tier": "text",
+   "side": "gt",
+   "rule": "Fewer than 50 % of the GT's letters are Arabic-script letters (GT >= 5 letters).",
+   "fix": "Look: wrong language, transliteration or encoding error."
+  },
+  "degenerate": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height or width < 8 px.",
+   "fix": "Re-cut from the page if a polygon exists, else drop."
+  },
+  "vertical": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Image height >= 1.8 x width: a vertical or marginal strip, not a horizontal line (skipped when the GT has <= 2 letters, which can be narrow legitimately).",
+   "fix": "Drop, or rotate if the text runs vertically."
+  },
+  "blank": {
+   "tier": "image",
+   "side": "image",
+   "rule": "No ink: the image is one flat colour (grey std < 2), or < 0.3 % of its non-padding pixels are darker than 0.8 x the local paper brightness (max filter over 1/8-scale neighbourhoods, so vignetting, ruling and coloured ink do not matter) while the GT has >= 3 letters. Deliberately conservative: faint but present text passes and is left to the reader tier.",
+   "fix": "Drop, or re-cut."
+  },
+  "multi_line": {
+   "tier": "image",
+   "side": "image",
+   "rule": "After deskewing (+-8 deg), the horizontal ink projection (smoothed over H/15 rows, padding excluded) has >= 2 prominent peaks: each >= 45 % of the highest with >= 40 % of the main line's ink mass (summed over one core height), apart by >= max(15 % of the height, 0.8 x the main line's core height), with a valley between them <= 50 % of the lower peak, and the extra peak >= 12 % of the height from the top and bottom edge (a whole extra line, not a clipped one: see neighbour_clip). Ascender tips and descender loops clipped from neighbour lines are too low to count.",
+   "fix": "Re-cut to the line polygon; if the GT holds only one line, the extra line is noise."
+  },
+  "neighbour_clip": {
+   "tier": "image",
+   "side": "image",
+   "rule": "Like multi_line, but the extra peak lies within 12 % of the top or bottom edge: a neighbour line cut in half by the crop. Informational: common in polygon-bounding-box crops.",
+   "fix": "Usually keep; re-cut to the polygon if the reader is confused by it."
+  },
+  "length_mismatch": {
+   "tier": "joint",
+   "side": "either",
+   "rule": "Robust z-score (median / MAD over the dataset) of log(GT letters) - log(core width / core height), where the core is the main line's band on the deskewed ink (neighbour fragments excluded), is beyond +-3.5: far too many letters for the ink (GT longer than the image: cut crop, doubled GT, wrong line) or far too few (truncated GT, extra ink).",
+   "fix": "Look; the sign says which way."
+  },
+  "gt_truncated": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "The reader reads all of the GT and much more: sub + del <= 15 % of GT length and insertions >= 15 % of GT length + 5.",
+   "fix": "Complete the GT, or drop."
+  },
+  "image_truncated": {
+   "tier": "reader",
+   "side": "image",
+   "rule": "The GT holds all the reader reads and much more: sub + ins <= 15 % of GT length and deletions >= 30 % of GT length + 5 (the crop misses part of the line, or the GT holds extra text).",
+   "fix": "Re-cut from the page, or drop."
+  },
+  "doubled_gt": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "Spaces removed, the longest span of >= 5 characters that repeats within 12 characters of its end is a paste: deleting its second copy from the GT cuts the edit distance to the reading by >= 60 % of the span length. Natural repeats (“الاثنين في الاثنين”) are read twice and gain nothing.",
+   "fix": "Cut the copy from the GT."
+  },
+  "shifted": {
+   "tier": "reader",
+   "side": "gt",
+   "rule": "CER(GT, own reading) >= 30 %, GT >= 15 characters, and the reading of another line on the same page matches the GT with CER < min(30 %, half the own CER): the GT belongs to a neighbour.",
+   "fix": "Re-assign GTs along the page (or drop)."
+  },
+  "unreadable": {
+   "tier": "reader",
+   "side": "either",
+   "rule": "CER(GT, reading) >= 60 % with GT >= 10 characters and no more specific flag.",
+   "fix": "Look: garbled GT, wrong crop, or a hard line."
+  },
+  "duplicate_image": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines have the same image (hash of the 64 x 16 greyscale thumbnail); detail says whether their GTs agree and whether they cross splits (leakage).",
+   "fix": "Keep one; if the GTs differ, one is wrong."
+  },
+  "duplicate_gt": {
+   "tier": "dataset",
+   "side": "either",
+   "rule": "Two or more lines share an identical GT of >= 25 characters.",
+   "fix": "Look: repeated content, or the same GT pasted on different images."
+  }
+ }
+}

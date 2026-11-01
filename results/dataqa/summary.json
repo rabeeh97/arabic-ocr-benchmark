@@ -1,0 +1,109 @@
+{
+ "RASAM-1_test": {
+  "n": 734,
+  "n_read": 734,
+  "any": 157,
+  "counts": {
+   "doubled_gt": 2,
+   "gt_truncated": 2,
+   "image_truncated": 1,
+   "length_mismatch": 11,
+   "multi_line": 23,
+   "neighbour_clip": 119,
+   "repeated_gt": 1,
+   "shifted": 1,
+   "unreadable": 2,
+   "vertical": 2
+  }
+ },
+ "RASAM-2_test": {
+  "n": 372,
+  "n_read": 372,
+  "any": 59,
+  "counts": {
+   "degenerate": 7,
+   "length_mismatch": 19,
+   "multi_line": 15,
+   "neighbour_clip": 34
+  }
+ },
+ "tarima_test": {
+  "n": 229,
+  "n_read": 229,
+  "any": 26,
+  "counts": {
+   "multi_line": 6,
+   "neighbour_clip": 20
+  }
+ },
+ "AMIDDA_test_n1500": {
+  "n": 1500,
+  "n_read": 0,
+  "any": 264,
+  "counts": {
+   "degenerate": 7,
+   "length_mismatch": 35,
+   "multi_line": 45,
+   "neighbour_clip": 200,
+   "repeated_gt": 1,
+   "vertical": 2
+  }
+ },
+ "muharaf-public_test": {
+  "n": 1334,
+  "n_read": 0,
+  "any": 121,
+  "counts": {
+   "blank": 1,
+   "duplicate_gt": 8,
+   "empty_gt": 6,
+   "length_mismatch": 20,
+   "multi_line": 27,
+   "neighbour_clip": 46,
+   "off_script": 25
+  }
+ },
+ "KHATT_v1.0_test": {
+  "n": 1038,
+  "n_read": 0,
+  "any": 395,
+  "counts": {
+   "blank": 4,
+   "duplicate_gt": 319,
+   "length_mismatch": 22,
+   "neighbour_clip": 76,
+   "vertical": 3
+  }
+ },
+ "omar-al-saleh-manuscripts-segments_test": {
+  "n": 2095,
+  "n_read": 0,
+  "any": 201,
+  "counts": {
+   "duplicate_gt": 10,
+   "length_mismatch": 45,
+   "multi_line": 31,
+   "neighbour_clip": 66,
+   "off_script": 68
+  }
+ },
+ "arocrbench_khatt_train": {
+  "n": 200,
+  "n_read": 0,
+  "any": 28,
+  "counts": {
+   "duplicate_gt": 11,
+   "length_mismatch": 1,
+   "neighbour_clip": 17,
+   "vertical": 1
+  }
+ },
+ "arocrbench_historicalbooks_train": {
+  "n": 10,
+  "n_read": 0,
+  "any": 9,
+  "counts": {
+   "neighbour_clip": 9
+  }
+ }
+}
