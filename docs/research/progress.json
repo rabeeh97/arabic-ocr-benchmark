@@ -239,7 +239,12 @@
   {
    "date": "2026-11-02",
    "kind": "done",
-   "text": "Tadqiq plan (docs/tadqiq/): the data-QA checks become a general toolkit, paper and platform for finding errors in Arabic datasets. Taxonomy v0.1 has 71 error types (18 built), plus the toolkit spec, paper plan (experiments E1–E7) and an agent-ready roadmap. Next: the user's decisions on name, licence, venue and scope."
+   "text": "Dataset-error toolkit, first full run: about 60 detectors from taxonomy v0.1 scanned 16 line datasets (196k lines, AraMS-28k-HTR included). Flag rates are 4 % (KHATT, AraMS) to 17 % (AMIDDA). Against CER-HV human labels on Muharaf, recall is 88-100 % for non-text lines, 56-65 % for segmentation errors and 54-59 % for script mismatch; 21-28 % of lines judged valid but hard are also flagged. Lexicon-only dotting and typo suggestions are only about 15-25 % precise, judged against reader readings, so a reader must confirm them. Split leakage: every test page of RASAM-1/2, TariMa, Iskandar and NAKBA also has lines in train, and so do 37 % of AMIDDA test lines."
+  },
+  {
+   "date": "2026-11-02",
+   "kind": "done",
+   "text": "Tadqiq plan (now in the local, untracked folder tadqiq/docs/): the data-QA checks become a general toolkit, paper and platform for finding errors in Arabic datasets. Taxonomy v0.1 has 71 error types (18 built), plus the toolkit spec, paper plan (experiments E1–E7) and an agent-ready roadmap. Next: the user's decisions on name, licence, venue and scope."
   },
   {
    "date": "2026-11-01",

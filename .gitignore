@@ -1,3 +1,7 @@
+# Tadqiq toolkit and platform: own folders, kept out of this repo (each will get its own repo)
+/tadqiq/
+/tadqiq-platform/
+
 # macOS
 .DS_Store
 ._*
