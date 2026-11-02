@@ -237,6 +237,11 @@
  ],
  "updates": [
   {
+   "date": "2026-11-02",
+   "kind": "done",
+   "text": "Tadqiq plan (docs/tadqiq/): the data-QA checks become a general toolkit, paper and platform for finding errors in Arabic datasets. Taxonomy v0.1 has 71 error types (18 built), plus the toolkit spec, paper plan (experiments E1–E7) and an agent-ready roadmap. Next: the user's decisions on name, licence, venue and scope."
+  },
+  {
    "date": "2026-11-01",
    "kind": "done",
    "text": "Automatic data-QA toolkit for any line dataset (17 checks: text, image, joint, reader, dataset tiers; docs/research/dataqa.md). Validated on RASAM test (13/17 by-eye defects caught, one new doubled reference) and scanned 9 local datasets; AMIDDA test is the union of the RASAM-1/2/TariMa tests (its train shares none of them), and KHATT test shares 67 % of its GTs with train."
