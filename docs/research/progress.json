@@ -237,6 +237,11 @@
  ],
  "updates": [
   {
+   "date": "2026-11-03",
+   "kind": "done",
+   "text": "Outside error reports collected and compared (CER-HV Muharaf, RASAM issues and sheet, KHATT, AraMS, NAKBA). New detectors: digit-system checks (C06), page-pattern clipped_text (I06), off_script at any length, 2-line multi_line. Muharaf CER-HV errors found 61 % -> 92 % (without the script-mismatch category 65 % -> 77 %) at the same false-alarm rate on correct lines (27.9 % -> 28.1 %). Caveat: script mismatch is mostly correctly transcribed Latin text and Western digits, so it is a scope question. Local review app built in tadqiq-platform/app (import, live run, analytics, sample review, export)."
+  },
+  {
    "date": "2026-11-02",
    "kind": "done",
    "text": "Dataset-error toolkit, first full run: about 60 detectors from taxonomy v0.1 scanned 16 line datasets (196k lines, AraMS-28k-HTR included). Flag rates are 4 % (KHATT, AraMS) to 17 % (AMIDDA). Against CER-HV human labels on Muharaf, recall is 88-100 % for non-text lines, 56-65 % for segmentation errors and 54-59 % for script mismatch; 21-28 % of lines judged valid but hard are also flagged. Lexicon-only dotting and typo suggestions are only about 15-25 % precise, judged against reader readings, so a reader must confirm them. Split leakage: every test page of RASAM-1/2, TariMa, Iskandar and NAKBA also has lines in train, and so do 37 % of AMIDDA test lines."
