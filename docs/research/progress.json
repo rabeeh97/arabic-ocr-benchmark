@@ -239,6 +239,11 @@
   {
    "date": "2026-11-04",
    "kind": "done",
+   "text": "Toolkit: per-check precision/recall on Muharaf vs CER-HV (public page Fig. 7). garbled (27 % right) and letter_position (0 %) moved to experimental: false alarms 13.1 % -> 9.1 %, precision 86 % -> 90 %, found 1,390 -> 1,379. New checks: near_duplicate_image (D01n; only fires on omar-al-saleh: 8 true pairs, 5 blind_test<->train copies with different transcriptions), page_outlier (P04, info), garbled reader gate (CER >= 0.4). No-model experiments not shipped: orientation by neighbour window, signature-crop rules, stacked-text bands. All 16 datasets rescanned. tadqiq/docs/10."
+  },
+  {
+   "date": "2026-11-04",
+   "kind": "done",
    "text": "Toolkit false-alarm fixes after a line-by-line look at misses and false alarms on Muharaf: dotless ى and ًأ spellings, within-split repeated GT, digit commas and $ / \\ in amounts are conventions (notes), not flags. CER-HV false alarms 18.0 % -> 13.1 %, errors found 91.5 % -> 89.7 %, precision 82 % -> 86 %; dropped flags on RASAM-1/2/TariMa sit at the reader base rate. Misses: signature crops with correct names, stacked dates in one crop, wrong transcriptions, one upside-down page (7 of 11 orientation errors). Orientation probes: ink-baseline score AUC 0.85 on synthetic flips (too weak per line); suite_v1 char-CTC CRNN too weak (AUC 0.66, long lines unscorable). Public page: Muharaf Error Audit."
   },
   {
