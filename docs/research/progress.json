@@ -239,6 +239,11 @@
   {
    "date": "2026-11-04",
    "kind": "done",
+   "text": "Toolkit: RASAM-1 validation sheet re-checked on 121 seeded lines (verdicts by Claude, pending human confirmation). ~1/2 of the toolkit's sheet-'false alarms' are real errors; sheet misses ~118 clear errors. New reader text gate: clear-error recall 70 % -> 92 %, precision 26 % -> 28 %; sheet-invalid found 30 -> 42 of 71. Public audit page now has three tabs: Muharaf, RASAM-1, unreviewed datasets (leakage table, heat map, <=3 random samples per finding). tadqiq/docs/10 §4."
+  },
+  {
+   "date": "2026-11-04",
+   "kind": "done",
    "text": "Toolkit: per-check precision/recall on Muharaf vs CER-HV (public page Fig. 7). garbled (27 % right) and letter_position (0 %) moved to experimental: false alarms 13.1 % -> 9.1 %, precision 86 % -> 90 %, found 1,390 -> 1,379. New checks: near_duplicate_image (D01n; only fires on omar-al-saleh: 8 true pairs, 5 blind_test<->train copies with different transcriptions), page_outlier (P04, info), garbled reader gate (CER >= 0.4). No-model experiments not shipped: orientation by neighbour window, signature-crop rules, stacked-text bands. All 16 datasets rescanned. tadqiq/docs/10."
   },
   {
