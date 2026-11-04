@@ -237,6 +237,11 @@
  ],
  "updates": [
   {
+   "date": "2026-11-04",
+   "kind": "done",
+   "text": "Toolkit false-alarm fixes after a line-by-line look at misses and false alarms on Muharaf: dotless ى and ًأ spellings, within-split repeated GT, digit commas and $ / \\ in amounts are conventions (notes), not flags. CER-HV false alarms 18.0 % -> 13.1 %, errors found 91.5 % -> 89.7 %, precision 82 % -> 86 %; dropped flags on RASAM-1/2/TariMa sit at the reader base rate. Misses: signature crops with correct names, stacked dates in one crop, wrong transcriptions, one upside-down page (7 of 11 orientation errors). Orientation probes: ink-baseline score AUC 0.85 on synthetic flips (too weak per line); suite_v1 char-CTC CRNN too weak (AUC 0.66, long lines unscorable). Public page: Muharaf Error Audit."
+  },
+  {
    "date": "2026-11-03",
    "kind": "done",
    "text": "Toolkit precision sprint. Precision measured per detector (Muharaf CER-HV labels; reader-disagreement proxy on RASAM-1/2, TariMa). garbled now uses a character LM adapted to the dataset (other-fold model + OpenITI): Muharaf garbled flags 1,028 -> 331 at equal precision. lookalike_letters and stray_tatweel demoted to hygiene (CER-HV: 0/9 and 4/32 real errors). Result on Muharaf: false alarms on valid lines 28.1 % -> 18.0 % while error lines found stay 92 % (1,439 -> 1,426). Word-level context LMs tested on synthetic errors: word trigram and CAMeLBERT masked LM both reach <= 9 % recall at 1 % FPR, so not shipped; a per-word character LM (odd_word, experimental) adds 10-14 points to the lexicon checks on spelling errors. Caveat: on KHATT (repeated fixed paragraphs, no page metadata) adapted garbled rises 20 -> 240 lines, a mix of real typos and by-design letter lists. Eight figures and a local review page: tadqiq/results/figures/muharaf/index.html."
