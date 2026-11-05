@@ -239,6 +239,11 @@
   {
    "date": "2026-11-05",
    "kind": "done",
+   "text": "Toolkit: RASAM-1 synthetic run on Colab CPU (0.02 units; scan seeded with real image measurements, no model run). On 101 lines the blind re-check judged correct, with reader-based checks: shift 99 %, truncate 99 %, merged text 80 %, dropped word 20 %, keyboard typo 10 %; untouched lines gaining a flag 0-0.03 %. Same types on Muharaf without readers: 1-12 %. Tiered review done by the user (203 cards, 17 min, median 3-4 s per card): near-duplicate transcriptions 10/10 right (AMIDDA, Omar al-Saleh), repeated GT AraMS 8/10, RASAM-2 garbled 2/9 definite, dotting 3/6 and 3/7; rotated crops 0 wrong but many unsure. Projected real errors: AMIDDA ~4,000, Baybars ~292, Omar al-Saleh ~119, RASAM-2 ~80, AraMS ~43, TariMa ~17. Mechanical tier not certain: blank flags on faint ink are false alarms; duplicate_image/degenerate verdicts await the user's reading (raw images byte-identical with different GT; 1-2 px crops)."
+  },
+  {
+   "date": "2026-11-05",
+   "kind": "done",
    "text": "Toolkit: RASAM-1 re-check closed (batch 2: 28 of 30 sheet+toolkit lines have a problem; clear-error precision after gate 23 %, 3.8x random). Review deck rebuilt in tiers (203 timed cards: mechanical x3, judgement x10). Leakage: exact counts (KHATT 551 of 1,038 test lines have their text in train, by design; AMIDDA 581; Omar al-Saleh 149 incl. 7 image copies); score effect not measurable with our models (0-3 leaked lines where we trained). Synthetic certain errors on CER-HV-verified Muharaf lines: empty/duplicate 100 %, re-saved duplicate 92 %, two-line image 69 %, text errors 1-12 %, upside-down 0 %; controls 0.1 %. RASAM-1 synthetic run (reader-based checks) delayed by the user. Public audit page now Muharaf-only (images as files)."
   },
   {
