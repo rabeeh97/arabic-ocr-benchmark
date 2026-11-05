@@ -32,7 +32,8 @@ def members() -> list[tuple[Path, str]]:
         out.append((p, f"tadqiq/cache/{p.name}"))
     for n in ["flags.jsonl", "summary.json", "imgstats_train.jsonl", "imgstats_validation.jsonl", "imgstats_test.jsonl"]:
         out.append((T / "results" / "RASAM-1" / n, f"tadqiq/results/RASAM-1/{n}"))
-    out.append((T / "results/adjudication/RASAM-1/verdicts_user.json", "tadqiq/results/adjudication/RASAM-1/verdicts_user.json"))
+    for n in ["verdicts_user.json", "items.json"]:  # verdicts are keyed by card number; items.json maps it to the line id
+        out.append((T / "results/adjudication/RASAM-1" / n, f"tadqiq/results/adjudication/RASAM-1/{n}"))
     for n in ["read_f0.json", "read_f1.json"]:
         out.append((REPO / "results/rasam/clean" / n, f"results/rasam/clean/{n}"))
     for r in READERS:
