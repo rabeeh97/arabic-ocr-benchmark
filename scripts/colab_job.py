@@ -205,18 +205,20 @@ def status_snippet(offset: int) -> str:
     )
 
 
-def manifest_snippet(artifacts: list[str], all_files: bool) -> str:
-    """List the files worth keeping with size and sha256: weights, configs, metrics and the job log. ckpt_last.pt (optimizer state, 3x the size) only when all_files."""
+def manifest_snippet(artifacts: list[str], all_files: bool, keep: list[str] | None = None) -> str:
+    """List the files worth keeping with size and sha256: weights, configs, metrics and the job log. ckpt_last.pt (optimizer state, 3x the size) only when all_files.
+    keep: extra filename suffixes to keep (spec field "keep", e.g. [".json", ".jsonl"] for a job whose results are not metrics files)."""
     return (
         "import hashlib, json, os\n"
         f"roots = {['/content/run'] + list(artifacts)!r}\n"
         "names = ('model_best.pt', 'model_final.pt', 'config.json', 'charset.json', 'heldout_cer.json', 'job.log', 'job.sh', 'exit_code')\n"
         f"all_files = {bool(all_files)!r}\n"
+        f"keep = {tuple(keep or ())!r}\n"
         "out = []\n"
         "for r in roots:\n"
         "    for d, _, fs in os.walk(r):\n"
         "        for n in fs:\n"
-        "            if n in names or n.startswith(('preds_', 'model_ema_', 'model_ep')) or n.endswith(('_metrics.json', '_overlap.json', '_timing.json')) or (all_files and n == 'ckpt_last.pt'):\n"
+        "            if n in names or n.startswith(('preds_', 'model_ema_', 'model_ep')) or n.endswith(('_metrics.json', '_overlap.json', '_timing.json')) or (all_files and n == 'ckpt_last.pt') or (keep and n.endswith(keep)):\n"
         "                p = os.path.join(d, n)\n"
         "                h = hashlib.sha256(open(p, 'rb').read()).hexdigest()\n"
         "                out.append([p, os.path.getsize(p), h])\n"
@@ -248,7 +250,7 @@ class Job:
         """Fetch every kept file that is new or changed, ONE FILE AT A TIME, and verify size and sha256 against the VM. True only if all are verified.
         A failed file is retried next time; files already verified are not downloaded again."""
         with self.sync_lock:
-            p, _ = self.kexec(manifest_snippet(self.spec.get("artifacts", []), all_files), 180)
+            p, _ = self.kexec(manifest_snippet(self.spec.get("artifacts", []), all_files, self.spec.get("keep")), 180)
             m = re.search(r"MANIFEST=(\[.*\])", p.stdout + p.stderr)
             if p.returncode != 0 or not m:
                 return False
@@ -352,7 +354,7 @@ def main() -> None:
     if a.dry_run:
         print(script)
         print(start_snippet(script, max_s)[:600])
-        print(manifest_snippet(spec.get("artifacts", []), False))
+        print(manifest_snippet(spec.get("artifacts", []), False, spec.get("keep")))
         print(status_snippet(0))
         return
 
@@ -468,7 +470,7 @@ def main() -> None:
                 print("final HF push:", ((q.stdout or "") + (q.stderr or "")).strip()[-160:], flush=True)
                 if tok:  # if HF already holds every weight and config file of the VM (sha256), the VM is not needed any more
                     try:
-                        mq, _ = job.kexec(manifest_snippet(spec.get("artifacts", []), False), 180)
+                        mq, _ = job.kexec(manifest_snippet(spec.get("artifacts", []), False, spec.get("keep")), 180)
                         mm = re.search(r"MANIFEST=(\[.*\])", (mq.stdout or "") + (mq.stderr or ""))
                         if mm:
                             man = {p: sha for p, _, sha in json.loads(mm.group(1))}
