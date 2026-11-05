@@ -239,6 +239,11 @@
   {
    "date": "2026-11-05",
    "kind": "done",
+   "text": "Toolkit: RASAM-1 re-check closed (batch 2: 28 of 30 sheet+toolkit lines have a problem; clear-error precision after gate 23 %, 3.8x random). Review deck rebuilt in tiers (203 timed cards: mechanical x3, judgement x10). Leakage: exact counts (KHATT 551 of 1,038 test lines have their text in train, by design; AMIDDA 581; Omar al-Saleh 149 incl. 7 image copies); score effect not measurable with our models (0-3 leaked lines where we trained). Synthetic certain errors on CER-HV-verified Muharaf lines: empty/duplicate 100 %, re-saved duplicate 92 %, two-line image 69 %, text errors 1-12 %, upside-down 0 %; controls 0.1 %. RASAM-1 synthetic run (reader-based checks) delayed by the user. Public audit page now Muharaf-only (images as files)."
+  },
+  {
+   "date": "2026-11-05",
+   "kind": "done",
    "text": "Toolkit: the user re-checked the 121 RASAM-1 lines blind (agreement with Claude 82/121, kappa 0.52). Human-based: flagged sheet lines 22 % clear errors (39 % any), 3.8x a random line; reader gate's 12 sheet-invalid additions all clear errors; 17 of 41 unflagged sheet-invalid lines have correct transcriptions. New I10 rotated_crop check (AMIDDA 349, baybars 257, RASAM-1 119; Muharaf 0: its orientation errors are 90-degree margin text). Usefulness without new models: reader-free flagged lines are 9 % of RASAM-1 test but carry 27 % of trained CRNN error (RASAM-2 11 % -> 30 %); Muharaf flagged lines 90 % errors vs 47 % base. Audit page: 10 samples per finding, self-evident boxes, fourth tab 'Does it help?'. Timed findings review deck (1,044 cards) ready. tadqiq/docs/10 §5."
   },
   {
