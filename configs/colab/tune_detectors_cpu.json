@@ -1,0 +1,35 @@
+{
+  "name": "tune-detectors",
+  "gpu": "CPU",
+  "max_units": 0.5,
+  "max_minutes": 300,
+  "poll_s": 60,
+  "sync_every_s": 600,
+  "final_sync_grace_min": 10,
+  "uploads": [
+    [
+      "results/rasam/colab_runs/_uploads/tune_code.tgz",
+      "/content/tune_code.tgz"
+    ],
+    [
+      "results/rasam/colab_runs/_uploads/tune_data.tgz",
+      "/content/tune_data.tgz"
+    ]
+  ],
+  "setup": [
+    "mkdir -p /content/work && tar -xzf /content/tune_code.tgz -C /content/work && tar -xzf /content/tune_data.tgz -C /content/work && pip install -q rapidfuzz && python -c \"import os; from huggingface_hub import snapshot_download; t = open('/content/.hf_token').read().strip() if os.path.exists('/content/.hf_token') else None; [snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t) for r in ['aamijar/muharaf-public', 'calfa-ai/RASAM-1', 'calfa-ai/RASAM-2', 'calfa-ai/tarima', 'Teklia/KHATT_v1.0', 'U4RASD/omar-al-saleh-manuscripts-segments', 'calfa-ai/baybars', 'calfa-ai/iskandar', 'calfa-ai/AMIDDA']]\""
+  ],
+  "runs": [
+    {
+      "label": "tune",
+      "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub PYTHONPATH=src python -u scripts/tune_detectors.py run --grid /content/work/tune_grid"
+    }
+  ],
+  "artifacts": [
+    "/content/work/tadqiq/results/tuning"
+  ],
+  "keep": [
+    ".json"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}

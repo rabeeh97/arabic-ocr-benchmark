@@ -1,0 +1,32 @@
+{
+  "name": "orient2",
+  "gpu": "CPU",
+  "max_units": 1.0,
+  "max_minutes": 660,
+  "poll_s": 60,
+  "sync_every_s": 600,
+  "final_sync_grace_min": 10,
+  "uploads": [
+    [
+      "results/rasam/colab_runs/_uploads/orient_code.tgz",
+      "/content/orient_code.tgz"
+    ]
+  ],
+  "setup": [
+    "mkdir -p /content/work && tar -xzf /content/orient_code.tgz -C /content/work && python -c \"import os; from huggingface_hub import snapshot_download; t = open('/content/.hf_token').read().strip() if os.path.exists('/content/.hf_token') else None; [snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t) for r in ['aamijar/muharaf-public', 'calfa-ai/RASAM-1', 'calfa-ai/RASAM-2', 'calfa-ai/tarima', 'Teklia/KHATT_v1.0', 'U4RASD/omar-al-saleh-manuscripts-segments', 'calfa-ai/baybars', 'calfa-ai/iskandar', 'calfa-ai/AMIDDA']]\" && nproc && free -g"
+  ],
+  "runs": [
+    {
+      "label": "orient",
+      "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub PYTHONPATH=src python -u scripts/orient_model.py all --restore job-orient2-cpu"
+    }
+  ],
+  "artifacts": [
+    "/content/crnn_out/orient"
+  ],
+  "keep": [
+    ".json",
+    ".gz"
+  ],
+  "local_out": "results/rasam/colab_runs"
+}

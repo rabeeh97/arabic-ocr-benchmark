@@ -68,7 +68,7 @@ def main():
         "sync_every_s": 600,
         "final_sync_grace_min": 10,
         "uploads": [[str(pk.relative_to(REPO)), f"/content/{pk.name}"] for pk in packs],
-        "setup": ["mkdir -p /content/work && " + " && ".join(f"tar -xzf /content/{pk.name} -C /content/work" for pk in packs) + " && " + dl],
+        "setup": ["mkdir -p /content/work && " + " && ".join(f"tar -xzf /content/{pk.name} -C /content/work" for pk in packs) + " && pip install -q rapidfuzz && " + dl],
         "runs": [{"label": "tune",
                   "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub PYTHONPATH=src python -u scripts/tune_detectors.py run "
                          "--grid /content/work/tune_grid"}],
