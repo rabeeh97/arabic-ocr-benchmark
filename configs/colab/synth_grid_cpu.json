@@ -29,7 +29,8 @@
     "/content/work/tadqiq/results/synthetic"
   ],
   "keep": [
-    ".json"
+    ".json",
+    ".jsonl"
   ],
   "local_out": "results/rasam/colab_runs"
 }

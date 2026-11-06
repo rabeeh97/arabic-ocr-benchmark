@@ -88,7 +88,7 @@ def main():
                   "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work TADQIQ_SYNTH=/content/synth "
                          f"PYTHONPATH=src python -u scripts/synthetic_grid.py --datasets {' '.join(names)} --n {n}"}],
         "artifacts": ["/content/work/tadqiq/results/synthetic"],
-        "keep": [".json"],
+        "keep": [".json", ".jsonl"],
         "local_out": "results/rasam/colab_runs",
     }
     out = REPO / f"configs/colab/synth_grid{'_smoke' if kind == 'smoke' else ''}_cpu.json"
