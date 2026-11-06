@@ -243,6 +243,7 @@ def main() -> None:
     ap.add_argument("--fade-aug", type=float, default=0.0, help="probability of fading a training line's ink towards the paper")
     ap.add_argument("--repeat-file", type=Path, help="JSON {\"extra\": {row_index: n}}: add n extra copies of these rows (indices into the pickle's rows)")
     ap.add_argument("--width", type=float, default=1.0, help="channel multiplier; 1.0 is the 3090 model")
+    ap.add_argument("--exclude", type=Path, help="JSON list of training-line keys to leave out (data-cleaning arms); heldout/test untouched")
     ap.add_argument("--max-train", type=int, default=0, help="use at most this many training lines (0 = all)")
     ap.add_argument("--train-sets", nargs="+", help="only rows whose dataset tag is listed (train and heldout alike); default all")
     ap.add_argument("--seed", type=int, help="seed python, numpy and torch (unset = unseeded, as the runs before 2026-10-13)")
@@ -285,6 +286,11 @@ def main() -> None:
     if a.train_sets:  # RASAM arms (A1-A4): train and select on the named dataset tags only
         rows = [r for r in rows if r["dataset"] in a.train_sets]
     train = [r for r in rows if r["role"] in ("train", "panel")]
+    if a.exclude:  # data-cleaning arms: leave these training lines out (keys as in the pack's "key" field); heldout and test are untouched
+        ex = set(json.loads(a.exclude.read_text()))
+        n0 = len(train)
+        train = [r for r in train if r.get("key", r["id"]) not in ex]
+        print(f"exclude: {n0 - len(train)} of {len(ex)} listed training lines left out", flush=True)
     DONORS[:] = [r["img"] for r in train]
     if a.max_train:
         random.Random(0).shuffle(train)
