@@ -8,12 +8,16 @@
   "final_sync_grace_min": 10,
   "uploads": [
     [
-      "results/rasam/colab_runs/_uploads/synth_grid_full_pack.tgz",
-      "/content/synth_grid_pack.tgz"
+      "results/rasam/colab_runs/_uploads/synth_grid_full_code.tgz",
+      "/content/synth_grid_full_code.tgz"
+    ],
+    [
+      "results/rasam/colab_runs/_uploads/synth_grid_full_data.tgz",
+      "/content/synth_grid_full_data.tgz"
     ]
   ],
   "setup": [
-    "mkdir -p /content/work /content/synth && tar -xzf /content/synth_grid_pack.tgz -C /content/work && pip install -q rapidfuzz && python -c \"import os; from huggingface_hub import snapshot_download; t = open('/content/.hf_token').read().strip() if os.path.exists('/content/.hf_token') else None; [snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t) for r in ['aamijar/muharaf-public', 'calfa-ai/RASAM-1', 'calfa-ai/RASAM-2', 'calfa-ai/tarima', 'Teklia/KHATT_v1.0', 'U4RASD/omar-al-saleh-manuscripts-segments', 'calfa-ai/baybars', 'calfa-ai/iskandar', 'calfa-ai/AMIDDA']]\" && free -g && df -h /content | tail -1"
+    "mkdir -p /content/work /content/synth && tar -xzf /content/synth_grid_full_code.tgz -C /content/work && tar -xzf /content/synth_grid_full_data.tgz -C /content/work && pip install -q rapidfuzz && python -c \"import os; from huggingface_hub import snapshot_download; t = open('/content/.hf_token').read().strip() if os.path.exists('/content/.hf_token') else None; [snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t) for r in ['aamijar/muharaf-public', 'calfa-ai/RASAM-1', 'calfa-ai/RASAM-2', 'calfa-ai/tarima', 'Teklia/KHATT_v1.0', 'U4RASD/omar-al-saleh-manuscripts-segments', 'calfa-ai/baybars', 'calfa-ai/iskandar', 'calfa-ai/AMIDDA']]\" && free -g && df -h /content | tail -1"
   ],
   "runs": [
     {

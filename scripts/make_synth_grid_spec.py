@@ -41,7 +41,7 @@ def members(names, resume):
             if p.exists():
                 out.append((p, f"results/rasam/crnn/{p.name}"))
     if resume:
-        out.append((resume, "tadqiq/results/synthetic/grid.json"))
+        out.append((resume, "tadqiq/results/synthetic/grid_v2.json"))
     return out
 
 
@@ -49,19 +49,26 @@ def main():
     kind = sys.argv[1] if len(sys.argv) > 1 else "full"
     names = ["tarima"] if kind == "smoke" else list(DATASETS)
     n = 5 if kind == "smoke" else 50
-    prev = sorted(glob.glob(str(REPO / "results/rasam/colab_runs/job-synth-grid-cpu-*/content/work/tadqiq/results/synthetic/grid.json")),
+    prev = sorted(glob.glob(str(REPO / "results/rasam/colab_runs/job-synth-grid-cpu-*/content/work/tadqiq/results/synthetic/grid_v2.json")),
                   key=os.path.getmtime)
     resume = Path(prev[-1]) if prev and kind == "full" else None
     ms = members(names, resume)
     miss = [str(p) for p, _ in ms if not p.exists()]
     if miss:
         raise SystemExit("missing: " + ", ".join(miss))
-    pack = REPO / f"results/rasam/colab_runs/_uploads/synth_grid_{kind}_pack.tgz"
-    pack.parent.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(pack, "w:gz") as tf:
-        for p, arc in ms:
-            tf.add(p, arcname=arc)
-    print(f"pack: {len(ms)} files, {pack.stat().st_size / 1e6:.0f} MB" + (f", resuming from {resume.relative_to(REPO)}" if resume else ""))
+    # two tarballs: uploads above ~64 MB fail with the colab CLI (85 MB failed twice, 64 MB worked)
+    packs = [REPO / f"results/rasam/colab_runs/_uploads/synth_grid_{kind}_{part}.tgz" for part in ("code", "data")]
+    packs[0].parent.mkdir(parents=True, exist_ok=True)
+    for pk, sel in zip(packs, (lambda arc: not arc.startswith("tadqiq/results/"), lambda arc: arc.startswith("tadqiq/results/"))):
+        with tarfile.open(pk, "w:gz") as tf:
+            for p, arc in ms:
+                if sel(arc):
+                    tf.add(p, arcname=arc)
+        mb = pk.stat().st_size / 1e6
+        print(f"{pk.name}: {mb:.0f} MB")
+        if mb > 66:
+            raise SystemExit(f"{pk.name} is {mb:.0f} MB: over the ~64 MB upload limit, split further")
+    print(f"{len(ms)} files" + (f", resuming from {resume.relative_to(REPO)}" if resume else ""))
     repos = [DATASETS[d] for d in names]
     dl = ("python -c \"import os; from huggingface_hub import snapshot_download; "
           "t = open('/content/.hf_token').read().strip() if os.path.exists('/content/.hf_token') else None; "
@@ -74,8 +81,8 @@ def main():
         "poll_s": 60,
         "sync_every_s": 600,
         "final_sync_grace_min": 10,
-        "uploads": [[str(pack.relative_to(REPO)), "/content/synth_grid_pack.tgz"]],
-        "setup": ["mkdir -p /content/work /content/synth && tar -xzf /content/synth_grid_pack.tgz -C /content/work "
+        "uploads": [[str(pk.relative_to(REPO)), f"/content/{pk.name}"] for pk in packs],
+        "setup": ["mkdir -p /content/work /content/synth && " + " && ".join(f"tar -xzf /content/{pk.name} -C /content/work" for pk in packs) + " "
                   "&& pip install -q rapidfuzz && " + dl + " && free -g && df -h /content | tail -1"],
         "runs": [{"label": "synth_grid",
                   "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work TADQIQ_SYNTH=/content/synth "

@@ -1,0 +1,33 @@
+{
+ "name": "muh-clean-s1",
+ "gpu": "T4",
+ "max_units": 10.0,
+ "max_minutes": 540,
+ "poll_s": 60,
+ "sync_every_s": 600,
+ "final_sync_grace_min": 15,
+ "uploads": [
+  [
+   "results/rasam/colab_runs/_uploads/muh_clean_pack.tgz",
+   "/content/muh_clean_pack.tgz"
+  ]
+ ],
+ "setup": [
+  "mkdir -p /content/work && tar -xzf /content/muh_clean_pack.tgz -C /content/work",
+  "pip install -q rapidfuzz",
+  "python -c \"from huggingface_hub import snapshot_download; snapshot_download('aamijar/muharaf-public', repo_type='dataset', cache_dir='/content/hf/hub', token=open('/content/.hf_token').read().strip())\""
+ ],
+ "runs": [
+  {
+   "label": "muh-clean-s1",
+   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HV TK HVTK RND --seeds 1 --epochs 30 --restore job-muh-clean-s1-t4"
+  }
+ ],
+ "artifacts": [
+  "/content/crnn_out"
+ ],
+ "keep": [
+  ".json"
+ ],
+ "local_out": "results/rasam/colab_runs"
+}

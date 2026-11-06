@@ -237,6 +237,26 @@
  ],
  "updates": [
   {
+   "date": "2026-11-06",
+   "kind": "done",
+   "text": "Synthetic grid v1 on 9 datasets × 20 error cells: text errors are caught mostly where model readings exist; rot180 and crops are the blind spots."
+  },
+  {
+   "date": "2026-11-06",
+   "kind": "done",
+   "text": "Muharaf: ~721 (663–764) errors expected among the 920 flagged lines CER-HV did not check; ranked cleaning list written."
+  },
+  {
+   "date": "2026-11-06",
+   "kind": "done",
+   "text": "Review deck for the uncorrected datasets: 101 definite + 96 possible findings (local page)."
+  },
+  {
+   "date": "2026-11-06",
+   "kind": "started",
+   "text": "Dirty-vs-clean training on Muharaf (5 arms × 3 seeds, Colab T4, resumable from HF)."
+  },
+  {
    "date": "2026-11-05",
    "kind": "done",
    "text": "Toolkit: RASAM-1 synthetic run on Colab CPU (0.02 units; scan seeded with real image measurements, no model run). On 101 lines the blind re-check judged correct, with reader-based checks: shift 99 %, truncate 99 %, merged text 80 %, dropped word 20 %, keyboard typo 10 %; untouched lines gaining a flag 0-0.03 %. Same types on Muharaf without readers: 1-12 %. Tiered review done by the user (203 cards, 17 min, median 3-4 s per card), judging whether each flagged line's transcription matches its image. Transcription wrong on: RASAM-2 garbled 7/9, TariMa dotting 4/7, RASAM-2 dotting 3/6, AMIDDA repeated GT 4/9 and oov 3/8, conventions 2/6-2/8, AraMS repeated GT 2/10; near-duplicate transcriptions 0/20 and rotated crops 0/25 (structure, not transcription). Mechanical: duplicate images with differing GT 14/17 and 1-2 px crops 9/9 wrong (raw images byte-identical), blank 7/9 (faint ink sometimes readable). Projected lines whose transcription does not match the image (each line once): RASAM-2 ~124, AMIDDA ~71 (24-1,660), AraMS ~30, KHATT ~24, TariMa ~22, Baybars ~17, Omar al-Saleh ~0; Iskandar pending (3 definite answers)."
