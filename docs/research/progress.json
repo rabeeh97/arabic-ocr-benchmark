@@ -238,6 +238,16 @@
  "updates": [
   {
    "date": "2026-11-07",
+   "kind": "done",
+   "text": "Public audit page republished with the tuned detectors (Muharaf F1 0.91) and the full AMIDDA rescan (samples cut on Colab CPU instead of a 9 GB local download)."
+  },
+  {
+   "date": "2026-11-07",
+   "kind": "finding",
+   "text": "Orientation model v2: catches all 11 of CER-HV's rotated Muharaf lines when Muharaf is unseen (old checks 4/11); auto-correction lands within 3° on 98.5–100 % of fixed lines."
+  },
+  {
+   "date": "2026-11-07",
    "kind": "started",
    "text": "Colab GPU queue: CER-HV's ResNet CRNN and three new recipes (modern optimisation, HTR augmentation, Conformer), each trained on dirty data and the best cleaned version (seed 0)."
   },
