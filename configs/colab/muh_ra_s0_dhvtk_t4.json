@@ -20,7 +20,7 @@
  "runs": [
   {
    "label": "muh-ra-s0-dhvtk",
-   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HVTK --seeds 0 --epochs 40 --tag _A --parallel 2 --restore job-muh-ra-s0 --recipe='--arch bp --bs 32 --lr 2e-3 --wd 0.05 --sched cosine --warmup 2 --drop-path 0.1 --rnn-drop 0.4 --keep-last 4 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
+   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HVTK --seeds 0 --epochs 40 --tag _A --parallel 1 --restore job-muh-ra-s0 --recipe='--arch bp --bs 32 --lr 2e-3 --wd 0.05 --sched cosine --warmup 2 --drop-path 0.1 --rnn-drop 0.4 --keep-last 4 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
   }
  ],
  "artifacts": [

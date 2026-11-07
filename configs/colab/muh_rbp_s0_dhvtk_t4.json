@@ -20,7 +20,7 @@
  "runs": [
   {
    "label": "muh-rbp-s0-dhvtk",
-   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HVTK --seeds 0 --epochs 40 --tag _bp --parallel 2 --restore job-muh-rbp-s0 --recipe='--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
+   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HVTK --seeds 0 --epochs 40 --tag _bp --parallel 1 --restore job-muh-rbp-s0 --recipe='--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
   }
  ],
  "artifacts": [

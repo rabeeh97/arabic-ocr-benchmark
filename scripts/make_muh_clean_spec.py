@@ -66,7 +66,7 @@ def main():
     ap.add_argument("kind", choices=["probe", "seed", "pilot", "recipe"])
     ap.add_argument("--recipe", choices=sorted(RECIPES), help="kind recipe: which recipe")
     ap.add_argument("--arms", nargs="+", default=["D", "HVTK"])
-    ap.add_argument("--parallel", type=int, default=2)
+    ap.add_argument("--parallel", type=int, default=1)  # 2 arms side by side ran out of T4 host RAM (bs 16) or GPU memory (bs 32), 2026-11-07
     ap.add_argument("seed", nargs="?", type=int, default=0)
     ap.add_argument("--epochs", type=int, default=30)
     ap.add_argument("--units", type=float, default=8.0)

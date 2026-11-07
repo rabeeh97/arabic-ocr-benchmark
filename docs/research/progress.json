@@ -238,6 +238,11 @@
  "updates": [
   {
    "date": "2026-11-07",
+   "kind": "status",
+   "text": "CER-HV recipe on Colab: first launch ran out of memory (two arms per T4); relaunched one arm at a time. Measured ~7 min per epoch, ~5 units per arm, so seed 0 of all four recipes (D + HVTK) fits the current budget."
+  },
+  {
+   "date": "2026-11-07",
    "kind": "finding",
    "text": "Clean-vs-dirty control (seed 0): dropping 2,150 random lines gives 15.0 % CER (worse than all data, 14.7 %); dropping the 2,150 flagged lines gives 13.2 %. The gain is from cleaning, not from less data."
   },
