@@ -238,6 +238,11 @@
  "updates": [
   {
    "date": "2026-11-07",
+   "kind": "finding",
+   "text": "Clean-vs-dirty control (seed 0): dropping 2,150 random lines gives 15.0 % CER (worse than all data, 14.7 %); dropping the 2,150 flagged lines gives 13.2 %. The gain is from cleaning, not from less data."
+  },
+  {
+   "date": "2026-11-07",
    "kind": "done",
    "text": "Public audit page republished with the tuned detectors (Muharaf F1 0.91) and the full AMIDDA rescan (samples cut on Colab CPU instead of a 9 GB local download)."
   },
