@@ -19,6 +19,9 @@ REPO = Path(__file__).resolve().parent.parent
 T = REPO / "tadqiq"
 
 
+GPU = sys.argv[1] if len(sys.argv) > 1 else "CPU"   # CPU or T4
+
+
 def main():
     ms = [(p, f"tadqiq/src/tadqiq/{p.name}") for p in sorted((T / "src" / "tadqiq").glob("*.py"))]
     ms += [(T / "scripts/orient_model.py", "tadqiq/scripts/orient_model.py"),
@@ -35,9 +38,9 @@ def main():
           f"[snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t) for r in {repos!r}]\"")
     spec = {
         "name": "orient2",
-        "gpu": "CPU",
-        "max_units": 1.0,
-        "max_minutes": 660,
+        "gpu": GPU,
+        "max_units": 1.0 if GPU == "CPU" else 4.0,
+        "max_minutes": 660 if GPU == "CPU" else 240,
         "poll_s": 60,
         "sync_every_s": 600,
         "final_sync_grace_min": 10,
@@ -45,12 +48,12 @@ def main():
         "setup": [f"mkdir -p /content/work && tar -xzf /content/{pk.name} -C /content/work && {dl} && nproc && free -g"],
         "runs": [{"label": "orient",
                   "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub PYTHONPATH=src python -u scripts/orient_model.py all "
-                         "--restore job-orient2-cpu"}],
+                         "--restore job-orient2"}],
         "artifacts": ["/content/crnn_out/orient"],
         "keep": [".json", ".gz"],
         "local_out": "results/rasam/colab_runs",
     }
-    out = REPO / "configs/colab/orient2_cpu.json"
+    out = REPO / f"configs/colab/orient2_{GPU.lower()}.json"
     out.write_text(json.dumps(spec, indent=2) + "\n")
     print(f"spec -> {out.relative_to(REPO)}")
 

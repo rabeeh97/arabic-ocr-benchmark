@@ -49,9 +49,9 @@ def main():
         "setup": ["mkdir -p /content/work && " + " && ".join(f"tar -xzf /content/{pk.name} -C /content/work" for pk in packs)
                   + " && pip install -q rapidfuzz && " + dl],
         "runs": [{"label": "rescan",
-                  "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work PYTHONPATH=src "
+                  "cmd": "cd /content/work/tadqiq && RESCAN_OUT=/content/crnn_out/rescan TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work PYTHONPATH=src "
                          f"python -u scripts/rescan_all.py --datasets {' '.join(names)}"}],
-        "artifacts": ["/content/work/tadqiq/results/rescan"],
+        "artifacts": ["/content/crnn_out/rescan"],
         "keep": [".json", ".jsonl"],
         "local_out": "results/rasam/colab_runs",
     }

@@ -1,7 +1,7 @@
 {
  "name": "muh-clean-s0",
  "gpu": "T4",
- "max_units": 10.0,
+ "max_units": 3.0,
  "max_minutes": 540,
  "poll_s": 60,
  "sync_every_s": 600,

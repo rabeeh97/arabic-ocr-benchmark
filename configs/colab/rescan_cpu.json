@@ -22,11 +22,11 @@
   "runs": [
     {
       "label": "rescan",
-      "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work PYTHONPATH=src python -u scripts/rescan_all.py --datasets muharaf-public RASAM-1 RASAM-2 tarima KHATT_v1.0 omar-al-saleh-manuscripts-segments baybars iskandar AMIDDA"
+      "cmd": "cd /content/work/tadqiq && RESCAN_OUT=/content/crnn_out/rescan TADQIQ_HUB=/content/hf/hub TADQIQ_MAIN=/content/work PYTHONPATH=src python -u scripts/rescan_all.py --datasets muharaf-public RASAM-1 RASAM-2 tarima KHATT_v1.0 omar-al-saleh-manuscripts-segments baybars iskandar AMIDDA"
     }
   ],
   "artifacts": [
-    "/content/work/tadqiq/results/rescan"
+    "/content/crnn_out/rescan"
   ],
   "keep": [
     ".json",
