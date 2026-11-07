@@ -1,0 +1,33 @@
+{
+ "name": "muh-bp-pilot",
+ "gpu": "T4",
+ "max_units": 6.0,
+ "max_minutes": 360,
+ "poll_s": 60,
+ "sync_every_s": 600,
+ "final_sync_grace_min": 15,
+ "uploads": [
+  [
+   "results/rasam/colab_runs/_uploads/muh_clean_pack.tgz",
+   "/content/muh_clean_pack.tgz"
+  ]
+ ],
+ "setup": [
+  "mkdir -p /content/work && tar -xzf /content/muh_clean_pack.tgz -C /content/work",
+  "pip install -q rapidfuzz",
+  "python -c \"from huggingface_hub import snapshot_download; snapshot_download('aamijar/muharaf-public', repo_type='dataset', cache_dir='/content/hf/hub', token=open('/content/.hf_token').read().strip())\""
+ ],
+ "runs": [
+  {
+   "label": "muh-bp-pilot",
+   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D --seeds 0 --epochs 40 --restore job-muh-bp-pilot-t4 --recipe='--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
+  }
+ ],
+ "artifacts": [
+  "/content/crnn_out"
+ ],
+ "keep": [
+  ".json"
+ ],
+ "local_out": "results/rasam/colab_runs"
+}

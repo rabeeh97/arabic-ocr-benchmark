@@ -3,6 +3,8 @@
     PYTHONPATH=src python scripts/make_muh_clean_spec.py probe            → configs/colab/muh_clean_probe_t4.json (1 epoch, arm D: timing)
     PYTHONPATH=src python scripts/make_muh_clean_spec.py seed 0 --epochs 30 [--units 8 --minutes 420]
                                                                         → configs/colab/muh_clean_s0_t4.json (all five arms, one seed)
+    PYTHONPATH=src python scripts/make_muh_clean_spec.py pilot 0 --epochs 40 --units 6 --minutes 360
+                                                                        → configs/colab/muh_bp_pilot_t4.json (arm D, --arch bp, CER-HV-style)
 Each seed job restores its arms from the HF runs repo first, so rerunning the same spec after a cut continues the work.
 """
 from __future__ import annotations
@@ -47,7 +49,7 @@ def spec(name, run, units, minutes):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("kind", choices=["probe", "seed"])
+    ap.add_argument("kind", choices=["probe", "seed", "pilot"])
     ap.add_argument("seed", nargs="?", type=int, default=0)
     ap.add_argument("--epochs", type=int, default=30)
     ap.add_argument("--units", type=float, default=8.0)
@@ -58,6 +60,11 @@ def main():
     if a.kind == "probe":
         s = spec("muh-clean-probe", f"{base} --arms D --seeds 0 --epochs 1", 1.2, 75)
         out = ROOT / "configs" / "colab" / "muh_clean_probe_t4.json"
+    elif a.kind == "pilot":  # CER-HV-style ResNet CRNN (--arch bp) on the raw train set: can our trainer reach their ~9.7 % full-test CER?
+        name = "muh-bp-pilot"
+        rec = "--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999"
+        s = spec(name, f"{base} --arms D --seeds {a.seed} --epochs {a.epochs} --restore job-{name}-t4 --recipe='{rec}'", a.units, a.minutes)
+        out = ROOT / "configs" / "colab" / "muh_bp_pilot_t4.json"
     else:
         name = f"muh-clean-s{a.seed}"
         s = spec(name, f"{base} --arms D HV TK HVTK RND --seeds {a.seed} --epochs {a.epochs} --restore job-{name}-t4", a.units, a.minutes)

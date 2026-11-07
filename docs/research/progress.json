@@ -237,6 +237,26 @@
  ],
  "updates": [
   {
+   "date": "2026-11-07",
+   "kind": "done",
+   "text": "Detector tuning applied and all 9 datasets rescanned: Muharaf F1 vs CER-HV labels 0.89 → 0.91 (false alarms 158 → 80); flags fell on 7 of 9 datasets (e.g. Baybars 1,326 → 502)."
+  },
+  {
+   "date": "2026-11-07",
+   "kind": "done",
+   "text": "Dirty vs clean training, seed 0 (our VGG CRNN): full-test CER D 14.7 / HV 13.8 / TK 13.5 / HVTK 13.2 %; toolkit cleaning beats CER-HV's own labels, and the union is best."
+  },
+  {
+   "date": "2026-11-07",
+   "kind": "done",
+   "text": "Compared with CER-HV (arXiv 2601.16713, same split): their recognizer is 3.5 points better (9.7 vs 13.2 % full test); 94.5 % of our top-50 Muharaf flags are errors by their labels."
+  },
+  {
+   "date": "2026-11-07",
+   "kind": "next",
+   "text": "Main effort: reproduce CER-HV's ResNet CRNN (pilot on Colab T4), then rerun the cleaning arms × 3 seeds. Later: three alternative recipes (modern optimisation; HTR-specific augmentation; Conformer + synthetic/self-training)."
+  },
+  {
    "date": "2026-11-06",
    "kind": "done",
    "text": "Synthetic grid v1 on 9 datasets × 20 error cells: text errors are caught mostly where model readings exist; rot180 and crops are the blind spots."

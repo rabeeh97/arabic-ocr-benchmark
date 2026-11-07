@@ -96,8 +96,51 @@ class TallCRNN(CRNN):
         self.proj = nn.Linear(c(512) * (height // 8), c(hidden))
 
 
+class ResBlock(nn.Module):
+    def __init__(self, cin: int, cout: int) -> None:
+        super().__init__()
+        self.body = nn.Sequential(nn.Conv2d(cin, cout, 3, padding=1, bias=False), nn.BatchNorm2d(cout), nn.ReLU(inplace=True),
+                                  nn.Conv2d(cout, cout, 3, padding=1, bias=False), nn.BatchNorm2d(cout))
+        self.skip = nn.Identity() if cin == cout else nn.Sequential(nn.Conv2d(cin, cout, 1, bias=False), nn.BatchNorm2d(cout))
+
+    def forward(self, x):
+        return F.relu(self.body(x) + self.skip(x))
+
+
+class BPCRNN(nn.Module):
+    """The CER-HV paper's recogniser (Al-azzawi et al. 2026, section 3.2, after Retsinas et al.'s "Best practices" HTR): 7x7 conv (32 ch,
+    stride 2), ResNet blocks 2x64, 4x128, 4x256 with max-pooling between groups, column-wise max-pool over the height, three BiLSTM layers
+    of 256 with dropout 0.2, dropout 0.2 before the classifier, and an auxiliary CTC "shortcut" head (1-D conv on the column features)
+    used only in training (loss weight 0.1). One deviation: the width is reduced 4x, not 8x (T = W // 4 like our other models), so long
+    lines keep enough CTC frames without squashing the image to a fixed width."""
+
+    def __init__(self, n_classes: int, hidden: int = 256) -> None:
+        super().__init__()
+
+        def group(cin, cout, n):
+            return [ResBlock(cin if i == 0 else cout, cout) for i in range(n)]
+        self.cnn = nn.Sequential(nn.Conv2d(1, 32, 7, stride=2, padding=3, bias=False), nn.BatchNorm2d(32), nn.ReLU(inplace=True),
+                                 *group(32, 64, 2), nn.MaxPool2d(2, 2),           # H/4, W/4
+                                 *group(64, 128, 4), nn.MaxPool2d((2, 1), (2, 1)),  # H/8, W/4
+                                 *group(128, 256, 4))
+        self.rnn = nn.LSTM(256, hidden, num_layers=3, dropout=0.2, bidirectional=True)
+        self.drop = nn.Dropout(0.2)
+        self.fc = nn.Linear(hidden * 2, n_classes)
+        self.shortcut = nn.Conv1d(256, n_classes, 3, padding=1)
+
+    def forward(self, x: torch.Tensor):
+        f = self.cnn(x).amax(2)                       # B,256,T  (column-wise max over the height)
+        y, _ = self.rnn(f.permute(2, 0, 1))           # T,B,2h
+        out = self.fc(self.drop(y))
+        if self.training:
+            return out, self.shortcut(f).permute(2, 0, 1)
+        return out
+
+
 def build_model(n_classes: int, cfg: dict) -> nn.Module:
     """The model a run's config.json describes (used by the trainer and the RASAM scoring scripts)."""
+    if cfg.get("arch") == "bp":
+        return BPCRNN(n_classes)
     if cfg.get("arch", "vgg") == "calfa":
         return CalfaCRNN(n_classes, height=int(cfg.get("height", 120)))
     if cfg.get("arch") == "vgg_tall":
@@ -139,6 +182,30 @@ def geom_aug(x: torch.Tensor, lens: torch.Tensor):
     return x, lens
 
 
+WARP_P = 0.0  # set by --warp-aug: probability of a small rotation + elastic (smooth random) warp per line
+
+
+def warp_aug(x: torch.Tensor, lens: torch.Tensor) -> torch.Tensor:
+    """The CER-HV recipe's affine + grid/elastic distortion, on the GPU: rotation up to +-2 degrees, vertical scale 0.9-1.1, and a smooth
+    displacement field (control points every ~32 px, up to 2.5 px x / 1.5 px y, bilinear upsampling). Paper (+1) fills the borders."""
+    b, _, h, w = x.shape
+    dev = x.device
+    on = (torch.rand(b, device=dev) < WARP_P).float()
+    ang = torch.deg2rad(torch.empty(b, device=dev).uniform_(-2, 2)) * on
+    sy = 1 + torch.empty(b, device=dev).uniform_(-0.1, 0.1) * on
+    theta = torch.zeros(b, 2, 3, device=dev)
+    theta[:, 0, 0] = torch.cos(ang)
+    theta[:, 0, 1] = -torch.sin(ang) * h / w
+    theta[:, 1, 0] = torch.sin(ang) * w / h
+    theta[:, 1, 1] = torch.cos(ang) * sy
+    grid = F.affine_grid(theta, list(x.shape), align_corners=False)
+    nx = max(2, w // 32)
+    d = torch.empty(b, 2, 3, nx, device=dev).uniform_(-1, 1) * on[:, None, None, None]
+    d = F.interpolate(d, size=(h, w), mode="bicubic", align_corners=True)
+    grid = grid + torch.stack([d[:, 0] * 2.5 * 2 / w, d[:, 1] * 1.5 * 2 / h], -1)
+    return F.grid_sample(x - 1, grid, mode="bilinear", padding_mode="zeros", align_corners=False) + 1
+
+
 NEIGHBOR_P = 0.0  # set by --neighbor-aug: probability of pasting ink strips of other lines above and below (tall RASAM crops contain neighbours)
 FADE_P = 0.0  # set by --fade-aug: probability of fading the ink towards the paper (faint RASAM-2 lines)
 DONORS: list = []  # training images that provide the neighbour strips
@@ -171,6 +238,8 @@ def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
     if train and GEOM_AUG:
         x, lens = geom_aug(x, lens)
         wmax = x.shape[3]
+    if train and WARP_P:
+        x = warp_aug(x, lens)
     if train:
         s = random.uniform(0.9, 1.1)  # one width scale per batch
         nw = max(8, int(round(wmax * s / 4)) * 4)
@@ -255,7 +324,8 @@ def main() -> None:
     ap.add_argument("--patience", type=int, default=0, help="stop after this many evaluations without a new best held-out CER (0 = never)")
     ap.add_argument("--abort-stuck", type=int, default=0, help="stop (exit 3) if the mean held-out CER is still above 0.95 at this epoch: "
                     "a CTC model stuck on blanks wastes the rest of the budget")
-    ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
+    ap.add_argument("--warp-aug", type=float, default=0.0, help="probability of a small rotation + elastic warp per training line (warp_aug)")
+    ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa", "bp"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
                     "CRNN (3 conv blocks, height / 4, 4 x BiLSTM 512); --width does not apply to calfa")
     ap.add_argument("--init", type=Path, help="start from these weights (a model_*.pt in a run dir) and keep that run's charset.json: fine-tuning, "
                     "e.g. specialising a shared model on one corpus with --train-sets")
@@ -271,14 +341,16 @@ def main() -> None:
         random.seed(a.seed)
         np.random.seed(a.seed)
         torch.manual_seed(a.seed)
-    global GEOM_AUG, NEIGHBOR_P, FADE_P
+    global GEOM_AUG, NEIGHBOR_P, FADE_P, WARP_P
     GEOM_AUG = a.geom_aug
+    WARP_P = a.warp_aug
     NEIGHBOR_P, FADE_P = a.neighbor_aug, a.fade_aug
     blob = pickle.load(open(a.data, "rb"))
     global H
     H = int(blob.get("H", 64))  # line height is a property of the data pack (rasam_prepare_crnn_data.py --height)
-    if H % (4 if a.arch == "calfa" else 32):
-        raise SystemExit(f"line height {H} must be a multiple of {4 if a.arch == 'calfa' else 32} for --arch {a.arch}")
+    hm = {"calfa": 4, "bp": 8}.get(a.arch, 32)
+    if H % hm:
+        raise SystemExit(f"line height {H} must be a multiple of {hm} for --arch {a.arch}")
     rows = blob["rows"]
     extra = {int(k): int(v) for k, v in json.loads(a.repeat_file.read_text())["extra"].items()} if a.repeat_file else {}
     for j, r in enumerate(rows):
@@ -311,7 +383,7 @@ def main() -> None:
     (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs,
                                                    "ema": a.ema, "keep_last": a.keep_last, "init": str(a.init) if a.init else None, "arch": a.arch,
-                                                   "train_sets": a.train_sets, "lr": a.lr}), encoding="utf-8")
+                                                   "train_sets": a.train_sets, "lr": a.lr, "warp_aug": a.warp_aug}), encoding="utf-8")
     model = build_model(len(chars) + 1, {"arch": a.arch, "width": a.width, "height": H}).to(dev)
     if a.init:
         model.load_state_dict(torch.load(a.init, map_location=dev))
@@ -367,8 +439,13 @@ def main() -> None:
             tl = torch.tensor([len(s) for s in tgt], device=dev)
             with torch.autocast("cuda" if dev == "cuda" else "cpu", dtype=torch.float16, enabled=dev == "cuda"):
                 logits = model(x)
+            aux = None
+            if isinstance(logits, tuple):  # bp: main head + CTC shortcut head (training only, weight 0.1)
+                logits, aux = logits
             lp = logits.float().log_softmax(-1)
             loss = ctc(lp, flat, torch.clamp(lens // 4, min=1), tl)
+            if aux is not None:
+                loss = loss + 0.1 * ctc(aux.float().log_softmax(-1), flat, torch.clamp(lens // 4, min=1), tl)
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
