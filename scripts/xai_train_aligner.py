@@ -102,9 +102,35 @@ class ResBlock(nn.Module):
         self.body = nn.Sequential(nn.Conv2d(cin, cout, 3, padding=1, bias=False), nn.BatchNorm2d(cout), nn.ReLU(inplace=True),
                                   nn.Conv2d(cout, cout, 3, padding=1, bias=False), nn.BatchNorm2d(cout))
         self.skip = nn.Identity() if cin == cout else nn.Sequential(nn.Conv2d(cin, cout, 1, bias=False), nn.BatchNorm2d(cout))
+        self.dp = 0.0  # stochastic depth (drop-path) probability, set by --drop-path; only identity-skip blocks are dropped
 
     def forward(self, x):
-        return F.relu(self.body(x) + self.skip(x))
+        y = self.body(x)
+        if self.training and self.dp and isinstance(self.skip, nn.Identity):
+            keep = (torch.rand(x.shape[0], 1, 1, 1, device=x.device) >= self.dp).to(y.dtype) / (1 - self.dp)
+            y = y * keep
+        return F.relu(y + self.skip(x))
+
+
+def feat_mask(f: torch.Tensor, p: float) -> torch.Tensor:
+    """SpecAugment-style masking on the CNN feature sequence f (B,C,T), training only (recipe B): with probability p per line, zero
+    ~1 frame block per 40 frames (each up to 6 frames wide, i.e. ~24 px, under a letter) and 2 channel blocks of up to 24 channels."""
+    b, c, t = f.shape
+    dev = f.device
+    m = torch.ones(b, c, t, device=dev, dtype=f.dtype)
+    on = torch.rand(b, device=dev) < p
+    ar_t, ar_c = torch.arange(t, device=dev), torch.arange(c, device=dev)
+    for _ in range(max(1, t // 40)):
+        w = torch.randint(0, 7, (b,), device=dev)
+        s0 = (torch.rand(b, device=dev) * (t - w).clamp(min=1)).long()
+        blk = (ar_t[None] >= s0[:, None]) & (ar_t[None] < (s0 + w)[:, None]) & on[:, None]
+        m = m * (~blk)[:, None, :]
+    for _ in range(2):
+        w = torch.randint(0, 25, (b,), device=dev)
+        s0 = (torch.rand(b, device=dev) * (c - w).clamp(min=1)).long()
+        blk = (ar_c[None] >= s0[:, None]) & (ar_c[None] < (s0 + w)[:, None]) & on[:, None]
+        m = m * (~blk)[:, :, None]
+    return f * m
 
 
 class BPCRNN(nn.Module):
@@ -114,8 +140,9 @@ class BPCRNN(nn.Module):
     used only in training (loss weight 0.1). One deviation: the width is reduced 4x, not 8x (T = W // 4 like our other models), so long
     lines keep enough CTC frames without squashing the image to a fixed width."""
 
-    def __init__(self, n_classes: int, hidden: int = 256) -> None:
+    def __init__(self, n_classes: int, hidden: int = 256, rnn_drop: float = 0.2) -> None:
         super().__init__()
+        self.featmask = 0.0  # set by --featmask (recipe B)
 
         def group(cin, cout, n):
             return [ResBlock(cin if i == 0 else cout, cout) for i in range(n)]
@@ -123,24 +150,83 @@ class BPCRNN(nn.Module):
                                  *group(32, 64, 2), nn.MaxPool2d(2, 2),           # H/4, W/4
                                  *group(64, 128, 4), nn.MaxPool2d((2, 1), (2, 1)),  # H/8, W/4
                                  *group(128, 256, 4))
-        self.rnn = nn.LSTM(256, hidden, num_layers=3, dropout=0.2, bidirectional=True)
+        self.rnn = nn.LSTM(256, hidden, num_layers=3, dropout=rnn_drop, bidirectional=True)
         self.drop = nn.Dropout(0.2)
         self.fc = nn.Linear(hidden * 2, n_classes)
         self.shortcut = nn.Conv1d(256, n_classes, 3, padding=1)
 
+    def encode(self, f: torch.Tensor) -> torch.Tensor:  # B,256,T -> T,B,D
+        y, _ = self.rnn(f.permute(2, 0, 1))
+        return y
+
     def forward(self, x: torch.Tensor):
         f = self.cnn(x).amax(2)                       # B,256,T  (column-wise max over the height)
-        y, _ = self.rnn(f.permute(2, 0, 1))           # T,B,2h
-        out = self.fc(self.drop(y))
+        if self.training and self.featmask:
+            f = feat_mask(f, self.featmask)
+        out = self.fc(self.drop(self.encode(f)))
         if self.training:
             return out, self.shortcut(f).permute(2, 0, 1)
         return out
 
 
+class ConformerBlock(nn.Module):
+    """Macaron feed-forward / self-attention / depthwise-conv block (Gulati et al. 2020), pre-norm, T,B,D layout."""
+
+    def __init__(self, d: int = 256, heads: int = 4, ff: int = 1024, k: int = 15, drop: float = 0.1) -> None:
+        super().__init__()
+        self.ff1 = nn.Sequential(nn.LayerNorm(d), nn.Linear(d, ff), nn.SiLU(), nn.Dropout(drop), nn.Linear(ff, d), nn.Dropout(drop))
+        self.ff2 = nn.Sequential(nn.LayerNorm(d), nn.Linear(d, ff), nn.SiLU(), nn.Dropout(drop), nn.Linear(ff, d), nn.Dropout(drop))
+        self.ln_att = nn.LayerNorm(d)
+        self.att = nn.MultiheadAttention(d, heads, dropout=drop)
+        self.ln_conv = nn.LayerNorm(d)
+        self.pw1 = nn.Conv1d(d, 2 * d, 1)
+        self.dw = nn.Conv1d(d, d, k, padding=k // 2, groups=d)
+        self.bn = nn.BatchNorm1d(d)
+        self.pw2 = nn.Conv1d(d, d, 1)
+        self.drop = nn.Dropout(drop)
+        self.ln_out = nn.LayerNorm(d)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = x + 0.5 * self.ff1(x)
+        h = self.ln_att(x)
+        x = x + self.drop(self.att(h, h, h, need_weights=False)[0])
+        h = self.ln_conv(x).permute(1, 2, 0)          # B,D,T
+        h = self.pw2(F.silu(self.bn(self.dw(F.glu(self.pw1(h), dim=1)))))
+        x = x + self.drop(h.permute(2, 0, 1))
+        x = x + 0.5 * self.ff2(x)
+        return self.ln_out(x)
+
+
+class BPConformer(BPCRNN):
+    """Recipe C: the CER-HV ResNet front-end with the BiLSTM replaced by a Conformer encoder (d 256, 4 heads, conv kernel 15) plus a
+    sinusoidal position code; same CTC head and CTC shortcut head."""
+
+    def __init__(self, n_classes: int, layers: int = 4, d: int = 256) -> None:
+        super().__init__(n_classes)
+        del self.rnn
+        self.proj = nn.Linear(256, d)
+        self.blocks = nn.ModuleList([ConformerBlock(d) for _ in range(layers)])
+        self.fc = nn.Linear(d, n_classes)
+
+    def encode(self, f: torch.Tensor) -> torch.Tensor:
+        x = self.proj(f.permute(2, 0, 1))             # T,B,D
+        t, _, d = x.shape
+        pos = torch.arange(t, device=x.device, dtype=torch.float32)[:, None]
+        div = torch.exp(torch.arange(0, d, 2, device=x.device, dtype=torch.float32) * (-math.log(10000.0) / d))
+        pe = torch.zeros(t, d, device=x.device)
+        pe[:, 0::2], pe[:, 1::2] = torch.sin(pos * div), torch.cos(pos * div)
+        x = x + pe[:, None, :].to(x.dtype)
+        for blk in self.blocks:
+            x = blk(x)
+        return x
+
+
 def build_model(n_classes: int, cfg: dict) -> nn.Module:
     """The model a run's config.json describes (used by the trainer and the RASAM scoring scripts)."""
     if cfg.get("arch") == "bp":
-        return BPCRNN(n_classes)
+        return BPCRNN(n_classes, rnn_drop=float(cfg.get("rnn_drop") or 0.2))
+    if cfg.get("arch") == "bpconf":
+        return BPConformer(n_classes)
     if cfg.get("arch", "vgg") == "calfa":
         return CalfaCRNN(n_classes, height=int(cfg.get("height", 120)))
     if cfg.get("arch") == "vgg_tall":
@@ -206,6 +292,52 @@ def warp_aug(x: torch.Tensor, lens: torch.Tensor) -> torch.Tensor:
     return F.grid_sample(x - 1, grid, mode="bilinear", padding_mode="zeros", align_corners=False) + 1
 
 
+ERASE_P = CROP_P = PAPER_P = 0.0  # set by --erase-aug / --crop-aug / --paper-aug (recipe B)
+AUG_MAG = 1.0  # set by --aug-mag: one global strength knob for the recipe-B augmentations
+
+
+def htr_aug(x: torch.Tensor, lens: torch.Tensor) -> torch.Tensor:
+    """Recipe B, on the GPU, x in [-1 ink .. +1 paper], B,1,H,W:
+      crop jitter  (CROP_P):  cut or add up to 10 % of the height at the top and bottom independently (resampled back to H), the way real
+                              line crops are too tight or too loose;
+      erasing      (ERASE_P): 1-3 paper-coloured rectangles, at most 0.12 H wide and 0.5 H tall (stroke pieces, never a whole word);
+      paper        (PAPER_P): low-frequency background shading and grain, plus faint bleed-through (another line of the batch, mirrored)."""
+    b, _, h, w = x.shape
+    dev = x.device
+    if CROP_P:
+        out = []
+        for i in range(b):
+            if random.random() < CROP_P:
+                t, bt = (int(round(random.uniform(-0.1, 0.1) * AUG_MAG * h)) for _ in range(2))
+                xi = x[i:i + 1]
+                xi = xi[:, :, t:] if t > 0 else F.pad(xi, (0, 0, -t, 0), value=1.0)            # top: cut t rows or add paper
+                xi = xi[:, :, : xi.shape[2] - bt] if bt > 0 else F.pad(xi, (0, 0, 0, -bt), value=1.0)  # bottom
+                out.append(F.interpolate(xi, size=(h, w), mode="bilinear", align_corners=False))
+            else:
+                out.append(x[i:i + 1])
+        x = torch.cat(out, 0)
+    if ERASE_P:
+        x = x.clone()
+        for i in range(b):
+            if random.random() < ERASE_P:
+                for _ in range(random.randint(1, 3)):
+                    ew = max(1, int(random.uniform(0.03, 0.12) * AUG_MAG * h))
+                    eh = max(1, int(random.uniform(0.15, 0.5) * h))
+                    x0 = random.randint(0, max(0, int(lens[i]) - ew))
+                    y0 = random.randint(0, h - eh)
+                    x[i, :, y0:y0 + eh, x0:x0 + ew] = 1.0
+    if PAPER_P:
+        sel = (torch.rand(b, 1, 1, 1, device=dev) < PAPER_P).float()
+        field = F.interpolate(torch.randn(b, 1, max(2, h // 24), max(2, w // 48), device=dev), size=(h, w), mode="bicubic", align_corners=False)
+        shade = (0.12 * AUG_MAG * field + 0.04 * AUG_MAG * torch.randn_like(x)) * sel
+        paper = (x > 0.3).float()  # only the paper is shaded; ink stays ink
+        x = x - paper * shade.abs()
+        alpha = torch.empty(b, 1, 1, 1, device=dev).uniform_(0.1, 0.3) * AUG_MAG * sel * (torch.rand(b, 1, 1, 1, device=dev) < 0.5).float()
+        other = x[torch.randperm(b, device=dev)].flip(-1)
+        x = torch.minimum(x, 1 - alpha * (1 - other))
+    return x.clamp(-1.2, 1.2)
+
+
 NEIGHBOR_P = 0.0  # set by --neighbor-aug: probability of pasting ink strips of other lines above and below (tall RASAM crops contain neighbours)
 FADE_P = 0.0  # set by --fade-aug: probability of fading the ink towards the paper (faint RASAM-2 lines)
 DONORS: list = []  # training images that provide the neighbour strips
@@ -240,6 +372,8 @@ def make_batch(rows: list[dict], stoi: dict, train: bool, dev: str):
         wmax = x.shape[3]
     if train and WARP_P:
         x = warp_aug(x, lens)
+    if train and (ERASE_P or CROP_P or PAPER_P):
+        x = htr_aug(x, lens)
     if train:
         s = random.uniform(0.9, 1.1)  # one width scale per batch
         nw = max(8, int(round(wmax * s / 4)) * 4)
@@ -319,13 +453,22 @@ def main() -> None:
     ap.add_argument("--ckpt-every", type=int, default=200, help="also checkpoint every N steps inside an epoch (resume loses at most N steps)")
     ap.add_argument("--ema", type=float, default=0.0, help="also keep an exponential moving average of the weights with this decay per step (0 = off); "
                     "evaluated next to the raw weights, saved as model_ema_best.pt / model_ema_final.pt")
-    ap.add_argument("--sched", choices=["onecycle", "plateau"], default="onecycle", help="onecycle (default, fixed length) or plateau "
+    ap.add_argument("--sched", choices=["onecycle", "plateau", "cosine"], default="onecycle", help="onecycle (default, fixed length) or plateau "
                     "(constant --lr, halved after an evaluation without improvement; pair with --patience to stop when it no longer learns)")
     ap.add_argument("--patience", type=int, default=0, help="stop after this many evaluations without a new best held-out CER (0 = never)")
     ap.add_argument("--abort-stuck", type=int, default=0, help="stop (exit 3) if the mean held-out CER is still above 0.95 at this epoch: "
                     "a CTC model stuck on blanks wastes the rest of the budget")
     ap.add_argument("--warp-aug", type=float, default=0.0, help="probability of a small rotation + elastic warp per training line (warp_aug)")
-    ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa", "bp"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
+    ap.add_argument("--erase-aug", type=float, default=0.0, help="recipe B: probability of random erasing (1-3 small paper rectangles) per line")
+    ap.add_argument("--crop-aug", type=float, default=0.0, help="recipe B: probability of top/bottom crop jitter per line")
+    ap.add_argument("--paper-aug", type=float, default=0.0, help="recipe B: probability of paper shading + grain (and bleed-through half the time)")
+    ap.add_argument("--aug-mag", type=float, default=1.0, help="recipe B: global strength multiplier of the erase / crop / paper augmentations")
+    ap.add_argument("--featmask", type=float, default=0.0, help="recipe B: probability of SpecAugment-style masking of the CNN feature sequence (bp archs)")
+    ap.add_argument("--wd", type=float, default=1e-4, help="AdamW weight decay (recipe A: 0.05)")
+    ap.add_argument("--warmup", type=float, default=1.0, help="--sched cosine: linear warmup length in epochs")
+    ap.add_argument("--drop-path", type=float, default=0.0, help="recipe A: stochastic-depth probability of the ResNet blocks (bp archs)")
+    ap.add_argument("--rnn-drop", type=float, default=0.0, help="recipe A: dropout between the BiLSTM layers of --arch bp (0 = the paper's 0.2)")
+    ap.add_argument("--arch", choices=["vgg", "vgg_tall", "calfa", "bp", "bpconf"], default="vgg", help="vgg: our CRNN (height / 32); calfa: the AMIDDA paper's per-corpus "
                     "CRNN (3 conv blocks, height / 4, 4 x BiLSTM 512); --width does not apply to calfa")
     ap.add_argument("--init", type=Path, help="start from these weights (a model_*.pt in a run dir) and keep that run's charset.json: fine-tuning, "
                     "e.g. specialising a shared model on one corpus with --train-sets")
@@ -341,14 +484,15 @@ def main() -> None:
         random.seed(a.seed)
         np.random.seed(a.seed)
         torch.manual_seed(a.seed)
-    global GEOM_AUG, NEIGHBOR_P, FADE_P, WARP_P
+    global GEOM_AUG, NEIGHBOR_P, FADE_P, WARP_P, ERASE_P, CROP_P, PAPER_P, AUG_MAG
     GEOM_AUG = a.geom_aug
     WARP_P = a.warp_aug
+    ERASE_P, CROP_P, PAPER_P, AUG_MAG = a.erase_aug, a.crop_aug, a.paper_aug, a.aug_mag
     NEIGHBOR_P, FADE_P = a.neighbor_aug, a.fade_aug
     blob = pickle.load(open(a.data, "rb"))
     global H
     H = int(blob.get("H", 64))  # line height is a property of the data pack (rasam_prepare_crnn_data.py --height)
-    hm = {"calfa": 4, "bp": 8}.get(a.arch, 32)
+    hm = {"calfa": 4, "bp": 8, "bpconf": 8}.get(a.arch, 32)
     if H % hm:
         raise SystemExit(f"line height {H} must be a multiple of {hm} for --arch {a.arch}")
     rows = blob["rows"]
@@ -383,14 +527,25 @@ def main() -> None:
     (a.out / "config.json").write_text(json.dumps({"width": a.width, "height": H, "geom_aug": a.geom_aug, "neighbor_aug": a.neighbor_aug, "fade_aug": a.fade_aug, "repeat_file": str(a.repeat_file) if a.repeat_file else None, "extra_rows": len(extra),
                                                    "seed": a.seed, "split": split, "data": str(a.data), "train_lines": len(train), "epochs": a.epochs,
                                                    "ema": a.ema, "keep_last": a.keep_last, "init": str(a.init) if a.init else None, "arch": a.arch,
-                                                   "train_sets": a.train_sets, "lr": a.lr, "warp_aug": a.warp_aug}), encoding="utf-8")
-    model = build_model(len(chars) + 1, {"arch": a.arch, "width": a.width, "height": H}).to(dev)
+                                                   "train_sets": a.train_sets, "lr": a.lr, "warp_aug": a.warp_aug, "bs": a.bs, "sched": a.sched,
+                                                   "wd": a.wd, "warmup": a.warmup, "drop_path": a.drop_path, "rnn_drop": a.rnn_drop,
+                                                   "erase_aug": a.erase_aug, "crop_aug": a.crop_aug, "paper_aug": a.paper_aug, "aug_mag": a.aug_mag,
+                                                   "featmask": a.featmask}), encoding="utf-8")
+    model = build_model(len(chars) + 1, {"arch": a.arch, "width": a.width, "height": H, "rnn_drop": a.rnn_drop}).to(dev)
+    for m in model.modules():
+        if isinstance(m, ResBlock):
+            m.dp = a.drop_path
+        if isinstance(m, BPCRNN):
+            m.featmask = a.featmask
     if a.init:
         model.load_state_dict(torch.load(a.init, map_location=dev))
         print("initialised from", a.init, flush=True)
     print("params", sum(p.numel() for p in model.parameters()) / 1e6, "M", "steps/epoch", steps_per_epoch, flush=True)
-    opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=1e-4)
-    if a.sched == "plateau":  # constant lr, halved when the mean held-out CER stops improving (train "as long as it learns", with --patience)
+    opt = torch.optim.AdamW(model.parameters(), lr=a.lr, weight_decay=a.wd)
+    if a.sched == "cosine":  # recipe A: linear warmup, then cosine decay to 1 % of --lr
+        tot_steps, wu = a.epochs * steps_per_epoch, max(1, int(a.warmup * steps_per_epoch))
+        sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda k: min(1.0, (k + 1) / wu) * (0.01 + 0.99 * 0.5 * (1 + math.cos(math.pi * min(1.0, k / tot_steps)))))
+    elif a.sched == "plateau":  # constant lr, halved when the mean held-out CER stops improving (train "as long as it learns", with --patience)
         sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, mode="min", factor=0.5, patience=1, min_lr=1e-5)
     else:
         sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=a.lr, total_steps=a.epochs * steps_per_epoch, pct_start=0.15)
@@ -451,7 +606,7 @@ def main() -> None:
             scaler.unscale_(opt)
             nn.utils.clip_grad_norm_(model.parameters(), 5.0)
             scaler.step(opt); scaler.update()
-            if a.sched == "onecycle":
+            if a.sched in ("onecycle", "cosine"):
                 sched.step()
             if ema is not None:
                 ema.update_parameters(model)
@@ -494,6 +649,18 @@ def main() -> None:
     if ema is not None:
         torch.save(ema.module.state_dict(), a.out / "model_ema_final.pt")
         final = {"raw": final, "ema": evaluate(ema.module, held, stoi, dev)}
+    sel = {"model_ema_best.pt": best_ema} if ema is not None and (a.out / "model_ema_best.pt").exists() else {}
+    kept = sorted(a.out.glob("model_ep*.pt"))
+    if a.keep_last and len(kept) >= 2:  # recipe A: average the last K epochs' weights (BatchNorm statistics averaged too)
+        sds = [torch.load(k, map_location=dev) for k in kept]
+        avg = {k: (sum(sd[k].float() for sd in sds) / len(sds)).to(sds[0][k].dtype) for k in sds[0]}
+        torch.save(avg, a.out / "model_avg.pt")
+        model.load_state_dict(avg)
+        acer = evaluate(model, held, stoi, dev)
+        final = {**(final if isinstance(final, dict) and "raw" in final else {"raw": final}), "avg": acer}
+        sel["model_avg.pt"] = sum(acer.values()) / max(1, len(acer))
+    if sel:  # read_test uses the checkpoint with the lowest mean held-out CER
+        (a.out / "select.json").write_text(json.dumps({"ckpt": min(sel, key=sel.get), "heldout": sel}), encoding="utf-8")
     (a.out / "heldout_cer.json").write_text(json.dumps(final), encoding="utf-8")
     print("done", flush=True)
 

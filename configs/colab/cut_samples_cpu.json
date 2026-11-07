@@ -1,0 +1,33 @@
+{
+ "name": "cut-samples",
+ "gpu": "CPU",
+ "max_units": 0.3,
+ "max_minutes": 120,
+ "poll_s": 60,
+ "sync_every_s": 300,
+ "final_sync_grace_min": 10,
+ "uploads": [
+  [
+   "results/rasam/colab_runs/_uploads/cut_samples.tgz",
+   "/content/cut_samples.tgz"
+  ]
+ ],
+ "setup": [
+  "mkdir -p /content/work && tar -xzf /content/cut_samples.tgz -C /content/work",
+  "python -c \"from huggingface_hub import snapshot_download; t = open('/content/.hf_token').read().strip(); [snapshot_download(r, repo_type='dataset', cache_dir='/content/hf/hub', token=t, max_workers=8) for r in ['calfa-ai/AMIDDA']]\""
+ ],
+ "runs": [
+  {
+   "label": "cut",
+   "cmd": "cd /content/work/tadqiq && TADQIQ_HUB=/content/hf/hub PYTHONPATH=src python -u scripts/cut_samples.py /content/work/want.json /content/crnn_out/samples --only AMIDDA"
+  }
+ ],
+ "artifacts": [
+  "/content/crnn_out"
+ ],
+ "keep": [
+  ".json",
+  ".jpg"
+ ],
+ "local_out": "results/rasam/colab_runs"
+}

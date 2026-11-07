@@ -1,8 +1,8 @@
 {
- "name": "muh-bp-pilot",
+ "name": "muh-rc-s0-dhvtk",
  "gpu": "T4",
- "max_units": 6.0,
- "max_minutes": 360,
+ "max_units": 16.0,
+ "max_minutes": 900,
  "poll_s": 60,
  "sync_every_s": 600,
  "final_sync_grace_min": 15,
@@ -19,8 +19,8 @@
  ],
  "runs": [
   {
-   "label": "muh-bp-pilot",
-   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D --seeds 0 --epochs 40 --restore job-muh-bp-pilot-t4 --recipe='--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
+   "label": "muh-rc-s0-dhvtk",
+   "cmd": "cd /content/work/scripts && python -u muharaf_clean_exp.py --lists /content/work/lists --arms D HVTK --seeds 0 --epochs 40 --tag _C --parallel 2 --restore job-muh-rc-s0 --recipe='--arch bpconf --bs 32 --lr 1e-3 --wd 0.05 --sched cosine --warmup 2 --drop-path 0.1 --keep-last 4 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999'"
   }
  ],
  "artifacts": [

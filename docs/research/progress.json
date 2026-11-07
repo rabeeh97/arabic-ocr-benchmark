@@ -238,6 +238,11 @@
  "updates": [
   {
    "date": "2026-11-07",
+   "kind": "started",
+   "text": "Colab GPU queue: CER-HV's ResNet CRNN and three new recipes (modern optimisation, HTR augmentation, Conformer), each trained on dirty data and the best cleaned version (seed 0)."
+  },
+  {
+   "date": "2026-11-07",
    "kind": "done",
    "text": "Detector tuning applied and all 9 datasets rescanned: Muharaf F1 vs CER-HV labels 0.89 → 0.91 (false alarms 158 → 80); flags fell on 7 of 9 datasets (e.g. Baybars 1,326 → 502)."
   },

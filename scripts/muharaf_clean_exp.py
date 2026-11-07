@@ -22,6 +22,7 @@ import os
 import pickle
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -103,7 +104,9 @@ def read_test(arm_dir: Path, pack_rows, test_err: set):
     chars = json.loads((arm_dir / "charset.json").read_text(encoding="utf-8"))["chars"]
     stoi, itos = {c: i + 1 for i, c in enumerate(chars)}, {i + 1: c for i, c in enumerate(chars)}
     T.H = int(cfg.get("height", 64))
-    ck = next(p for p in ("model_ema_best.pt", "model_best.pt", "model_final.pt") if (arm_dir / p).exists())
+    sel = arm_dir / "select.json"  # written by the trainer when it compared EMA-best and averaged weights on the held-out set
+    ck = json.loads(sel.read_text())["ckpt"] if sel.exists() else next(
+        p for p in ("model_ema_best.pt", "model_best.pt", "model_final.pt") if (arm_dir / p).exists())
     model = T.build_model(len(chars) + 1, cfg).to("cuda")
     model.load_state_dict(torch.load(arm_dir / ck, map_location="cuda"))
     model.eval()
@@ -135,8 +138,10 @@ def main():
     ap.add_argument("--pack", type=Path, default=Path("/content/pack_muharaf.pkl"))
     ap.add_argument("--restore", help="job-name prefix of earlier runs of this experiment on the HF runs repo")
     ap.add_argument("--recipe", default="--bs 16 --width 0.5 --eval-every 2 --geom-aug --ema 0.999")
+    ap.add_argument("--parallel", type=int, default=1, help="train this many arms at the same time on the one GPU (each gets 1/N of its memory)")
+    ap.add_argument("--tag", default="", help="suffix of the arm folders (recipe name), e.g. _bp -> D_s0_bp")
     a = ap.parse_args()
-    runs = [(arm, s, f"{arm}_s{s}") for s in a.seeds for arm in a.arms]
+    runs = [(arm, s, f"{arm}_s{s}{a.tag}") for s in a.seeds for arm in a.arms]
     if a.restore:
         restore(a.restore, [d for _, _, d in runs])
     if all((OUT / d / "test_lines.json").exists() for _, _, d in runs):
@@ -145,27 +150,51 @@ def main():
     if not a.pack.exists():
         build_pack(a.pack, a.hub, a.height, json.loads((a.lists / "probe_gt.json").read_text()))
     test_err = set(json.loads((a.lists / "test_cerhv_errors.json").read_text()))
-    test_rows = None
-    for arm, seed, d in runs:
+    todo = [(arm, seed, d) for arm, seed, d in runs if not (OUT / d / "test_lines.json").exists()]
+    env = dict(os.environ)
+    if a.parallel > 1:
+        env["AOCR_CUDA_MEM_FRACTION"] = f"{0.95 / a.parallel:.3f}"
+
+    def pump(proc, d):
+        for line in proc.stdout:
+            print(f"[{d}] {line}", end="", flush=True)
+
+    def start(arm, seed, d):
         arm_dir = OUT / d
-        if (arm_dir / "test_lines.json").exists():
-            print("done", d, flush=True)
-            continue
         arm_dir.mkdir(parents=True, exist_ok=True)
-        if not (arm_dir / "model_final.pt").exists():
-            cmd = [sys.executable, "-u", str(HERE / "xai_train_aligner.py"), "--data", str(a.pack), "--out", str(arm_dir),
-                   "--epochs", str(a.epochs), "--device", "cuda", "--seed", str(seed), *a.recipe.split()]
-            if arm != "D":
-                cmd += ["--exclude", str(a.lists / f"exclude_{arm}.json")]
-            t0 = time.time()
-            print("TRAIN", d, " ".join(cmd[2:]), flush=True)
-            rc = subprocess.run(cmd).returncode
-            print(f"TIMING {d} train_s={time.time() - t0:.0f} rc={rc}", flush=True)
-            if rc:
-                raise SystemExit(f"training {d} failed (rc {rc})")
+        cmd = [sys.executable, "-u", str(HERE / "xai_train_aligner.py"), "--data", str(a.pack), "--out", str(arm_dir),
+               "--epochs", str(a.epochs), "--device", "cuda", "--seed", str(seed), *a.recipe.split()]
+        if arm != "D":
+            cmd += ["--exclude", str(a.lists / f"exclude_{arm}.json")]
+        print("TRAIN", d, " ".join(cmd[2:]), flush=True)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, env=env)
+        th = threading.Thread(target=pump, args=(proc, d), daemon=True)
+        th.start()
+        return proc, th, time.time()
+
+    test_rows = None
+    pending = [r for r in todo if not (OUT / r[2] / "model_final.pt").exists()]
+    trained = [r for r in todo if (OUT / r[2] / "model_final.pt").exists()]
+    live: dict = {}
+    failed = []
+    while pending or live:
+        while pending and len(live) < max(1, a.parallel):
+            r = pending.pop(0)
+            live[r] = start(*r)
+        time.sleep(5)
+        for r, (proc, th, t0) in list(live.items()):
+            if proc.poll() is None:
+                continue
+            th.join(timeout=10)
+            del live[r]
+            print(f"TIMING {r[2]} train_s={time.time() - t0:.0f} rc={proc.returncode}", flush=True)
+            (failed if proc.returncode else trained).append(r)
+    for arm, seed, d in sorted(trained, key=lambda r: [x[2] for x in todo].index(r[2])):
         if test_rows is None:
             test_rows = [r for r in pickle.load(open(a.pack, "rb"))["rows"] if r["role"] == "test"]
-        read_test(arm_dir, test_rows, test_err)
+        read_test(OUT / d, test_rows, test_err)
+    if failed:
+        raise SystemExit(f"training failed: {[r[2] for r in failed]}")
 
 
 if __name__ == "__main__":

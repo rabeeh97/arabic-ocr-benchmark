@@ -18,6 +18,20 @@ ROOT = Path(__file__).resolve().parents[1]
 LISTS = ROOT / "tadqiq" / "results" / "muharaf-public" / "clean_exp"
 PACK = ROOT / "results" / "rasam" / "colab_runs" / "_uploads" / "muh_clean_pack.tgz"
 SCRIPTS = ["muharaf_clean_exp.py", "xai_train_aligner.py", "rasam_prepare_crnn_data.py"]
+# Recipes competing with CER-HV (arXiv 2601.16713) on Muharaf; all on the CER-HV ResNet CRNN front-end, 40 epochs (compute-matched).
+RECIPES = {
+    # their recogniser and augmentation family (affine + elastic + noise/brightness), our slant/stroke aug, EMA
+    "bp": "--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999",
+    # A: modern optimisation: AdamW wd 0.05, warmup + cosine, larger batch, stochastic depth, more LSTM dropout, EMA vs last-4 averaging
+    "A": "--arch bp --bs 32 --lr 2e-3 --wd 0.05 --sched cosine --warmup 2 --drop-path 0.1 --rnn-drop 0.4 --keep-last 4 "
+         "--eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999",
+    # B: HTR augmentation on top of bp: neighbour ink, crop jitter, small erasing, paper shading + bleed-through, feature masking
+    "B": "--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --neighbor-aug 0.3 --crop-aug 0.5 --erase-aug 0.3 "
+         "--paper-aug 0.3 --featmask 0.5 --ema 0.999",
+    # C: Conformer encoder instead of the BiLSTM (needs A's warmup/AdamW), bp augmentation
+    "C": "--arch bpconf --bs 32 --lr 1e-3 --wd 0.05 --sched cosine --warmup 2 --drop-path 0.1 --keep-last 4 "
+         "--eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999",
+}
 
 
 def make_pack():
@@ -49,7 +63,10 @@ def spec(name, run, units, minutes):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("kind", choices=["probe", "seed", "pilot"])
+    ap.add_argument("kind", choices=["probe", "seed", "pilot", "recipe"])
+    ap.add_argument("--recipe", choices=sorted(RECIPES), help="kind recipe: which recipe")
+    ap.add_argument("--arms", nargs="+", default=["D", "HVTK"])
+    ap.add_argument("--parallel", type=int, default=2)
     ap.add_argument("seed", nargs="?", type=int, default=0)
     ap.add_argument("--epochs", type=int, default=30)
     ap.add_argument("--units", type=float, default=8.0)
@@ -65,6 +82,12 @@ def main():
         rec = "--arch bp --bs 16 --lr 1e-3 --eval-every 2 --geom-aug --warp-aug 0.5 --ema 0.999"
         s = spec(name, f"{base} --arms D --seeds {a.seed} --epochs {a.epochs} --restore job-{name}-t4 --recipe='{rec}'", a.units, a.minutes)
         out = ROOT / "configs" / "colab" / "muh_bp_pilot_t4.json"
+    elif a.kind == "recipe":  # one recipe, the given arms and seed, two arms at a time on the T4
+        arms = "".join(x.lower() for x in a.arms)
+        name = f"muh-r{a.recipe.lower()}-s{a.seed}-{arms}"
+        s = spec(name, f"{base} --arms {' '.join(a.arms)} --seeds {a.seed} --epochs {a.epochs} --tag _{a.recipe} --parallel {a.parallel} "
+                       f"--restore job-muh-r{a.recipe.lower()}-s{a.seed} --recipe='{RECIPES[a.recipe]}'", a.units, a.minutes)
+        out = ROOT / "configs" / "colab" / f"muh_r{a.recipe.lower()}_s{a.seed}_{arms}_t4.json"
     else:
         name = f"muh-clean-s{a.seed}"
         s = spec(name, f"{base} --arms D HV TK HVTK RND --seeds {a.seed} --epochs {a.epochs} --restore job-{name}-t4", a.units, a.minutes)
