@@ -233,9 +233,50 @@
    "title": "Synthesis & release (gate V6)",
    "status": "planned",
    "tasks": []
+  },
+  {
+   "id": "G-gold",
+   "title": "Gold set: seeded, verified yardstick for all models",
+   "status": "active",
+   "doc": "gold/README.md",
+   "tasks": [
+    {
+     "t": "Registry, seeded ranking, image de-duplication (15 datasets, test splits)",
+     "s": "done"
+    },
+    {
+     "t": "Tranche 1 exported: 50 lines per dataset (750), auto tags, toolkit notes",
+     "s": "done"
+    },
+    {
+     "t": "Labeling guidelines v0.1, labeling tool with labeler ID, agreement report",
+     "s": "done"
+    },
+    {
+     "t": "Calibration: two labelers on the 75 calibration lines, then revise the guidelines",
+     "s": "next"
+    },
+    {
+     "t": "Label tranche 1, freeze it, score all models on it (original and verified labels)",
+     "s": "planned"
+    },
+    {
+     "t": "Difficulty band from a separate model panel",
+     "s": "planned"
+    },
+    {
+     "t": "Persian/Urdu source and the recorded hard-case set",
+     "s": "planned"
+    }
+   ]
   }
  ],
  "updates": [
+  {
+   "date": "2026-11-08",
+   "kind": "done",
+   "text": "Gold set pipeline built: 15 datasets ranked with one seed, image de-duplication (AMIDDA test: 2,268 of 6,684 lines are copies of other datasets' lines, including all of RASAM-1/2, TARIMA and ISKANDAR test), tranche 1 = 750 lines exported with tags, labeling guidelines v0.1 and a local labeling tool with labeler IDs. Next: calibration labeling by two people."
+  },
   {
    "date": "2026-11-07",
    "kind": "status",

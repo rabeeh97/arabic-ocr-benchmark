@@ -1,0 +1,58 @@
+# Gold set registry. One entry per source dataset.
+#
+# Rules (decided with the project owner, 2026-11-08):
+#   * lines only (no pages, no word crops), test splits only;
+#   * exact image duplicates are removed (exact text repeating across different images is fine);
+#   * every dataset gets ONE seeded ranking; "the first 50 / 100 / 150 ..." are prefixes of it;
+#   * the gold set is random within a dataset; non-random material lives in its own tier and is
+#     never pooled into the Arabic headline number.
+version: 1
+seed: "arabic-gold-v1"       # change = a new, different gold set. Never edit after labelling starts.
+tranche_size: 50
+hub: /Volumes/PortableSSD/huggingface/hub
+toolkit_results: tadqiq/results   # Tadqiq scan output; shown to labelers only AFTER they judge a line
+dedup:
+  dhash_bits: 16            # 16x16 difference hash = 256 bits
+  max_hamming: 10           # near-identical image candidates ...
+  min_corr: 0.97            # ... confirmed by pixel correlation on a 48x12 thumbnail
+  aspect_tol: 0.05
+
+# priority: lower = keeps the line when two datasets contain the same image (originals before aggregates).
+datasets:
+  # ---- tier A: Arabic, random ------------------------------------------------------------------
+  - {key: rasam1,     repo: calfa-ai/RASAM-1,   split: test, priority: 10, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: maghrebi, toolkit_dir: RASAM-1}
+  - {key: rasam2,     repo: calfa-ai/RASAM-2,   split: test, priority: 11, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: maghrebi, toolkit_dir: RASAM-2}
+  - {key: tarima,     repo: calfa-ai/tarima,    split: test, priority: 12, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: maghrebi, toolkit_dir: tarima}
+  - {key: iskandar,   repo: calfa-ai/iskandar,  split: test, priority: 13, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: unspecified, toolkit_dir: iskandar}
+  - {key: baybars,    repo: calfa-ai/baybars,   split: test, priority: 14, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: unspecified, toolkit_dir: baybars}
+  - {key: nakba,      repo: U4RASD/omar-al-saleh-manuscripts-segments, split: test, priority: 15, tier: arabic_random, language: ar, medium: handwritten, era: modern_20c, script_style: unspecified, toolkit_dir: omar-al-saleh-manuscripts-segments,
+     notes: "official test split shares pages with train; a page-disjoint blind_test (2,671 lines) also exists"}
+  - {key: muharaf,    repo: aamijar/muharaf-public, split: test, priority: 16, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: unspecified, toolkit_dir: muharaf-public,
+     notes: "public copy is stored at 60 px line height"}
+  - {key: khatt,      repo: Teklia/KHATT_v1.0,  split: test, priority: 17, tier: arabic_random, language: ar, medium: handwritten, era: modern, script_style: unspecified, toolkit_dir: KHATT_v1.0}
+  - {key: arams,      repo: local/AraMS-28k-HTR, split: test, priority: 18, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: unspecified, toolkit_dir: AraMS-28k-HTR}
+  - {key: onlinekhatt, repo: ahmedheakl/arocrbench_onlinekhatt, split: train, priority: 19, tier: arabic_random, language: ar, medium: handwritten, era: modern, script_style: unspecified, toolkit_dir: arocrbench_onlinekhatt,
+     notes: "benchmark-only sample (200 lines); single split; capacity 200"}
+  - {key: historyar,  repo: ahmedheakl/arocrbench_historyar, split: train, priority: 20, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: unspecified, toolkit_dir: arocrbench_historyar,
+     notes: "benchmark-only sample (200 lines); single split; capacity 200"}
+  - {key: patsocr,    repo: ahmedheakl/arocrbench_patsocr, split: train, priority: 21, tier: arabic_random, language: ar, medium: printed, era: modern, script_style: printed_fonts,
+     notes: "benchmark-only sample (500 lines); single split"}
+  - {key: isippt,     repo: ahmedheakl/arocrbench_isippt, split: train, priority: 22, tier: arabic_random, language: ar, medium: printed, era: modern, script_style: printed_screen,
+     notes: "benchmark-only sample (500 lines), screenshot-style, 28 px high; single split"}
+  - {key: amidda,     repo: calfa-ai/AMIDDA,    split: test, priority: 90, tier: arabic_random, language: ar, medium: handwritten, era: historical, script_style: mixed_sources, toolkit_dir: AMIDDA,
+     notes: "aggregate of RASAM/RASM/KHATT/Muharaf lines; ranked LAST so only lines not already present elsewhere survive the image de-duplication"}
+  # ---- tier B: another language, random (sanity control for VLMs; never pooled with tier A) -------
+  - {key: iam,        repo: Teklia/IAM-line,    split: test, priority: 30, tier: other_language_random, language: en, medium: handwritten, era: modern, script_style: latin_cursive,
+     notes: "GT uses IAM's tokenised spacing around punctuation; keep it, scoring folds it"}
+
+# Open slots (nothing to pick yet; see gold/README.md):
+#   tier other_language_random: Persian / Urdu / other Arabic-script handwriting, once a real line-level source is chosen
+#     (checked 2026-11-08: no directly downloadable real line set on the Hub; UTRSet-Real needs a manual download).
+#   tier recorded_hard: lines we record ourselves, never published, aimed at hard cases (see GUIDELINES.md, section R).
+excluded:
+  arocrbench_hindawi: page-scale (about 900 characters per item)
+  arocrbench_historicalbooks: page-scale
+  arocrbench_evarest: word crops (median 5 characters)
+  arocrbench_adab: word crops (median 8 characters)
+  arocrbench_muharaf: 86.5% of it is in Muharaf train; the Muharaf test split above replaces it
+  arocrbench_khatt: a sample of KHATT; the KHATT test split above replaces it

@@ -81,3 +81,9 @@ results/geometry/*.pkl
 results/geometry/**/*.pkl
 results/geometry/**/*.npz
 results/geometry/tiny/
+
+# gold set: images/labels stay local (dataset licences); pool and manifests are tracked
+gold/.cache/
+gold/tranches/*/images/
+gold/tranches/*/lines.jsonl
+gold/labels/

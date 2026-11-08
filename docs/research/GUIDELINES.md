@@ -91,6 +91,7 @@ From [`characteristics-framework.md`](characteristics-framework.md):
 | Literature | `script-characteristics.md`, `characteristics-framework.md`, future topic files; `references.bib` |
 | Characterisation plan | `characterization-plan.md` (layers L1–L7, revised phases P0–P11) |
 | Own-dataset spec | `dataset-design.md` |
+| Gold set (seeded, verified yardstick: pool, tranches, labeling tool, guidelines) | `gold/README.md`; spec `docs/superpowers/specs/2026-11-08-gold-set-design.md`; code `src/arabic_ocr_bench/gold/`, `scripts/gold_*.py` |
 | Text analyzer | `src/arabic_ocr_bench/characterize/text.py` (positional forms, rasm, PAWs, diacritics, hygiene), tests in `tests/test_characterize_text.py` |
 | Canonical predictions + error decomposition | `characterize/runs.py`, `characterize/errors.py`, `scripts/decompose_errors.py` → `results/characterize/canonical_runs.json`, `results/characterize/<stamp>/errors.json` |
 | Per-sample characteristics | `characterize/samples.py`, `scripts/sample_characteristics.py` → `results/characterize/<stamp>/samples.json` |

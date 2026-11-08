@@ -1,0 +1,181 @@
+{
+ "datasets": {
+  "amidda": {
+   "dup_exact": 2154,
+   "dup_near": 114,
+   "dups_by_dataset": {
+    "baybars": 157,
+    "historyar": 1,
+    "iskandar": 523,
+    "khatt": 113,
+    "muharaf": 139,
+    "rasam1": 734,
+    "rasam2": 372,
+    "tarima": 229
+   },
+   "eligible": 4416,
+   "no_image": 0,
+   "repo": "calfa-ai/AMIDDA",
+   "rows": 6684,
+   "snapshot": "697e3786d5be1f61a5c8aa23fe72104761f6edd7",
+   "split": "test"
+  },
+  "arams": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 6744,
+   "no_image": 0,
+   "repo": "local/AraMS-28k-HTR",
+   "rows": 6744,
+   "snapshot": "local:AraMS-28k-HTR.zip",
+   "split": "test"
+  },
+  "baybars": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 1528,
+   "no_image": 0,
+   "repo": "calfa-ai/baybars",
+   "rows": 1528,
+   "snapshot": "39995afe1b35c241f919a57f1086aa8f4c35140f",
+   "split": "test"
+  },
+  "historyar": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 200,
+   "no_image": 0,
+   "repo": "ahmedheakl/arocrbench_historyar",
+   "rows": 200,
+   "snapshot": "4e8d71775498cb10b873453910a2819714b46463",
+   "split": "train"
+  },
+  "iam": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 2915,
+   "no_image": 0,
+   "repo": "Teklia/IAM-line",
+   "rows": 2915,
+   "snapshot": "fbdad97500ce54635c0d1ba306bf535cb40656cf",
+   "split": "test"
+  },
+  "isippt": {
+   "dup_exact": 1,
+   "dup_near": 0,
+   "dups_by_dataset": {
+    "isippt": 1
+   },
+   "eligible": 499,
+   "no_image": 0,
+   "repo": "ahmedheakl/arocrbench_isippt",
+   "rows": 500,
+   "snapshot": "6f4a6c330923cab4fabb3bccbc28a31a8f4e5c7a",
+   "split": "train"
+  },
+  "iskandar": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 523,
+   "no_image": 0,
+   "repo": "calfa-ai/iskandar",
+   "rows": 523,
+   "snapshot": "2dce9ac52e7962bf438f66d8525ce463a0f45423",
+   "split": "test"
+  },
+  "khatt": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 1038,
+   "no_image": 0,
+   "repo": "Teklia/KHATT_v1.0",
+   "rows": 1038,
+   "snapshot": "7da941f6705364c085107c75af4f75e5d421fa4e",
+   "split": "test"
+  },
+  "muharaf": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 1334,
+   "no_image": 0,
+   "repo": "aamijar/muharaf-public",
+   "rows": 1334,
+   "snapshot": "20f5f2864fd922d30a9620c45fe2bb3049c702ef",
+   "split": "test"
+  },
+  "nakba": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 2095,
+   "no_image": 0,
+   "repo": "U4RASD/omar-al-saleh-manuscripts-segments",
+   "rows": 2095,
+   "snapshot": "e6e8cd92661b3e208091bb86820f769494d00602",
+   "split": "test"
+  },
+  "onlinekhatt": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 200,
+   "no_image": 0,
+   "repo": "ahmedheakl/arocrbench_onlinekhatt",
+   "rows": 200,
+   "snapshot": "8c90441e48754066b1440d53c12098ece35684cd",
+   "split": "train"
+  },
+  "patsocr": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 500,
+   "no_image": 0,
+   "repo": "ahmedheakl/arocrbench_patsocr",
+   "rows": 500,
+   "snapshot": "b43dcde0a749fef3ab49690fe07f855b420acff1",
+   "split": "train"
+  },
+  "rasam1": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 734,
+   "no_image": 0,
+   "repo": "calfa-ai/RASAM-1",
+   "rows": 734,
+   "snapshot": "5a9dd8f7de63bfa25315066c0efe1f24d8cef5f4",
+   "split": "test"
+  },
+  "rasam2": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 372,
+   "no_image": 0,
+   "repo": "calfa-ai/RASAM-2",
+   "rows": 372,
+   "snapshot": "81083de50477e6431bebed28ee6fcc7acdcd807c",
+   "split": "test"
+  },
+  "tarima": {
+   "dup_exact": 0,
+   "dup_near": 0,
+   "dups_by_dataset": {},
+   "eligible": 229,
+   "no_image": 0,
+   "repo": "calfa-ai/tarima",
+   "rows": 229,
+   "snapshot": "56a8d782c87b007a3b726597439e9903fee9acc1",
+   "split": "test"
+  }
+ },
+ "seed": "arabic-gold-v1"
+}

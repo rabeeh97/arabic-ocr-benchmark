@@ -133,6 +133,20 @@ same notebook on an L4/A100 with step checkpoints mirrored to the Hub.
 
 ---
 
+## G: gold set (opened 2026-11-08; spec `../superpowers/specs/2026-11-08-gold-set-design.md`, how-to `../../gold/README.md`)
+
+One seeded, de-duplicated, verified set of lines; every model is scored on it from now on.
+- [x] (2026-11-08) **G1 Pool.** 15 datasets, test splits, one seed, image de-duplication. *Done:* `gold/pool/`.
+- [x] (2026-11-08) **G2 Tranche 1.** Ranks 1-50 of every dataset (750 lines) with auto tags and toolkit notes. *Done:* `gold/tranches/t01/`.
+- [x] (2026-11-08) **G3 Guidelines, labeling tool, agreement report.** `gold/GUIDELINES.md` v0.1, `scripts/gold_label_app.py`, `scripts/gold_agreement.py`.
+- [ ] **G4 Calibration.** Two labelers do the 75 calibration lines blind; run `gold_agreement.py`; revise the guidelines (new version).
+  *Done when:* verdict kappa and per-dataset CER between labelers are in findings, and the guidelines version is bumped.
+- [ ] **G5 Label tranche 1 and freeze.** Then re-score every model on it against original and verified labels, with the "dataset in this model's training mix" flag.
+- [ ] **G6 Difficulty band.** Separate model panel; per-dataset and pooled bands (hardest 10 / 25 / 50 %).
+- [ ] **G7 Open slots.** Persian/Urdu line source; the recorded hard-case set (`GUIDELINES.md` section 12).
+
+---
+
 ## R: characterisation track (see `characterization-plan.md` §Revised phases)
 
 ### R0 Inventory (P0)
