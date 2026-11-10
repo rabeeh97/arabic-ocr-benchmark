@@ -256,6 +256,18 @@ Atlas §9. Findings in `../experiments/findings-and-notes.md`.
   the page-scale KITAB sets.
 - [ ] **X6** Backfill `kitab_khatt` for Baseer-Nakba.
 
+- [ ] **X8** *(deferred, do not lose)* Slim the `xai-attribution-spike` worktree
+  (87 GB on the exFAT SSD, 2026-11-10). It holds `.geomvenv` (32 GB; torch 15 GB,
+  transformers 3.6 GB) which the gold-label app (`scripts/gold_label_app.py`,
+  port 8770) runs from, and `tadqiq-platform/app/workspace` (12 GB: `muharaf-demo`,
+  `rasam1`) which is gitignored, so it exists nowhere else. Decide: share one venv
+  across worktrees (stop the labelling app first), and either move the two
+  workspaces into `suite-v1-artifacts` or delete them. Details and numbers:
+  `docs/experiments/disk-space-and-worktrees.md`.
+- [ ] **X9** Run dirs cost 6 MiB each on exFAT (`results/2026*/` has 6 files each,
+  1 MiB per file). Consider packing old run dirs into one archive per month, as
+  the same slack as the old `_cache` is hiding there. Measure first.
+
 ## S: own dataset (stretch; spec in `dataset-design.md`)
 - [ ] **S0** Identify the school/partner contact and the ethics-approval route
   (minors: IRB, parental consent, child assent, licence). This blocks

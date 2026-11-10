@@ -6,6 +6,7 @@ This is the automated form of the plan's sanity checks:
 - the persistent cache must prevent a second call for the same key
 """
 
+from arabic_ocr_bench.cache import ResultCache
 import json
 
 import pytest
@@ -117,7 +118,7 @@ def test_errored_predictions_are_not_cached(wired, monkeypatch):
     cfg = {"models": ["mock_echo"], "datasets": ["fake"], "prompt_version": "line-v1",
            "cache": True}
     run(cfg, results_root=wired)
-    assert not list((wired / "_cache").glob("*.json"))
+    assert len(ResultCache(wired)) == 0  # errored results are never cached
 
 
 def test_accumulate_targets_fresh_indices_on_rerun(monkeypatch, tmp_path):

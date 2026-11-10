@@ -25,9 +25,11 @@ data/
 !data/**/*.json.example
 
 # benchmark outputs: run dirs ARE committed (that's how results come back from
-# Colab). The per-line resume cache (results/_cache/) is ALSO committed now, so
-# that a re-run — on any machine, on the free API stack — never repeats a call
-# that already has an answer. Its files are tiny (<1 KB of JSON each).
+# Colab). The per-line resume cache (results/_cache.jsonl, ONE append-only file —
+# merge=union in .gitattributes; see src/arabic_ocr_bench/cache.py) is ALSO
+# committed, so that a re-run — on any machine, on the free API stack — never
+# repeats a call that already has an answer. (It used to be 10k tiny files, which
+# cost ~10 GB per checkout on the exFAT SSD's 1 MiB allocation blocks.)
 
 # HF / model caches
 .cache/

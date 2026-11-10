@@ -19,6 +19,7 @@ from pathlib import Path
 import yaml
 from tqdm.auto import tqdm
 
+from .cache import ResultCache
 from .datasets.registry import build_dataset, load_dataset_configs
 from .models.mock_client import build_mock_prompt
 from .models.registry import build_model, is_mock, load_model_configs
@@ -170,8 +171,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         run_id = f"{stamp}-{bump}"
         run_dir = root / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
-    cache_dir = root / "_cache"
-    cache_dir.mkdir(parents=True, exist_ok=True)
+    cache = ResultCache(root)  # one append-only results/_cache.jsonl (see cache.py)
 
     (run_dir / "run_config.snapshot.yaml").write_text(
         yaml.safe_dump(run_cfg, sort_keys=False), encoding="utf-8"
@@ -195,9 +195,8 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
     def _one(model_name: str, ds_name: str, sample) -> dict:
         cfg = models_cfg[model_name]
         key = _cache_key(sample.id, model_name, prompt_version)
-        cache_file = cache_dir / f"{key}.json"
-        if use_cache and cache_file.exists():
-            row = json.loads(cache_file.read_text(encoding="utf-8"))
+        row = cache.get(key) if use_cache else None
+        if row is not None:
             if not row.get("error"):  # never serve a stale errored result — retry it
                 row["cached"] = True
                 # keep the original runner's attribution; record who re-served it
@@ -244,7 +243,7 @@ def run(run_cfg: dict, *, results_root: str | Path | None = None) -> Path:
         if session_id:
             row["session"] = session_id
         if use_cache and pred.error is None:
-            cache_file.write_text(json.dumps(row, ensure_ascii=False), encoding="utf-8")
+            cache.put(key, row)
         return row
 
     def _chunks(it, n):

@@ -1,0 +1,2 @@
+# Resume cache is append-only JSONL: concurrent appends from Colab/3090/local merge by union.
+results/_cache.jsonl merge=union
