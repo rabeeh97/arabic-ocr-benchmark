@@ -41,4 +41,5 @@ longer needed for new branches.
 - `xai-attribution-spike` worktree is still 87 GB: `.geomvenv` 32 GB (in use by the
   gold-label app), `tadqiq-platform/app/workspace` 12 GB (gitignored, only copy),
   `results` 23 GB. Needs a decision, see X8.
-- Run dirs cost 6 MiB each (6 files x 1 MiB). See X9.
+- Run dirs (X9, measured 2026-11-11): 298 dirs, 1,599 files, 62 MB real, ~1.6 GB on
+  disk per full checkout. Not worth packing; just exclude in sparse worktrees.

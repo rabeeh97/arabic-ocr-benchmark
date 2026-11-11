@@ -264,9 +264,10 @@ Atlas §9. Findings in `../experiments/findings-and-notes.md`.
   across worktrees (stop the labelling app first), and either move the two
   workspaces into `suite-v1-artifacts` or delete them. Details and numbers:
   `docs/experiments/disk-space-and-worktrees.md`.
-- [ ] **X9** Run dirs cost 6 MiB each on exFAT (`results/2026*/` has 6 files each,
-  1 MiB per file). Consider packing old run dirs into one archive per month, as
-  the same slack as the old `_cache` is hiding there. Measure first.
+- [x] **X9** Run dirs on exFAT: measured 2026-11-11 — 298 dirs, 1,599 files, 62 MB
+  real, ~1.6 GB on disk per full checkout. Minor next to the old cache (~10 GB), so
+  NOT worth packing; keep excluding `results/20*/` via sparse-checkout in
+  throwaway worktrees (see `docs/experiments/disk-space-and-worktrees.md`).
 
 ## S: own dataset (stretch; spec in `dataset-design.md`)
 - [ ] **S0** Identify the school/partner contact and the ethics-approval route
