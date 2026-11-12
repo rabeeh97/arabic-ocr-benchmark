@@ -87,3 +87,4 @@ gold/.cache/
 gold/tranches/*/images/
 gold/tranches/*/lines.jsonl
 gold/labels/
+gold/exports/

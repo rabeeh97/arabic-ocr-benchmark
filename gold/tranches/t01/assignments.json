@@ -1,0 +1,16 @@
+{
+ "parts": {
+  "gold_part_b": {
+   "datasets": [
+    "baybars",
+    "arams",
+    "amidda",
+    "onlinekhatt",
+    "historyar",
+    "isippt",
+    "iam"
+   ],
+   "plus": "all calibration lines (shared by every labeler)"
+  }
+ }
+}

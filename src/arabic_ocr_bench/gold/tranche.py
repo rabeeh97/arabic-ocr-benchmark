@@ -1,14 +1,13 @@
-"""Export a tranche: ranks (t-1)*size+1 .. t*size of every dataset, with images, tags and toolkit notes."""
+"""Export a tranche: ranks (t-1)*size+1 .. t*size of every dataset, with images, tags and toolkit notes.
+
+Heavy imports (Pillow, PyYAML via pool) are lazy, so the labeling tool, which only calls load_tranche, runs on the
+standard library alone.
+"""
 from __future__ import annotations
 
 import io
 import json
 from pathlib import Path
-
-from PIL import Image
-
-from . import pool as poolmod
-from . import readers, tags
 
 CALIBRATION_RANKS = 5  # the first 5 lines of every dataset in tranche 1 are labelled by every labeler (agreement check)
 
@@ -31,12 +30,17 @@ def _toolkit_notes(results_dir: Path, toolkit_dir: str | None, wanted: set[str])
 
 
 def _ext(raw: bytes) -> str:
+    from PIL import Image
+
     fmt = (Image.open(io.BytesIO(raw)).format or "PNG").lower()
     return {"jpeg": "jpg"}.get(fmt, fmt)
 
 
 def export_tranche(cfg: dict, pool_dir: str | Path, out_dir: str | Path, tranche: int, root: str | Path,
                    only: list[str] | None = None, progress=print) -> dict:
+    from . import pool as poolmod
+    from . import readers, tags
+
     size = cfg["tranche_size"]
     out = Path(out_dir)
     (out / "images").mkdir(parents=True, exist_ok=True)
